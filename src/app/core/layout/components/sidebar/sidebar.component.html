@@ -1,0 +1,22 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-content">
+    <div *ngFor="let item of menuItems" class="menu-items">
+      <a
+        class="p-menuitem-link"
+        [pTooltip]="isCollapsed ? item.label : ''"
+        tooltipPosition="right"
+        [tooltipStyleClass]="'custom-tooltip'"    
+        [routerLink]="item.routerLink">
+        <i [class]="item.icon"></i>
+        <span class="menu-item-text">{{ item.label }}</span>
+      </a>
+    </div>
+  </div>
+  <button
+    pButton
+    type="button"
+    class="collapse-button"
+    [icon]="isCollapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'"
+    (click)="toggleCollapse.emit()"
+  ></button>
+</div>

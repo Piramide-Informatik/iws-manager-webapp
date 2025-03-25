@@ -1,0 +1,54 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background: #2E4053; // Azul oscuro
+    padding: 0 1.5rem;
+    color: white;
+
+    .user-button {
+        color: white !important;
+        background: transparent !important;
+        border: none;
+        font-weight: bold;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    }
+
+    .menu-button {
+        color: white !important;
+        background: transparent !important;
+        border: none;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    }
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+:host ::ng-deep .p-menu {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+:host ::ng-deep .p-menuitem-link {
+    color: #2E4053 !important;
+
+    &:hover {
+        background: rgba(46, 64, 83, 0.1) !important;
+    }
+}
+
+.options{
+    cursor: pointer;
+}

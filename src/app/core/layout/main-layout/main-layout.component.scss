@@ -1,0 +1,58 @@
+.layout {
+  min-height: 100vh;
+  background: #F8F9FA;
+
+  .layout-content {
+    display: flex;
+    margin-top: 0;
+  }
+
+  .sidebar {
+    margin-top: 0;
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    transition: margin-left 0.3s;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+    &.sidebar-collapsed {
+      margin-left: 70px;
+    }
+  }
+}
+
+// Add these new styles
+:host ::ng-deep {
+  .custom-sidebar {
+    .p-sidebar-header {
+      padding: 0;
+    }
+
+    .custom-sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #f8f9fa;
+
+      span {
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      button {
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+
+.close-button{
+ background-color: #34495E;
+ color: #34495E;
+}

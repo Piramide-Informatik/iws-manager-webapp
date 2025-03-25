@@ -1,0 +1,75 @@
+.sidebar {
+    width: 280px;
+    background: #34495E; 
+    height: calc(100vh - 60px);
+    transition: width 0.3s;
+    position: relative;
+    overflow: visible;
+    .menu-items{
+        cursor: pointer;
+        width: 100%;
+    }
+
+    &.collapsed {
+        width: 70px;
+
+        .menu-item-text {
+            display: none;
+        }
+
+        .p-menuitem-link {
+            margin: 5px 0; // Reduce el espacio entre las opciones
+            justify-content: center; // Centra los íconos horizontalmente
+        }
+
+        i {
+            font-size: 1.8rem; // Aumenta el tamaño del ícono
+        }
+    }
+
+    .sidebar-content {
+        position: relative;
+        color: white !important;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; // Alinea los elementos a la izquierda
+    }
+
+    .p-menuitem-link {
+        display: flex;
+        align-items: center;
+        margin: 15px 0; // Espaciado entre las opciones cuando está extendido
+        padding-left: 15px; // Margen izquierdo para separar del borde
+        text-align: left; // Alinea el texto a la izquierda
+        text-decoration: none;
+        color: white;
+
+        i {
+            font-size: 1.5rem; // Tamaño del ícono en estado normal
+            margin-right: 10px; // Espaciado entre el ícono y el texto
+        }
+    }
+
+    .collapse-button {
+        position: absolute;
+        right: -20px; 
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #2E4053;
+        border: 2px solid #A5D6A7; 
+        color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+        z-index: 1000; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: #3a526b;
+        }
+    }
+}
