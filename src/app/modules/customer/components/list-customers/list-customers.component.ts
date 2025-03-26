@@ -9,13 +9,11 @@ import { CustomerService } from '../../services/customer.service';
   styleUrl: './list-customers.component.scss'
 })
 export class ListCustomersComponent implements OnInit {
-  products!: Customer[];
+  customers!: Customer[];
 
   constructor(private customerService: CustomerService) {}
 
   ngOnInit() {
-      this.customerService.list().then((data) => {
-          this.products = data;
-      });
+    this.customers = this.customerService.list();
   }
 }
