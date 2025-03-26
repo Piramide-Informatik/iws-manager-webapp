@@ -9,10 +9,11 @@ import { CustomerService } from '../../services/customer.service';
   styleUrl: './list-customers.component.scss'
 })
 export class ListCustomersComponent implements OnInit {
+  customers!: Customer[];
 
   constructor(private customerService: CustomerService) {}
 
   ngOnInit() {
-
+    this.customers = this.customerService.list();
   }
 }

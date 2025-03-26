@@ -9,6 +9,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 import { CustomerModule } from './modules/customer/customer.module';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CustomerModule } from './modules/customer/customer.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
-    CustomerModule
+    CustomerModule,
+    MatButtonModule 
   ],
   providers: [
     provideAnimationsAsync(),
