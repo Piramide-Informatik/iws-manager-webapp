@@ -1,0 +1,56 @@
+<div class="card">
+  <p-table [value]="products" [tableStyle]="{ 'min-width': '60rem' }">
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="employeeId" style="width: 10%">
+          Employee ID <p-sortIcon field="employeeId" />
+        </th>
+        <th pSortableColumn="firstName" style="width: 15%">
+          First Name <p-sortIcon field="firstName" />
+        </th>
+        <th pSortableColumn="lastName" style="width: 15%">
+          Last Name <p-sortIcon field="lastName" />
+        </th>
+        <th pSortableColumn="date" style="width: 15%">
+          Date <p-sortIcon field="date" />
+        </th>
+        <th pSortableColumn="salary" style="width: 10%">
+          Salary <p-sortIcon field="salary" />
+        </th>
+        <th pSortableColumn="weeklyHours" style="width: 10%">
+          Weekly Hours <p-sortIcon field="weeklyHours" />
+        </th>
+        <th pSortableColumn="abbreviation" style="width: 10%">
+          Abbreviation <p-sortIcon field="abbreviation" />
+        </th>
+        <th pSortableColumn="maxHrsMonth" style="width: 10%">
+          Max Hrs/Month <p-sortIcon field="maxHrsMonth" />
+        </th>
+        <th pSortableColumn="maxHrsDay" style="width: 10%">
+          Max Hrs/Day <p-sortIcon field="maxHrsDay" />
+        </th>
+        <th pSortableColumn="hourlyRate" style="width: 10%">
+          Hourly Rate <p-sortIcon field="hourlyRate" />
+        </th>
+        <th pSortableColumn="noteLine" style="width: 15%">
+          Note Line <p-sortIcon field="noteLine" />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td>{{ product.employeeId }}</td>
+        <td>{{ product.firstName }}</td>
+        <td>{{ product.lastName }}</td>
+        <td>{{ product.date }}</td>
+        <td>{{ product.salary }}</td>
+        <td>{{ product.weeklyHours }}</td>
+        <td>{{ product.abbreviation }}</td>
+        <td>{{ product.maxHrsMonth }}</td>
+        <td>{{ product.maxHrsDay }}</td>
+        <td>{{ product.hourlyRate }}</td>
+        <td>{{ product.noteLine }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

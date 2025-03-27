@@ -11,27 +11,25 @@ import Lara from '@primeng/themes/lara';
 import { CustomerModule } from './modules/customer/customer.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
-    CustomerModule
+    CustomerModule,
   ],
   providers: [
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Lara, 
+        preset: Lara,
         options: {
-          darkModeSelector: '.my-app-dark'
-        }
-      }
-    })
+          darkModeSelector: '.my-app-dark',
+        },
+      },
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
