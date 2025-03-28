@@ -1,28 +1,69 @@
 <div class="card">
-    <p-table  [tableStyle]="{'min-width': '60rem'}">
-        <ng-template #header>
-            <tr>
-                <th pSortableColumn="code" style="width:20%">
-                    Code <p-sortIcon field="code" />
-                </th>
-                <th pSortableColumn="name" style="width:20%">
-                    Name <p-sortIcon field="name" />
-                </th>
-                <th pSortableColumn="category" style="width:20%">
-                    Category <p-sortIcon field="category" />
-                </th>
-                <th pSortableColumn="quantity" style="width:20%">
-                    Quantity <p-sortIcon field="quantity" />
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template >
-            <tr>
-                <td>1</td>
-                <td>Valeria</td>
-                <td>Persona</td>
-                <td>Unos</td>
-            </tr>
-        </ng-template>
-    </p-table>
+  <p-table
+    #dt2
+    [value]="customers"
+    dataKey="id"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    [scrollable]="true"
+    scrollHeight="90vh"
+  >
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="id">No. <p-sortIcon field="id" /></th>
+        <th pSortableColumn="companyName">
+          Company Name <p-sortIcon field="companyName" />
+        </th>
+        <th pSortableColumn="nameLine2">
+          Name Line 2 <p-sortIcon field="nameLine2" />
+        </th>
+        <th pSortableColumn="kind">Kind <p-sortIcon field="kind" /></th>
+        <th pSortableColumn="land">Land <p-sortIcon field="land" /></th>
+        <th pSortableColumn="place">Place <p-sortIcon field="place" /></th>
+        <th pSortableColumn="contact">
+          Contact <p-sortIcon field="contact" />
+        </th>
+      </tr>
+      <tr>
+        <th
+          *ngFor="
+            let field of [
+              'id',
+              'companyName',
+              'nameLine2',
+              'kind',
+              'land',
+              'place',
+              'contact'
+            ]
+          "
+        >
+          <input
+            pInputText
+            type="text"
+            (input)="applyFilter($event, field)"
+            [placeholder]="'Search ' + field"
+          />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-customer>
+      <tr>
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.companyName }}</td>
+        <td>{{ customer.nameLine2 }}</td>
+        <td>{{ customer.kind }}</td>
+        <td>{{ customer.land }}</td>
+        <td>{{ customer.place }}</td>
+        <td>{{ customer.contact }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="7">No customers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-button label="new" severity="info" [rounded]="true" />
 </div>
