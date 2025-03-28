@@ -9,34 +9,34 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 import { CustomerModule } from './modules/customer/customer.module';
+import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 
 import { EmployeeContractService } from './modules/customer/services/employee-contract.service';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
     CustomerModule,
-    MatButtonModule 
+    CustomerModule,
+    MatButtonModule,
   ],
   providers: [
     EmployeeContractService,
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Lara, 
+        preset: Lara,
         options: {
-          darkModeSelector: '.my-app-dark'
-        }
-      }
-    })
+          darkModeSelector: '.my-app-dark',
+        },
+      },
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
