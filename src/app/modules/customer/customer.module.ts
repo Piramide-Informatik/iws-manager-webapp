@@ -9,7 +9,8 @@ import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-
+import { ContactComponent } from './components/contact/contact.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 
@@ -20,7 +21,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 @NgModule({
   declarations: [
     ListCustomersComponent,
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
+    ContactComponent
   ],
   imports: [
     FormsModule,
@@ -34,7 +36,9 @@ import { DatePickerModule } from 'primeng/datepicker';
     InputTextModule,
     DropdownModule,
     CalendarModule,
-    DatePickerModule
+    DatePickerModule,
+    ReactiveFormsModule
   ]
 })
-export class CustomerModule { }
+export class CustomerModule {
+ }
