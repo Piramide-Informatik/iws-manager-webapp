@@ -1,0 +1,12 @@
+:host ::ng-deep .product-image {
+  width: 150px;
+  margin: 0 auto 2rem auto;
+  display: block;
+  min-height: 500px;
+  overflow: auto;
+}
+
+.p-dialog .p-dialog-content {
+  min-height: 500px;
+  overflow: auto;
+}

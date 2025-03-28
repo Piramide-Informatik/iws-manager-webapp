@@ -5,15 +5,28 @@ import { MainLayoutComponent } from './core/layout/main-layout/main-layout.compo
 const routes: Routes = [
   {
     path: '',
-    component: MainLayoutComponent, 
+    component: MainLayoutComponent,
     children: [
-      { path: 'customer', loadChildren: () => import('./modules/customer/customer.module').then(c => c.CustomerModule) }
-    ]   
-  }
+      {
+        path: 'customer',
+        loadChildren: () =>
+          import('./modules/customer/customer.module').then(
+            (c) => c.CustomerModule
+          ),
+      },
+      {
+        path: 'work-contracts',
+        loadChildren: () =>
+          import('./modules/work-contracts/work-contracts.module').then(
+            (w) => w.WorkContractsModule
+          ),
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
