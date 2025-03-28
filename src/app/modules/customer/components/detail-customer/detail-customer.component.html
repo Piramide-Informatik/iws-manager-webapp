@@ -1,0 +1,190 @@
+<div class="container">
+  <!-- <h3 class="text-center mt-0">Detail customer</h3> -->
+  <form [formGroup]="formDetailCustomer" action="">
+    <div class="grid">
+      <!-- Primera columna -->
+      <div class="column col-6">
+
+        <div class="field">
+          <label>Customer No.</label>
+          <input type="text" id="companyName1" pInputText formControlName="customerNo" value="123"/>
+        </div>
+
+        <div class="field align-items-start">
+          <label for="companyName" class="mt-2">Company Name</label>
+          <div class="flex flex-column">
+            <input type="text" id="companyName1" class="mb-1" pInputText formControlName="companyText1"/>
+            <input type="text" id="companyName2" pInputText formControlName="companyText2"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="country">Country</label>
+          <p-select formControlName="selectedCountry" 
+            id="country"
+            [options]="countries"
+            optionLabel="name" 
+            placeholder="Select a Country"
+          />
+        </div>
+
+        <div class="field">
+          <div class="flex flex-none">
+            <label for="street">Street</label>
+          </div>
+          <div class="flex flex-grow">
+            <input type="text" id="street" pInputText formControlName="street"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="">Postal Code / City</label>
+          <div class="postal-city">
+            <input type="text" id="postalCode" class="w-4 mr-2" pInputText formControlName="postalCode"/>
+            <input type="text" id="city" class="" pInputText formControlName="city"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="">Type of Company</label>
+          <p-select formControlName="selectedTypeCompany" 
+          id="typeCompany"
+          [options]="typesCompany" 
+          optionLabel="name" 
+          placeholder="Select a Type Company"
+          />
+        </div>
+
+        <div class="field">
+          <label for="">Sector</label>
+          <p-select formControlName="selectedSector" 
+          id="sector"
+          [options]="sectors" 
+          optionLabel="name" 
+          placeholder="Select a sector"  
+          />
+        </div>
+
+        <div class="field">
+          <label for="">State</label>
+          <p-select formControlName="selectedState" 
+          id="state"
+          [options]="states" 
+          optionLabel="name" 
+          placeholder="Select a state"
+          />
+        </div>
+
+        <div class="field">
+          <label for="homepage">Homepage</label>
+          <input type="text" id="homepage" pInputText formControlName="homepage"/>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" pInputText formControlName="phone"/>
+        </div>
+      </div>
+
+      <!-- Segunda columna -->
+      <div class="column col-6">
+        
+        <div class="field">
+          <label for="invoiceEmail">Invoice Email</label>
+          <input type="text" id="invoiceEmail" pInputText formControlName="invoiceEmail"/>
+        </div>
+
+        <div class="field">
+          <label for="weekWorkingHours">Company-wide Weekly Working Hours</label>
+          <input type="text" id="weekWorkingHours" pInputText formControlName="weekWorkingHours"/>
+        </div>
+
+        <div class="field">
+          <label for="taxNumber">Tax Number</label>
+          <input type="number" id="taxNumber" pInputText formControlName="taxNumber"/>
+        </div>
+
+        <div class="field">
+          <label for="headcount">Headcount</label>
+          <input type="number" id="headcount" pInputText formControlName="headcount"/>
+        </div>
+
+        <div class="field">
+          <label for="maxHoursMonth">Max Hours / Month</label>
+          <input type="number" id="maxHoursMonth" pInputText formControlName="maxHoursMonth"/>
+        </div>
+
+        <div class="field">
+          <label for="maxHoursYear">Max Hours / Year</label>
+          <input type="number" id="maxHoursYear" pInputText formControlName="maxHoursYear"/>
+        </div>
+
+        <p-floatlabel variant="on">
+          <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="8" cols="30" style="resize: none" class="w-full h-full"></textarea>
+          <label for="textAreaComment">Comment</label>
+        </p-floatlabel>
+
+      </div>
+
+    </div>
+  </form>
+  <div class="contact-person flex flex-column">
+
+    <div class="flex flex-row gap-3 align-items-center my-2">
+      <label>Contact Person</label>
+      <p-button icon="pi pi-plus" label="New" id="new-contact-person" (onClick)="showDialog()"></p-button>
+    </div>
+    
+    <p-table [value]="persons" stripedRows [tableStyle]="{'min-width': '50rem'}">
+      <ng-template #header>
+        <tr>
+          <th>Option</th>
+          <th>Name</th>
+          <th>Function</th>
+          <th>Right</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-person>
+        <tr>
+          <td> 
+            <div class="flex gap-3">
+              <p-button icon="pi pi-pencil"></p-button>
+              <p-button icon="pi pi-trash" severity="danger" (onClick)="deletePerson(person)"></p-button>
+            </div>
+          </td>
+          <td>{{person.name}}</td>
+          <td>{{person.function}}</td>
+          <td>{{person.right}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div class="buttons flex justify-content-center my-2">
+      <p-button label="Save" icon="pi pi-check" class="mx-4" severity="success"></p-button>
+      <p-button label="Delete" icon="pi pi-trash" class="mx-4" severity="danger"></p-button>
+      <p-button label="Cancel" icon="pi pi-times" class="mx-4"severity="secondary"></p-button>
+     </div>
+  </div>
+</div>
+
+<div class="card flex justify-center">
+  <p-dialog header="New Contact Person" [modal]="true" [(visible)]="visibleDialogNewPerson" [style]="{ width: '25rem' }">
+      <span class="p-text-secondary block mb-3">Add new contact person</span>
+      <div class="flex align-items-center gap-4 mb-2">
+          <label for="name" class="font-semibold label-dialog">Name</label>
+          <input #inputName pInputText id="name" class="flex-auto" autocomplete="off" />
+      </div>
+      <div class="flex align-items-center gap-4 mb-2">
+          <label for="function" class="font-semibold label-dialog">Function</label>
+          <input #inputFunction pInputText id="function" class="flex-auto" autocomplete="off" />
+      </div>
+      <div class="flex align-items-center gap-4 mb-3">
+        <label for="right" class="font-semibold label-dialog">Right</label>
+        <input #inputRight pInputText id="right" class="flex-auto" autocomplete="off" />
+    </div>
+      <div class="flex justify-content-center gap-2">
+          <p-button label="Cancel" severity="secondary" (click)="visibleDialogNewPerson = false" />
+          <p-button label="Save" (click)="addNewPerson(inputName.value, inputFunction.value, inputRight.value)" />
+      </div>
+  </p-dialog>
+</div>

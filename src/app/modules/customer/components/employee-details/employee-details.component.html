@@ -1,0 +1,215 @@
+<div class="card">
+    <div class="p-fluid">
+        <label class="col-md-2 control-label" for="customerName">Customer</label>
+        <input class="col-md-6" [disabled]="true" type="text" pInputText [(ngModel)]="customerName" />
+    </div>
+    <br>
+    <div class="form-row flex flex-wrap justify-content-center">
+
+        <div class="form-column">
+
+            <div class="flex-wrap">
+                <label class="col-md-4 control-label" for="customerName">Employee Number</label>
+                <input class="col-md-6" type="text" pInputText [(ngModel)]="customerName" />
+            </div>
+            <br>
+            <div class="flex-wrap">
+                <label class="col-md-4 control-label" for="customerName">Salutation</label>
+                <p-dropdown [options]="salutations" [(ngModel)]="salutationId" [style]="{'width':'50%'}"
+                    [editable]="true" [showClear]="true" optionLabel="name" />
+            </div>
+            <br>
+            <div class="flex-wrap">
+                <label class="col-md-4 control-label" for="customerName">Title</label>
+                <p-dropdown [options]="titles" [(ngModel)]="titleId" [style]="{'width':'50%'}" [editable]="true"
+                    [showClear]="true" optionLabel="name" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-4 control-label" for="customerName">First Name</label>
+                <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeFirstName" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-4 control-label" for="customerName">Last Name</label>
+                <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeLastName" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-4 control-label" for="customerName">Email</label>
+                <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeEmail" />
+            </div>
+        </div>
+
+        <div class="form-column">
+            <div class="">
+                <label class="col-md-5 control-label" for="customerName"> General Manager since</label>
+                <p-datepicker class="col-md-6" [(ngModel)]="generalManagerSinceDate" [style]="{'width':'50%'}"
+                    [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-5 control-label" for="customerName">Shareholder since</label>
+                <p-datepicker [(ngModel)]="shareholderSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
+                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-5 control-label" for="customerName">Sole Propietor since</label>
+                <p-datepicker [(ngModel)]="solePropietorSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
+                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-5 control-label" for="customerName">Co-entrepreneur since</label>
+                <p-datepicker [(ngModel)]="coentrepreneurSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
+                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-5 control-label" for="customerName">Qualification FZ</label>
+                <p-dropdown [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [style]="{'width':'50%'}"
+                    [editable]="true" [showClear]="true" optionLabel="name" />
+            </div>
+            <br>
+            <div>
+                <label class="col-md-5 control-label" for="customerName">Qualification SMEi</label>
+                <input class="col-md-6" type="text" pInputText [(ngModel)]="qualificationKMUi" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row flex flex-wrap gap-3 justify-content-center">
+        <p-button label="Save" />
+        <p-button label="Delete" severity="danger" />
+        <p-button label="Cancel" severity="secondary" />
+
+    </div>
+
+    <div class="card flex flex-wrapjustify-content-center">
+
+        <p-table [value]="employeeContracts" dataKey="id" editMode="row" [scrollable]="true" scrollHeight="260px"
+            [tableStyle]="{'min-width': '50rem'}">
+            <ng-template #header>
+                <tr>
+                    <th style="width:10%"></th>
+                    <th class="" pSortableColumn="datum" style="width:10%">
+                        Start date <p-sortIcon field="datum" />
+                    </th>
+                    <th style="width:10%">Salary per month</th>
+                    <th style="width:10%">Hours per week</th>
+                    <th style="width:10%">Work short time</th>
+                    <th style="width:10%">Max Hours per Month</th>
+                    <th style="width:10%">Max Hours per Day</th>
+                    <th style="width:10%">Hourly rate</th>
+                    <th style="width:10%">Annual special payment</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-employeeContract let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="employeeContract">
+                    <td>
+                        <div class="flex items-center justify-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                (click)="onRowEditInit(employeeContract)" text rounded severity="secondary"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(employeeContract)" text rounded severity="secondary"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(employeeContract, ri)" text rounded
+                                severity="secondary"></button>
+                        </div>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="employeeContract.startDate" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{employeeContract.startDate}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="employeeContract.salaryPerMonth" required />
+                            </ng-template>
+                            <ng-template #output>
+                                {{employeeContract.salaryPerMonth | currency: 'USD'}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-select [options]="statuses" appendTo="body"
+                                    [(ngModel)]="employeeContract.hoursPerWeek" [style]="{'width':'100%'}" />
+                            </ng-template>
+                            <ng-template #output>
+                                <p-tag [value]="employeeContract.hoursPerWeek" />
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="employeeContract.workShortTime" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{employeeContract.workShortTime}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="employeeContract.maxHoursPerMonth"
+                                    required />
+                            </ng-template>
+                            <ng-template #output>
+                                {{employeeContract.maxHoursPerMonth}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="employeeContract.maxHoursPerDay" required />
+                            </ng-template>
+                            <ng-template #output>
+                                {{employeeContract.maxHoursPerDay}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="employeeContract.hourlyRate" required />
+                            </ng-template>
+                            <ng-template #output>
+                                {{employeeContract.hourlyRate}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <input pInputText type="text" [(ngModel)]="employeeContract.specialPayment" required />
+                            </ng-template>
+                            <ng-template #output>
+                                {{employeeContract.specialPayment | currency: 'USD'}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                </tr>
+
+            </ng-template>
+
+        </p-table>
+        <br>
+        <div class="form-row flex flex-wrap gap-3 justify-content-left">
+            <p-button label="New" />
+
+        </div>
+    </div>
+</div>
