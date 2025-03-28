@@ -50,133 +50,121 @@
       </p-iconfield>
     </div>
   </p-toolbar>
-  <div
-    style="
-      overflow-x: auto;
-      max-width: 50%;
-      padding: 10px;
-      border: 2px solid #0c21df;
-    "
-  >
-    <table
-      class="table table-striped table-bordered"
-      style="min-width: 200%; table-layout: auto"
+
+  <div style="overflow-x: auto; width: 99%">
+    <p-table
+      #dt
+      [value]="products"
+      [rows]="10"
+      [columns]="cols"
+      [paginator]="true"
+      scrollable="true"
+      scrollHeight="400px"
+      [globalFilterFields]="[
+        'employeeId',
+        'firstName',
+        'lastName',
+        'date',
+        'salary',
+        'weeklyHours'
+      ]"
+      [(selection)]="selectedProducts"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
     >
-      <p-table
-        [tableStyle]="{ 'min-width': '130rem' }"
-        #dt
-        [value]="products"
-        [rows]="10"
-        [columns]="cols"
-        [paginator]="true"
-        scrollable="true"
-        scrollHeight="400px"
-        [globalFilterFields]="[
-          'employeeId',
-          'firstName',
-          'lastName',
-          'date',
-          'salary',
-          'weeklyHours'
-        ]"
-        [(selection)]="selectedProducts"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [showCurrentPageReport]="true"
-      >
-        <ng-template #caption>
-          <div class="flex items-center justify-between">
-            <h5 class="m-0">Manage Products</h5>
-          </div>
-        </ng-template>
-        <ng-template #header>
-          <tr>
-            <th style="min-width: 1rem">
-              <p-tableHeaderCheckbox />
-            </th>
-            <th pSortableColumn="employeeId" style="min-width: 6rem">
-              Employee ID <p-sortIcon field="employeeId" />
-            </th>
-            <th pSortableColumn="firstName" style="min-width: 5rem">
-              First Name <p-sortIcon field="firstName" />
-            </th>
-            <th pSortableColumn="lastName" style="min-width: 5rem">
-              Last Name <p-sortIcon field="lastName" />
-            </th>
-            <th pSortableColumn="date" style="min-width: 5rem">
-              Date <p-sortIcon field="date" />
-            </th>
-            <th pSortableColumn="salary" style="min-width: 5rem">
-              Salary <p-sortIcon field="salary" />
-            </th>
-            <th pSortableColumn="weeklyHours" style="min-width: 5rem">
-              Weekly Hours <p-sortIcon field="weeklyHours" />
-            </th>
-            <th pSortableColumn="abbreviation" style="min-width: 5rem">
-              Abbreviation <p-sortIcon field="abbreviation" />
-            </th>
-            <th pSortableColumn="maxHrsMonth" style="min-width: 5rem">
-              Max Hrs/Month <p-sortIcon field="maxHrsMonth" />
-            </th>
-            <th pSortableColumn="maxHrsDay" style="min-width: 5rem">
-              Max Hrs/Day <p-sortIcon field="maxHrsDay" />
-            </th>
-            <th pSortableColumn="hourlyRate" style="min-width: 1rem">
-              Hourly Rate <p-sortIcon field="hourlyRate" />
-            </th>
-            <th pSortableColumn="noteLine" style="min-width: 1rem">
-              Note Line <p-sortIcon field="noteLine" />
-            </th>
-            <th style="min-width: 1rem"></th>
-          </tr>
-        </ng-template>
-        <ng-template #body let-product>
-          <tr>
-            <td style="width: 1rem">
-              <p-tableCheckbox [value]="product" />
-            </td>
-            <td style="min-width: 6rem">{{ product.employeeId }}</td>
-            <td style="min-width: 6rem">{{ product.firstName }}</td>
-            <td style="min-width: 6rem">{{ product.lastName }}</td>
-            <td style="min-width: 6rem">{{ product.date }}</td>
-            <td style="min-width: 6rem">
-              {{ product.salary | currency : "USD" }}
-            </td>
-            <td style="min-width: 6rem">{{ product.weeklyHours }}</td>
-            <td style="min-width: 6rem">{{ product.abbreviation }}</td>
-            <td style="min-width: 6rem">{{ product.maxHrsMonth }}</td>
-            <td style="min-width: 6rem">{{ product.maxHrsDay }}</td>
-            <td style="min-width: 6rem">
-              {{ product.hourlyRate | currency : "USD" }}
-            </td>
-            <td style="min-width: 6rem">{{ product.noteLine }}</td>
-            <td></td>
-            <td>
-              <p-button
-                icon="pi pi-pencil"
-                class="mr-2"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="editProduct(product)"
-              />
-              <p-button
-                icon="pi pi-trash"
-                severity="danger"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="deleteProduct(product)"
-              />
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template #summary>
-          <div class="flex items-center justify-between">
-            In total there are {{ products ? products.length : 0 }} products.
-          </div>
-        </ng-template>
-      </p-table>
-    </table>
+      <ng-template #caption>
+        <div class="flex items-center justify-between">
+          <h5 class="m-0">Manage Products</h5>
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th style="min-width: 1rem">
+            <p-tableHeaderCheckbox />
+          </th>
+          <th pSortableColumn="employeeId" style="min-width: 6rem">
+            Employee ID <p-sortIcon field="employeeId" />
+          </th>
+          <th pSortableColumn="firstName" style="min-width: 5rem">
+            First Name <p-sortIcon field="firstName" />
+          </th>
+          <th pSortableColumn="lastName" style="min-width: 5rem">
+            Last Name <p-sortIcon field="lastName" />
+          </th>
+          <th pSortableColumn="date" style="min-width: 5rem">
+            Date <p-sortIcon field="date" />
+          </th>
+          <th pSortableColumn="salary" style="min-width: 5rem">
+            Salary <p-sortIcon field="salary" />
+          </th>
+          <th pSortableColumn="weeklyHours" style="min-width: 5rem">
+            Weekly Hours <p-sortIcon field="weeklyHours" />
+          </th>
+          <th pSortableColumn="abbreviation" style="min-width: 5rem">
+            Abbreviation <p-sortIcon field="abbreviation" />
+          </th>
+          <th pSortableColumn="maxHrsMonth" style="min-width: 5rem">
+            Max Hrs/Month <p-sortIcon field="maxHrsMonth" />
+          </th>
+          <th pSortableColumn="maxHrsDay" style="min-width: 5rem">
+            Max Hrs/Day <p-sortIcon field="maxHrsDay" />
+          </th>
+          <th pSortableColumn="hourlyRate" style="min-width: 1rem">
+            Hourly Rate <p-sortIcon field="hourlyRate" />
+          </th>
+          <th pSortableColumn="noteLine" style="min-width: 1rem">
+            Note Line <p-sortIcon field="noteLine" />
+          </th>
+          <th style="min-width: 1rem"></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-product>
+        <tr>
+          <td style="width: 1rem">
+            <p-tableCheckbox [value]="product" />
+          </td>
+          <td style="min-width: 6rem">{{ product.employeeId }}</td>
+          <td style="min-width: 6rem">{{ product.firstName }}</td>
+          <td style="min-width: 6rem">{{ product.lastName }}</td>
+          <td style="min-width: 6rem">{{ product.date }}</td>
+          <td style="min-width: 6rem">
+            {{ product.salary | currency : "USD" }}
+          </td>
+          <td style="min-width: 6rem">{{ product.weeklyHours }}</td>
+          <td style="min-width: 6rem">{{ product.abbreviation }}</td>
+          <td style="min-width: 6rem">{{ product.maxHrsMonth }}</td>
+          <td style="min-width: 6rem">{{ product.maxHrsDay }}</td>
+          <td style="min-width: 6rem">
+            {{ product.hourlyRate | currency : "USD" }}
+          </td>
+          <td style="min-width: 6rem">{{ product.noteLine }}</td>
+          <td></td>
+          <td>
+            <p-button
+              icon="pi pi-pencil"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="editProduct(product)"
+            />
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="deleteProduct(product)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #summary>
+        <div class="flex items-center justify-between">
+          In total there are {{ products ? products.length : 0 }} products.
+        </div>
+      </ng-template>
+    </p-table>
   </div>
   <p-dialog
     [(visible)]="productDialog"
