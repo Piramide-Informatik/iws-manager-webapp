@@ -1,0 +1,61 @@
+<section class="employeeOverview">
+    <form [formGroup]="searchEmployee">
+        <label for="kunde">Kunde:</label>
+        <input type="text" id="kunde" formControlName="kunde" placeholder="Buscar empleado..." />
+    </form>
+    
+    <div class="scrollbox">
+        <table class="table table-striped table-bordered" style="min-width: 200%; table-layout: auto;">
+            <p-table [tableStyle]="{'min-width': '100%'}">
+                <ng-template #header>
+                    <tr>
+                        <th pSortableColumn="personId" style="width: 5vw">
+                            PersNr <p-sortIcon field="personId" />
+                        </th>
+                        <th pSortableColumn="firstName" style="width: 10vw">
+                            Vorname <p-sortIcon field="firstName" />
+                        </th>
+                        <th pSortableColumn="lastName" style="width: 10vw">
+                            Nachname <p-sortIcon field="lastName" />
+                        </th>
+                        <th pSortableColumn="email" style="width: 15vw">
+                            Email <p-sortIcon field="email" />
+                        </th>
+                        <th pSortableColumn="generalManagerSince" style="width: 10vw">
+                            GF <p-sortIcon field="generalManagerSince" />
+                        </th>
+                        <th pSortableColumn="shareHolderSince" style="width: 10vw">
+                            Ges. <p-sortIcon field="shareHolderSince" />
+                        </th>
+                        <th pSortableColumn="soleProprietorSince" style="width: 10vw">
+                            EU <p-sortIcon field="soleProprietorSince" />
+                        </th>
+                        <th pSortableColumn="coentrepreneurSince" style="width: 10vw">
+                            MU <p-sortIcon field="coentrepreneurSince" />
+                        </th>
+                        <th pSortableColumn="qualificationFz" style="width: 10vw">
+                            Quali FZ <p-sortIcon field="qualificationFz" />
+                        </th>
+                        <th pSortableColumn="qualificationKmui" style="width: 10vw">
+                            Quali KMUi <p-sortIcon field="qualificationKmui" />
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template>
+                    <tr>
+                        <td>1</td>
+                        <td>Valeria</td>
+                        <td>Persona</td>
+                        <td>Unos</td>
+                        <td>2020</td>
+                        <td>2021</td>
+                        <td>2022</td>
+                        <td>2023</td>
+                        <td>FZ Quali</td>
+                        <td>KMUi Quali</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </table>
+    </div>
+</section>
