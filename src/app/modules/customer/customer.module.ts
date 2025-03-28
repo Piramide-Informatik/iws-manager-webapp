@@ -9,6 +9,13 @@ import { CustomerRoutingModule } from './customer-routing.module';
 
 //PrimeNG
 import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectModule } from 'primeng/select';
@@ -28,6 +35,7 @@ import { DetailCustomerComponent } from './components/detail-customer/detail-cus
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 
 
+
 @NgModule({
   declarations: [
     ListCustomersComponent,
@@ -39,6 +47,12 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
     FormsModule,
     CommonModule,
     CustomerRoutingModule,
+    IconFieldModule,
+    InputTextModule,
+    InputIconModule,
+    MultiSelectModule,
+    SelectModule,
+    ButtonModule
     ReactiveFormsModule,
     TableModule,
     TextareaModule,
