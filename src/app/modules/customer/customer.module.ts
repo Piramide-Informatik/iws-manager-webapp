@@ -4,16 +4,21 @@ import { CommonModule } from '@angular/common';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 import { TableModule } from 'primeng/table';
+import { ContactComponent } from './components/contact/contact.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    ListCustomersComponent
+    ListCustomersComponent,
+    ContactComponent
   ],
   imports: [
     CommonModule,
     CustomerRoutingModule,
-    TableModule
+    TableModule,
+    ReactiveFormsModule
   ]
 })
-export class CustomerModule { }
+export class CustomerModule {
+ }
