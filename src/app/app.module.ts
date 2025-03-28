@@ -11,6 +11,8 @@ import Lara from '@primeng/themes/lara';
 import { CustomerModule } from './modules/customer/customer.module';
 import { MatButtonModule } from '@angular/material/button';
 
+import { EmployeeContractService } from './modules/customer/services/employee-contract.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -24,6 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule 
   ],
   providers: [
+    EmployeeContractService,
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
