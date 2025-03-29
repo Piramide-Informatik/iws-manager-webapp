@@ -12,10 +12,9 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
+
 import { MultiSelectModule } from 'primeng/multiselect';
-import { SelectModule } from 'primeng/select';
-import { ButtonModule } from 'primeng/button';
+
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectModule } from 'primeng/select';
@@ -25,7 +24,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { FloatLabel } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
-import { TagModule } from 'primeng/tag';
+
 import { DatePickerModule } from 'primeng/datepicker';
 
 //Componentes
@@ -34,14 +33,12 @@ import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 
-
-
 @NgModule({
   declarations: [
     ListCustomersComponent,
     DetailCustomerComponent,
     EmployeeDetailsComponent,
-    ContactComponent
+    ContactComponent,
   ],
   imports: [
     FormsModule,
@@ -52,12 +49,12 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
     InputIconModule,
     MultiSelectModule,
     SelectModule,
-    ButtonModule
+    ButtonModule,
     ReactiveFormsModule,
     TableModule,
     TextareaModule,
     FloatLabel,
-    Dialog
+    Dialog,
     SelectModule,
     TagModule,
     ButtonModule,
@@ -65,8 +62,7 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
     InputTextModule,
     DropdownModule,
     CalendarModule,
-    DatePickerModule
-  ]
+    DatePickerModule,
+  ],
 })
-export class CustomerModule {
- }
+export class CustomerModule {}

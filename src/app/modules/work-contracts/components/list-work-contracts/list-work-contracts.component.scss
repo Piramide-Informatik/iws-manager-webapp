@@ -6,7 +6,41 @@
   overflow: auto;
 }
 
-.p-dialog .p-dialog-content {
-  min-height: 500px;
-  overflow: auto;
+.odd-row {
+  background-color: #34495e38 !important;
+}
+
+.even-row {
+  background-color: #ffffff !important;
+}
+
+/* Estilo de resaltado cuando el mouse pasa sobre la fila */
+.odd-row:hover,
+.even-row:hover {
+  background-color: #dcdcdc !important; /* Gris claro para resaltar */
+  cursor: pointer; /* Cambia el cursor a mano para dar un toque interactivo */
+  transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+/* Opción alternativa con un borde */
+.odd-row:hover,
+.even-row:hover {
+  background-color: #34495e7e !important; /* Gris claro */
+  border-left: 3px solid #007bff; /* Borde azul para un toque profesional */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Transición suave para el borde y el fondo */
+}
+
+.custom-dialog .p-dialog-content {
+  margin-top: 20px; /* Ajusta el margen superior  */
+}
+
+.custom-dialog-content {
+  margin-top: 20px;
+  padding: 10px;
+}
+.title-container {
+  display: flex;
+  justify-content: center; /* Centra el título horizontalmente */
+  width: 100%;
 }

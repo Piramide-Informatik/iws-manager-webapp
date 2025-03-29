@@ -28,15 +28,27 @@ export class ListWorkContractsComponent implements OnInit {
   products: WorkContract[] = [];
 
   product!: WorkContract;
-  selectedProducts!: WorkContract[] | null;
+  selectedProducts: WorkContract[] | null | undefined;
   submitted: boolean = true;
-
+  searchTerm: string = '';
   statuses!: any[];
 
   @ViewChild('dt') dt!: Table;
 
   loading: boolean = true;
-  cols!: Column[];
+  cols: Column[] = [
+    { field: 'employeeId', header: 'Employee ID' },
+    { field: 'firstName', header: 'First Name' },
+    { field: 'lastName', header: 'Last Name' },
+    { field: 'date', header: 'Date' },
+    { field: 'salary', header: 'Salary' },
+    { field: 'weeklyHours', header: 'Weekly Hours' },
+    { field: 'maxHrsDay', header: 'Max Hrs/Day' },
+    { field: 'maxHrsMonth', header: 'Max Hrs/Month' },
+    { field: 'abbreviation', header: 'Abbreviation' },
+    { field: 'hourlyRate', header: 'Hourly Rate' },
+    { field: 'noteLine', header: 'Note Line' },
+  ];
 
   exportColumns!: ExportColumn[];
   constructor(
@@ -47,24 +59,59 @@ export class ListWorkContractsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.workContractsService.list().then((data) => {
-      this.products = data;
-      this.loading = false;
-    });
+    this.workContractsService
+      .list()
+      .then((data) => {
+        console.log('Datos cargados:', data);
+        this.products = data || [];
+        this.loading = false;
+
+        this.cd.detectChanges();
+      })
+      .catch((error) => {
+        console.error('Error al cargar los contratos:', error);
+      });
   }
   exportCSV() {
-    this.dt.exportCSV();
+    if (this.products && this.products.length) {
+      setTimeout(() => {
+        if (this.dt && this.dt.exportCSV) {
+          this.dt.exportCSV();
+        } else {
+          console.error('La tabla no tiene el método exportCSV disponible');
+        }
+      }, 0);
+    } else {
+      console.error('No hay datos para exportar');
+    }
   }
-
   loadWorkContracts() {
-    this.workContractsService.list().then((contracts) => {
-      this.products = contracts;
-      this.loading = false;
-    });
+    this.workContractsService
+      .list()
+      .then((data) => {
+        console.log('Datos cargados:', data);
+        this.products = data || [];
+        this.loading = false;
+      })
+      .catch((error) => {
+        console.error('Error al cargar los contratos:', error);
+      });
   }
-
   openNew() {
-    this.product, (this.submitted = false);
+    this.product = {
+      employeeId: 0,
+      firstName: '',
+      lastName: '',
+      date: '',
+      salary: 0,
+      weeklyHours: 0,
+      maxHrsDay: 0,
+      maxHrsMonth: 0,
+      abbreviation: '',
+      hourlyRate: 0,
+      noteLine: '',
+    };
+    this.submitted = false;
     this.productDialog = true;
   }
 
@@ -96,7 +143,7 @@ export class ListWorkContractsComponent implements OnInit {
   hideDialog() {
     this.productDialog = false;
     this.submitted = false;
-    this.product; // Resetea el producto al cerrar el diálogo
+    this.product;
   }
   deleteProduct(product: WorkContract) {
     this.confirmationService.confirm({
@@ -126,7 +173,7 @@ export class ListWorkContractsComponent implements OnInit {
     let id: number;
     do {
       id = Math.floor(Math.random() * 1000);
-    } while (this.products.some((product) => product.employeeId === id)); // Verifica si ya existe un contrato con el mismo ID
+    } while (this.products.some((product) => product.employeeId === id));
     return id;
   }
   getSeverity(status: string) {
@@ -136,12 +183,12 @@ export class ListWorkContractsComponent implements OnInit {
     if (status === 'Pending') {
       return 'warning';
     }
-    return 'info'; // Valor por defecto
+    return 'info';
   }
 
   onInputChange(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    if (inputElement && inputElement.value) {
+    if (inputElement) {
       this.dt.filterGlobal(inputElement.value, 'contains');
     }
   }
@@ -150,30 +197,43 @@ export class ListWorkContractsComponent implements OnInit {
     this.submitted = true;
 
     if (this.product.firstName?.trim()) {
-      if (this.product.employeeId) {
-        this.products[this.findIndexById(this.product.employeeId)] =
-          this.product;
+      const productAction = this.product.employeeId
+        ? this.workContractsService.updateProduct(this.product)
+        : this.workContractsService.addProduct({
+            ...this.product,
+            employeeId: this.product.employeeId || this.createUniqueId(),
+          });
+
+      productAction.then(() => {
+        this.loadProducts();
+
+        this.cd.detectChanges();
+
+        const actionMessage = this.product.employeeId
+          ? 'Product Updated'
+          : 'Product Created';
+
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',
-          detail: 'Product Updated',
+          detail: actionMessage,
           life: 3000,
         });
-      } else {
-        this.product.employeeId = this.createUniqueId();
 
-        this.products.push(this.product);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Created',
-          life: 3000,
-        });
-      }
-
-      this.products = [...this.products];
-      this.productDialog = false;
-      this.product = {} as WorkContract;
+        this.resetProductDialog();
+      });
     }
+  }
+
+  loadProducts() {
+    this.workContractsService.list().then((data) => {
+      this.products = data;
+    });
+  }
+
+  resetProductDialog() {
+    this.productDialog = false;
+    this.product = {} as WorkContract;
+    this.selectedProducts = [];
   }
 }
