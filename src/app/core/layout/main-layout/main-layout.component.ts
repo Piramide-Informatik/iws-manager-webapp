@@ -48,18 +48,15 @@ export class MainLayoutComponent implements OnInit {
       case 'admin':
         this.currentSidebarItems = [
           { label: 'Customer', routerLink: ['/customer/list-customers'] },
-          { label: 'Employe', routerLink: ['/admin/roles'] },
-          {
-            label: 'Work Contrats',
-            routerLink: ['/work-contracts/list-work-contracts'],
-          },
+          { label: 'Employees', routerLink: ['/admin/roles'] },
+          { label: 'Employment Contracts', routerLink: ['/work-contracts/list-work-contracts'], },
           { label: 'Projects', routerLink: ['/admin/roles'] },
           { label: 'Orders', routerLink: ['/admin/permissions'] },
           { label: 'Claims', routerLink: ['/admin/roles'] },
           { label: 'Invoices', routerLink: ['/admin/permissions'] },
           { label: 'Framework Agreements', routerLink: ['/admin/roles'] },
           { label: 'Contractors', routerLink: ['/admin/permissions'] },
-          { label: 'Subcontracts', routerLink: ['/admin/permissions'] },
+          { label: 'Subcontracts', routerLink: ['/admin/permissions'] }
         ];
         break;
       case 'inventory':

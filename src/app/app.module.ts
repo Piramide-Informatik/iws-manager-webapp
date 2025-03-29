@@ -12,6 +12,8 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 
+import { EmployeeContractService } from './modules/customer/services/employee-contract.service';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -24,6 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
   ],
   providers: [
+    EmployeeContractService,
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
