@@ -30,7 +30,7 @@ import { Table } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { HttpClientModule } from '@angular/common/http';
 import { CheckboxModule } from 'primeng/checkbox';
-
+import { DatePickerModule } from 'primeng/datepicker';
 @NgModule({
   declarations: [ListWorkContractsComponent],
   imports: [
@@ -63,6 +63,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     InputIconModule,
     HttpClientModule,
     CheckboxModule,
+    DatePickerModule,
   ],
 })
 export class WorkContractsModule {}

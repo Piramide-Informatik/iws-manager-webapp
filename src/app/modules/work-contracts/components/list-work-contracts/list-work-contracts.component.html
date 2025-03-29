@@ -1,162 +1,164 @@
 <div class="card">
   <p-toast />
-  <p-toolbar styleClass="mb-6">
-    <ng-template #start>
-      <p-button
-        label="New"
-        icon="pi pi-plus"
-        class="mr-2"
-        (onClick)="openNew()"
-      />
-      <p-button
-        severity="danger"
-        label="Delete"
-        icon="pi pi-trash"
-        outlined
-        (onClick)="deleteSelectedProducts()"
-        [disabled]="!selectedProducts || !selectedProducts.length"
-      />
-    </ng-template>
-
-    <ng-template #end>
-      <p-fileUpload
-        mode="basic"
-        accept="image/*"
-        [maxFileSize]="1000000"
-        label="Import"
-        chooseLabel="Import"
-        auto
-        customUpload
-        class="mr-2 inline-block"
-        [chooseButtonProps]="{ severity: 'secondary' }"
-      />
-      <p-button
-        label="Export"
-        icon="pi pi-upload"
-        severity="secondary"
-        (onClick)="exportCSV()"
-      />
-    </ng-template>
-
-    <div class="flex justify-end">
-      <p-iconfield>
-        <p-inputicon styleClass="pi pi-search" />
-        <input
-          pInputText
-          type="text"
-          (input)="onInputChange($event)"
-          placeholder="Search..."
-        />
-      </p-iconfield>
-    </div>
-  </p-toolbar>
 
   <div style="overflow-x: auto; width: 99%">
     <p-table
       #dt
       [value]="products"
+      [loading]="loading"
+      stripedRows
+      [tableStyle]="{ 'min-width': '10rem' }"
       [rows]="10"
       [columns]="cols"
       [paginator]="true"
       scrollable="true"
-      scrollHeight="400px"
+      scrollHeight="800px"
+      selectionMode="multiple"
       [globalFilterFields]="[
         'employeeId',
         'firstName',
         'lastName',
         'date',
         'salary',
-        'weeklyHours'
+        'weeklyHours',
+        'maxHrsDay',
+        'maxHrsMonth',
+        'abbreviation',
+        'hourlyRate',
+        'noteLine'
       ]"
       [(selection)]="selectedProducts"
       [rowHover]="true"
-      dataKey="id"
+      dataKey="employeeId"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [showCurrentPageReport]="true"
     >
       <ng-template #caption>
-        <div class="flex items-center justify-between">
-          <h5 class="m-0">Manage Products</h5>
+        <div class="flex items-center justify-center title-container">
+          <h5 class="m-0">Work Contracts</h5>
+        </div>
+        <div class="flex justify-start">
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-search"></p-inputicon>
+            <input
+              pInputText
+              type="text"
+              (input)="onInputChange($event)"
+              placeholder="Search..."
+            />
+          </p-iconfield>
         </div>
       </ng-template>
+
       <ng-template #header>
         <tr>
+          <th style="min-width: 1rem"></th>
           <th style="min-width: 1rem">
             <p-tableHeaderCheckbox />
           </th>
-          <th pSortableColumn="employeeId" style="min-width: 6rem">
+          <th
+            pSortableColumn="employeeId"
+            style="min-width: 6rem; text-align: center"
+          >
             Employee ID <p-sortIcon field="employeeId" />
           </th>
-          <th pSortableColumn="firstName" style="min-width: 5rem">
+          <th
+            pSortableColumn="firstName"
+            style="min-width: 6rem; text-align: center"
+          >
             First Name <p-sortIcon field="firstName" />
           </th>
-          <th pSortableColumn="lastName" style="min-width: 5rem">
+          <th
+            pSortableColumn="lastName"
+            style="min-width: 6rem; text-align: center"
+          >
             Last Name <p-sortIcon field="lastName" />
           </th>
-          <th pSortableColumn="date" style="min-width: 5rem">
+          <th
+            pSortableColumn="date"
+            style="min-width: 6rem; text-align: center"
+          >
             Date <p-sortIcon field="date" />
           </th>
-          <th pSortableColumn="salary" style="min-width: 5rem">
+          <th
+            pSortableColumn="salary"
+            style="min-width: 6rem; text-align: center"
+          >
             Salary <p-sortIcon field="salary" />
           </th>
-          <th pSortableColumn="weeklyHours" style="min-width: 5rem">
+          <th
+            pSortableColumn="weeklyHours"
+            style="min-width: 6rem; text-align: center"
+          >
             Weekly Hours <p-sortIcon field="weeklyHours" />
           </th>
-          <th pSortableColumn="abbreviation" style="min-width: 5rem">
+          <th
+            pSortableColumn="abbreviation"
+            style="min-width: 6rem; text-align: center"
+          >
             Abbreviation <p-sortIcon field="abbreviation" />
           </th>
-          <th pSortableColumn="maxHrsMonth" style="min-width: 5rem">
+          <th
+            pSortableColumn="maxHrsMonth"
+            style="min-width: 6rem; text-align: center"
+          >
             Max Hrs/Month <p-sortIcon field="maxHrsMonth" />
           </th>
-          <th pSortableColumn="maxHrsDay" style="min-width: 5rem">
+          <th
+            pSortableColumn="maxHrsDay"
+            style="min-width: 6rem; text-align: center"
+          >
             Max Hrs/Day <p-sortIcon field="maxHrsDay" />
           </th>
-          <th pSortableColumn="hourlyRate" style="min-width: 1rem">
+          <th
+            pSortableColumn="hourlyRate"
+            style="min-width: 6rem; text-align: center"
+          >
             Hourly Rate <p-sortIcon field="hourlyRate" />
           </th>
-          <th pSortableColumn="noteLine" style="min-width: 1rem">
+          <th
+            pSortableColumn="noteLine"
+            style="min-width: 6rem; text-align: center"
+          >
             Note Line <p-sortIcon field="noteLine" />
           </th>
-          <th style="min-width: 1rem"></th>
         </tr>
       </ng-template>
-      <ng-template #body let-product>
-        <tr>
-          <td style="width: 1rem">
-            <p-tableCheckbox [value]="product" />
-          </td>
-          <td style="min-width: 6rem">{{ product.employeeId }}</td>
-          <td style="min-width: 6rem">{{ product.firstName }}</td>
-          <td style="min-width: 6rem">{{ product.lastName }}</td>
-          <td style="min-width: 6rem">{{ product.date }}</td>
-          <td style="min-width: 6rem">
-            {{ product.salary | currency : "USD" }}
-          </td>
-          <td style="min-width: 6rem">{{ product.weeklyHours }}</td>
-          <td style="min-width: 6rem">{{ product.abbreviation }}</td>
-          <td style="min-width: 6rem">{{ product.maxHrsMonth }}</td>
-          <td style="min-width: 6rem">{{ product.maxHrsDay }}</td>
-          <td style="min-width: 6rem">
-            {{ product.hourlyRate | currency : "USD" }}
-          </td>
-          <td style="min-width: 6rem">{{ product.noteLine }}</td>
-          <td></td>
-          <td>
+      <ng-template #body let-product let-i="rowIndex">
+        <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+          <td style="min-width: 1rem">
             <p-button
               icon="pi pi-pencil"
               class="mr-2"
-              [rounded]="true"
-              [outlined]="true"
+              label="Edit"
+              severity="success"
               (click)="editProduct(product)"
             />
             <p-button
               icon="pi pi-trash"
+              label="Delete"
               severity="danger"
-              [rounded]="true"
-              [outlined]="true"
               (click)="deleteProduct(product)"
             />
           </td>
+          <td style="width: 1rem">
+            <p-tableCheckbox [value]="product" />
+          </td>
+          <td style="text-align: center">{{ product.employeeId }}</td>
+          <td style="text-align: center">{{ product.firstName }}</td>
+          <td style="text-align: center">{{ product.lastName }}</td>
+          <td style="text-align: center">{{ product.date }}</td>
+          <td style="text-align: center">
+            {{ product.salary | currency : "USD" }}
+          </td>
+          <td style="text-align: center">{{ product.weeklyHours }}</td>
+          <td style="text-align: center">{{ product.abbreviation }}</td>
+          <td style="text-align: center">{{ product.maxHrsMonth }}</td>
+          <td style="text-align: center">{{ product.maxHrsDay }}</td>
+          <td style="text-align: center">
+            {{ product.hourlyRate | currency : "USD" }}
+          </td>
+          <td style="text-align: center">{{ product.noteLine }}</td>
         </tr>
       </ng-template>
       <ng-template #summary>
@@ -165,151 +167,195 @@
         </div>
       </ng-template>
     </p-table>
+    <p-toolbar styleClass="mb-6">
+      <ng-template #start>
+        <p-button
+          label="New"
+          icon="pi pi-plus"
+          class="mr-2"
+          (onClick)="openNew()"
+        />
+        <p-button
+          severity="danger"
+          label="Delete"
+          icon="pi pi-trash"
+          outlined
+          (onClick)="deleteSelectedProducts()"
+          [disabled]="!selectedProducts || !selectedProducts.length"
+        />
+      </ng-template>
+
+      <ng-template #end>
+        <p-fileUpload
+          mode="basic"
+          accept="image/*"
+          [maxFileSize]="1000000"
+          label="Import"
+          chooseLabel="Import"
+          auto
+          customUpload
+          class="mr-2 inline-block"
+          [chooseButtonProps]="{ severity: 'secondary' }"
+        />
+        <p-button
+          label="Export"
+          icon="pi pi-upload"
+          severity="secondary"
+          (onClick)="exportCSV()"
+        />
+      </ng-template>
+    </p-toolbar>
   </div>
   <p-dialog
     [(visible)]="productDialog"
-    [style]="{ width: '1000px' }"
+    [style]="{ width: '1100px' }"
     header="Product Details"
     [modal]="true"
   >
     <ng-template #content>
-      <div class="flex flex-col gap-6">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label for="employeeId" class="block font-bold mb-3"
-              >Employee ID</label
-            >
-            <p-inputnumber
-              id="employeeId"
-              [(ngModel)]="product.employeeId"
-              [min]="1"
-              required
-              fluid
-            />
+      <div class="custom-dialog-content">
+        <div class="flex flex-col gap-6">
+          <div class="grid grid-cols-1 gap-4">
+            <div>
+              <label for="employeeId" class="block font-bold mb-3"
+                >Employee ID</label
+              >
+              <p-inputnumber
+                id="employeeId"
+                [(ngModel)]="product.employeeId"
+                [min]="1"
+                required
+                fluid
+              />
+            </div>
+
+            <div>
+              <label for="firstName" class="block font-bold mb-3"
+                >First Name</label
+              >
+              <input
+                type="text"
+                pInputText
+                id="firstName"
+                [(ngModel)]="product.firstName"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="lastName" class="block font-bold mb-3"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                pInputText
+                id="lastName"
+                [(ngModel)]="product.lastName"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="date" class="block font-bold mb-3">Date</label>
+
+              <p-datepicker
+                id="date"
+                [(ngModel)]="product.date"
+                dateFormat="yy-mm-dd"
+                required
+                showIcon
+                [appendTo]="'body'"
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-6">
+              <label for="salary" class="block font-bold mb-3">Salary</label>
+              <p-inputnumber
+                id="salary"
+                [(ngModel)]="product.salary"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                required
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <label for="hourlyRate" class="block font-bold mb-3"
+                >Hourly Rate</label
+              >
+              <p-inputnumber
+                id="hourlyRate"
+                [(ngModel)]="product.hourlyRate"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                required
+                fluid
+              />
+            </div>
+
+            <div class="col-span-6">
+              <label for="weeklyHours" class="block font-bold mb-3"
+                >Weekly Hours</label
+              >
+              <p-inputnumber
+                id="weeklyHours"
+                [(ngModel)]="product.weeklyHours"
+                required
+                fluid
+              />
+            </div>
+
+            <div class="col-span-6">
+              <label for="maxHrsDay" class="block font-bold mb-3"
+                >Max Hrs/Day</label
+              >
+              <p-inputnumber
+                id="maxHrsDay"
+                [(ngModel)]="product.maxHrsDay"
+                required
+                fluid
+              />
+            </div>
           </div>
 
-          <div>
-            <label for="firstName" class="block font-bold mb-3"
-              >First Name</label
-            >
-            <input
-              type="text"
-              pInputText
-              id="firstName"
-              [(ngModel)]="product.firstName"
-              required
-            />
-          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-6">
+              <label for="maxHrsMonth" class="block font-bold mb-3"
+                >Max Hrs/Month</label
+              >
+              <p-inputnumber
+                id="maxHrsMonth"
+                [(ngModel)]="product.maxHrsMonth"
+                required
+                fluid
+              />
+            </div>
+            <div class="col-span-6">
+              <label for="abbreviation" class="block font-bold mb-3"
+                >Abbreviation</label
+              >
+              <input
+                type="text"
+                pInputText
+                id="abbreviation"
+                [(ngModel)]="product.abbreviation"
+                required
+              />
+            </div>
 
-          <div>
-            <label for="lastName" class="block font-bold mb-3">Last Name</label>
-            <input
-              type="text"
-              pInputText
-              id="lastName"
-              [(ngModel)]="product.lastName"
-              required
-            />
-          </div>
-
-          <div>
-            <label for="date" class="block font-bold mb-3">Date</label>
-            <p-calendar
-              id="date"
-              [(ngModel)]="product.date"
-              dateFormat="yy-mm-dd"
-              required
-              showIcon
-            />
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="col-span-6">
-            <label for="salary" class="block font-bold mb-3">Salary</label>
-            <p-inputnumber
-              id="salary"
-              [(ngModel)]="product.salary"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-              required
-              fluid
-            />
-          </div>
-          <div class="col-span-6">
-            <label for="hourlyRate" class="block font-bold mb-3"
-              >Hourly Rate</label
-            >
-            <p-inputnumber
-              id="hourlyRate"
-              [(ngModel)]="product.hourlyRate"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-              required
-              fluid
-            />
-          </div>
-
-          <div class="col-span-6">
-            <label for="weeklyHours" class="block font-bold mb-3"
-              >Weekly Hours</label
-            >
-            <p-inputnumber
-              id="weeklyHours"
-              [(ngModel)]="product.weeklyHours"
-              required
-              fluid
-            />
-          </div>
-
-          <div class="col-span-6">
-            <label for="maxHrsDay" class="block font-bold mb-3"
-              >Max Hrs/Day</label
-            >
-            <p-inputnumber
-              id="maxHrsDay"
-              [(ngModel)]="product.maxHrsDay"
-              required
-              fluid
-            />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div class="col-span-6">
-            <label for="maxHrsMonth" class="block font-bold mb-3"
-              >Max Hrs/Month</label
-            >
-            <p-inputnumber
-              id="maxHrsMonth"
-              [(ngModel)]="product.maxHrsMonth"
-              required
-              fluid
-            />
-          </div>
-          <div class="col-span-6">
-            <label for="abbreviation" class="block font-bold mb-3"
-              >Abbreviation</label
-            >
-            <input
-              type="text"
-              pInputText
-              id="abbreviation"
-              [(ngModel)]="product.abbreviation"
-              required
-            />
-          </div>
-
-          <div>
-            <label for="noteLine" class="block font-bold mb-3">Notes</label>
-            <textarea
-              id="noteLine"
-              pTextarea
-              [(ngModel)]="product.noteLine"
-              rows="3"
-              cols="20"
-            ></textarea>
+            <div>
+              <label for="noteLine" class="block font-bold mb-3">Notes</label>
+              <textarea
+                id="noteLine"
+                pTextarea
+                [(ngModel)]="product.noteLine"
+                rows="3"
+                cols="20"
+              ></textarea>
+            </div>
           </div>
         </div>
       </div>
