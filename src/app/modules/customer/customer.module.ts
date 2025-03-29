@@ -1,71 +1,67 @@
 // Angular
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 //Modulos
 import { CustomerRoutingModule } from './customer-routing.module';
 
 //PrimeNG
-import { TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
+import { Dialog } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { FloatLabel } from 'primeng/floatlabel';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
-import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
-import { SelectModule } from 'primeng/select';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { TextareaModule } from 'primeng/textarea';
-import { FloatLabel } from 'primeng/floatlabel';
-import { ButtonModule } from 'primeng/button';
-import { Dialog } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { DatePickerModule } from 'primeng/datepicker';
+import { TextareaModule } from 'primeng/textarea';
 
 //Componentes
-import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
+import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 
 
 
 @NgModule({
   declarations: [
-    ListCustomersComponent,
+    ContactComponent,
     DetailCustomerComponent,
     EmployeeDetailsComponent,
-    ContactComponent
+    ListCustomersComponent
   ],
   imports: [
-    FormsModule,
+    ButtonModule,
+    ButtonModule,
+    CalendarModule,
     CommonModule,
     CustomerRoutingModule,
-    IconFieldModule,
-    InputTextModule,
-    InputIconModule,
-    MultiSelectModule,
-    SelectModule,
-    ButtonModule
-    ReactiveFormsModule,
-    TableModule,
-    TextareaModule,
+    DatePickerModule,
+    Dialog,
+    DropdownModule,
     FloatLabel,
-    Dialog
-    SelectModule,
-    TagModule,
-    ButtonModule,
+    FormsModule,
+    IconFieldModule,
+    InputIconModule,
     InputNumberModule,
     InputTextModule,
-    DropdownModule,
-    CalendarModule,
-    DatePickerModule
+    InputTextModule,
+    MultiSelectModule,
+    ReactiveFormsModule,
+    SelectModule,
+    SelectModule,
+    TableModule,
+    TagModule,
+    TextareaModule,
   ]
 })
 export class CustomerModule {
