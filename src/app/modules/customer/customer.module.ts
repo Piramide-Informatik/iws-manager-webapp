@@ -41,7 +41,6 @@ import { ListCustomersComponent } from './components/list-customers/list-custome
   ],
   imports: [
     ButtonModule,
-    ButtonModule,
     CalendarModule,
     CommonModule,
     CustomerRoutingModule,
@@ -54,10 +53,8 @@ import { ListCustomersComponent } from './components/list-customers/list-custome
     InputIconModule,
     InputNumberModule,
     InputTextModule,
-    InputTextModule,
     MultiSelectModule,
     ReactiveFormsModule,
-    SelectModule,
     SelectModule,
     TableModule,
     TagModule,
