@@ -23,6 +23,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Dialog } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+
 
 //Componentes
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
@@ -63,7 +66,9 @@ import { EmployeeOverviewComponent } from './components/employee-overview/employ
     InputTextModule,
     DropdownModule,
     CalendarModule,
-    DatePickerModule
+    DatePickerModule,
+    ToastModule,
+    ToolbarModule
   ]
 })
 export class CustomerModule {

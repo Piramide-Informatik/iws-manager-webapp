@@ -1,61 +1,99 @@
 <section class="employeeOverview">
-    <form [formGroup]="searchEmployee">
-        <label for="kunde">Kunde:</label>
-        <input type="text" id="kunde" formControlName="kunde" placeholder="Buscar empleado..." />
-    </form>
-    
+    <p-toast />
+    <p-toolbar styleClass="mb-1">
+        <ng-template #start>
+            <label for="SearchCustomer">Search Customer: </label>
+            <p-iconfield class="px-4">
+                <p-inputicon styleClass="pi pi-search px-4" />
+                <input pInputText type="text" (input)="onInputChange($event)" placeholder="Search Customer" />
+            </p-iconfield>
+        </ng-template>
+    </p-toolbar>
+    <p-toolbar styleClass="mb-3">
+        <ng-template #start>
+            <label for="SearchCustomer">Search Customer: </label>
+            <p-iconfield class="px-4">
+                <p-inputicon styleClass="pi pi-search px-4" />
+                <input pInputText type="text" (input)="searchEmployee($event)" placeholder="Search Employee" />
+            </p-iconfield>
+            <p-button label="Add new employee" icon="pi pi-plus" class="mr-2" (onClick)="createEmployee()" />
+        </ng-template>
+    </p-toolbar>
+
     <div class="scrollbox">
-        <table class="table table-striped table-bordered" style="min-width: 200%; table-layout: auto;">
-            <p-table [tableStyle]="{'min-width': '100%'}">
+            <p-table #dt [value]="employees" [tableStyle]="{ 'min-width': '270%' }" [rows]="10" [columns]="cols" [paginator]="true" scrollable="true"
+                scrollHeight="50vh" [globalFilterFields]="[
+                'personId',
+                'firstName',
+                'lastName',
+                'generalManagerSince',
+                'shareHolderSince',
+                'soleProprietorSince',
+                'qualificationFz',
+                'qualificationKmui'
+                ]" [(selection)]="selectedCustomers" [rowHover]="true" dataKey="id"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
+                <ng-template #caption>
+                    <div class="flex items-center justify-between">
+                        <h5 class="m-0">Employee Overview</h5>
+                    </div>
+                </ng-template>
                 <ng-template #header>
                     <tr>
-                        <th pSortableColumn="personId" style="width: 5vw">
-                            PersNr <p-sortIcon field="personId" />
+                        <th pSortableColumn="id" style="width: 5vw">
+                            ID <p-sortIcon field="id" />
                         </th>
                         <th pSortableColumn="firstName" style="width: 10vw">
-                            Vorname <p-sortIcon field="firstName" />
+                            First Name <p-sortIcon field="firstName" />
                         </th>
                         <th pSortableColumn="lastName" style="width: 10vw">
-                            Nachname <p-sortIcon field="lastName" />
+                            Last Name <p-sortIcon field="lastName" />
                         </th>
-                        <th pSortableColumn="email" style="width: 15vw">
+                        <th pSortableColumn="email" style="width: 10vw">
                             Email <p-sortIcon field="email" />
                         </th>
                         <th pSortableColumn="generalManagerSince" style="width: 10vw">
-                            GF <p-sortIcon field="generalManagerSince" />
+                            General Manager Since (GF) <p-sortIcon field="generalManagerSince" />
                         </th>
-                        <th pSortableColumn="shareHolderSince" style="width: 10vw">
-                            Ges. <p-sortIcon field="shareHolderSince" />
+                        <th pSortableColumn="shareholderSince" style="width: 10vw">
+                            Shareholder Since (Ges.) <p-sortIcon field="shareholderSince" />
                         </th>
                         <th pSortableColumn="soleProprietorSince" style="width: 10vw">
-                            EU <p-sortIcon field="soleProprietorSince" />
+                            Sole-proprietor Since (EU) <p-sortIcon field="soleProprietorSince" />
                         </th>
                         <th pSortableColumn="coentrepreneurSince" style="width: 10vw">
-                            MU <p-sortIcon field="coentrepreneurSince" />
+                            Co-entrepreneur Since (MU) <p-sortIcon field="coentrepreneurSince" />
                         </th>
                         <th pSortableColumn="qualificationFz" style="width: 10vw">
-                            Quali FZ <p-sortIcon field="qualificationFz" />
+                            Qualification FZ (Quali FZ) <p-sortIcon field="qualificationFz" />
                         </th>
                         <th pSortableColumn="qualificationKmui" style="width: 10vw">
-                            Quali KMUi <p-sortIcon field="qualificationKmui" />
+                            Qualification KMUI (Quali KMUi) <p-sortIcon field="qualificationKmui" />
+                        </th>
+                        <th pSortableColumn="EditDelete" style="width: 5vw">
+                            Edit/Delete <p-sortIcon field="EditDelete" />
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template #body>
+                <ng-template #body let-employee>
                     <tr>
-                        <td>1</td>
-                        <td>Valeria</td>
-                        <td>Persona</td>
-                        <td>Unos</td>
-                        <td>2020</td>
-                        <td>2021</td>
-                        <td>2022</td>
-                        <td>2023</td>
-                        <td>FZ Quali</td>
-                        <td>KMUi Quali</td>
+                        <td>{{ employee.id }}</td>
+                        <td>{{ employee.firstName }}</td>
+                        <td>{{ employee.lastName }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.generalManagerSince }}</td>
+                        <td>{{ employee.shareholderSince }}</td>
+                        <td>{{ employee.soleproprietorSince }}</td>
+                        <td>{{ employee.coentrepreneurSince }}</td>
+                        <td>{{ employee.qualificationFz }}</td>
+                        <td>{{ employee.qualificationKmui }}</td>
+                        <td>
+                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
-        </table>
     </div>
 </section>
