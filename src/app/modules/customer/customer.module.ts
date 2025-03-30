@@ -23,21 +23,26 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+
+
 
 //Componentes
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
-
+import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
 
 
 @NgModule({
   declarations: [
     ContactComponent,
+    ListCustomersComponent,
+    EmployeeOverviewComponent,
     DetailCustomerComponent,
     EmployeeDetailsComponent,
-    ListCustomersComponent
   ],
   imports: [
     ButtonModule,
@@ -59,6 +64,8 @@ import { ListCustomersComponent } from './components/list-customers/list-custome
     TableModule,
     TagModule,
     TextareaModule,
+    ToastModule,
+    ToolbarModule
   ]
 })
 export class CustomerModule {
