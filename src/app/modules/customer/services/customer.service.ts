@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../../../Entities/customer';
+import { CustomerDatastoreService } from './customer-datastore.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerService {
+  constructor(private datastore: CustomerDatastoreService) {}
 
-  constructor() { }
+  list() {
+    return this.datastore.list();
 
-  list(){
-    const customers: Customer[] = [];
-    return customers;
   }
 }

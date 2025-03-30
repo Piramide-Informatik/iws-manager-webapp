@@ -16,7 +16,7 @@
     "@angular/compiler": "^19.1.0",
     "@angular/core": "^19.1.0",
     "@angular/forms": "^19.1.0",
-    "@angular/material": "^19.2.4",
+    "@angular/material": "^19.2.7",
     "@angular/platform-browser": "^19.1.0",
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
@@ -27,7 +27,7 @@
     "jwt-decode": "^4.0.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
-    "primeng": "^19.0.9",
+    "primeng": "^19.0.10",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

@@ -1,0 +1,43 @@
+.field {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.25rem;
+  align-items: center;
+  justify-content: space-between;
+  
+  label {
+    display: block;
+    margin-bottom: 0;
+    font-weight: 500;
+    width: 7rem;
+  }
+  
+  input {
+    height: 35px;
+    width: 18.75rem;
+  }
+
+  .p-select {
+    height: 36px;
+    width: 18.75rem;
+
+    span.p-select-label {
+      padding: 0.5rem 0.75rem !important;
+    }
+  }
+
+  .postal-city {
+    width: 18.75rem;
+    display: flex;
+  }
+  
+}
+
+.column {
+  padding: 0.5rem 2rem;
+}
+
+.label-dialog {
+  display: block;
+  width: 3.2rem;
+}
