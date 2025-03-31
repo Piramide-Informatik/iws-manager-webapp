@@ -41,3 +41,28 @@
   display: block;
   width: 3.2rem;
 }
+
+.odd-row {
+  background-color: #ffffff !important;
+}
+
+.even-row {
+  background-color: #34495e38 !important;
+}
+
+/* Estilo de resaltado cuando el mouse pasa sobre la fila */
+.odd-row:hover,
+.even-row:hover {
+  background-color: #dcdcdc !important; /* Gris claro para resaltar */
+  cursor: pointer; /* Cambia el cursor a mano para dar un toque interactivo */
+  transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.pi.pi-globe {
+  position: absolute;
+  right: -1.2rem;
+}
+
+p-select {
+  align-items: center;
+}
