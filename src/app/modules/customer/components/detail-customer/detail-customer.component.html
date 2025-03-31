@@ -120,7 +120,7 @@
         </div>
 
         <p-floatlabel variant="on">
-          <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="8" cols="30" style="resize: none" class="w-full h-full"></textarea>
+          <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="6" cols="30" style="resize: none" class="w-full h-full"></textarea>
           <label for="textAreaComment">Comment</label>
         </p-floatlabel>
 
@@ -135,21 +135,47 @@
       <p-button icon="pi pi-plus" label="New" id="new-contact-person" (onClick)="showDialog()"></p-button>
     </div>
     
-    <p-table [value]="persons" stripedRows [tableStyle]="{'min-width': '50rem'}">
+    <p-table 
+      [value]="persons" 
+      [paginator]="true"
+      [rows]="5"
+      scrollable="true"
+      scrollHeight="400px"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [tableStyle]="{'min-width': '50rem'}"
+    >
       <ng-template #header>
         <tr>
           <th>Option</th>
-          <th>Name</th>
-          <th>Function</th>
-          <th>Right</th>
+          <th pSortableColumn="name">
+            Name 
+            <p-sortIcon field="name"/>
+          </th>
+          <th pSortableColumn="function">
+            Function
+            <p-sortIcon field="function"/>
+          </th>
+          <th pSortableColumn="right">
+            Right
+            <p-sortIcon field="right"/>
+          </th>
         </tr>
       </ng-template>
-      <ng-template #body let-person>
-        <tr>
+      <ng-template #body let-person let-i="rowIndex">
+        <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
           <td> 
             <div class="flex gap-3">
-              <p-button icon="pi pi-pencil"></p-button>
-              <p-button icon="pi pi-trash" severity="danger" (onClick)="deletePerson(person)"></p-button>
+              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"></button>
+              <button 
+                pButton 
+                icon="pi pi-trash" 
+                class="p-button-rounded p-button-danger"
+                (click)="deletePerson(person)"
+              ></button>
+              <!-- <p-button icon="pi pi-pencil"></p-button>
+              <p-button icon="pi pi-trash" severity="danger" (onClick)="deletePerson(person)"></p-button> -->
             </div>
           </td>
           <td>{{person.name}}</td>

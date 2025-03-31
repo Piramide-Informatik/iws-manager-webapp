@@ -71,7 +71,52 @@ export class DetailCustomerComponent {
       name: 'Elena Petrova',
       function: 'Head of Data Protection',
       right: 'Certified to issue GDPR'
-    }
+    },
+    {
+      name: 'Dr. Anna Müller',
+      function: 'Chief Financial Officer',
+      right: 'Authorized signatory'
+    },
+    {
+      name: 'James Carter',
+      function: 'Power of Attorney',
+      right: 'Granted full decision-making'
+    },
+    {
+      name: 'Elena Petrova',
+      function: 'Head of Data Protection',
+      right: 'Certified to issue GDPR'
+    },
+    {
+      name: 'Dr. Anna Müller',
+      function: 'Chief Financial Officer',
+      right: 'Authorized signatory'
+    },
+    {
+      name: 'James Carter',
+      function: 'Power of Attorney',
+      right: 'Granted full decision-making'
+    },
+    {
+      name: 'Elena Petrova',
+      function: 'Head of Data Protection',
+      right: 'Certified to issue GDPR'
+    },
+    {
+      name: 'Dr. Anna Müller',
+      function: 'Chief Financial Officer',
+      right: 'Authorized signatory'
+    },
+    {
+      name: 'James Carter',
+      function: 'Power of Attorney',
+      right: 'Granted full decision-making'
+    },
+    {
+      name: 'Elena Petrova',
+      function: 'Head of Data Protection',
+      right: 'Certified to issue GDPR'
+    },
   ]
 
   constructor(private fb: FormBuilder){
