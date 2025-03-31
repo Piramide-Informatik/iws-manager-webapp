@@ -3,11 +3,11 @@
   <form [formGroup]="formDetailCustomer" action="">
     <div class="grid">
       <!-- Primera columna -->
-      <div class="column col-6">
+      <div class="column md:col-6 lg:col-6">
 
         <div class="field">
           <label>Customer No.</label>
-          <input type="text" id="companyName1" pInputText formControlName="customerNo" value="123"/>
+          <input type="text" pInputText id="InputCustomerNo" formControlName="customerNo"/>
         </div>
 
         <div class="field align-items-start">
@@ -25,7 +25,31 @@
             [options]="countries"
             optionLabel="name" 
             placeholder="Select a Country"
-          />
+          >
+            <!-- Opción seleccionada (visualización en el input) -->
+            <ng-template let-country pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2" *ngIf="country">
+                <img 
+                  [src]="country.flag" 
+                  style="width: 24px; height: 16px; object-fit: cover" 
+                  alt="flag" 
+                />
+                <span>{{ country.name }}</span>
+              </div>
+            </ng-template>
+
+           <!-- Personalización de cada opción -->
+            <ng-template let-country pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <img 
+                  [src]="country.flag" 
+                  style="width: 24px; height: 16px; object-fit: cover" 
+                  alt="flag" 
+                />
+                <span>{{ country.name }}</span>
+              </div>
+            </ng-template>
+          </p-select>
         </div>
 
         <div class="field">
@@ -66,7 +90,7 @@
         </div>
 
         <div class="field">
-          <label for="">State</label>
+          <label for="state">State</label>
           <p-select formControlName="selectedState" 
           id="state"
           [options]="states" 
@@ -75,9 +99,10 @@
           />
         </div>
 
-        <div class="field">
+        <div class="field relative">
           <label for="homepage">Homepage</label>
           <input type="text" id="homepage" pInputText formControlName="homepage"/>
+          <i class="pi pi-globe" style="color: blue"></i>
         </div>
 
         <div class="field">
@@ -87,7 +112,7 @@
       </div>
 
       <!-- Segunda columna -->
-      <div class="column col-6">
+      <div class="column md:col-6 lg:col-6">
         
         <div class="field">
           <label for="invoiceEmail">Invoice Email</label>
@@ -101,7 +126,7 @@
 
         <div class="field">
           <label for="taxNumber">Tax Number</label>
-          <input type="number" id="taxNumber" pInputText formControlName="taxNumber"/>
+          <input type="text" id="taxNumber" pInputText formControlName="taxNumber"/>
         </div>
 
         <div class="field">
@@ -120,7 +145,7 @@
         </div>
 
         <p-floatlabel variant="on">
-          <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="6" cols="30" style="resize: none" class="w-full h-full"></textarea>
+          <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="6" cols="30" style="resize: none" class="w-full"></textarea>
           <label for="textAreaComment">Comment</label>
         </p-floatlabel>
 

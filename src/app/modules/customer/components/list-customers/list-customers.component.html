@@ -50,7 +50,7 @@
     </ng-template>
     <ng-template #body let-customer>
       <tr>
-        <td>{{ customer.id }}</td>
+        <td [routerLink]="['/customer/detail-customer', customer.id]">{{ customer.id }}</td>
         <td>{{ customer.companyName }}</td>
         <td>{{ customer.nameLine2 }}</td>
         <td>{{ customer.kind }}</td>
@@ -65,6 +65,6 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-button label="new" severity="info" [rounded]="true" />
+  <p-button label="new" severity="info" [rounded]="true" routerLink="/customer/detail-customer" />
 
 </div>
