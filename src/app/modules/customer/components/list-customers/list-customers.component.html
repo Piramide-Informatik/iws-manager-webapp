@@ -11,6 +11,7 @@
   >
     <ng-template #header>
       <tr>
+        <th style="width:10%"></th>
         <th pSortableColumn="id">No. <p-sortIcon field="id" /></th>
         <th pSortableColumn="companyName">
           Company Name <p-sortIcon field="companyName" />
@@ -29,6 +30,7 @@
         <th
           *ngFor="
             let field of [
+              '',
               'id',
               'companyName',
               'nameLine2',
@@ -50,6 +52,12 @@
     </ng-template>
     <ng-template #body let-customer>
       <tr>
+        <td>
+          <div class="flex items-center justify-center gap-2">
+              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"></button>
+              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+          </div>
+      </td>
         <td>{{ customer.id }}</td>
         <td>{{ customer.companyName }}</td>
         <td>{{ customer.nameLine2 }}</td>
@@ -65,6 +73,6 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-button label="new" severity="info" [rounded]="true" />
+  <p-button label="New" severity="info" icon="pi pi-plus" />
 
 </div>

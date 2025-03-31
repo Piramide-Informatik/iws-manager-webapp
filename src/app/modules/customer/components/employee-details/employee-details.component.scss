@@ -7,3 +7,36 @@
 .form-column {
   flex: 1;
 }
+
+:host ::ng-deep.p-datatable-table tr:nth-child(even) {
+  background-color: #7a81887e;
+}
+
+//Change row height
+.p-treetable .p-datatable-wrapper .p-datatable-tbody {
+  height: 5vh;
+}
+
+.text-table {
+  text-align: start;
+}
+
+.number-table {
+  text-align: right;
+}
+
+.field {
+  margin: 15px 0;
+  border-radius: 10px;
+
+  label {
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+
+}
+
+label {
+  margin-bottom: 0;
+  font-weight: 500;
+}

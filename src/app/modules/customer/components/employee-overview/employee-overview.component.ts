@@ -5,6 +5,8 @@ import { Table } from 'primeng/table';
 import { Customer } from '../../../../Entities/customer';
 import { Employee } from '../../../../Entities/Employee';
 import { EmployeeService } from '../../services/employee/employee.service';
+import { ActivatedRoute, Router } from '@angular/router';
+ 
 
 interface Column {
   field: string;
@@ -35,11 +37,15 @@ export class EmployeeOverviewComponent {
   loading: boolean = true;
   cols!: Column[];
 
-  constructor( private employeeService: EmployeeService ){ }
+  constructor( private employeeService: EmployeeService, private router : Router ){ }
 
   ngOnInit() {
     this.employees = this.employeeService.getEmployees();
     this.loading = false;
+  }
+
+  goToEmployeeDetails(currentEmployee: Employee) {
+    this.router.navigateByUrl('/customer/employee-details', { state: { customer: "Piramide" , employee: currentEmployee } });
   }
 
   searchEmployee(event: Event): void {
@@ -50,6 +56,7 @@ export class EmployeeOverviewComponent {
   }
 
   onInputChange(event: Event): void {
+    
   }
 
   createEmployee(){}
