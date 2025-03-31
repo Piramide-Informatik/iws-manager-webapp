@@ -5,6 +5,7 @@ import { MainLayoutComponent } from './core/layout/main-layout/main-layout.compo
 const routes: Routes = [
   {
     path: '',
+   
     component: MainLayoutComponent,
     children: [
       {

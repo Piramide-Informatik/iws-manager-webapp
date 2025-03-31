@@ -11,18 +11,25 @@
     </p-toolbar>
     <p-toolbar styleClass="mb-3">
         <ng-template #start>
-            <label for="SearchCustomer">Search Customer: </label>
+            <label for="SearchCustomer">Search Employee: </label>
             <p-iconfield class="px-4">
                 <p-inputicon styleClass="pi pi-search px-4" />
                 <input pInputText type="text" (input)="searchEmployee($event)" placeholder="Search Employee" />
             </p-iconfield>
-            <p-button label="Add new employee" icon="pi pi-plus" class="mr-2" (onClick)="createEmployee()" />
+            <p-button label="Add new employee" icon="pi pi-plus" severity="info" class="mr-2" (onClick)="createEmployee()" />
         </ng-template>
     </p-toolbar>
 
     <div class="scrollbox">
-            <p-table #dt [value]="employees" [tableStyle]="{ 'min-width': '270%' }" [rows]="10" [columns]="cols" [paginator]="true" scrollable="true"
-                scrollHeight="50vh" [globalFilterFields]="[
+            <p-table #dt [value]="employees" 
+            [tableStyle]="{ 'min-width': '270%' }"
+            [rows]="10" 
+            [columns]="cols"
+            [paginator]="true" 
+            scrollable="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            scrollHeight="90vh"
+            [globalFilterFields]="[
                 'personId',
                 'firstName',
                 'lastName',
@@ -41,6 +48,9 @@
                 </ng-template>
                 <ng-template #header>
                     <tr>
+                        <th style="width: 5vw">
+                             
+                        </th>
                         <th pSortableColumn="id" style="width: 5vw">
                             ID <p-sortIcon field="id" />
                         </th>
@@ -71,13 +81,20 @@
                         <th pSortableColumn="qualificationKmui" style="width: 10vw">
                             Qualification KMUI (Quali KMUi) <p-sortIcon field="qualificationKmui" />
                         </th>
-                        <th pSortableColumn="EditDelete" style="width: 5vw">
-                            Edit/Delete <p-sortIcon field="EditDelete" />
-                        </th>
                     </tr>
                 </ng-template>
                 <ng-template #body let-employee>
                     <tr>
+                        <td>
+                            <div class="flex items-center justify-center gap-2">
+                                <button pButton icon="pi pi-pencil" 
+                                class="p-button-rounded p-button-info"
+                                (click)="goToEmployeeDetails(employee)"
+                                ></button>
+                                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+                            </div>
+                           
+                        </td>
                         <td>{{ employee.id }}</td>
                         <td>{{ employee.firstName }}</td>
                         <td>{{ employee.lastName }}</td>
@@ -88,10 +105,7 @@
                         <td>{{ employee.coentrepreneurSince }}</td>
                         <td>{{ employee.qualificationFz }}</td>
                         <td>{{ employee.qualificationKmui }}</td>
-                        <td>
-                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"></button>
-                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
-                        </td>
+                       
                     </tr>
                 </ng-template>
             </p-table>

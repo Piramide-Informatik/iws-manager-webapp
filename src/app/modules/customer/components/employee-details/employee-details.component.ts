@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { MessageService, SelectItem } from 'primeng/api';
 import { EmployeeContract } from '../../models/employee-contract';
 import { EmployeeContractService } from '../../services/employee-contract.service';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { Salutation } from '../../models/salutation';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
@@ -44,10 +45,27 @@ export class EmployeeDetailsComponent implements OnInit {
   searchText: string = '';
   nextId: number = 1;
 
-  constructor(private employeeContractService: EmployeeContractService, private messageService: MessageService) { }
+  constructor(private employeeContractService: EmployeeContractService, private messageService: MessageService, 
+    private router:Router, private activatedRoute:ActivatedRoute) { 
+      //console.log(this.router.getCurrentNavigation().extras.state);
+    }
 
   ngOnInit(): void {
 
+    this.customerName = history.state.customer;
+    this.employeeNumber = history.state.employee.id;
+    this.salutationId = history.state.employee.salutation;
+    this.titleId = history.state.employee.title;
+    this.employeeFirstName = history.state.employee.firstName;
+    this.employeeLastName = history.state.employee.lastName;
+    this.employeeEmail = history.state.employee.email;
+    this.generalManagerSinceDate = history.state.employee.generalManagerSince;
+    this.shareholderSinceDate = history.state.employee.shareholderSince;
+    this.solePropietorSinceDate = history.state.employee.soleProprietorSince;
+    this.coentrepreneurSinceDate = history.state.employee.coEntrepreneurSince;
+    this.qualificationFzId = history.state.employee.qualificationFz;
+    this.qualificationKMUi = history.state.employee.qualificationKmui;
+    
     this.employeeContractService.getEmployeeContractsData().then((data) => {
       this.employeeContracts = data;
     });
@@ -59,11 +77,9 @@ export class EmployeeDetailsComponent implements OnInit {
     ];
 
     this.titles = [
-      { id: 1, name: 'Sir', description: 'title' },
-      { id: 2, name: 'Lord', description: 'title' },
-      { id: 3, name: 'Captain', description: 'title' },
-      { id: 4, name: 'Proffesor', description: 'title' },
-      { id: 5, name: 'Dr.', description: 'title' }
+      { id: 1, name: 'Dr.', description: 'title' },
+      { id: 2, name: 'Prof.', description: 'title' },
+      { id: 3, name: 'Prof. Doc.', description: 'title' }
 
     ];
 
