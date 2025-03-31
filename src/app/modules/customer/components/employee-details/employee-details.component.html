@@ -1,78 +1,72 @@
 <div class="card">
     <div class="p-fluid">
-        <label class="col-md-2 control-label" for="customerName">Customer</label>
+        <label class="col-md-2 label" for="customerName">Customer</label>
         <input class="col-md-6" [disabled]="true" type="text" pInputText [(ngModel)]="customerName" />
     </div>
-    <br>
-    <div class="form-row flex flex-wrap justify-content-center">
+    <div class="form-row flex flex-wrap justify-content-center ">
 
         <div class="form-column">
 
-            <div class="flex-wrap">
-                <label class="col-md-4 control-label" for="customerName">Employee Number</label>
-                <input class="col-md-6" type="text" pInputText [(ngModel)]="customerName" />
+            <div class="field">
+                <label class="col-md-4" for="customerName">Employee Number</label>
+                <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeNumber" />
             </div>
-            <br>
-            <div class="flex-wrap">
+            
+            <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Salutation</label>
                 <p-dropdown [options]="salutations" [(ngModel)]="salutationId" [style]="{'width':'50%'}"
                     [editable]="true" [showClear]="true" optionLabel="name" />
             </div>
-            <br>
-            <div class="flex-wrap">
+            
+            <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Title</label>
                 <p-dropdown [options]="titles" [(ngModel)]="titleId" [style]="{'width':'50%'}" [editable]="true"
                     [showClear]="true" optionLabel="name" />
             </div>
-            <br>
-            <div>
+            
+            <div class="field">
                 <label class="col-md-4 control-label" for="customerName">First Name</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeFirstName" />
             </div>
-            <br>
-            <div>
+            
+            <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Last Name</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeLastName" />
             </div>
-            <br>
-            <div>
+            
+            <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Email</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeEmail" />
             </div>
         </div>
 
         <div class="form-column">
-            <div class="">
+            <div class="field">
                 <label class="col-md-5 control-label" for="customerName"> General Manager since</label>
                 <p-datepicker class="col-md-6" [(ngModel)]="generalManagerSinceDate" [style]="{'width':'50%'}"
-                    [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+                    [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" />
             </div>
-            <br>
-            <div>
+            <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Shareholder since</label>
                 <p-datepicker [(ngModel)]="shareholderSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
-                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+                    inputId="buttondisplay" [showOnFocus]="false" />
             </div>
-            <br>
-            <div>
+            <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Sole Propietor since</label>
                 <p-datepicker [(ngModel)]="solePropietorSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
-                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+                    inputId="buttondisplay" [showOnFocus]="false" />
             </div>
-            <br>
-            <div>
+            <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Co-entrepreneur since</label>
                 <p-datepicker [(ngModel)]="coentrepreneurSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
-                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
+                    inputId="buttondisplay" [showOnFocus]="false" />
             </div>
-            <br>
-            <div>
+            <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Qualification FZ</label>
                 <p-dropdown [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [style]="{'width':'50%'}"
                     [editable]="true" [showClear]="true" optionLabel="name" />
             </div>
-            <br>
-            <div>
+            <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Qualification SMEi</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="qualificationKMUi" />
             </div>
@@ -80,16 +74,34 @@
     </div>
 
     <div class="form-row flex flex-wrap gap-3 justify-content-center">
-        <p-button label="Save" />
-        <p-button label="Delete" severity="danger" />
-        <p-button label="Cancel" severity="secondary" />
+        <p-button label="Save" icon="pi pi-check" class="mx-4" severity="success"></p-button>
+        <p-button label="Delete" icon="pi pi-trash" class="mx-4" severity="danger"></p-button>
+        <p-button label="Cancel" icon="pi pi-times" class="mx-4"severity="secondary"></p-button>
 
     </div>
 
     <div class="card flex flex-wrapjustify-content-center">
 
-        <p-table [value]="employeeContracts" dataKey="id" editMode="row" [scrollable]="true" scrollHeight="260px"
-            [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="employeeContracts" 
+        class="p-datatable-table"
+        dataKey="id" 
+        editMode="row" 
+        [scrollable]="true" 
+        [paginator]="true"
+        [rows]="10" 
+        [rowsPerPageOptions]="[10, 25, 50]"
+        showGridlines
+        scrollHeight="260px"
+        [tableStyle]="{'min-width': '50rem'}"
+        [globalFilterFields]="[
+        'datum'
+        ]"
+    [rowHover]="true" dataKey="id">
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <h5 class="m-0">Employment Contracts</h5>
+                </div>
+            </ng-template>
             <ng-template #header>
                 <tr>
                     <th style="width:10%"></th>
@@ -109,16 +121,11 @@
                 <tr [pEditableRow]="employeeContract">
                     <td>
                         <div class="flex items-center justify-center gap-2">
-                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                                (click)="onRowEditInit(employeeContract)" text rounded severity="secondary"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                                (click)="onRowEditSave(employeeContract)" text rounded severity="secondary"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                                (click)="onRowEditCancel(employeeContract, ri)" text rounded
-                                severity="secondary"></button>
+                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
                         </div>
                     </td>
-                    <td>
+                    <td class="number-table">
                         <p-cellEditor>
                             <ng-template #input>
                                 <input pInputText type="text" [(ngModel)]="employeeContract.startDate" />
@@ -128,7 +135,7 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <td class="number-table">
                         <p-cellEditor>
                             <ng-template #input>
                                 <input pInputText type="text" [(ngModel)]="employeeContract.salaryPerMonth" required />
@@ -138,18 +145,17 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <td class="number-table">
                         <p-cellEditor>
                             <ng-template #input>
-                                <p-select [options]="statuses" appendTo="body"
-                                    [(ngModel)]="employeeContract.hoursPerWeek" [style]="{'width':'100%'}" />
+                                <input pInputText type="text" [(ngModel)]="employeeContract.hoursPerWeek" />
                             </ng-template>
                             <ng-template #output>
-                                <p-tag [value]="employeeContract.hoursPerWeek" />
+                                {{employeeContract.hoursPerWeek}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <td class="number-table">
                         <p-cellEditor>
                             <ng-template #input>
                                 <input pInputText type="text" [(ngModel)]="employeeContract.workShortTime" />
@@ -159,9 +165,9 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <td  class="number-table">
                         <p-cellEditor>
-                            <ng-template #input>
+                            <ng-template #input >
                                 <input pInputText type="text" [(ngModel)]="employeeContract.maxHoursPerMonth"
                                     required />
                             </ng-template>
@@ -170,7 +176,7 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <td  class="number-table">
                         <p-cellEditor>
                             <ng-template #input>
                                 <input pInputText type="text" [(ngModel)]="employeeContract.maxHoursPerDay" required />
@@ -180,7 +186,7 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <td  class="number-table">
                         <p-cellEditor>
                             <ng-template #input>
                                 <input pInputText type="text" [(ngModel)]="employeeContract.hourlyRate" required />
@@ -190,7 +196,7 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <td  class="number-table">
                         <p-cellEditor>
                             <ng-template #input>
                                 <input pInputText type="text" [(ngModel)]="employeeContract.specialPayment" required />
@@ -202,13 +208,10 @@
                     </td>
 
                 </tr>
-
             </ng-template>
-
         </p-table>
-        <br>
         <div class="form-row flex flex-wrap gap-3 justify-content-left">
-            <p-button label="New" />
+            <p-button  icon="pi pi-plus" label="New" severity="info"/>
 
         </div>
     </div>
