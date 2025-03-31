@@ -27,7 +27,6 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 
-
 //Componentes
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
@@ -68,5 +67,4 @@ import { EmployeeOverviewComponent } from './components/employee-overview/employ
     ToolbarModule
   ]
 })
-export class CustomerModule {
- }
+export class CustomerModule {}
