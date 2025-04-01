@@ -17,7 +17,7 @@ const routes: Routes = [
       {
         path: 'work-contracts',
         loadChildren: () =>
-          import('./modules/work-contracts/work-contracts.module').then(
+          import('./modules/customer/work-contracts.module').then(
             (w) => w.WorkContractsModule
           ),
       },

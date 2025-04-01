@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
-import { WorkContractsService } from '../../services/work-contracts.service';
+import { WorkContractsService } from '../../services/work-contracts/work-contracts.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Table } from 'primeng/table';
@@ -25,9 +25,8 @@ interface ExportColumn {
 })
 export class ListWorkContractsComponent implements OnInit {
   productDialog: boolean = false;
-  products: WorkContract[] = [];
-
-  product!: WorkContract;
+  currentContract!: WorkContract;
+  contracts: WorkContract[] = [];
   selectedProducts: WorkContract[] | null | undefined;
   submitted: boolean = true;
   searchTerm: string = '';
@@ -63,7 +62,7 @@ export class ListWorkContractsComponent implements OnInit {
       .list()
       .then((data) => {
         console.log('Datos cargados:', data);
-        this.products = data || [];
+        this.contracts = data || [];
         this.loading = false;
 
         this.cd.detectChanges();
@@ -73,7 +72,7 @@ export class ListWorkContractsComponent implements OnInit {
       });
   }
   exportCSV() {
-    if (this.products && this.products.length) {
+    if (this.contracts && this.contracts.length) {
       setTimeout(() => {
         if (this.dt && this.dt.exportCSV) {
           this.dt.exportCSV();
@@ -90,7 +89,7 @@ export class ListWorkContractsComponent implements OnInit {
       .list()
       .then((data) => {
         console.log('Datos cargados:', data);
-        this.products = data || [];
+        this.contracts = data || [];
         this.loading = false;
       })
       .catch((error) => {
@@ -98,7 +97,7 @@ export class ListWorkContractsComponent implements OnInit {
       });
   }
   openNew() {
-    this.product = {
+    this.currentContract = {
       employeeId: 0,
       firstName: '',
       lastName: '',
@@ -115,8 +114,8 @@ export class ListWorkContractsComponent implements OnInit {
     this.productDialog = true;
   }
 
-  editProduct(product: WorkContract) {
-    this.product = { ...product };
+  editProduct(currentContract: WorkContract) {
+    this.currentContract = { ...currentContract };
     this.productDialog = true;
   }
 
@@ -126,7 +125,7 @@ export class ListWorkContractsComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.products = this.products.filter(
+        this.contracts = this.contracts.filter(
           (val) => !this.selectedProducts?.includes(val)
         );
         this.selectedProducts = null;
@@ -143,7 +142,7 @@ export class ListWorkContractsComponent implements OnInit {
   hideDialog() {
     this.productDialog = false;
     this.submitted = false;
-    this.product;
+    this.currentContract;
   }
   deleteProduct(product: WorkContract) {
     this.confirmationService.confirm({
@@ -151,10 +150,10 @@ export class ListWorkContractsComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.products = this.products.filter(
+        this.contracts = this.contracts.filter(
           (val) => val.employeeId !== product.employeeId
         );
-        this.product;
+        this.currentContract;
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',
@@ -166,14 +165,20 @@ export class ListWorkContractsComponent implements OnInit {
   }
 
   findIndexById(id: number): number {
-    return this.products.findIndex((product) => product.employeeId === id);
+    return this.contracts.findIndex(
+      (currentContract) => currentContract.employeeId === id
+    );
   }
 
   createUniqueId(): number {
     let id: number;
     do {
       id = Math.floor(Math.random() * 1000);
-    } while (this.products.some((product) => product.employeeId === id));
+    } while (
+      this.contracts.some(
+        (currentContract) => currentContract.employeeId === id
+      )
+    );
     return id;
   }
   getSeverity(status: string) {
@@ -186,22 +191,23 @@ export class ListWorkContractsComponent implements OnInit {
     return 'info';
   }
 
-  onInputChange(event: Event): void {
+  onInputChange(event: Event, field: string): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
-      this.dt.filterGlobal(inputElement.value, 'contains');
+      this.dt.filter(inputElement.value, field, 'contains');
     }
   }
 
   saveProduct() {
     this.submitted = true;
 
-    if (this.product.firstName?.trim()) {
-      const productAction = this.product.employeeId
-        ? this.workContractsService.updateProduct(this.product)
+    if (this.currentContract.firstName?.trim()) {
+      const productAction = this.currentContract.employeeId
+        ? this.workContractsService.updateProduct(this.currentContract)
         : this.workContractsService.addProduct({
-            ...this.product,
-            employeeId: this.product.employeeId || this.createUniqueId(),
+            ...this.currentContract,
+            employeeId:
+              this.currentContract.employeeId || this.createUniqueId(),
           });
 
       productAction.then(() => {
@@ -209,7 +215,7 @@ export class ListWorkContractsComponent implements OnInit {
 
         this.cd.detectChanges();
 
-        const actionMessage = this.product.employeeId
+        const actionMessage = this.currentContract.employeeId
           ? 'Product Updated'
           : 'Product Created';
 
@@ -227,13 +233,13 @@ export class ListWorkContractsComponent implements OnInit {
 
   loadProducts() {
     this.workContractsService.list().then((data) => {
-      this.products = data;
+      this.contracts = data;
     });
   }
 
   resetProductDialog() {
     this.productDialog = false;
-    this.product = {} as WorkContract;
+    this.currentContract = {} as WorkContract;
     this.selectedProducts = [];
   }
 }

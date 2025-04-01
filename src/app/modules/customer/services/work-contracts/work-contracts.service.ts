@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WorkContract } from '../../../Entities/work-contracts';
+import { WorkContract } from '../../../../Entities/work-contracts';
 
 @Injectable({
   providedIn: 'root',

@@ -1,0 +1,35 @@
+.odd-row {
+  background-color: #34495e38 !important;
+}
+
+.even-row {
+  background-color: #ffffff !important;
+}
+
+/* Estilo de resaltado cuando el mouse pasa sobre la fila */
+.odd-row:hover,
+.even-row:hover {
+  background-color: #dcdcdc62 !important; /* Gris claro para resaltar */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.title-container {
+  display: flex;
+  justify-content: center; /* Centra el título horizontalmente */
+  width: 100%;
+}
+
+::ng-deep .blue-button {
+  background-color: #007bff !important; /* Azul estándar */
+  border: none !important;
+  color: white !important;
+}
+
+::ng-deep .blue-button:hover {
+  background-color: #0056b3 !important; /* Azul más oscuro al pasar el mouse */
+}
+
+::ng-deep .blue-button:focus {
+  outline: none !important; /* Opcional: elimina el borde del enfoque */
+}
