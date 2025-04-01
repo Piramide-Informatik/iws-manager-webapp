@@ -4,7 +4,7 @@
   <div style="overflow-x: auto; width: 99%">
     <p-table
       #dt
-      [value]="products"
+      [value]="contracts"
       [loading]="loading"
       stripedRows
       [tableStyle]="{ 'min-width': '10rem' }"
@@ -14,19 +14,6 @@
       scrollable="true"
       scrollHeight="800px"
       selectionMode="multiple"
-      [globalFilterFields]="[
-        'employeeId',
-        'firstName',
-        'lastName',
-        'date',
-        'salary',
-        'weeklyHours',
-        'maxHrsDay',
-        'maxHrsMonth',
-        'abbreviation',
-        'hourlyRate',
-        'noteLine'
-      ]"
       [(selection)]="selectedProducts"
       [rowHover]="true"
       dataKey="employeeId"
@@ -37,7 +24,7 @@
         <div class="flex items-center justify-center title-container">
           <h5 class="m-0">Work Contracts</h5>
         </div>
-        <div class="flex justify-start">
+        <!-- <div class="flex justify-start">
           <p-iconfield>
             <p-inputicon styleClass="pi pi-search"></p-inputicon>
             <input
@@ -47,7 +34,7 @@
               placeholder="Search..."
             />
           </p-iconfield>
-        </div>
+        </div> -->
       </ng-template>
 
       <ng-template #header>
@@ -123,48 +110,75 @@
             Note Line <p-sortIcon field="noteLine" />
           </th>
         </tr>
-      </ng-template>
-      <ng-template #body let-product let-i="rowIndex">
-        <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-          <td style="min-width: 1rem">
-            <p-button
-              icon="pi pi-pencil"
-              class="mr-2"
-              label="Edit"
-              severity="success"
-              (click)="editProduct(product)"
-            />
-            <p-button
-              icon="pi pi-trash"
-              label="Delete"
-              severity="danger"
-              (click)="deleteProduct(product)"
-            />
-          </td>
-          <td style="width: 1rem">
-            <p-tableCheckbox [value]="product" />
-          </td>
-          <td style="text-align: center">{{ product.employeeId }}</td>
-          <td style="text-align: center">{{ product.firstName }}</td>
-          <td style="text-align: center">{{ product.lastName }}</td>
-          <td style="text-align: center">{{ product.date }}</td>
-          <td style="text-align: center">
-            {{ product.salary | currency : "USD" }}
-          </td>
-          <td style="text-align: center">{{ product.weeklyHours }}</td>
-          <td style="text-align: center">{{ product.abbreviation }}</td>
-          <td style="text-align: center">{{ product.maxHrsMonth }}</td>
-          <td style="text-align: center">{{ product.maxHrsDay }}</td>
-          <td style="text-align: center">
-            {{ product.hourlyRate | currency : "USD" }}
-          </td>
-          <td style="text-align: center">{{ product.noteLine }}</td>
+        <tr>
+          <th
+            *ngFor="
+              let field of [
+                '',
+                '',
+                'employeeId',
+                'firstName',
+                'lastName',
+                'date',
+                'salary',
+                'weeklyHours',
+                'maxHrsDay',
+                'maxHrsMonth',
+                'abbreviation',
+                'hourlyRate',
+                'noteLine'
+              ]
+            "
+          >
+            <ng-container *ngIf="field; else emptyCell">
+              <input
+                pInputText
+                type="text"
+                (input)="onInputChange($event, field)"
+                [placeholder]="'Search ' + field"
+              />
+            </ng-container>
+            <ng-template #emptyCell></ng-template>
+          </th>
         </tr>
       </ng-template>
-      <ng-template #summary>
-        <div class="flex items-center justify-between">
-          In total there are {{ products ? products.length : 0 }} products.
-        </div>
+      <ng-template #body let-currentContract let-i="rowIndex">
+        <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+          <td>
+            <div class="flex items-center justify-center gap-2">
+              <button
+                pButton
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-info"
+                (click)="editProduct(currentContract)"
+              ></button>
+              <button
+                pButton
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                (click)="deleteProduct(currentContract)"
+              ></button>
+            </div>
+          </td>
+          <td style="width: 1rem">
+            <p-tableCheckbox [value]="currentContract" />
+          </td>
+          <td style="text-align: center">{{ currentContract.employeeId }}</td>
+          <td style="text-align: center">{{ currentContract.firstName }}</td>
+          <td style="text-align: center">{{ currentContract.lastName }}</td>
+          <td style="text-align: center">{{ currentContract.date }}</td>
+          <td style="text-align: center">
+            {{ currentContract.salary | currency : "USD" }}
+          </td>
+          <td style="text-align: center">{{ currentContract.weeklyHours }}</td>
+          <td style="text-align: center">{{ currentContract.abbreviation }}</td>
+          <td style="text-align: center">{{ currentContract.maxHrsMonth }}</td>
+          <td style="text-align: center">{{ currentContract.maxHrsDay }}</td>
+          <td style="text-align: center">
+            {{ currentContract.hourlyRate | currency : "USD" }}
+          </td>
+          <td style="text-align: center">{{ currentContract.noteLine }}</td>
+        </tr>
       </ng-template>
     </p-table>
     <p-toolbar styleClass="mb-6">
@@ -172,7 +186,7 @@
         <p-button
           label="New"
           icon="pi pi-plus"
-          class="mr-2"
+          class="mr-2 blue-button"
           (onClick)="openNew()"
         />
         <p-button
@@ -222,7 +236,7 @@
               >
               <p-inputnumber
                 id="employeeId"
-                [(ngModel)]="product.employeeId"
+                [(ngModel)]="currentContract.employeeId"
                 [min]="1"
                 required
                 fluid
@@ -237,7 +251,7 @@
                 type="text"
                 pInputText
                 id="firstName"
-                [(ngModel)]="product.firstName"
+                [(ngModel)]="currentContract.firstName"
                 required
               />
             </div>
@@ -250,7 +264,7 @@
                 type="text"
                 pInputText
                 id="lastName"
-                [(ngModel)]="product.lastName"
+                [(ngModel)]="currentContract.lastName"
                 required
               />
             </div>
@@ -260,7 +274,7 @@
 
               <p-datepicker
                 id="date"
-                [(ngModel)]="product.date"
+                [(ngModel)]="currentContract.date"
                 dateFormat="yy-mm-dd"
                 required
                 showIcon
@@ -273,7 +287,7 @@
               <label for="salary" class="block font-bold mb-3">Salary</label>
               <p-inputnumber
                 id="salary"
-                [(ngModel)]="product.salary"
+                [(ngModel)]="currentContract.salary"
                 mode="currency"
                 currency="USD"
                 locale="en-US"
@@ -287,7 +301,7 @@
               >
               <p-inputnumber
                 id="hourlyRate"
-                [(ngModel)]="product.hourlyRate"
+                [(ngModel)]="currentContract.hourlyRate"
                 mode="currency"
                 currency="USD"
                 locale="en-US"
@@ -302,7 +316,7 @@
               >
               <p-inputnumber
                 id="weeklyHours"
-                [(ngModel)]="product.weeklyHours"
+                [(ngModel)]="currentContract.weeklyHours"
                 required
                 fluid
               />
@@ -314,7 +328,7 @@
               >
               <p-inputnumber
                 id="maxHrsDay"
-                [(ngModel)]="product.maxHrsDay"
+                [(ngModel)]="currentContract.maxHrsDay"
                 required
                 fluid
               />
@@ -328,7 +342,7 @@
               >
               <p-inputnumber
                 id="maxHrsMonth"
-                [(ngModel)]="product.maxHrsMonth"
+                [(ngModel)]="currentContract.maxHrsMonth"
                 required
                 fluid
               />
@@ -341,7 +355,7 @@
                 type="text"
                 pInputText
                 id="abbreviation"
-                [(ngModel)]="product.abbreviation"
+                [(ngModel)]="currentContract.abbreviation"
                 required
               />
             </div>
@@ -351,7 +365,7 @@
               <textarea
                 id="noteLine"
                 pTextarea
-                [(ngModel)]="product.noteLine"
+                [(ngModel)]="currentContract.noteLine"
                 rows="3"
                 cols="20"
               ></textarea>
