@@ -157,7 +157,7 @@
 
     <div class="flex flex-row gap-3 align-items-center my-2">
       <label>Contact Person</label>
-      <p-button icon="pi pi-plus" label="New" id="new-contact-person" (onClick)="showDialog()"></p-button>
+      <p-button icon="pi pi-plus" label="New" id="new-contact-person" routerLink="/customer/contact"></p-button>
     </div>
     
     <p-table 
@@ -192,15 +192,18 @@
         <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
           <td> 
             <div class="flex gap-3">
-              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"></button>
+              <button 
+                pButton 
+                icon="pi pi-pencil" 
+                class="p-button-rounded p-button-info" 
+                [routerLink]="['/customer/contact', person.name]"
+              ></button>
               <button 
                 pButton 
                 icon="pi pi-trash" 
                 class="p-button-rounded p-button-danger"
                 (click)="deletePerson(person)"
               ></button>
-              <!-- <p-button icon="pi pi-pencil"></p-button>
-              <p-button icon="pi pi-trash" severity="danger" (onClick)="deletePerson(person)"></p-button> -->
             </div>
           </td>
           <td>{{person.name}}</td>
@@ -208,34 +211,26 @@
           <td>{{person.right}}</td>
         </tr>
       </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="7">
+            <p-message severity="info">No contact persons found.</p-message
+          ></td>
+        </tr>
+      </ng-template>
     </p-table>
 
     <div class="buttons flex justify-content-center my-2">
       <p-button label="Save" icon="pi pi-check" class="mx-4" severity="success"></p-button>
       <p-button label="Delete" icon="pi pi-trash" class="mx-4" severity="danger"></p-button>
-      <p-button label="Cancel" icon="pi pi-times" class="mx-4"severity="secondary"></p-button>
+      <p-button 
+        label="Cancel" 
+        icon="pi pi-times" 
+        class="mx-4"
+        severity="secondary"
+        routerLink="/customer/list-customers"
+      ></p-button>
      </div>
   </div>
 </div>
 
-<div class="card flex justify-center">
-  <p-dialog header="New Contact Person" [modal]="true" [(visible)]="visibleDialogNewPerson" [style]="{ width: '25rem' }">
-      <span class="p-text-secondary block mb-3">Add new contact person</span>
-      <div class="flex align-items-center gap-4 mb-2">
-          <label for="name" class="font-semibold label-dialog">Name</label>
-          <input #inputName pInputText id="name" class="flex-auto" autocomplete="off" />
-      </div>
-      <div class="flex align-items-center gap-4 mb-2">
-          <label for="function" class="font-semibold label-dialog">Function</label>
-          <input #inputFunction pInputText id="function" class="flex-auto" autocomplete="off" />
-      </div>
-      <div class="flex align-items-center gap-4 mb-3">
-        <label for="right" class="font-semibold label-dialog">Right</label>
-        <input #inputRight pInputText id="right" class="flex-auto" autocomplete="off" />
-    </div>
-      <div class="flex justify-content-center gap-2">
-          <p-button label="Cancel" severity="secondary" (click)="visibleDialogNewPerson = false" />
-          <p-button label="Save" (click)="addNewPerson(inputName.value, inputFunction.value, inputRight.value)" />
-      </div>
-  </p-dialog>
-</div>

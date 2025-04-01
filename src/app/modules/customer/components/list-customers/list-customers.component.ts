@@ -25,5 +25,9 @@ export class ListCustomersComponent implements OnInit {
       this.dt2.filter(inputElement.value, field, 'contains');
     }
   }
+
+  deleteCustomer(id: number){
+    this.customers = this.customers.filter( customer => customer.id !== id);
+  }
   
 }
