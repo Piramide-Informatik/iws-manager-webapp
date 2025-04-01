@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'detail-customer', component: DetailCustomerComponent},
   {path: 'detail-customer/:id', component: DetailCustomerComponent},
   {path: 'contact', component: ContactComponent},
+  {path: 'contact/:id', component: ContactComponent},
   {path: 'roles', component: EmployeeOverviewComponent}
 
 ];

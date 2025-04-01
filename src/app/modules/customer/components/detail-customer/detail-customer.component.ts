@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Customer } from '../../../../Entities/customer';
+import { CustomerService } from '../../services/customer.service';
 
 
 @Component({
@@ -11,29 +13,26 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DetailCustomerComponent implements OnInit {
 
-  public visibleDialogNewPerson: boolean = false;
+  public customers!: Customer[];
   
   public countries: any[] = [
-    { 
-      name: 'Germany', 
-      code: 'DE', 
-      flag: 'https://flagsapi.com/DE/flat/64.png'
-    },
-    { 
-      name: 'Switzerland', 
-      code: 'CH', 
-      flag: 'https://flagsapi.com/CH/flat/64.png' 
-    },
-    { 
-      name: 'France', 
-      code: 'FR', 
-      flag: 'https://flagsapi.com/FR/flat/64.png' 
-    },
-    { 
-      name: 'Japan', 
-      code: 'JP', 
-      flag: 'https://flagsapi.com/JP/flat/64.png' 
-    }
+    {name: 'Germany', code: 'DE',flag: 'https://flagsapi.com/DE/flat/64.png'},
+    {name: 'Switzerland',code: 'CH',flag: 'https://flagsapi.com/CH/flat/64.png'},
+    {name: 'France',code: 'FR',flag: 'https://flagsapi.com/FR/flat/64.png'},
+    {name: 'Japan',code: 'JP',flag: 'https://flagsapi.com/JP/flat/64.png'},
+    {name: 'USA',code: 'US',flag: 'https://flagsapi.com/US/flat/64.png'},
+    {name: 'UK',code: 'GB',flag: 'https://flagsapi.com/GB/flat/64.png'},
+    {name: 'Canada',code: 'CA',flag: 'https://flagsapi.com/CA/flat/64.png'},
+    {name: 'Spain',code: 'ES',flag: 'https://flagsapi.com/ES/flat/64.png'},
+    {name: 'Italy',code: 'IT',flag: 'https://flagsapi.com/IT/flat/64.png'},
+    {name: 'Netherlands',code: 'NL',flag: 'https://flagsapi.com/NL/flat/64.png'},
+    {name: 'India',code: 'IN',flag: 'https://flagsapi.com/IN/flat/64.png'},
+    {name: 'Brazil',code: 'BR',flag: 'https://flagsapi.com/BR/flat/64.png'},
+    {name: 'Mexico',code: 'MX',flag: 'https://flagsapi.com/MX/flat/64.png'},
+    {name: 'Argentina',code: 'AR',flag: 'https://flagsapi.com/AR/flat/64.png'},
+    {name: 'South Korea',code: 'KR',flag: 'https://flagsapi.com/KR/flat/64.png'},
+    {name: 'Australia',code: 'AU',flag: 'https://flagsapi.com/AU/flat/64.png'},
+    {name: 'Russia',code: 'RU',flag: 'https://flagsapi.com/RU/flat/64.png'}
   ];
 
 
@@ -62,127 +61,128 @@ export class DetailCustomerComponent implements OnInit {
       id: 1,
       name: 'Dr. Anna Müller',
       function: 'Chief Financial Officer',
-      right: 'Authorized signatory'
+      right: 1
     },
     {
       id: 2,
       name: 'James Carter',
       function: 'Power of Attorney',
-      right: 'Granted full decision-making'
+      right: 1
     },
     {
       id: 3,
       name: 'Elena Petrova',
       function: 'Head of Data Protection',
-      right: 'Certified to issue GDPR'
+      right: 1
     },
     {
       id: 4,
       name: "Marcus Holloway",
       function: "Cybersecurity Specialist",
-      right: "Access to mainframe encryption keys"
+      right: 0
     },
     {
       id: 5,
       name: "Eliza Chen",
       function: "Biomedical Researcher",
-      right: "Authorization for Level 4 lab access"
+      right: 1
     },
     {
       id: 6,
       name: "Darius Johnson",
       function: "Urban Planner",
-      right: "Approval authority for zoning changes"
+      right: 1
     },
     {
       id: 7,
       name: "Sophia Rivera",
       function: "Federal Judge",
-      right: "Judicial override capability"
+      right: 0
     },
     {
       id: 8,
       name: "Trevor O'Neil",
       function: "Power Grid Operator",
-      right: "Emergency load shedding privileges"
+      right: 1
     },
     {
       id: 9,
       name: "Priya Patel",
       function: "Pharmaceutical Director",
-      right: "Experimental drug approval"
+      right: 1
     },
     {
       id: 10,
       name: "Jamal Washington",
       function: "Air Traffic Controller",
-      right: "Priority flight rerouting"
+      right: 1
     },
     {
       id: 11,
       name: "Natalie Brooks",
       function: "Meteorology Chief",
-      right: "Emergency broadcast access"
+      right: 1
     },
     {
       id: 12,
       name: "Connor Shaw",
       function: "FBI Field Agent",
-      right: "Bypass local jurisdiction"
+      right: 0
     },
     {
       id: 13,
       name: "Isabella Morales",
       function: "Water Treatment Manager",
-      right: "Chemical dosage override"
+      right: 1
     },
     {
       id: 14,
       name: "Ethan Zhang",
       function: "Stock Exchange Analyst",
-      right: "Trading halt authorization"
+      right: 1
     },
     {
       id: 15,
       name: "Olivia Kensington",
       function: "Nuclear Engineer",
-      right: "Reactor safety protocols override"
+      right: 1
     },
     {
       id: 16,
       name: "Miguel Alvarez",
       function: "Border Patrol Supervisor",
-      right: "Temporary checkpoint establishment"
+      right: 1
     },
     {
       id: 17,
       name: "Avery Sinclair",
       function: "CDC Epidemiologist",
-      right: "Mandatory quarantine declaration"
+      right: 1
     },
     {
       id: 18,
       name: "Jasmine Williams",
       function: "Federal Reserve Economist",
-      right: "Emergency fund release"
+      right: 1
     },
     {
       id: 19,
       name: "Caleb Donovan",
       function: "NASA Flight Director",
-      right: "Mission abort decision"
+      right: 1
     },
     {
       id: 20,
       name: "Violet Chang",
       function: "Social Media CTO",
-      right: "Information flow control"
+      right: 1
     }
   ]
 
   constructor(
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private customerService: CustomerService
   ){
 
     this.formDetailCustomer = this.fb.group({
@@ -209,14 +209,17 @@ export class DetailCustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.formDetailCustomer.get('customerNo')?.disable();
+    this.customers = this.customerService.list();
     this.activatedRoute.params
     .subscribe( params => {
       const customerId = params['id'];
       if(customerId){
-        this.formDetailCustomer.get('customerNo')?.disable();
         this.formDetailCustomer.get('customerNo')?.setValue(customerId);
 
         
+      }else{
+        this.formDetailCustomer.get('customerNo')?.setValue(this.customers.length+1);
       }
     });
   }
@@ -225,19 +228,8 @@ export class DetailCustomerComponent implements OnInit {
     this.persons = this.persons.filter(person => person.id !== contact.id); 
   }
 
-  addNewPerson(name: string, functionPerson: string, right: string){
-    this.visibleDialogNewPerson = false;
-    const newPerson = {
-      id: this.persons.length + 1,
-      name,
-      function: functionPerson,
-      right
-    }
-    this.persons.push(newPerson);
-  }
-
-  showDialog() {
-    this.visibleDialogNewPerson = true;
+  addNewPerson(){
+    
   }
 
 }
