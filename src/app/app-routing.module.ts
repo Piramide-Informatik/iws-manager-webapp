@@ -21,6 +21,14 @@ const routes: Routes = [
             (w) => w.WorkContractsModule
           ),
       },
+      { 
+        path: 'admin', 
+        loadChildren: () => 
+        import('./modules/customer/customer.module')
+        .then(
+          c => c.CustomerModule
+        ), 
+      },
     ],
   },
 ];
