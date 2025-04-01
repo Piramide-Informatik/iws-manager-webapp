@@ -211,12 +211,25 @@
           <td>{{person.right}}</td>
         </tr>
       </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="7">
+            <p-message severity="info">No contact persons found.</p-message
+          ></td>
+        </tr>
+      </ng-template>
     </p-table>
 
     <div class="buttons flex justify-content-center my-2">
       <p-button label="Save" icon="pi pi-check" class="mx-4" severity="success"></p-button>
       <p-button label="Delete" icon="pi pi-trash" class="mx-4" severity="danger"></p-button>
-      <p-button label="Cancel" icon="pi pi-times" class="mx-4"severity="secondary"></p-button>
+      <p-button 
+        label="Cancel" 
+        icon="pi pi-times" 
+        class="mx-4"
+        severity="secondary"
+        routerLink="/customer/list-customers"
+      ></p-button>
      </div>
   </div>
 </div>
