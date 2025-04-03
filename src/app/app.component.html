@@ -1,1 +1,21 @@
+<button
+  pButton
+  type="button"
+  icon="pi pi-globe"
+  class="p-button-rounded p-button-text"
+  style="float: right; margin-right: 16px"
+  (click)="op.toggle($event)"
+></button>
+<p-overlayPanel #op [appendTo]="'body'">
+  <div class="flag-option" (click)="changeLanguage('en'); op.hide()">
+    <span class="flag-icon flag-icon-us"></span> English
+  </div>
+  <div class="flag-option" (click)="changeLanguage('es'); op.hide()">
+    <span class="flag-icon flag-icon-es"></span> Español
+  </div>
+  <div class="flag-option" (click)="changeLanguage('de'); op.hide()">
+    <span class="flag-icon flag-icon-de"></span> Deutsch
+  </div>
+</p-overlayPanel>
+
 <router-outlet></router-outlet>

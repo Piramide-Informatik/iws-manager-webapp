@@ -1,0 +1,26 @@
+{
+  "MENU": {
+    "CUSTOMERS": "Kunden",
+    "PROJECTS": "Projekte",
+    "INVOICING": "Abrechnung",
+    "CONTROLLING": "Controlling",
+    "MASTER_DATA": "Stammdaten"
+  },
+  "SIDEBAR": {
+    "CUSTOMER": "Kunde",
+    "EMPLOYEES": "Mitarbeiter",
+    "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
+    "PROJECTS": "Projekte",
+    "ORDERS": "Bestellungen",
+    "CLAIMS": "Reklamationen",
+    "INVOICES": "Rechnungen",
+    "FRAMEWORK_AGREEMENTS": "Rahmenverträge",
+    "CONTRACTORS": "Auftragnehmer",
+    "SUBCONTRACTS": "Teilaufträge",
+    "GOODS_ENTRY": "Wareneingang",
+    "STOCK_CONTROL": "Lagerbestandskontrolle",
+    "PRODUCTS": "Produkte",
+    "SALES": "Vertrieb",
+    "INVENTORY": "Inventar"
+  }
+}
