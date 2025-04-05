@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
-import { WorkContractsService } from '../../services/work-contracts/work-contracts.service';
+import { WorkContractsService } from '../../services/work-contracts.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Table } from 'primeng/table';

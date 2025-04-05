@@ -11,8 +11,9 @@ import Lara from '@primeng/themes/lara';
 import { CustomerModule } from './modules/customer/customer.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
+import { EmployeeModule } from './modules/employee/employee.module';
+import { WorkContractsModule } from './modules/work-contracts/work-contracts.module';
 
-import { EmployeeContractService } from './modules/customer/services/employee-contract.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,11 +23,11 @@ import { EmployeeContractService } from './modules/customer/services/employee-co
     BrowserAnimationsModule,
     LayoutModule,
     CustomerModule,
-    CustomerModule,
+    EmployeeModule,
+    WorkContractsModule,
     MatButtonModule,
   ],
   providers: [
-    EmployeeContractService,
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {

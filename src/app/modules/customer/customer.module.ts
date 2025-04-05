@@ -31,18 +31,14 @@ import { ToolbarModule } from 'primeng/toolbar';
 //Componentes
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
-import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
-import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
 
 
 @NgModule({
   declarations: [
     ContactComponent,
     ListCustomersComponent,
-    EmployeeOverviewComponent,
     DetailCustomerComponent,
-    EmployeeDetailsComponent,
   ],
   imports: [
     ButtonModule,

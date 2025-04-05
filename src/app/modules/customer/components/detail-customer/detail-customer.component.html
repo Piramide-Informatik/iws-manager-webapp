@@ -157,7 +157,7 @@
 
     <div class="flex flex-row gap-3 align-items-center my-2">
       <label>Contact Person</label>
-      <p-button icon="pi pi-plus" label="New" id="new-contact-person" routerLink="/customer/contact"></p-button>
+      <p-button icon="pi pi-plus" label="New" id="new-contact-person" routerLink="/customers/contact"></p-button>
     </div>
     
     <p-table 
@@ -196,7 +196,7 @@
                 pButton 
                 icon="pi pi-pencil" 
                 class="p-button-rounded p-button-info" 
-                [routerLink]="['/customer/contact', person.name]"
+                [routerLink]="['/customers/contact', person.name]"
               ></button>
               <button 
                 pButton 
@@ -228,7 +228,7 @@
         icon="pi pi-times" 
         class="mx-4"
         severity="secondary"
-        routerLink="/customer/list-customers"
+        routerLink="/customers"
       ></p-button>
      </div>
   </div>

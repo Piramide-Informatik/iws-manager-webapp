@@ -32,7 +32,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 @NgModule({
-  declarations: [ListWorkContractsComponent],
+  declarations: [
+    ListWorkContractsComponent
+  ],
   imports: [
     CommonModule,
     WorkContractsRoutingModule,
