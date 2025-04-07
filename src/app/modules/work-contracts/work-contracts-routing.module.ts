@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListWorkContractsComponent } from './components/list-work-contracts/list-work-contracts.component';
 
 const routes: Routes = [
-  { path: 'list-work-contracts', component: ListWorkContractsComponent },
+  { path: '', component: ListWorkContractsComponent },
 ];
 
 @NgModule({

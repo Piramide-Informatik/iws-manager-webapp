@@ -56,7 +56,7 @@
         <td>
           <div class="flex items-center justify-center gap-2">
               <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info" 
-                [routerLink]="['/customer/detail-customer', customer.id]"        
+                [routerLink]="['/customers/detail-customer', customer.id]"        
               ></button>
               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCustomer(customer.id)"></button>
           </div>
@@ -78,6 +78,6 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-button label="New" icon="pi pi-plus" routerLink="/customer/detail-customer" />
+  <p-button label="New" icon="pi pi-plus" routerLink="/customers/detail-customer" />
 
 </div>
