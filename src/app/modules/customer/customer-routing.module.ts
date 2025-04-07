@@ -5,12 +5,18 @@ import { DetailCustomerComponent } from './components/detail-customer/detail-cus
 import { ContactComponent } from './components/contact/contact.component';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
+import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
+import { ListWorkContractsComponent } from './components/list-work-contracts/list-work-contracts.component';
 
 const routes: Routes = [
-  {path: 'list-customers', component: ListCustomersComponent},
+  {path: 'customer-overview', component: ListCustomersComponent},
+  {path: 'employee-overview', component: EmployeeOverviewComponent},
   {path: 'employee-details', component: EmployeeDetailsComponent},
-  {path: 'detail-customer', component: DetailCustomerComponent},
-  {path: 'detail-customer/:id', component: DetailCustomerComponent},
+  {path: 'employment-contracts-overview', component: ListWorkContractsComponent},
+  {path: 'projects-overview', component: ProjectsOverviewComponent},
+  {path: 'customer-details/:id', component: DetailCustomerComponent},
+  {path: 'projects-overview', component: ProjectsOverviewComponent},
+
   {path: 'contact', component: ContactComponent},
   {path: 'roles', component: EmployeeOverviewComponent}
 
