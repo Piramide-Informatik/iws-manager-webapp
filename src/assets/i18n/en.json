@@ -1,0 +1,26 @@
+{
+  "MENU": {
+    "CUSTOMERS": "Customers",
+    "PROJECTS": "Projects",
+    "INVOICING": "Invoicing",
+    "CONTROLLING": "Controlling",
+    "MASTER_DATA": "Master Data"
+  },
+  "SIDEBAR": {
+    "CUSTOMER": "Customer",
+    "EMPLOYEES": "Employees",
+    "EMPLOYMENT_CONTRACTS": "Employment Contracts",
+    "PROJECTS": "Projects",
+    "ORDERS": "Orders",
+    "CLAIMS": "Claims",
+    "INVOICES": "Invoices",
+    "FRAMEWORK_AGREEMENTS": "Framework Agreements",
+    "CONTRACTORS": "Contractors",
+    "SUBCONTRACTS": "Subcontracts",
+    "GOODS_ENTRY": "Goods Entry",
+    "STOCK_CONTROL": "Stock Control",
+    "PRODUCTS": "Products",
+    "SALES": "Sales",
+    "INVENTORY": "Inventory"
+  }
+}
