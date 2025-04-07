@@ -9,21 +9,38 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 import { CustomerModule } from './modules/customer/customer.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-
 import { EmployeeContractService } from './modules/customer/services/employee-contract.service';
+
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ButtonModule } from 'primeng/button';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    OverlayPanelModule,
+    ButtonModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
     CustomerModule,
-    CustomerModule,
     MatButtonModule,
+    HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     EmployeeContractService,
