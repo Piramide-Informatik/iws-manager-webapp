@@ -5,6 +5,7 @@ import { DetailCustomerComponent } from './components/detail-customer/detail-cus
 import { ContactComponent } from './components/contact/contact.component';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 const routes: Routes = [
   {path: 'list-customers', component: ListCustomersComponent},
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'detail-customer', component: DetailCustomerComponent},
   {path: 'detail-customer/:id', component: DetailCustomerComponent},
   {path: 'contact', component: ContactComponent},
-  {path: 'roles', component: EmployeeOverviewComponent}
+  {path: 'roles', component: EmployeeOverviewComponent},
+  {path: 'order-details', component: OrderDetailsComponent}
 
 ];
 

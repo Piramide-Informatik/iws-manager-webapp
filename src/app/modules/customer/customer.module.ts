@@ -33,6 +33,7 @@ import { DetailCustomerComponent } from './components/detail-customer/detail-cus
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { EmployeeOverviewComponent } from './components/employee-overview/employ
     EmployeeOverviewComponent,
     DetailCustomerComponent,
     EmployeeDetailsComponent,
+    OrderDetailsComponent,
   ],
   imports: [
     ButtonModule,
