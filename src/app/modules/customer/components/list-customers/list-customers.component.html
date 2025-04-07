@@ -6,23 +6,27 @@
     [rows]="10"
     [rowsPerPageOptions]="[10, 25, 50]"
     [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+    showGridlines
     [scrollable]="true"
     scrollHeight="90vh"
+    [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
   >
     <ng-template #header>
       <tr>
-        <th style="width:10%"></th>
-        <th pSortableColumn="id">No. <p-sortIcon field="id" /></th>
-        <th pSortableColumn="companyName">
+        <th class="thead-bg-blue"></th>
+        <th pSortableColumn="id" class="thead">No. <p-sortIcon field="id" /></th>
+        <th pSortableColumn="companyName" class="thead">
           Company Name <p-sortIcon field="companyName" />
         </th>
-        <th pSortableColumn="nameLine2">
+        <th pSortableColumn="nameLine2" class="thead">
           Name Line 2 <p-sortIcon field="nameLine2" />
         </th>
-        <th pSortableColumn="kind">Kind <p-sortIcon field="kind" /></th>
-        <th pSortableColumn="land">Land <p-sortIcon field="land" /></th>
-        <th pSortableColumn="place">Place <p-sortIcon field="place" /></th>
-        <th pSortableColumn="contact">
+        <th pSortableColumn="kind" class="thead">Kind <p-sortIcon field="kind" /></th>
+        <th pSortableColumn="land" class="thead">Land <p-sortIcon field="land" /></th>
+        <th pSortableColumn="place" class="thead">Place <p-sortIcon field="place" /></th>
+        <th pSortableColumn="contact" class="thead">
           Contact <p-sortIcon field="contact" />
         </th>
       </tr>
@@ -43,22 +47,24 @@
         >
           <input
             *ngIf="i != 0"
-            pInputText
+            pInputText 
+            pSize="small"
             type="text"
+            [ngClass]="{'thead-input-id': i == 1, 'thead-input-width': i > 1}"
             (input)="applyFilter($event, field)"
             [placeholder]="'Search ' + field"
           />
         </th>
       </tr>
     </ng-template>
-    <ng-template #body let-customer>
-      <tr>
+    <ng-template #body let-customer let-i="rowIndex">
+      <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
-              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info" 
+              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option" 
                 [routerLink]="['/customers/detail-customer', customer.id]"        
               ></button>
-              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteCustomer(customer.id)"></button>
+              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option" (click)="deleteCustomer(customer.id)"></button>
           </div>
       </td>
         <td>{{ customer.id }}</td>
