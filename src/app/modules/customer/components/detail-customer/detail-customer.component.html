@@ -187,7 +187,7 @@
       <ng-template #header let-columns>
         <tr>
 
-          <th class="thead" pResizableColumn>Option</th>
+          <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}">Option</th>
 
           <th *ngFor="let col of columns; let i = index" 
             [pSortableColumn]="col.field" 
