@@ -18,6 +18,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -30,18 +31,14 @@ import { ToolbarModule } from 'primeng/toolbar';
 //Componentes
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
-import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
-import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
 
 
 @NgModule({
   declarations: [
     ContactComponent,
     ListCustomersComponent,
-    EmployeeOverviewComponent,
     DetailCustomerComponent,
-    EmployeeDetailsComponent,
   ],
   imports: [
     ButtonModule,
@@ -57,6 +54,7 @@ import { EmployeeOverviewComponent } from './components/employee-overview/employ
     InputIconModule,
     InputNumberModule,
     InputTextModule,
+    MessageModule,
     MultiSelectModule,
     ReactiveFormsModule,
     SelectModule,

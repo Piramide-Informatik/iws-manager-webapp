@@ -8,6 +8,11 @@
     .menu-items{
         cursor: pointer;
         width: 100%;
+
+        &:hover {
+            background-color: #7eb5c4;
+            color: #34495E;
+        }
     }
 
     &.collapsed {

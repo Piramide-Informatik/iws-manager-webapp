@@ -11,8 +11,8 @@ import Lara from '@primeng/themes/lara';
 import { CustomerModule } from './modules/customer/customer.module';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { EmployeeContractService } from './modules/customer/services/employee-contract.service';
-
+import { EmployeeModule } from './modules/employee/employee.module';
+import { WorkContractsModule } from './modules/work-contracts/work-contracts.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -32,6 +32,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     LayoutModule,
     CustomerModule,
+    EmployeeModule,
+    WorkContractsModule,
     MatButtonModule,
     HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
     TranslateModule.forRoot({
@@ -43,7 +45,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
   ],
   providers: [
-    EmployeeContractService,
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
