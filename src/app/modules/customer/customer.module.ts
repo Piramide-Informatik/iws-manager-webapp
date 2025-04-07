@@ -34,6 +34,9 @@ import { EmployeeDetailsComponent } from './components/employee-details/employee
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
+import { OrderComponent } from './components/order-details/order/order.component';
+import { ProjectComponent } from './components/order-details/project/project.component';
+import { IwsProvisionComponent } from './components/order-details/iws-provision/iws-provision.component';
 
 
 @NgModule({
@@ -44,6 +47,9 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
     DetailCustomerComponent,
     EmployeeDetailsComponent,
     OrderDetailsComponent,
+    OrderComponent,
+    ProjectComponent,
+    IwsProvisionComponent
   ],
   imports: [
     ButtonModule,
