@@ -162,53 +162,65 @@
     
     <p-table 
       [value]="persons" 
+      [columns]="selectedColumns"
       [paginator]="true"
       [rows]="5"
       scrollable="true"
-      scrollHeight="400px"
+      scrollHeight="300px"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [showCurrentPageReport]="true"
       [rowsPerPageOptions]="[5, 10, 20]"
-      [tableStyle]="{'min-width': '50rem'}"
+      [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
+      [resizableColumns]="true"
+      styleClass="p-datatable-gridlines"
     >
-      <ng-template #header>
+      <ng-template #caption>
+        <p-multiselect 
+          display="chip" 
+          [options]="cols" 
+          [(ngModel)]="selectedColumns" 
+          optionLabel="header" 
+          selectedItemsLabel="{0} columns selected" 
+          [style]="{ 'width': '250px' }" 
+          placeholder="Choose Columns" />
+      </ng-template>
+      <ng-template #header let-columns>
         <tr>
-          <th>Option</th>
-          <th pSortableColumn="name">
-            Name 
-            <p-sortIcon field="name"/>
-          </th>
-          <th pSortableColumn="function">
-            Function
-            <p-sortIcon field="function"/>
-          </th>
-          <th pSortableColumn="right">
-            Right
-            <p-sortIcon field="right"/>
+
+          <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}">Option</th>
+
+          <th *ngFor="let col of columns; let i = index" 
+            [pSortableColumn]="col.field" 
+            class="thead" 
+            pResizableColumn>
+              {{ col.header }} 
+            <p-sortIcon [field]="col.field"/>
           </th>
         </tr>
       </ng-template>
-      <ng-template #body let-person let-i="rowIndex">
+      <ng-template #body let-person let-i="rowIndex" let-columns="columns">
         <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-          <td> 
+
+          <td>
             <div class="flex gap-3">
               <button 
                 pButton 
                 icon="pi pi-pencil" 
-                class="p-button-rounded p-button-info" 
-                [routerLink]="['/customers/contact', person.name]"
+                class="p-button-rounded p-button-info button-option" 
+                [routerLink]="['/customers/contact', person.id]"
               ></button>
               <button 
                 pButton 
                 icon="pi pi-trash" 
-                class="p-button-rounded p-button-danger"
+                class="p-button-rounded p-button-danger button-option"
                 (click)="deletePerson(person)"
               ></button>
             </div>
           </td>
-          <td>{{person.name}}</td>
-          <td>{{person.function}}</td>
-          <td>{{person.right}}</td>
+
+          <td *ngFor="let col of columns"> 
+            {{ person[col.field] }}
+          </td>
         </tr>
       </ng-template>
       <ng-template #emptymessage>

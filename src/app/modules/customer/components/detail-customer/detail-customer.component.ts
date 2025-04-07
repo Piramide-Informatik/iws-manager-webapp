@@ -4,6 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
 
+interface Column {
+  field: string,
+  header: string
+}
 
 @Component({
   selector: 'app-detail-customer',
@@ -12,6 +16,10 @@ import { CustomerService } from '../../services/customer.service';
   styleUrl: './detail-customer.component.scss'
 })
 export class DetailCustomerComponent implements OnInit {
+
+  public cols!: Column[];
+
+  public selectedColumns!: Column[];
 
   public customers!: Customer[];
   
@@ -57,126 +65,26 @@ export class DetailCustomerComponent implements OnInit {
   public formDetailCustomer!: FormGroup; 
 
   public persons = [
-    {
-      id: 1,
-      name: 'Dr. Anna Müller',
-      function: 'Chief Financial Officer',
-      right: 1
-    },
-    {
-      id: 2,
-      name: 'James Carter',
-      function: 'Power of Attorney',
-      right: 1
-    },
-    {
-      id: 3,
-      name: 'Elena Petrova',
-      function: 'Head of Data Protection',
-      right: 1
-    },
-    {
-      id: 4,
-      name: "Marcus Holloway",
-      function: "Cybersecurity Specialist",
-      right: 0
-    },
-    {
-      id: 5,
-      name: "Eliza Chen",
-      function: "Biomedical Researcher",
-      right: 1
-    },
-    {
-      id: 6,
-      name: "Darius Johnson",
-      function: "Urban Planner",
-      right: 1
-    },
-    {
-      id: 7,
-      name: "Sophia Rivera",
-      function: "Federal Judge",
-      right: 0
-    },
-    {
-      id: 8,
-      name: "Trevor O'Neil",
-      function: "Power Grid Operator",
-      right: 1
-    },
-    {
-      id: 9,
-      name: "Priya Patel",
-      function: "Pharmaceutical Director",
-      right: 1
-    },
-    {
-      id: 10,
-      name: "Jamal Washington",
-      function: "Air Traffic Controller",
-      right: 1
-    },
-    {
-      id: 11,
-      name: "Natalie Brooks",
-      function: "Meteorology Chief",
-      right: 1
-    },
-    {
-      id: 12,
-      name: "Connor Shaw",
-      function: "FBI Field Agent",
-      right: 0
-    },
-    {
-      id: 13,
-      name: "Isabella Morales",
-      function: "Water Treatment Manager",
-      right: 1
-    },
-    {
-      id: 14,
-      name: "Ethan Zhang",
-      function: "Stock Exchange Analyst",
-      right: 1
-    },
-    {
-      id: 15,
-      name: "Olivia Kensington",
-      function: "Nuclear Engineer",
-      right: 1
-    },
-    {
-      id: 16,
-      name: "Miguel Alvarez",
-      function: "Border Patrol Supervisor",
-      right: 1
-    },
-    {
-      id: 17,
-      name: "Avery Sinclair",
-      function: "CDC Epidemiologist",
-      right: 1
-    },
-    {
-      id: 18,
-      name: "Jasmine Williams",
-      function: "Federal Reserve Economist",
-      right: 1
-    },
-    {
-      id: 19,
-      name: "Caleb Donovan",
-      function: "NASA Flight Director",
-      right: 1
-    },
-    {
-      id: 20,
-      name: "Violet Chang",
-      function: "Social Media CTO",
-      right: 1
-    }
+    { id: 1, name: 'Dr. Anna Müller', function: 'Chief Financial Officer', right: 1 },
+    { id: 2, name: 'James Carter', function: 'Power of Attorney', right: 1 },
+    { id: 3, name: 'Elena Petrova', function: 'Head of Data Protection', right: 1 },
+    { id: 4, name: "Marcus Holloway", function: "Cybersecurity Specialist", right: 0 },
+    { id: 5, name: "Eliza Chen", function: "Biomedical Researcher", right: 1 },
+    { id: 6, name: "Darius Johnson", function: "Urban Planner", right: 1 },
+    { id: 7, name: "Sophia Rivera", function: "Federal Judge", right: 0 },
+    { id: 8, name: "Trevor O'Neil", function: "Power Grid Operator", right: 1 },
+    { id: 9, name: "Priya Patel", function: "Pharmaceutical Director", right: 1 },
+    { id: 10, name: "Jamal Washington", function: "Air Traffic Controller", right: 1 },
+    { id: 11, name: "Natalie Brooks", function: "Meteorology Chief", right: 1 },
+    { id: 12, name: "Connor Shaw", function: "FBI Field Agent", right: 0 },
+    { id: 13, name: "Isabella Morales", function: "Water Treatment Manager", right: 1 },
+    { id: 14, name: "Ethan Zhang", function: "Stock Exchange Analyst", right: 1 },
+    { id: 15, name: "Olivia Kensington", function: "Nuclear Engineer", right: 1 },
+    { id: 16, name: "Miguel Alvarez", function: "Border Patrol Supervisor", right: 1 },
+    { id: 17, name: "Avery Sinclair", function: "CDC Epidemiologist", right: 1 },
+    { id: 18, name: "Jasmine Williams", function: "Federal Reserve Economist", right: 1 },
+    { id: 19, name: "Caleb Donovan", function: "NASA Flight Director", right: 1 },
+    { id: 20, name: "Violet Chang", function: "Social Media CTO", right: 1 }
   ]
 
   constructor(
@@ -222,6 +130,15 @@ export class DetailCustomerComponent implements OnInit {
         this.formDetailCustomer.get('customerNo')?.setValue(this.customers.length+1);
       }
     });
+
+    //Init colums
+    this.cols = [
+      { field: 'name', header: 'Name' },
+      { field: 'function', header: 'Function' },
+      { field: 'right', header: 'Right' },
+    ];
+
+    this.selectedColumns = this.cols;
   }
 
   deletePerson(contact: any){
