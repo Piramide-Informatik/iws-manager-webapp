@@ -169,20 +169,22 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [showCurrentPageReport]="true"
       [rowsPerPageOptions]="[5, 10, 20]"
-      [tableStyle]="{'min-width': '50rem'}"
+      [tableStyle]="{'min-width': 'auto'}"
+      [resizableColumns]="true"
+      styleClass="p-datatable-gridlines"
     >
       <ng-template #header>
         <tr>
-          <th>Option</th>
-          <th pSortableColumn="name">
+          <th class="thead" pResizableColumn>Option</th>
+          <th pSortableColumn="name" class="thead" pResizableColumn>
             Name 
             <p-sortIcon field="name"/>
           </th>
-          <th pSortableColumn="function">
+          <th pSortableColumn="function" class="thead"pResizableColumn>
             Function
             <p-sortIcon field="function"/>
           </th>
-          <th pSortableColumn="right">
+          <th pSortableColumn="right" class="thead" pResizableColumn>
             Right
             <p-sortIcon field="right"/>
           </th>
@@ -195,13 +197,13 @@
               <button 
                 pButton 
                 icon="pi pi-pencil" 
-                class="p-button-rounded p-button-info" 
+                class="p-button-rounded p-button-info button-option" 
                 [routerLink]="['/customers/contact', person.name]"
               ></button>
               <button 
                 pButton 
                 icon="pi pi-trash" 
-                class="p-button-rounded p-button-danger"
+                class="p-button-rounded p-button-danger button-option"
                 (click)="deletePerson(person)"
               ></button>
             </div>
