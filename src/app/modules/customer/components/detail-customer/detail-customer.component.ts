@@ -4,6 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
 
+interface Column {
+  field: string,
+  header: string
+}
 
 @Component({
   selector: 'app-detail-customer',
@@ -12,6 +16,10 @@ import { CustomerService } from '../../services/customer.service';
   styleUrl: './detail-customer.component.scss'
 })
 export class DetailCustomerComponent implements OnInit {
+
+  public cols!: Column[];
+
+  public selectedColumns!: Column[];
 
   public customers!: Customer[];
   
@@ -122,6 +130,15 @@ export class DetailCustomerComponent implements OnInit {
         this.formDetailCustomer.get('customerNo')?.setValue(this.customers.length+1);
       }
     });
+
+    //Init colums
+    this.cols = [
+      { field: 'name', header: 'Name' },
+      { field: 'function', header: 'Function' },
+      { field: 'right', header: 'Right' },
+    ];
+
+    this.selectedColumns = this.cols;
   }
 
   deletePerson(contact: any){
