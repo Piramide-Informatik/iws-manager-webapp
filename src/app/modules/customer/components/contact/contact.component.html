@@ -47,7 +47,13 @@
         <!-- Botones centrados -->
         <div class="button-container">
             <button type="button" (click)="save()">Save</button>
-            <button type="button" (click)="cancel()" class="cancel-btn">Cancel</button>
+            <button 
+                type="button" 
+                (click)="cancel()" 
+                class="cancel-btn" 
+                routerLink="/customers/detail-customer" 
+            >Cancel</button>
+            <!-- devolver el id cuando se edita un cliente -->
         </div>
     </form>
 </div>

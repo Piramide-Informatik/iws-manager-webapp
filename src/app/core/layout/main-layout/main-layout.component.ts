@@ -85,19 +85,19 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         this.currentSidebarItems = [
           {
             label: this.translate.instant('SIDEBAR.CUSTOMER'),
-            routerLink: ['/customer/customer-overview'],
+            routerLink: ['/customers'],
           },
           {
             label: this.translate.instant('SIDEBAR.EMPLOYEES'),
-            routerLink: ['/customer/employee-overview'],
+            routerLink: ['/employees'],
           },
           {
             label: this.translate.instant('SIDEBAR.EMPLOYMENT_CONTRACTS'),
-            routerLink: ['/customer/employment-contracts-overview'],
+            routerLink: ['/work-contracts'],
           },
           {
             label: this.translate.instant('SIDEBAR.PROJECTS'),
-            routerLink: ['/customer/projects-overview'],
+            routerLink: ['/projects'],
           },
           {
             label: this.translate.instant('SIDEBAR.ORDERS'),
