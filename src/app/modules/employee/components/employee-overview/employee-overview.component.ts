@@ -4,7 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Customer } from '../../../../Entities/customer';
 import { Employee } from '../../../../Entities/Employee';
-import { EmployeeService } from '../../services/employee/employee.service';
+import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
  
 
@@ -45,7 +45,7 @@ export class EmployeeOverviewComponent {
   }
 
   goToEmployeeDetails(currentEmployee: Employee) {
-    this.router.navigateByUrl('/customer/employee-details', { state: { customer: "Piramide" , employee: currentEmployee } });
+    this.router.navigateByUrl('/employees/employee-details', { state: { customer: "Piramide" , employee: currentEmployee } });
   }
 
   searchEmployee(event: Event): void {
@@ -59,5 +59,7 @@ export class EmployeeOverviewComponent {
     
   }
 
-  createEmployee(){}
+  createEmployee(){
+    this.router.navigateByUrl('/employees/employee-details');
+  }
 }

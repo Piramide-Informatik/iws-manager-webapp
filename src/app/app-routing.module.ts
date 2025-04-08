@@ -9,16 +9,23 @@ const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {
-        path: 'customer',
+        path: 'customers',
         loadChildren: () =>
           import('./modules/customer/customer.module').then(
             (c) => c.CustomerModule
           ),
       },
       {
+        path: 'employees',
+        loadChildren: () =>
+          import('./modules/employee/employee.module').then(
+            (e) => e.EmployeeModule
+          ),
+      },
+      {
         path: 'work-contracts',
         loadChildren: () =>
-          import('./modules/customer/work-contracts.module').then(
+          import('./modules/work-contracts/work-contracts.module').then(
             (w) => w.WorkContractsModule
           ),
       },

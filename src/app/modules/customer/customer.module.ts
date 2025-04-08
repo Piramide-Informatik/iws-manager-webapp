@@ -19,6 +19,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
@@ -31,22 +32,17 @@ import { ToolbarModule } from 'primeng/toolbar';
 //Componentes
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
-import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
-import { EmployeeOverviewComponent } from './components/employee-overview/employee-overview.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { OrderComponent } from './components/order-details/order/order.component';
 import { ProjectComponent } from './components/order-details/project/project.component';
 import { IwsProvisionComponent } from './components/order-details/iws-provision/iws-provision.component';
 
-
 @NgModule({
   declarations: [
     ContactComponent,
     ListCustomersComponent,
-    EmployeeOverviewComponent,
     DetailCustomerComponent,
-    EmployeeDetailsComponent,
     OrderDetailsComponent,
     OrderComponent,
     ProjectComponent,
@@ -67,6 +63,7 @@ import { IwsProvisionComponent } from './components/order-details/iws-provision/
     InputIconModule,
     InputNumberModule,
     InputTextModule,
+    MessageModule,
     MultiSelectModule,
     ReactiveFormsModule,
     SelectModule,

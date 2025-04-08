@@ -4,77 +4,87 @@
     [value]="customers"
     dataKey="id"
     [rows]="10"
+    [columns]="selectedColumns"
     [rowsPerPageOptions]="[10, 25, 50]"
     [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+    showGridlines
+    [resizableColumns]="true"
     [scrollable]="true"
     scrollHeight="90vh"
+    [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
   >
-    <ng-template #header>
+    <ng-template #caption>
+      <p-multiselect 
+        display="chip" 
+        [options]="cols" 
+        [(ngModel)]="selectedColumns" 
+        optionLabel="header" 
+        selectedItemsLabel="{0} columns selected" 
+        [style]="{ 'width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
+        placeholder="Choose Columns" />
+    </ng-template>
+    <ng-template #header let-columns>
       <tr>
-        <th style="width:10%"></th>
-        <th pSortableColumn="id">No. <p-sortIcon field="id" /></th>
-        <th pSortableColumn="companyName">
-          Company Name <p-sortIcon field="companyName" />
+
+        <th class="thead-bg-blue"></th>
+
+        <th *ngFor="let col of columns; let i = index"
+          [pSortableColumn]="col.field" 
+          pResizableColumn
+          class="thead"
+        >{{ col.header }} <p-sortIcon [field]="col.field" />
         </th>
-        <th pSortableColumn="nameLine2">
-          Name Line 2 <p-sortIcon field="nameLine2" />
-        </th>
-        <th pSortableColumn="kind">Kind <p-sortIcon field="kind" /></th>
-        <th pSortableColumn="land">Land <p-sortIcon field="land" /></th>
-        <th pSortableColumn="place">Place <p-sortIcon field="place" /></th>
-        <th pSortableColumn="contact">
-          Contact <p-sortIcon field="contact" />
-        </th>
+        
       </tr>
       <tr>
-        <th
-          *ngFor="
-            let field of [
-              '',
-              'id',
-              'companyName',
-              'nameLine2',
-              'kind',
-              'land',
-              'place',
-              'contact'
-            ]
-          "
-        >
+
+        <th></th>
+
+        <th *ngFor="let col of columns; let i = index">
           <input
-            pInputText
+            pInputText 
+            pSize="small"
             type="text"
-            (input)="applyFilter($event, field)"
-            [placeholder]="'Search ' + field"
+            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+            (input)="applyFilter($event, col.field)"
+            [placeholder]="'Search ' + col.field"
           />
         </th>
       </tr>
     </ng-template>
-    <ng-template #body let-customer>
-      <tr>
+    <ng-template #body let-customer let-i="rowIndex" let-columns="columns">
+      <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
-              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info" 
-                [routerLink]="['/customer/detail-customer', customer.id]"        
+              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option" 
+                [routerLink]="['/customers/detail-customer', customer.id]"        
               ></button>
-              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option" (click)="deleteCustomer(customer.id)"></button>
           </div>
-      </td>
-        <td>{{ customer.id }}</td>
+        </td>
+        <td *ngFor="let col of columns"
+        >{{ customer[col.field] }}</td>
+        <!-- <td>{{ customer.id }}</td>
         <td>{{ customer.companyName }}</td>
         <td>{{ customer.nameLine2 }}</td>
         <td>{{ customer.kind }}</td>
         <td>{{ customer.land }}</td>
         <td>{{ customer.place }}</td>
-        <td>{{ customer.contact }}</td>
+        <td>{{ customer.contact }}</td> -->
       </tr>
     </ng-template>
     <ng-template #emptymessage>
       <tr>
-        <td colspan="7">No customers found.</td>
+        <td colspan="7">
+          <p-message severity="info">No customers found.</p-message
+        ></td>
       </tr>
     </ng-template>
   </p-table>
-  <p-button label="New" severity="info" icon="pi pi-plus" routerLink="/customer/detail-customer" />
+  <div class="">
+    <p-button label="New" icon="pi pi-plus" routerLink="/customers/detail-customer" />
+  </div>
 
 </div>
