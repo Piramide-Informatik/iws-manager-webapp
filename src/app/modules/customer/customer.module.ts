@@ -10,6 +10,7 @@ import { CustomerRoutingModule } from './customer-routing.module';
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { CardModule } from 'primeng/card';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Dialog } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -54,6 +55,7 @@ import { IwsProvisionComponent } from './components/order-details/iws-provision/
   imports: [
     ButtonModule,
     CalendarModule,
+    CardModule,
     CommonModule,
     CustomerRoutingModule,
     DatePickerModule,
