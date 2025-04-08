@@ -8,7 +8,7 @@ import { EmployeeOverviewComponent } from '../employee/components/employee-overv
 
 
 const routes: Routes = [
-  {path: '', component: ListCustomersComponent},
+  {path: 'list', component: ListCustomersComponent},
   {path: 'detail-customer', component: DetailCustomerComponent},
   {path: 'detail-customer/:id', component: DetailCustomerComponent},
   {path: 'contact', component: ContactComponent},
