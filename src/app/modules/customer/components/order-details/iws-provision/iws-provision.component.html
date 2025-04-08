@@ -1,5 +1,5 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
-    <ng-template #title>Projekt</ng-template>
+    <ng-template #title>IWS Provision</ng-template>
 
     <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
@@ -15,7 +15,7 @@
             </div>
         </div>
     </form>
-    <p-table #dt [value]="orderCommissions" [tableStyle]="{ 'min-width': '270%' }" [rows]="10" [columns]="cols"
+    <p-table #dt [value]="orderCommissions" [tableStyle]="{ 'min-width': '100%' }" [rows]="10" [columns]="cols"
         [paginator]="true" scrollable="true" [rowsPerPageOptions]="[10, 25, 50]" scrollHeight="90vh"
         [globalFilterFields]="[
             'fromordervalue',
@@ -25,7 +25,7 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template #caption>
             <div class="flex items-center justify-between">
-                <h5 class="m-0">Employee Overview</h5>
+                <h5 class="m-0">IWS Provision</h5>
             </div>
         </ng-template>
         <ng-template #header>
@@ -33,13 +33,13 @@
                 <th style="width: 5vw">
 
                 </th>
-                <th pSortableColumn="fromOrderValue" style="width: auto">
+                <th pSortableColumn="fromOrderValue" style="width: 5vw">
                     ab Wert<p-sortIcon field="fromOrderValue" />
                 </th>
-                <th pSortableColumn="commission" style="width: auto">
+                <th pSortableColumn="commission" style="width: 5vw">
                     Provision <p-sortIcon field="commission" />
                 </th>
-                <th pSortableColumn="minCommission" style="width: auto">
+                <th pSortableColumn="minCommission" style="width: 5vw">
                     Mindestprovision <p-sortIcon field="minCommission" />
                 </th>
             </tr>
@@ -48,8 +48,8 @@
             <tr>
                 <td>
                     <div class="flex items-center justify-center gap-2">
-                        <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"></button>
-                        <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+                        <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"></button>
+                        <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"></button>
                     </div>
 
                 </td>
