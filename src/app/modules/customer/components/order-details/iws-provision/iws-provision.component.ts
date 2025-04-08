@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
@@ -15,6 +16,9 @@ interface ExportColumn {
   dataKey: string;
 }
 
+=======
+import { Component } from '@angular/core';
+>>>>>>> c9fc209 (order, project, iws-provision components created)
 
 @Component({
   selector: 'app-iws-provision',
