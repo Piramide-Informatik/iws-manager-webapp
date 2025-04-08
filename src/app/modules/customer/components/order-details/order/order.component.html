@@ -32,8 +32,8 @@
             <input pInputText type="text" id="orderTitle" formControlName="orderTitle" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderDate">Auftragsdatum: (input date)</label>
-            <input pInputText type="text" id="orderDate" formControlName="orderDate" autocomplete="off" />
+            <label for="orderDate">Auftragsdatum: </label>
+            <p-datepicker id="orderDate" showIcon iconDisplay="input" formControlName="orderDate" />
         </div>
         <div class="order_input order_name mb-2">
             <label for="fundingProgram">Förderprogramm:</label>
@@ -44,8 +44,8 @@
             <input pInputText type="text" id="contractStatus" formControlName="contractStatus" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="approvalDate">Unterschriftsdatum:  (input date)</label>
-            <input pInputText type="text" id="approvalDate" formControlName="approvalDate" autocomplete="off" />
+            <label for="approvalDate">Unterschriftsdatum: (input date)</label>
+            <p-datepicker id="approvalDate" showIcon iconDisplay="input" formControlName="approvalDate" />
         </div>
         <div class="order_input order_name mb-2">
             <label for="contractTitle">Rahmenvertrag:</label>
@@ -61,5 +61,5 @@
         </div>
     </div>
 
-    <button type="submit" [disabled]="!orderForm.valid">Submit</button>
+    <!-- <p-button  size="small" type="submit" [disabled]="!orderForm.valid" label="Save" icon="pi pi-check" iconPos="right" /> -->
 </form>
