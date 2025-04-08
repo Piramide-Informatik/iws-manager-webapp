@@ -34,9 +34,9 @@ import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
-import { OrderComponent } from './components/order-details/order/order.component';
-import { ProjectComponent } from './components/order-details/project/project.component';
-import { IwsProvisionComponent } from './components/order-details/iws-provision/iws-provision.component';
+// import { OrderComponent } from '../orders/components/order-detail/order/order.component';
+// import { ProjectComponent } from '../orders/components/order-detail/project/project.component';
+// import { IwsProvisionComponent } from '../orders/components/order-detail/iws-provision/iws-provision.component';
 
 @NgModule({
   declarations: [
@@ -44,9 +44,9 @@ import { IwsProvisionComponent } from './components/order-details/iws-provision/
     ListCustomersComponent,
     DetailCustomerComponent,
     OrderDetailsComponent,
-    OrderComponent,
-    ProjectComponent,
-    IwsProvisionComponent
+    // OrderComponent,
+    // ProjectComponent,
+    // IwsProvisionComponent
   ],
   imports: [
     ButtonModule,

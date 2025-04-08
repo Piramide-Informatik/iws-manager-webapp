@@ -37,11 +37,11 @@ const routes: Routes = [
           ),
       },
       { 
-        path: 'admin', 
+        path: 'orders', 
         loadChildren: () => 
-        import('./modules/customer/customer.module')
+        import('./modules/orders/order-routing.module')
         .then(
-          c => c.CustomerModule
+          o => o.OrderRountingModule
         ), 
       },
     ],

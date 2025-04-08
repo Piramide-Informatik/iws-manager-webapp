@@ -58,7 +58,7 @@
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
-              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info" 
+              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option" 
                 [routerLink]="['/customers/customer-details', customer.id]"        
               ></button>
               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option" (click)="deleteCustomer(customer.id)"></button>
@@ -66,13 +66,7 @@
         </td>
         <td *ngFor="let col of columns"
         >{{ customer[col.field] }}</td>
-        <!-- <td>{{ customer.id }}</td>
-        <td>{{ customer.companyName }}</td>
-        <td>{{ customer.nameLine2 }}</td>
-        <td>{{ customer.kind }}</td>
-        <td>{{ customer.land }}</td>
-        <td>{{ customer.place }}</td>
-        <td>{{ customer.contact }}</td> -->
+
       </tr>
     </ng-template>
     <ng-template #emptymessage>

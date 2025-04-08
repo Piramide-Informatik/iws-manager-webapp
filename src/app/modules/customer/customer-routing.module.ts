@@ -12,16 +12,16 @@ import { ProjectsOverviewComponent } from '../projects/components/projects-overv
 
 const routes: Routes = [
   {path: '', component: ListCustomersComponent},
-  {path: 'list', component: ListCustomersComponent},
-  {path: 'customer-overview', component: ListCustomersComponent},
+  // {path: 'list', component: ListCustomersComponent},
+  // {path: 'customer-overview', component: ListCustomersComponent},
   {path: 'customer-details', component: DetailCustomerComponent},
   {path: 'customer-details/:id', component: DetailCustomerComponent},
-  {path: 'employee-overview', component: EmployeeOverviewComponent},
-  {path: 'employee-details', component: EmployeeDetailsComponent},
-  {path: 'employment-contracts-overview', component: ListWorkContractsComponent},
-  {path: 'projects-overview', component: ProjectsOverviewComponent},
+  // {path: 'employee-overview', component: EmployeeOverviewComponent},
+  // {path: 'employee-details', component: EmployeeDetailsComponent},
+  // {path: 'employment-contracts-overview', component: ListWorkContractsComponent},
+  // {path: 'projects-overview', component: ProjectsOverviewComponent},
   {path: 'contact', component: ContactComponent},
-  {path: 'roles', component: EmployeeOverviewComponent},
+  // {path: 'roles', component: EmployeeOverviewComponent},
   {path: 'order-details', component: OrderDetailsComponent},
   {path: 'contact/:id', component: ContactComponent},
 ];
