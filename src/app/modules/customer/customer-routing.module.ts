@@ -6,7 +6,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { EmployeeOverviewComponent } from '../employee/components/employee-overview/employee-overview.component';
 import { EmployeeDetailsComponent } from '../employee/components/employee-details/employee-details.component';
 import { ListWorkContractsComponent } from '../work-contracts/components/list-work-contracts/list-work-contracts.component';
-import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
+import { ProjectsOverviewComponent } from '../projects/components/projects-overview/projects-overview.component';
 
 
 const routes: Routes = [
