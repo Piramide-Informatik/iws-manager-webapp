@@ -17,6 +17,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
+import { ProjectModule } from './modules/projects/project.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,6 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CustomerModule,
     EmployeeModule,
     WorkContractsModule,
+    ProjectModule,
     MatButtonModule,
     HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
     TranslateModule.forRoot({

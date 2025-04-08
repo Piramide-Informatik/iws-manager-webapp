@@ -22,5 +22,9 @@
     "PRODUCTS": "Products",
     "SALES": "Sales",
     "INVENTORY": "Inventory"
+  },
+  "PROJECTS-TABLE": {
+    "PROJECT_LABEL": "Project Label",
+    "PROJECT_NAME": "Project Name"
   }
 }

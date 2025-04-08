@@ -1,0 +1,92 @@
+.field {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.25rem;
+    align-items: center;
+    justify-content: space-between;
+    
+    label {
+      display: block;
+      margin-bottom: 0;
+      font-weight: 500;
+      width: 7rem;
+    }
+    
+    input {
+      height: 35px;
+      width: 18.75rem;
+    }
+  
+    .p-select {
+      height: 36px;
+      width: 18.75rem;
+  
+      span.p-select-label {
+        padding: 0.5rem 0.75rem !important;
+      }
+    }
+  
+    .postal-city {
+      width: 18.75rem;
+      display: flex;
+    }
+    
+  }
+  
+  .column {
+    padding: 0.5rem 2rem;
+  }
+  
+  .label-dialog {
+    display: block;
+    width: 3.2rem;
+  }
+  
+  .odd-row {
+    background-color: #ffffff !important;
+  }
+  
+  .even-row {
+    background-color: #34495e38 !important;
+  }
+  
+  /* Estilo de resaltado cuando el mouse pasa sobre la fila */
+  .odd-row:hover,
+  .even-row:hover {
+    background-color: #dcdcdc !important; /* Gris claro para resaltar */
+    cursor: pointer; /* Cambia el cursor a mano para dar un toque interactivo */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+  }
+  
+  .pi.pi-globe {
+    position: absolute;
+    right: -1.2rem;
+  }
+  
+  p-select {
+    align-items: center;
+  }
+  
+  //Styles table head
+  .thead {
+    background: #007fff;
+    color: #fff;
+    min-width: 6.25rem;//=100px
+  
+    &:hover {
+      background: #abcbeb;
+      color: #1E293B
+    }
+  }
+  
+  //Styles btns edit delete
+  .button-option.p-button-rounded {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  
+  td, th {
+    padding: 5px 16px !important;
+    font-size: 14px;
+    margin-left: 15px !important;
+  }

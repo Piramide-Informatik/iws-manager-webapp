@@ -22,5 +22,9 @@
     "PRODUCTS": "Produkte",
     "SALES": "Vertrieb",
     "INVENTORY": "Inventar"
+  },
+  "PROJECTS-TABLE": {
+    "PROJECT_LABEL": "Projekt",
+    "PROJECT_NAME": "Longtext"
   }
 }
