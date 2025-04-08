@@ -1,5 +1,11 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 /* You can add global styles to this file, and also import other style files */
+
+
+:root {
+    --light-cyan: rgba(142, 197, 255, 0.3)
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -17,6 +23,16 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input{
+    height: 27px !important; 
+    font-size: 0.85rem; 
+    padding: 2px 6px;
+    width: 20vw;
+}
+
+button.p-ripple.p-button.p-component{
+    height: 27px;
+}
 //Estilo para sidebar activo
 .active {
     background-color: #4b6de8;

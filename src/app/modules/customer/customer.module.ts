@@ -10,6 +10,7 @@ import { CustomerRoutingModule } from './customer-routing.module';
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { CardModule } from 'primeng/card';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Dialog } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -32,17 +33,25 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
-
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
+import { OrderComponent } from './components/order-details/order/order.component';
+import { ProjectComponent } from './components/order-details/project/project.component';
+import { IwsProvisionComponent } from './components/order-details/iws-provision/iws-provision.component';
 
 @NgModule({
   declarations: [
     ContactComponent,
     ListCustomersComponent,
     DetailCustomerComponent,
+    OrderDetailsComponent,
+    OrderComponent,
+    ProjectComponent,
+    IwsProvisionComponent
   ],
   imports: [
     ButtonModule,
     CalendarModule,
+    CardModule,
     CommonModule,
     CustomerRoutingModule,
     DatePickerModule,
