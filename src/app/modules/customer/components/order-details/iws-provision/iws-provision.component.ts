@@ -37,6 +37,7 @@ export class IwsProvisionComponent implements OnInit{
     this.iwsEmployeeForm = new FormGroup({
       fixCommission: new FormControl('', [Validators.required]),
       maxCommission: new FormControl('', [Validators.required]),
+      estimated: new FormControl('', [Validators.required]),
     });
 
     this.orderCommissions = this.orderCommissionService.getOrderCommission();
