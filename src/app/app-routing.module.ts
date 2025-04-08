@@ -39,9 +39,15 @@ const routes: Routes = [
       { 
         path: 'orders', 
         loadChildren: () => 
-        import('./modules/orders/order-routing.module')
-        .then(
+        import('./modules/orders/order-routing.module').then(
           o => o.OrderRountingModule
+        ),
+      },
+      {
+        path: 'demands', 
+        loadChildren: () => 
+        import('./modules/receivables/receivables.module').then(
+          r => r.ReceivablesModule
         ), 
       },
     ],
