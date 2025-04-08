@@ -30,11 +30,10 @@ const routes: Routes = [
           ),
       },
       { 
-        path: 'admin', 
+        path: 'demands', 
         loadChildren: () => 
-        import('./modules/customer/customer.module')
-        .then(
-          c => c.CustomerModule
+        import('./modules/receivables/receivables.module').then(
+          r => r.ReceivablesModule
         ), 
       },
     ],
