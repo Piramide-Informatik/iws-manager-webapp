@@ -97,7 +97,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           },
           {
             label: this.translate.instant('SIDEBAR.PROJECTS'),
-            routerLink: ['/admin/roles'],
+            routerLink: ['/projects'],
           },
           {
             label: this.translate.instant('SIDEBAR.ORDERS'),
