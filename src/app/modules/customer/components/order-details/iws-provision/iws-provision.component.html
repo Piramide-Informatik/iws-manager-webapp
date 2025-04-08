@@ -1,1 +1,16 @@
-<p>iws-provision works!</p>
+<p-card [style]="{ background: 'var(--light-cyan)' }">
+    <ng-template #title>Projekt</ng-template>
+
+    <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="iws-employeeInput project_name mb-2">
+                <label for="fixCommission">Fixe Provision:</label>
+                <input pInputText type="text" id="fixCommission" formControlName="fixCommission" autocomplete="off" /> Euro
+            </div>
+            <div class="iws-employeeInput order_maxCommission mb-2">
+                <label for="maxCommission">Max. Provision:</label>
+                <input pInputText type="text" id="maxCommission" formControlName="maxCommission" autocomplete="off" /> Euro
+            </div>
+        </div>
+    </form>
+</p-card>
