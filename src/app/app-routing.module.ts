@@ -29,6 +29,13 @@ const routes: Routes = [
             (w) => w.WorkContractsModule
           ),
       },
+      {
+        path: 'projects',
+        loadChildren: () =>
+          import('./modules/projects/project-routing.module').then(
+            (w) => w.ProjectRoutingModule
+          ),
+      },
       { 
         path: 'admin', 
         loadChildren: () => 
