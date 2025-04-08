@@ -165,6 +165,7 @@
       [columns]="selectedColumns"
       [paginator]="true"
       [rows]="5"
+      showGridlines
       scrollable="true"
       scrollHeight="300px"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -181,7 +182,7 @@
           [(ngModel)]="selectedColumns" 
           optionLabel="header" 
           selectedItemsLabel="{0} columns selected" 
-          [style]="{ 'width': '250px' }" 
+          [style]="{ 'width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
           placeholder="Choose Columns" />
       </ng-template>
       <ng-template #header let-columns>
