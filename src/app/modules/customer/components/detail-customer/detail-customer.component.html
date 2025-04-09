@@ -17,6 +17,7 @@
           </div>
         </div>
 
+        <!-- Select country -->
         <div class="field">
           <label for="country">Country</label>
           <p-select formControlName="selectedCountry" 
@@ -172,6 +173,7 @@
       [rowsPerPageOptions]="[5, 10, 20]"
       [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
       [resizableColumns]="true"
+      columnResizeMode="expand"
       styleClass="p-datatable-gridlines"
     >
       <ng-template #caption>
@@ -181,7 +183,7 @@
           [(ngModel)]="selectedColumns" 
           optionLabel="header" 
           selectedItemsLabel="{0} columns selected" 
-          [style]="{ 'width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
+          [style]="{ 'min-width': '200px', 'font-size': '14px', 'line-height': '16.8px' }" 
           placeholder="Choose Columns" />
       </ng-template>
       <ng-template #header let-columns>

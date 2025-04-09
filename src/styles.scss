@@ -54,3 +54,12 @@ button.p-ripple.p-button.p-component{
     cursor: pointer; /* Cambia el cursor a mano para dar un toque interactivo */
     transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
 }
+
+// Box shadow en tema Aura primeNG
+// .p-inputtext:enabled:focus,
+// .p-dropdown:not(.p-disabled).p-focus,
+// .p-select:not(.p-disabled).p-focus,
+// .p-calendar .p-inputtext:enabled:focus {
+//   box-shadow: 0 0 0 0.2rem #bfdbfe !important;
+// //   box-shadow: var(--p-inputtext-focus-ring-shadow) !important;
+// }

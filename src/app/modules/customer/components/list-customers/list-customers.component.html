@@ -11,6 +11,7 @@
     [showCurrentPageReport]="true"
     showGridlines
     [resizableColumns]="true"
+    columnResizeMode="expand"
     [scrollable]="true"
     scrollHeight="90vh"
     [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
@@ -22,7 +23,7 @@
         [(ngModel)]="selectedColumns" 
         optionLabel="header" 
         selectedItemsLabel="{0} columns selected" 
-        [style]="{ 'width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
+        [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
         placeholder="Choose Columns" />
     </ng-template>
     <ng-template #header let-columns>
@@ -77,6 +78,6 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-button label="New" severity="info" icon="pi pi-plus" routerLink="/customers/customer-details" />
+  <p-button label="New" icon="pi pi-plus" routerLink="/customers/customer-details" />
 
 </div>

@@ -35,13 +35,13 @@ import { ListCustomersComponent } from './components/list-customers/list-custome
     CustomerRoutingModule,
     FloatLabel,
     FormsModule,
-    // InputTextModule,//--revisar entre pInputText en detail-customer
+    InputTextModule,
     MessageModule,
     MultiSelectModule,
     ReactiveFormsModule,
     SelectModule,
     TableModule,
-    // TextareaModule,//revisar 
+    TextareaModule,
   ]
 })
 export class CustomerModule {}

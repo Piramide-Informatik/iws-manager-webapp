@@ -8,6 +8,7 @@ import { LayoutModule } from './core/layout/layout.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeng/themes/lara';
+import Aura from '@primeng/themes/aura'//Tema default primeNG
 import { CustomerModule } from './modules/customer/customer.module';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
