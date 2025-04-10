@@ -27,7 +27,8 @@ td, th {
 }
 
 .thead-input-id {
-    width: 4.4rem;//=70px
+    min-width: 4.4rem;//=70px
+    width: 100%;
 }
 
 .thead-input-width {
