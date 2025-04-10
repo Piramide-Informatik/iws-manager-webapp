@@ -15,6 +15,7 @@ import { Dialog } from 'primeng/dialog';
 import { FileUpload } from 'primeng/fileupload';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputNumber } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -37,6 +38,7 @@ import { ListWorkContractsComponent } from './components/list-work-contracts/lis
     HttpClientModule,
     IconFieldModule,
     InputNumber,
+    InputTextModule,
     ReactiveFormsModule,
     TableModule,
     ToastModule,

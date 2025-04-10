@@ -14,13 +14,13 @@
             
             <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Salutation</label>
-                <p-dropdown [options]="salutations" [(ngModel)]="salutationId" [style]="{'width':'50%'}"
+                <p-select [options]="salutations" [(ngModel)]="salutationId" [style]="{'width':'50%'}"
                     [editable]="true" [showClear]="true" optionLabel="name" />
             </div>
             
             <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Title</label>
-                <p-dropdown [options]="titles" [(ngModel)]="titleId" [style]="{'width':'50%'}" [editable]="true"
+                <p-select [options]="titles" [(ngModel)]="titleId" [style]="{'width':'50%'}" [editable]="true"
                     [showClear]="true" optionLabel="name" />
             </div>
             
@@ -63,7 +63,7 @@
             </div>
             <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Qualification FZ</label>
-                <p-dropdown [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [style]="{'width':'50%'}"
+                <p-select [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [style]="{'width':'50%'}"
                     [editable]="true" [showClear]="true" optionLabel="name" />
             </div>
             <div class="field">

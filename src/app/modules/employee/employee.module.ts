@@ -9,9 +9,9 @@ import { EmployeeRountingModule } from "./employee-routing.module";
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
-import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -31,12 +31,12 @@ import { EmployeeDetailsComponent } from "./components/employee-details/employee
         ButtonModule,
         CommonModule,
         DatePickerModule,
-        DropdownModule,//cambiar por select
         EmployeeRountingModule,
         FormsModule,
         IconFieldModule,
         InputIconModule,
-        // SelectModule,
+        InputTextModule,
+        SelectModule,
         TableModule,
         ToastModule,
         ToolbarModule

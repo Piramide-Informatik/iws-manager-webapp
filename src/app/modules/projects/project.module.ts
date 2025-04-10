@@ -7,8 +7,10 @@ import { NgModule } from "@angular/core";
 import { ProjectRoutingModule } from './project-routing.module';
 
 //PrimeNG
+import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
@@ -24,13 +26,15 @@ import { ProjectsOverviewComponent } from './components/projects-overview/projec
         ProjectsOverviewComponent
     ],
     imports: [
-        ProjectRoutingModule,
+        ButtonModule,
         CommonModule,
         FormsModule,
         IconFieldModule,
         InputIconModule,
+        InputTextModule,
         MessageModule,
         MultiSelectModule,
+        ProjectRoutingModule,
         TableModule,
         ToastModule,
         ToolbarModule
