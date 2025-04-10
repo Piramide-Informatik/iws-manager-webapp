@@ -1,11 +1,11 @@
-// @use 'src/styles/variables' as *;
+@use 'variables' as *;
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 6vh;
-    background: #f40ac1; // Azul oscuro
+    background: $primary-color; // Azul oscuro
     padding: 0 1.5rem;
     color: white;
 
