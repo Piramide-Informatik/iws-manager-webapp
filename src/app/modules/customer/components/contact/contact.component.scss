@@ -7,8 +7,8 @@
 
 .form-row {
     display: flex;
-    align-items: center;
-    gap: 70px; 
+    align-items: center; /* Alinea verticalmente los elementos */
+    gap: 82px; /* Reduce el espacio entre label e input */
     margin-bottom: 20px; 
 }
 
@@ -24,49 +24,46 @@ input, select {
     width: 100%; 
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-left: 10px;
+}
+
+.rechnungsempfaenger-label {
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle; /* Alinea verticalmente al centro */
+}
+
+.form-row1 {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    margin-bottom: 20px; 
 }
 
 .checkbox-container {
     display: flex;
-    justify-content: flex-start;
-    align-items: left; 
-    gap: 30px; 
+    align-items: center;
 
-    label{
-        width: 400px;
+    input[type="checkbox"] {
+        width: 20px;  /* Ajusta el ancho según sea necesario */
+        height: 20px; /* Ajusta la altura según sea necesario */
+        margin-left: 5px; /* Ajusta el margen si es necesario */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 }
 
-.checkbox-container input {
-    margin-top: 5px;
+.checkbox-form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.checkbox-container span {
+    margin-left: 5px;
+    font-size: 16px;
 }
 
 .spacer{
     justify-content: space-between;
-}
-
-.button-container {
-    display: flex;
-    justify-content: center; 
-    gap: 100px;
-    margin-top: 50px; 
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:first-child {
-    background-color: #007bff;
-    color: white;
-}
-
-.cancel-btn {
-    background-color: #dc3545;
-    color: white;
 }
