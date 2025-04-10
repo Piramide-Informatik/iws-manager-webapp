@@ -44,6 +44,13 @@ const routes: Routes = [
           c => c.CustomerModule
         ), 
       },
+      {
+        path: 'framework-agreements',
+        loadChildren: () =>
+          import('./modules/framework-agreements/framework-agreements.module').then(
+            (f) => f.FrameworkAgreementsModule
+          ),
+      },
     ],
   },
 ];
