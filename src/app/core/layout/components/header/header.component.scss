@@ -7,10 +7,10 @@
     height: 6vh;
     background: $primary-dark; // Azul oscuro
     padding: 0 1.5rem;
-    color: white;
+    color: $primary-light;
 
     .user-button {
-        color: white !important;
+        color: $primary-light !important;
         background: transparent !important;
         border: none;
         font-weight: bold;
@@ -21,7 +21,7 @@
     }
 
     .menu-button {
-        color: white !important;
+        color: $primary-light !important;
         background: transparent !important;
         border: none;
 
@@ -38,13 +38,13 @@
 }
 
 :host ::ng-deep .p-menu {
-    background: white !important;
-    border: 1px solid #ddd !important;
+    background: $primary-light !important;
+    border: 1px solid $primary-light !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
 }
 
 :host ::ng-deep .p-menuitem-link {
-    color: #2E4053 !important;
+    color: $primary-dark !important;
 
     &:hover {
         background: rgba(46, 64, 83, 0.1) !important;
