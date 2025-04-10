@@ -15,7 +15,8 @@
             </div>
         </div>
     </form>
-    <p-table #dt [value]="orderCommissions" [tableStyle]="{ 'min-width': '100%' }" [rows]="10" [columns]="cols"
+    <p-table #dt [value]="orderCommissions" showGridlines
+    stripedRows [tableStyle]="{ 'min-width': '100%' }" [rows]="10" [columns]="cols"
         [paginator]="true" scrollable="true" [rowsPerPageOptions]="[10, 25, 50]" scrollHeight="90vh"
         [globalFilterFields]="[
             'fromordervalue',
