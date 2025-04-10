@@ -9,6 +9,7 @@ import { OrderRountingModule } from './order-routing.module';
 //Prime NG
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
 import { TableModule } from 'primeng/table';
@@ -33,6 +34,7 @@ import { IwsProvisionComponent } from './components/order-detail/iws-provision/i
     ButtonModule,
     CardModule,
     CommonModule,
+    DatePickerModule,
     FloatLabel,
     InputTextModule,
     OrderRountingModule,
