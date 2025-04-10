@@ -2,12 +2,22 @@
 /* You can add global styles to this file, and also import other style files */
 
 
+*{
+    font-size: 12px !important;
+}
+
 :root {
     --light-cyan: rgba(142, 197, 255, 0.3)
 }
 
+html,
+body {
+    height: 100%;
+}
+
 body {
     margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     padding: 0;
     overflow: hidden;
 }
@@ -20,19 +30,18 @@ body {
     margin: 0;
     padding: 0;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input{
-    height: 27px !important; 
-    font-size: 0.85rem; 
+.p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
+    height: 27px !important;
+    font-size: 0.85rem;
     padding: 2px 6px;
     width: 20vw;
 }
 
-button.p-ripple.p-button.p-component{
+button.p-ripple.p-button.p-component {
     height: 27px;
 }
+
 //Estilo para sidebar activo
 .active {
     background-color: #4b6de8;
@@ -42,24 +51,25 @@ button.p-ripple.p-button.p-component{
 .odd-row {
     background-color: #ffffff !important;
 }
-  
+
 .even-row {
     background-color: #34495e38 !important;
 }
-  
+
 /* Estilo de resaltado cuando el mouse pasa sobre la fila */
 .odd-row:hover,
 .even-row:hover {
-    background-color: #dcdcdc !important; /* Gris claro para resaltar */
-    cursor: pointer; /* Cambia el cursor a mano para dar un toque interactivo */
-    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+    background-color: #dcdcdc !important;
+    /* Gris claro para resaltar */
+    cursor: pointer;
+    /* Cambia el cursor a mano para dar un toque interactivo */
+    transition: background-color 0.3s ease;
+    /* Transición suave para el cambio de color */
 }
 
-// Box shadow en tema Aura primeNG
-// .p-inputtext:enabled:focus,
-// .p-dropdown:not(.p-disabled).p-focus,
-// .p-select:not(.p-disabled).p-focus,
-// .p-calendar .p-inputtext:enabled:focus {
-//   box-shadow: 0 0 0 0.2rem #bfdbfe !important;
-// //   box-shadow: var(--p-inputtext-focus-ring-shadow) !important;
-// }
+input, .p-select{
+    height: 25px; 
+    font-size: 0.85rem; 
+    padding: 2px 6px;
+}
+
