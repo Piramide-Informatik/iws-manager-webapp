@@ -1,0 +1,36 @@
+.order_input input{
+    width: 20vw;
+}
+
+p-floatlabel{
+    margin-left: 5px;
+
+    #customerId{
+        width: 6vw;
+    }
+
+    #customerName{
+        width: 13.1vw;
+    }
+}
+
+.order_input{
+    width: 100% !important;   
+    display: flex;
+
+    label {
+        width: 33%;
+    }
+}
+
+.order_input p-dropdown {
+    flex: unset; /* Evita que el flexbox lo expanda */
+    width: 320px !important; /* Ajusta este valor al tamaño que necesites */
+}
+
+/* Si el dropdown sigue sin ajustarse, prueba esta regla más específica */
+.order_input p-dropdown .p-dropdown {
+    width:350px !important; 
+    min-width: 350px !important;
+    max-width: 350px !important;
+}

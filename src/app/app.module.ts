@@ -14,6 +14,7 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { LayoutModule } from './core/layout/layout.module';
 import { ProjectModule } from './modules/projects/project.module';
+import { FrameworkAgreementsModule } from './modules/framework-agreements/framework-agreements.module';
 import { WorkContractsModule } from './modules/work-contracts/work-contracts.module';
 
 //Prime NG
@@ -40,6 +41,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ButtonModule,
     CustomerModule,
     EmployeeModule,
+    WorkContractsModule,
+    ProjectModule,
+    FrameworkAgreementsModule,
+    MatButtonModule,
     HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
     LayoutModule,
     MatButtonModule,
