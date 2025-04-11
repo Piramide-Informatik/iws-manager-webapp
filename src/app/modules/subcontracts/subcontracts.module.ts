@@ -1,7 +1,21 @@
+//Angular 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListSubcontractsComponent } from './components/list-subcontracts/list-subcontracts.component';
+import { FormsModule } from '@angular/forms';
+
+//Modulos
 import { SubcontractsRoutingModule } from './subcontracts-routing.module';
+
+//PrimeNG
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { MultiSelect } from 'primeng/multiselect';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+
+
+//Components
+import { ListSubcontractsComponent } from './components/list-subcontracts/list-subcontracts.component';
 
 
 @NgModule({
@@ -9,8 +23,14 @@ import { SubcontractsRoutingModule } from './subcontracts-routing.module';
     ListSubcontractsComponent
   ],
   imports: [
+    ButtonModule,
     CommonModule,
-    SubcontractsRoutingModule
+    FormsModule,
+    MessageModule,
+    MultiSelect,
+    InputTextModule,
+    SubcontractsRoutingModule,
+    TableModule
   ]
 })
 export class SubcontractsModule { }
