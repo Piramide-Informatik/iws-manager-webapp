@@ -58,6 +58,13 @@ const routes: Routes = [
           c => c.ContractorRoutingModule
         ), 
       },
+      {
+        path: 'subcontracts', 
+        loadChildren: () => 
+        import('./modules/subcontracts/subcontracts.module').then(
+          s => s.SubcontractsModule
+        )
+      },
     ],
   },
 ];
