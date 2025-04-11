@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
+import { ReactiveFormsModule } from '@angular/forms';
 
 //Modulos
 
@@ -26,15 +27,25 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { CardModule } from 'primeng/card';
+
+
+
 
 //Components
 import { FrameworkAgreementsSummaryComponent } from './components/framework-agreements-summary/framework-agreements-summary.component';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { OrderComponent } from './components/order-detail/order/order.component';
+import { IwsProvisionComponent } from './components/order-detail/iws-provision/iws-provision.component';
+
 
 
 @NgModule({
     declarations: [
         FrameworkAgreementsSummaryComponent,
-        
+        OrderDetailComponent,
+        OrderComponent,
+        IwsProvisionComponent
     ],
     imports: [
         FrameworkAgreementsRoutingModule,
@@ -57,7 +68,9 @@ import { FrameworkAgreementsSummaryComponent } from './components/framework-agre
         TagModule,
         TextareaModule,
         ToastModule,
-        ToolbarModule
+        ToolbarModule,
+        CardModule,
+        ReactiveFormsModule,     
     ]
 
 })

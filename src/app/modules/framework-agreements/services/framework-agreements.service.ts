@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../../../Entities/customer';
-import { CustomerDatastoreService } from './customer-datastore.service';
+import { frameworkDatastoreService } from './framework-agree-datastore.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomerService {
-  constructor(private datastore: CustomerDatastoreService) {}
+export class FrameworkAgreementsService {
+  constructor(private datastore: frameworkDatastoreService) {}
 
   list() {
     return this.datastore.list();

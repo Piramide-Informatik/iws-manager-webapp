@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FrameworkAgreements } from '../../../../Entities/Framework-agreements';
-import { CustomerService } from '../../services/customer.service';
+import { FrameworkAgreementsService } from '../../services/framework-agreements.service';
 import { Table } from 'primeng/table';
 
 interface Column {
@@ -31,10 +31,10 @@ export class FrameworkAgreementsSummaryComponent implements OnInit {
 
   public selectedColumns!: Column[];
 
-  constructor(private customerService: CustomerService) {}
+  constructor(private FrameworkAgreementsService: FrameworkAgreementsService) {}
 
   ngOnInit() {
-    this.frameworkAgreements = this.customerService.list();
+    this.frameworkAgreements = this.FrameworkAgreementsService.list();
 
     this.selectedColumns = this.cols;
   }

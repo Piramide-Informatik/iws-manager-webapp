@@ -4,7 +4,7 @@ import { FrameworkAgreements } from '../../../Entities/Framework-agreements';
 @Injectable({
   providedIn: 'root'
 })
-export class CustomerDatastoreService {
+export class frameworkDatastoreService {
   constructor() { }
 
   list(): FrameworkAgreements[] {
