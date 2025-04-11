@@ -1,4 +1,13 @@
 <div class="card">
+  <p-toolbar styleClass="mb-1">
+    <ng-template #start>
+        <label for="SearchCustomer">Kunde</label>
+        <p-iconfield class="px-4">
+            <p-inputicon styleClass="pi pi-search px-4" />
+            <input pInputText type="text" placeholder="Suche nach Kunden" />
+        </p-iconfield>
+    </ng-template>
+</p-toolbar>
   <p-table
     #dt2
     [value]="frameworkAgreements"
