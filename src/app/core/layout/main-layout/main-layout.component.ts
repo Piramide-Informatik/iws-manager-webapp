@@ -121,7 +121,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           },
           {
             label: this.translate.instant('SIDEBAR.SUBCONTRACTS'),
-            routerLink: ['/admin/permissions'],
+            routerLink: ['/subcontracts'],
           },
         ];
         break;
