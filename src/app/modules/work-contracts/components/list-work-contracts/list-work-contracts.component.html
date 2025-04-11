@@ -1,374 +1,144 @@
 <div class="card">
   <p-toast />
-
-  <div style="overflow-x: auto; width: 99%">
-    <p-table
-      #dt
-      [value]="contracts"
-      [loading]="loading"
-      stripedRows
-      [tableStyle]="{ 'min-width': '10rem' }"
-      [rows]="10"
-      [columns]="cols"
-      [paginator]="true"
-      scrollable="true"
-      scrollHeight="800px"
-      selectionMode="multiple"
-      [(selection)]="selectedProducts"
-      [rowHover]="true"
-      dataKey="employeeId"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [showCurrentPageReport]="true"
-    >
-      <ng-template #caption>
-        <div class="flex items-center justify-center title-container">
-          <h5 class="m-0">Work Contracts</h5>
-        </div>
-        <!-- <div class="flex justify-start">
-          <p-iconfield>
-            <p-inputicon styleClass="pi pi-search"></p-inputicon>
-            <input
-              pInputText
-              type="text"
-              (input)="onInputChange($event)"
-              placeholder="Search..."
-            />
-          </p-iconfield>
-        </div> -->
-      </ng-template>
-
-      <ng-template #header>
-        <tr>
-          <th style="min-width: 1rem"></th>
-          <th style="min-width: 1rem">
-            <p-tableHeaderCheckbox />
-          </th>
-          <th
-            pSortableColumn="employeeId"
-            style="min-width: 6rem; text-align: center"
-          >
-            Employee ID <p-sortIcon field="employeeId" />
-          </th>
-          <th
-            pSortableColumn="firstName"
-            style="min-width: 6rem; text-align: center"
-          >
-            First Name <p-sortIcon field="firstName" />
-          </th>
-          <th
-            pSortableColumn="lastName"
-            style="min-width: 6rem; text-align: center"
-          >
-            Last Name <p-sortIcon field="lastName" />
-          </th>
-          <th
-            pSortableColumn="date"
-            style="min-width: 6rem; text-align: center"
-          >
-            Date <p-sortIcon field="date" />
-          </th>
-          <th
-            pSortableColumn="salary"
-            style="min-width: 6rem; text-align: center"
-          >
-            Salary <p-sortIcon field="salary" />
-          </th>
-          <th
-            pSortableColumn="weeklyHours"
-            style="min-width: 6rem; text-align: center"
-          >
-            Weekly Hours <p-sortIcon field="weeklyHours" />
-          </th>
-          <th
-            pSortableColumn="abbreviation"
-            style="min-width: 6rem; text-align: center"
-          >
-            Abbreviation <p-sortIcon field="abbreviation" />
-          </th>
-          <th
-            pSortableColumn="maxHrsMonth"
-            style="min-width: 6rem; text-align: center"
-          >
-            Max Hrs/Month <p-sortIcon field="maxHrsMonth" />
-          </th>
-          <th
-            pSortableColumn="maxHrsDay"
-            style="min-width: 6rem; text-align: center"
-          >
-            Max Hrs/Day <p-sortIcon field="maxHrsDay" />
-          </th>
-          <th
-            pSortableColumn="hourlyRate"
-            style="min-width: 6rem; text-align: center"
-          >
-            Hourly Rate <p-sortIcon field="hourlyRate" />
-          </th>
-          <th
-            pSortableColumn="noteLine"
-            style="min-width: 6rem; text-align: center"
-          >
-            Note Line <p-sortIcon field="noteLine" />
-          </th>
-        </tr>
-        <tr>
-          <th
-            *ngFor="
-              let field of [
-                '',
-                '',
-                'employeeId',
-                'firstName',
-                'lastName',
-                'date',
-                'salary',
-                'weeklyHours',
-                'maxHrsDay',
-                'maxHrsMonth',
-                'abbreviation',
-                'hourlyRate',
-                'noteLine'
-              ]
-            "
-          >
-            <ng-container *ngIf="field; else emptyCell">
-              <input
-                pInputText
-                type="text"
-                (input)="onInputChange($event, field)"
-                [placeholder]="'Search ' + field"
-              />
-            </ng-container>
-            <ng-template #emptyCell></ng-template>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-currentContract let-i="rowIndex">
-        <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-          <td>
-            <div class="flex items-center justify-center gap-2">
-              <button
-                pButton
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-info"
-                (click)="editProduct(currentContract)"
-              ></button>
-              <button
-                pButton
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-danger"
-                (click)="deleteProduct(currentContract)"
-              ></button>
-            </div>
-          </td>
-          <td style="width: 1rem">
-            <p-tableCheckbox [value]="currentContract" />
-          </td>
-          <td style="text-align: center">{{ currentContract.employeeId }}</td>
-          <td style="text-align: center">{{ currentContract.firstName }}</td>
-          <td style="text-align: center">{{ currentContract.lastName }}</td>
-          <td style="text-align: center">{{ currentContract.date }}</td>
-          <td style="text-align: center">
-            {{ currentContract.salary | currency : "USD" }}
-          </td>
-          <td style="text-align: center">{{ currentContract.weeklyHours }}</td>
-          <td style="text-align: center">{{ currentContract.abbreviation }}</td>
-          <td style="text-align: center">{{ currentContract.maxHrsMonth }}</td>
-          <td style="text-align: center">{{ currentContract.maxHrsDay }}</td>
-          <td style="text-align: center">
-            {{ currentContract.hourlyRate | currency : "USD" }}
-          </td>
-          <td style="text-align: center">{{ currentContract.noteLine }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <p-toolbar styleClass="mb-6">
-      <ng-template #start>
-        <p-button
-          label="New"
-          icon="pi pi-plus"
-          class="mr-2 blue-button"
-          (onClick)="openNew()"
-        />
-        <p-button
-          severity="danger"
-          label="Delete"
-          icon="pi pi-trash"
-          outlined
-          (onClick)="deleteSelectedProducts()"
-          [disabled]="!selectedProducts || !selectedProducts.length"
-        />
-      </ng-template>
-
-      <ng-template #end>
-        <p-fileUpload
-          mode="basic"
-          accept="image/*"
-          [maxFileSize]="1000000"
-          label="Import"
-          chooseLabel="Import"
-          auto
-          customUpload
-          class="mr-2 inline-block"
-          [chooseButtonProps]="{ severity: 'secondary' }"
-        />
-        <p-button
-          label="Export"
-          icon="pi pi-upload"
-          severity="secondary"
-          (onClick)="exportCSV()"
-        />
-      </ng-template>
-    </p-toolbar>
+  <div class="flex px-4 py-3 align-items-center">
+    <label for="SearchCustomer">Kunde</label>
+    <p-iconfield class="px-4">
+      <p-inputicon styleClass="pi pi-search px-4" />
+      <input pInputText type="text" placeholder="" [(ngModel)]="customer" />
+    </p-iconfield>
   </div>
-  <p-dialog
-    [(visible)]="productDialog"
-    [style]="{ width: '1100px' }"
-    header="Product Details"
-    [modal]="true"
-  >
+  <p-table #dt2 [value]="contracts" dataKey="id" [rows]="10" [columns]="selectedColumns"
+    [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+    showGridlines [resizableColumns]="true" columnResizeMode="expand" [scrollable]="true" scrollHeight="60vh"
+    [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}">
+    <ng-template #caption>
+      <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+        selectedItemsLabel="{0} columns selected"
+        [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" placeholder="Choose Columns" />
+    </ng-template>
+    <ng-template #header let-columns>
+      <tr>
+
+        <th></th>
+
+        <th *ngFor="let col of columns; let i = index">
+          <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+            (input)="applyFilter($event, col.field)" />
+        </th>
+      </tr>
+      <tr>
+
+        <th class="thead-bg-blue"></th>
+
+        <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
+          col.header }} <p-sortIcon [field]="col.field" />
+        </th>
+
+      </tr>
+
+    </ng-template>
+    <ng-template #body let-customer let-i="rowIndex" let-columns="columns">
+      <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+        <td>
+          <div class="flex items-center justify-center gap-2">
+            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
+              [routerLink]="['', customer.id]"></button>
+            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
+              (click)="deleteWorkContract(customer.id)"></button>
+          </div>
+        </td>
+        <td *ngFor="let col of columns">{{ customer[col.field] }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="7">
+          <p-message severity="info">No customers found.</p-message>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-toolbar>
+
+    <ng-template  #start>
+      <p-button label="Neu" icon="pi pi-plus" routerLink="" />
+      
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="importEmployContracts" chooseLabel="Arbeitsverträge importieren" auto
+        customUpload class="mr-2 inline-block"  />
+    </ng-template>
+
+    <ng-template #end>
+      
+<!--     <p-button label="Export" icon="pi pi-upload" (onClick)="exportCSV()" />--> 
+    </ng-template>
+  </p-toolbar>
+
+  <!---
+  <p-dialog [(visible)]="productDialog" [style]="{ width: '1100px' }" header="Product Details" [modal]="true">
     <ng-template #content>
       <div class="custom-dialog-content">
         <div class="flex flex-col gap-6">
           <div class="grid grid-cols-1 gap-4">
             <div>
-              <label for="employeeId" class="block font-bold mb-3"
-                >Employee ID</label
-              >
-              <p-inputnumber
-                id="employeeId"
-                [(ngModel)]="currentContract.employeeId"
-                [min]="1"
-                required
-                fluid
-              />
+              <label for="employeeId" class="block font-bold mb-3">Employee ID</label>
+              <p-inputnumber id="employeeId" [(ngModel)]="currentContract.employeeId" [min]="1" required fluid />
             </div>
 
             <div>
-              <label for="firstName" class="block font-bold mb-3"
-                >First Name</label
-              >
-              <input
-                type="text"
-                pInputText
-                id="firstName"
-                [(ngModel)]="currentContract.firstName"
-                required
-              />
+              <label for="firstName" class="block font-bold mb-3">First Name</label>
+              <input type="text" pInputText id="firstName" [(ngModel)]="currentContract.firstName" required />
             </div>
 
             <div>
-              <label for="lastName" class="block font-bold mb-3"
-                >Last Name</label
-              >
-              <input
-                type="text"
-                pInputText
-                id="lastName"
-                [(ngModel)]="currentContract.lastName"
-                required
-              />
+              <label for="lastName" class="block font-bold mb-3">Last Name</label>
+              <input type="text" pInputText id="lastName" [(ngModel)]="currentContract.lastName" required />
             </div>
 
             <div>
               <label for="date" class="block font-bold mb-3">Date</label>
 
-              <p-datepicker
-                id="date"
-                [(ngModel)]="currentContract.date"
-                dateFormat="yy-mm-dd"
-                required
-                showIcon
-                [appendTo]="'body'"
-              />
+              <p-datepicker id="date" [(ngModel)]="currentContract.startDate" dateFormat="yy-mm-dd" required showIcon
+                [appendTo]="'body'" />
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div class="col-span-6">
               <label for="salary" class="block font-bold mb-3">Salary</label>
-              <p-inputnumber
-                id="salary"
-                [(ngModel)]="currentContract.salary"
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-                required
-                fluid
-              />
+              <p-inputnumber id="salary" [(ngModel)]="currentContract.salaryPerMonth" mode="currency" currency="USD"
+                locale="en-US" required fluid />
             </div>
             <div class="col-span-6">
-              <label for="hourlyRate" class="block font-bold mb-3"
-                >Hourly Rate</label
-              >
-              <p-inputnumber
-                id="hourlyRate"
-                [(ngModel)]="currentContract.hourlyRate"
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-                required
-                fluid
-              />
+              <label for="hourlyRate" class="block font-bold mb-3">Hourly Rate</label>
+              <p-inputnumber id="hourlyRate" [(ngModel)]="currentContract.hourlyRate" mode="currency" currency="USD"
+                locale="en-US" required fluid />
             </div>
 
             <div class="col-span-6">
-              <label for="weeklyHours" class="block font-bold mb-3"
-                >Weekly Hours</label
-              >
-              <p-inputnumber
-                id="weeklyHours"
-                [(ngModel)]="currentContract.weeklyHours"
-                required
-                fluid
-              />
+              <label for="weeklyHours" class="block font-bold mb-3">Weekly Hours</label>
+              <p-inputnumber id="weeklyHours" [(ngModel)]="currentContract.weeklyHours" required fluid />
             </div>
 
             <div class="col-span-6">
-              <label for="maxHrsDay" class="block font-bold mb-3"
-                >Max Hrs/Day</label
-              >
-              <p-inputnumber
-                id="maxHrsDay"
-                [(ngModel)]="currentContract.maxHrsDay"
-                required
-                fluid
-              />
+              <label for="maxHrsDay" class="block font-bold mb-3">Max Hrs/Day</label>
+              <p-inputnumber id="maxHrsDay" [(ngModel)]="currentContract.maxHrsPerDay" required fluid />
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div class="col-span-6">
-              <label for="maxHrsMonth" class="block font-bold mb-3"
-                >Max Hrs/Month</label
-              >
-              <p-inputnumber
-                id="maxHrsMonth"
-                [(ngModel)]="currentContract.maxHrsMonth"
-                required
-                fluid
-              />
+              <label for="maxHrsMonth" class="block font-bold mb-3">Max Hrs/Month</label>
+              <p-inputnumber id="maxHrsMonth" [(ngModel)]="currentContract.maxHrspPerMonth" required fluid />
             </div>
             <div class="col-span-6">
-              <label for="abbreviation" class="block font-bold mb-3"
-                >Abbreviation</label
-              >
-              <input
-                type="text"
-                pInputText
-                id="abbreviation"
-                [(ngModel)]="currentContract.abbreviation"
-                required
-              />
+              <label for="abbreviation" class="block font-bold mb-3">Abbreviation</label>
+              <input type="text" pInputText id="abbreviation" [(ngModel)]="currentContract.abbreviation" required />
             </div>
 
             <div>
               <label for="noteLine" class="block font-bold mb-3">Notes</label>
-              <textarea
-                id="noteLine"
-                pTextarea
-                [(ngModel)]="currentContract.noteLine"
-                rows="3"
-                cols="20"
-              ></textarea>
+              <textarea id="noteLine" pTextarea [(ngModel)]="currentContract.noteLine" rows="3" cols="20"></textarea>
             </div>
           </div>
         </div>
@@ -380,6 +150,6 @@
       <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
     </ng-template>
   </p-dialog>
-
+-->
   <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

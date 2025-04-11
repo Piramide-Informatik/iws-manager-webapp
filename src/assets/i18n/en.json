@@ -1,5 +1,6 @@
 {
   "MENU": {
+    "DASHBOARD": "Dashboard",
     "CUSTOMERS": "Customers",
     "PROJECTS": "Projects",
     "INVOICING": "Invoicing",

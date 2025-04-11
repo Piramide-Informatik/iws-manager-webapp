@@ -134,8 +134,8 @@ export class DetailCustomerComponent implements OnInit {
     //Init colums
     this.cols = [
       { field: 'name', header: 'Name' },
-      { field: 'function', header: 'Function' },
-      { field: 'right', header: 'Right' },
+      { field: 'function', header: 'Funktion' },
+      { field: 'right', header: 'Rech' },
     ];
 
     this.selectedColumns = this.cols;

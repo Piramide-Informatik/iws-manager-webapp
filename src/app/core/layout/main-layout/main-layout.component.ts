@@ -16,18 +16,20 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   currentSidebarItems: MenuItem[] = [];
   mainMenuItems: MenuItem[] = [];
+
   private langSubscription!: Subscription;
 
   constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {
     this.loadMainMenuItems();
-    this.loadSidebarItems('admin');
+    this.loadSidebarItems('customers');
+
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadMainMenuItems();
 
-      this.loadSidebarItems('admin');
+      this.loadSidebarItems('customers');
     });
   }
 
@@ -40,9 +42,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   loadMainMenuItems(): void {
     this.mainMenuItems = [
       {
+        label: this.translate.instant('MENU.DASHBOARD'),
+        icon: 'pi pi-cog',
+        command: () => this.loadSidebarItems('dashboard'),
+      },
+      {
         label: this.translate.instant('MENU.CUSTOMERS'),
         icon: 'pi pi-cog',
-        command: () => this.loadSidebarItems('admin'),
+        command: () => this.loadSidebarItems('customers'),
       },
       {
         label: this.translate.instant('MENU.PROJECTS'),
@@ -81,7 +88,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   loadSidebarItems(menu: string): void {
     switch (menu) {
-      case 'admin':
+      case 'customers':
         this.currentSidebarItems = [
           {
             label: this.translate.instant('SIDEBAR.CUSTOMER'),
@@ -109,11 +116,11 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           },
           {
             label: this.translate.instant('SIDEBAR.INVOICES'),
-            routerLink: ['/admin/permissions'],
+            routerLink: ['/invoices'],
           },
           {
             label: this.translate.instant('SIDEBAR.FRAMEWORK_AGREEMENTS'),
-            routerLink: ['/admin/roles'],
+            routerLink: ['/framework-agreements'],
           },
           {
             label: this.translate.instant('SIDEBAR.CONTRACTORS'),
@@ -121,7 +128,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           },
           {
             label: this.translate.instant('SIDEBAR.SUBCONTRACTS'),
-            routerLink: ['/admin/permissions'],
+            routerLink: ['/subcontracts'],
           },
         ];
         break;
@@ -172,8 +179,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           },
         ];
         break;
-      default:
-        this.currentSidebarItems = [];
     }
     this.mainMenuVisible = false;
   }

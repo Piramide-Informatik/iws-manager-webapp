@@ -33,13 +33,15 @@ export class ProjectsOverviewComponent implements OnInit {
   public selectedFilterColumns!: Column[];
 
   public projects!: Project[];
+  
+  public customer!: string;
 
   private langSubscription!: Subscription;
 
   @ViewChild('dt2') dt2!: Table;
 
   constructor(
-    private fb: FormBuilder,
+  
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
     private translate: TranslateService
@@ -49,6 +51,8 @@ export class ProjectsOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
+
+    this.customer = 'Valentin Laime';
 
     this.projects = this.projectService.list();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {

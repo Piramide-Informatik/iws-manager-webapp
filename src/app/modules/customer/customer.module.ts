@@ -16,6 +16,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
+import { ToolbarModule } from 'primeng/toolbar';
 
 
 //Componentes
@@ -42,6 +43,7 @@ import { ListCustomersComponent } from './components/list-customers/list-custome
     SelectModule,
     TableModule,
     TextareaModule,
+    ToolbarModule
   ]
 })
 export class CustomerModule {}

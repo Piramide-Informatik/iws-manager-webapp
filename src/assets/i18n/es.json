@@ -1,5 +1,6 @@
 {
   "MENU": {
+    "DASHBOARD": "Panel",
     "CUSTOMERS": "Clientes",
     "PROJECTS": "Proyectos",
     "INVOICING": "Facturación",

@@ -39,13 +39,17 @@ body {
     width: 20vw;
 }
 
+//Button  +New
 button.p-ripple.p-button.p-component {
     height: 27px;
+    background-color: #267bbf;
+    border: #267bbf;
 }
 
 //Estilo para sidebar activo
 .active {
     background-color: #267bbf;
+    border-color: #267bbf;
 }
 
 // Estilos para las filas de una tabla

@@ -9,8 +9,11 @@ import { ReceivablesRoutingModule } from './receivables-routing.module';
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
 
 //Components
@@ -24,13 +27,16 @@ import { ListDemandsComponent } from './components/list-demands/list-demands.com
   ],
   imports: [
     ButtonModule,
+    IconFieldModule,
+    InputIconModule,
     CommonModule,
     FormsModule,
     InputTextModule,
     MessageModule,
     MultiSelectModule,
     ReceivablesRoutingModule,
-    TableModule
+    TableModule,
+    ToolbarModule
   ]
 })
 export class ReceivablesModule { }

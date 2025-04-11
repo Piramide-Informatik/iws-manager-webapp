@@ -6,6 +6,12 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { Salutation } from '../../models/salutation';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+interface Column {
+  field: string,
+  header: string
+}
 
 @Component({
   selector: 'app-employee-details',
@@ -16,6 +22,10 @@ import { QualificationFZ } from '../../models/qualification-fz';
   providers: [MessageService, EmployeeContractService]
 })
 export class EmployeeDetailsComponent implements OnInit {
+
+  public cols!: Column[];
+
+  public selectedColumns!: Column[];
 
   titles: Title[] | undefined;
 
@@ -28,6 +38,8 @@ export class EmployeeDetailsComponent implements OnInit {
   statuses!: SelectItem[];
 
   clonedEmployeeContracts: { [s: string]: EmployeeContract } = {};
+
+  orderForm!: FormGroup;
 
   @Input() customerName!: string | undefined;
   @Input() employeeNumber!: string | undefined;
@@ -45,10 +57,10 @@ export class EmployeeDetailsComponent implements OnInit {
   searchText: string = '';
   nextId: number = 1;
 
-  constructor(private employeeContractService: EmployeeContractService, private messageService: MessageService, 
-    private router:Router, private activatedRoute:ActivatedRoute) { 
-      //console.log(this.router.getCurrentNavigation().extras.state);
-    }
+  constructor(private employeeContractService: EmployeeContractService, private messageService: MessageService,
+    private router: Router, private activatedRoute: ActivatedRoute) {
+    //console.log(this.router.getCurrentNavigation().extras.state);
+  }
 
   ngOnInit(): void {
 
@@ -65,11 +77,28 @@ export class EmployeeDetailsComponent implements OnInit {
     this.coentrepreneurSinceDate = history.state.employee.coEntrepreneurSince;
     this.qualificationFzId = history.state.employee.qualificationFz;
     this.qualificationKMUi = history.state.employee.qualificationKmui;
-    
+
     this.employeeContractService.getEmployeeContractsData().then((data) => {
       this.employeeContracts = data;
     });
 
+    /** 
+    this.orderForm = new FormGroup({
+      customerName: new FormControl('', [Validators.required]),
+      employeeNumber: new FormControl('', [Validators.required]),
+      salutationId: new FormControl('', [Validators.required]),
+      titleId: new FormControl('', [Validators.required]),
+      employeeFirstName: new FormControl('', [Validators.required]),
+      employeeLastName: new FormControl('', [Validators.required]),
+      employeeEmail: new FormControl('', [Validators.required]),
+      generalManagerSinceDate: new FormControl('', [Validators.required]),
+      shareholderSinceDate: new FormControl('', [Validators.required]),
+      solePropietorSinceDate: new FormControl('', [Validators.required]),
+      coentrepreneurSinceDate: new FormControl('', [Validators.required]),
+      qualificationFzId: new FormControl('', [Validators.required]),
+      qualificationKMUi: new FormControl('', [Validators.required])
+    });
+*/
     this.salutations = [
       { id: 1, name: 'Frau', description: 'Men' },
       { id: 2, name: 'Herr', description: 'Women' },
@@ -90,24 +119,22 @@ export class EmployeeDetailsComponent implements OnInit {
       { id: 3, name: 'Medium', description: 'title' }
 
     ];
+
+    //Init colums
+    this.cols = [
+      { field: 'startDate', header: 'Datum' },
+      { field: 'salaryPerMonth', header: 'Gehalt' },
+      { field: 'hoursPerWeek', header: 'WoStd' },
+      { field: 'workShortTime', header: 'Kurz' },
+      { field: 'maxHoursPerMonth', header: 'Max. Std Mon' },
+      { field: 'maxHoursPerDay', header: 'Max. Std Tag' },
+      { field: 'hourlyRate', header: 'Std.Satz' },
+      { field: 'specialPayment', header: 'JaZoSa' }
+    ];
+
+    this.selectedColumns = this.cols;
   }
 
-  onRowEditInit(employeeContract: EmployeeContract) {
-    this.clonedEmployeeContracts[employeeContract.id as string] = { ...employeeContract };
-  }
 
-  onRowEditSave(employeeContract: EmployeeContract) {
-    if (employeeContract) {
-      delete this.clonedEmployeeContracts[employeeContract.id as string];
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Contract is updated' });
-    } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Contract' });
-    }
-  }
-
-  onRowEditCancel(product: EmployeeContract, index: number) {
-    this.employeeContracts[index] = this.clonedEmployeeContracts[product.id as string];
-    delete this.clonedEmployeeContracts[product.id as string];
-  }
 
 }
