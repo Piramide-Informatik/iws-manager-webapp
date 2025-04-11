@@ -14,6 +14,8 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { LayoutModule } from './core/layout/layout.module';
 import { ProjectModule } from './modules/projects/project.module';
+import { FrameworkAgreementsModule } from './modules/framework-agreements/framework-agreements.module';
+import { SubcontractsModule } from './modules/subcontracts/subcontracts.module';
 import { WorkContractsModule } from './modules/work-contracts/work-contracts.module';
 
 //Prime NG
@@ -26,6 +28,7 @@ import Lara from '@primeng/themes/lara';
 //Components
 import { AppComponent } from './app.component';
 import { OrdersModule } from './modules/orders/orders.module';
+import { ContractorModule } from './modules/contractor/contractor.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -40,13 +43,19 @@ export function HttpLoaderFactory(http: HttpClient) {
     ButtonModule,
     CustomerModule,
     EmployeeModule,
+    WorkContractsModule,
+    ProjectModule,
+    FrameworkAgreementsModule,
+    MatButtonModule,
     HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
     LayoutModule,
     MatButtonModule,
     OrdersModule,
     OverlayPanelModule,
     ProjectModule,
+    SubcontractsModule,
     WorkContractsModule,
+    ContractorModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

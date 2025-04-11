@@ -13,6 +13,9 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
 import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { FieldsetModule } from 'primeng/fieldset';
 
 
 //Components
@@ -40,6 +43,9 @@ import { IwsProvisionComponent } from './components/order-detail/iws-provision/i
     OrderRountingModule,
     ReactiveFormsModule,
     TableModule,
+    SelectModule,
+    MultiSelectModule,
+    FieldsetModule
   ],
 })
 export class OrdersModule { }

@@ -24,30 +24,24 @@ interface ExportColumn {
   styleUrl: './list-work-contracts.component.scss',
 })
 export class ListWorkContractsComponent implements OnInit {
+
+  public cols!: Column[];
+
+  public selectedColumns!: Column[];
+
+  public customer!: string;
   productDialog: boolean = false;
   currentContract!: WorkContract;
-  contracts: WorkContract[] = [];
+  public contracts: WorkContract[] = [];
   selectedProducts: WorkContract[] | null | undefined;
   submitted: boolean = true;
   searchTerm: string = '';
   statuses!: any[];
 
-  @ViewChild('dt') dt!: Table;
+  @ViewChild('dt2') dt2!: Table;
 
   loading: boolean = true;
-  cols: Column[] = [
-    { field: 'employeeId', header: 'Employee ID' },
-    { field: 'firstName', header: 'First Name' },
-    { field: 'lastName', header: 'Last Name' },
-    { field: 'date', header: 'Date' },
-    { field: 'salary', header: 'Salary' },
-    { field: 'weeklyHours', header: 'Weekly Hours' },
-    { field: 'maxHrsDay', header: 'Max Hrs/Day' },
-    { field: 'maxHrsMonth', header: 'Max Hrs/Month' },
-    { field: 'abbreviation', header: 'Abbreviation' },
-    { field: 'hourlyRate', header: 'Hourly Rate' },
-    { field: 'noteLine', header: 'Note Line' },
-  ];
+
 
   exportColumns!: ExportColumn[];
   constructor(
@@ -55,27 +49,46 @@ export class ListWorkContractsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.workContractsService
-      .list()
-      .then((data) => {
-        console.log('Datos cargados:', data);
-        this.contracts = data || [];
-        this.loading = false;
+    this.selectedColumns = this.cols;
+    this.customer = 'Valentin Laime';
 
-        this.cd.detectChanges();
-      })
-      .catch((error) => {
-        console.error('Error al cargar los contratos:', error);
-      });
+    this.contracts = this.workContractsService.list();
+
+    this.cols = [
+      { field: 'employeeId', header: 'Pers.Nr.' },
+      { field: 'firstName', header: 'Vorname' },
+      { field: 'lastName', header: 'Nachname' },
+      { field: 'startDate', header: 'Datum' },
+      { field: 'salaryPerMonth', header: 'Gehalt' },
+      { field: 'weeklyHours', header: 'WoStd' },
+      { field: 'worksShortTime', header: 'Kurz' },
+      { field: 'specialPayment', header: 'Max.Std Mon' },
+      { field: 'maxHrspPerMonth', header: 'Max Std Tag' },
+      { field: 'maxHrsPerDay', header: 'Std.Satz' },
+      { field: 'hourlyRate', header: 'JaSoZa' }
+    ];
+
+    this.selectedColumns = this.cols;
+
+
   }
+
+
+  applyFilter(event: Event, field: string) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      this.dt2.filter(inputElement.value, field, 'contains');
+    }
+  }
+
   exportCSV() {
     if (this.contracts && this.contracts.length) {
       setTimeout(() => {
-        if (this.dt && this.dt.exportCSV) {
-          this.dt.exportCSV();
+        if (this.dt2 && this.dt2.exportCSV) {
+          this.dt2.exportCSV();
         } else {
           console.error('La tabla no tiene el método exportCSV disponible');
         }
@@ -84,7 +97,8 @@ export class ListWorkContractsComponent implements OnInit {
       console.error('No hay datos para exportar');
     }
   }
-  loadWorkContracts() {
+
+  /**loadWorkContracts() {
     this.workContractsService
       .list()
       .then((data) => {
@@ -96,6 +110,7 @@ export class ListWorkContractsComponent implements OnInit {
         console.error('Error al cargar los contratos:', error);
       });
   }
+  /** 
   openNew() {
     this.currentContract = {
       employeeId: 0,
@@ -113,8 +128,8 @@ export class ListWorkContractsComponent implements OnInit {
     this.submitted = false;
     this.productDialog = true;
   }
-
-  editProduct(currentContract: WorkContract) {
+*/
+  editWorkContract(currentContract: WorkContract) {
     this.currentContract = { ...currentContract };
     this.productDialog = true;
   }
@@ -144,7 +159,7 @@ export class ListWorkContractsComponent implements OnInit {
     this.submitted = false;
     this.currentContract;
   }
-  deleteProduct(product: WorkContract) {
+  deleteWorkContract(product: WorkContract) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + product.firstName + '?',
       header: 'Confirm',
@@ -194,7 +209,7 @@ export class ListWorkContractsComponent implements OnInit {
   onInputChange(event: Event, field: string): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
-      this.dt.filter(inputElement.value, field, 'contains');
+      this.dt2.filter(inputElement.value, field, 'contains');
     }
   }
 
@@ -205,13 +220,13 @@ export class ListWorkContractsComponent implements OnInit {
       const productAction = this.currentContract.employeeId
         ? this.workContractsService.updateProduct(this.currentContract)
         : this.workContractsService.addProduct({
-            ...this.currentContract,
-            employeeId:
-              this.currentContract.employeeId || this.createUniqueId(),
-          });
+          ...this.currentContract,
+          employeeId:
+            this.currentContract.employeeId || this.createUniqueId(),
+        });
 
       productAction.then(() => {
-        this.loadProducts();
+       // this.loadProducts();
 
         this.cd.detectChanges();
 
@@ -231,12 +246,13 @@ export class ListWorkContractsComponent implements OnInit {
     }
   }
 
+  /** 
   loadProducts() {
     this.workContractsService.list().then((data) => {
       this.contracts = data;
     });
   }
-
+*/
   resetProductDialog() {
     this.productDialog = false;
     this.currentContract = {} as WorkContract;

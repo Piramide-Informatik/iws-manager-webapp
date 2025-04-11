@@ -2,12 +2,12 @@ export interface WorkContract {
   employeeId: number;
   firstName: string;
   lastName: string;
-  date: string;
-  salary: number;
+  startDate: string;
+  salaryPerMonth: number;
   weeklyHours: number;
-  abbreviation: string;
-  maxHrsMonth: number;
-  maxHrsDay: number;
+  worksShortTime: number;
+  specialPayment: number;
+  maxHrspPerMonth: number;
+  maxHrsPerDay: number;
   hourlyRate: number;
-  noteLine: string;
 }

@@ -50,6 +50,28 @@ const routes: Routes = [
           r => r.ReceivablesModule
         ), 
       },
+      {
+        path: 'framework-agreements',
+        loadChildren: () =>
+          import('./modules/framework-agreements/framework-agreements.module').then(
+            (f) => f.FrameworkAgreementsModule
+          ),
+      },
+      { 
+        path: 'contractors', 
+        loadChildren: () => 
+        import('./modules/contractor/contractor-routing.module')
+        .then(
+          c => c.ContractorRoutingModule
+        ), 
+      },
+      {
+        path: 'subcontracts', 
+        loadChildren: () => 
+        import('./modules/subcontracts/subcontracts.module').then(
+          s => s.SubcontractsModule
+        )
+      },
     ],
   },
 ];

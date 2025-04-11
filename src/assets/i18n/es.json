@@ -1,18 +1,19 @@
 {
   "MENU": {
+    "DASHBOARD": "Panel",
     "CUSTOMERS": "Clientes",
     "PROJECTS": "Proyectos",
     "INVOICING": "Facturación",
-    "CONTROLLING": "Control",
+    "CONTROLLING": "Supervisión",
     "MASTER_DATA": "Datos Maestros"
   },
   "SIDEBAR": {
     "CUSTOMER": "Cliente",
     "EMPLOYEES": "Empleados",
-    "EMPLOYMENT_CONTRACTS": "Contratos de Empleo",
+    "EMPLOYMENT_CONTRACTS": "Contratos Laborales",
     "PROJECTS": "Proyectos",
-    "ORDERS": "Órdenes",
-    "CLAIMS": "Reclamos",
+    "ORDERS": "Pedidos",
+    "DEMANDS": "Creditos",
     "INVOICES": "Facturas",
     "FRAMEWORK_AGREEMENTS": "Acuerdos Marco",
     "CONTRACTORS": "Contratistas",

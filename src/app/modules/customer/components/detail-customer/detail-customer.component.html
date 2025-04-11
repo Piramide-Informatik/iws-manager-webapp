@@ -5,7 +5,7 @@
       <div class="md:col-6 lg:col-6 lg:pr-8 md:pr-8">
 
         <div class="field">
-          <label>Customer No.</label>
+          <label>Kunden-Nr.</label>
           <input type="text" pInputText id="InputCustomerNo" formControlName="customerNo"/>
         </div>
 
@@ -19,7 +19,7 @@
 
         <!-- Select country -->
         <div class="field">
-          <label for="country">Country</label>
+          <label for="country">Land</label>
           <p-select formControlName="selectedCountry" 
             id="country"
             [options]="countries"
@@ -58,7 +58,7 @@
         </div>
 
         <div class="field">
-          <label for="">Postal Code / City</label>
+          <label for="">PLZ / Ort</label>
           <div class="postal-city">
             <input type="text" id="postalCode" class="postal" pInputText formControlName="postalCode"/>
             <input type="text" id="city" class="city" pInputText formControlName="city"/>
@@ -66,7 +66,7 @@
         </div>
 
         <div class="field">
-          <label for="">Type of Company</label>
+          <label for="">Unternehmensart</label>
           <p-select formControlName="selectedTypeCompany" 
           id="typeCompany"
           [options]="typesCompany" 
@@ -76,7 +76,7 @@
         </div>
 
         <div class="field">
-          <label for="">Sector</label>
+          <label for="">Wirtschaftszweig</label>
           <p-select formControlName="selectedSector" 
           id="sector"
           [options]="sectors" 
@@ -86,7 +86,7 @@
         </div>
 
         <div class="field">
-          <label for="state">State</label>
+          <label for="state">Bundesland</label>
           <p-select formControlName="selectedState" 
           id="state"
           [options]="states" 
@@ -96,13 +96,13 @@
         </div>
 
         <div class="field relative">
-          <label for="homepage">Homepage</label>
+          <label for="homepage">Webseite</label>
           <input type="text" id="homepage" pInputText formControlName="homepage"/>
           <i class="pi pi-globe" style="color: blue"></i>
         </div>
 
         <div class="field">
-          <label for="phone">Phone</label>
+          <label for="phone">Telefon</label>
           <input type="text" id="phone" pInputText formControlName="phone"/>
         </div>
       </div>
@@ -111,38 +111,38 @@
       <div class="md:col-6 lg:col-6 lg:pl-8 md:pl-8">
         
         <div class="field">
-          <label for="invoiceEmail">Invoice Email</label>
+          <label for="invoiceEmail">Email Rechnung</label>
           <input type="text" id="invoiceEmail" pInputText formControlName="invoiceEmail"/>
         </div>
 
         <div class="field">
-          <label for="weekWorkingHours">Company-wide Weekly Working Hours</label>
+          <label for="weekWorkingHours">Unternehmerische Wochenarbeitszeit</label>
           <input type="text" id="weekWorkingHours" pInputText formControlName="weekWorkingHours"/>
         </div>
 
         <div class="field">
-          <label for="taxNumber">Tax Number</label>
+          <label for="taxNumber">Steuernummer</label>
           <input type="text" id="taxNumber" pInputText formControlName="taxNumber"/>
         </div>
 
         <div class="field">
-          <label for="headcount">Headcount</label>
+          <label for="headcount">Finanzamt</label>
           <input type="number" id="headcount" pInputText formControlName="headcount"/>
         </div>
 
         <div class="field">
-          <label for="maxHoursMonth">Max Hours / Month</label>
+          <label for="maxHoursMonth">Max. Stunden / Monat</label>
           <input type="number" id="maxHoursMonth" pInputText formControlName="maxHoursMonth"/>
         </div>
 
         <div class="field">
-          <label for="maxHoursYear">Max Hours / Year</label>
+          <label for="maxHoursYear">Max. Stunden / Jahr</label>
           <input type="number" id="maxHoursYear" pInputText formControlName="maxHoursYear"/>
         </div>
 
         <p-floatlabel variant="on">
           <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="6" cols="30" style="resize: none" class="w-full"></textarea>
-          <label for="textAreaComment">Comment</label>
+          <label for="textAreaComment">Kommentar</label>
         </p-floatlabel>
 
       </div>
@@ -152,8 +152,8 @@
   <div class="contact-person flex flex-column">
 
     <div class="flex flex-row gap-3 align-items-center my-2">
-      <label>Contact Person</label>
-      <p-button icon="pi pi-plus" label="New" id="new-contact-person" routerLink="/customers/contact"></p-button>
+      <label>Ansprechpartner</label>
+      <p-button icon="pi pi-plus" label="Neu" id="new-contact-person" routerLink="/customers/contact"></p-button>
     </div>
     
     <p-table 
@@ -185,7 +185,7 @@
       <ng-template #header let-columns>
         <tr>
 
-          <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}">Option</th>
+          <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
 
           <th *ngFor="let col of columns; let i = index" 
             [pSortableColumn]="col.field" 
@@ -228,19 +228,16 @@
           ></td>
         </tr>
       </ng-template>
-    </p-table>
-
-    <div class="buttons flex justify-content-center my-2">
-      <p-button label="Save" icon="pi pi-check" class="mx-4" severity="success"></p-button>
-      <p-button label="Delete" icon="pi pi-trash" class="mx-4" severity="danger"></p-button>
-      <p-button 
-        label="Cancel" 
-        icon="pi pi-times" 
-        class="mx-4"
-        severity="secondary"
-        routerLink="/customers"
-      ></p-button>
-     </div>
+    </p-table>  
+    <br>
+    <div class="form-row flex flex-wrap gap-3 justify-content-center">
+      <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check"
+          iconPos="left" />
+      <p-button class="Delete me-2" size="small" label="Löschen" icon="pi pi-trash"
+          iconPos="left" [style]="{ background: '#ef4444' }" />
+      <p-button class="Cancel me-2" size="small" label="Abbrechen" icon="pi pi-times"
+          iconPos="left" [style]="{ background: '#000' }" routerLink="/customers"/>
+  </div>
   </div>
 </div>
 
