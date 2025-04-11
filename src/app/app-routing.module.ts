@@ -50,6 +50,13 @@ const routes: Routes = [
           r => r.ReceivablesModule
         ), 
       },
+      {
+        path: 'framework-agreements',
+        loadChildren: () =>
+          import('./modules/framework-agreements/framework-agreements.module').then(
+            (f) => f.FrameworkAgreementsModule
+          ),
+      },
       { 
         path: 'contractors', 
         loadChildren: () => 
