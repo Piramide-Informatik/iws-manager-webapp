@@ -21,23 +21,23 @@ export class ListDemandsComponent implements OnInit {
   @ViewChild('dt2') dt2!: Table;
 
   public cols: Column[] = [
-    { field: 'idClaim', header: 'Claim No'},
-    { field: 'idOrder', header: 'Order No'},
-    { field: 'orderTitle', header: 'Order'},//Title
-    { field: 'fundingProgram', header: 'Funding Pr.'},
-    { field: 'projectSponsor', header: 'Project Tr.'},
-    { field: 'fundingConcentration', header: 'Funding Co. Camp'},
-    { field: 'projectStart', header: 'Project Start'},
-    { field: 'projectEnd', header: 'Project End'},
-    { field: 'projectCost', header: 'Project Kost'},//falta doc
-    { field: 'abrStart', header: 'Abr. Start'},
-    { field: 'abrEnd', header: 'Abr. End'},
-    { field: 'forNet', header: 'FOR Net'},
-    { field: 'ofSt', header: 'OF St.'},
-    { field: 'zaGross', header: 'ZA Gross'},
-    { field: 'zaReceived', header: 'ZA Received'},
-    { field: 'zaOffen', header: 'ZA Offen'},
-    { field: 'iwsPercent', header: 'IWS %'},
+    { field: 'idClaim', header: 'Ford.-Nr.'},
+    { field: 'idOrder', header: 'Auftr.-Nr.'},
+    { field: 'orderTitle', header: 'Auftrag'},//Title
+    { field: 'fundingProgram', header: 'Förderp'},
+    { field: 'projectSponsor', header: 'Projekttr.'},
+    { field: 'fundingConcentration', header: 'Förder-KZ'},
+    { field: 'projectStart', header: 'Proj.Start'},
+    { field: 'projectEnd', header: 'Proj.Ende'},
+    { field: 'projectCost', header: 'Proj.Koste'},//falta doc
+    { field: 'abrStart', header: 'Abr.Start'},
+    { field: 'abrEnd', header: 'Abr.Ende'},
+    { field: 'forNet', header: 'Zuwendunge'},
+    { field: 'ofSt', header: 'ZA netto.'},
+    { field: 'zaGross', header: 'ZA MwSt. ^v.'},
+    { field: 'zaReceived', header: 'ZA brutto.'},
+    { field: 'zaOffen', header: 'ZA erhalten.'},
+    { field: 'iwsPercent', header: 'IWS-%'},
   ];
 
   public selectedColumns!: Column[];
@@ -47,7 +47,7 @@ export class ListDemandsComponent implements OnInit {
   ngOnInit(): void {
     this.selectedColumns = this.cols;
 
-    this.customer = 'Customer'
+    this.customer = 'Valentin Laime'
 
     this.demands = [
       {

@@ -50,12 +50,20 @@ const routes: Routes = [
           r => r.ReceivablesModule
         ), 
       },
+      { 
+        path: 'contractors', 
+        loadChildren: () => 
+        import('./modules/contractor/contractor-routing.module')
+        .then(
+          c => c.ContractorRoutingModule
+        ), 
+      },
       {
         path: 'subcontracts', 
         loadChildren: () => 
         import('./modules/subcontracts/subcontracts.module').then(
           s => s.SubcontractsModule
-        ), 
+        )
       },
     ],
   },

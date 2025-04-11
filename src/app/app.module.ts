@@ -27,6 +27,7 @@ import Lara from '@primeng/themes/lara';
 //Components
 import { AppComponent } from './app.component';
 import { OrdersModule } from './modules/orders/orders.module';
+import { ContractorModule } from './modules/contractor/contractor.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,6 +50,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectModule,
     SubcontractsModule,
     WorkContractsModule,
+    ContractorModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

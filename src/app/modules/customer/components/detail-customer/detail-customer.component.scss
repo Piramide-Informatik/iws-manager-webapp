@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .field {
   display: flex;
   flex-direction: row;
@@ -47,12 +49,12 @@ p-select {
 
 //Styles table head
 .thead {
-  background: #007fff;
+  background: $primary-color;
   color: #fff;
   min-width: 6.25rem;//=100px
 
   &:hover {
-    background: #abcbeb;
+    background: $accent-color;
     color: #1E293B
   }
 }

@@ -1,8 +1,9 @@
 {
   "MENU": {
+    "DASHBOARD": "Dash-Board",
     "CUSTOMERS": "Kunden",
     "PROJECTS": "Projekte",
-    "INVOICING": "Abrechnung",
+    "INVOICING": "Rechnungsstellung",
     "CONTROLLING": "Controlling",
     "MASTER_DATA": "Stammdaten"
   },
@@ -11,17 +12,12 @@
     "EMPLOYEES": "Mitarbeiter",
     "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
     "PROJECTS": "Projekte",
-    "ORDERS": "Bestellungen",
-    "CLAIMS": "Reklamationen",
+    "ORDERS": "Aufträge",
+    "DEMANDS": "Forderungen",
     "INVOICES": "Rechnungen",
     "FRAMEWORK_AGREEMENTS": "Rahmenverträge",
     "CONTRACTORS": "Auftragnehmer",
-    "SUBCONTRACTS": "Teilaufträge",
-    "GOODS_ENTRY": "Wareneingang",
-    "STOCK_CONTROL": "Lagerbestandskontrolle",
-    "PRODUCTS": "Produkte",
-    "SALES": "Vertrieb",
-    "INVENTORY": "Inventar"
+    "SUBCONTRACTS": "Unteraufträge"
   },
   "PROJECTS-TABLE": {
     "PROJECT_LABEL": "Projekt",

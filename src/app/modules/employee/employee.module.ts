@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
+import { ReactiveFormsModule } from '@angular/forms';
 
 //Modulos
 import { EmployeeRountingModule } from "./employee-routing.module";
@@ -12,6 +13,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -29,6 +31,7 @@ import { EmployeeDetailsComponent } from "./components/employee-details/employee
     ],
     imports: [
         ButtonModule,
+        MultiSelectModule,
         CommonModule,
         DatePickerModule,
         EmployeeRountingModule,
@@ -39,7 +42,8 @@ import { EmployeeDetailsComponent } from "./components/employee-details/employee
         SelectModule,
         TableModule,
         ToastModule,
-        ToolbarModule
+        ToolbarModule,
+        ReactiveFormsModule
     ]
 
 })

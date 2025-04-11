@@ -1,15 +1,14 @@
-<section class="employeeOverview">
+<div class="card">
     <p-toast />
-    <p-toolbar styleClass="mb-1">
-        <ng-template #start>
-            <label for="SearchCustomer">Search Customer: </label>
-            <p-iconfield class="px-4">
-                <p-inputicon styleClass="pi pi-search px-4" />
-                <input pInputText type="text" (input)="onInputChange($event)" placeholder="Search Customer" />
-            </p-iconfield>
-        </ng-template>
-    </p-toolbar>
-    <p-toolbar styleClass="mb-3">
+    <div class="flex px-4 py-3 align-items-center">
+        <label for="SearchCustomer">Kunde</label>
+        <p-iconfield class="px-4">
+            <p-inputicon styleClass="pi pi-search px-4" />
+            <input pInputText type="text" placeholder="" [(ngModel)]="customer" />
+        </p-iconfield>
+    </div>
+    <!--- 
+ <p-toolbar styleClass="mb-3">
         <ng-template #start>
             <label for="SearchCustomer">Search Employee: </label>
             <p-iconfield class="px-4">
@@ -19,97 +18,81 @@
             <p-button label="Add new employee" icon="pi pi-plus" severity="info" class="mr-2" (onClick)="createEmployee()" />
         </ng-template>
     </p-toolbar>
-
+-->
     <div class="scrollbox">
-            <p-table #dt [value]="employees" 
-            showGridlines
-            stripedRows
-            [tableStyle]="{ 'min-width': '270%' }"
-            [rows]="10" 
-            [columns]="cols"
-            [paginator]="true" 
-            scrollable="true"
-            [rowsPerPageOptions]="[10, 25, 50]"
-            scrollHeight="90vh"
-            [globalFilterFields]="[
-                'personId',
-                'firstName',
-                'lastName',
-                'generalManagerSince',
-                'shareHolderSince',
-                'soleProprietorSince',
-                'qualificationFz',
-                'qualificationKmui'
-                ]" [(selection)]="selectedCustomers" [rowHover]="true" dataKey="id"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [showCurrentPageReport]="true">
-                <ng-template #caption>
+        <p-table #dt2 [value]="employees" showGridlines stripedRows [tableStyle]="{ 'min-width': '270%' }" [rows]="10"
+            [columns]="selectedColumns" [paginator]="true" scrollable="true" [rowsPerPageOptions]="[10, 25, 50]"
+            [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}" [resizableColumns]="true"
+            styleClass="p-datatable-gridlines" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+            <ng-template #caption>
+                <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                    selectedItemsLabel="{0} columns selected"
+                    [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }"
+                    placeholder="Choose Columns" />
+            </ng-template>
+            <ng-template #caption>
+                <!---
                     <div class="flex items-center justify-between">
                         <h5 class="m-0">Employee Overview</h5>
                     </div>
-                </ng-template>
-                <ng-template #header>
-                    <tr>
-                        <th style="width: 5vw">
-                             
-                        </th>
-                        <th pSortableColumn="id" style="width: 5vw">
-                            ID <p-sortIcon field="id" />
-                        </th>
-                        <th pSortableColumn="firstName" style="width: 10vw">
-                            First Name <p-sortIcon field="firstName" />
-                        </th>
-                        <th pSortableColumn="lastName" style="width: 10vw">
-                            Last Name <p-sortIcon field="lastName" />
-                        </th>
-                        <th pSortableColumn="email" style="width: 10vw">
-                            Email <p-sortIcon field="email" />
-                        </th>
-                        <th pSortableColumn="generalManagerSince" style="width: 10vw">
-                            General Manager Since (GF) <p-sortIcon field="generalManagerSince" />
-                        </th>
-                        <th pSortableColumn="shareholderSince" style="width: 10vw">
-                            Shareholder Since (Ges.) <p-sortIcon field="shareholderSince" />
-                        </th>
-                        <th pSortableColumn="soleProprietorSince" style="width: 10vw">
-                            Sole-proprietor Since (EU) <p-sortIcon field="soleProprietorSince" />
-                        </th>
-                        <th pSortableColumn="coentrepreneurSince" style="width: 10vw">
-                            Co-entrepreneur Since (MU) <p-sortIcon field="coentrepreneurSince" />
-                        </th>
-                        <th pSortableColumn="qualificationFz" style="width: 10vw">
-                            Qualification FZ (Quali FZ) <p-sortIcon field="qualificationFz" />
-                        </th>
-                        <th pSortableColumn="qualificationKmui" style="width: 10vw">
-                            Qualification KMUI (Quali KMUi) <p-sortIcon field="qualificationKmui" />
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template #body let-employee>
-                    <tr>
-                        <td>
-                            <div class="flex items-center justify-center gap-2">
-                                <button pButton icon="pi pi-pencil" 
-                                class="p-button-rounded p-button-info"
-                                (click)="goToEmployeeDetails(employee)"
-                                ></button>
-                                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
-                            </div>
-                           
-                        </td>
-                        <td>{{ employee.id }}</td>
-                        <td>{{ employee.firstName }}</td>
-                        <td>{{ employee.lastName }}</td>
-                        <td>{{ employee.email }}</td>
-                        <td>{{ employee.generalManagerSince }}</td>
-                        <td>{{ employee.shareholderSince }}</td>
-                        <td>{{ employee.soleproprietorSince }}</td>
-                        <td>{{ employee.coentrepreneurSince }}</td>
-                        <td>{{ employee.qualificationFz }}</td>
-                        <td>{{ employee.qualificationKmui }}</td>
-                       
-                    </tr>
-                </ng-template>
-            </p-table>
+-->
+            </ng-template>
+            <ng-template #header let-columns>
+                <tr>
+                    <th>
+                    </th>
+                    <th *ngFor="let col of selectedFilterColumns; let i = index">
+
+                        <input pInputText pSize="small" type="text"
+                            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i < 0}"
+                            (input)="applyFilter($event, col.field)" />
+                    </th>
+                </tr>
+                <tr>
+
+                    <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
+
+                    <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" class="thead"
+                        pResizableColumn>
+                        {{ col.header }}
+                        <p-sortIcon [field]="col.field" />
+                    </th>
+                </tr>
+
+            </ng-template>
+            <ng-template #body let-employee>
+                <tr>
+                    <td>
+                        <div class="flex items-center justify-center gap-2">
+                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"
+                                (click)="goToEmployeeDetails(employee)"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+                        </div>
+
+                    </td>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.firstName }}</td>
+                    <td>{{ employee.lastName }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.generalManagerSince }}</td>
+                    <td>{{ employee.shareholderSince }}</td>
+                    <td>{{ employee.soleproprietorSince }}</td>
+                    <td>{{ employee.coentrepreneurSince }}</td>
+                    <td>{{ employee.qualificationFz }}</td>
+                    <td>{{ employee.qualificationKmui }}</td>
+
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-toolbar>
+            <ng-template #start>
+                <p-button label="Neu" icon="pi pi-plus" routerLink="/employees/employee-details" />
+            </ng-template>
+            <ng-template #end>
+            </ng-template>
+        </p-toolbar>
+
     </div>
-</section>
+</div>

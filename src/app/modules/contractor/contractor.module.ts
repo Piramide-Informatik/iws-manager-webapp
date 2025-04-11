@@ -1,42 +1,38 @@
-//Angular 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-//Modulos
-import { ReceivablesRoutingModule } from './receivables-routing.module';
+import { ContractorRoutingModule } from './contractor-routing.module';
+import { ContractorOverviewComponent } from './components/contractor-overview/contractor-overview.component';
 
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
-
-//Components
-import { ListDemandsComponent } from './components/list-demands/list-demands.component';
-
-
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @NgModule({
   declarations: [
-    ListDemandsComponent
+    ContractorOverviewComponent
   ],
   imports: [
     ButtonModule,
-    IconFieldModule,
-    InputIconModule,
     CommonModule,
     FormsModule,
+    IconFieldModule,
+    InputIconModule,
     InputTextModule,
     MessageModule,
     MultiSelectModule,
-    ReceivablesRoutingModule,
+    ContractorRoutingModule,
     TableModule,
+    ToastModule,
     ToolbarModule
-  ]
+]
 })
-export class ReceivablesModule { }
+export class ContractorModule { }

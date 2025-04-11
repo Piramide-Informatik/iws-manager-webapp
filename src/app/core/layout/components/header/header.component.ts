@@ -17,17 +17,17 @@ export class HeaderComponent implements OnInit{
   ngOnInit(): void {
     this.userMenuItems = [
       {
-        label: 'Perfil',
+        label: 'Profile',
         icon: 'pi pi-user',
         routerLink: ['/profile']
       },
       {
-        label: 'Cambiar Contraseña',
+        label: 'Change Password',
         icon: 'pi pi-key',
         routerLink: ['/change-password']
       },
       {
-        label: 'Configuraciones',
+        label: 'Settings',
         icon: 'pi pi-cog',
         routerLink: ['/settings']
       },
@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit{
         separator: true
       },
       {
-        label: 'Cerrar Sesión',
+        label: 'Logout',
         icon: 'pi pi-sign-out',
         command: () => this.logout()
       }
