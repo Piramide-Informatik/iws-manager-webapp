@@ -20,7 +20,7 @@
         </div>
         <div class="order_input order_name mb-2">
             <label for="orderDate">Datum</label>
-            <p-datepicker id="orderDate" showIcon iconDisplay="input" formControlName="orderDate" />
+            <p-datepicker id="orderDate" showIcon iconDisplay="input" formControlName="orderDate"  dateFormat="dd.mm.yy"  />
         </div>
         <div class="order_input order_name mb-2">
             <label for="orderTitle">Langtext</label>
@@ -28,22 +28,22 @@
         </div>
         <div class="order_input order_name mb-2"> 
             <label for="approvalDate">Unterschriftsdatum</label>
-            <p-datepicker id="approvalDate" showIcon iconDisplay="input" formControlName="approvalDate" />
+            <p-datepicker id="approvalDate" showIcon iconDisplay="input" formControlName="approvalDate"  dateFormat="dd.mm.yy"  />
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="contractTitle">Förderprogramm</label>
-            <p-dropdown id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle" placeholder="Förderprogramm auswählen"></p-dropdown>
+            <p-dropdown id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle"></p-dropdown>
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="employeeiws">Vertragsstatus</label>
-            <p-dropdown id="employeeiws" [options]="vertragsstatusOptions" formControlName="employeeiws" placeholder="Vertragsstatus auswählen"></p-dropdown>
+            <p-dropdown id="employeeiws" [options]="vertragsstatusOptions" formControlName="employeeiws" ></p-dropdown>
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="orderValue">IWS Mitarbeiter</label>
-            <p-dropdown id="orderValue" [options]="iwsMitarbeiterOptions" formControlName="orderValue" placeholder="Mitarbeiter auswählen"></p-dropdown>
+            <p-dropdown id="orderValue" [options]="iwsMitarbeiterOptions" formControlName="orderValue" ></p-dropdown>
         </div>
         
     </div>

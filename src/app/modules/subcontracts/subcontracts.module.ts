@@ -12,6 +12,9 @@ import { TableModule } from 'primeng/table';
 import { MultiSelect } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { ToolbarModule } from 'primeng/toolbar';
 
 
 //Components
@@ -30,7 +33,10 @@ import { ListSubcontractsComponent } from './components/list-subcontracts/list-s
     MultiSelect,
     InputTextModule,
     SubcontractsRoutingModule,
-    TableModule
+    TableModule,
+    IconFieldModule,
+    InputIconModule,
+    ToolbarModule
   ]
 })
 export class SubcontractsModule { }
