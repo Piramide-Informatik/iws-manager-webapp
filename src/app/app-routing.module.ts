@@ -44,6 +44,14 @@ const routes: Routes = [
           o => o.OrderRountingModule
         ), 
       },
+      { 
+        path: 'contractors', 
+        loadChildren: () => 
+        import('./modules/contractor/contractor-routing.module')
+        .then(
+          c => c.ContractorRoutingModule
+        ), 
+      },
     ],
   },
 ];

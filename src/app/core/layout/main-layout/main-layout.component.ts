@@ -104,7 +104,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             routerLink: ['/orders'],
           },
           {
-            label: this.translate.instant('SIDEBAR.CLAIMS'),
+            label: this.translate.instant('SIDEBAR.DEMANDS'),
             routerLink: ['/admin/roles'],
           },
           {
@@ -117,7 +117,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           },
           {
             label: this.translate.instant('SIDEBAR.CONTRACTORS'),
-            routerLink: ['/admin/permissions'],
+            routerLink: ['/contractors'],
           },
           {
             label: this.translate.instant('SIDEBAR.SUBCONTRACTS'),

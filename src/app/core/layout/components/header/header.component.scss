@@ -1,14 +1,15 @@
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     height: 60px;
-    background: #2E4053; // Azul oscuro
+    background: #accde7; // Azul oscuro
     padding: 0 1.5rem;
-    color: white;
+    font-weight: bold;
+    color: #12435d;
 
     .user-button {
-        color: white !important;
+        color: #12435d !important;
         background: transparent !important;
         border: none;
         font-weight: bold;
@@ -19,7 +20,7 @@
     }
 
     .menu-button {
-        color: white !important;
+        color: #12435d !important;
         background: transparent !important;
         border: none;
 
@@ -31,7 +32,7 @@
 
 .header-right {
     display: flex;
-    align-items: center;
+    align-items: end;
     gap: 1rem;
 }
 

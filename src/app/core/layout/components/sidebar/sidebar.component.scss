@@ -1,6 +1,6 @@
 .sidebar {
-    width: 280px;
-    background: #34495E; 
+    width: 135px;
+    background: #12435D; 
     height: calc(100vh - 60px);
     transition: width 0.3s;
     position: relative;
@@ -44,11 +44,11 @@
     .p-menuitem-link {
         display: flex;
         align-items: center;
-        margin: 15px 0; // Espaciado entre las opciones cuando está extendido
+        margin: 12px 0; // Espaciado entre las opciones cuando está extendido
         padding-left: 15px; // Margen izquierdo para separar del borde
         text-align: left; // Alinea el texto a la izquierda
         text-decoration: none;
-        color: white;
+        color: #accde7;
 
         i {
             font-size: 1.5rem; // Tamaño del ícono en estado normal

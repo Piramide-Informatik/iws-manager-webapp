@@ -7,12 +7,12 @@
     "MASTER_DATA": "Master Data"
   },
   "SIDEBAR": {
-    "CUSTOMER": "Customers",
+    "CUSTOMER": "Customer",
     "EMPLOYEES": "Employees",
     "EMPLOYMENT_CONTRACTS": "Employment Contracts",
     "PROJECTS": "Projects",
     "ORDERS": "Orders",
-    "CLAIMS": "Claims",
+    "DEMANDS": "Receivables",
     "INVOICES": "Invoices",
     "FRAMEWORK_AGREEMENTS": "Framework Agreements",
     "CONTRACTORS": "Contractors",
