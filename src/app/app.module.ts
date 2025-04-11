@@ -14,6 +14,7 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { LayoutModule } from './core/layout/layout.module';
 import { ProjectModule } from './modules/projects/project.module';
+import { SubcontractsModule } from './modules/subcontracts/subcontracts.module';
 import { WorkContractsModule } from './modules/work-contracts/work-contracts.module';
 
 //Prime NG
@@ -46,6 +47,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrdersModule,
     OverlayPanelModule,
     ProjectModule,
+    SubcontractsModule,
     WorkContractsModule,
     TranslateModule.forRoot({
       loader: {
