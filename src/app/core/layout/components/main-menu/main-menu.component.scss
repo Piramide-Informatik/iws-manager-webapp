@@ -1,7 +1,9 @@
+@use 'variables' as *;
+
 .p-menu {
     .p-menu-close {
-      background-color: #2E4053 !important; // Cambia el color del botón
-      color: white !important; // Cambia el color del ícono
+      background-color: $primary-dark !important; // Cambia el color del botón
+      color: $primary-light !important; // Cambia el color del ícono
       border: none !important; // Elimina el borde
       border-radius: 50% !important; // Hazlo circular
       width: 2rem; // Ajusta el tamaño

@@ -1,22 +1,29 @@
+@use 'variables' as *;
+
 .sidebar {
-    width: 280px;
-    background: #34495E; 
+    width: 15vw;
+    background: $primary-dark;
     height: calc(100vh - 60px);
     transition: width 0.3s;
     position: relative;
     overflow: visible;
-    .menu-items{
+
+    .menu-items {
         cursor: pointer;
         width: 100%;
 
         &:hover {
-            background-color: #7eb5c4;
-            color: #34495E;
+            background-color: $accent-color;
+
+            a {
+                color: $primary-dark !important;
+                font-weight: 600;
+            }
         }
     }
 
     &.collapsed {
-        width: 70px;
+        width: 3px;
 
         .menu-item-text {
             display: none;
@@ -34,7 +41,7 @@
 
     .sidebar-content {
         position: relative;
-        color: white !important;
+        color: $primary-light !important;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -48,7 +55,7 @@
         padding-left: 15px; // Margen izquierdo para separar del borde
         text-align: left; // Alinea el texto a la izquierda
         text-decoration: none;
-        color: white;
+        color: $primary-light;
 
         i {
             font-size: 1.5rem; // Tamaño del ícono en estado normal
@@ -58,23 +65,23 @@
 
     .collapse-button {
         position: absolute;
-        right: -20px; 
+        right: -20px;
         top: 50%;
         transform: translateY(-50%);
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: #2E4053;
-        border: 2px solid #A5D6A7; 
-        color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-        z-index: 1000; 
+        background: $primary-dark;
+        border: 2px solid $accent-color;
+        color: $primary-light;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
         display: flex;
         align-items: center;
         justify-content: center;
 
         &:hover {
-            background: #3a526b;
+            background: $primary-color;
         }
     }
 }
