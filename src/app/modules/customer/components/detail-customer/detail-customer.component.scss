@@ -11,14 +11,8 @@
     font-weight: 500;
     width: 7rem;
   }
-  
-  input {
-    height: 35px;
-    width: 18.75rem;
-  }
 
   .p-select {
-    height: 36px;
     width: 18.75rem;
 
     span.p-select-label {
@@ -63,14 +57,3 @@ p-select {
   }
 }
 
-//Styles btns edit delete
-.button-option.p-button-rounded {
-  height: 1.5rem;
-  width: 1.5rem;
-}
-
-td, th {
-  padding: 5px 16px !important;
-  font-size: 14px;
-  margin-left: 15px !important;
-}

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
 import { Table } from 'primeng/table';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 interface Column {
   field: string,

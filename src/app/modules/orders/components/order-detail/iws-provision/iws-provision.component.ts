@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
-import { OrderCommissionService } from '../../../services/order-commission/order-commission.service';
+import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
 
 interface Column {
   field: string;
