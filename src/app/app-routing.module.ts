@@ -57,13 +57,21 @@ const routes: Routes = [
             (f) => f.FrameworkAgreementsModule
           ),
       },
+      { 
+        path: 'contractors', 
+        loadChildren: () => 
+        import('./modules/contractor/contractor-routing.module')
+        .then(
+          c => c.ContractorRoutingModule
+        ), 
+      },
       {
         path: 'subcontracts', 
         loadChildren: () => 
         import('./modules/subcontracts/subcontracts.module').then(
           s => s.SubcontractsModule
-        ), 
-      }
+        )
+      },
     ],
   },
 ];

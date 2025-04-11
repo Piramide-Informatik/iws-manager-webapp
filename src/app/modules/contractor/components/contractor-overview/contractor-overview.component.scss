@@ -1,18 +1,6 @@
-@use 'variables' as *;
-
-.iws-employeeInput{
-    width: 100% !important;
-
-    label {
-        width: 33%;
-    }
-
-}
-
-//Styles table head
 //Styles table head
 .thead {
-    background: $primary-color;
+    background: #267bbf;
     color: #fff;
     min-width: 6.25rem; //=100px
 
@@ -23,11 +11,12 @@
 }
 
 .thead-bg-blue {
-    background: $primary-color;
+    background: #267bbf;
 }
 
 .thead-input-id {
-    width: 4.4rem; //=70px
+    min-width: 4.4rem; //=70px
+    width: 100%;
 }
 
 .thead-input-width {

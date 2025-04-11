@@ -1,62 +1,62 @@
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
         <div class="order_input order_id mb-2">
-            <label for="orderId">Order ID:</label>
+            <label for="orderId">Auftrag-Nr.</label>
             <input pInputText type="text" id="orderId" formControlName="orderId" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderLabel">Auftrag:</label>
+            <label for="orderLabel">Auftrag</label>
             <input pInputText type="text" id="orderLabel" formControlName="orderLabel" autocomplete="off" />
         </div>
         <div class="order_input order_type mb-2">
-            <label for="orderType">Auftragsart:</label>
-            <input pInputText type="text" id="orderType" formControlName="orderType" autocomplete="off" />
+            <label for="orderType">Auftragsart</label>
+            <p-select  [style]="{'width':'57%'}" formControlName="orderType" [editable]="true" [showClear]="true" optionLabel="name" autocomplete="off"/>
         </div>
         <div class="order_input order_customer me-0 mb-2 d-flex">
-            <label>Kunde:</label>
+            <label>Kunde</label>
             <p-floatlabel class="customerId" variant="on">
-                <label for="customerId">ID:</label>
+                <label for="customerId">Nr.</label>
                 <input pInputText type="text" id="customerId" formControlName="customerId" autocomplete="off" />
             </p-floatlabel>
             <p-floatlabel class="customerName" variant="on">
-                <label for="customerName">Name:</label>
+                <label for="customerName"></label>
                 <input pInputText type="text" id="customerName" formControlName="customerName" autocomplete="off" />
             </p-floatlabel>
         </div>
         <div class="order_input order_name mb-2">
-            <label for="acronym">Akronym:</label>
+            <label for="acronym">Akronym</label>
             <input pInputText type="text" id="acronym" formControlName="acronym" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderTitle">Langtext:</label>
+            <label for="orderTitle">Langtext</label>
             <input pInputText type="text" id="orderTitle" formControlName="orderTitle" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderDate">Auftragsdatum: </label>
-            <p-datepicker id="orderDate" showIcon iconDisplay="input" formControlName="orderDate" />
+            <label for="orderDate">Auftragsdatum</label>
+            <p-datepicker id="orderDate" [showIcon]="true" iconDisplay="input"  formControlName="orderDate" dateFormat="dd.mm.yy" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="fundingProgram">Förderprogramm:</label>
-            <input pInputText type="text" id="fundingProgram" formControlName="fundingProgram" autocomplete="off" />
+            <label for="fundingProgram">Förderprogramm</label>
+            <p-select  [style]="{'width':'57%'}" id="fundingProgram" formControlName="fundingProgram" [editable]="true" [showClear]="true" optionLabel="name" autocomplete="off"/>
         </div>
         <div class="order_input order_name mb-2">
-            <label for="contractStatus">Vertragsstatus:</label>
-            <input pInputText type="text" id="contractStatus" formControlName="contractStatus" autocomplete="off" />
+            <label for="contractStatus">Vertragsstatus</label>
+            <p-select  [style]="{'width':'57%'}" id="contractStatus" formControlName="contractStatus" [editable]="true" [showClear]="true" optionLabel="name" autocomplete="off"/>
         </div>
         <div class="order_input order_name mb-2">
-            <label for="approvalDate">Unterschriftsdatum: (input date)</label>
-            <p-datepicker id="approvalDate" showIcon iconDisplay="input" formControlName="approvalDate" />
+            <label for="approvalDate">Unterschriftsdatum</label>
+            <p-datepicker id="approvalDate" [showIcon]="true" iconDisplay="input" formControlName="approvalDate" dateFormat="dd.mm.yy" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="contractTitle">Rahmenvertrag:</label>
-            <input pInputText type="text" id="contractTitle" formControlName="contractTitle" autocomplete="off" />
+            <label for="contractTitle">Rahmenvertrag</label>
+            <p-select  [style]="{'width':'57%'}" id="contractTitle" formControlName="contractTitle" [editable]="true" [showClear]="true" optionLabel="name" autocomplete="off"/>
         </div>
         <div class="order_input order_name mb-2">
-            <label for="employeeiws">IWS Mitarbeiter:</label>
-            <input pInputText type="text" id="employeeiws" formControlName="employeeiws" autocomplete="off" />
+            <label for="employeeiws">IWS Mitarbeiter</label>
+            <p-select  [style]="{'width':'57%'}"  id="employeeiws" formControlName="employeeiws" [editable]="true" [showClear]="true" optionLabel="name" autocomplete="off"/>
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderValue">Geschätzter Auftragswert:</label>
+            <label for="orderValue">Geschätzter Auftragswert</label>
             <input pInputText type="text" id="orderValue" formControlName="orderValue" autocomplete="off" />
         </div>
     </div>
