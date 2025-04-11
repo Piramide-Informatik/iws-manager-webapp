@@ -22,13 +22,13 @@ export class ListCustomersComponent implements OnInit {
   @ViewChild('dt2') dt2!: Table;
 
   public cols: Column[] = [
-    { field: 'id', header: 'No'},
-    { field: 'companyName', header: 'Company Name'},
-    { field: 'nameLine2', header: 'Name Line 2'},
-    { field: 'kind', header: 'Kind'},
+    { field: 'id', header: 'Nr.'},
+    { field: 'companyName', header: 'Unternehmensname'},
+    { field: 'nameLine2', header: 'Name Zeile 2'},
+    { field: 'kind', header: 'Art'},
     { field: 'land', header: 'Land'},
-    { field: 'place', header: 'Place'},
-    { field: 'contact', header: 'Contact'},
+    { field: 'place', header: 'Ort'},
+    { field: 'contact', header: 'Ansprechpartner'},
   ];
 
   public selectedColumns!: Column[];

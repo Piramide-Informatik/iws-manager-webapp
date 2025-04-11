@@ -12,6 +12,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     SidebarModule,
     TooltipModule,
-    MenuModule
+    MenuModule,
+    AvatarModule,
+    AvatarGroupModule
   ],
   exports:[MainLayoutComponent]
 })

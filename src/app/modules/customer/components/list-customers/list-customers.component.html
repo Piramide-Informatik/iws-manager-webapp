@@ -13,7 +13,7 @@
     [resizableColumns]="true"
     columnResizeMode="expand"
     [scrollable]="true"
-    scrollHeight="90vh"
+    scrollHeight="60vh"
     [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
   >
     <ng-template #caption>
@@ -27,6 +27,20 @@
         placeholder="Choose Columns" />
     </ng-template>
     <ng-template #header let-columns>
+            <tr>
+
+        <th></th>
+
+        <th *ngFor="let col of columns; let i = index">
+          <input
+            pInputText 
+            pSize="small"
+            type="text"
+            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+            (input)="applyFilter($event, col.field)"
+          />
+        </th>
+      </tr>
       <tr>
 
         <th class="thead-bg-blue"></th>
@@ -39,21 +53,7 @@
         </th>
         
       </tr>
-      <tr>
 
-        <th></th>
-
-        <th *ngFor="let col of columns; let i = index">
-          <input
-            pInputText 
-            pSize="small"
-            type="text"
-            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
-            (input)="applyFilter($event, col.field)"
-            [placeholder]="'Search ' + col.field"
-          />
-        </th>
-      </tr>
     </ng-template>
     <ng-template #body let-customer let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">

@@ -2,15 +2,16 @@
 
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    height: 6vh;
-    background: $primary-dark; // Azul oscuro
+    height: 60px;
+    background: $accent-color; // Azul oscuro
     padding: 0 1.5rem;
-    color: $primary-light;
+    font-weight: bold;
+    color: #12435d;
 
     .user-button {
-        color: $primary-light !important;
+        color: $primary-dark !important;
         background: transparent !important;
         border: none;
         font-weight: bold;
@@ -21,7 +22,7 @@
     }
 
     .menu-button {
-        color: $primary-light !important;
+        color: $primary-dark !important;
         background: transparent !important;
         border: none;
 
@@ -33,7 +34,7 @@
 
 .header-right {
     display: flex;
-    align-items: center;
+    align-items: end;
     gap: 1rem;
 }
 

@@ -1,25 +1,28 @@
-<div class="container">
+<div class="card">
     <p-toast />
     <p-toolbar styleClass="mb-1">
         <ng-template #start>
             <label for="SearchCustomer">Customer</label>
             <p-iconfield class="px-4">
                 <p-inputicon styleClass="pi pi-search px-4" />
-                <input pInputText type="text" placeholder="Search Customer" />
+                <input pInputText type="text" placeholder="" />
             </p-iconfield>
         </ng-template>
     </p-toolbar>
-    <div class=" flex flex-column">
+    <div class="flex flex-column">
   
       <p-table 
-        [value]="persons" 
+        #dt2
+        [value]="projects" 
         showGridlines
         stripedRows
         [columns]="selectedColumns"
         [paginator]="true"
         [rows]="5"
         scrollable="true"
-        scrollHeight="300px"
+        scrollHeight="60vh"
+        [resizableColumns]="true"
+        columnResizeMode="expand"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[5, 10, 20]"
@@ -34,13 +37,28 @@
             [(ngModel)]="selectedColumns" 
             optionLabel="header" 
             selectedItemsLabel="{0} columns selected" 
-            [style]="{ 'min-width': '250px' }" 
+            [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
             placeholder="Choose Columns" />
         </ng-template>
         <ng-template #header let-columns>
           <tr>
+            <th>
+            </th>
+            <th *ngFor="let col of selectedFilterColumns; let i = index" >
+              
+              <input
+                pInputText 
+                pSize="small"
+                type="text"
+                [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i < 0}"
+                (input)="applyFilter($event, col.field)"
+                
+              />
+            </th>
+          </tr>
+          <tr>
   
-            <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}">Option</th>
+            <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
   
             <th *ngFor="let col of columns; let i = index" 
               [pSortableColumn]="col.field" 
@@ -50,6 +68,7 @@
               <p-sortIcon [field]="col.field"/>
             </th>
           </tr>
+
         </ng-template>
         <ng-template #body let-person let-i="rowIndex" let-columns="columns">
           <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
@@ -75,6 +94,8 @@
               {{ person[col.field] }}
             </td>
           </tr>
+
+
         </ng-template>
         <ng-template #emptymessage>
           <tr>
