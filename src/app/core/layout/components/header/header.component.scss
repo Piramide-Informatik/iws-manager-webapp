@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .header {
     display: flex;
     justify-content: space-around;
@@ -37,13 +39,13 @@
 }
 
 :host ::ng-deep .p-menu {
-    background: white !important;
-    border: 1px solid #ddd !important;
+    background: $primary-light !important;
+    border: 1px solid $primary-light !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
 }
 
 :host ::ng-deep .p-menuitem-link {
-    color: #2E4053 !important;
+    color: $primary-dark !important;
 
     &:hover {
         background: rgba(46, 64, 83, 0.1) !important;
