@@ -1,15 +1,7 @@
-//Styles btns edit delete
 @use 'variables' as *;
 
-.button-option.p-button-rounded {
-    height: 1.5rem;
-    width: 1.5rem;
-}
-
-td, th {
-    padding: 5px 16px !important;
-    font-size: 14px;
-    margin-left: 15px !important;
+p-button{
+    color: $primary-light;
 }
 
 //Styles table head
@@ -20,7 +12,7 @@ td, th {
   
     &:hover {
       background: $accent-color;
-      color: #12435d
+      color: $primary-dark;
     }
 }
 

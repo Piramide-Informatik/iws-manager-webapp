@@ -18,15 +18,17 @@ export class FrameworkAgreementsSummaryComponent implements OnInit {
 
   public frameworkAgreements!: FrameworkAgreements[];
 
+  public customer!: string;
+
   @ViewChild('dt2') dt2!: Table;
 
   public cols: Column[] = [
-    { field: 'id', header: 'No' },
-    { field: 'frameworkContract', header: 'Framework Contract' },
-    { field: 'date', header: 'Date' },
-    { field: 'fundingProgram', header: 'Funding Program' },
-    { field: 'contractStatus', header: 'Contract Status' },
-    { field: 'iwsEmployee', header: 'IWS Employee' },
+    { field: 'id', header: 'RV-Nr.' },
+    { field: 'frameworkContract', header: 'Rahmenvertrag' },
+    { field: 'date', header: 'Datum' },
+    { field: 'fundingProgram', header: 'Förderprogramm' },
+    { field: 'contractStatus', header: 'Vertragsstatus' },
+    { field: 'iwsEmployee', header: 'IWS MA' },
   ];
 
   public selectedColumns!: Column[];
@@ -35,6 +37,8 @@ export class FrameworkAgreementsSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.frameworkAgreements = this.FrameworkAgreementsService.list();
+
+    this.customer = 'Valentin Laime';
 
     this.selectedColumns = this.cols;
   }

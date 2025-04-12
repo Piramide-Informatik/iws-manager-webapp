@@ -1,4 +1,4 @@
-
+@use 'variables' as *;
 
 .field {
     display: flex;
@@ -69,34 +69,22 @@
   
   //Styles table head
   .thead {
-    background: #007fff;
+    background: $primary-color;
     color: #fff;
     min-width: 6.25rem;//=100px
   
     &:hover {
-      background: #abcbeb;
-      color: #1E293B
+      background: $accent-color;
+      color: $primary-dark;
     }
   }
   
   p-button{
-    color: #267bbf;
-}
-
-//Styles table head
-.thead {
-    background: #267bbf;
-    color: #fff;
-    min-width: 6.25rem;//=100px
-  
-    &:hover {
-      background: #abcbeb;
-      color: #1E293B
-    }
+    color: $primary-color;
 }
 
 .thead-bg-blue {
-    background: #267bbf;
+    background: $primary-light;
 }
 
 .thead-input-id {

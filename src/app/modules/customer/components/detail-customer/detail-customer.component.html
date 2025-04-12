@@ -2,7 +2,7 @@
   <form [formGroup]="formDetailCustomer" action="">
     <div class="grid">
       <!-- Primera columna -->
-      <div class="column md:col-6 lg:col-6">
+      <div class="md:col-6 lg:col-6 lg:pr-8 md:pr-8">
 
         <div class="field">
           <label>Kunden-Nr.</label>
@@ -10,8 +10,8 @@
         </div>
 
         <div class="field align-items-start">
-          <label for="companyName" class="mt-2">Unternehmensname</label>
-          <div class="flex flex-column">
+          <label for="companyName" class="mt-2">Company Name</label>
+          <div class="flex flex-column w-full">
             <input type="text" id="companyName1" class="mb-1" pInputText formControlName="companyText1"/>
             <input type="text" id="companyName2" pInputText formControlName="companyText2"/>
           </div>
@@ -24,7 +24,6 @@
             id="country"
             [options]="countries"
             optionLabel="name" 
-            placeholder="Select a Country"
           >
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
@@ -53,19 +52,15 @@
         </div>
 
         <div class="field">
-          <div class="flex flex-none">
-            <label for="street">Straße</label>
-          </div>
-          <div class="flex flex-grow">
-            <input type="text" id="street" pInputText formControlName="street"/>
-          </div>
+          <label for="street">Street</label>
+          <input type="text" id="street" pInputText formControlName="street"/>
         </div>
 
         <div class="field">
           <label for="">PLZ / Ort</label>
           <div class="postal-city">
-            <input type="text" id="postalCode" class="w-4 mr-2" pInputText formControlName="postalCode"/>
-            <input type="text" id="city" class="" pInputText formControlName="city"/>
+            <input type="text" id="postalCode" class="postal" pInputText formControlName="postalCode"/>
+            <input type="text" id="city" class="city" pInputText formControlName="city"/>
           </div>
         </div>
 
@@ -75,7 +70,6 @@
           id="typeCompany"
           [options]="typesCompany" 
           optionLabel="name" 
-          placeholder="Select a Type Company"
           />
         </div>
 
@@ -85,7 +79,6 @@
           id="sector"
           [options]="sectors" 
           optionLabel="name" 
-          placeholder="Select a sector"  
           />
         </div>
 
@@ -94,15 +87,14 @@
           <p-select formControlName="selectedState" 
           id="state"
           [options]="states" 
-          optionLabel="name" 
-          placeholder="Select a state"
+          optionLabel="name"
           />
         </div>
 
         <div class="field relative">
           <label for="homepage">Webseite</label>
           <input type="text" id="homepage" pInputText formControlName="homepage"/>
-          <i class="pi pi-globe" style="color: blue"></i>
+          <i class="pi pi-globe" style="color: #12435d"></i>
         </div>
 
         <div class="field">
@@ -112,7 +104,7 @@
       </div>
 
       <!-- Segunda columna -->
-      <div class="column md:col-6 lg:col-6">
+      <div class="md:col-6 lg:col-6 lg:pl-8 md:pl-8">
         
         <div class="field">
           <label for="invoiceEmail">Email Rechnung</label>
@@ -167,7 +159,7 @@
       [rows]="5"
       showGridlines
       scrollable="true"
-      scrollHeight="300px"
+      scrollHeight="200px"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [showCurrentPageReport]="true"
       [rowsPerPageOptions]="[5, 10, 20]"

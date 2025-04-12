@@ -4,19 +4,19 @@
     <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
             <div class="iws-employeeInput project_name mb-2">
-                <label for="fixCommission">Fixe Provision:</label>
+                <label for="fixCommission">Fixe Provision</label>
                 <input pInputText type="text" id="fixCommission" formControlName="fixCommission" autocomplete="off" />
                 Euro
             </div>
             <div class="iws-employeeInput order_maxCommission mb-2">
-                <label for="maxCommission">Max. Provision:</label>
+                <label for="maxCommission">Max. Provision</label>
                 <input pInputText type="text" id="maxCommission" formControlName="maxCommission" autocomplete="off" />
                 Euro
             </div>
         </div>
     </form>
     <p-table #dt [value]="orderCommissions" showGridlines
-    stripedRows [tableStyle]="{ 'min-width': '100%' }" [rows]="10" [columns]="cols"
+    stripedRows [tableStyle]="{ 'min-width': '100%' }" [rows]="4" [columns]="cols"
         [paginator]="true" scrollable="true" [rowsPerPageOptions]="[10, 25, 50]" scrollHeight="90vh"
         [globalFilterFields]="[
             'fromordervalue',
@@ -24,23 +24,18 @@
             'mincommission'
             ]" [(selection)]="selectedOrderCommission" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">IWS Provision</h5>
-            </div>
-        </ng-template>
         <ng-template #header>
             <tr>
-                <th style="width: 5vw">
+                <th class="thead">
 
                 </th>
-                <th pSortableColumn="fromOrderValue" style="width: 5vw">
+                <th pSortableColumn="fromOrderValue" class="thead">
                     ab Wert<p-sortIcon field="fromOrderValue" />
                 </th>
-                <th pSortableColumn="commission" style="width: 5vw">
+                <th pSortableColumn="commission" class="thead">
                     Provision <p-sortIcon field="commission" />
                 </th>
-                <th pSortableColumn="minCommission" style="width: 5vw">
+                <th pSortableColumn="minCommission" class="thead">
                     Mindestprovision <p-sortIcon field="minCommission" />
                 </th>
             </tr>
@@ -65,7 +60,7 @@
 
     <div class="row">
         <div class="col-3">
-            <p-button class="addNew me-2" size="small" label="Neu" icon="pi pi-plus" iconPos="right" />
+            <p-button class="addNew me-2" size="small" label="Neu" icon="pi pi-plus" iconPos="left" />
         </div>
         
     </div>
