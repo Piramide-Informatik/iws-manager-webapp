@@ -11,6 +11,7 @@ import { OrderRountingModule } from './order-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DatePickerModule } from 'primeng/datepicker';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabel } from 'primeng/floatlabel';
 import { TableModule } from 'primeng/table';
@@ -45,6 +46,7 @@ import { OrdersOverviewComponent } from './components/orders-overview/orders-ove
     CardModule,
     CommonModule,
     DatePickerModule,
+    DialogModule,
     FloatLabel,
     InputTextModule,
     OrderRountingModule,
