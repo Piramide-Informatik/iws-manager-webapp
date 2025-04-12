@@ -44,9 +44,9 @@
         </div>
 
         <div class="contractor-buttons  mt-4">
-            <p-button label="Speichern" [disabled]="!isFormValid()" (click)="onSubmit()"></p-button>
-            <p-button label="Löschen" (click)="onDelete()"></p-button>
-            <p-button label="Abbrechen" (click)="onCancel()"></p-button>
+            <p-button label="Speichern" [disabled]="!isFormValid()" (click)="onSubmit()" (keydown.enter)="onSubmit()"></p-button>
+            <p-button label="Löschen" (click)="onDelete()" (keydown.backspace)="onDelete()"></p-button>
+            <p-button label="Abbrechen" (click)="onCancel()" (keydown.escape)="onCancel()"></p-button>
         </div>
     </div>
 </div>

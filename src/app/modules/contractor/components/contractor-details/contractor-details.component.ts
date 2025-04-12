@@ -40,7 +40,7 @@ export class ContractorDetailsComponent {
     this.contractorName().trim().length > 0
   );
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   onSubmit() {
     if (!this.isFormValid()) {
@@ -48,7 +48,7 @@ export class ContractorDetailsComponent {
       return;
     }
 
-    const contractor = {
+    let contractor = {
       customer: this.customer(),
       contractorLabel: this.contractorLabel(),
       contractorName: this.contractorName(),
