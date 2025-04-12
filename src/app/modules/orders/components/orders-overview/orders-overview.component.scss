@@ -1,0 +1,30 @@
+@use 'variables' as *;
+
+p-button{
+    color: $primary-light;
+}
+
+//Styles table head
+.thead {
+    background: $primary-color;
+    color: #fff;
+    min-width: 6.25rem;//=100px
+  
+    &:hover {
+      background: $accent-color;
+      color: $primary-dark;
+    }
+}
+
+.thead-bg-blue {
+    background: $primary-color;
+}
+
+.thead-input-id {
+    min-width: 4.4rem;//=70px
+    width: 100%;
+}
+
+.thead-input-width {
+    width: 100%;
+}

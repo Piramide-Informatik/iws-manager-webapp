@@ -30,20 +30,18 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { CardModule } from 'primeng/card';
 
 
-
-
 //Components
 import { FrameworkAgreementsSummaryComponent } from './components/framework-agreements-summary/framework-agreements-summary.component';
-import { OrderDetailComponent } from './components/order-detail/order-detail.component';
-import { OrderComponent } from './components/order-detail/order/order.component';
-import { IwsProvisionComponent } from './components/order-detail/iws-provision/iws-provision.component';
+import { FrameworkAgreementsDetailsComponent } from './components/framework-agreement-details/framework-agreement-details.component';
+import { OrderComponent } from './components/framework-agreement-details/order/order.component';
+import { IwsProvisionComponent } from './components/framework-agreement-details/iws-provision/iws-provision.component';
 
 
 
 @NgModule({
     declarations: [
         FrameworkAgreementsSummaryComponent,
-        OrderDetailComponent,
+        FrameworkAgreementsDetailsComponent,
         OrderComponent,
         IwsProvisionComponent
     ],

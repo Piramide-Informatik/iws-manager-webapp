@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-order-detail',
-  templateUrl: './order-detail.component.html',
-  styleUrls: ['./order-detail.component.scss'],
+  selector: 'app-framework-agreement-details',
+  templateUrl: './framework-agreement-details.component.html',
+  styleUrls: ['./framework-agreement-details.component.scss'],
   standalone: false
 })
-export class OrderDetailComponent implements OnInit {
+export class FrameworkAgreementsDetailsComponent implements OnInit {
   agreementId: string | null = null;
 
   constructor(private route: ActivatedRoute) {}
