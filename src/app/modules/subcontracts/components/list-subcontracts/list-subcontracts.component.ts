@@ -21,14 +21,14 @@ export class ListSubcontractsComponent implements OnInit {
   @ViewChild('dt2') dt2!: Table;
 
   public cols: Column[] = [
-    { field: 'orderTitle', header: 'Order'},
-    { field: 'contractor', header: 'Contractor'},
-    { field: 'project', header: 'Project'},
-    { field: 'date', header: 'Date'},
-    { field: 'invoiceNumber', header: 'Invoice No.'},
-    { field: 'net', header: 'Net'},
-    { field: 'gross', header: 'Gross'},
-    { field: 'share', header: 'Share'},
+    { field: 'orderTitle', header: 'Autrag'},
+    { field: 'contractor', header: 'Auftragnehmer'},
+    { field: 'project', header: 'Projekt'},
+    { field: 'date', header: 'Datum'},
+    { field: 'invoiceNumber', header: 'Rechnung-Nr.'},
+    { field: 'net', header: 'Netto'},
+    { field: 'gross', header: 'Brutto'},
+    { field: 'share', header: 'Anteil'},
   ];
 
   public selectedColumns!: Column[];
