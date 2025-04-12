@@ -24,7 +24,6 @@
             id="country"
             [options]="countries"
             optionLabel="name" 
-            placeholder="Select a Country"
           >
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
@@ -75,7 +74,6 @@
           id="typeCompany"
           [options]="typesCompany" 
           optionLabel="name" 
-          placeholder="Select a Type Company"
           />
         </div>
 
@@ -85,7 +83,6 @@
           id="sector"
           [options]="sectors" 
           optionLabel="name" 
-          placeholder="Select a sector"  
           />
         </div>
 
@@ -94,15 +91,14 @@
           <p-select formControlName="selectedState" 
           id="state"
           [options]="states" 
-          optionLabel="name" 
-          placeholder="Select a state"
+          optionLabel="name"
           />
         </div>
 
         <div class="field relative">
           <label for="homepage">Webseite</label>
           <input type="text" id="homepage" pInputText formControlName="homepage"/>
-          <i class="pi pi-globe" style="color: blue"></i>
+          <i class="pi pi-globe" style="color: #12435d"></i>
         </div>
 
         <div class="field">

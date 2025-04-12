@@ -25,11 +25,6 @@
             'mincommission'
             ]" [(selection)]="selectedOrderCommission" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">IWS Provision</h5>
-            </div>
-        </ng-template>
         <ng-template #header>
             <tr>
                 <th class="thead">
@@ -66,7 +61,7 @@
 
     <div class="row">
         <div class="col-3">
-            <p-button class="addNew me-2" size="small" label="Neu" icon="pi pi-plus" iconPos="right" />
+            <p-button class="addNew me-2" size="small" label="Neu" icon="pi pi-plus" iconPos="left" />
         </div>
         <div class="col-9">
             <div class="project_name mb-2">

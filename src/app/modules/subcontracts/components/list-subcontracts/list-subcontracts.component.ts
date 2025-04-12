@@ -38,7 +38,7 @@ export class ListSubcontractsComponent implements OnInit {
   ngOnInit(): void {
     this.selectedColumns = this.cols;
 
-    this.customer = 'Customer name';
+    this.customer = 'Valentin Laime';
 
     this.subcontracts = [
       {

@@ -1,21 +1,23 @@
+@use 'variables' as *;
+
 p-button{
-    color: #267bbf;
+    color: $primary-light;
 }
 
 //Styles table head
 .thead {
-    background: #267bbf;
+    background: $primary-color;
     color: #fff;
     min-width: 6.25rem;//=100px
   
     &:hover {
-      background: #abcbeb;
-      color: #1E293B
+      background: $accent-color;
+      color: $primary-dark;
     }
 }
 
 .thead-bg-blue {
-    background: #267bbf;
+    background: $primary-color;
 }
 
 .thead-input-id {
