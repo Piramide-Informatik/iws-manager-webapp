@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+
 import {
   TranslateService,
   TranslatePipe,
-  TranslateDirective
-} from "@ngx-translate/core";
+  TranslateDirective,
+} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
