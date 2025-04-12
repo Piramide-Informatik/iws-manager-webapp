@@ -51,8 +51,10 @@
                 <td>
                     <div class="flex items-center justify-center gap-2">
                         <button pButton icon="pi pi-pencil"
+                            (click)="showModalIwsCommission(optionIwsCommission.edit, orderCommissions.fromOrderValue)"
                             class="p-button-rounded p-button-info button-option"></button>
                         <button pButton icon="pi pi-trash"
+                            (click)="deleteCommission(orderCommissions.fromOrderValue)"
                             class="p-button-rounded p-button-danger button-option"></button>
                     </div>
 
@@ -66,7 +68,10 @@
 
     <div class="row">
         <div class="col-3">
-            <p-button class="addNew me-2" size="small" label="Neu" icon="pi pi-plus" iconPos="right" />
+            <p-button class="addNew me-2" size="small" 
+                label="Neu" icon="pi pi-plus" iconPos="right"
+                (click)="showModalIwsCommission(optionIwsCommission.new)"
+            />
         </div>
         <div class="col-9">
             <div class="project_name mb-2">
@@ -76,3 +81,28 @@
         </div>
     </div>
 </p-card>
+
+<!-- Modal IWS Commission -->
+<div class="card">
+    <p-dialog [header]="optionIwsCommission+' IWS Commission'" (onHide)="closeModalIwsCommission()" [modal]="true" [(visible)]="visibleModalIWSCommission" [style]="{ width: '40rem' }">
+        <hr class="mt-0">
+        <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmit()">
+            <div class="flex gap-4 mb-3">
+                <label for="fromValue" class="w-3">From Value</label>
+                <input pInputText id="fromValue" class="flex-auto" formControlName="fromOrderValue" autocomplete="off" />
+            </div>
+            <div class="flex gap-4 mb-3">
+                <label for="provision" class="w-3">Provision (%)</label>
+                <input pInputText id="provision" class="flex-auto" formControlName="provision" autocomplete="off" />
+            </div>
+            <div class="flex gap-4 mb-3">
+                <label for="minCommission" class="w-3">Minimum Commission</label>
+                <input pInputText id="minCommission" class="flex-auto" formControlName="minCommission" autocomplete="off" />
+            </div>
+            <div class="flex justify-content-center gap-2">
+                <p-button label="Save" (click)="addIwsCommission()" />
+                <p-button label="Cancel" (click)="closeModalIwsCommission()" />
+            </div>
+        </form>
+    </p-dialog>
+</div>
