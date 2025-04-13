@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="contractor-form p-fluid">
+
+        <div class="contractor-input mb-2">
+            <label for="customer">Kunde</label>
+            <input pInputText id="customer" [ngModel]="customer()" (ngModelChange)="customer.set($event)" />
+        </div>
+
+        <div class="contractor-input mb-2">
+            <label for="contractorLabel">Kurzname</label>
+            <input pInputText id="contractorLabel" [ngModel]="contractorLabel()"
+                (ngModelChange)="contractorLabel.set($event)" />
+        </div>
+
+        <div class="contractor-input mb-2">
+            <label for="contractorName">Name</label>
+            <input pInputText id="contractorName" [ngModel]="contractorName()"
+                (ngModelChange)="contractorName.set($event)" />
+        </div>
+
+        <div class="contractor-input mb-2">
+            <label for="countryname">Land</label>
+            <p-dropdown id="countryname" [options]="countries" [ngModel]="countryname()" (ngModelChange)="countryname.set($event)" optionLabel="label" optionValue="value" placeholder="Wähle ein Land"></p-dropdown>
+        </div>
+
+        <div class="contractor-input mb-2">
+            <label for="street">Straße</label>
+            <input pInputText id="street" [ngModel]="street()" (ngModelChange)="street.set($event)" />
+        </div>
+
+        <div class="contractor-input mb-2">
+            <label for="zipcode">PLZ</label>
+            <input pInputText id="zipcode" [ngModel]="zipcode()" (ngModelChange)="zipcode.set($event)" />
+        </div>
+
+        <div class="contractor-input mb-2">
+            <label for="city">Ort</label>
+            <input pInputText id="city" [ngModel]="city()" (ngModelChange)="city.set($event)" />
+        </div>
+
+        <div class="contractor-input mb-2">
+            <label for="taxNumber">USt.-ID</label>
+            <input pInputText id="taxNumber" [ngModel]="taxNumber()" (ngModelChange)="taxNumber.set($event)" />
+        </div>
+
+        <div class="contractor-buttons  mt-4">
+            <p-button label="Speichern" [disabled]="!isFormValid()" (click)="onSubmit()" (keydown.enter)="onSubmit()"></p-button>
+            <p-button label="Löschen" (click)="onDelete()" (keydown.backspace)="onDelete()"></p-button>
+            <p-button label="Abbrechen" (click)="onCancel()" (keydown.escape)="onCancel()"></p-button>
+        </div>
+    </div>
+</div>
