@@ -4,19 +4,20 @@
   label="Idioma"
   class="p-button-outlined idioma-btn"
   style="float: right; margin-right: 3px"
+  (onKeyDown.enter)="op.toggle($event)"
   (click)="op.toggle($event)"
 ></button>
 
 <p-overlayPanel #op [appendTo]="'body'" styleClass="lang-panel">
-  <div class="flag-option" (click)="changeLanguage('de'); op.hide()">
+  <button class="flag-option" (keydown.enter)="changeLanguage('de'); op.hide()" (click)="changeLanguage('de'); op.hide()">
     <span class="flag-icon flag-icon-de"></span> Deutsch
-  </div>
-  <div class="flag-option" (click)="changeLanguage('en'); op.hide()">
+  </button>
+  <button class="flag-option" (keydown.enter)="changeLanguage('en'); op.hide()" (click)="changeLanguage('en'); op.hide()">
     <span class="flag-icon flag-icon-gb"></span> English
-  </div>
-  <div class="flag-option" (click)="changeLanguage('es'); op.hide()">
+  </button>
+  <button class="flag-option" (keydown.enter)="changeLanguage('es'); op.hide()" (click)="changeLanguage('es'); op.hide()">
     <span class="flag-icon flag-icon-es"></span> Spanish
-  </div>
+  </button>
 </p-overlayPanel>
 
 <router-outlet></router-outlet>
