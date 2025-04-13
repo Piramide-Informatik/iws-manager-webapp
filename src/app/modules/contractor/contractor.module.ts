@@ -15,10 +15,13 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { ContractorDetailsComponent } from './components/contractor-details/contractor-details.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
-    ContractorOverviewComponent
+    ContractorOverviewComponent,
+    ContractorDetailsComponent
   ],
   imports: [
     ButtonModule,
@@ -30,6 +33,7 @@ import { ToolbarModule } from 'primeng/toolbar';
     MessageModule,
     MultiSelectModule,
     ContractorRoutingModule,
+    DropdownModule,
     TableModule,
     ToastModule,
     ToolbarModule

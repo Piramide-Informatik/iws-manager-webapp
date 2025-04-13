@@ -1,0 +1,30 @@
+
+$input-width:15em;
+
+.contractor-form{
+    height: auto;
+}
+
+.contractor-buttons{
+    p-button{
+        margin-left: 3px;
+    }
+}
+
+.contractor-input{
+    width: 100% !important;   
+    display: flex;
+    align-items: center;
+
+    label {
+        width: 6em;
+    }
+
+    input{
+        width: $input-width;
+    }
+
+    p-dropdown{
+        width: $input-width;
+    }
+}
