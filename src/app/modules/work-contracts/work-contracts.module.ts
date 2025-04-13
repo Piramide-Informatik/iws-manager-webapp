@@ -22,14 +22,20 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
+import { DropdownModule } from 'primeng/dropdown';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FloatLabel } from 'primeng/floatlabel';
+import { SelectModule } from 'primeng/select';
 
 
 //Components
 import { ListWorkContractsComponent } from './components/list-work-contracts/list-work-contracts.component';
+import { ContractDetailsComponent } from './components/ContractDetails/contract-details.component';
 
 @NgModule({
   declarations: [
-    ListWorkContractsComponent
+    ListWorkContractsComponent,
+    ContractDetailsComponent,
   ],
   imports: [
     ButtonModule,
@@ -51,6 +57,10 @@ import { ListWorkContractsComponent } from './components/list-work-contracts/lis
     MultiSelectModule,
     MessageModule,
     WorkContractsRoutingModule,
+    DropdownModule,
+    AutoCompleteModule,
+    FloatLabel,
+    SelectModule,
   ],
 })
 export class WorkContractsModule {}
