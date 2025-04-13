@@ -22,12 +22,10 @@ import { WorkContractsModule } from './modules/work-contracts/work-contracts.mod
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura'; //Tema default primeNG
 import Lara from '@primeng/themes/lara';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
 import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
 import { SplitButtonModule } from 'primeng/splitbutton';
 
 //Components
