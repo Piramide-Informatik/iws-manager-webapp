@@ -1,4 +1,4 @@
-//Angular 
+//Angular
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,17 +18,15 @@ import { FrameworkAgreementsModule } from './modules/framework-agreements/framew
 import { SubcontractsModule } from './modules/subcontracts/subcontracts.module';
 import { WorkContractsModule } from './modules/work-contracts/work-contracts.module';
 
-
 //Prime NG
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura'//Tema default primeNG
 import Lara from '@primeng/themes/lara';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
 import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 //Components
 import { AppComponent } from './app.component';
@@ -58,6 +56,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrdersModule,
     OverlayPanelModule,
     ProjectModule,
+    SplitButtonModule,
     SubcontractsModule,
     WorkContractsModule,
     ContractorModule,

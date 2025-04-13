@@ -26,6 +26,7 @@
     "@primeng/themes": "^19.0.9",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
+    "flag-icon-css": "^4.1.7",
     "jwt-decode": "^4.0.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
