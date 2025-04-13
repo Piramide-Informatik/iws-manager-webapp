@@ -149,8 +149,10 @@ export class ListInvoicesComponent implements OnInit {
 
   createUniqueId(): number {
     let id: number;
+    const array = new Uint32Array(1);
     do {
-      id = Math.floor(Math.random() * 1000);
+      crypto.getRandomValues(array);
+      id = array[0] % 1000;
     } while (
       this.invoices.some(
         (currentInvoice) => currentInvoice.invoiceNumber === id.toString()
@@ -158,6 +160,7 @@ export class ListInvoicesComponent implements OnInit {
     );
     return id;
   }
+
   getSeverity(status: string) {
     if (status === 'Active') {
       return 'success';
