@@ -6,7 +6,7 @@ import { InvoicesDatastoreService } from './invoices-datastore.service';
   providedIn: 'root',
 })
 export class InvoicesService {
-  constructor(private datastore: InvoicesDatastoreService) {}
+  constructor(private readonly datastore: InvoicesDatastoreService) {}
 
   private invoices: Invoice[] = [];
 

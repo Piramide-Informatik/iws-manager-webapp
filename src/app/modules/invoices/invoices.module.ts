@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 //Modulos
-import { invoicesRoutingModule } from './invoices-routing.module';
+import { InvoicesRoutingModule } from './invoices-routing.module';
 
 //Prime NG
 import { ButtonModule } from 'primeng/button';
@@ -47,7 +47,7 @@ import { ListInvoicesComponent } from './components/list-invoices-contracts/list
     ToolbarModule,
     MultiSelectModule,
     MessageModule,
-    invoicesRoutingModule,
+    InvoicesRoutingModule,
   ],
 })
-export class invoicesModule {}
+export class InvoicesModule {}
