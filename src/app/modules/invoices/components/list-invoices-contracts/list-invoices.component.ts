@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Invoice } from '../../../../Entities/invoices';
 import { InvoicesService } from '../../services/invoices.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
 import { Table } from 'primeng/table';
 
 interface Column {
@@ -44,10 +43,10 @@ export class ListInvoicesComponent implements OnInit {
 
   exportColumns!: ExportColumn[];
   constructor(
-    private invoicesService: InvoicesService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private cd: ChangeDetectorRef
+    private readonly invoicesService: InvoicesService,
+    private readonly messageService: MessageService,
+    private readonly confirmationService: ConfirmationService,
+    private readonly cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -80,9 +79,9 @@ export class ListInvoicesComponent implements OnInit {
   }
 
   exportCSV() {
-    if (this.invoices && this.invoices.length) {
+    if (this.invoices?.length) {
       setTimeout(() => {
-        if (this.dt2 && this.dt2.exportCSV) {
+        if (this.dt2?.exportCSV) {
           this.dt2.exportCSV();
         } else {
           console.error('Exportación no disponible');
@@ -93,37 +92,6 @@ export class ListInvoicesComponent implements OnInit {
     }
   }
 
-  /**loadWorkContracts() {
-    this.workContractsService
-      .list()
-      .then((data) => {
-        console.log('Datos cargados:', data);
-        this.contracts = data || [];
-        this.loading = false;
-      })
-      .catch((error) => {
-        console.error('Error al cargar los contratos:', error);
-      });
-  }
-  /** 
-  openNew() {
-    this.currentContract = {
-      employeeId: 0,
-      firstName: '',
-      lastName: '',
-      date: '',
-      salary: 0,
-      weeklyHours: 0,
-      maxHrsDay: 0,
-      maxHrsMonth: 0,
-      abbreviation: '',
-      hourlyRate: 0,
-      noteLine: '',
-    };
-    this.submitted = false;
-    this.productDialog = true;
-  }
-*/
   editInvoice(currentInvoice: Invoice) {
     this.currentInvoice = { ...currentInvoice };
     this.productDialog = true;
@@ -152,7 +120,6 @@ export class ListInvoicesComponent implements OnInit {
   hideDialog() {
     this.productDialog = false;
     this.submitted = false;
-    this.currentInvoice;
   }
   deleteInvoice(invoice: Invoice) {
     this.confirmationService.confirm({
@@ -201,13 +168,6 @@ export class ListInvoicesComponent implements OnInit {
     return 'info';
   }
 
-  onInputChange(event: Event, field: string): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
-
   saveProduct() {
     this.submitted = true;
 
@@ -222,8 +182,6 @@ export class ListInvoicesComponent implements OnInit {
           });
 
       productAction.then(() => {
-        // this.loadProducts();
-
         this.cd.detectChanges();
 
         const actionMessage = this.currentInvoice.invoiceNumber
@@ -242,13 +200,6 @@ export class ListInvoicesComponent implements OnInit {
     }
   }
 
-  /** 
-  loadProducts() {
-    this.workContractsService.list().then((data) => {
-      this.contracts = data;
-    });
-  }
-*/
   resetProductDialog() {
     this.productDialog = false;
     this.currentInvoice = {} as Invoice;

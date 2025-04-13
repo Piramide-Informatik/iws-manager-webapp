@@ -55,7 +55,7 @@ const routes: Routes = [
         path: 'invoices',
         loadChildren: () =>
           import('./modules/invoices/invoices.module').then(
-            (m) => m.invoicesModule
+            (m) => m.InvoicesModule
           ),
       },
       {
