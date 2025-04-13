@@ -5,8 +5,8 @@
       <div class="md:col-6 lg:col-6 lg:pr-8 md:pr-8">
 
         <div class="field">
-          <label>Kunden-Nr.</label>
-          <input type="text" pInputText id="InputCustomerNo" formControlName="customerNo"/>
+          <label for="customerNo">Kunden-Nr.</label>
+          <input type="text" pInputText id="customerNo" formControlName="customerNo"/>
         </div>
 
         <div class="field align-items-start">
@@ -148,7 +148,7 @@
   <div class="contact-person flex flex-column">
 
     <div class="flex flex-row gap-3 align-items-center my-2">
-      <label>Ansprechpartner</label>
+      <p>Ansprechpartner</p>
       <p-button icon="pi pi-plus" label="Neu" id="new-contact-person" routerLink="/customers/contact"></p-button>
     </div>
     
@@ -181,9 +181,9 @@
       <ng-template #header let-columns>
         <tr>
 
-          <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
+          <th id="detail-customer-buttons-field" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
 
-          <th *ngFor="let col of columns; let i = index" 
+          <th id="detail-customer-col-field" *ngFor="let col of columns; let i = index" 
             [pSortableColumn]="col.field" 
             class="thead" 
             pResizableColumn>
