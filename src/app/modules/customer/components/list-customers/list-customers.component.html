@@ -23,8 +23,8 @@
 
         <th class="thead-bg-blue"></th>
 
-        <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
-          col.header }} <p-sortIcon [field]="col.field" />
+        <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">
+          {{col.header  | translate }} <p-sortIcon [field]="col.field" />
         </th>
 
       </tr>

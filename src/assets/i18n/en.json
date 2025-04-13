@@ -24,8 +24,145 @@
     "SALES": "Sales",
     "INVENTORY": "Inventory"
   },
-  "PROJECTS-TABLE": {
-    "PROJECT_LABEL": "Project Label",
-    "PROJECT_NAME": "Project Name"
+  "COMMON": {
+    "CUSTOMER_NAME": "Customer"
+  },
+  "CUSTOMERS": {
+    "CUSTOMER_NAME": "Customer",
+    "TABLE": {
+      "CUSTOMER_ID": "Customer Number",
+      "COMPANY_NAME": "Company Name",
+      "NAME_LINE_2": "Name Line 2",
+      "COMPANY_TYPE": "Company Type",
+      "COUNTRY_NAME": "Country",
+      "CITY": "City",
+      "CONTACT_PERSON": "Contact"
+    }
+  },
+  "EMPLOYEES": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Employee Number",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "GM_SINCE_DATE": "GF",
+      "SH_SINCE_DATE": "Ges.",
+      "SP_DATE": "EU",
+      "CE_SINCE_DATE": "MU",
+      "QUALI_FZ": "Quali FZ",
+      "QUALI_MKUI": "Quali KMU-i"
+    }
+  },
+  "EMPLOYEE-CONTRACTS": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Employee ID",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "START_DATE": "Start Date",
+      "SALARY_PER_MONTH": "Salary per Month",
+      "WEEKLY_HOURS": "Weekly Hours",
+      "WORK_SHORT_TIME": "Percentage Decrease",
+      "SPECIAL_PAYMENT": "Special Payment",
+      "MAX_HOURS_PER_MONTH": "Max. Hours/Month",
+      "MAX_HOURS_PER_DAY": "Max. Hours/Day",
+      "HOURLY_RATE": "Hourly Rate"
+    }
+  },
+  "PROJECTS": {
+    "TABLE": {
+      "PROJECT_LABEL": "Label",
+      "PROJECT_NAME": "Name",
+      "FUNDING_PROGRAM": "Funding Program",
+      "PROMOTER": "Promoter",
+      "FUNDING_LABEL": "Funding Label",
+      "START_DATE": "Start Date",
+      "END_DATE": "End Date",
+      "AUTH_DATE": "Auth. Date",
+      "FUNDING_RATE": "Funding Rate"
+    }
+  },
+  "ORDERS": {
+    "TABLE": {
+      "ORDER_ID": "Order ID",
+      "ORDER_LABEL": "Label",
+      "ORDER_TYPE": "Type",
+      "ORDER_DATE": "Date",
+      "ACRONYM": "Acronym",
+      "FUNDING_PROGRAM": "Funding Program",
+      "VALUE": "Value",
+      "CONTRACT_STATUS": "Contract Status",
+      "CONTRACT_NRO": "Contract Number",
+      "CONTRACT_TITLE": "Contract Title",
+      "IWS_PERCENT": "IWS %",
+      "IWS_PERCENT_VALUE": "IWS-Value"
+    }
+  },
+  "RECEIVABLES": {
+    "TABLE": {
+      "CLAIM_NUMBER": "Claim Number",
+      "ORDER_NUMBER": "Order Number",
+      "ORDER_TITLE": "Order Title",
+      "FUNDING_PROGRAM": "Funding Program",
+      "PROJECT_SPONSOR": "Project Sponsor",
+      "FUNDING_CONCENTRATION": "Funding Concentration",
+      "PROJECT_START_DATE": "Project Start Date",
+      "PROJECT_END_DATE": "Project End Date",
+      "PROJECT_COST": "Project Cost",
+      "BILLING_START_DATE": "Billing Start Date",
+      "BILLING_END_DATE": "Billing End Date",
+      "NET_AMOUNT": "Net Amount",
+      "GROSS_AMOUNT": "Gross Amount",
+      "VAT_AMOUNT": "VAT Amount",
+      "RECEIVED_AMOUNT": "Received Amount",
+      "OPEN_AMOUNT": "Outstanding Balance",
+      "IWS_PERCENT": "IWS-%"
+    }
+  },
+  "INVOICES": {
+    "TABLE": {
+      "INVOICE_NUMBER": "Invoice Number",
+      "INVOICE_DATE": "Date",
+      "DESCRIPTION": "Description",
+      "INVOICE_TYPE": "Type",
+      "NETWORK": "Network",
+      "ORDER_NUMBER": "Order Number",
+      "ORDER_TITLE": "Order Title",
+      "NET_AMOUNT": "Net Amount",
+      "TAX_AMOUNT": "Tax Amount",
+      "AMOUNT_GROSS": "Gross Amount"
+    }
+  },
+  "FRAMEWORK-AGREEMENTS": {
+    "TABLE": {
+      "CONTRACT_NUMBER": "Contract Number",
+      "CONTRACT_LABEL": "Contract Label",
+      "DATE": "Date",
+      "FUNDING_PROGRAM": "Funding Program",
+      "CONTRACT_STATUS": "Contract Status",
+      "IWS_EMPLOYEE": "IWS Enployees"
+    }
+  },
+  "CONTRACTS": {
+    "TABLE": {
+      "CONTRACTOR_LABEL": "Label",
+      "CONTRACTOR_NAME": "Name",
+      "COUNTRY_LABEL": "Country",
+      "STREET": "Street",
+      "ZIP_CODE": "Zip Code",
+      "CITY": "City",
+      "TAX_NUMBER": "Tax Number"
+    }
+  },
+  "SUB-CONTRACTS": {
+    "TABLE": {
+      "ORDER_TITLE": "Order Title",
+      "CONTRACTOR": "Contractor",
+      "PROJECT": "Project",
+      "DATE": "Date",
+      "INVOICE_NUMBER": "Invoice Number",
+      "NET_INVOICE": "Net Invoice Amount",
+      "GROSS_INVOICE": "Gross Invoice Amount",
+      "SHARE": "Share"
+    }
   }
 }
