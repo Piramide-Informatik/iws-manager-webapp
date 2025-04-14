@@ -39,7 +39,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
     this.loadColHeaders();
     this.frameworkAgreements = this.FrameworkAgreementsService.list();
 
-    this.customer = 'Valentin Laime';
+    this.customer = 'Joe Doe';
 
     this.selectedColumns = this.cols;
 

@@ -58,7 +58,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
   ngOnInit():void {
     this.loadColHeaders();
     this.selectedColumns = this.cols;
-    this.customer = 'Valentin Laime';
+    this.customer = 'Joe Doe';
 
     this.invoices = this.invoicesService.list();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
