@@ -148,8 +148,15 @@
   <div class="contact-person flex flex-column">
 
     <div class="flex flex-row gap-3 align-items-center my-2">
-      <p>Ansprechpartner</p>
-      <p-button icon="pi pi-plus" label="Neu" id="new-contact-person" routerLink="/customers/contact"></p-button>
+      <span class="font-semibold">Contact Person</span>
+      <p-button (keydown.enter)="showDialog()" icon="pi pi-plus" label="Neu" id="new-contact-person" (click)="showDialog()"></p-button>
+      <p-dialog header="Ansprechpartner bearbeiten" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
+        <app-contact></app-contact>
+        <div class="buttons flex justify-content-center my-2">
+          <p-button label="Speichern" icon="pi pi-check" class="mx-4" severity="success"></p-button>
+          <p-button (keydown.enter)="visible = false" label="Abbrechen" icon="pi pi-times" severity="secondary" (click)="visible = false" />
+         </div>
+      </p-dialog>
     </div>
     
     <p-table 
@@ -180,8 +187,8 @@
       </ng-template>
       <ng-template #header let-columns>
         <tr>
+          <th id="customer-Details-options" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}">Option</th>
 
-          <th id="detail-customer-buttons-field" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
 
           <th id="detail-customer-col-field" *ngFor="let col of columns; let i = index" 
             [pSortableColumn]="col.field" 
@@ -201,8 +208,9 @@
                 pButton 
                 icon="pi pi-pencil" 
                 class="p-button-rounded p-button-info button-option" 
-                [routerLink]="['/customers/contact', person.id]"
+                (click)="showDialog()"
               ></button>
+              
               <button 
                 pButton 
                 icon="pi pi-trash" 

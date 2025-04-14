@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
@@ -16,31 +16,31 @@ interface Column {
   styleUrl: './detail-customer.component.scss'
 })
 export class DetailCustomerComponent implements OnInit {
-
+  
   public cols!: Column[];
 
   public selectedColumns!: Column[];
 
   public customers!: Customer[];
-  
+
   public countries: any[] = [
-    {name: 'Germany', code: 'DE',flag: 'https://flagsapi.com/DE/flat/64.png'},
-    {name: 'Switzerland',code: 'CH',flag: 'https://flagsapi.com/CH/flat/64.png'},
-    {name: 'France',code: 'FR',flag: 'https://flagsapi.com/FR/flat/64.png'},
-    {name: 'Japan',code: 'JP',flag: 'https://flagsapi.com/JP/flat/64.png'},
-    {name: 'USA',code: 'US',flag: 'https://flagsapi.com/US/flat/64.png'},
-    {name: 'UK',code: 'GB',flag: 'https://flagsapi.com/GB/flat/64.png'},
-    {name: 'Canada',code: 'CA',flag: 'https://flagsapi.com/CA/flat/64.png'},
-    {name: 'Spain',code: 'ES',flag: 'https://flagsapi.com/ES/flat/64.png'},
-    {name: 'Italy',code: 'IT',flag: 'https://flagsapi.com/IT/flat/64.png'},
-    {name: 'Netherlands',code: 'NL',flag: 'https://flagsapi.com/NL/flat/64.png'},
-    {name: 'India',code: 'IN',flag: 'https://flagsapi.com/IN/flat/64.png'},
-    {name: 'Brazil',code: 'BR',flag: 'https://flagsapi.com/BR/flat/64.png'},
-    {name: 'Mexico',code: 'MX',flag: 'https://flagsapi.com/MX/flat/64.png'},
-    {name: 'Argentina',code: 'AR',flag: 'https://flagsapi.com/AR/flat/64.png'},
-    {name: 'South Korea',code: 'KR',flag: 'https://flagsapi.com/KR/flat/64.png'},
-    {name: 'Australia',code: 'AU',flag: 'https://flagsapi.com/AU/flat/64.png'},
-    {name: 'Russia',code: 'RU',flag: 'https://flagsapi.com/RU/flat/64.png'}
+    { name: 'Germany', code: 'DE', flag: 'https://flagsapi.com/DE/flat/64.png' },
+    { name: 'Switzerland', code: 'CH', flag: 'https://flagsapi.com/CH/flat/64.png' },
+    { name: 'France', code: 'FR', flag: 'https://flagsapi.com/FR/flat/64.png' },
+    { name: 'Japan', code: 'JP', flag: 'https://flagsapi.com/JP/flat/64.png' },
+    { name: 'USA', code: 'US', flag: 'https://flagsapi.com/US/flat/64.png' },
+    { name: 'UK', code: 'GB', flag: 'https://flagsapi.com/GB/flat/64.png' },
+    { name: 'Canada', code: 'CA', flag: 'https://flagsapi.com/CA/flat/64.png' },
+    { name: 'Spain', code: 'ES', flag: 'https://flagsapi.com/ES/flat/64.png' },
+    { name: 'Italy', code: 'IT', flag: 'https://flagsapi.com/IT/flat/64.png' },
+    { name: 'Netherlands', code: 'NL', flag: 'https://flagsapi.com/NL/flat/64.png' },
+    { name: 'India', code: 'IN', flag: 'https://flagsapi.com/IN/flat/64.png' },
+    { name: 'Brazil', code: 'BR', flag: 'https://flagsapi.com/BR/flat/64.png' },
+    { name: 'Mexico', code: 'MX', flag: 'https://flagsapi.com/MX/flat/64.png' },
+    { name: 'Argentina', code: 'AR', flag: 'https://flagsapi.com/AR/flat/64.png' },
+    { name: 'South Korea', code: 'KR', flag: 'https://flagsapi.com/KR/flat/64.png' },
+    { name: 'Australia', code: 'AU', flag: 'https://flagsapi.com/AU/flat/64.png' },
+    { name: 'Russia', code: 'RU', flag: 'https://flagsapi.com/RU/flat/64.png' }
   ];
 
 
@@ -62,7 +62,7 @@ export class DetailCustomerComponent implements OnInit {
     { name: 'Saarland', code: 'SL' }
   ]
 
-  public formDetailCustomer!: FormGroup; 
+  public formDetailCustomer!: FormGroup;
 
   public persons = [
     { id: 1, name: 'Dr. Anna Müller', function: 'Chief Financial Officer', right: 1 },
@@ -91,7 +91,7 @@ export class DetailCustomerComponent implements OnInit {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private customerService: CustomerService
-  ){
+  ) {
 
     this.formDetailCustomer = this.fb.group({
       customerNo: [123],
@@ -116,20 +116,22 @@ export class DetailCustomerComponent implements OnInit {
     });
   }
 
+  visible: boolean = false;
+
   ngOnInit(): void {
     this.formDetailCustomer.get('customerNo')?.disable();
     this.customers = this.customerService.list();
     this.activatedRoute.params
-    .subscribe( params => {
-      const customerId = params['id'];
-      if(customerId){
-        this.formDetailCustomer.get('customerNo')?.setValue(customerId);
+      .subscribe(params => {
+        const customerId = params['id'];
+        if (customerId) {
+          this.formDetailCustomer.get('customerNo')?.setValue(customerId);
 
-        
-      }else{
-        this.formDetailCustomer.get('customerNo')?.setValue(this.customers.length+1);
-      }
-    });
+
+        } else {
+          this.formDetailCustomer.get('customerNo')?.setValue(this.customers.length + 1);
+        }
+      });
 
     //Init colums
     this.cols = [
@@ -141,12 +143,16 @@ export class DetailCustomerComponent implements OnInit {
     this.selectedColumns = this.cols;
   }
 
-  deletePerson(contact: any){
-    this.persons = this.persons.filter(person => person.id !== contact.id); 
+  deletePerson(contact: any) {
+    this.persons = this.persons.filter(person => person.id !== contact.id);
   }
 
-  addNewPerson(){
-    
+  addNewPerson() {
+
+  }
+
+  showDialog() {
+    this.visible = true;
   }
 
 }
