@@ -8,10 +8,20 @@
         </p-iconfield>
     </div>
     <div class="scrollbox">
-        <p-table #dt2 [value]="employees" showGridlines stripedRows [tableStyle]="{ 'min-width': '270%' }" [rows]="10"
-            [columns]="selectedColumns" [paginator]="true" scrollable="true" [rowsPerPageOptions]="[10, 25, 50]"
-            [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}" [resizableColumns]="true"
-            styleClass="p-datatable-gridlines" [rowHover]="true" dataKey="id"
+        <p-table #dt2 [value]="employees" 
+            showGridlines 
+            stripedRows 
+            [rows]="10"
+            [columns]="selectedColumns" 
+            [paginator]="true" 
+            scrollable="true" 
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}" 
+            [resizableColumns]="true"
+            columnResizeMode="expand"
+            styleClass="p-datatable-gridlines" 
+            [rowHover]="true" 
+            dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [showCurrentPageReport]="true">
             <ng-template #caption>
@@ -57,10 +67,10 @@
                     <td>{{ employee.firstName }}</td>
                     <td>{{ employee.lastName }}</td>
                     <td>{{ employee.email }}</td>
-                    <td>{{ employee.generalManagerSince }}</td>
-                    <td>{{ employee.shareholderSince }}</td>
-                    <td>{{ employee.soleproprietorSince }}</td>
-                    <td>{{ employee.coentrepreneurSince }}</td>
+                    <td class="text-center">{{ employee.generalManagerSince }}</td>
+                    <td class="text-center">{{ employee.shareholderSince }}</td>
+                    <td class="text-center">{{ employee.soleproprietorSince }}</td>
+                    <td class="text-center">{{ employee.coentrepreneurSince }}</td>
                     <td>{{ employee.qualificationFz }}</td>
                     <td>{{ employee.qualificationKmui }}</td>
                 </tr>
