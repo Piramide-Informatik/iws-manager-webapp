@@ -221,8 +221,9 @@
             </div>
           </td>
 
-          <td *ngFor="let col of columns"> 
-            {{ person[col.field] }}
+          <td *ngFor="let col of columns; let i = index" 
+             [ngClass]="{'align-right': i === columns.length - 1}">
+             {{ person[col.field] }}
           </td>
         </tr>
       </ng-template>

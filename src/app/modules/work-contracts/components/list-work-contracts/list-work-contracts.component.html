@@ -49,7 +49,7 @@
           </div>
         </td>
         <td *ngFor="let col of columns; let i = index" 
-             [ngClass]="{'align-right': i === 0 || i === 4 || i === 5 || i === 7 || i === 8 || i === 9 || i === 10, 
+             [ngClass]="{'align-right': i === 0 || i === 4 || i === 5 || i === 6 || i === 7 || i === 8 || i === 9 || i === 10, 
               'text-center': i === 3}">
              {{ contract[col.field] }}
         </td>

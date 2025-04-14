@@ -78,7 +78,7 @@
             </div>
           </td>
           <td *ngFor="let col of columns; let i = index" 
-              [ngClass]="{'align-right': i === 6 || i === 11, 'text-center': i === 3}">
+              [ngClass]="{'align-right':  i === 0 ||i === 6 || i === 11 || i === 10, 'text-center': i === 3}">
               {{ customer[col.field] }}
           </td>
         </tr>
