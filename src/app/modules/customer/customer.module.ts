@@ -17,6 +17,8 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
+import { DialogModule } from 'primeng/dialog';
+
 
 
 //Componentes
@@ -49,7 +51,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     ToolbarModule,
     TranslateModule,
     TranslatePipe,
-    TranslateDirective
+    TranslateDirective,
+    DialogModule
   ]
 })
 export class CustomerModule {}
