@@ -21,14 +21,16 @@
   >
     <ng-template #header>
       <tr>
-        <th></th>
-        <th pSortableColumn="projectName">
+        <th id="action-th" class="thead"></th>
+        <th id="col-fiel" pSortableColumn="projectName" class="thead">
           Projekt <p-sortIcon field="projectName" />
         </th>
-        <th pSortableColumn="percentage">
+        <th id="col-fiel" pSortableColumn="percentage" class="thead">
           Anteil % <p-sortIcon field="percentage" />
         </th>
-        <th pSortableColumn="amount">Betrag <p-sortIcon field="amount" /></th>
+        <th id="col-fiel" pSortableColumn="amount" class="thead">
+          Betrag <p-sortIcon field="amount" />
+        </th>
       </tr>
     </ng-template>
 
@@ -59,23 +61,23 @@
 
   <div class="mt-2">
     <p-button
-      class="addNew me-2"
       size="small"
       label="Neu"
       icon="pi pi-plus"
       iconPos="left"
       (click)="showModal(option.new)"
-    />
+      [attr.aria-label]="'Add new project'"
+      (keydown.enter)="showModal(option.new)"
+    ></p-button>
   </div>
 </p-card>
 
-<!-- Modal de asignación -->
 <div class="card">
   <p-dialog
-    [header]="optionSelected + ' Project Allocation'"
+    header="Unterauftrag – Projekte"
     (onHide)="closeModal()"
     [modal]="true"
-    [(visible)]="visibleModal()"
+    [(visible)]="visibleModal"
     [style]="{ width: '40rem' }"
   >
     <hr class="mt-0" />
@@ -111,8 +113,17 @@
         />
       </div>
       <div class="flex justify-content-center gap-2">
-        <p-button label="Save" (click)="saveAllocation()" />
-        <p-button label="Cancel" (click)="closeModal()" />
+        <p-button
+          label="Save"
+          (click)="saveAllocation()"
+          (keydown.enter)="saveAllocation()"
+        ></p-button>
+
+        <p-button
+          label="Cancel"
+          (click)="closeModal()"
+          (keydown.enter)="closeModal()"
+        ></p-button>
       </div>
     </form>
   </p-dialog>

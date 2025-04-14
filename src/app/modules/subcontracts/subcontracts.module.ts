@@ -7,12 +7,14 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
-import { CalendarModule } from 'primeng/calendar';
-import { DropdownModule } from 'primeng/dropdown';
+import { DatePickerModule } from 'primeng/datepicker';
+import { SelectModule } from 'primeng/select';
 import { CheckboxModule } from 'primeng/checkbox';
-import { InputTextarea } from 'primeng/inputtextarea';
-
+import { IconFieldModule } from 'primeng/iconfield';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { ToolbarModule } from 'primeng/toolbar';
+import { MessageModule } from 'primeng/message';
+import { CardModule } from 'primeng/card';
 
 // Routing
 import { SubcontractsRoutingModule } from './subcontracts-routing.module';
@@ -43,11 +45,14 @@ import { DepreciationScheduleComponent } from './components/subcontracts-detail/
     TableModule,
     InputTextModule,
     DialogModule,
-    CalendarModule,
-    DropdownModule,
+    DatePickerModule,
+    SelectModule,
     CheckboxModule,
-    InputTextarea,
     ToolbarModule,
+    MessageModule,
+    MultiSelectModule,
+    IconFieldModule,
+    CardModule,
   ],
 })
 export class SubcontractsModule {}

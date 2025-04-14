@@ -30,6 +30,34 @@ export class DepreciationScheduleComponent implements OnInit {
   selectedYear!: number;
 
   ngOnInit(): void {
+    this.depreciationEntries = [
+      {
+        year: 2025,
+        usagePercentage: 40,
+        depreciationAmount: 3000,
+      },
+      {
+        year: 2026,
+        usagePercentage: 30,
+        depreciationAmount: 2250,
+      },
+      {
+        year: 2027,
+        usagePercentage: 20,
+        depreciationAmount: 1500,
+      },
+      {
+        year: 2028,
+        usagePercentage: 10,
+        depreciationAmount: 750,
+      },
+      {
+        year: 2029,
+        usagePercentage: 5,
+        depreciationAmount: 375,
+      },
+    ];
+
     this.depreciationForm = new FormGroup({
       year: new FormControl('', Validators.required),
       usagePercentage: new FormControl('', Validators.required),

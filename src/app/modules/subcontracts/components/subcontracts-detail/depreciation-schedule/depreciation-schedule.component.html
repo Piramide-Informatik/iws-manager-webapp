@@ -21,12 +21,14 @@
   >
     <ng-template #header>
       <tr>
-        <th></th>
-        <th pSortableColumn="year">Jahr <p-sortIcon field="year" /></th>
-        <th pSortableColumn="usagePercentage">
+        <th id="col-fiel" class="thead"></th>
+        <th id="col-fiel" pSortableColumn="year" class="thead">
+          Jahr <p-sortIcon field="year" />
+        </th>
+        <th id="col-fiel" pSortableColumn="usagePercentage" class="thead">
           Nutzungsanteil % <p-sortIcon field="usagePercentage" />
         </th>
-        <th pSortableColumn="depreciationAmount">
+        <th id="col-fiel" pSortableColumn="depreciationAmount" class="thead">
           AfA im Jahr <p-sortIcon field="depreciationAmount" />
         </th>
       </tr>
@@ -56,26 +58,25 @@
     </ng-template>
   </p-table>
 
-  <!-- Botón NUEVO -->
   <div class="mt-2">
     <p-button
-      class="addNew me-2"
       size="small"
       label="Neu"
       icon="pi pi-plus"
       iconPos="left"
       (click)="showModal(option.new)"
-    />
+      [attr.aria-label]="'Add new project'"
+      (keydown.enter)="showModal(option.new)"
+    ></p-button>
   </div>
 </p-card>
 
-<!-- Modal -->
 <div class="card">
   <p-dialog
-    [header]="optionSelected + ' Depreciation Entry'"
+    header="Unterauftrag – Abschreibung Jahre"
     (onHide)="closeModal()"
     [modal]="true"
-    [(visible)]="visibleModal()"
+    [(visible)]="visibleModal"
     [style]="{ width: '40rem' }"
   >
     <hr class="mt-0" />
@@ -111,8 +112,17 @@
         />
       </div>
       <div class="flex justify-content-center gap-2">
-        <p-button label="Save" (click)="saveDepreciation()" />
-        <p-button label="Cancel" (click)="closeModal()" />
+        <p-button
+          label="Save"
+          (click)="saveDepreciation()"
+          (keydown.enter)="saveDepreciation()"
+        ></p-button>
+
+        <p-button
+          label="Cancel"
+          (click)="closeModal()"
+          (keydown.enter)="closeModal()"
+        ></p-button>
       </div>
     </form>
   </p-dialog>
