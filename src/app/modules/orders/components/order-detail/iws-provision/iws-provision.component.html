@@ -1,6 +1,4 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
-  <ng-template #title>IWS Provision</ng-template>
-
   <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
       <div class="iws-employeeInput project_name mb-2">
@@ -48,14 +46,26 @@
   >
     <ng-template #header>
       <tr>
-        <th class="thead"></th>
-        <th pSortableColumn="fromOrderValue" class="thead">
+        <th id="iws-provision-buttons-field" class="thead"></th>
+        <th
+          id="iws-provision-field-fromOrderValue"
+          pSortableColumn="fromOrderValue"
+          class="thead"
+        >
           ab Wert<p-sortIcon field="fromOrderValue" />
         </th>
-        <th pSortableColumn="commission" class="thead">
+        <th
+          id="iws-provision-field-commission"
+          pSortableColumn="commission"
+          class="thead"
+        >
           Provision <p-sortIcon field="commission" />
         </th>
-        <th pSortableColumn="minCommission" class="thead">
+        <th
+          id="iws-provision-field-minCommission"
+          pSortableColumn="minCommission"
+          class="thead"
+        >
           Mindestprovision <p-sortIcon field="minCommission" />
         </th>
       </tr>
