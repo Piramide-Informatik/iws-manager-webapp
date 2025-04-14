@@ -5,7 +5,7 @@ import { SubcontractDatastoreService } from './subcontracts-datastore.service';
   providedIn: 'root',
 })
 export class SubcontractsService {
-  constructor(private datastore: SubcontractDatastoreService) {}
+  constructor(private readonly datastore: SubcontractDatastoreService) {}
 
   list() {
     return this.datastore.list();
