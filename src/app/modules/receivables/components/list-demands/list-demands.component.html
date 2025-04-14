@@ -45,7 +45,7 @@
           pInputText 
           pSize="small"
           type="text"
-          [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i < 0}"
+          [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
           (input)="applyFilter($event, col.field)"
           
         />
@@ -77,7 +77,8 @@
               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option" (click)="deleteDemand(demand.idClaim)"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns"
+        <td *ngFor="let col of columns; let j = index"
+          [ngClass]="{'text-center': j == 6 || j == 7 || j == 9 || j == 10}"
         >{{ demand[col.field] }}</td>
         
       </tr>
