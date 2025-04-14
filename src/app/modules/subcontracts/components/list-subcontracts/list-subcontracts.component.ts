@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
+import {TranslateService, _} from "@ngx-translate/core";
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface Column {
   field: string,
@@ -12,7 +15,9 @@ interface Column {
   templateUrl: './list-subcontracts.component.html',
   styleUrl: './list-subcontracts.component.scss'
 })
-export class ListSubcontractsComponent implements OnInit {
+export class ListSubcontractsComponent implements OnInit, OnDestroy {
+
+  public cols!: Column[];
 
   public subcontracts!: any[];
 
@@ -20,25 +25,25 @@ export class ListSubcontractsComponent implements OnInit {
 
   @ViewChild('dt2') dt2!: Table;
 
-  public cols: Column[] = [
-    { field: 'orderTitle', header: 'Autrag'},
-    { field: 'contractor', header: 'Auftragnehmer'},
-    { field: 'project', header: 'Projekt'},
-    { field: 'date', header: 'Datum'},
-    { field: 'invoiceNumber', header: 'Rechnung-Nr.'},
-    { field: 'net', header: 'Netto'},
-    { field: 'gross', header: 'Brutto'},
-    { field: 'share', header: 'Anteil'},
-  ];
+  private langSubscription!: Subscription;
+
 
   public selectedColumns!: Column[];
 
-  constructor(){}
+  constructor( private translate: TranslateService, public router:Router){}
 
+  
   ngOnInit(): void {
+
+    this.loadColHeaders();
     this.selectedColumns = this.cols;
 
     this.customer = 'Valentin Laime';
+
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.reloadComponent(true);
+    });
 
     this.subcontracts = [
       {
@@ -243,6 +248,36 @@ export class ListSubcontractsComponent implements OnInit {
       }
     ];
   }
+
+  loadColHeaders(): void {
+    this.cols = [
+          { field: 'orderTitle', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))},
+          { field: 'contractor', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR'))},
+          { field: 'project', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT'))},
+          { field: 'date', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE'))},
+          { field: 'invoiceNumber', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER'))},
+          { field: 'net', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE'))},
+          { field: 'gross', header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE'))},
+          { field: 'share',header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE'))}
+        ];
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
+
+  reloadComponent(self:boolean,urlToNavigateTo ?:string){
+    //skipLocationChange:true means dont update the url to / when navigating
+    //console.log("Current route I am on:",this.router.url);
+   const url=self ? this.router.url :urlToNavigateTo;
+   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
+     this.router.navigate([`/${url}`]).then(()=>{
+  //console.log(`After navigation I am on:${this.router.url}`)
+     })
+   })
+ }
 
   applyFilter(event: Event, field: string) {
     const inputElement = event.target as HTMLInputElement;

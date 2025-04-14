@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
+import { TranslateService, _ } from "@ngx-translate/core";
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface Column {
   field: string,
@@ -12,7 +15,11 @@ interface Column {
   templateUrl: './list-demands.component.html',
   styleUrl: './list-demands.component.scss'
 })
-export class ListDemandsComponent implements OnInit {
+export class ListDemandsComponent implements OnInit, OnDestroy {
+
+  public cols!: Column[];
+
+  private langSubscription!: Subscription;
 
   public demands!: any[];
 
@@ -20,31 +27,12 @@ export class ListDemandsComponent implements OnInit {
 
   @ViewChild('dt2') dt2!: Table;
 
-  public cols: Column[] = [
-    { field: 'idClaim', header: 'Ford.-Nr.'},
-    { field: 'idOrder', header: 'Auftr.-Nr.'},
-    { field: 'orderTitle', header: 'Auftrag'},//Title
-    { field: 'fundingProgram', header: 'Förderp'},
-    { field: 'projectSponsor', header: 'Projekttr.'},
-    { field: 'fundingConcentration', header: 'Förder-KZ'},
-    { field: 'projectStart', header: 'Proj.Start'},
-    { field: 'projectEnd', header: 'Proj.Ende'},
-    { field: 'projectCost', header: 'Proj.Koste'},//falta doc
-    { field: 'abrStart', header: 'Abr.Start'},
-    { field: 'abrEnd', header: 'Abr.Ende'},
-    { field: 'forNet', header: 'Zuwendunge'},
-    { field: 'ofSt', header: 'ZA netto.'},
-    { field: 'zaGross', header: 'ZA MwSt. ^v.'},
-    { field: 'zaReceived', header: 'ZA brutto.'},
-    { field: 'zaOffen', header: 'ZA erhalten.'},
-    { field: 'iwsPercent', header: 'IWS-%'},
-  ];
-
   public selectedColumns!: Column[];
 
-  constructor(){}
+  constructor(private translate: TranslateService, public router: Router) { }
 
   ngOnInit(): void {
+    this.loadColHeaders();
     this.selectedColumns = this.cols;
 
     this.customer = 'Valentin Laime'
@@ -431,6 +419,52 @@ export class ListDemandsComponent implements OnInit {
         "iwsPercent": 6.5
       }
     ];
+
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.reloadComponent(true);
+    });
+  }
+
+  loadColHeaders(): void {
+    this.cols = [
+      { field: 'idClaim', header: this.translate.instant(_('RECEIVABLES.TABLE.CLAIM_NUMBER')) },
+      { field: 'idOrder', header: this.translate.instant(_('RECEIVABLES.TABLE.ORDER_NUMBER')) },
+      { field: 'orderTitle', header: this.translate.instant(_('RECEIVABLES.TABLE.ORDER_TITLE')) },
+      { field: 'fundingProgram', header: this.translate.instant(_('RECEIVABLES.TABLE.FUNDING_PROGRAM')) },
+      { field: 'projectSponsor', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_SPONSOR')) },
+      { field: 'fundingConcentration', header: this.translate.instant(_('RECEIVABLES.TABLE.FUNDING_CONCENTRATION')) },
+      { field: 'projectStart', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_START_DATE')) },
+      { field: 'projectEnd', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_END_DATE')) },
+      { field: 'projectCost', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_COST')) },
+      { field: 'abrStart', header: this.translate.instant(_('RECEIVABLES.TABLE.BILLING_START_DATE')) },
+      { field: 'abrEnd', header: this.translate.instant(_('RECEIVABLES.TABLE.BILLING_END_DATE')) },
+      { field: 'forNet', header: this.translate.instant(_('RECEIVABLES.TABLE.NET_AMOUNT')) },
+      { field: 'ofSt', header: this.translate.instant(_('RECEIVABLES.TABLE.GROSS_AMOUNT')) },
+      { field: 'zaGross', header: this.translate.instant(_('RECEIVABLES.TABLE.VAT_AMOUNT')) },
+      { field: 'zaReceived', header: this.translate.instant(_('RECEIVABLES.TABLE.RECEIVED_AMOUNT')) },
+      { field: 'zaOffen', header: this.translate.instant(_('RECEIVABLES.TABLE.OPEN_AMOUNT')) },
+      { field: 'iwsPercent', header: this.translate.instant(_('RECEIVABLES.TABLE.IWS_PERCENT')) }
+    ];
+
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
+
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+    //skipLocationChange:true means dont update the url to / when navigating
+    //console.log("Current route I am on:",this.router.url);
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+        //console.log(`After navigation I am on:${this.router.url}`)
+      })
+    })
   }
 
   applyFilter(event: Event, field: string) {
@@ -440,7 +474,7 @@ export class ListDemandsComponent implements OnInit {
     }
   }
 
-  deleteDemand(idClaim: any){
-    this.demands = this.demands.filter( demand => demand.idClaim !== idClaim);
+  deleteDemand(idClaim: any) {
+    this.demands = this.demands.filter(demand => demand.idClaim !== idClaim);
   }
 }

@@ -1,8 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Invoice } from '../../../../Entities/invoices';
 import { InvoicesService } from '../../services/invoices.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import {TranslateService, _} from "@ngx-translate/core";
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface Column {
   field: string;
@@ -22,8 +25,10 @@ interface ExportColumn {
   templateUrl: './list-invoices.component.html',
   styleUrl: './list-invoices.component.scss',
 })
-export class ListInvoicesComponent implements OnInit {
+export class ListInvoicesComponent implements OnInit, OnDestroy{
   public cols!: Column[];
+
+  private langSubscription!: Subscription;
 
   public selectedColumns!: Column[];
 
@@ -46,30 +51,56 @@ export class ListInvoicesComponent implements OnInit {
     private readonly invoicesService: InvoicesService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
-    private readonly cd: ChangeDetectorRef
+    private readonly cd: ChangeDetectorRef,
+    private translate: TranslateService, public router:Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit():void {
+    this.loadColHeaders();
     this.selectedColumns = this.cols;
     this.customer = 'Valentin Laime';
 
     this.invoices = this.invoicesService.list();
-
-    this.cols = [
-      { field: 'invoiceNumber', header: 'Rechnung-Nr.' },
-      { field: 'date', header: 'Datum' },
-      { field: 'description', header: 'Beschreibung' },
-      { field: 'type', header: 'Typ' },
-      { field: 'iwsNumber', header: 'Netzwerk' },
-      { field: 'orderNumber', header: 'Auftrag-Nr.' },
-      { field: 'orderName', header: 'Auftrag' },
-      { field: 'netAmount', header: 'Netto' },
-      { field: 'value', header: 'MwSt.' },
-      { field: 'totalAmount', header: 'Summe' },
-    ];
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.reloadComponent(true);
+    });
 
     this.selectedColumns = this.cols;
   }
+
+  loadColHeaders(): void {
+    this.cols = [
+          { field: 'invoiceNumber', header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))},
+          { field: 'date', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE'))},
+          { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION'))},
+          { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE'))},
+          { field: 'iwsNumber', header: this.translate.instant(_('INVOICES.TABLE.NETWORK'))},
+          { field: 'orderNumber', header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER'))},
+          { field: 'orderName', header: this.translate.instant(_('INVOICES.TABLE.ORDER_TITLE'))},
+          { field: 'netAmount',  header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT'))},
+          { field: 'value', header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT'))},
+          { field: 'totalAmount', header: this.translate.instant(_('INVOICES.TABLE.AMOUNT_GROSS'))}
+        ];
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
+
+  reloadComponent(self:boolean,urlToNavigateTo ?:string){
+    //skipLocationChange:true means dont update the url to / when navigating
+    //console.log("Current route I am on:",this.router.url);
+   const url=self ? this.router.url :urlToNavigateTo;
+   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
+     this.router.navigate([`/${url}`]).then(()=>{
+  //console.log(`After navigation I am on:${this.router.url}`)
+     })
+   })
+ }
+
 
   applyFilter(event: Event, field: string) {
     const inputElement = event.target as HTMLInputElement;

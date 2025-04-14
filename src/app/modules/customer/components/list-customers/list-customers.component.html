@@ -18,10 +18,11 @@
         </th>
       </tr>
       <tr>
-        <th id="list-customers-buttons-field" class="thead-bg-blue"></th>
-        <th id="list-customers-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
-          col.header }} <p-sortIcon [field]="col.field" />
-        </th>
+
+        <th class="thead-bg-blue"></th>
+
+        <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">
+          {{col.header }} <p-sortIcon [field]="col.field" />
       </tr>
     </ng-template>
     <ng-template #body let-customer let-i="rowIndex" let-columns="columns">
