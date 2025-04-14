@@ -1,0 +1,119 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }">
+  <ng-template #title>Aufteilung auf Jahre</ng-template>
+
+  <p-table
+    #dt
+    [value]="depreciationEntries"
+    showGridlines
+    stripedRows
+    [tableStyle]="{ 'min-width': '100%' }"
+    [rows]="4"
+    [paginator]="true"
+    scrollable="true"
+    scrollHeight="90vh"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [globalFilterFields]="['year', 'usagePercentage', 'depreciationAmount']"
+    [(selection)]="selectedYear"
+    [rowHover]="true"
+    dataKey="year"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template #header>
+      <tr>
+        <th></th>
+        <th pSortableColumn="year">Jahr <p-sortIcon field="year" /></th>
+        <th pSortableColumn="usagePercentage">
+          Nutzungsanteil % <p-sortIcon field="usagePercentage" />
+        </th>
+        <th pSortableColumn="depreciationAmount">
+          AfA im Jahr <p-sortIcon field="depreciationAmount" />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-entry>
+      <tr>
+        <td>
+          <div class="flex items-center justify-center gap-2">
+            <button
+              pButton
+              icon="pi pi-pencil"
+              (click)="showModal(option.edit, entry.year)"
+              class="p-button-rounded p-button-info button-option"
+            ></button>
+            <button
+              pButton
+              icon="pi pi-trash"
+              (click)="deleteDepreciation(entry.year)"
+              class="p-button-rounded p-button-danger button-option"
+            ></button>
+          </div>
+        </td>
+        <td>{{ entry.year }}</td>
+        <td>{{ entry.usagePercentage }}%</td>
+        <td>{{ entry.depreciationAmount | currency : "EUR" }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Botón NUEVO -->
+  <div class="mt-2">
+    <p-button
+      class="addNew me-2"
+      size="small"
+      label="Neu"
+      icon="pi pi-plus"
+      iconPos="left"
+      (click)="showModal(option.new)"
+    />
+  </div>
+</p-card>
+
+<!-- Modal -->
+<div class="card">
+  <p-dialog
+    [header]="optionSelected + ' Depreciation Entry'"
+    (onHide)="closeModal()"
+    [modal]="true"
+    [(visible)]="visibleModal()"
+    [style]="{ width: '40rem' }"
+  >
+    <hr class="mt-0" />
+    <form [formGroup]="depreciationForm" (ngSubmit)="saveDepreciation()">
+      <div class="flex gap-4 mb-3">
+        <label for="year" class="w-3">Jahr</label>
+        <input
+          pInputText
+          id="year"
+          class="flex-auto"
+          formControlName="year"
+          autocomplete="off"
+        />
+      </div>
+      <div class="flex gap-4 mb-3">
+        <label for="usagePercentage" class="w-3">Nutzungsanteil %</label>
+        <input
+          pInputText
+          id="usagePercentage"
+          class="flex-auto"
+          formControlName="usagePercentage"
+          autocomplete="off"
+        />
+      </div>
+      <div class="flex gap-4 mb-3">
+        <label for="depreciationAmount" class="w-3">AfA im Jahr</label>
+        <input
+          pInputText
+          id="depreciationAmount"
+          class="flex-auto"
+          formControlName="depreciationAmount"
+          autocomplete="off"
+        />
+      </div>
+      <div class="flex justify-content-center gap-2">
+        <p-button label="Save" (click)="saveDepreciation()" />
+        <p-button label="Cancel" (click)="closeModal()" />
+      </div>
+    </form>
+  </p-dialog>
+</div>
