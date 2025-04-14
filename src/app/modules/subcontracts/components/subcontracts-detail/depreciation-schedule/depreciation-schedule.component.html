@@ -7,16 +7,16 @@
     showGridlines
     stripedRows
     [tableStyle]="{ 'min-width': '100%' }"
-    [rows]="4"
+    [rows]="15"
     [paginator]="true"
     scrollable="true"
     scrollHeight="90vh"
-    [rowsPerPageOptions]="[10, 25, 50]"
+    [rowsPerPageOptions]="[15, 30, 50]"
     [globalFilterFields]="['year', 'usagePercentage', 'depreciationAmount']"
     [(selection)]="selectedYear"
     [rowHover]="true"
     dataKey="year"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
     [showCurrentPageReport]="true"
   >
     <ng-template #header>
@@ -53,7 +53,7 @@
         </td>
         <td [ngClass]="'align-right'">{{ entry.year }}</td>
         <td [ngClass]="'align-right'">{{ entry.usagePercentage }}%</td>
-        <td>{{ entry.depreciationAmount | currency : "EUR" }}</td>
+        <td [ngClass]="'align-right'">{{ entry.depreciationAmount | currency : "EUR" }}</td>
       </tr>
     </ng-template>
   </p-table>

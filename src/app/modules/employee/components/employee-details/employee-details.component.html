@@ -89,13 +89,13 @@
         [value]="employeeContracts" 
         [columns]="selectedColumns"
         [paginator]="true"
-        [rows]="5"
+        [rows]="15"
         showGridlines
         scrollable="true"
         scrollHeight="300px"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
         [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[5, 10, 20]"
+        [rowsPerPageOptions]="[15, 30, 50]"
         [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
         [resizableColumns]="true"
         columnResizeMode="expand"
@@ -155,7 +155,7 @@
                                 <input pInputText type="text" [(ngModel)]="employeeContract.salaryPerMonth" required />
                             </ng-template>
                             <ng-template #output>
-                                {{employeeContract.salaryPerMonth | currency: 'USD'}}
+                                {{employeeContract.salaryPerMonth}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -216,7 +216,7 @@
                                 <input pInputText type="text" [(ngModel)]="employeeContract.specialPayment" required />
                             </ng-template>
                             <ng-template #output>
-                                {{employeeContract.specialPayment | currency: 'USD'}}
+                                {{employeeContract.specialPayment}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
