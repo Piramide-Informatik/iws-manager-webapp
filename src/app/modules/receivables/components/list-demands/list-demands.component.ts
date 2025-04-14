@@ -35,7 +35,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
     this.loadColHeaders();
     this.selectedColumns = this.cols;
 
-    this.customer = 'Valentin Laime'
+    this.customer = 'Joe Doe'
 
     this.demands = [
       {
