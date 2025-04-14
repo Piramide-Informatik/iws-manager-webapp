@@ -43,7 +43,7 @@
         <td>
           <div class="flex items-center justify-center gap-2">
             <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-              [routerLink]="['', customer.id]"></button>
+              [routerLink]="['/work-contracts/contractDetails', customer.id]"></button>
             <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
               (click)="deleteWorkContract(customer.id)"></button>
           </div>
@@ -63,7 +63,7 @@
   <p-toolbar>
 
     <ng-template  #start>
-      <p-button label="Neu" icon="pi pi-plus" routerLink="" />
+      <p-button label="Neu" icon="pi pi-plus" [routerLink]="['/work-contracts/contractDetails']" />
       
       <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="importEmployContracts" chooseLabel="Arbeitsverträge importieren" auto
         customUpload class="mr-2 inline-block"  />
