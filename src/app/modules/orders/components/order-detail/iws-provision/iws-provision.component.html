@@ -103,13 +103,14 @@
   <div class="row">
     <div class="col-3">
       <p-button
-        class="addNew me-2"
         size="small"
         label="Neu"
         icon="pi pi-plus"
         iconPos="left"
         (click)="showModalIwsCommission(optionIwsCommission.new)"
-      />
+        [attr.aria-label]="'Add new project'"
+        (keydown.enter)="showModalIwsCommission(optionIwsCommission.new)"
+      ></p-button>
     </div>
     <div class="col-9">
       <div class="project_name mb-2">
@@ -168,8 +169,17 @@
         />
       </div>
       <div class="flex justify-content-center gap-2">
-        <p-button label="Save" (click)="addIwsCommission()" />
-        <p-button label="Cancel" (click)="closeModalIwsCommission()" />
+        <p-button
+          label="Save"
+          (click)="addIwsCommission()"
+          (keydown.enter)="addIwsCommission()"
+        ></p-button>
+
+        <p-button
+          label="Cancel"
+          (click)="closeModalIwsCommission()"
+          (keydown.enter)="closeModalIwsCommission()"
+        ></p-button>
       </div>
     </form>
   </p-dialog>
