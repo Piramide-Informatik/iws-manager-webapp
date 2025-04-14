@@ -23,6 +23,7 @@
           <p-select formControlName="selectedCountry" 
             id="country"
             [options]="countries"
+            [(ngModel)]="selectedCountry"
             optionLabel="name" 
           >
             <!-- Opción seleccionada (visualización en el input) -->

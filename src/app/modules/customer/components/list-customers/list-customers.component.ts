@@ -1,9 +1,9 @@
-import { Component,  OnInit, OnDestroy,  ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
 import { Table } from 'primeng/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import {TranslateService, _} from "@ngx-translate/core";
+import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -30,7 +30,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor(private customerService: CustomerService, private translate: TranslateService, public router:Router) {}
+  constructor(private customerService: CustomerService, private translate: TranslateService, public router: Router) { }
 
   ngOnInit(): void {
 
@@ -47,14 +47,14 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-          { field: 'id', header:  this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID'))},
-          { field: 'companyName', header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME'))},
-          { field: 'nameLine2', header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2'))},
-          { field: 'kind', header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE'))},
-          { field: 'land', header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME'))},
-          { field: 'place', header: this.translate.instant(_('CUSTOMERS.TABLE.CITY'))},
-          { field: 'contact',  header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON'))}
-        ];
+      { field: 'id', header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')) },
+      { field: 'companyName', header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')) },
+      { field: 'nameLine2', header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2')) },
+      { field: 'kind', header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE')) },
+      { field: 'land', header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')) },
+      { field: 'place', header: this.translate.instant(_('CUSTOMERS.TABLE.CITY')) },
+      { field: 'contact', header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON')) }
+    ];
   }
 
   ngOnDestroy(): void {
@@ -71,19 +71,23 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteCustomer(id: number){
-    this.customers = this.customers.filter( customer => customer.id !== id);
+  deleteCustomer(id: number) {
+    this.customers = this.customers.filter(customer => customer.id !== id);
   }
 
-  reloadComponent(self:boolean,urlToNavigateTo ?:string){
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
     //skipLocationChange:true means dont update the url to / when navigating
     //console.log("Current route I am on:",this.router.url);
-   const url=self ? this.router.url :urlToNavigateTo;
-   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
-     this.router.navigate([`/${url}`]).then(()=>{
-  //console.log(`After navigation I am on:${this.router.url}`)
-     })
-   })
- }
-  
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+        //console.log(`After navigation I am on:${this.router.url}`)
+      })
+    })
+  }
+
+    goToCustomerDetails(currentCustomer: Customer) {
+      this.router.navigateByUrl('/customers/customer-details', { state: { customer: "Valentin Laime", customerData: currentCustomer } });
+    }
+
 }

@@ -7,6 +7,8 @@ import { Salutation } from '../../models/salutation';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {TranslateService, _} from "@ngx-translate/core";
+import {TranslatePipe, TranslateDirective} from "@ngx-translate/core";
 
 interface Column {
   field: string,
@@ -16,12 +18,12 @@ interface Column {
 @Component({
   selector: 'app-employee-details',
   standalone: false,
+  providers: [MessageService, EmployeeContractService, TranslatePipe, TranslateDirective],
   templateUrl: './employee-details.component.html',
-  styleUrl: './employee-details.component.scss',
-
-  providers: [MessageService, EmployeeContractService]
+  styleUrl: './employee-details.component.scss'
 })
 export class EmployeeDetailsComponent implements OnInit {
+  
 
   public cols!: Column[];
 

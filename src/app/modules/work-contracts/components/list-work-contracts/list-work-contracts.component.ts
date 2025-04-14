@@ -188,25 +188,32 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.currentContract;
   }
-  deleteWorkContract(product: WorkContract) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.firstName + '?',
-      header: 'Confirm',
+
+  deleteWorkContract(workContract: WorkContract) {
+     this.confirmationService.confirm({
+      message: this.translate.instant(_('DIALOG.DELETE'), { value: workContract.employeeId }),
+      header: this.translate.instant(_('DIALOG.CONFIRM_TITLE')),
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
+      rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
       accept: () => {
+        this.workContractsService.deleteWorkContract(workContract.employeeId);
         this.contracts = this.contracts.filter(
-          (val) => val.employeeId !== product.employeeId
+          (val) => val.employeeId !== workContract.employeeId
         );
-        this.currentContract;
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Deleted',
-          life: 3000,
+          summary: this.translate.instant(_('DIALOG.SUCCESSFUL_MESSAGE')),
+          detail: this.translate.instant(_('DIALOG.WORKCONTRACT_SUCCESS_DELETED_MESSAGE')),
+          life: 3000
         });
       },
     });
   }
+
+    goToWorkCOntractDetails(currentWContract: WorkContract) {
+      this.router.navigateByUrl('/work-contracts/contractDetails', { state: { customer: "Valentin Laime", workContract: currentWContract } });
+    }
 
   findIndexById(id: number): number {
     return this.contracts.findIndex(

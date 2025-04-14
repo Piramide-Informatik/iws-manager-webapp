@@ -6,7 +6,7 @@ import { Customer } from '../../../../Entities/customer';
 import { Employee } from '../../../../Entities/Employee';
 import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import {TranslateService, _} from "@ngx-translate/core";
+import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 
 
@@ -28,7 +28,7 @@ interface ExportColumn {
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })
-export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
+export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   public customer!: string;
   public customerLabel!: string;
   customers: Customer[] = [];
@@ -51,7 +51,11 @@ export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
   public selectedFilterColumns!: Column[];
 
 
-  constructor(private employeeService: EmployeeService,  private translate: TranslateService, public router:Router) { }
+  constructor(private employeeService: EmployeeService,
+    private messageService: MessageService,
+    private translate: TranslateService,
+    public router: Router,
+    private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     //this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
@@ -64,7 +68,7 @@ export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
 
     this.customer = 'Valentin Laime'
 
-  
+
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
@@ -73,7 +77,7 @@ export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
 
 
 
-   
+
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
   }
@@ -83,21 +87,21 @@ export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
     this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
 
     this.cols = [
-      { field: 'id', header:  this.translate.instant(_('EMPLOYEES.TABLE.EMPLOYEE_ID'))},
-      { field: 'firstName',header:  this.translate.instant(_('EMPLOYEES.TABLE.FIRST_NAME'))},
-      { field: 'lastName', header:  this.translate.instant(_('EMPLOYEES.TABLE.LAST_NAME'))},
-      { field: 'email', header:  this.translate.instant(_('EMPLOYEES.TABLE.EMAIL'))},
-      { field: 'generalManagerSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.GM_SINCE_DATE'))},
-      { field: 'shareholderSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.SH_SINCE_DATE'))},
-      { field: 'soleProprietorSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.SP_SINCE_DATE'))},
-      { field: 'coEntrepreneurSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.CE_SINCE_DATE'))},
-      { field: 'qualificationFz', header:  this.translate.instant(_('EMPLOYEES.TABLE.QUALI_FZ'))},
-      { field: 'qualificationKmui', header:  this.translate.instant(_('EMPLOYEES.TABLE.QUALI_MKUI'))},
+      { field: 'id', header: this.translate.instant(_('EMPLOYEES.TABLE.EMPLOYEE_ID')) },
+      { field: 'firstName', header: this.translate.instant(_('EMPLOYEES.TABLE.FIRST_NAME')) },
+      { field: 'lastName', header: this.translate.instant(_('EMPLOYEES.TABLE.LAST_NAME')) },
+      { field: 'email', header: this.translate.instant(_('EMPLOYEES.TABLE.EMAIL')) },
+      { field: 'generalManagerSince', header: this.translate.instant(_('EMPLOYEES.TABLE.GM_SINCE_DATE')) },
+      { field: 'shareholderSince', header: this.translate.instant(_('EMPLOYEES.TABLE.SH_SINCE_DATE')) },
+      { field: 'soleProprietorSince', header: this.translate.instant(_('EMPLOYEES.TABLE.SP_SINCE_DATE')) },
+      { field: 'coEntrepreneurSince', header: this.translate.instant(_('EMPLOYEES.TABLE.CE_SINCE_DATE')) },
+      { field: 'qualificationFz', header: this.translate.instant(_('EMPLOYEES.TABLE.QUALI_FZ')) },
+      { field: 'qualificationKmui', header: this.translate.instant(_('EMPLOYEES.TABLE.QUALI_MKUI')) },
 
     ];
 
-     //Filter colums
-     this.filterCols = [
+    //Filter colums
+    this.filterCols = [
       { field: 'id', header: 'Pers. Nr.' },
       { field: 'firstName', header: 'Vorname' },
       { field: 'lastName', header: 'Nachname' },
@@ -112,17 +116,17 @@ export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
     }
   }
 
-  reloadComponent(self:boolean,urlToNavigateTo ?:string){
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
     //skipLocationChange:true means dont update the url to / when navigating
     //console.log("Current route I am on:",this.router.url);
-   const url=self ? this.router.url :urlToNavigateTo;
-   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
-     this.router.navigate([`/${url}`]).then(()=>{
-  //console.log(`After navigation I am on:${this.router.url}`)
-     })
-   })
- }
-  
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+        //console.log(`After navigation I am on:${this.router.url}`)
+      })
+    })
+  }
+
 
   goToEmployeeDetails(currentEmployee: Employee) {
     this.router.navigateByUrl('/employees/employee-details', { state: { customer: "Valentin Laime", employee: currentEmployee } });
@@ -148,5 +152,27 @@ export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
     if (inputElement) {
       this.dt2.filter(inputElement.value, field, 'contains');
     }
+  }
+
+  deleteEmployee(employee: Employee) {
+    this.confirmationService.confirm({
+      message: this.translate.instant(_('DIALOG.DELETE'), { value: employee.id }),
+      header: this.translate.instant(_('DIALOG.CONFIRM_TITLE')),
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
+      rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
+      accept: () => {
+        this.employeeService.deleteEmployee(employee.id);
+        this.employees = this.employees.filter(
+          (val) => val.id !== employee.id
+        );
+        this.messageService.add({
+          severity: 'success',
+          summary: this.translate.instant(_('DIALOG.SUCCESSFUL_MESSAGE')),
+          detail: this.translate.instant(_('DIALOG.EMPLOYEE_SUCCESS_DELETED_MESSAGE')),
+          life: 3000
+        });
+      },
+    });
   }
 }

@@ -27,6 +27,21 @@
   "COMMON": {
     "CUSTOMER_NAME": "Customer"
   },
+  "BUTTONS": {
+    "NEW": "Neu",
+    "SAVE": "Save",
+    "DELETE": "Delete",
+    "CANCEL": "Cancel"
+  },
+  "DIALOG": {
+    "CONFIRM_TITLE": "Confirmation",
+    "DELETE": "Are you sure you want to delete {{value}}?",
+    "SUCCESSFUL_MESSAGE": "Successful",
+    "EMPLOYEE_SUCCESS_DELETED_MESSAGE": "Employee deleted.",
+    "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Work Contract deleted.",
+    "ACCEPT_LABEL": "Yes",
+    "REJECT_LABEL": "No"
+  },
   "CUSTOMERS": {
     "CUSTOMER_NAME": "Customer",
     "TABLE": {

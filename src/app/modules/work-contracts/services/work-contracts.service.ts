@@ -72,6 +72,12 @@ export class WorkContractsService {
     return Promise.resolve(this.workContracts);
   }
 
+  deleteWorkContract(employeeId: number): void {
+    this.workContracts = this.workContracts.filter(
+      (workContract) => workContract.employeeId !== employeeId
+    );
+  }
+
   updateProduct(updatedWorkContract: WorkContract) {
     const index = this.workContracts.findIndex(
       (workContract) => workContract.employeeId === updatedWorkContract.employeeId

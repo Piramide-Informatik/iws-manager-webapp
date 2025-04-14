@@ -30,7 +30,7 @@
         <td>
           <div class="flex items-center justify-center gap-2">
             <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-              [routerLink]="['/customers/customer-details', customer.id]"></button>
+            (click)="goToCustomerDetails(customer)"></button>
             <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
               (click)="deleteCustomer(customer.id)"></button>
           </div>
