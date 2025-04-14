@@ -10,16 +10,8 @@
         [pTooltip]="isCollapsed ? item.label : ''"
         tooltipPosition="right"
         [tooltipStyleClass]="'custom-tooltip'">
-        <i [class]="item.icon"></i>
         <span class="menu-item-text">{{ item.label }}</span>
       </a>
     </div>
   </div>
-  <button
-    pButton
-    type="button"
-    class="collapse-button"
-    [icon]="isCollapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'"
-    (click)="toggleCollapse.emit()"
-  ></button>
 </div>
