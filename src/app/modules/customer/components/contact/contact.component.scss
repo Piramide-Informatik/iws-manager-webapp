@@ -30,6 +30,8 @@ input, select {
     font-weight: bold;
     text-align: left;
     vertical-align: middle; 
+    width: 184px; 
+    display: inline-block;
 }
 
 .form-row1 {
@@ -67,7 +69,4 @@ input, select {
 .spacer{
     justify-content: space-between;
 }
-.rechnungsempfaenger-label {
-    width: 184px; /* 👈 controla el ancho aquí */
-    display: inline-block; /* necesario para que width funcione bien */
-}
+
