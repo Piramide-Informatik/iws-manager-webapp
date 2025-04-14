@@ -34,11 +34,11 @@
             </ng-template>
             <ng-template #header let-columns>
                 <tr>
-                    <th id="employee-overview-buttons">
-                    </th>
+                    <th id="employee-overview-buttons"></th>
+
                     <th id="employee-overview-field-search" *ngFor="let col of selectedFilterColumns; let i = index">
                         <input pInputText pSize="small" type="text"
-                            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i < 0}"
+                            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
                             (input)="applyFilter($event, col.field)" />
                     </th>
                 </tr>
