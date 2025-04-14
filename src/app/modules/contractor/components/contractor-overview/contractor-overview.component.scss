@@ -1,0 +1,24 @@
+//Styles table head
+.thead {
+    background: #267bbf;
+    color: #fff;
+    min-width: 6.25rem; //=100px
+
+    &:hover {
+        background: #abcbeb;
+        color: #1E293B
+    }
+}
+
+.thead-bg-blue {
+    background: #267bbf;
+}
+
+.thead-input-id {
+    min-width: 4.4rem; //=70px
+    width: 100%;
+}
+
+.thead-input-width {
+    width: 100%;
+}

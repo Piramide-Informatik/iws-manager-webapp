@@ -2,28 +2,28 @@
   <form [formGroup]="formDetailCustomer" action="">
     <div class="grid">
       <!-- Primera columna -->
-      <div class="column md:col-6 lg:col-6">
+      <div class="md:col-6 lg:col-6 lg:pr-8 md:pr-8">
 
         <div class="field">
-          <label for="customerNo">Customer No.</label>
+          <label for="customerNo">Kunden-Nr.</label>
           <input type="text" pInputText id="customerNo" formControlName="customerNo"/>
         </div>
 
         <div class="field align-items-start">
           <label for="companyName" class="mt-2">Company Name</label>
-          <div class="flex flex-column">
+          <div class="flex flex-column w-full">
             <input type="text" id="companyName1" class="mb-1" pInputText formControlName="companyText1"/>
             <input type="text" id="companyName2" pInputText formControlName="companyText2"/>
           </div>
         </div>
 
+        <!-- Select country -->
         <div class="field">
-          <label for="country">Country</label>
+          <label for="country">Land</label>
           <p-select formControlName="selectedCountry" 
             id="country"
             [options]="countries"
             optionLabel="name" 
-            placeholder="Select a Country"
           >
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
@@ -52,100 +52,93 @@
         </div>
 
         <div class="field">
-          <div class="flex flex-none">
-            <label for="street">Street</label>
-          </div>
-          <div class="flex flex-grow">
-            <input type="text" id="street" pInputText formControlName="street"/>
-          </div>
+          <label for="street">Street</label>
+          <input type="text" id="street" pInputText formControlName="street"/>
         </div>
 
         <div class="field">
-          <label for="">Postal Code / City</label>
+          <label for="">PLZ / Ort</label>
           <div class="postal-city">
-            <input type="text" id="postalCode" class="w-4 mr-2" pInputText formControlName="postalCode"/>
-            <input type="text" id="city" class="" pInputText formControlName="city"/>
+            <input type="text" id="postalCode" class="postal" pInputText formControlName="postalCode"/>
+            <input type="text" id="city" class="city" pInputText formControlName="city"/>
           </div>
         </div>
 
         <div class="field">
-          <label for="">Type of Company</label>
+          <label for="">Unternehmensart</label>
           <p-select formControlName="selectedTypeCompany" 
           id="typeCompany"
           [options]="typesCompany" 
           optionLabel="name" 
-          placeholder="Select a Type Company"
           />
         </div>
 
         <div class="field">
-          <label for="">Sector</label>
+          <label for="">Wirtschaftszweig</label>
           <p-select formControlName="selectedSector" 
           id="sector"
           [options]="sectors" 
           optionLabel="name" 
-          placeholder="Select a sector"  
           />
         </div>
 
         <div class="field">
-          <label for="state">State</label>
+          <label for="state">Bundesland</label>
           <p-select formControlName="selectedState" 
           id="state"
           [options]="states" 
-          optionLabel="name" 
-          placeholder="Select a state"
+          optionLabel="name"
           />
         </div>
 
         <div class="field relative">
-          <label for="homepage">Homepage</label>
+          <label for="homepage">Webseite</label>
           <input type="text" id="homepage" pInputText formControlName="homepage"/>
-          <i class="pi pi-globe" style="color: blue"></i>
+          <i class="pi pi-globe" style="color: #12435d"></i>
         </div>
 
         <div class="field">
-          <label for="phone">Phone</label>
+          <label for="phone">Telefon</label>
           <input type="text" id="phone" pInputText formControlName="phone"/>
         </div>
       </div>
 
       <!-- Segunda columna -->
-      <div class="column md:col-6 lg:col-6">
+      <div class="md:col-6 lg:col-6 lg:pl-8 md:pl-8">
         
         <div class="field">
-          <label for="invoiceEmail">Invoice Email</label>
+          <label for="invoiceEmail">Email Rechnung</label>
           <input type="text" id="invoiceEmail" pInputText formControlName="invoiceEmail"/>
         </div>
 
         <div class="field">
-          <label for="weekWorkingHours">Company-wide Weekly Working Hours</label>
+          <label for="weekWorkingHours">Unternehmerische Wochenarbeitszeit</label>
           <input type="text" id="weekWorkingHours" pInputText formControlName="weekWorkingHours"/>
         </div>
 
         <div class="field">
-          <label for="taxNumber">Tax Number</label>
+          <label for="taxNumber">Steuernummer</label>
           <input type="text" id="taxNumber" pInputText formControlName="taxNumber"/>
         </div>
 
         <div class="field">
-          <label for="headcount">Headcount</label>
+          <label for="headcount">Finanzamt</label>
           <input type="number" id="headcount" pInputText formControlName="headcount"/>
         </div>
 
         <div class="field">
-          <label for="maxHoursMonth">Max Hours / Month</label>
+          <label for="maxHoursMonth">Max. Stunden / Monat</label>
           <input type="number" id="maxHoursMonth" pInputText formControlName="maxHoursMonth"/>
         </div>
 
         <div class="field">
-          <label for="maxHoursYear">Max Hours / Year</label>
+          <label for="maxHoursYear">Max. Stunden / Jahr</label>
           <input type="number" id="maxHoursYear" pInputText formControlName="maxHoursYear"/>
         </div>
 
         <p-floatlabel variant="on">
           <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="6" cols="30" style="resize: none" class="w-full"></textarea>
-          <label for="textAreaComment">Comment</label>
+          <label for="textAreaComment">Kommentar</label>
         </p-floatlabel>
 
       </div>
@@ -156,7 +149,7 @@
 
     <div class="flex flex-row gap-3 align-items-center my-2">
       <span class="font-semibold">Contact Person</span>
-      <p-button (keydown.enter)="showDialog()" icon="pi pi-plus" label="New" id="new-contact-person" (click)="showDialog()"></p-button>
+      <p-button (keydown.enter)="showDialog()" icon="pi pi-plus" label="Neu" id="new-contact-person" (click)="showDialog()"></p-button>
       <p-dialog header="Ansprechpartner bearbeiten" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
         <app-contact></app-contact>
         <div class="buttons flex justify-content-center my-2">
@@ -173,12 +166,13 @@
       [rows]="5"
       showGridlines
       scrollable="true"
-      scrollHeight="300px"
+      scrollHeight="200px"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [showCurrentPageReport]="true"
       [rowsPerPageOptions]="[5, 10, 20]"
       [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
       [resizableColumns]="true"
+      columnResizeMode="expand"
       styleClass="p-datatable-gridlines"
     >
       <ng-template #caption>
@@ -188,15 +182,15 @@
           [(ngModel)]="selectedColumns" 
           optionLabel="header" 
           selectedItemsLabel="{0} columns selected" 
-          [style]="{ 'width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
+          [style]="{ 'min-width': '200px', 'font-size': '14px', 'line-height': '16.8px' }" 
           placeholder="Choose Columns" />
       </ng-template>
       <ng-template #header let-columns>
         <tr>
-
           <th id="customer-Details-options" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}">Option</th>
 
-          <th *ngFor="let col of columns; let i = index" 
+
+          <th id="detail-customer-col-field" *ngFor="let col of columns; let i = index" 
             [pSortableColumn]="col.field" 
             class="thead" 
             pResizableColumn>
@@ -238,19 +232,16 @@
           ></td>
         </tr>
       </ng-template>
-    </p-table>
-
-    <div class="buttons flex justify-content-center my-2">
-      <p-button label="Save" icon="pi pi-check" class="mx-4" severity="success"></p-button>
-      <p-button label="Delete" icon="pi pi-trash" class="mx-4" severity="danger"></p-button>
-      <p-button 
-        label="Cancel" 
-        icon="pi pi-times" 
-        class="mx-4"
-        severity="secondary"
-        routerLink="/customers"
-      ></p-button>
-     </div>
+    </p-table>  
+    <br>
+    <div class="form-row flex flex-wrap gap-3 justify-content-center">
+      <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check"
+          iconPos="left" />
+      <p-button class="Delete me-2" size="small" label="Löschen" icon="pi pi-trash"
+          iconPos="left" [style]="{ background: '#ef4444' }" />
+      <p-button class="Cancel me-2" size="small" label="Abbrechen" icon="pi pi-times"
+          iconPos="left" [style]="{ background: '#000' }" routerLink="/customers"/>
+  </div>
   </div>
 </div>
 

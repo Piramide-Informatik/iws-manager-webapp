@@ -1,0 +1,29 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }">
+    <ng-template #title>Projekt</ng-template>
+
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="proj_input project_name mb-2">
+                <label for="projectLabel">Projekt</label>
+                
+                <p-select  [style]="{'width':'57%'}" formControlName="projectLabel" [editable]="true" [showClear]="true" optionLabel="name" />
+            </div>
+            <div class="proj_input project_id mb-2">
+                <label for="projectId">Projektträger ID</label>
+                <input pInputText type="text" id="projectId" formControlName="projectId" autocomplete="off" />
+            </div>
+            <div class="proj_input promoter_id mb-2">
+                <label for="promoterId">Projektträger</label>
+                <input pInputText type="text" id="promoterId" formControlName="promoterId" autocomplete="off" />
+            </div>
+            <div class="proj_input project_startDate mb-2">
+                <label for="startDate">Laufzeit Start</label>
+                <input pInputText type="text" id="startDate" formControlName="startDate" autocomplete="off" />
+            </div>
+            <div class="proj_input project_endDate mb-2">
+                <label for="endDate">Laufzeit Ende</label>
+                <input pInputText type="text" id="endDate" formControlName="endDate" autocomplete="off" />
+            </div>
+        </div>
+    </form>
+</p-card>

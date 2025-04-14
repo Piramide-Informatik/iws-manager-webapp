@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+
 import {
   TranslateService,
   TranslatePipe,
-  TranslateDirective
-} from "@ngx-translate/core";
+  TranslateDirective,
+} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -15,14 +16,21 @@ import {
 export class AppComponent {
   title = 'iws-manager-webapp';
 
+  public selectedLanguage!: string;
+
   constructor(private translate: TranslateService) {
     // Configura inglés como idioma por defecto e inicial
     this.translate.addLangs(['de', 'es', 'en']);
-    this.translate.setDefaultLang('en');
-    this.translate.use('en');
+    this.translate.setDefaultLang('de');
+    this.translate.use('de');
   }
 
   changeLanguage(lang: string) {
     this.translate.use(lang);
+    this.selectedLanguage = lang;
+  }
+
+  ngOnInit(): void {
+    this.selectedLanguage = 'de';
   }
 }

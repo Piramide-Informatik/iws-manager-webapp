@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .layout {
   min-height: 100vh;
 
@@ -16,7 +18,7 @@
     flex: 1;
     padding: 1rem;
     transition: margin-left 0.3s;
-    background: white;
+    background: $primary-light;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     width: 90vw;
@@ -41,7 +43,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem;
-      background-color: #f8f9fa;
+      background-color: $primary-light;
 
       span {
         font-weight: bold;
@@ -57,6 +59,6 @@
 
 
 .close-button{
- background-color: #34495E;
- color: #34495E;
+ background-color: $primary-dark;
+ color: $primary-dark;
 }

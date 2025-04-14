@@ -1,0 +1,83 @@
+<form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
+    <div class="contract_form_wrapper">
+        <div class="contract_input kunde mb-2">
+            <label for="SearchCustomer">Kunde</label>
+            <div class="icon-field-wrapper">
+              <p-iconfield>
+                <p-inputicon styleClass="pi pi-search px-4" />
+                <input pInputText type="text" placeholder="" formControlName="customer" />
+              </p-iconfield>
+            </div>
+          </div>          
+  
+      <div class="contract_input mb-2">
+        <label for="personalnr">Personal-Nr</label>
+        <p-select formControlName="personalnr" [editable]="true" [showClear]="true"
+          optionLabel="name" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="vorname">Vorname</label>
+        <input pInputText type="text" id="vorname" formControlName="vorname" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="nachname">Nachname</label>
+        <input pInputText type="text" id="nachname" formControlName="nachname" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input contract_name mb-2">
+        <label for="datum">Datum</label>
+        <p-datepicker id="datum"
+                      formControlName="datum"
+                      [showIcon]="true"
+                      iconDisplay="input"
+                      dateFormat="dd.mm.yy">
+        </p-datepicker>
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="gehalt">Gehalt</label>
+        <input pInputText type="number" id="gehalt" formControlName="gehalt" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="wochenstunden">Wochenstunden</label>
+        <input pInputText type="number" id="wochenstunden" formControlName="wochenstunden" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="kurz">Kurz</label>
+        <input pInputText type="text" id="kurz" formControlName="kurz" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="jahresauszahlung">Jahresauszahlung</label>
+        <input pInputText type="number" id="jahresauszahlung" formControlName="jahresauszahlung" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="maxstudenmonat">Max. Stunden / Monat</label>
+        <input pInputText type="number" id="maxstudenmonat" formControlName="maxstudenmonat" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="maxstudentag">Max. Stunden / Tag</label>
+        <input pInputText type="number" id="maxstudentag" formControlName="maxstudentag" autocomplete="off" />
+      </div>
+  
+      <div class="contract_input mb-2">
+        <label for="stundensatz">Stundensatz</label>
+        <input pInputText type="number" id="stundensatz" formControlName="stundensatz" autocomplete="off" />
+      </div>
+  
+      <div class="buttons">
+        <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check" iconPos="left" />
+        <p-button class="Delete me-2" size="small" label="Löschen" icon="pi pi-trash" iconPos="left"
+          [style]="{ background: '#ef4444' }" />
+          <p-button class="Cancel me-2" size="small" label="Abbrechen" icon="pi pi-times"
+          iconPos="left" [style]="{ background: '#000' }" [routerLink]="['/work-contracts']"/>      
+      </div>
+    </div>
+  </form>
+  

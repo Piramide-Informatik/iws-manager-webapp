@@ -1,0 +1,69 @@
+<div class="card">
+  <div class="flex px-4 py-3 align-items-center">
+    <label for="SearchCustomer">Kunde</label>
+    <p-iconfield class="px-4">
+      <p-inputicon styleClass="pi pi-search px-4" />
+      <input pInputText type="text" placeholder=""  [(ngModel)]="customer"/>
+    </p-iconfield>
+  </div>
+  <p-table #dt2 [value]="contractors" dataKey="id" [rows]="10" [columns]="selectedColumns"
+    [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+    showGridlines [resizableColumns]="true" columnResizeMode="expand" [scrollable]="true" scrollHeight="60vh"
+    [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}">
+    <ng-template #caption>
+      <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+        selectedItemsLabel="{0} columns selected"
+        [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" placeholder="Choose Columns" />
+    </ng-template>
+    <ng-template #header let-columns>
+      <tr>
+        <th id="buttons-field"></th>
+        <th id="col-field-search" *ngFor="let col of columns; let i = index">
+          <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+            (input)="applyFilter($event, col.field)" />
+        </th>
+      </tr>
+      <tr>
+
+        <th id="buttons-col" class="thead-bg-blue"></th>
+
+        <th id="col-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
+          col.header }} <p-sortIcon [field]="col.field" />
+        </th>
+
+      </tr>
+
+    </ng-template>
+    <ng-template #body let-customer let-i="rowIndex" let-columns="columns">
+      <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+        <td>
+          <div class="flex items-center justify-center gap-2">
+            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
+              [routerLink]="['/contractors/', customer.id]"></button>
+            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
+              (click)="deleteCustomer(customer.id)"></button>
+          </div>
+        </td>
+        <td *ngFor="let col of columns">{{ customer[col.field] }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="7">
+          <p-message severity="info">No customers found.</p-message>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-toolbar>
+    <ng-template #start>
+      <p-button label="Neu" icon="pi pi-plus" routerLink=""
+    ></p-button>
+    </ng-template>
+    <ng-template #end>
+    </ng-template>
+  </p-toolbar>
+
+</div>

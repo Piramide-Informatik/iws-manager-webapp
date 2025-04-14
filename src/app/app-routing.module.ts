@@ -5,7 +5,7 @@ import { MainLayoutComponent } from './core/layout/main-layout/main-layout.compo
 const routes: Routes = [
   {
     path: '',
-   
+
     component: MainLayoutComponent,
     children: [
       {
@@ -36,13 +36,48 @@ const routes: Routes = [
             (w) => w.ProjectRoutingModule
           ),
       },
-      { 
-        path: 'admin', 
-        loadChildren: () => 
-        import('./modules/customer/customer.module')
-        .then(
-          c => c.CustomerModule
-        ), 
+      {
+        path: 'orders',
+        loadChildren: () =>
+          import('./modules/orders/order-routing.module').then(
+            (o) => o.OrderRountingModule
+          ),
+      },
+      {
+        path: 'demands',
+        loadChildren: () =>
+          import('./modules/receivables/receivables.module').then(
+            (r) => r.ReceivablesModule
+          ),
+      },
+
+      {
+        path: 'invoices',
+        loadChildren: () =>
+          import('./modules/invoices/invoices.module').then(
+            (m) => m.InvoicesModule
+          ),
+      },
+      {
+        path: 'framework-agreements',
+        loadChildren: () =>
+          import(
+            './modules/framework-agreements/framework-agreements.module'
+          ).then((f) => f.FrameworkAgreementsModule),
+      },
+      {
+        path: 'contractors',
+        loadChildren: () =>
+          import('./modules/contractor/contractor-routing.module').then(
+            (c) => c.ContractorRoutingModule
+          ),
+      },
+      {
+        path: 'subcontracts',
+        loadChildren: () =>
+          import('./modules/subcontracts/subcontracts.module').then(
+            (s) => s.SubcontractsModule
+          ),
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -6,7 +6,9 @@ import { Customer } from '../../../../Entities/customer';
 import { Employee } from '../../../../Entities/Employee';
 import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
- 
+import {TranslateService, _} from "@ngx-translate/core";
+import { Subscription } from 'rxjs';
+
 
 interface Column {
   field: string;
@@ -26,40 +28,125 @@ interface ExportColumn {
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })
-export class EmployeeOverviewComponent {
+export class EmployeeOverviewComponent implements  OnInit, OnDestroy {
+  public customer!: string;
+  public customerLabel!: string;
   customers: Customer[] = [];
   employees: Employee[] = [];
   selectedCustomers!: WorkContract[] | null;
   selectedCustomer!: WorkContract[] | null;
   submitted: boolean = true;
   statuses!: any[];
-  @ViewChild('dt') dt!: Table;
+  @ViewChild('dt2') dt2!: Table;
   loading: boolean = true;
-  cols!: Column[];
+  public cols!: Column[];
+  private langSubscription!: Subscription;
 
-  constructor( private employeeService: EmployeeService, private router : Router ){ }
+  //public cols!: Column[];
+
+  public selectedColumns!: Column[];
+
+  public filterCols!: Column[];
+
+  public selectedFilterColumns!: Column[];
+
+
+  constructor(private employeeService: EmployeeService,  private translate: TranslateService, public router:Router) { }
 
   ngOnInit() {
+    //this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
+    this.loadColHeaders();
+    this.selectedColumns = this.cols;
+    this.selectedFilterColumns = this.filterCols;
+
     this.employees = this.employeeService.getEmployees();
     this.loading = false;
+
+    this.customer = 'Valentin Laime'
+
+  
+
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.reloadComponent(true);
+    });
+
+
+
+   
+    this.selectedColumns = this.cols;
+    this.selectedFilterColumns = this.filterCols;
   }
 
+  loadColHeaders(): void {
+
+    this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
+
+    this.cols = [
+      { field: 'id', header:  this.translate.instant(_('EMPLOYEES.TABLE.EMPLOYEE_ID'))},
+      { field: 'firstName',header:  this.translate.instant(_('EMPLOYEES.TABLE.FIRST_NAME'))},
+      { field: 'lastName', header:  this.translate.instant(_('EMPLOYEES.TABLE.LAST_NAME'))},
+      { field: 'email', header:  this.translate.instant(_('EMPLOYEES.TABLE.EMAIL'))},
+      { field: 'generalManagerSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.GM_SINCE_DATE'))},
+      { field: 'shareholderSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.SH_SINCE_DATE'))},
+      { field: 'soleProprietorSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.SP_SINCE_DATE'))},
+      { field: 'coEntrepreneurSince', header:  this.translate.instant(_('EMPLOYEES.TABLE.CE_SINCE_DATE'))},
+      { field: 'qualificationFz', header:  this.translate.instant(_('EMPLOYEES.TABLE.QUALI_FZ'))},
+      { field: 'qualificationKmui', header:  this.translate.instant(_('EMPLOYEES.TABLE.QUALI_MKUI'))},
+
+    ];
+
+     //Filter colums
+     this.filterCols = [
+      { field: 'id', header: 'Pers. Nr.' },
+      { field: 'firstName', header: 'Vorname' },
+      { field: 'lastName', header: 'Nachname' },
+      { field: 'email', header: 'Email' }
+    ];
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
+
+  reloadComponent(self:boolean,urlToNavigateTo ?:string){
+    //skipLocationChange:true means dont update the url to / when navigating
+    //console.log("Current route I am on:",this.router.url);
+   const url=self ? this.router.url :urlToNavigateTo;
+   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
+     this.router.navigate([`/${url}`]).then(()=>{
+  //console.log(`After navigation I am on:${this.router.url}`)
+     })
+   })
+ }
+  
+
   goToEmployeeDetails(currentEmployee: Employee) {
-    this.router.navigateByUrl('/employees/employee-details', { state: { customer: "Piramide" , employee: currentEmployee } });
+    this.router.navigateByUrl('/employees/employee-details', { state: { customer: "Valentin Laime", employee: currentEmployee } });
   }
 
   searchEmployee(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement && inputElement.value) {
-      this.dt.filterGlobal(inputElement.value, 'contains');
+      this.dt2.filterGlobal(inputElement.value, 'contains');
     }
   }
 
   onInputChange(event: Event): void {
-    
+
   }
 
-  createEmployee(){
+  createEmployee() {
     this.router.navigateByUrl('/employees/employee-details');
+  }
+
+  applyFilter(event: Event, field: string) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      this.dt2.filter(inputElement.value, field, 'contains');
+    }
   }
 }

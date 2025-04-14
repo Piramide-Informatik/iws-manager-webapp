@@ -1,0 +1,34 @@
+@use 'variables' as *;
+
+.iws-employeeInput{
+    width: 100% !important;
+
+    label {
+        width: 33%;
+    }
+
+}
+
+//Styles table head
+.thead {
+    background: $primary-color;
+    color: #fff;
+    min-width: 6.25rem;//=100px
+  
+    &:hover {
+      background: $accent-color;
+      color: $primary-dark;
+    }
+}
+
+.thead-bg-blue {
+    background: $primary-color;
+}
+
+.thead-input-id {
+    width: 4.4rem;//=70px
+}
+
+.thead-input-width {
+    width: 100%;
+}

@@ -1,21 +1,23 @@
 <button
   pButton
-  type="button"
   icon="pi pi-globe"
-  class="p-button-rounded p-button-text"
-  style="float: right; margin-right: 16px"
+  label={{selectedLanguage}}
+  class="p-button-outlined idioma-btn"
+  style="float: right; margin-right: 3px"
+  (onKeyDown.enter)="op.toggle($event)"
   (click)="op.toggle($event)"
 ></button>
-<p-overlayPanel #op [appendTo]="'body'">
-  <div class="flag-option" (click)="changeLanguage('en'); op.hide()">
-    <span class="flag-icon flag-icon-us"></span> English
-  </div>
-  <div class="flag-option" (click)="changeLanguage('es'); op.hide()">
-    <span class="flag-icon flag-icon-es"></span> Spanish
-  </div>
-  <div class="flag-option" (click)="changeLanguage('de'); op.hide()">
+
+<p-overlayPanel #op [appendTo]="'body'" styleClass="lang-panel">
+  <button class="flag-option" (keydown.enter)="changeLanguage('de'); op.hide()" (click)="changeLanguage('de'); op.hide()">
     <span class="flag-icon flag-icon-de"></span> Deutsch
-  </div>
+  </button>
+  <button class="flag-option" (keydown.enter)="changeLanguage('en'); op.hide()" (click)="changeLanguage('en'); op.hide()">
+    <span class="flag-icon flag-icon-gb"></span> English
+  </button>
+  <button class="flag-option" (keydown.enter)="changeLanguage('es'); op.hide()" (click)="changeLanguage('es'); op.hide()">
+    <span class="flag-icon flag-icon-es"></span> Spanish
+  </button>
 </p-overlayPanel>
 
 <router-outlet></router-outlet>

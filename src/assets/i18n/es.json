@@ -1,18 +1,19 @@
 {
   "MENU": {
+    "DASHBOARD": "Panel",
     "CUSTOMERS": "Clientes",
     "PROJECTS": "Proyectos",
     "INVOICING": "Facturación",
-    "CONTROLLING": "Control",
+    "CONTROLLING": "Supervisión",
     "MASTER_DATA": "Datos Maestros"
   },
   "SIDEBAR": {
     "CUSTOMER": "Cliente",
     "EMPLOYEES": "Empleados",
-    "EMPLOYMENT_CONTRACTS": "Contratos de Empleo",
+    "EMPLOYMENT_CONTRACTS": "Contratos Laborales",
     "PROJECTS": "Proyectos",
-    "ORDERS": "Órdenes",
-    "CLAIMS": "Reclamos",
+    "ORDERS": "Pedidos",
+    "DEMANDS": "Creditos",
     "INVOICES": "Facturas",
     "FRAMEWORK_AGREEMENTS": "Acuerdos Marco",
     "CONTRACTORS": "Contratistas",
@@ -23,8 +24,145 @@
     "SALES": "Ventas",
     "INVENTORY": "Inventario"
   },
-  "PROJECTS-TABLE": {
-    "PROJECT_LABEL": "Sigla del Proyecto",
-    "PROJECT_NAME": "Nombre del Proyecto"
+  "COMMON": {
+    "CUSTOMER_NAME": "Cliente"
+  },
+  "CUSTOMERS": {
+    "CUSTOMER_NAME": "Cliente",
+    "TABLE": {
+      "CUSTOMER_ID": "ID Cliente",
+      "COMPANY_NAME": "Nombre de Empresa",
+      "NAME_LINE_2": "Nombre Linea",
+      "COMPANY_TYPE": "Tipo de la Empresa",
+      "COUNTRY_NAME": "País",
+      "CITY": "Ciudad",
+      "CONTACT_PERSON": "Contacto"
+    }
+  },
+  "EMPLOYEES": {
+    "TABLE": {
+      "EMPLOYEE_ID": "ID Empleado",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellidos",
+      "EMAIL": "Correo",
+      "GM_SINCE_DATE": "GF",
+      "SH_SINCE_DATE": "Ges.",
+      "SP_DATE": "EU",
+      "CE_SINCE_DATE": "MU",
+      "QUALI_FZ": "Quali FZ",
+      "QUALI_MKUI": "Quali KMU-i"
+    }
+  },
+  "EMPLOYEE-CONTRACTS": {
+    "TABLE": {
+      "EMPLOYEE_ID": "ID Empleado",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellidos",
+      "START_DATE": "Fecha Incio",
+      "SALARY_PER_MONTH": "Salario Mensual",
+      "WEEKLY_HOURS": "Horas Semanales",
+      "WORK_SHORT_TIME": "Porcentaje de Reducción",
+      "SPECIAL_PAYMENT": "Pago Especial",
+      "MAX_HOURS_PER_MONTH": "Max. Horas/Mes",
+      "MAX_HOURS_PER_DAY": "Max. Horas/Día",
+      "HOURLY_RATE": "Tafira por Hora"
+    }
+  },
+  "PROJECTS": {
+    "TABLE": {
+      "PROJECT_LABEL": "Sigla",
+      "PROJECT_NAME": "Nombre",
+      "FUNDING_PROGRAM": "Pr. Financiamiento",
+      "PROMOTER": "Promotor",
+      "FUNDING_LABEL": "Sigla de Financiación",
+      "START_DATE": "Fecha Incio",
+      "END_DATE": "Fecha Fin",
+      "AUTH_DATE": "Fecha de Autorización",
+      "FUNDING_RATE": "Tasa de Financiación"
+    }
+  },
+  "ORDERS": {
+    "TABLE": {
+      "ORDER_ID": "ID Orden",
+      "ORDER_LABEL": "Sigla",
+      "ORDER_TYPE": "Tipo",
+      "ORDER_DATE": "Fecha de Orden",
+      "ACRONYM": "Acronimo",
+      "FUNDING_PROGRAM": "Pr. Financiamiento",
+      "VALUE": "Valor",
+      "CONTRACT_STATUS": "Estado del Contrato",
+      "CONTRACT_NRO": "Número de Contrato",
+      "CONTRACT_TITLE": "Título de Contrato",
+      "IWS_PERCENT": "IWS %",
+      "IWS_PERCENT_VALUE": "IWS-Valor"
+    }
+  },
+  "RECEIVABLES": {
+    "TABLE": {
+      "CLAIM_NUMBER": "Número de Reclamo",
+      "ORDER_NUMBER": "Número de Orden",
+      "ORDER_TITLE": "Título de Orden",
+      "FUNDING_PROGRAM": "Pr. Financiamiento",
+      "PROJECT_SPONSOR": "Patrocinadores del Proyecto",
+      "FUNDING_CONCENTRATION": "Pr. Concentración",
+      "PROJECT_START_DATE": "Fecha Ini. Proyecto",
+      "PROJECT_END_DATE": "Fecha Fin Proyecto",
+      "PROJECT_COST": "Costo del Proyecto",
+      "BILLING_START_DATE": "Fecha Ini. Fact.",
+      "BILLING_END_DATE": "Fecha Fin Fact.",
+      "NET_AMOUNT": "Importe Neto",
+      "GROSS_AMOUNT": "Importe Bruto",
+      "VAT_AMOUNT": "IVA",
+      "RECEIVED_AMOUNT": "Importe Recibido",
+      "OPEN_AMOUNT": "Saldo Pendiente",
+      "IWS_PERCENT": "IWS-%"
+    }
+  },
+  "INVOICES": {
+    "TABLE": {
+      "INVOICE_NUMBER": "Número Factura",
+      "INVOICE_DATE": "Fecha",
+      "DESCRIPTION": "Descripción",
+      "INVOICE_TYPE": "Tipo",
+      "NETWORK": "Red",
+      "ORDER_NUMBER": "Número de Orden",
+      "ORDER_TITLE": "Título de Orden",
+      "NET_AMOUNT": "Importe Neto",
+      "TAX_AMOUNT": "Importe al Impuesto",
+      "AMOUNT_GROSS": "Importe Bruto"
+    }
+  },
+  "FRAMEWORK-AGREEMENTS": {
+    "TABLE": {
+      "CONTRACT_NUMBER": "Numero de Contrato",
+      "CONTRACT_LABEL": "Sigla de Contrato",
+      "DATE": "Fecha",
+      "FUNDING_PROGRAM": "Pr. Financiamiento",
+      "CONTRACT_STATUS": "Estado del Contrato",
+      "IWS_EMPLOYEE": "IWS Empleados"
+    }
+  },
+  "CONTRACTS": {
+    "TABLE": {
+      "CONTRACTOR_LABEL": "Sigla",
+      "CONTRACTOR_NAME": "Nombre",
+      "COUNTRY_LABEL": "País",
+      "STREET": "Calle",
+      "ZIP_CODE": "Código Postal",
+      "CITY": "Ciudad",
+      "TAX_NUMBER": "Numero de Impuesto"
+    }
+  },
+  "SUB-CONTRACTS": {
+    "TABLE": {
+      "ORDER_TITLE": "Título",
+      "CONTRACTOR": "Contratista",
+      "PROJECT": "Proyecto",
+      "DATE": "Fecha",
+      "INVOICE_NUMBER": "Número Factura",
+      "NET_INVOICE": "Importe Neto Factura",
+      "GROSS_INVOICE": "Importe Bruto Factura",
+      "SHARE": "Parte"
+    }
   }
 }

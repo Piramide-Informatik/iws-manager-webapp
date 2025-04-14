@@ -1,71 +1,66 @@
+//Angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { WorkContractsRoutingModule } from './work-contracts-routing.module';
-import { ListWorkContractsComponent } from './components/list-work-contracts/list-work-contracts.component';
-import { TableModule } from 'primeng/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-import { Dialog } from 'primeng/dialog';
-import { Ripple } from 'primeng/ripple';
+//Modulos
+import { WorkContractsRoutingModule } from './work-contracts-routing.module';
+
+//Prime NG
 import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { DialogModule } from 'primeng/dialog';
-import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
+import { DatePickerModule } from 'primeng/datepicker';
+import { Dialog } from 'primeng/dialog';
 import { FileUpload } from 'primeng/fileupload';
-import { SelectModule } from 'primeng/select';
-import { Tag } from 'primeng/tag';
-import { RadioButton } from 'primeng/radiobutton';
-import { Rating } from 'primeng/rating';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { CalendarModule } from 'primeng/calendar';
-
-import { InputNumber } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { Table } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { MessageModule } from 'primeng/message';
 import { DropdownModule } from 'primeng/dropdown';
-import { HttpClientModule } from '@angular/common/http';
-import { CheckboxModule } from 'primeng/checkbox';
-import { DatePickerModule } from 'primeng/datepicker';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FloatLabel } from 'primeng/floatlabel';
+import { SelectModule } from 'primeng/select';
+
+
+//Components
+import { ListWorkContractsComponent } from './components/list-work-contracts/list-work-contracts.component';
+import { ContractDetailsComponent } from './components/ContractDetails/contract-details.component';
+
 @NgModule({
   declarations: [
-    ListWorkContractsComponent
+    ListWorkContractsComponent,
+    ContractDetailsComponent,
   ],
   imports: [
-    CommonModule,
-    WorkContractsRoutingModule,
-    TableModule,
     ButtonModule,
-    InputNumberModule,
-    CalendarModule,
-    DialogModule,
+    CommonModule,
+    ConfirmDialog,
+    DatePickerModule,
     Dialog,
-    Ripple,
-    SelectModule,
+    FileUpload,
+    FormsModule,
+    HttpClientModule,
+    IconFieldModule,
+    InputNumber,
+    InputIconModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    TableModule,
     ToastModule,
     ToolbarModule,
-    ConfirmDialog,
-    InputTextModule,
-    TextareaModule,
-    CommonModule,
-    FileUpload,
+    MultiSelectModule,
+    MessageModule,
+    WorkContractsRoutingModule,
     DropdownModule,
-    Tag,
-    RadioButton,
-    Rating,
-    InputTextModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputNumber,
-    IconFieldModule,
-    InputIconModule,
-    HttpClientModule,
-    CheckboxModule,
-    DatePickerModule,
+    AutoCompleteModule,
+    FloatLabel,
+    SelectModule,
   ],
 })
 export class WorkContractsModule {}

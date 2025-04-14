@@ -1,0 +1,38 @@
+//Styles btns edit delete
+@use 'variables' as *;
+
+.button-option.p-button-rounded {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+td, th {
+    padding: 5px 16px !important;
+    font-size: 14px;
+    margin-left: 15px !important;
+}
+
+//Styles table head
+.thead {
+    background: $primary-color;
+    color: #fff;
+    min-width: 6.25rem;//=100px
+  
+    &:hover {
+      background: $accent-color;
+      color: #12435d
+    }
+}
+
+.thead-bg-blue {
+    background: $primary-color;
+}
+
+.thead-input-id {
+    min-width: 4.4rem;//=70px
+    width: 100%;
+}
+
+.thead-input-width {
+    width: 100%;
+}

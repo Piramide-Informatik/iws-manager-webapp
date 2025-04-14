@@ -1,14 +1,58 @@
+@use "variables" as *;
+.idioma-btn {
+  font-size: 1.1rem;
+  padding: 1.7rem 1.6rem; // 👉 MÁS ALTO verticalmente
+  line-height: 1.2rem; // 🧘 Ajusta el texto para que no se achique
+  border-radius: 0px;
+  margin-top: 2px;
+}
+.idioma-btn:hover {
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+
+.p-button-outlined {
+  background: $accent-color;
+  border-color: $accent-color;
+  color: $primary-dark;
+}
+
+.lang-panel {
+  padding: 0.5rem;
+  min-width: 180px;
+}
+
 .flag-option {
+  all:unset;
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+  gap: 8px;
+  padding: 0.5rem;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f4f4f4;
+  }
 }
 
-.flag-option:hover {
-  background-color: #f0f0f0;
+.flag-icon {
+  width: 1.5rem;
+  height: 1rem;
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
 }
 
-.flag-option img {
-  margin-right: 8px;
+.flag-icon-de {
+  background-image: url("../assets/flags/de.png");
+}
+
+.flag-icon-gb {
+  background-image: url("../assets/flags/gb.png");
+}
+
+.flag-icon-es {
+  background-image: url("../assets/flags/es.png");
 }

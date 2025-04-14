@@ -7,7 +7,7 @@ export class EmployeeContractService {
             {
                 id: '1001',
                 employeeId: '5010',
-                startDate: '25/04/2021',
+                startDate: '25.04.2021',
                 salaryPerMonth: 3492,
                 hoursPerWeek: 40,
                 workShortTime: 5,
@@ -19,7 +19,7 @@ export class EmployeeContractService {
             {
                 id: '1001',
                 employeeId: '5011',
-                startDate: '12/05/2022',
+                startDate: '12.05.2022',
                 salaryPerMonth: 4285,
                 hoursPerWeek: 40,
                 workShortTime: 6,
@@ -31,7 +31,7 @@ export class EmployeeContractService {
             {
                 id: '1001',
                 employeeId: '5012',
-                startDate: '07/07/2022',
+                startDate: '07.07.2022',
                 salaryPerMonth: 4802,
                 hoursPerWeek: 40,
                 workShortTime: 5,

@@ -1,8 +1,9 @@
 {
   "MENU": {
+    "DASHBOARD": "Dash-Board",
     "CUSTOMERS": "Kunden",
     "PROJECTS": "Projekte",
-    "INVOICING": "Abrechnung",
+    "INVOICING": "Rechnungsstellung",
     "CONTROLLING": "Controlling",
     "MASTER_DATA": "Stammdaten"
   },
@@ -11,20 +12,152 @@
     "EMPLOYEES": "Mitarbeiter",
     "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
     "PROJECTS": "Projekte",
-    "ORDERS": "Bestellungen",
-    "CLAIMS": "Reklamationen",
+    "ORDERS": "Aufträge",
+    "DEMANDS": "Forderungen",
     "INVOICES": "Rechnungen",
     "FRAMEWORK_AGREEMENTS": "Rahmenverträge",
     "CONTRACTORS": "Auftragnehmer",
-    "SUBCONTRACTS": "Teilaufträge",
-    "GOODS_ENTRY": "Wareneingang",
-    "STOCK_CONTROL": "Lagerbestandskontrolle",
-    "PRODUCTS": "Produkte",
-    "SALES": "Vertrieb",
-    "INVENTORY": "Inventar"
+    "SUBCONTRACTS": "Unteraufträge"
   },
-  "PROJECTS-TABLE": {
-    "PROJECT_LABEL": "Projekt",
-    "PROJECT_NAME": "Longtext"
+  "COMMON": {
+    "CUSTOMER_NAME": "Kunde"
+  },
+  "CUSTOMERS": {
+    "CUSTOMER_NAME": "Kunde",
+    "TABLE": {
+      "CUSTOMER_ID": "Nr.",
+      "COMPANY_NAME": "Unternehmensname",
+      "NAME_LINE_2": "Name Zeile 2",
+      "COMPANY_TYPE": "Art",
+      "COUNTRY_NAME": "Land",
+      "CITY": "Ort",
+      "CONTACT_PERSON": "Ansprechpartner"
+    }
+  },
+  "EMPLOYEES": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Pers.Nr.",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "EMAIL": "Email",
+      "GM_SINCE_DATE": "GF",
+      "SH_SINCE_DATE": "Ges.",
+      "SP_SINCE_DATE": "EU",
+      "CE_SINCE_DATE": "MU",
+      "QUALI_FZ": "Quali FZ",
+      "QUALI_MKUI": "Quali KMU-i"
+    }
+  },
+  "EMPLOYEE-CONTRACTS": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Pers.Nr.",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "START_DATE": "Datum",
+      "SALARY_PER_MONTH": "Gehalt",
+      "WEEKLY_HOURS": "WoStd",
+      "WORK_SHORT_TIME": "Kurz",
+      "SPECIAL_PAYMENT": "Max.Std Mon",
+      "MAX_HOURS_PER_MONTH": "Max Std Tag",
+      "MAX_HOURS_PER_DAY": "Std.Satz",
+      "HOURLY_RATE": "JaSoZa"
+    }
+  },
+  "PROJECTS": {
+    "TABLE": {
+      "PROJECT_LABEL": "Projekt",
+      "PROJECT_NAME": "Langname",
+      "FUNDING_PROGRAM": "Förd.Programm",
+      "PROMOTER": "Projektträger",
+      "FUNDING_LABEL": "Förderkennzeichen",
+      "START_DATE": "Start",
+      "END_DATE": "Ende",
+      "AUTH_DATE": "Förderkennzeichen",
+      "FUNDING_RATE": "Fördersatz"
+    }
+  },
+  "ORDERS": {
+    "TABLE": {
+      "ORDER_ID": "A-Nr.",
+      "ORDER_LABEL": "Auftrag",
+      "ORDER_TYPE": "Art",
+      "ORDER_DATE": "Datum",
+      "ACRONYM": "Akronym",
+      "FUNDING_PROGRAM": "Förderprogramm",
+      "VALUE": "Wert",
+      "CONTRACT_STATUS": "V-Status",
+      "CONTRACT_NRO": "RV-Nr.",
+      "CONTRACT_TITLE": "RV",
+      "IWS_PERCENT": "IWS %",
+      "IWS_PERCENT_VALUE": "IWS-Wert"
+    }
+  },
+  "RECEIVABLES": {
+    "TABLE": {
+      "CLAIM_NUMBER": "Ford.-Nr.",
+      "ORDER_NUMBER": "Auftr.-Nr.",
+      "ORDER_TITLE": "Auftrag",
+      "FUNDING_PROGRAM": "Förderp",
+      "PROJECT_SPONSOR": "Projekttr.",
+      "FUNDING_CONCENTRATION": "Förder-KZ",
+      "PROJECT_START_DATE": "Proj.Start.",
+      "PROJECT_END_DATE": "Proj.Ende",
+      "PROJECT_COST": "Proj.Koste",
+      "BILLING_START_DATE": "Abr.Start.",
+      "BILLING_END_DATE": "Abr.Ende.",
+      "NET_AMOUNT": "Zuwendunge",
+      "GROSS_AMOUNT": "ZA netto.",
+      "VAT_AMOUNT": "ZA MwSt. ^v.",
+      "RECEIVED_AMOUNT": "ZA brutto.",
+      "OPEN_AMOUNT": "ZA erhalten.",
+      "IWS_PERCENT": "IWS-%"
+    }
+  },
+  "INVOICES": {
+    "TABLE": {
+      "INVOICE_NUMBER": "Rechnung-Nr.",
+      "INVOICE_DATE": "Datum",
+      "DESCRIPTION": "Beschreibung",
+      "INVOICE_TYPE": "Typ",
+      "NETWORK": "Netzwerk",
+      "ORDER_NUMBER": "Auftrag-Nr.",
+      "ORDER_TITLE": "Auftrag",
+      "NET_AMOUNT": "Netto",
+      "TAX_AMOUNT": "MwSt.",
+      "AMOUNT_GROSS": "Summe"
+    }
+  },
+  "FRAMEWORK-AGREEMENTS": {
+    "TABLE": {
+      "CONTRACT_NUMBER": "RV-Nr.",
+      "CONTRACT_LABEL": "Rahmenvertrag",
+      "DATE": "Datum",
+      "FUNDING_PROGRAM": "Förderprogramm",
+      "CONTRACT_STATUS": "Vertragsstatus",
+      "IWS_EMPLOYEE": "IWS MA"
+    }
+  },
+  "CONTRACTS": {
+    "TABLE": {
+      "CONTRACTOR_LABEL": "Kurzname",
+      "CONTRACTOR_NAME": "Name",
+      "COUNTRY_LABEL": "Land",
+      "STREET": "Straße",
+      "ZIP_CODE": "PLZ",
+      "CITY": "Ort",
+      "TAX_NUMBER": "USt.-Ident-Nr."
+    }
+  },
+  "SUB-CONTRACTS": {
+    "TABLE": {
+      "ORDER_TITLE": "Autrag",
+      "CONTRACTOR": "Auftragnehmer",
+      "PROJECT": "Projekt",
+      "DATE": "Datum",
+      "INVOICE_NUMBER": "Rechnung-Nr.",
+      "NET_INVOICE": "Netto",
+      "GROSS_INVOICE": "Brutto",
+      "SHARE": "Anteil"
+    }
   }
 }

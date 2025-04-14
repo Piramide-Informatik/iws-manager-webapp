@@ -1,6 +1,6 @@
-<div class="card">
+<div class="container">
     <div class="p-fluid">
-        <label class="col-md-2 label" for="customerName">Customer</label>
+        <label class="col-md-2 label" for="customerName">Kunde</label>
         <input class="col-md-6" [disabled]="true" type="text" pInputText [(ngModel)]="customerName" />
     </div>
     <div class="form-row flex flex-wrap justify-content-center ">
@@ -8,29 +8,29 @@
         <div class="form-column">
 
             <div class="field">
-                <label class="col-md-4" for="customerName">Employee Number</label>
+                <label class="col-md-4" for="customerName">Personal-Nr.</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeNumber" />
             </div>
             
             <div class="field">
-                <label class="col-md-4 control-label" for="customerName">Salutation</label>
-                <p-dropdown [options]="salutations" [(ngModel)]="salutationId" [style]="{'width':'50%'}"
+                <label class="col-md-4 control-label" for="customerName">Anrede</label>
+                <p-select [options]="salutations" [(ngModel)]="salutationId" [style]="{'width':'50%'}"
                     [editable]="true" [showClear]="true" optionLabel="name" />
             </div>
             
             <div class="field">
-                <label class="col-md-4 control-label" for="customerName">Title</label>
-                <p-dropdown [options]="titles" [(ngModel)]="titleId" [style]="{'width':'50%'}" [editable]="true"
+                <label class="col-md-4 control-label" for="customerName">Titel</label>
+                <p-select [options]="titles" [(ngModel)]="titleId" [style]="{'width':'50%'}" [editable]="true"
                     [showClear]="true" optionLabel="name" />
             </div>
             
             <div class="field">
-                <label class="col-md-4 control-label" for="customerName">First Name</label>
+                <label class="col-md-4 control-label" for="customerName">Vorname</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeFirstName" />
             </div>
             
             <div class="field">
-                <label class="col-md-4 control-label" for="customerName">Last Name</label>
+                <label class="col-md-4 control-label" for="customerName">Nachname</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeLastName" />
             </div>
             
@@ -42,81 +42,95 @@
 
         <div class="form-column">
             <div class="field">
-                <label class="col-md-5 control-label" for="customerName"> General Manager since</label>
+                <label class="col-md-5 control-label" for="customerName"> GF seit</label>
                 <p-datepicker class="col-md-6" [(ngModel)]="generalManagerSinceDate" [style]="{'width':'50%'}"
-                    [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" />
+                    [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy"  />
             </div>
             <div class="field">
-                <label class="col-md-5 control-label" for="customerName">Shareholder since</label>
+                <label class="col-md-5 control-label" for="customerName">Gesellschafter seit</label>
                 <p-datepicker [(ngModel)]="shareholderSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
-                    inputId="buttondisplay" [showOnFocus]="false" />
+                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
             </div>
             <div class="field">
-                <label class="col-md-5 control-label" for="customerName">Sole Propietor since</label>
+                <label class="col-md-5 control-label" for="customerName">Einzelunternehmer seit</label>
                 <p-datepicker [(ngModel)]="solePropietorSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
-                    inputId="buttondisplay" [showOnFocus]="false" />
+                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
             </div>
             <div class="field">
-                <label class="col-md-5 control-label" for="customerName">Co-entrepreneur since</label>
+                <label class="col-md-5 control-label" for="customerName">Mitunternehmer seit</label>
                 <p-datepicker [(ngModel)]="coentrepreneurSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
-                    inputId="buttondisplay" [showOnFocus]="false" />
+                    inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy"  />
             </div>
             <div class="field">
-                <label class="col-md-5 control-label" for="customerName">Qualification FZ</label>
-                <p-dropdown [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [style]="{'width':'50%'}"
-                    [editable]="true" [showClear]="true" optionLabel="name" />
+                <label class="col-md-5 control-label" for="customerName">Qualifikation FZ</label>
+                <p-select [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [style]="{'width':'50%'}"
+                    [editable]="true" [showClear]="true" optionLabel="name" dateFormat="dd.mm.yy" />
             </div>
             <div class="field">
-                <label class="col-md-5 control-label" for="customerName">Qualification SMEi</label>
+                <label class="col-md-5 control-label" for="customerName">Qualifikation KMU-i</label>
                 <input class="col-md-6" type="text" pInputText [(ngModel)]="qualificationKMUi" />
             </div>
         </div>
     </div>
 
     <div class="form-row flex flex-wrap gap-3 justify-content-center">
-        <p-button label="Save" icon="pi pi-check" class="mx-4" severity="success"></p-button>
-        <p-button label="Delete" icon="pi pi-trash" class="mx-4" severity="danger"></p-button>
-        <p-button label="Cancel" icon="pi pi-times" class="mx-4"severity="secondary" routerLink="/employees"></p-button>
-
+        <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check"
+            iconPos="left" />
+        <p-button class="Delete me-2" size="small" label="Löschen" icon="pi pi-trash"
+            iconPos="left" [style]="{ background: '#ef4444' }" />
+        <p-button class="Cancel me-2" size="small" label="Abbrechen" icon="pi pi-times"
+            iconPos="left" [style]="{ background: '#000' }" routerLink="/employees"/>
     </div>
-
+    <div class="flex flex-row gap-3 align-items-center my-2">
+        <span class="font-semibold">Arbeitsverträge</span>
+      </div>
     <div class="card flex flex-wrapjustify-content-center">
-
-        <p-table [value]="employeeContracts" 
-        class="p-datatable-table"
-        dataKey="id" 
-        editMode="row" 
-        [scrollable]="true" 
+        <p-table 
+        [value]="employeeContracts" 
+        [columns]="selectedColumns"
         [paginator]="true"
-        [rows]="10" 
-        [rowsPerPageOptions]="[10, 25, 50]"
+        [rows]="5"
         showGridlines
-        scrollHeight="260px"
-        [tableStyle]="{'min-width': '50rem'}"
+        scrollable="true"
+        scrollHeight="300px"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
+        [resizableColumns]="true"
+        columnResizeMode="expand"
+        styleClass="p-datatable-gridlines"
         [globalFilterFields]="[
         'datum'
         ]"
     [rowHover]="true" dataKey="id">
-            <ng-template #caption>
-                <div class="flex items-center justify-between">
-                    <h5 class="m-0">Employment Contracts</h5>
-                </div>
-            </ng-template>
-            <ng-template #header>
-                <tr>
-                    <th style="width:10%"></th>
-                    <th class="" pSortableColumn="datum" style="width:10%">
-                        Start date <p-sortIcon field="datum" />
-                    </th>
-                    <th style="width:10%">Salary per month</th>
-                    <th style="width:10%">Hours per week</th>
-                    <th style="width:10%">Work short time</th>
-                    <th style="width:10%">Max Hours per Month</th>
-                    <th style="width:10%">Max Hours per Day</th>
-                    <th style="width:10%">Hourly rate</th>
-                    <th style="width:10%">Annual special payment</th>
-                </tr>
-            </ng-template>
+
+
+    <ng-template #caption>
+
+        <p-multiselect 
+          display="chip" 
+          [options]="cols" 
+          [(ngModel)]="selectedColumns" 
+          optionLabel="header" 
+          selectedItemsLabel="{0} columns selected" 
+          [style]="{ 'min-width': '200px', 'font-size': '14px', 'line-height': '16.8px' }" 
+          placeholder="Choose Columns" />
+      </ng-template>
+      <ng-template #header let-columns>
+        <tr>
+
+          <th id="employee-details-buttons-field" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
+
+          <th id="employee-details-field" *ngFor="let col of columns; let i = index" 
+            [pSortableColumn]="col.field" 
+            class="thead" 
+            pResizableColumn>
+              {{ col.header }} 
+            <p-sortIcon [field]="col.field"/>
+          </th>
+        </tr>
+      </ng-template>
             <ng-template #body let-employeeContract let-editing="editing" let-ri="rowIndex">
                 <tr [pEditableRow]="employeeContract">
                     <td>
@@ -211,7 +225,7 @@
             </ng-template>
         </p-table>
         <div class="form-row flex flex-wrap gap-3 justify-content-left">
-            <p-button  icon="pi pi-plus" label="New" severity="info"/>
+            <p-button  icon="pi pi-plus" label="Neu" severity="info"/>
 
         </div>
     </div>

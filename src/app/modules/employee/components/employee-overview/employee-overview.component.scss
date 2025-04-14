@@ -1,0 +1,98 @@
+@use 'variables' as *;
+.field {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.25rem;
+    align-items: center;
+    justify-content: space-between;
+
+    label {
+        display: block;
+        margin-bottom: 0;
+        font-weight: 500;
+        width: 7rem;
+    }
+
+    input {
+        width: 18.75rem;
+    }
+
+    .p-select {
+        width: 18.75rem;
+
+        span.p-select-label {
+            padding: 0.5rem 0.75rem !important;
+        }
+    }
+
+    .postal-city {
+        width: 18.75rem;
+        display: flex;
+    }
+
+}
+
+.column {
+    padding: 0.5rem 2rem;
+}
+
+.label-dialog {
+    display: block;
+    width: 3.2rem;
+}
+
+.odd-row {
+    background-color: #ffffff !important;
+}
+
+.even-row {
+    background-color: #34495e38 !important;
+}
+
+/* Estilo de resaltado cuando el mouse pasa sobre la fila */
+.odd-row:hover,
+.even-row:hover {
+    background-color: #dcdcdc !important;
+    /* Gris claro para resaltar */
+    cursor: pointer;
+    /* Cambia el cursor a mano para dar un toque interactivo */
+    transition: background-color 0.3s ease;
+    /* Transición suave para el cambio de color */
+}
+
+.pi.pi-globe {
+    position: absolute;
+    right: -1.2rem;
+}
+
+p-select {
+    align-items: center;
+}
+
+p-button {
+    color: $primary-color;
+}
+
+//Styles table head
+.thead {
+    background: $primary-color;
+    color: #fff;
+    min-width: 6.25rem; //=100px
+
+    &:hover {
+        background: $accent-color;
+        color: $primary-dark
+    }
+}
+
+.thead-bg-blue {
+    background: $primary-color;
+}
+
+.thead-input-id {
+    width: 4.4rem; //=70px
+}
+
+.thead-input-width {
+    width: 100%;
+}
