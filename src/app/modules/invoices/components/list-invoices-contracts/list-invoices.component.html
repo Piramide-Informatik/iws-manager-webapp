@@ -83,7 +83,9 @@
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ invoice[col.field] }}</td>
+        <td *ngFor="let col of columns; let i = index" [ngClass]="{'align-right': i === 7 ||i === 8 || i === 9}">
+          {{ invoice[col.field] }}
+        </td>
       </tr>
     </ng-template>
     <ng-template #emptymessage>

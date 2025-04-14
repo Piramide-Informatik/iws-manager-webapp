@@ -77,8 +77,9 @@
               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option" (click)="deleteDemand(demand.idClaim)"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns"
-        >{{ demand[col.field] }}</td>
+        <td *ngFor="let col of columns; let j = index" [ngClass]="{'align-right': j === 8 || j === 11 || j === 12 || j === 13 || j === 14 || j === 15}">
+          {{ demand[col.field] }}
+        </td>
         
       </tr>
     </ng-template>

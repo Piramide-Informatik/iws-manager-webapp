@@ -83,7 +83,9 @@
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ subcontract[col.field] }}</td>
+        <td *ngFor="let col of columns; let i = index" [ngClass]="{'align-right': i === 5 || i === 6 }">
+          {{ subcontract[col.field] }}
+        </td>
       </tr>
     </ng-template>
     <ng-template #emptymessage>
