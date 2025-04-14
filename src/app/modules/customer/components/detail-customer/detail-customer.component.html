@@ -154,7 +154,7 @@
         <app-contact></app-contact>
         <div class="buttons flex justify-content-center my-2">
           <p-button label="Speichern" icon="pi pi-check" class="mx-4" severity="success"></p-button>
-          <p-button (keydown.enter)="visible = false" label="Abbrechen" icon="pi pi-times" severity="secondary" (click)="visible = false" />
+          <p-button (keydown.enter)="visible = false" label="Abbrechen" icon="pi pi-times" severity="secondary" (click)="visible = false" [style]="{ 'background-color': 'black', 'color': 'white', 'border': 'none' }"/>
          </div>
       </p-dialog>
     </div>
