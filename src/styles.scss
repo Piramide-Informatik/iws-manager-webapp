@@ -103,3 +103,8 @@ td, th {
     height: 1.5rem !important;
     width: 1.5rem !important;
 }
+
+.w-13em .p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
+    width: 15em !important;
+}
+
