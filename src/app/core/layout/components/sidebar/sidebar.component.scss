@@ -2,7 +2,7 @@
 
 .sidebar {
     width: 100%;
-    background: #12435D; 
+    background: $accent-color; 
     transition: width 0.3s;
     position: relative;
     overflow: visible;
@@ -13,11 +13,16 @@
         display: flex;
         justify-content: center;
 
+        a{
+            color: $primary-dark;
+            font-weight: 600;
+        }
+
         &:hover {
-            background-color: $accent-color;
+            background-color: $primary-dark;
 
             a {
-                color: $primary-dark !important;
+                color: $primary-light !important;
                 font-weight: 600;
             }
         }
@@ -31,12 +36,12 @@
         }
 
         .p-menuitem-link {
-            margin: 5px 0; // Reduce el espacio entre las opciones
-            justify-content: center; // Centra los íconos horizontalmente
+            margin: 5px 0; 
+            justify-content: center;
         }
 
         i {
-            font-size: 1.8rem; // Aumenta el tamaño del ícono
+            font-size: 1.8rem;
         }
     }
 
@@ -52,8 +57,8 @@
     .p-menuitem-link {
         display: flex;
         align-items: center;
-        margin: 12px 0; // Espaciado entre las opciones cuando está extendido
-        text-align: center; // Alinea el texto al centro
+        margin: 12px 0;
+        text-align: center;
         text-decoration: none;
         color: #accde7;
         justify-content: center;

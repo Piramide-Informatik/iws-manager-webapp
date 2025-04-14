@@ -39,7 +39,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
     this.selectedColumns = this.cols;
 
-    this.customer = 'Valentin Laime'
+    this.customer = 'Joe Doe'
     
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();

@@ -5,13 +5,13 @@
     justify-content: space-around;
     align-items: center;
     height: 60px;
-    background: $accent-color; // Azul oscuro
+    background: $primary-dark; 
     padding: 0 1.5rem;
     font-weight: bold;
-    color: #12435d;
+    color: $primary-light;
 
     .user-button {
-        color: $primary-dark !important;
+        color: $primary-light;
         background: transparent !important;
         border: none;
         font-weight: bold;

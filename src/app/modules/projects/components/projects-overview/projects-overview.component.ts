@@ -55,7 +55,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
 
-    this.customer = 'Valentin Laime';
+    this.customer = 'Joe Doe';
 
     this.projects = this.projectService.list();
 

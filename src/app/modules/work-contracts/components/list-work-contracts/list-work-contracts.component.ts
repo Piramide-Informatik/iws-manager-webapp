@@ -61,7 +61,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadColHeaders();
     this.selectedColumns = this.cols;
-    this.customer = 'Valentin Laime';
+    this.customer = 'Joe Doe';
 
     this.contracts = this.workContractsService.list();
 
@@ -212,7 +212,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   }
 
     goToWorkCOntractDetails(currentWContract: WorkContract) {
-      this.router.navigateByUrl('/work-contracts/contractDetails', { state: { customer: "Valentin Laime", workContract: currentWContract } });
+      this.router.navigateByUrl('/work-contracts/contractDetails', { state: { customer: "Joe Doe", workContract: currentWContract } });
     }
 
   findIndexById(id: number): number {

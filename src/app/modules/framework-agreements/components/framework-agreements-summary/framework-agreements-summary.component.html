@@ -50,9 +50,15 @@
               <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option" (click)="deleteFrameworkAgreement(agreement.id)"></button>
           </div>
         </td>
+<<<<<<< HEAD
         <td *ngFor="let col of columns" [ngClass]="{'align-right': col.field === 'id'}">
           {{ agreement[col.field] }}
         </td>
+=======
+        <td *ngFor="let col of columns; let j = index"
+          [ngClass]="{'text-center': j == 2}"
+        >{{ agreement[col.field] }}</td>
+>>>>>>> 0f935ec2ec06b58573cf2952333bf11d8134adb5
       </tr>
     </ng-template>
     <ng-template #emptymessage>

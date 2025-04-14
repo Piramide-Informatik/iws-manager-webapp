@@ -87,7 +87,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
     goToCustomerDetails(currentCustomer: Customer) {
-      this.router.navigateByUrl('/customers/customer-details', { state: { customer: "Valentin Laime", customerData: currentCustomer } });
+      this.router.navigateByUrl('/customers/customer-details', { state: { customer: "Joe Doe", customerData: currentCustomer } });
     }
 
 }
