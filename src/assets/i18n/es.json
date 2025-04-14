@@ -27,6 +27,21 @@
   "COMMON": {
     "CUSTOMER_NAME": "Cliente"
   },
+  "BUTTONS": {
+    "NEW": "Nuevo",
+    "SAVE": "Guardar",
+    "DELETE": "Eliminar",
+    "CANCEL": "Cancelar"
+  },
+  "DIALOG": {
+    "CONFIRM_TITLE": "Confirmación",
+    "DELETE": "¿Estás seguro de que quieres eliminar {{value}}?",
+    "SUCCESSFUL_MESSAGE": "Exitosamente",
+    "EMPLOYEE_SUCCESS_DELETED_MESSAGE": "Empleado eliminado.",
+    "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Contrato Laboral eliminado",
+    "ACCEPT_LABEL": "Sí",
+    "REJECT_LABEL": "No"
+  },
   "CUSTOMERS": {
     "CUSTOMER_NAME": "Cliente",
     "TABLE": {

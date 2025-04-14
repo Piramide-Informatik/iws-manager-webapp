@@ -224,4 +224,10 @@ export class EmployeeService {
   getEmployees(): Employee[] {
     return this.employees;
   }
+
+  deleteEmployee(employeeId: number): void {
+    this.employees = this.employees.filter(
+      (employee) => employee.id !== employeeId
+    );
+  }
 }

@@ -38,17 +38,17 @@
       </tr>
 
     </ng-template>
-    <ng-template #body let-customer let-i="rowIndex" let-columns="columns">
+    <ng-template #body let-contract let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
             <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-              [routerLink]="['/work-contracts/contractDetails', customer.id]"></button>
+            (click)="goToWorkCOntractDetails(contract)"></button>
             <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
-              (click)="deleteWorkContract(customer.id)"></button>
+              (click)="deleteWorkContract(contract)"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ customer[col.field] }}</td>
+        <td *ngFor="let col of columns">{{ contract[col.field] }}</td>
       </tr>
     </ng-template>
     <ng-template #emptymessage>
@@ -74,7 +74,7 @@
 <!--     <p-button label="Export" icon="pi pi-upload" (onClick)="exportCSV()" />--> 
     </ng-template>
   </p-toolbar>
-
+  <p-confirmDialog [style]="{ width: '450px' }" />
   <!---
   <p-dialog [(visible)]="productDialog" [style]="{ width: '1100px' }" header="Product Details" [modal]="true">
     <ng-template #content>
@@ -151,5 +151,5 @@
     </ng-template>
   </p-dialog>
 -->
-  <p-confirmDialog [style]="{ width: '450px' }" />
+ 
 </div>

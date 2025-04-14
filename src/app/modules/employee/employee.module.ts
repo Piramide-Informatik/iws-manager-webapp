@@ -18,6 +18,9 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { MessageModule } from 'primeng/message';
+import { Dialog } from 'primeng/dialog';
 
 //Components
 import { EmployeeOverviewComponent } from "./components/employee-overview/employee-overview.component";
@@ -43,7 +46,10 @@ import { EmployeeDetailsComponent } from "./components/employee-details/employee
         TableModule,
         ToastModule,
         ToolbarModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ConfirmDialog,
+        MessageModule,
+        Dialog
     ]
 
 })

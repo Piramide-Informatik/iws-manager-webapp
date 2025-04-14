@@ -16,7 +16,9 @@ interface Column {
   styleUrl: './detail-customer.component.scss'
 })
 export class DetailCustomerComponent implements OnInit {
-  
+
+  public selectedCountry!: string;
+
   public cols!: Column[];
 
   public selectedColumns!: Column[];
@@ -121,17 +123,19 @@ export class DetailCustomerComponent implements OnInit {
   ngOnInit(): void {
     this.formDetailCustomer.get('customerNo')?.disable();
     this.customers = this.customerService.list();
+
+    this.selectedCountry = (history.state.customerData.land);
     this.activatedRoute.params
       .subscribe(params => {
         const customerId = params['id'];
-        if (customerId) {
-          this.formDetailCustomer.get('customerNo')?.setValue(customerId);
-
-
-        } else {
-          this.formDetailCustomer.get('customerNo')?.setValue(this.customers.length + 1);
-        }
-      });
+        this.formDetailCustomer.get('customerNo')?.setValue(history.state.customerData.id) ;
+        this.formDetailCustomer.get('companyText1')?.setValue(history.state.customerData.companyName) ;
+        this.formDetailCustomer.get('companyText2')?.setValue(history.state.customerData.nameLine2) ;
+        this.formDetailCustomer.get('selectedCountry')?.setValue(this.countries[1]) ;
+        this.formDetailCustomer.get('selectedTypeCompany')?.setValue(history.state.customerData.kind) ;
+        this.formDetailCustomer.get('city')?.setValue(history.state.customerData.place) ;
+        this.formDetailCustomer.get('invoiceEmail')?.setValue(history.state.customerData.contact) ;
+      })
 
     //Init colums
     this.cols = [

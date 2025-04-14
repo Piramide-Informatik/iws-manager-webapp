@@ -48,7 +48,9 @@
                         <div class="flex items-center justify-center gap-2">
                             <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"
                                 (click)="goToEmployeeDetails(employee)"></button>
-                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+                            <button pButton icon="pi pi-trash"
+                             class="p-button-rounded p-button-danger"
+                             (click)="deleteEmployee(employee)"></button>
                         </div>
                     </td>
                     <td>{{ employee.id }}</td>
@@ -66,10 +68,11 @@
         </p-table>
         <p-toolbar>
             <ng-template #start>
-                <p-button label="Neu" icon="pi pi-plus" routerLink="/employees/employee-details" />
+                <p-button label='Neu' icon="pi pi-plus" routerLink="/employees/employee-details" />
             </ng-template>
             <ng-template #end>
             </ng-template>
         </p-toolbar>
     </div>
+    <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
