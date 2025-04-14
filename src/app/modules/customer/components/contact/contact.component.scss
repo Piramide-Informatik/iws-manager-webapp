@@ -7,8 +7,8 @@
 
 .form-row {
     display: flex;
-    align-items: center; /* Alinea verticalmente los elementos */
-    gap: 82px; /* Reduce el espacio entre label e input */
+    align-items: center; 
+    gap: 82px; 
     margin-bottom: 20px; 
 }
 
@@ -29,7 +29,9 @@ input, select {
 .rechnungsempfaenger-label {
     font-weight: bold;
     text-align: left;
-    vertical-align: middle; /* Alinea verticalmente al centro */
+    vertical-align: middle; 
+    width: 184px; 
+    display: inline-block;
 }
 
 .form-row1 {
@@ -44,9 +46,9 @@ input, select {
     align-items: center;
 
     input[type="checkbox"] {
-        width: 20px;  /* Ajusta el ancho según sea necesario */
-        height: 20px; /* Ajusta la altura según sea necesario */
-        margin-left: 5px; /* Ajusta el margen si es necesario */
+        width: 20px; 
+        height: 20px; 
+        margin-left: 2px; 
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -56,7 +58,7 @@ input, select {
 .checkbox-form-row {
     display: flex;
     align-items: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .checkbox-container span {
@@ -67,3 +69,4 @@ input, select {
 .spacer{
     justify-content: space-between;
 }
+
