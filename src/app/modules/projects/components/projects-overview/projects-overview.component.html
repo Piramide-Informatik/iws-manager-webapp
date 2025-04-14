@@ -48,7 +48,7 @@
                 pInputText 
                 pSize="small"
                 type="text"
-                [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i < 0}"
+                [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
                 (input)="applyFilter($event, col.field)"
                 
               />
@@ -88,7 +88,7 @@
               </div>
             </td>
   
-            <td *ngFor="let col of columns"> 
+            <td *ngFor="let col of columns; let j=index" [ngClass]="{'text-center': j >= 5 && j<= 7}"> 
               {{ person[col.field] }}
             </td>
           </tr>
