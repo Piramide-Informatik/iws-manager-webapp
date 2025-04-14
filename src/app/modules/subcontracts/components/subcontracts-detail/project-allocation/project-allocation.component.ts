@@ -30,6 +30,34 @@ export class ProjectAllocationComponent implements OnInit {
   selectedProjectName!: string;
 
   ngOnInit(): void {
+    this.allocations = [
+      {
+        projectName: 'Webportal Ausbau',
+        percentage: 25,
+        amount: 2500,
+      },
+      {
+        projectName: 'Infrastruktur Update',
+        percentage: 20,
+        amount: 2000,
+      },
+      {
+        projectName: 'ERP Integration',
+        percentage: 15,
+        amount: 1500,
+      },
+      {
+        projectName: 'UX Optimierung',
+        percentage: 30,
+        amount: 3000,
+      },
+      {
+        projectName: 'Mobile App Entwicklung',
+        percentage: 10,
+        amount: 1000,
+      },
+    ];
+
     this.allocationForm = new FormGroup({
       projectName: new FormControl('', Validators.required),
       percentage: new FormControl('', Validators.required),
