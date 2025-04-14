@@ -1,0 +1,114 @@
+<form [formGroup]="subcontractForm" (ngSubmit)="onSubmit()">
+  <div class="align-items-center mb-2">
+    <div class="order_input order_name mb-2">
+      <label for="customer">Kunde</label>
+      <input
+        pInputText
+        type="text"
+        id="customer"
+        formControlName="customer"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="order_input order_name mb-2">
+      <label for="order">Auftrag</label>
+      <input
+        pInputText
+        type="text"
+        id="order"
+        formControlName="order"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="order_input order_name mb-2">
+      <label for="contractor">Auftragnehmer</label>
+      <input
+        pInputText
+        type="text"
+        id="contractor"
+        formControlName="contractor"
+        autocomplete="off"
+      />
+    </div>
+    <div class="order_input order_name mb-2">
+      <label for="invoiceNumber">Rechnungsnummer</label>
+      <input
+        pInputText
+        type="text"
+        id="invoiceNumber"
+        formControlName="invoiceNumber"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="order_input order_name mb-2">
+      <label for="invoiceDate">Rechnungsdatum</label>
+      <p-datepicker
+        id="invoiceDate"
+        [showIcon]="true"
+        iconDisplay="input"
+        formControlName="invoiceDate"
+        dateFormat="dd.mm.yy"
+      ></p-datepicker>
+    </div>
+
+    <div class="order_input order_name mb-2">
+      <label for="netOrGross">Netto oder brutto</label>
+      <p-select
+        [style]="{ width: '57%' }"
+        id="netOrGross"
+        [options]="[
+          { label: 'Netto', value: 'net' },
+          { label: 'Brutto', value: 'gross' }
+        ]"
+        formControlName="netOrGross"
+        optionLabel="label"
+        placeholder="Auswählen"
+      ></p-select>
+    </div>
+
+    <!-- Monto -->
+    <div class="order_input order_name mb-2">
+      <label for="amount">Rechnungsbetrag</label>
+      <input
+        pInputText
+        id="invoiceAmount"
+        type="number"
+        pInputText
+        formControlName="invoiceAmount"
+      />
+    </div>
+
+    <div class="order_input order_name mb-2">
+      <p-checkbox
+        inputId="afa"
+        formControlName="afa"
+        binary="true"
+      ></p-checkbox>
+      <label for="afa">AfA</label>
+    </div>
+
+    <div class="order_input order_name mb-2">
+      <label for="afaDurationMonths">AfA Dauer (Monate)</label>
+      <input
+        id="afaDurationMonths"
+        type="number"
+        pInputText
+        formControlName="afaDurationMonths"
+      />
+    </div>
+
+    <!-- Descripción -->
+    <div class="order_input order_name mb-2">
+      <label for="description">Beschreibung</label>
+      <textarea
+        id="description"
+        pInputTextarea
+        rows="6"
+        formControlName="description"
+      ></textarea>
+    </div>
+  </div>
+</form>
