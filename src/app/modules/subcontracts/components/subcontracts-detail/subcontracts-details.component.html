@@ -1,30 +1,37 @@
 <div class="container">
   <div class="row">
+    <!-- Sección izquierda: Datos del subcontrato -->
     <div class="col-md-6">
-      <app-order></app-order>
+      <app-subcontract></app-subcontract>
     </div>
+
+    <!-- Sección derecha: Asignaciones -->
     <div class="col-md-6">
       <div class="mb-2">
-        <app-project></app-project>
+        <app-project-allocation></app-project-allocation>
       </div>
       <div class="mb-2">
-        <app-iws-provision></app-iws-provision>
+        <app-depreciation-schedule
+          *ngIf="afaEnabled"
+        ></app-depreciation-schedule>
       </div>
     </div>
   </div>
 
-  <div class="buttons">
+  <!-- Botones -->
+  <div class="buttons mt-4">
     <div class="row">
       <div class="col-4">
         <p-button
           class="order_PDF"
           size="small"
-          label="Auftrags-PDF erzeugen"
+          label="Subcontract-PDF erzeugen"
           icon="pi pi-file-pdf"
           iconPos="right"
           [style]="{ background: '#656565' }"
-        />
+        ></p-button>
       </div>
+
       <div class="col-8">
         <p-button
           class="Save me-2"
@@ -32,7 +39,7 @@
           label="Speichern"
           icon="pi pi-check"
           iconPos="left"
-        />
+        ></p-button>
         <p-button
           class="Delete me-2"
           size="small"
@@ -40,7 +47,7 @@
           icon="pi pi-trash"
           iconPos="left"
           [style]="{ background: '#ef4444' }"
-        />
+        ></p-button>
         <p-button
           class="Cancel me-2"
           size="small"
@@ -48,7 +55,7 @@
           icon="pi pi-times"
           iconPos="left"
           [style]="{ background: '#000' }"
-        />
+        ></p-button>
       </div>
     </div>
   </div>
