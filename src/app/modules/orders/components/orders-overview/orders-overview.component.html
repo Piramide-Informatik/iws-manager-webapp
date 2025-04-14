@@ -50,7 +50,7 @@
   
           <th class="thead-bg-blue"></th>
   
-          <th *ngFor="let col of columns; let i = index" 
+          <th id="orders-overview-field" *ngFor="let col of columns; let i = index" 
             [pSortableColumn]="col.field" 
             pResizableColumn 
             class="thead"
