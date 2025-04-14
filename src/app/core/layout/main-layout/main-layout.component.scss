@@ -8,6 +8,7 @@
     margin-top: 0;  
     height: calc(100vh - 60px); // Ajusta según la altura de tu header
     overflow: hidden; // Evita que el contenido principal y el sidebar hagan scroll
+    flex-direction: column;
   }
 
   .sidebar {
@@ -21,7 +22,7 @@
     background: $primary-light;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    width: 90vw;
+    width: 100vw;
     overflow-y: auto; // Solo esta sección podrá hacer scroll
     max-height: 100%; // Se asegura de respetar los límites
 

@@ -1,9 +1,8 @@
 @use 'variables' as *;
 
 .sidebar {
-    width: 135px;
+    width: 100%;
     background: #12435D; 
-    height: calc(100vh - 60px);
     transition: width 0.3s;
     position: relative;
     overflow: visible;
@@ -11,6 +10,8 @@
     .menu-items {
         cursor: pointer;
         width: 100%;
+        display: flex;
+        justify-content: center;
 
         &:hover {
             background-color: $accent-color;
@@ -44,7 +45,7 @@
         color: $primary-light !important;
         height: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start; // Alinea los elementos a la izquierda
     }
 
@@ -52,10 +53,10 @@
         display: flex;
         align-items: center;
         margin: 12px 0; // Espaciado entre las opciones cuando está extendido
-        padding-left: 15px; // Margen izquierdo para separar del borde
-        text-align: left; // Alinea el texto a la izquierda
+        text-align: center; // Alinea el texto al centro
         text-decoration: none;
         color: #accde7;
+        justify-content: center;
 
         i {
             font-size: 1.5rem; // Tamaño del ícono en estado normal
