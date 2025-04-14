@@ -4,17 +4,19 @@
     width: 100% !important;
 
     label {
-        width: 33%;
+        width: 9em;
+    }
+
+    input{
+        width: 13em;
     }
 
 }
 
-//Styles table head
-//Styles table head
 .thead {
     background: $primary-color;
     color: #fff;
-    min-width: 6.25rem; //=100px
+    min-width: 6.25rem; 
 
     &:hover {
         background: #abcbeb;
