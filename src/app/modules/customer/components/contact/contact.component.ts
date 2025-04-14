@@ -13,22 +13,14 @@ export class ContactComponent {
 
   constructor() {
     this.contactForm = new FormGroup({
-      lastname: new FormControl(''),
-      firstname: new FormControl(''),
-      salutation: new FormControl(''),
-      title: new FormControl(''),
-      position: new FormControl(''),
-      emailaddress: new FormControl(''),
-      invoicerecipient: new FormControl('')
+      nachname: new FormControl(''),
+      vorname: new FormControl(''),
+      anrede: new FormControl(''),
+      titel: new FormControl(''),
+      funktion: new FormControl(''),
+      mailadresse: new FormControl(''),
+      rechnungsempfänger: new FormControl('')
     });
-  }
-  save() {
-    console.log('Guardando datos:', this.contactForm.value);
-  }
-
-  cancel() {
-    console.log('Cancelando operación');
-    this.contactForm.reset();
   }
 }
 

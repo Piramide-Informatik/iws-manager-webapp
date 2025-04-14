@@ -1,9 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { WorkContractsService } from '../../services/work-contracts.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Table } from 'primeng/table';
+
+import { TranslateService, _, TranslatePipe, TranslateDirective } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Column {
   field: string;
@@ -23,7 +27,7 @@ interface ExportColumn {
   templateUrl: './list-work-contracts.component.html',
   styleUrl: './list-work-contracts.component.scss',
 })
-export class ListWorkContractsComponent implements OnInit {
+export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   public cols!: Column[];
 
@@ -42,40 +46,65 @@ export class ListWorkContractsComponent implements OnInit {
 
   loading: boolean = true;
 
+  private langSubscription!: Subscription;
 
   exportColumns!: ExportColumn[];
   constructor(
     private workContractsService: WorkContractsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private translate: TranslateService,
+    public router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.loadColHeaders();
     this.selectedColumns = this.cols;
     this.customer = 'Valentin Laime';
 
     this.contracts = this.workContractsService.list();
 
-    this.cols = [
-      { field: 'employeeId', header: 'Pers.Nr.' },
-      { field: 'firstName', header: 'Vorname' },
-      { field: 'lastName', header: 'Nachname' },
-      { field: 'startDate', header: 'Datum' },
-      { field: 'salaryPerMonth', header: 'Gehalt' },
-      { field: 'weeklyHours', header: 'WoStd' },
-      { field: 'worksShortTime', header: 'Kurz' },
-      { field: 'specialPayment', header: 'Max.Std Mon' },
-      { field: 'maxHrspPerMonth', header: 'Max Std Tag' },
-      { field: 'maxHrsPerDay', header: 'Std.Satz' },
-      { field: 'hourlyRate', header: 'JaSoZa' }
-    ];
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.reloadComponent(true);
+    });
 
     this.selectedColumns = this.cols;
-
-
   }
 
+  loadColHeaders(): void {
+    this.cols = [
+      { field: 'employeeId', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))},
+      { field: 'firstName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
+      { field: 'lastName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
+      { field: 'startDate', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
+      { field: 'salaryPerMonth',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
+      { field: 'weeklyHours',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
+      { field: 'worksShortTime',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
+      { field: 'specialPayment',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
+      { field: 'maxHrspPerMonth', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
+      { field: 'maxHrsPerDay',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
+      { field: 'hourlyRate',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
+    ];
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
+
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+    //skipLocationChange:true means dont update the url to / when navigating
+    //console.log("Current route I am on:",this.router.url);
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+        //console.log(`After navigation I am on:${this.router.url}`)
+      })
+    })
+  }
 
   applyFilter(event: Event, field: string) {
     const inputElement = event.target as HTMLInputElement;
@@ -226,7 +255,7 @@ export class ListWorkContractsComponent implements OnInit {
         });
 
       productAction.then(() => {
-       // this.loadProducts();
+        // this.loadProducts();
 
         this.cd.detectChanges();
 

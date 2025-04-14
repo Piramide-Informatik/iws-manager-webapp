@@ -82,7 +82,7 @@
             iconPos="left" [style]="{ background: '#000' }" routerLink="/employees"/>
     </div>
     <div class="flex flex-row gap-3 align-items-center my-2">
-        <label>Arbeitsverträge</label>
+        <span class="font-semibold">Arbeitsverträge</span>
       </div>
     <div class="card flex flex-wrapjustify-content-center">
         <p-table 
@@ -120,9 +120,9 @@
       <ng-template #header let-columns>
         <tr>
 
-          <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
+          <th id="employee-details-buttons-field" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
 
-          <th *ngFor="let col of columns; let i = index" 
+          <th id="employee-details-field" *ngFor="let col of columns; let i = index" 
             [pSortableColumn]="col.field" 
             class="thead" 
             pResizableColumn>

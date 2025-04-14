@@ -1,55 +1,56 @@
 <div class="modal-content-contact">
     <form [formGroup]="contactForm">
         <div class="form-row spacer">
-            <label for="lastname">Last Name</label>
-            <input type="text" id="lastname" formControlName="lastname">
+            <label for="nachname">Nachname</label>
+            <input type="text" id="nachname" formControlName="nachname" pInputText>
         </div>
 
         <div class="form-row spacer">
-            <label for="firstname">First Name</label>
-            <input type="text" id="firstname" formControlName="firstname">
+            <label for="vorname">Vorname</label>
+            <input type="vorname" id="firstname" formControlName="vorname" pInputText>
         </div>
 
         <div class="form-row spacer">
-            <label for="salutation">Salutation</label>
-            <select id="salutation" formControlName="salutation">
-                <option value="mr">Mr.</option>
-                <option value="ms">Ms.</option>
+            <label for="anrede">Anrede</label>
+            <select id="anrede" formControlName="anrede">
+                <option value="herr">Herr</option>
+                <option value="frau">Frau</option>
             </select>
         </div>
 
         <div class="form-row spacer">
-            <label for="title">Title</label>
-            <select id="title" formControlName="title">
+            <label for="titel">Titel</label>
+            <select id="titel" formControlName="titel">
                 <option value="dr">Dr.</option>
-                <option value="msc">MSc.</option>
+                <option value="dr">Prof.</option>
+                <option value="msc">Prof. Dr.</option>
             </select>
         </div>
 
         <div class="form-row spacer">
-            <label for="position">Position</label>
-            <input type="text" id="position" formControlName="position">
+            <label for="funktion">Funktion</label>
+            <input type="text" id="funktion" formControlName="funktion" pInputText>
         </div>
 
         <div class="form-row spacer">
-            <label for="emailaddress">Email Address</label>
-            <input type="email" id="emailaddress" formControlName="emailaddress">
+            <label for="mailadresse">Mailadresse</label>
+            <input type="mailadresse" id="mailadresse" formControlName="mailadresse" pInputText>
         </div>
 
-        <div class="form-row">
-            <label for="invoicerecipient">Invoice Recipient</label>
-            <div class="checkbox-container">
-                <input type="checkbox" id="invoicerecipient" formControlName="invoicerecipient">
-                <label for="invoicerecipient">Is Invoice Recipient</label>
+        <div class="form-row1">
+            <label for="rechnungsempfänger" class="rechnungsempfaenger-label">Rechnungsempfänger</label>
+            <div class="checkbox-container"> 
+                <input type="checkbox" id="rechnungsempfänger" formControlName="rechnungsempfänger">
+                <span>Its Rechnungsempfänger</span> 
             </div>
         </div>
 
         <!-- Botones centrados -->
         <div class="button-container">
-            <button type="button" (click)="save()">Save</button>
+            <button type="button" >Save</button>
             <button 
                 type="button" 
-                (click)="cancel()" 
+               
                 class="cancel-btn" 
                 routerLink="/customers/customer-details" 
             >Cancel</button>

@@ -16,6 +16,8 @@ import {
 export class AppComponent {
   title = 'iws-manager-webapp';
 
+  public selectedLanguage!: string;
+
   constructor(private translate: TranslateService) {
     // Configura inglés como idioma por defecto e inicial
     this.translate.addLangs(['de', 'es', 'en']);
@@ -25,5 +27,10 @@ export class AppComponent {
 
   changeLanguage(lang: string) {
     this.translate.use(lang);
+    this.selectedLanguage = lang;
+  }
+
+  ngOnInit(): void {
+    this.selectedLanguage = 'de';
   }
 }

@@ -7,8 +7,14 @@
   margin-top: 2px;
 }
 .idioma-btn:hover {
-  background-color: #e6fffa;
-  border-color: #00cba0;
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+
+.p-button-outlined {
+  background: $accent-color;
+  border-color: $accent-color;
+  color: $primary-dark;
 }
 
 .lang-panel {
@@ -17,6 +23,7 @@
 }
 
 .flag-option {
+  all:unset;
   display: flex;
   align-items: center;
   gap: 8px;

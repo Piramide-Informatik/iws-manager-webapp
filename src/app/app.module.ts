@@ -5,8 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateDirective } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslatePipe } from '@ngx-translate/core';
 
 //Modules app
 import { AppRoutingModule } from './app-routing.module';
@@ -63,12 +64,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     MenubarModule,
     MenuModule,
     AvatarModule,
+    TranslatePipe,
+    TranslateDirective,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
+      defaultLanguage: 'de'
     }),
   ],
   providers: [

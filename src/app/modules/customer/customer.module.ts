@@ -17,12 +17,17 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
+import { DialogModule } from 'primeng/dialog';
+
 
 
 //Componentes
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
+
+import { TranslateDirective, TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -43,7 +48,11 @@ import { ListCustomersComponent } from './components/list-customers/list-custome
     SelectModule,
     TableModule,
     TextareaModule,
-    ToolbarModule
+    ToolbarModule,
+    TranslateModule,
+    TranslatePipe,
+    TranslateDirective,
+    DialogModule
   ]
 })
 export class CustomerModule {}
