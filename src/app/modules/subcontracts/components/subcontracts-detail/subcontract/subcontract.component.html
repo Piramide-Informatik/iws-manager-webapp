@@ -57,7 +57,7 @@
     <div class="order_input order_name mb-2">
       <label for="netOrGross">Netto oder brutto</label>
       <p-select
-        [style]="{ width: '57%' }"
+        [style]="{ width: '20vw' }"
         id="netOrGross"
         [options]="[
           { label: 'Netto', value: 'net' },
@@ -82,12 +82,12 @@
     </div>
 
     <div class="order_input order_name mb-2">
+      <label for="afa">AfA</label>
       <p-checkbox
         inputId="afa"
         formControlName="afa"
         binary="true"
       ></p-checkbox>
-      <label for="afa">AfA</label>
     </div>
 
     <div class="order_input order_name mb-2">
@@ -101,13 +101,14 @@
     </div>
 
     <!-- Descripción -->
-    <div class="order_input order_name mb-2">
+    <div class="order_input order_name mb-2 flex">
       <label for="description">Beschreibung</label>
       <textarea
         id="description"
-        pInputTextarea
+        pTextarea
         rows="6"
         formControlName="description"
+        style="resize: none; width: 20vw;"
       ></textarea>
     </div>
   </div>
