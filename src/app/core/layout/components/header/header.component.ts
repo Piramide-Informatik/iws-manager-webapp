@@ -42,8 +42,16 @@ export class HeaderComponent implements OnInit{
     ];
   }
   
-  onMenuSelect(menu: string): void {
+  onMenuSelect(menu: string, index:number): void {
     this.menuSelected.emit(menu);
+    const menuOptions: HTMLCollectionOf<Element> = document.getElementsByClassName('menu-options');
+    const option = menuOptions[index];
+
+    Array.from(menuOptions).forEach( element => {
+      element.classList.remove('active');
+    })
+    option.classList.add('active');
+
   }  
 
   logout() {

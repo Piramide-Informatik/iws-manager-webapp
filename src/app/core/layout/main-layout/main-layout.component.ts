@@ -15,7 +15,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   mainMenuVisible: boolean = false;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   currentSidebarItems: MenuItem[] = [];
-  mainMenuItems: MenuItem[] = [];
+  mainMenuItems: any[] = [];
 
   private langSubscription!: Subscription;
 
@@ -49,27 +49,28 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       {
         label: this.translate.instant('MENU.CUSTOMERS'),
         icon: 'pi pi-cog',
-        command: () => this.loadSidebarItems('customers'),
+        command: 'customers'//() => this.loadSidebarItems('customers'),
+        
       },
       {
         label: this.translate.instant('MENU.PROJECTS'),
         icon: 'pi pi-box',
-        command: () => this.loadSidebarItems('inventory'),
+        command: 'inventory'//() => this.loadSidebarItems('inventory'),
       },
       {
         label: this.translate.instant('MENU.INVOICING'),
         icon: 'pi pi-shopping-cart',
-        command: () => this.loadSidebarItems('sales'),
+        command: 'sales'//() => this.loadSidebarItems('sales'),
       },
       {
         label: this.translate.instant('MENU.CONTROLLING'),
         icon: 'pi pi-chart-bar',
-        command: () => this.loadSidebarItems('reports'),
+        command: 'reports'//() => this.loadSidebarItems('reports'),
       },
       {
         label: this.translate.instant('MENU.MASTER_DATA'),
         icon: 'pi pi-chart-bar',
-        command: () => this.loadSidebarItems('reports'),
+        command: 'reports'//() => this.loadSidebarItems('reports'),
       },
     ];
   }
@@ -93,6 +94,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           {
             label: this.translate.instant('SIDEBAR.CUSTOMER'),
             routerLink: ['/customers'],
+            
           },
           {
             label: this.translate.instant('SIDEBAR.EMPLOYEES'),
@@ -131,6 +133,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             routerLink: ['/subcontracts'],
           },
         ];
+
         break;
       case 'inventory':
         this.currentSidebarItems = [
