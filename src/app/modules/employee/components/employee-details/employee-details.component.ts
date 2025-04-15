@@ -102,12 +102,14 @@ export class EmployeeDetailsComponent implements OnInit {
     });
 */
     this.salutations = [
+      { id: 0, name: '', description: '' },
       { id: 1, name: 'Frau', description: 'Men' },
       { id: 2, name: 'Herr', description: 'Women' },
 
     ];
 
     this.titles = [
+      { id: 0, name: '', description: '' },
       { id: 1, name: 'Dr.', description: 'title' },
       { id: 2, name: 'Prof.', description: 'title' },
       { id: 3, name: 'Prof. Doc.', description: 'title' }

@@ -1,3 +1,4 @@
+@use 'variables' as *;
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Michroma&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -109,5 +110,10 @@ td, th {
 
 .w-13em .p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
     width: 15em !important;
+}
+
+.p-datatable-thead > tr > th.p-datatable-column-sorted {
+    background: $accent-color;
+    color: $primary-dark;
 }
 

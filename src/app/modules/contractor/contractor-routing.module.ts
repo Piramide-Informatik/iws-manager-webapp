@@ -5,8 +5,8 @@ import { ContractorDetailsComponent } from './components/contractor-details/cont
 
 const routes: Routes = [
     {path: '', component: ContractorOverviewComponent},
-    {path: 'projects-overview', component: ContractorOverviewComponent},
-    {path: ':id', component: ContractorDetailsComponent},
+    {path: 'contracts-overview', component: ContractorOverviewComponent},
+    {path: 'contract-details', component: ContractorDetailsComponent}
 ]
 
 @NgModule({
