@@ -27,3 +27,10 @@ p-floatlabel{
     flex: unset; 
     width: 20vw;
 }
+::ng-deep .p-datepicker table,
+::ng-deep .p-datepicker .p-monthpicker,
+::ng-deep .p-datepicker .p-yearpicker,
+::ng-deep .p-datepicker .p-datepicker-group {
+  width: 100%;
+  table-layout: fixed;
+}

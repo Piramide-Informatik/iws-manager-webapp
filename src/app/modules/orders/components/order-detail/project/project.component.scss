@@ -6,13 +6,18 @@ input{
 
 .proj_input{
     width: 100% !important;
-
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-weight: normal;
     label {
         width: 102px;
     }
 
-    input{
-        width: 170px;
+    input,
+    p-select{
+        width: 400px;
     }
 
     span {

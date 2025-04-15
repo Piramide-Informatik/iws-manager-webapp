@@ -21,4 +21,10 @@ p-floatlabel{
         width: 33%;
     }
 }
-
+::ng-deep .p-datepicker table,
+::ng-deep .p-datepicker .p-monthpicker,
+::ng-deep .p-datepicker .p-yearpicker,
+::ng-deep .p-datepicker .p-datepicker-group {
+  width: 100%;
+  table-layout: fixed;
+}
