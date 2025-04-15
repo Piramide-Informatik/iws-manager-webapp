@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 60px;
+    height: 50px;
     background: $primary-dark; 
     padding: 0 1.5rem;
     font-weight: bold;
@@ -52,6 +52,11 @@
     }
 }
 
-.options{
+.menu-options{
     cursor: pointer;
+
+    &:hover {
+        background-color: $primary-light;
+        color: $primary-dark;
+    }
 }
