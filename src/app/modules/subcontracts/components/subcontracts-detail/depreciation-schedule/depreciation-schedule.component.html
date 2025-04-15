@@ -51,9 +51,9 @@
             ></button>
           </div>
         </td>
-        <td>{{ entry.year }}</td>
-        <td>{{ entry.usagePercentage }}%</td>
-        <td>{{ entry.depreciationAmount }}</td>
+        <td [ngClass]="'align-right'">{{ entry.year }}</td>
+        <td [ngClass]="'align-right'">{{ entry.usagePercentage }}%</td>
+        <td [ngClass]="'align-right'">{{ entry.depreciationAmount | currency : "EUR" }}</td>
       </tr>
     </ng-template>
   </p-table>

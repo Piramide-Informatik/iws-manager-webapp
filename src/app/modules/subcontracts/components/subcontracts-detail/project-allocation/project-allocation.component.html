@@ -53,8 +53,8 @@
           </div>
         </td>
         <td>{{ entry.projectName }}</td>
-        <td>{{ entry.percentage }}%</td>
-        <td>{{ entry.amount }}</td>
+        <td [ngClass]="'align-right'">{{ entry.percentage }}%</td>
+        <td [ngClass]="'align-right'">{{ entry.amount | currency : "EUR" }}</td>
       </tr>
     </ng-template>
   </p-table>

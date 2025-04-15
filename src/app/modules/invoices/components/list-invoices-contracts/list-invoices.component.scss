@@ -45,3 +45,6 @@ p-button{
 ::ng-deep .blue-button:focus {
   outline: none !important; /* Opcional: elimina el borde del enfoque */
 }
+.align-right {
+  text-align: right;
+}

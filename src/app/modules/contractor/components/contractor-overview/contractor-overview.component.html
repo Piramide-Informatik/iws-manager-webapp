@@ -48,7 +48,9 @@
               (click)="deleteCustomer(customer.id)"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ customer[col.field] }}</td>
+        <td *ngFor="let col of columns; let i = index" [ngClass]="{'align-right': i === 6 || i === 4 }">
+          {{ customer[col.field] }}
+        </td>
       </tr>
     </ng-template>
     <ng-template #emptymessage>

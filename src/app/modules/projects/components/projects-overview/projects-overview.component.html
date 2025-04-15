@@ -76,8 +76,9 @@
               </div>
             </td>
   
-            <td *ngFor="let col of columns; let j=index" [ngClass]="{'text-center': j >= 5 && j<= 7}"> 
-              {{ person[col.field] }}
+            <td *ngFor="let col of columns; let j = index" 
+              [ngClass]="{'text-center': j >= 5 && j <= 7, 'align-right': j === columns.length - 1}">
+               {{ person[col.field] }}
             </td>
           </tr>
 

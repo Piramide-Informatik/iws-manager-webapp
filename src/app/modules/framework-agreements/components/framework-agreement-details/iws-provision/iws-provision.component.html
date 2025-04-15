@@ -52,9 +52,9 @@
                     </div>
 
                 </td>
-                <td>{{ orderCommissions.fromOrderValue }}</td>
-                <td>{{ orderCommissions.commission }}</td>
-                <td>{{ orderCommissions.minCommission }}</td>
+                <td [ngClass]="'align-right'">{{ orderCommissions.fromOrderValue }}</td>
+                <td [ngClass]="'align-right'">{{ orderCommissions.commission }}</td>
+                <td [ngClass]="'align-right'">{{ orderCommissions.minCommission }}</td>
             </tr>
         </ng-template>
     </p-table>
