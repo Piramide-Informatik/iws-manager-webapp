@@ -8,7 +8,7 @@
         </p-iconfield>
     </div>
     <div class="scrollbox">
-        <p-table #dt2 [value]="employees" [rows]="15" [columns]="selectedColumns" [rowsPerPageOptions]="[15, 30, 50]"
+        <p-table #dt2 [value]="employees" [rows]="15" stripedRows [columns]="selectedColumns" [rowsPerPageOptions]="[15, 30, 50]"
             [paginator]="true"
             currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
             [showCurrentPageReport]="true" [resizableColumns]="true" [scrollable]="true" showGridlines

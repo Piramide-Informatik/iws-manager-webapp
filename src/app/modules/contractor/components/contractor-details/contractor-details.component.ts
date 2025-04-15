@@ -1,12 +1,16 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-contractor-details',
   standalone: false,
   templateUrl: './contractor-details.component.html',
   styleUrl: './contractor-details.component.scss'
 })
-export class ContractorDetailsComponent {
+export class ContractorDetailsComponent implements OnInit {
+
+  public formDetailContract!: FormGroup;
 
   customer = signal('');
   contractorLabel = signal('');
@@ -40,7 +44,32 @@ export class ContractorDetailsComponent {
     this.contractorName().trim().length > 0
   );
 
-  constructor(private readonly router: Router) {}
+  constructor(private fb: FormBuilder,
+    private readonly router: Router, 
+    private activatedRoute: ActivatedRoute,) {
+      this.formDetailContract = this.fb.group({
+        customer: [],
+        contractorLabel: [''],
+        contractorName: [''],
+        countryname: [''],
+        street: [''],
+        zipcode: [''],
+        city: [''],
+        taxNumber: ['']
+      });
+    }
+
+
+  ngOnInit():void {
+
+    this.activatedRoute.params
+    .subscribe(params => {
+      this.formDetailContract.get('customer')?.setValue(history.state.customer) ;
+      
+    })
+
+
+  }
 
   onSubmit() {
     if (!this.isFormValid()) {

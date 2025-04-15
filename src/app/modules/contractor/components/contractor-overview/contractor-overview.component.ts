@@ -84,6 +84,10 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToContractDetails(currentContract: Contractor) {
+    this.router.navigateByUrl('/contractors/contract-details', { state: { customer: "Joe Doe", contractData: currentContract } });
+  }
+
   deleteCustomer(id: number) {
     //this.contractors = this.contractors.filter( contractor => contractor.contractorLabel !== id);
   }
