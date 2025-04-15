@@ -1,5 +1,7 @@
+@use 'variables' as *;
+
 p-button{
-  color: #267bbf;
+  color: $primary-light;
 }
 
 //Styles table head

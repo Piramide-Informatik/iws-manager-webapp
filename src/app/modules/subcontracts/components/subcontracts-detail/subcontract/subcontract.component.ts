@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-subcontract',
   standalone: false,
   templateUrl: './subcontract.component.html',
+    providers: [MessageService, ConfirmationService],
   styleUrls: ['./subcontract.component.scss'],
 })
 export class SubcontractComponent implements OnInit {

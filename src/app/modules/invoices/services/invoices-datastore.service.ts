@@ -11,7 +11,7 @@ export class InvoicesDatastoreService {
     return [
       {
         invoiceNumber: 'INV-001',
-        date: '2024-04-01',
+        date: '04.05.2024',
         description: 'Entwicklung der Plattform',
         type: 'Service',
         iwsNumber: 'IWS-9001',
@@ -23,7 +23,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-002',
-        date: '2024-04-05',
+        date: '05.05.2024',
         description: 'Beratung',
         type: 'Consulting',
         iwsNumber: 'IWS-9002',
@@ -35,7 +35,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-003',
-        date: '2024-04-10',
+        date: '10.05.2024',
         description: 'Software-Lizenz',
         type: 'Produkt',
         iwsNumber: 'IWS-9003',
@@ -47,7 +47,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-004',
-        date: '2024-04-12',
+        date: '10.06.2024',
         description: 'Netzwerkinstallation',
         type: 'Service',
         iwsNumber: 'IWS-9004',
@@ -59,7 +59,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-005',
-        date: '2024-04-15',
+        date: '12.07.2024',
         description: 'IT-Schulung',
         type: 'Training',
         iwsNumber: 'IWS-9005',
@@ -71,7 +71,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-006',
-        date: '2024-04-17',
+        date: '17.08.2024',
         description: 'Cloud-Backup',
         type: 'Service',
         iwsNumber: 'IWS-9006',
@@ -83,7 +83,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-007',
-        date: '2024-04-20',
+        date: '15.09.2024',
         description: 'Server-Migration',
         type: 'Consulting',
         iwsNumber: 'IWS-9007',
@@ -95,7 +95,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-008',
-        date: '2024-04-22',
+        date: '17.08.2024',
         description: 'Hardware-Wartung',
         type: 'Service',
         iwsNumber: 'IWS-9008',
@@ -107,7 +107,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-009',
-        date: '2024-04-24',
+        date: '17.10.2024',
         description: 'Benutzerverwaltung',
         type: 'Support',
         iwsNumber: 'IWS-9009',
@@ -119,7 +119,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-010',
-        date: '2024-04-26',
+        date: '18.08.2024',
         description: 'Mobile App Entwicklung',
         type: 'Projekt',
         iwsNumber: 'IWS-9010',
@@ -131,7 +131,7 @@ export class InvoicesDatastoreService {
       },
       {
         invoiceNumber: 'INV-011',
-        date: '2024-04-28',
+        date: '20.08.2024',
         description: 'SEO Optimierung',
         type: 'Consulting',
         iwsNumber: 'IWS-9011',

@@ -15,6 +15,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
+import { InputIconModule } from 'primeng/inputicon';
+import { ToastModule } from 'primeng/toast';
 import { TextareaModule } from 'primeng/textarea';
 
 // Routing
@@ -54,6 +56,8 @@ import { DepreciationScheduleComponent } from './components/subcontracts-detail/
     MultiSelectModule,
     IconFieldModule,
     CardModule,
+    InputIconModule,
+    ToastModule,
     TextareaModule
   ],
 })

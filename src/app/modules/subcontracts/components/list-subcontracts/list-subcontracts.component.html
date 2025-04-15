@@ -2,69 +2,61 @@
   <div class="flex px-4 py-3 align-items-center">
     <label for="SearchCustomer">Kunde</label>
     <p-iconfield class="px-4">
-      <input pInputText type="text" class="pi pi-search px-4" />
-
-      <input pInputText type="text" placeholder="" [(ngModel)]="customer" />
+      <p-inputicon styleClass="pi pi-search px-4" />
+      <input pInputText type="text" placeholder=""  [(ngModel)]="customer"/>
     </p-iconfield>
   </div>
+  <div class="flex flex-column">
   <p-table
     #dt2
     [value]="subcontracts"
     dataKey="id"
-    [rows]="10"
+    [rows]="15"
     [columns]="selectedColumns"
-    [rowsPerPageOptions]="[10, 25, 50]"
+    [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
     [showCurrentPageReport]="true"
     showGridlines
     [resizableColumns]="true"
     columnResizeMode="expand"
     [scrollable]="true"
     scrollHeight="60vh"
-    [tableStyle]="{ 'min-width': 'auto', 'border-spacing': '1px' }"
+    [tableStyle]="{ 'min-width': '20%', 'border-spacing': '1px' }"
+    styleClass="p-datatable-gridlines"
   >
-    <ng-template #caption>
-      <p-multiselect
-        display="chip"
-        [options]="cols"
-        [(ngModel)]="selectedColumns"
-        optionLabel="header"
-        selectedItemsLabel="{0} columns selected"
-        [style]="{
-          'min-width': '250px',
-          'font-size': '14px',
-          'line-height': '16.8px'
-        }"
-        placeholder="Choose Columns"
+  <ng-template #caption>
+    <p-multiselect 
+      display="chip"
+      [options]="cols"
+      [(ngModel)]="selectedColumns"
+      optionLabel="header"
+      selectedItemsLabel="{0} columns selected"
+      [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }"
       />
-    </ng-template>
-    <ng-template #header let-columns>
-      <tr>
-        <th id="action-th" *ngFor="let col of columns; let i = index">
-          <input
-            pInputText
-            pSize="small"
-            type="text"
-            [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
-            (input)="applyFilter($event, col.field)"
-          />
-        </th>
-      </tr>
-      <tr>
-        <th id="action-th" class="thead-bg-blue"></th>
-
-        <th
-          id="action-th"
-          *ngFor="let col of columns; let i = index"
-          [pSortableColumn]="col.field"
-          pResizableColumn
-          class="thead"
-        >
-          {{ col.header }} <p-sortIcon [field]="col.field" />
-        </th>
-      </tr>
-    </ng-template>
+  </ng-template>
+  <ng-template #header let-columns>
+    <tr>
+      <th></th>
+      <th *ngFor="let col of columns; let i = index">
+        <input 
+          pInputText
+          pSize="small"
+          type="text"
+          [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+          (input)="applyFilter($event, col.field)" />
+      </th>
+    </tr>
+    <tr>
+      <th class="thead-bg-blue"></th>
+      <th *ngFor="let col of columns; let i = index"
+        [pSortableColumn]="col.field"
+        pResizableColumn class="thead">{{
+        col.header }} 
+        <p-sortIcon [field]="col.field" />
+      </th>
+    </tr>
+  </ng-template>
     <ng-template #body let-subcontract let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
