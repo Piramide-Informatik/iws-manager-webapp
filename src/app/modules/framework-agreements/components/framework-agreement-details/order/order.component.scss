@@ -24,13 +24,6 @@ p-floatlabel{
 }
 
 .order_input p-dropdown {
-    flex: unset; /* Evita que el flexbox lo expanda */
-    width: 320px !important; /* Ajusta este valor al tamaño que necesites */
-}
-
-/* Si el dropdown sigue sin ajustarse, prueba esta regla más específica */
-.order_input p-dropdown .p-dropdown {
-    width:350px !important; 
-    min-width: 350px !important;
-    max-width: 350px !important;
+    flex: unset; 
+    width: 20vw;
 }
