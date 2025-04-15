@@ -83,13 +83,15 @@
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ invoice[col.field] }}</td>
+        <td *ngFor="let col of columns; let j = index"
+          [ngClass]="{'text-center': j == 1}"
+        >{{ invoice[col.field] }}</td>
       </tr>
     </ng-template>
     <ng-template #emptymessage>
       <tr>
         <td colspan="7">
-          <p-message severity="info">No customers found.</p-message>
+          <p-message severity="info">No invoices found.</p-message>
         </td>
       </tr>
     </ng-template>

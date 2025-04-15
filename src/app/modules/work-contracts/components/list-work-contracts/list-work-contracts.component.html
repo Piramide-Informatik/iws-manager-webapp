@@ -48,7 +48,7 @@
               (click)="deleteWorkContract(contract)"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ contract[col.field] }}</td>
+        <td *ngFor="let col of columns; let j=index" [ngClass]="{'text-center': j==3}">{{ contract[col.field] }}</td>
       </tr>
     </ng-template>
     <ng-template #emptymessage>
