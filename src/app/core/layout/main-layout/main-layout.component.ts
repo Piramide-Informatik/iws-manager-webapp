@@ -49,28 +49,28 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       {
         label: this.translate.instant('MENU.CUSTOMERS'),
         icon: 'pi pi-cog',
-        command: 'customers'//() => this.loadSidebarItems('customers'),
+        command: 'customers'
         
       },
       {
         label: this.translate.instant('MENU.PROJECTS'),
         icon: 'pi pi-box',
-        command: 'inventory'//() => this.loadSidebarItems('inventory'),
+        command: 'inventory'
       },
       {
         label: this.translate.instant('MENU.INVOICING'),
         icon: 'pi pi-shopping-cart',
-        command: 'sales'//() => this.loadSidebarItems('sales'),
+        command: 'sales'
       },
       {
         label: this.translate.instant('MENU.CONTROLLING'),
         icon: 'pi pi-chart-bar',
-        command: 'reports'//() => this.loadSidebarItems('reports'),
+        command: 'reports'
       },
       {
         label: this.translate.instant('MENU.MASTER_DATA'),
         icon: 'pi pi-chart-bar',
-        command: 'reports'//() => this.loadSidebarItems('reports'),
+        command: 'reports'
       },
     ];
   }
