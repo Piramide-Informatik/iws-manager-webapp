@@ -83,10 +83,9 @@
   <p-toolbar>
 
     <ng-template  #start>
-      <p-button label="Neu" icon="pi pi-plus" [routerLink]="['/work-contracts/contractDetails']" />
-      
-      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="importEmployContracts" chooseLabel="Arbeitsverträge importieren" auto
-        customUpload class="mr-2 inline-block"  />
+      <p-button label="Neu" icon="pi pi-plus" [routerLink]="['/work-contracts/contractDetails']" class="mr-3 inline-block" />
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="importEmployContracts"
+        chooseLabel="Arbeitsverträge importieren" auto customUpload class="inline-block" />
     </ng-template>
 
     <ng-template #end>
