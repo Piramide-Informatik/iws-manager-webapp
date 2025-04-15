@@ -15,7 +15,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   mainMenuVisible: boolean = false;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   currentSidebarItems: MenuItem[] = [];
-  mainMenuItems: MenuItem[] = [];
+  mainMenuItems: any[] = [];
 
   private langSubscription!: Subscription;
 
@@ -75,7 +75,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       {
         label: this.translate.instant('MENU.CUSTOMERS'),
         icon: 'pi pi-cog',
-        command: () => this.loadSidebarItems('customers'),
+        command: 'customers'
       },
       {
         label: this.translate.instant('MENU.PROJECTS'),
