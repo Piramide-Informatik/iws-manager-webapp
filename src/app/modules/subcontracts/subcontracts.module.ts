@@ -17,6 +17,7 @@ import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
 import { InputIconModule } from 'primeng/inputicon';
 import { ToastModule } from 'primeng/toast';
+import { TextareaModule } from 'primeng/textarea';
 
 // Routing
 import { SubcontractsRoutingModule } from './subcontracts-routing.module';
@@ -55,8 +56,12 @@ import { DepreciationScheduleComponent } from './components/subcontracts-detail/
     MultiSelectModule,
     IconFieldModule,
     CardModule,
+<<<<<<< HEAD
     InputIconModule,
     ToastModule
+=======
+    TextareaModule
+>>>>>>> 0f935ec2ec06b58573cf2952333bf11d8134adb5
   ],
 })
 export class SubcontractsModule {}
