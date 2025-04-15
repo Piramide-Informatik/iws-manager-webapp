@@ -38,18 +38,18 @@
       </tr>
 
     </ng-template>
-    <ng-template #body let-customer let-i="rowIndex" let-columns="columns">
+    <ng-template #body let-contract let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
             <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-              [routerLink]="['/contractors/', customer.id]"></button>
+            (click)="goToContractDetails(contract)"></button>
             <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
-              (click)="deleteCustomer(customer.id)"></button>
+              (click)="deleteCustomer(contract)"></button>
           </div>
         </td>
         <td *ngFor="let col of columns; let i = index" [ngClass]="{'align-right': i === 6 || i === 4 }">
-          {{ customer[col.field] }}
+          {{ contract[col.field] }}
         </td>
       </tr>
     </ng-template>
