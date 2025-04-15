@@ -8,41 +8,41 @@
         </p-iconfield>
     </div>
     <div class="scrollbox">
-        <p-table #dt2 [value]="employees" showGridlines stripedRows [tableStyle]="{ 'min-width': '270%' }" [rows]="10"
-            [columns]="selectedColumns" [paginator]="true" scrollable="true" [rowsPerPageOptions]="[10, 25, 50]"
-            [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}" [resizableColumns]="true"
-            styleClass="p-datatable-gridlines" [rowHover]="true" dataKey="id"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [showCurrentPageReport]="true">
+        <p-table #dt2 
+            [value]="employees"
+            [rows]="15"
+            [columns]="selectedColumns"
+            [rowsPerPageOptions]="[15, 30, 50]"
+            [paginator]="true"
+            currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
+            [showCurrentPageReport]="true"
+            [resizableColumns]="true"
+            [scrollable]="true"
+            showGridlines
+            scrollHeight="60vh"
+            [tableStyle]="{'min-width': '5%','border-spacing': '1px'}">
             <ng-template #caption>
                 <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-                    selectedItemsLabel="{0} columns selected"
-                    [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }"
-                    placeholder="Choose Columns" />
-            </ng-template>
-            <ng-template #caption>
-            </ng-template>
-            <ng-template #header let-columns>
+                  selectedItemsLabel="{0} columns selected"
+                  [style]="{ 'min-width': '10%', 'font-size': '14px', 'line-height': '16.8px' }"
+                   placeholder="Choose Columns" />
+              </ng-template>
+              <ng-template #header let-columns>
                 <tr>
-                    <th id="employee-overview-buttons">
-                    </th>
-                    <th id="employee-overview-field-search" *ngFor="let col of selectedFilterColumns; let i = index">
-                        <input pInputText pSize="small" type="text"
-                            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i < 0}"
-                            (input)="applyFilter($event, col.field)" />
-                    </th>
+                  <th></th>
+                  <th *ngFor="let col of selectedFilterColumns; let i = index">
+                    <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+                      (input)="applyFilter($event, col.field)" />
+                  </th>
                 </tr>
                 <tr>
-                    <th id="employee-overview-buttons-field" class="thead" pResizableColumn
-                        [style]="{'min-width': '100px', 'width':'100px'}"></th>
-                    <th id="employee-overview-field" *ngFor="let col of columns; let i = index"
-                        [pSortableColumn]="col.field" class="thead" pResizableColumn>
-                        {{ col.header }}
-                        <p-sortIcon [field]="col.field" />
-                    </th>
+                  <th class="thead-bg-blue"></th>
+                  <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
+                    col.header }} <p-sortIcon [field]="col.field" />
+                  </th>
                 </tr>
-            </ng-template>
-            <ng-template #body let-employee>
+              </ng-template>
+            <ng-template #body let-employee let-i="rowIndex" let-columns="columns">
                 <tr>
                     <td>
                         <div class="flex items-center justify-center gap-2">

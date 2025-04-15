@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
 
 interface Column {
   field: string,
-  header: string
+  header: string,
+  minWidth: number,
 }
 
 @Component({
@@ -47,13 +48,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'id', header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')) },
-      { field: 'companyName', header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')) },
-      { field: 'nameLine2', header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2')) },
-      { field: 'kind', header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE')) },
-      { field: 'land', header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')) },
-      { field: 'place', header: this.translate.instant(_('CUSTOMERS.TABLE.CITY')) },
-      { field: 'contact', header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON')) }
+      { field: 'id', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')) },
+      { field: 'companyName', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')) },
+      { field: 'nameLine2',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2')) },
+      { field: 'kind',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE')) },
+      { field: 'land',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')) },
+      { field: 'place',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CITY')) },
+      { field: 'contact',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON')) }
     ];
   }
 

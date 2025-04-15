@@ -16,14 +16,15 @@
         </div>
     </form>
     <p-table #dt [value]="orderCommissions" showGridlines
-    stripedRows [tableStyle]="{ 'min-width': '100%' }" [rows]="4" [columns]="cols"
-        [paginator]="true" scrollable="true" [rowsPerPageOptions]="[10, 25, 50]" scrollHeight="90vh"
+    stripedRows [tableStyle]="{ 'min-width': '100%' }" [rows]="15" [columns]="cols"
+        [paginator]="true" scrollable="true" [rowsPerPageOptions]="[15, 30, 50]" scrollHeight="90vh"
         [globalFilterFields]="[
             'fromordervalue',
             'commission',
             'mincommission'
             ]" [(selection)]="selectedOrderCommission" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+            currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
+             [showCurrentPageReport]="true">
         <ng-template #header>
             <tr>
                 <th class="thead">
