@@ -2,8 +2,7 @@
 
 .idioma-btn {
   font-size: 1.1rem;
-  padding: 1.8rem 1.7rem; 
-  line-height: 1.2rem;
+  height: 60px;
   border-radius: 0px;
 }
 .idioma-btn:hover {
@@ -55,4 +54,8 @@
 
 .flag-icon-es {
   background-image: url("../assets/flags/es.png");
+}
+
+button{
+  background-color: $primary-dark;
 }
