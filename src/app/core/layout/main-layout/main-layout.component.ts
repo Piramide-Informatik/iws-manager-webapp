@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss'], // Asegúrate de que sea styleUrls (plural)
+  styleUrls: ['./main-layout.component.scss'],
   standalone: false,
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
@@ -19,16 +19,42 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   private langSubscription!: Subscription;
 
-  constructor(private translate: TranslateService) {}
+  private readonly sidebarItemsConfig: Record<string, { labelKey: string; icon?: string; route: string }[]> = {
+    customers: [
+      { labelKey: 'SIDEBAR.CUSTOMER', route: '/customers' },
+      { labelKey: 'SIDEBAR.EMPLOYEES', route: '/employees' },
+      { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: '/work-contracts' },
+      { labelKey: 'SIDEBAR.PROJECTS', route: '/projects' },
+      { labelKey: 'SIDEBAR.ORDERS', route: '/orders' },
+      { labelKey: 'SIDEBAR.DEMANDS', route: '/demands' },
+      { labelKey: 'SIDEBAR.INVOICES', route: '/invoices' },
+      { labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS', route: '/framework-agreements' },
+      { labelKey: 'SIDEBAR.CONTRACTORS', route: '/contractors' },
+      { labelKey: 'SIDEBAR.SUBCONTRACTS', route: '/subcontracts' },
+    ],
+    inventory: [
+      { labelKey: 'SIDEBAR.GOODS_ENTRY', icon: 'pi pi-plus', route: '/inventory/input' },
+      { labelKey: 'SIDEBAR.STOCK_CONTROL', icon: 'pi pi-list', route: '/inventory/stock' },
+      { labelKey: 'SIDEBAR.PRODUCTS', icon: 'pi pi-box', route: '/inventory/products' },
+    ],
+    sales: [
+      { labelKey: 'SIDEBAR.ORDERS', icon: 'pi pi-shopping-cart', route: '/sales/orders' },
+      { labelKey: 'SIDEBAR.CUSTOMERS', icon: 'pi pi-users', route: '/sales/customers' },
+    ],
+    reports: [
+      { labelKey: 'SIDEBAR.SALES', icon: 'pi pi-chart-line', route: '/reports/sales' },
+      { labelKey: 'SIDEBAR.INVENTORY', icon: 'pi pi-chart-bar', route: '/reports/inventory' },
+    ],
+  };
+
+  constructor(private readonly translate: TranslateService) {}
 
   ngOnInit(): void {
     this.loadMainMenuItems();
     this.loadSidebarItems('customers');
 
-
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadMainMenuItems();
-
       this.loadSidebarItems('customers');
     });
   }
@@ -87,99 +113,17 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   loadSidebarItems(menu: string): void {
-    switch (menu) {
-      case 'customers':
-        this.currentSidebarItems = [
-          {
-            label: this.translate.instant('SIDEBAR.CUSTOMER'),
-            routerLink: ['/customers'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.EMPLOYEES'),
-            routerLink: ['/employees'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.EMPLOYMENT_CONTRACTS'),
-            routerLink: ['/work-contracts'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.PROJECTS'),
-            routerLink: ['/projects'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.ORDERS'),
-            routerLink: ['/orders'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.DEMANDS'),
-            routerLink: ['/demands'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.INVOICES'),
-            routerLink: ['/invoices'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.FRAMEWORK_AGREEMENTS'),
-            routerLink: ['/framework-agreements'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.CONTRACTORS'),
-            routerLink: ['/contractors'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.SUBCONTRACTS'),
-            routerLink: ['/subcontracts'],
-          },
-        ];
-        break;
-      case 'inventory':
-        this.currentSidebarItems = [
-          {
-            label: this.translate.instant('SIDEBAR.GOODS_ENTRY'),
-            icon: 'pi pi-plus',
-            routerLink: ['/inventory/input'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.STOCK_CONTROL'),
-            icon: 'pi pi-list',
-            routerLink: ['/inventory/stock'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.PRODUCTS'),
-            icon: 'pi pi-box',
-            routerLink: ['/inventory/products'],
-          },
-        ];
-        break;
-      case 'sales':
-        this.currentSidebarItems = [
-          {
-            label: this.translate.instant('SIDEBAR.ORDERS'),
-            icon: 'pi pi-shopping-cart',
-            routerLink: ['/sales/orders'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.CUSTOMERS'),
-            icon: 'pi pi-users',
-            routerLink: ['/sales/customers'],
-          },
-        ];
-        break;
-      case 'reports':
-        this.currentSidebarItems = [
-          {
-            label: this.translate.instant('SIDEBAR.SALES'),
-            icon: 'pi pi-chart-line',
-            routerLink: ['/reports/sales'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.INVENTORY'),
-            icon: 'pi pi-chart-bar',
-            routerLink: ['/reports/inventory'],
-          },
-        ];
-        break;
+    const config = this.sidebarItemsConfig[menu];
+    if (config) {
+      this.currentSidebarItems = config.map(item => ({
+        label: this.translate.instant(item.labelKey),
+        icon: item.icon,
+        routerLink: [item.route],
+      }));
+    } else {
+      this.currentSidebarItems = [];
     }
+
     this.mainMenuVisible = false;
   }
 

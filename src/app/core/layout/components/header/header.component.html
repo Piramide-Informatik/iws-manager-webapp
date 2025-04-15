@@ -1,6 +1,6 @@
 <div class="header">
-      <div class="grid" *ngFor="let item of items">
-        <div class="col options" (click)="onMenuSelect(item.command?? 'default')">
+      <div class="grid m-0 h-full align-items-center px-3 menu-options" *ngFor="let item of items; let i = index">
+        <div class="col" (click)="onMenuSelect(item.command?? 'customers', i)">
           <span class="menu-item-text">{{ item.label }}</span>
         </div>        
       </div>
