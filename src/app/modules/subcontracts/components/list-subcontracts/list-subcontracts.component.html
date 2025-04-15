@@ -75,7 +75,9 @@
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ subcontract[col.field] }}</td>
+        <td *ngFor="let col of columns; let j = index"
+          [ngClass]="{'text-center': j == 3}"
+        >{{ subcontract[col.field] }}</td>
       </tr>
     </ng-template>
     <ng-template #emptymessage>

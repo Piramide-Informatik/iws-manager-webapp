@@ -20,7 +20,7 @@
             [scrollable]="true"
             showGridlines
             scrollHeight="60vh"
-            [tableStyle]="{'min-width': '5%','border-spacing': '1px'}">
+            [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}">
             <ng-template #caption>
                 <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
                   selectedItemsLabel="{0} columns selected"
@@ -29,11 +29,21 @@
               </ng-template>
               <ng-template #header let-columns>
                 <tr>
+<<<<<<< HEAD
                   <th></th>
                   <th *ngFor="let col of selectedFilterColumns; let i = index">
                     <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
                       (input)="applyFilter($event, col.field)" />
                   </th>
+=======
+                    <th id="employee-overview-buttons"></th>
+
+                    <th id="employee-overview-field-search" *ngFor="let col of selectedFilterColumns; let i = index">
+                        <input pInputText pSize="small" type="text"
+                            [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+                            (input)="applyFilter($event, col.field)" />
+                    </th>
+>>>>>>> 16bb840f1f92ff91738782f9bd61caea5a185b9f
                 </tr>
                 <tr>
                   <th class="thead-bg-blue"></th>
@@ -57,10 +67,10 @@
                     <td>{{ employee.firstName }}</td>
                     <td>{{ employee.lastName }}</td>
                     <td>{{ employee.email }}</td>
-                    <td>{{ employee.generalManagerSince }}</td>
-                    <td>{{ employee.shareholderSince }}</td>
-                    <td>{{ employee.soleproprietorSince }}</td>
-                    <td>{{ employee.coentrepreneurSince }}</td>
+                    <td class="text-center">{{ employee.generalManagerSince }}</td>
+                    <td class="text-center">{{ employee.shareholderSince }}</td>
+                    <td class="text-center">{{ employee.soleproprietorSince }}</td>
+                    <td class="text-center">{{ employee.coentrepreneurSince }}</td>
                     <td>{{ employee.qualificationFz }}</td>
                     <td>{{ employee.qualificationKmui }}</td>
                 </tr>

@@ -14,7 +14,7 @@ export class OrderComponent implements OnInit{
   public customer!: string;
 
   ngOnInit(): void {
-    this.customer = 'Valentin Laime'
+    this.customer = 'Joe Doe'
     this.orderForm = new FormGroup({
       orderId: new FormControl('', [Validators.required]),
       orderLabel: new FormControl('', [Validators.required]),

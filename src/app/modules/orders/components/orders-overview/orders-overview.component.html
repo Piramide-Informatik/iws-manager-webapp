@@ -14,7 +14,7 @@
       [columns]="selectedColumns"
       [rowsPerPageOptions]="[15, 30, 50]"
       [paginator]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
       [showCurrentPageReport]="true"
       [resizableColumns]="true"
       columnResizeMode="expand"
@@ -22,15 +22,24 @@
       scrollHeight="60vh"
       [tableStyle]="{'min-width': '20%','border-spacing': '1px'}">
       <ng-template #caption>
-        <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+        <p-multiselect 
+          display="chip" 
+          [options]="cols" 
+          [(ngModel)]="selectedColumns" 
+          optionLabel="header"
           selectedItemsLabel="{0} columns selected"
-          [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" placeholder="Choose Columns" />
+          [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
+          placeholder="Choose Columns" />
       </ng-template>
       <ng-template #header let-columns>
         <tr>
           <th></th>
           <th *ngFor="let col of columns; let i = index">
-            <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+            <input 
+              pInputText 
+              pSize="small" 
+              type="text" 
+              [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
               (input)="applyFilter($event, col.field)" />
           </th>
         </tr>
@@ -46,13 +55,22 @@
         <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
           <td>
             <div class="flex items-center justify-center gap-2">
-              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-                [routerLink]="['/orders/order-details']"></button>
-              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
+              <button 
+                pButton 
+                icon="pi pi-pencil" 
+                class="p-button-rounded p-button-info button-option"
+                [routerLink]="['/orders/order-details']"
+              ></button>
+              <button 
+                pButton 
+                icon="pi pi-trash" 
+                class="p-button-rounded p-button-danger button-option"
                 (click)="deleteCustomer(customer.id)"></button>
             </div>
           </td>
-          <td *ngFor="let col of columns">{{ customer[col.field] }}</td>
+          <td *ngFor="let col of columns; let j = index"
+            [ngClass]="{'text-center': j == 3}"
+          >{{ customer[col.field] }}</td>
         </tr>
       </ng-template>
       <ng-template #emptymessage>

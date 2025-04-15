@@ -66,7 +66,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.employees = this.employeeService.getEmployees();
     this.loading = false;
 
-    this.customer = 'Valentin Laime'
+    this.customer = 'Joe Doe'
 
 
 
@@ -129,7 +129,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
 
   goToEmployeeDetails(currentEmployee: Employee) {
-    this.router.navigateByUrl('/employees/employee-details', { state: { customer: "Valentin Laime", employee: currentEmployee } });
+    this.router.navigateByUrl('/employees/employee-details', { state: { customer: "Joe Doe", employee: currentEmployee } });
   }
 
   searchEmployee(event: Event): void {

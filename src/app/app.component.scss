@@ -1,20 +1,20 @@
 @use "variables" as *;
+
 .idioma-btn {
   font-size: 1.1rem;
-  padding: 1.7rem 1.6rem; // 👉 MÁS ALTO verticalmente
-  line-height: 1.2rem; // 🧘 Ajusta el texto para que no se achique
+  padding: 1.8rem 1.7rem; 
+  line-height: 1.2rem;
   border-radius: 0px;
-  margin-top: 2px;
 }
 .idioma-btn:hover {
-  background-color: $primary-color;
-  border-color: $primary-color;
+  background-color: $primary-dark;
+  border-color: $primary-dark;
 }
 
 .p-button-outlined {
-  background: $accent-color;
-  border-color: $accent-color;
-  color: $primary-dark;
+  background: $primary-dark;
+  border-color: $primary-dark;
+  color: $primary-light;
 }
 
 .lang-panel {

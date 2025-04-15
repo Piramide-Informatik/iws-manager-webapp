@@ -1,6 +1,5 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Michroma&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-/* You can add global styles to this file, and also import other style files */
 
 
 * {
@@ -50,6 +49,10 @@ button.p-ripple.p-button.p-component {
 .active {
     background-color: #267bbf;
     border-color: #267bbf;
+    
+    a span{
+        color:#eaf3fa;
+    }
 }
 
 // Estilos para las filas de una tabla
