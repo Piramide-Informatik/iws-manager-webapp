@@ -19,7 +19,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   private langSubscription!: Subscription;
 
-  private sidebarItemsConfig: Record<string, { labelKey: string; icon?: string; route: string }[]> = {
+  private readonly sidebarItemsConfig: Record<string, { labelKey: string; icon?: string; route: string }[]> = {
     customers: [
       { labelKey: 'SIDEBAR.CUSTOMER', route: '/customers' },
       { labelKey: 'SIDEBAR.EMPLOYEES', route: '/employees' },
@@ -47,7 +47,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     ],
   };
 
-  constructor(private translate: TranslateService) {}
+  constructor(private readonly translate: TranslateService) {}
 
   ngOnInit(): void {
     this.loadMainMenuItems();
