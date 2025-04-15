@@ -56,12 +56,9 @@ import { DepreciationScheduleComponent } from './components/subcontracts-detail/
     MultiSelectModule,
     IconFieldModule,
     CardModule,
-<<<<<<< HEAD
     InputIconModule,
-    ToastModule
-=======
+    ToastModule,
     TextareaModule
->>>>>>> 0f935ec2ec06b58573cf2952333bf11d8134adb5
   ],
 })
 export class SubcontractsModule {}
