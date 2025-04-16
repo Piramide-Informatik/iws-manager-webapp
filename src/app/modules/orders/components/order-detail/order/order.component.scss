@@ -1,24 +1,49 @@
 .order_input {
     width: 100% !important;
-
-    label {
-        width: 13em;
-    }
-
-    input {
-        width: 15em;
-    }
-
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-weight: normal;
+  
+    label,
     span {
-        width: 13em;
+      width: 13em;
     }
-
+  
+    input,
+    p-select {
+      width: 20vw !important;
+    }
+  
+  /* Campos especiales del cliente */
     #customerId {
-        width: 5em !important;
-        margin-right: 1em;
+      width: 9em !important;
+      margin-right: 1.5em;
     }
-
+  
     #customerName {
-        width: 9em !important;
+      width: 15em !important;
     }
-}
+  }
+  
+  /* Estilo del calendario */
+  ::ng-deep .p-datepicker {
+    width: 20vw;
+    min-width: 20vw;
+    max-width: 20vw;
+    box-sizing: border-box;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* Asegurar consistencia interna del calendario */
+  ::ng-deep .p-datepicker table,
+  ::ng-deep .p-datepicker .p-monthpicker,
+  ::ng-deep .p-datepicker .p-yearpicker,
+  ::ng-deep .p-datepicker .p-datepicker-group {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
