@@ -130,7 +130,7 @@
 <!-- Modal IWS Commission -->
 <div class="card">
   <p-dialog
-    [header]="optionIwsCommission + ' IWS Commission'"
+    [header]="'IWS Commission '+ optionSelected"
     (onHide)="closeModalIwsCommission()"
     [modal]="true"
     [(visible)]="visibleModalIWSCommission"
@@ -139,7 +139,7 @@
     <hr class="mt-0" />
     <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmit()">
       <div class="flex gap-4 mb-3">
-        <label for="fromValue" class="w-3">From Value</label>
+        <label for="fromValue" class="w-3">ab Auftragswert</label>
         <input
           pInputText
           id="fromValue"
@@ -159,7 +159,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="minCommission" class="w-3">Minimum Commission</label>
+        <label for="minCommission" class="w-3">Mindestprovision</label>
         <input
           pInputText
           id="minCommission"
@@ -170,13 +170,13 @@
       </div>
       <div class="flex justify-content-center gap-2">
         <p-button
-          label="Save"
+          label="Speichern"
           (click)="addIwsCommission()"
           (keydown.enter)="addIwsCommission()"
         ></p-button>
 
         <p-button
-          label="Cancel"
+          label="Abbrechen"
           (click)="closeModalIwsCommission()"
           (keydown.enter)="closeModalIwsCommission()"
         ></p-button>

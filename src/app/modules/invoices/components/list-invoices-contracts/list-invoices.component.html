@@ -31,15 +31,15 @@
   </ng-template>
   <ng-template #header let-columns>
     <tr>
-      <th></th>
-      <th *ngFor="let col of columns; let i = index">
+      <th id="table-head"></th>
+      <th id="table-head" *ngFor="let col of columns; let i = index">
         <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
           (input)="applyFilter($event, col.field)" />
       </th>
     </tr>
     <tr>
-      <th class="thead-bg-blue"></th>
-      <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
+      <th class="thead-bg-blue" id="table-head"></th>
+      <th id="table-head" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
         col.header }} <p-sortIcon [field]="col.field" />
       </th>
     </tr>
@@ -80,18 +80,20 @@
 
   <p-toolbar>
     <ng-template #start>
-      <p-button label="Neu" icon="pi pi-plus" routerLink="" />
-
-      <p-fileUpload
-        mode="basic"
-        accept=".pdf,.xml,.csv"
-        [maxFileSize]="5000000"
-        label="importInvoices"
-        chooseLabel="Rechnungen importieren"
-        auto
-        customUpload
-        class="mr-2 inline-block"
-      />
+      <div class="flex gap-2">
+        <p-button label="Neu" icon="pi pi-plus" routerLink="" />
+  
+        <p-fileUpload
+          mode="basic"
+          accept=".pdf,.xml,.csv"
+          [maxFileSize]="5000000"
+          label="importInvoices"
+          chooseLabel="Rechnungen importieren"
+          auto
+          customUpload
+          class="mr-2 inline-block"
+        />
+      </div>
     </ng-template>
 
     <ng-template #end> </ng-template>
