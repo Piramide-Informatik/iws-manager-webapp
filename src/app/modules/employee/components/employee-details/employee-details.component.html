@@ -14,13 +14,13 @@
             
             <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Anrede</label>
-                <p-select [options]="salutations" [(ngModel)]="salutationId" [style]="{'width':'50%'}"
+                <p-select [options]="salutations" [(ngModel)]="salutationId"
                     [editable]="true" [showClear]="true" optionLabel="name" />
             </div>
             
             <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Titel</label>
-                <p-select [options]="titles" [(ngModel)]="titleId" [style]="{'width':'50%'}" [editable]="true"
+                <p-select [options]="titles" [(ngModel)]="titleId" [editable]="true"
                     [showClear]="true" optionLabel="name" />
             </div>
             
@@ -43,28 +43,28 @@
         <div class="form-column">
             <div class="field">
                 <label class="col-md-5 control-label" for="customerName"> GF seit</label>
-                <p-datepicker class="col-md-6" [(ngModel)]="generalManagerSinceDate" [style]="{'width':'50%'}"
+                <p-datepicker class="col-md-6" [(ngModel)]="generalManagerSinceDate"
                     [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy"  />
             </div>
             <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Gesellschafter seit</label>
-                <p-datepicker [(ngModel)]="shareholderSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
+                <p-datepicker [(ngModel)]="shareholderSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
                     inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" />
             </div>
             <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Einzelunternehmer seit</label>
-                <p-datepicker [(ngModel)]="solePropietorSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
+                <p-datepicker [(ngModel)]="solePropietorSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
                     inputId="buttondisplay" [showOnFocus]="false"  [showWeek]="true" 
                      dateFormat="dd.mm.yy" />
             </div>
             <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Mitunternehmer seit</label>
-                <p-datepicker [(ngModel)]="coentrepreneurSinceDate" [style]="{'width':'50%'}" [showIcon]="true"
+                <p-datepicker [(ngModel)]="coentrepreneurSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
                     inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy"  />
             </div>
             <div class="field">
                 <label class="col-md-5 control-label" for="customerName">Qualifikation FZ</label>
-                <p-select [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [style]="{'width':'50%'}"
+                <p-select [options]="qualificationsFZ" [(ngModel)]="qualificationFzId"
                     [editable]="true" [showClear]="true" optionLabel="name" dateFormat="dd.mm.yy" />
             </div>
             <div class="field">

@@ -33,12 +33,12 @@ export class IwsProvisionComponent implements OnInit{
   cols!: Column[];
   visibleModalIWSCommission = signal(false);
   optionIwsCommission = {
-    new: 'New',
-    edit: 'Edit'
+    new: 'neu',
+    edit: 'bearbeiten'
   };
   optionSelected: string = '';
 
-  constructor( private orderCommissionService: OrderCommissionService ){ }
+  constructor( private readonly orderCommissionService: OrderCommissionService ){ }
 
   ngOnInit(): void {
     this.iwsEmployeeForm = new FormGroup({
@@ -68,10 +68,11 @@ export class IwsProvisionComponent implements OnInit{
   addIwsCommission(){
   
     if(this.optionSelected == this.optionIwsCommission.new){//Add new commission
+      console.log('add new commission');
 
-
-    }else if(this.optionSelected == this.optionIwsCommission.edit){//Edit commission
-
+    }else {//Edit commission
+      console.log('edit commission');
+      
     }
   }
 
