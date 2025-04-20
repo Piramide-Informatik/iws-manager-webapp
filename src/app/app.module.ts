@@ -33,13 +33,14 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { AppComponent } from './app.component';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ContractorModule } from './modules/contractor/contractor.module';
+import { AbsenceTypesComponent } from './modules/master-data/components/absence-types/absence-types.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AbsenceTypesComponent],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
