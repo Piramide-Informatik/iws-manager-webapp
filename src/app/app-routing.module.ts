@@ -79,6 +79,13 @@ const routes: Routes = [
             (s) => s.SubcontractsModule
           ),
       },
+      {
+        path: 'master-data',
+        loadChildren: () =>
+          import('./modules/master-data/master-data.module').then(
+            (md) => md.MasterDataModule
+          ),
+      },      
     ],
   },
 ];

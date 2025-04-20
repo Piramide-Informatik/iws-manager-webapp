@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { LayoutModule } from './core/layout/layout.module';
+import { MasterDataModule } from './modules/master-data/master-data.module';
 import { ProjectModule } from './modules/projects/project.module';
 import { FrameworkAgreementsModule } from './modules/framework-agreements/framework-agreements.module';
 import { SubcontractsModule } from './modules/subcontracts/subcontracts.module';
@@ -33,14 +34,13 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { AppComponent } from './app.component';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ContractorModule } from './modules/contractor/contractor.module';
-import { AbsenceTypesComponent } from './modules/master-data/components/absence-types/absence-types.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, AbsenceTypesComponent],
+  declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -55,6 +55,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
     LayoutModule,
     MatButtonModule,
+    MasterDataModule,
     OrdersModule,
     OverlayPanelModule,
     ProjectModule,
