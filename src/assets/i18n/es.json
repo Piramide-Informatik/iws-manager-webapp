@@ -191,5 +191,13 @@
     "BUTTON": {
       "NEW": "Nuevo"
     }
+  },
+  "STATES": {
+    "TABLE": {
+      "STATE": "Estado Federal"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo"
+    }
   }
 }

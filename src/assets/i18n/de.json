@@ -186,5 +186,13 @@
     "BUTTON": {
       "NEW": "Neu"
     }
+  },
+  "STATES": {
+    "TABLE": {
+      "STATE": "Bundesland"
+    },
+    "BUTTON": {
+      "NEW": "Neu"
+    }
   }
 }
