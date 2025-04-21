@@ -1,5 +1,10 @@
-import { ViewChild, ElementRef } from '@angular/core';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  ViewChild,
+  ElementRef,
+  Component,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
