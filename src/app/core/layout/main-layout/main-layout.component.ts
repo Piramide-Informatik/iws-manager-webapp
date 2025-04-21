@@ -18,8 +18,12 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   mainMenuItems: any[] = [];
 
   private langSubscription!: Subscription;
+  public currentMenuKey: string = 'customers';
 
-  private readonly sidebarItemsConfig: Record<string, { labelKey: string; icon?: string; route: string }[]> = {
+  private readonly sidebarItemsConfig: Record<
+    string,
+    { labelKey: string; icon?: string; route: string }[]
+  > = {
     customers: [
       { labelKey: 'SIDEBAR.CUSTOMER', route: '/customers' },
       { labelKey: 'SIDEBAR.EMPLOYEES', route: '/employees' },
@@ -28,22 +32,53 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       { labelKey: 'SIDEBAR.ORDERS', route: '/orders' },
       { labelKey: 'SIDEBAR.DEMANDS', route: '/demands' },
       { labelKey: 'SIDEBAR.INVOICES', route: '/invoices' },
-      { labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS', route: '/framework-agreements' },
+      {
+        labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS',
+        route: '/framework-agreements',
+      },
       { labelKey: 'SIDEBAR.CONTRACTORS', route: '/contractors' },
       { labelKey: 'SIDEBAR.SUBCONTRACTS', route: '/subcontracts' },
     ],
     inventory: [
-      { labelKey: 'SIDEBAR.GOODS_ENTRY', icon: 'pi pi-plus', route: '/inventory/input' },
-      { labelKey: 'SIDEBAR.STOCK_CONTROL', icon: 'pi pi-list', route: '/inventory/stock' },
-      { labelKey: 'SIDEBAR.PRODUCTS', icon: 'pi pi-box', route: '/inventory/products' },
+      {
+        labelKey: 'SIDEBAR.GOODS_ENTRY',
+        icon: 'pi pi-plus',
+        route: '/inventory/input',
+      },
+      {
+        labelKey: 'SIDEBAR.STOCK_CONTROL',
+        icon: 'pi pi-list',
+        route: '/inventory/stock',
+      },
+      {
+        labelKey: 'SIDEBAR.PRODUCTS',
+        icon: 'pi pi-box',
+        route: '/inventory/products',
+      },
     ],
     sales: [
-      { labelKey: 'SIDEBAR.ORDERS', icon: 'pi pi-shopping-cart', route: '/sales/orders' },
-      { labelKey: 'SIDEBAR.CUSTOMERS', icon: 'pi pi-users', route: '/sales/customers' },
+      {
+        labelKey: 'SIDEBAR.ORDERS',
+        icon: 'pi pi-shopping-cart',
+        route: '/sales/orders',
+      },
+      {
+        labelKey: 'SIDEBAR.CUSTOMERS',
+        icon: 'pi pi-users',
+        route: '/sales/customers',
+      },
     ],
     reports: [
-      { labelKey: 'SIDEBAR.SALES', icon: 'pi pi-chart-line', route: '/reports/sales' },
-      { labelKey: 'SIDEBAR.INVENTORY', icon: 'pi pi-chart-bar', route: '/reports/inventory' },
+      {
+        labelKey: 'SIDEBAR.SALES',
+        icon: 'pi pi-chart-line',
+        route: '/reports/sales',
+      },
+      {
+        labelKey: 'SIDEBAR.INVENTORY',
+        icon: 'pi pi-chart-bar',
+        route: '/reports/inventory',
+      },
     ],
   };
 
@@ -51,11 +86,11 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadMainMenuItems();
-    this.loadSidebarItems('customers');
+    this.loadSidebarItems(this.currentMenuKey);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadMainMenuItems();
-      this.loadSidebarItems('customers');
+      this.loadSidebarItems(this.currentMenuKey);
     });
   }
 
@@ -75,7 +110,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       {
         label: this.translate.instant('MENU.CUSTOMERS'),
         icon: 'pi pi-cog',
-        command: 'customers'
+        command: 'customers',
       },
       {
         label: this.translate.instant('MENU.PROJECTS'),
@@ -94,8 +129,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       },
       {
         label: this.translate.instant('MENU.MASTER_DATA'),
-        icon: 'pi pi-chart-bar',
-        command: () => this.loadSidebarItems('reports'),
+        icon: 'pi pi-cog',
+        command: 'masterdata',
       },
     ];
   }
@@ -113,15 +148,22 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   loadSidebarItems(menu: string): void {
-    const config = this.sidebarItemsConfig[menu];
-    if (config) {
-      this.currentSidebarItems = config.map(item => ({
-        label: this.translate.instant(item.labelKey),
-        icon: item.icon,
-        routerLink: [item.route],
-      }));
-    } else {
+    this.currentMenuKey = menu;
+
+    if (menu === 'masterdata') {
       this.currentSidebarItems = [];
+    } else {
+      const config = this.sidebarItemsConfig[menu];
+
+      if (Array.isArray(config)) {
+        this.currentSidebarItems = config.map((item) => ({
+          label: this.translate.instant(item.labelKey),
+          icon: item.icon,
+          routerLink: [item.route],
+        }));
+      } else {
+        this.currentSidebarItems = [];
+      }
     }
 
     this.mainMenuVisible = false;

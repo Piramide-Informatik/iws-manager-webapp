@@ -1,93 +1,93 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 .sidebar {
+  width: 100%;
+  background: $accent-color;
+  transition: width 0.3s;
+  position: relative;
+  overflow: visible;
+
+  .menu-items {
+    cursor: pointer;
     width: 100%;
-    background: $accent-color; 
-    transition: width 0.3s;
-    position: relative;
-    overflow: visible;
+    display: flex;
+    justify-content: center;
 
-    .menu-items {
-        cursor: pointer;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-
-        a{
-            color: $primary-dark;
-            font-weight: 600;
-        }
-
-        &:hover {
-            background-color: $primary-dark;
-
-            a {
-                color: $primary-light !important;
-                font-weight: 600;
-            }
-        }
+    a {
+      color: $primary-dark;
+      font-weight: 600;
     }
 
-    &.collapsed {
-        width: 3px;
+    &:hover {
+      background-color: $primary-dark;
 
-        .menu-item-text {
-            display: none;
-        }
-
-        .p-menuitem-link {
-            margin: 5px 0; 
-            justify-content: center;
-        }
-
-        i {
-            font-size: 1.8rem;
-        }
-    }
-
-    .sidebar-content {
-        position: relative;
+      a {
         color: $primary-light !important;
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start; // Alinea los elementos a la izquierda
+        font-weight: 600;
+      }
+    }
+  }
+
+  &.collapsed {
+    width: 3px;
+
+    .menu-item-text {
+      display: none;
     }
 
     .p-menuitem-link {
-        display: flex;
-        align-items: center;
-        margin: 12px 0;
-        text-align: center;
-        text-decoration: none;
-        color: #accde7;
-        justify-content: center;
-
-        i {
-            font-size: 1.5rem; // Tamaño del ícono en estado normal
-            margin-right: 10px; // Espaciado entre el ícono y el texto
-        }
+      margin: 5px 0;
+      justify-content: center;
     }
 
-    .collapse-button {
-        position: absolute;
-        right: -20px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: $primary-dark;
-        border: 2px solid $accent-color;
-        color: $primary-light;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &:hover {
-            background: $primary-color;
-        }
+    i {
+      font-size: 1.8rem;
     }
+  }
+
+  .sidebar-content {
+    position: relative;
+    color: $primary-light !important;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; // Alinea los elementos a la izquierda
+  }
+
+  .p-menuitem-link {
+    display: flex;
+    align-items: center;
+    margin: 12px 0;
+    text-align: center;
+    text-decoration: none;
+    color: #accde7;
+    justify-content: center;
+
+    i {
+      font-size: 1.5rem; // Tamaño del ícono en estado normal
+      margin-right: 10px; // Espaciado entre el ícono y el texto
+    }
+  }
+
+  .collapse-button {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $primary-dark;
+    border: 2px solid $accent-color;
+    color: $primary-light;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: $primary-color;
+    }
+  }
 }

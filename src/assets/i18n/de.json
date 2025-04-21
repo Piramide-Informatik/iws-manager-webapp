@@ -17,7 +17,49 @@
     "INVOICES": "Rechnungen",
     "FRAMEWORK_AGREEMENTS": "Rahmenverträge",
     "CONTRACTORS": "Auftragnehmer",
-    "SUBCONTRACTS": "Unteraufträge"
+    "SUBCONTRACTS": "Unteraufträge",
+
+    "ABSENCE_TYPES": "Abwesenheitsarten",
+    "ADDRESS": "Anrede",
+    "ORDER_TYPES": "Auftragstypen",
+    "GROUP_PERSONAS_Y_USUARIOS": "Personen und Benutzer",
+    "GROUP_LOCALIZACION": "Standort",
+    "GROUP_PARAMETROS_GENERALES": "Allgemeine Parameter",
+    "GROUP_PROYECTOS": "Projekte",
+    "GROUP_FACTURACION": "Abrechnung",
+    "GROUP_TECNICOS_Y_AYUDA": "Technik und Hilfe",
+
+    "USER": "Benutzer",
+    "ROLES": "Rollen",
+    "IWS_STAFF": "IWS - Personal",
+    "IWS_COMMISSIONS": "IWS - Provisionen",
+    "IWS_TEAMS": "IWS - Teams",
+
+    "COUNTRIES": "Länder",
+    "STATES": "Bundesländer",
+
+    "TITLE": "Titel",
+
+    "APPROVAL_STATUS": "Freigabestatus",
+    "HOLIDAYS": "Feiertage",
+
+    "FUNDING_PROGRAMS": "Förderprogramme",
+
+    "PROJECT_STATUS": "Projektstatus",
+    "PROJECT_FUNNELS": "Projekttrichter",
+    "REALIZATION_PROBABILITIES": "Realisierungswahrscheinlichkeiten",
+
+    "BILLERS": "Rechnungsersteller",
+    "DUNNING_LEVELS": "Mahnungsstufen",
+    "SALES_TAX": "Umsatzsteuer",
+    "BILLING_METHODS": "Abrechnungsmethoden",
+    "CONTRACT_STATUS": "Vertragsstatus",
+    "TERMS_OF_PAYMENT": "Zahlungsbedingungen",
+
+    "EMPLOYEE_QUALIFICATION": "Mitarbeiterqualifikation",
+    "NETWORKS": "Netzwerke",
+    "SYSTEM_CONSTANTS": "Systemkonstanten",
+    "TEXTS": "Texte"
   },
   "COMMON": {
     "CUSTOMER_NAME": "Kunde"

@@ -1,0 +1,77 @@
+@use "variables" as *;
+
+.scroll-wrapper {
+  display: flex;
+  align-items: center;
+  background: $accent-color;
+  padding: 0.25rem 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex: 1;
+  padding: 0 1rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.menu-item {
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+
+  color: $primary-dark;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $primary-dark;
+    color: $primary-light;
+  }
+
+  &.active {
+    background: $primary-dark;
+    color: $primary-light;
+  }
+}
+
+.scroll-btn {
+  background: $primary-dark;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s;
+
+  &.left {
+    margin-right: 0.5rem;
+  }
+
+  &.right {
+    margin-left: 0.5rem;
+  }
+
+  &:hover {
+    background-color: lighten($primary-dark, 10%);
+  }
+
+  &:active {
+    background-color: darken($primary-dark, 5%);
+  }
+}

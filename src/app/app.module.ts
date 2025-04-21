@@ -3,13 +3,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule, TranslateLoader, TranslateDirective } from '@ngx-translate/core';
+import {
+  TranslateModule,
+  TranslateLoader,
+  TranslateDirective,
+  TranslatePipe,
+} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslatePipe } from '@ngx-translate/core';
 
-//Modules app
+//Modules
 import { AppRoutingModule } from './app-routing.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { EmployeeModule } from './modules/employee/employee.module';
@@ -52,7 +56,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectModule,
     FrameworkAgreementsModule,
     MatButtonModule,
-    HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
     LayoutModule,
     MatButtonModule,
     MasterDataModule,
@@ -74,7 +77,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
-      defaultLanguage: 'de'
+      defaultLanguage: 'de',
     }),
   ],
   providers: [

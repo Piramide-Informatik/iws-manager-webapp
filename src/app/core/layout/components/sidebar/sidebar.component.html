@@ -1,7 +1,8 @@
 <div class="sidebar" [class.collapsed]="isCollapsed">
   <div class="sidebar-content">
-    <div *ngFor="let item of menuItems" 
-      class="menu-items" 
+    <div
+      *ngFor="let item of menuItems"
+      class="menu-items"
       [routerLink]="item.routerLink"
       routerLinkActive="active"
     >
@@ -9,7 +10,8 @@
         class="p-menuitem-link"
         [pTooltip]="isCollapsed ? item.label : ''"
         tooltipPosition="right"
-        [tooltipStyleClass]="'custom-tooltip'">
+        [tooltipStyleClass]="'custom-tooltip'"
+      >
         <span class="menu-item-text">{{ item.label }}</span>
       </a>
     </div>

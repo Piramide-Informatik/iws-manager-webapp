@@ -41,7 +41,7 @@ import { StatesTableComponent } from './components/states/components/states-tabl
     EditProjectCarrierComponent,
     StatesComponent,
     StateFormComponent,
-    StatesTableComponent
+    StatesTableComponent,
   ],
   imports: [
     ButtonModule,
@@ -65,7 +65,7 @@ import { StatesTableComponent } from './components/states/components/states-tabl
     TranslateModule,
     MessageModule,
     SelectModule,
-    FormsModule
+    FormsModule,
   ],
 })
 export class MasterDataModule {}

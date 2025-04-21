@@ -1,25 +1,46 @@
-<!-- Modified layout template -->
 <div class="layout">
-  <app-header [username]="'Patrick Zessin'" [items]="mainMenuItems" (menuSelected)="onMainMenuSelect($event)">
-
+  <app-header
+    [username]="'Patrick Zessin'"
+    [items]="mainMenuItems"
+    (menuSelected)="onMainMenuSelect($event)"
+  >
   </app-header>
 
   <div class="layout-content">
-    <app-sidebar [isCollapsed]="sidebarCollapsed" [menuItems]="currentSidebarItems" (toggleCollapse)="toggleSidebar()">
+    <app-sidebar
+      [isCollapsed]="sidebarCollapsed"
+      [menuItems]="currentSidebarItems"
+      (toggleCollapse)="toggleSidebar()"
+    >
     </app-sidebar>
+
+    <app-masterdata-panel
+      *ngIf="currentMenuKey === 'masterdata'"
+    ></app-masterdata-panel>
+
+    <div *ngIf="currentMenuKey === 'masterdata'"></div>
 
     <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
       <router-outlet></router-outlet>
     </div>
   </div>
+
   <p-sidebar #sidebarRef [(visible)]="mainMenuVisible">
     <ng-template pTemplate="headless">
       <div class="flex flex-column h-full">
-        <div class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">
+        <div
+          class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0"
+        >
           Menu
           <span>
-            <p-button type="button" (onClick)="closeCallback($event)" severity="contrast" icon="pi pi-times"
-              [rounded]="true" [outlined]="true"></p-button>
+            <p-button
+              type="button"
+              (onClick)="closeCallback($event)"
+              severity="contrast"
+              icon="pi pi-times"
+              [rounded]="true"
+              [outlined]="true"
+            ></p-button>
           </span>
         </div>
       </div>
