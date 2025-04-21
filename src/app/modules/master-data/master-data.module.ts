@@ -2,7 +2,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 
 //Modules
@@ -10,6 +9,7 @@ import { MasterDataRoutingModule } from './master-data-routing.module';
 
 //Prime NG
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { Dialog } from 'primeng/dialog';
@@ -21,11 +21,9 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
-import { DropdownModule } from 'primeng/dropdown';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { FloatLabel } from 'primeng/floatlabel';
 import { SelectModule } from 'primeng/select';
 
 //Components
@@ -41,6 +39,7 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
   ],
   imports: [
     ButtonModule,
+    CardModule,
     CommonModule,
     ConfirmDialog,
     DatePickerModule,
@@ -52,8 +51,10 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
     InputTextModule,
     MasterDataRoutingModule,
     MultiSelectModule,
+    ReactiveFormsModule,
     TableModule,
     ToastModule,
+    ToggleSwitch,
     ToolbarModule,
     TranslateModule,
     MessageModule,

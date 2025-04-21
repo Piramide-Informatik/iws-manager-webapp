@@ -20,7 +20,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   private langSubscription!: Subscription;
 
-  constructor(private translate: TranslateService, public router: Router) { }
+  constructor(private readonly translate: TranslateService, private readonly router: Router) { }
 
   ngOnInit() {
     this.absenceTypes = [
@@ -41,14 +41,6 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
         canBeBooked: '',
       },
     ];
-
-    // this.cols = [
-    //   { field: 'type', header: 'Abwesenheitsart' },
-    //   { field: 'abbreviation', header: 'Kürzel' },
-    //   { field: 'fractionOfDay', header: 'Kürzel Tag' },
-    //   { field: 'isVacation', header: 'Ist Urlaub' },
-    //   { field: 'canBeBooked', header: 'kann gebucht werden' },
-    // ];
 
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];

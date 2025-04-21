@@ -23,16 +23,16 @@
 
         <ng-template #header let-columns>
             <tr>
-                <th></th>
-                <th *ngFor="let col of columns; let i = index">
+                <th id="absence-types-table-options"></th>
+                <th id="absence-types-table-search" *ngFor="let col of columns; let i = index">
                     <input pInputText pSize="small" type="text"
                         [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
                         (input)="applyFilter($event, col.field)" />
                 </th>
             </tr>
             <tr>
-                <th class="thead-bg-blue"></th>
-                <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn
+                <th id="absence-types-table-options-field" class="thead-bg-blue"></th>
+                <th id="absence-types-table-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn
                     class="thead">{{ col.header }} <p-sortIcon [field]="col.field" /></th>
             </tr>
         </ng-template>
@@ -62,7 +62,7 @@
 
     <p-toolbar>
         <ng-template #start>
-            <p-button [label]="'ABSENCE_TYPES.BUTTON.NEW' | translate" icon="pi pi-plus" (click)="createAbsenceType()" />
+            <p-button [label]="'ABSENCE_TYPES.BUTTON.NEW' | translate" icon="pi pi-plus" (click)="createAbsenceType()" (keydown.enter)="createAbsenceType()" />
         </ng-template>
     </p-toolbar>
 </div>
