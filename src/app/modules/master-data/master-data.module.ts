@@ -30,12 +30,18 @@ import { SelectModule } from 'primeng/select';
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
 import { AbsenceTypesTableComponent } from './components/absence-types/components/absence-types-table/absence-types-table.component';
 import { EditProjectCarrierComponent } from './components/absence-types/components/edit-project-carrier/edit-project-carrier.component';
+import { StatesComponent } from './components/states/states.component';
+import { StateFormComponent } from './components/states/components/state-form/state-form.component';
+import { StatesTableComponent } from './components/states/components/states-table/states-table.component';
 
 @NgModule({
   declarations: [
     AbsenceTypesComponent,
     AbsenceTypesTableComponent,
-    EditProjectCarrierComponent
+    EditProjectCarrierComponent,
+    StatesComponent,
+    StateFormComponent,
+    StatesTableComponent
   ],
   imports: [
     ButtonModule,
