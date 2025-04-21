@@ -5,7 +5,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule, TranslateLoader, TranslateDirective } from '@ngx-translate/core';
+import {
+  TranslateModule,
+  TranslateLoader,
+  TranslateDirective,
+} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -33,6 +37,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { AppComponent } from './app.component';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ContractorModule } from './modules/contractor/contractor.module';
+import { MasterdataPanelComponent } from './core/sidebar-panels/masterdata-panel/masterdata-panel.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -72,7 +77,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
-      defaultLanguage: 'de'
+      defaultLanguage: 'de',
     }),
   ],
   providers: [

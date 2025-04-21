@@ -18,7 +18,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   mainMenuItems: any[] = [];
 
   private langSubscription!: Subscription;
-  private currentMenuKey: string = 'customers';
+  public currentMenuKey: string = 'customers';
 
   private readonly sidebarItemsConfig: Record<
     string,
@@ -82,165 +82,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     ],
   };
 
-  private getMasterDataSidebar(): any[] {
-    return [
-      {
-        label: this.translate.instant('SIDEBAR.GROUP_PERSONAS_Y_USUARIOS'),
-        items: [
-          {
-            label: this.translate.instant('SIDEBAR.USER'),
-            routerLink: ['/master-data/user'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.ROLES'),
-            routerLink: ['/master-data/roles'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.IWS_STAFF'),
-            routerLink: ['/master-data/iws-staff'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.IWS_COMMISSIONS'),
-            routerLink: ['/master-data/iws-commissions'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.IWS_TEAMS'),
-            routerLink: ['/master-data/iws-teams'],
-          },
-        ],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.GROUP_LOCALIZACION'),
-        items: [
-          {
-            label: this.translate.instant('SIDEBAR.COUNTRIES'),
-            routerLink: ['/master-data/countries'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.STATES'),
-            routerLink: ['/master-data/states'],
-          },
-        ],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.GROUP_PARAMETROS_GENERALES'),
-        items: [
-          {
-            label: this.translate.instant('SIDEBAR.TITLE'),
-            routerLink: ['/master-data/title'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.ORDER_TYPES'),
-            routerLink: ['/master-data/order-types'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.APPROVAL_STATUS'),
-            routerLink: ['/master-data/approval-status'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.HOLIDAYS'),
-            routerLink: ['/master-data/holidays'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.ABSENCE_TYPES'),
-            routerLink: ['/master-data/absence-types'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.FUNDING_PROGRAMS'),
-            routerLink: ['/master-data/funding-programs'],
-          },
-        ],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.GROUP_PROYECTOS'),
-        items: [
-          {
-            label: this.translate.instant('SIDEBAR.PROJECT_STATUS'),
-            routerLink: ['/master-data/project-status'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.PROJECT_FUNNELS'),
-            routerLink: ['/master-data/project-funnels'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.REALIZATION_PROBABILITIES'),
-            routerLink: ['/master-data/realization-probabilities'],
-          },
-        ],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.GROUP_FACTURACION'),
-        items: [
-          {
-            label: this.translate.instant('SIDEBAR.BILLERS'),
-            routerLink: ['/master-data/billers'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.DUNNING_LEVELS'),
-            routerLink: ['/master-data/dunning-levels'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.SALES_TAX'),
-            routerLink: ['/master-data/sales-tax'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.BILLING_METHODS'),
-            routerLink: ['/master-data/billing-methods'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.CONTRACT_STATUS'),
-            routerLink: ['/master-data/contract-status'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.TERMS_OF_PAYMENT'),
-            routerLink: ['/master-data/terms-of-payment'],
-          },
-        ],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.GROUP_TECNICOS_Y_AYUDA'),
-        items: [
-          {
-            label: this.translate.instant('SIDEBAR.EMPLOYEE_QUALIFICATION'),
-            routerLink: ['/master-data/employee-qualification'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.NETWORKS'),
-            routerLink: ['/master-data/networks'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.SYSTEM_CONSTANTS'),
-            routerLink: ['/master-data/system-constants'],
-          },
-          {
-            label: this.translate.instant('SIDEBAR.TEXTS'),
-            routerLink: ['/master-data/texts'],
-          },
-        ],
-      },
-    ];
-  }
-
   constructor(private readonly translate: TranslateService) {}
 
   ngOnInit(): void {
-    this.sidebarItemsConfig['masterdata'] = this.getMasterDataSidebar().map(
-      (group) => ({
-        ...group,
-        open: false,
-      })
-    );
-
     this.loadMainMenuItems();
     this.loadSidebarItems(this.currentMenuKey);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.sidebarItemsConfig['masterdata'] = this.getMasterDataSidebar().map(
-        (group) => ({
-          ...group,
-          open: false,
-        })
-      );
       this.loadMainMenuItems();
       this.loadSidebarItems(this.currentMenuKey);
     });
@@ -302,18 +150,20 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   loadSidebarItems(menu: string): void {
     this.currentMenuKey = menu;
 
-    const config = this.sidebarItemsConfig[menu];
-
-    if (Array.isArray(config) && 'items' in config[0]) {
-      this.currentSidebarItems = config;
-    } else if (Array.isArray(config)) {
-      this.currentSidebarItems = config.map((item) => ({
-        label: this.translate.instant(item.labelKey),
-        icon: item.icon,
-        routerLink: [item.route],
-      }));
-    } else {
+    if (menu === 'masterdata') {
       this.currentSidebarItems = [];
+    } else {
+      const config = this.sidebarItemsConfig[menu];
+
+      if (Array.isArray(config)) {
+        this.currentSidebarItems = config.map((item) => ({
+          label: this.translate.instant(item.labelKey),
+          icon: item.icon,
+          routerLink: [item.route],
+        }));
+      } else {
+        this.currentSidebarItems = [];
+      }
     }
 
     this.mainMenuVisible = false;

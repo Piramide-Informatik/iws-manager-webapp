@@ -3,47 +3,11 @@
 .sidebar {
   width: 100%;
 
-  background: linear-gradient(to bottom, #eaf1f9, #dceaf7);
+  background: $accent-color;
   transition: width 0.3s;
   position: relative;
   overflow: visible;
 
-  // === Agrupados ===
-  .menu-group-items {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .grouped-item {
-    color: $primary-dark;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
-    width: 100%;
-    text-align: center;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-
-    a {
-      color: $primary-dark;
-      font-weight: 600;
-    }
-
-    &:hover {
-      background-color: $primary-dark;
-
-      a {
-        color: $primary-light !important;
-        font-weight: 600;
-      }
-    }
-  }
-
-  // === Planos ===
   .flat-item {
     cursor: pointer;
     width: 100%;

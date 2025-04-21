@@ -14,13 +14,19 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-
+import { MasterdataPanelComponent } from '../sidebar-panels/masterdata-panel/masterdata-panel.component';
 
 @NgModule({
-  declarations: [MainLayoutComponent, SidebarComponent, HeaderComponent, MainMenuComponent],
+  declarations: [
+    MainLayoutComponent,
+    SidebarComponent,
+    HeaderComponent,
+    MainMenuComponent,
+  ],
   imports: [
     CommonModule,
     LayoutRoutingModule,
+    MasterdataPanelComponent,
     BrowserModule,
     BrowserAnimationsModule,
     ButtonModule,
@@ -28,8 +34,8 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     TooltipModule,
     MenuModule,
     AvatarModule,
-    AvatarGroupModule
+    AvatarGroupModule,
   ],
-  exports:[MainLayoutComponent]
+  exports: [MainLayoutComponent],
 })
-export class LayoutModule { }
+export class LayoutModule {}

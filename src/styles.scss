@@ -1,119 +1,120 @@
-@use 'variables' as *;
+@use "variables" as *;
 @import "bootstrap/dist/css/bootstrap.min.css";
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Michroma&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Michroma&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
-    font-size: 12px !important;
+  font-size: 12px !important;
 }
 
 :root {
-    --light-cyan: rgba(142, 197, 255, 0.3)
+  --light-cyan: rgba(142, 197, 255, 0.3);
 }
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: "Inter", Roboto, "Helvetica Neue", sans-serif;
-    padding: 0;
-    overflow: hidden;
+  margin: 0;
+  font-family: "Inter", Roboto, "Helvetica Neue", sans-serif;
+  padding: 0;
+  overflow: hidden;
 }
 
 .p-component {
-    font-family: var(--font-family);
+  font-family: var(--font-family);
 }
 
 .p-component-overlay {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
-    height: 27px !important;
-    font-size: 0.85rem;
-    padding: 2px 6px;
-    width: 20vw;
+  height: 27px !important;
+  font-size: 0.85rem;
+  padding: 2px 6px;
+  width: 20vw;
 }
 
 //Button  +New
 button.p-ripple.p-button.p-component {
-    height: 27px;
-    background-color: #267bbf;
-    border: #267bbf;
+  height: 27px;
+  background-color: #267bbf;
+  border: #267bbf;
 }
 
 //Estilo para sidebar activo
 .active {
-    background-color: #267bbf;
-    border-color: #267bbf;
-    
-    a span{
-        color:#eaf3fa;
-    }
+  background-color: #267bbf;
+  border-color: #267bbf;
+
+  a span {
+    color: #eaf3fa;
+  }
 }
 
 // Estilos para las filas de una tabla
 .odd-row {
-    background-color: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 .even-row {
-    background-color: #34495e38 !important;
+  background-color: #34495e38 !important;
 }
 
 /* Estilo de resaltado cuando el mouse pasa sobre la fila */
 .odd-row:hover,
 .even-row:hover {
-    background-color: #dcdcdc !important;
-    /* Gris claro para resaltar */
-    cursor: pointer;
-    /* Cambia el cursor a mano para dar un toque interactivo */
-    transition: background-color 0.3s ease;
-    /* Transición suave para el cambio de color */
+  background-color: #dcdcdc !important;
+  /* Gris claro para resaltar */
+  cursor: pointer;
+  /* Cambia el cursor a mano para dar un toque interactivo */
+  transition: background-color 0.3s ease;
+  /* Transición suave para el cambio de color */
 }
 
 input,
 .p-select {
-    height: 25px;
-    font-size: 0.85rem;
-    padding: 2px 6px;
+  height: 25px;
+  font-size: 0.85rem;
+  padding: 2px 6px;
 }
 
 .p-select-label {
-    height: 18px;
-    padding: 0 !important;
+  height: 18px;
+  padding: 0 !important;
 
-    li {
-        height: 25px;
-    }
+  li {
+    height: 25px;
+  }
 }
 
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
-    background-color: #34495e38 !important;
+  background-color: #34495e38 !important;
 }
 
-td, th {
-    padding: 5px 16px !important;
-    font-size: 14px;
-    margin-left: 15px !important;
+td,
+th {
+  padding: 5px 16px !important;
+  font-size: 14px;
+  margin-left: 15px !important;
 }
 
 // //Styles btns edit delete
 .p-button-rounded {
-    height: 1.5rem !important;
-    width: 1.5rem !important;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
 }
 
-.w-13em .p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
-    width: 15em !important;
+.w-13em
+  .p-datepicker:has(.p-datepicker-input-icon-container)
+  .p-datepicker-input {
+  width: 15em !important;
 }
 
 .p-datatable-thead > tr > th.p-datatable-column-sorted {
-    background: $accent-color;
-    color: $primary-dark;
+  background: $accent-color;
+  color: $primary-dark;
 }
-

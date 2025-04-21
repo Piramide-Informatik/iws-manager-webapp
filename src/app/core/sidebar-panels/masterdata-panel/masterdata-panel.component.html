@@ -1,0 +1,28 @@
+<div class="sidebar">
+  <div class="sidebar-content">
+    <ng-container *ngFor="let group of masterDataGroups">
+      <div
+        class="menu-group"
+        (mouseenter)="group.open = true"
+        (mouseleave)="group.open = false"
+      >
+        <div class="menu-group-title">
+          {{ group.label }}
+        </div>
+
+        <div class="menu-group-items" *ngIf="group.open">
+          <div
+            *ngFor="let item of group.items"
+            class="grouped-item"
+            [routerLink]="item.routerLink"
+            routerLinkActive="active"
+          >
+            <a class="p-menuitem-link">
+              <span class="menu-item-text">{{ item.label }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
