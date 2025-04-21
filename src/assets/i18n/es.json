@@ -179,5 +179,17 @@
       "GROSS_INVOICE": "Importe Bruto Factura",
       "SHARE": "Parte"
     }
+  },
+  "ABSENCE_TYPES": {
+    "TABLE": {
+      "TYPE": "Tipo de Ausencia",
+      "ABBREVIATION": "Abreviatura",
+      "FRACTION_OF_DAY": "Fracción del Día",
+      "IS_VACATION": "Es Vacación",
+      "CAN_BE_BOOKED": "Se Puede Reservar"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo"
+    }
   }
 }

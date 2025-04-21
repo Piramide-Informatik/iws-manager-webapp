@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 
 //Modules
 import { MasterDataRoutingModule } from './master-data-routing.module';
@@ -40,8 +41,24 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
   ],
   imports: [
     ButtonModule,
+    CommonModule,
     ConfirmDialog,
-    MasterDataRoutingModule
+    DatePickerModule,
+    Dialog,
+    FileUpload,
+    IconFieldModule,
+    InputIconModule,
+    InputNumber,
+    InputTextModule,
+    MasterDataRoutingModule,
+    MultiSelectModule,
+    TableModule,
+    ToastModule,
+    ToolbarModule,
+    TranslateModule,
+    MessageModule,
+    SelectModule,
+    FormsModule
   ],
 })
 export class MasterDataModule {}
