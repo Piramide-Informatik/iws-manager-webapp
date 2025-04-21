@@ -228,5 +228,19 @@
     "BUTTON": {
       "NEW": "Neu"
     }
+  },
+  "STATES": {
+    "TABLE": {
+      "STATE": "Bundesland"
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "STATE": "Bundesland",
+      "EDIT_STATE": "Bundesland bearbeiten"
+    }
   }
 }

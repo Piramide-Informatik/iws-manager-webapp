@@ -231,5 +231,19 @@
     "BUTTON": {
       "NEW": "Nuevo"
     }
+  },
+  "STATES": {
+    "TABLE": {
+      "STATE": "Estado Federal"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "STATE": "Estado Federal",
+      "EDIT_STATE": "Editar Estado"
+    }
   }
 }
