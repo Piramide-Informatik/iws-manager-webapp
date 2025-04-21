@@ -46,7 +46,6 @@ button.p-ripple.p-button.p-component {
     border: #267bbf;
 }
 
-//Estilo para sidebar activo
 .active {
     background-color: #267bbf;
     border-color: #267bbf;
@@ -56,7 +55,6 @@ button.p-ripple.p-button.p-component {
     }
 }
 
-// Estilos para las filas de una tabla
 .odd-row {
     background-color: #ffffff !important;
 }
@@ -65,15 +63,11 @@ button.p-ripple.p-button.p-component {
     background-color: #34495e38 !important;
 }
 
-/* Estilo de resaltado cuando el mouse pasa sobre la fila */
 .odd-row:hover,
 .even-row:hover {
     background-color: #dcdcdc !important;
-    /* Gris claro para resaltar */
     cursor: pointer;
-    /* Cambia el cursor a mano para dar un toque interactivo */
     transition: background-color 0.3s ease;
-    /* Transición suave para el cambio de color */
 }
 
 input,
@@ -117,3 +111,17 @@ td, th {
     color: $primary-dark;
 }
 
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider{
+    background: #267bbf !important;
+}
+
+.p-toggleswitch-handle{
+    background: #fff !important;
+    color: #267bbf !important;
+    border-color: #267bbf !important;
+}
+
+.p-toggleswitch-slider{
+    background: #fff !important;
+    border-color: #267bbf !important;
+}

@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { LayoutModule } from './core/layout/layout.module';
+import { MasterDataModule } from './modules/master-data/master-data.module';
 import { ProjectModule } from './modules/projects/project.module';
 import { FrameworkAgreementsModule } from './modules/framework-agreements/framework-agreements.module';
 import { SubcontractsModule } from './modules/subcontracts/subcontracts.module';
@@ -54,6 +55,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule, // Agregado para que ngx-translate pueda cargar los archivos JSON
     LayoutModule,
     MatButtonModule,
+    MasterDataModule,
     OrdersModule,
     OverlayPanelModule,
     ProjectModule,

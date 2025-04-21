@@ -1,0 +1,44 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" header="Projektträger bearbeiten">
+    <form [formGroup]="editProjectCarrierForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="absence-form mb-2">
+                <label for="absenceType">Abwesenheitsart</label>
+                <input pInputText type="text" id="absenceType" formControlName="absenceType" autocomplete="off" />
+            </div>
+            <div class="absence-form mb-2">
+                <label for="absenceTypeLabel">Kürzel</label>
+                <input pInputText type="text" id="absenceTypeLabel" formControlName="absenceTypeLabel"
+                    autocomplete="off" />
+            </div>
+            <div class="absence-form mb-2">
+                <label for="shareOfDay">Anteil Tag</label>
+                <input pInputText type="text" id="shareOfDay" formControlName="shareOfDay" autocomplete="off" />
+            </div>
+            <div class="absence-form-check mb-2">
+                <label for="isHolidayChecked">Ist Urlaub</label>
+                <p-toggleswitch [(ngModel)]="isHoliday">
+                    <ng-template #handle let-checked="checked">
+                        <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+                    </ng-template>
+                </p-toggleswitch>
+            </div>
+            <div class="absence-form-check mb-2">
+                <label for="canBeBookedChecked">kann gebucht werden</label>
+                <p-toggleswitch [(ngModel)]="canBeBooked">
+                    <ng-template #handle let-checked="checked">
+                        <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+                    </ng-template>
+                </p-toggleswitch>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check" iconPos="left" />
+                </div>
+                <div class="col">
+                    <p-button class="Cancel me-2" size="small" label="Abbrechen" icon="pi pi-times" iconPos="left"
+                        [style]="{ background: '#000' }" />
+                </div>
+            </div>
+        </div>
+    </form>
+</p-card>

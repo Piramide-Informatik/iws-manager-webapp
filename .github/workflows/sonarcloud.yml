@@ -35,5 +35,6 @@ jobs:
             -Dsonar.projectKey=Piramide-Informatik_iws-manager-webapp
             -Dsonar.organization=piramide-informatik
             -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.coverage.exclusions=**/*
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
