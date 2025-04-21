@@ -1,0 +1,53 @@
+// Contenedor principal del formulario
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+// Grupos de formulario
+.form-group,
+.form-group-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    label {
+        width: 150px;
+        font-weight: 500;
+    }
+
+    input,
+    p-toggleswitch {
+        flex: 1;
+        max-width: 300px;
+        margin-left: 1rem;
+    }
+}
+
+// Fila de botones
+.button-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    .btn-save {
+       
+        color: white;
+        transition: background-color 0.3s ease;
+
+        
+    }
+
+    .btn-cancel {
+        background-color: #000 !important;
+        color: white !important;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #333 !important;
+        }
+    }
+}

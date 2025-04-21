@@ -245,5 +245,16 @@
       "STATE": "Estado Federal",
       "EDIT_STATE": "Editar Estado"
     }
+  },
+  "APPROVAL_STATUS": {
+    "TABLE": {
+      "APPROVAL_STATUS": "Estado de Aprobación",
+      "ORDER": "Orden",
+      "PROJECTS": "Proyectos",
+      "NETWORKS": "Redes"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo"
+    }
   }
 }

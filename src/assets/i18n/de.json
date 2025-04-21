@@ -242,5 +242,16 @@
       "STATE": "Bundesland",
       "EDIT_STATE": "Bundesland bearbeiten"
     }
+  },
+  "APPROVAL_STATUS": {
+    "TABLE": {
+      "APPROVAL_STATUS": "Bewilligungsstatus",
+      "ORDER": "Reihenfolge",
+      "PROJECTS": "Projekte",
+      "NETWORKS": "Netzwerke"
+    },
+    "BUTTON": {
+      "NEW": "Neu"
+    }
   }
 }

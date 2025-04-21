@@ -33,6 +33,9 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
 import { StatesComponent } from './components/states/states.component';
 import { StateFormComponent } from './components/states/components/state-form/state-form.component';
 import { StatesTableComponent } from './components/states/components/states-table/states-table.component';
+import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
+import { ApprovalStatusTableComponent } from './components/approval-status/components/approval-status-project/approval-status-table/approval-status-table.component';
+import { EditApprovalStatusComponent } from './components/approval-status/components/approval-status-project/edit-approval-status/edit-approval-status.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { StatesTableComponent } from './components/states/components/states-tabl
     StatesComponent,
     StateFormComponent,
     StatesTableComponent,
+    ApprovalStatusProjectComponent,
+    ApprovalStatusTableComponent,
+    EditApprovalStatusComponent,
   ],
   imports: [
     ButtonModule,

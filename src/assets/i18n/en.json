@@ -246,5 +246,16 @@
       "STATE": "Federal State",
       "EDIT_STATE": "Edit State"
     }
+  },
+  "APPROVAL_STATUS": {
+    "TABLE": {
+      "APPROVAL_STATUS": "Approval Status",
+      "ORDER": "Order",
+      "PROJECTS": "Projects",
+      "NETWORKS": "Networks"
+    },
+    "BUTTON": {
+      "NEW": "New"
+    }
   }
 }
