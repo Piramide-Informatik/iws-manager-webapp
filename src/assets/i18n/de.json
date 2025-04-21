@@ -216,5 +216,17 @@
       "GROSS_INVOICE": "Brutto",
       "SHARE": "Anteil"
     }
+  },
+  "ABSENCE_TYPES": {
+    "TABLE": {
+      "TYPE": "Abwesenheitsart",
+      "ABBREVIATION": "Kürzel",
+      "FRACTION_OF_DAY": "Anteil Tag",
+      "IS_VACATION": "Ist Urlaub",
+      "CAN_BE_BOOKED": "Kann gebucht werden"
+    },
+    "BUTTON": {
+      "NEW": "Neu"
+    }
   }
 }
