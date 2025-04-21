@@ -29,10 +29,14 @@ import { SelectModule } from 'primeng/select';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
+import { AbsenceTypesTableComponent } from './components/absence-types/components/absence-types-table/absence-types-table.component';
+import { EditProjectCarrierComponent } from './components/absence-types/components/edit-project-carrier/edit-project-carrier.component';
 
 @NgModule({
   declarations: [
-    AbsenceTypesComponent
+    AbsenceTypesComponent,
+    AbsenceTypesTableComponent,
+    EditProjectCarrierComponent
   ],
   imports: [
     ButtonModule,
