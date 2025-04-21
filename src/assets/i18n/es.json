@@ -197,7 +197,13 @@
       "STATE": "Estado Federal"
     },
     "BUTTON": {
-      "NEW": "Nuevo"
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "STATE": "Estado Federal",
+      "EDIT_STATE": "Editar Estado"
     }
   }
 }

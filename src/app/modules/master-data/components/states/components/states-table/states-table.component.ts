@@ -1,8 +1,9 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
-import { TranslateService, _ } from "@ngx-translate/core";
+import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { GERMAN_STATES } from './states.data';
 
 @Component({
   selector: 'app-states-table',
@@ -11,85 +12,46 @@ import { Router } from '@angular/router';
   styleUrl: './states-table.component.scss'
 })
 export class StatesTableComponent implements OnInit, OnDestroy {
-  states: any[] = [];
+  states = [...GERMAN_STATES];
   cols: any[] = [];
   selectedColumns: any[] = [];
-
   @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
 
-  constructor(private readonly translate: TranslateService, private readonly router: Router) { }
+  constructor(
+    private readonly translate: TranslateService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit() {
-    this.states = [
-      {
-        id: 1,
-        state: 'Baden-Wurttemberg',
-      },
-      {
-        id: 2,
-        state: 'Bayern',
-      },
-      {
-        id: 3,
-        state: 'Berlin',
-      },
-      {
-        id: 4,
-        state: 'Bremen',
-      },
-      {
-        id: 5,
-        state: 'Hamburg',
-      },
-      {
-        id: 6,
-        state: 'Hessen',
-      },
-      {
-        id: 7,
-        state: 'Mecklenburg-Vorpommern',
-      },
-      {
-        id: 8,
-        state: 'Niedersachsen',
-      },
-      {
-        id: 9,
-        state: 'Rheinland-Pfalz',
-      },
-      {
-        id: 10,
-        state: 'Saarland',
-      },
-      {
-        id: 11,
-        state: 'Sachsen',
-      },
-    ];
-
-    this.loadColHeaders();
-    this.selectedColumns = [...this.cols];
+    this.updateHeadersAndColumns();
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
-      this.selectedColumns = [...this.cols];
+      this.updateHeadersAndColumns();
     });
+  }
+
+  updateHeadersAndColumns() {
+    this.loadColHeaders();
+    this.selectedColumns = [...this.cols];
   }
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'state', minWidth: 110, header: this.translate.instant(_('STATES.TABLE.STATE')) },
+      {
+        field: 'state',
+        minWidth: 110,
+        header: this.translate.instant(_('STATES.TABLE.STATE'))
+      }
     ];
   }
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-      })
-    })
+      this.router.navigate([`/${url}`]);
+    });
   }
 
   ngOnDestroy(): void {
@@ -98,16 +60,20 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  logAction(action: string, data?: any) {
+    console.log(`${action}`, data ?? '');
+  }
+
   editAbsenceType(absenceType: any) {
-    console.log('Editing', absenceType);
+    this.logAction('Editing', absenceType);
   }
 
   deleteAbsenceType(id: number) {
-    console.log('Deleting ID', id);
+    this.logAction('Deleting ID', id);
   }
 
   createAbsenceType() {
-    console.log('Creating new state');
+    this.logAction('Creating new state');
   }
 
   applyFilter(event: any, field: string) {

@@ -1,1 +1,19 @@
-<p>state-form works!</p>
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'STATES.LABEL.EDIT_STATE' | translate">
+    <form [formGroup]="editStateForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="state-form mb-2">
+                <label for="stateName">{{ 'STATES.LABEL.STATE' | translate }}</label>
+                <input pInputText type="text" id="stateName" formControlName="stateName" autocomplete="off" />
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p-button class="Save me-2" size="small" [label]="'STATES.BUTTON.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                </div>
+                <div class="col">
+                    <p-button class="Cancel me-2" size="small" [label]="'STATES.BUTTON.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+                        [style]="{ background: '#000' }" />
+                </div>
+            </div>
+        </div>
+    </form>
+</p-card>

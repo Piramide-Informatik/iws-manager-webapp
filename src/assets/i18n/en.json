@@ -197,7 +197,13 @@
       "STATE": "Federal State"
     },
     "BUTTON": {
-      "NEW": "New"
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "STATE": "Federal State",
+      "EDIT_STATE": "Edit State"
     }
   }
 }
