@@ -1,17 +1,53 @@
 <div class="sidebar" [class.collapsed]="isCollapsed">
   <div class="sidebar-content">
-    <div *ngFor="let item of menuItems" 
-      class="menu-items" 
-      [routerLink]="item.routerLink"
-      routerLinkActive="active"
-    >
-      <a
-        class="p-menuitem-link"
-        [pTooltip]="isCollapsed ? item.label : ''"
-        tooltipPosition="right"
-        [tooltipStyleClass]="'custom-tooltip'">
-        <span class="menu-item-text">{{ item.label }}</span>
-      </a>
-    </div>
+    <ng-container *ngFor="let item of menuItems">
+      <!-- GRUPOS -->
+      <div
+        *ngIf="item.items; else flatItem"
+        class="menu-group"
+        (mouseenter)="item.open = true"
+        (mouseleave)="item.open = false"
+      >
+        <div class="menu-group-title">
+          {{ item.label }}
+        </div>
+
+        <div class="menu-group-items" *ngIf="item.open">
+          <div
+            *ngFor="let subItem of item.items"
+            class="grouped-item"
+            [routerLink]="subItem.routerLink"
+            routerLinkActive="active"
+          >
+            <a
+              class="p-menuitem-link"
+              [pTooltip]="isCollapsed ? subItem.label : ''"
+              tooltipPosition="right"
+              [tooltipStyleClass]="'custom-tooltip'"
+            >
+              <span class="menu-item-text">{{ subItem.label }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLANOS -->
+      <ng-template #flatItem>
+        <div
+          class="flat-item"
+          [routerLink]="item.routerLink"
+          routerLinkActive="active"
+        >
+          <a
+            class="p-menuitem-link"
+            [pTooltip]="isCollapsed ? item.label : ''"
+            tooltipPosition="right"
+            [tooltipStyleClass]="'custom-tooltip'"
+          >
+            <span class="menu-item-text">{{ item.label }}</span>
+          </a>
+        </div>
+      </ng-template>
+    </ng-container>
   </div>
 </div>
