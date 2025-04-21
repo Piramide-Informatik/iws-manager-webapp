@@ -48,112 +48,42 @@ export class MasterdataPanelComponent implements OnInit, OnDestroy {
       this.langSubscription.unsubscribe();
     }
   }
+  private readonly items: { key: string; path: string }[] = [
+    { key: 'SIDEBAR.USER', path: 'user' },
+    { key: 'SIDEBAR.ROLES', path: 'roles' },
+    { key: 'SIDEBAR.IWS_STAFF', path: 'iws-staff' },
+    { key: 'SIDEBAR.IWS_COMMISSIONS', path: 'iws-commissions' },
+    { key: 'SIDEBAR.IWS_TEAMS', path: 'iws-teams' },
+    { key: 'SIDEBAR.COUNTRIES', path: 'countries' },
+    { key: 'SIDEBAR.STATES', path: 'states' },
+    { key: 'SIDEBAR.TITLE', path: 'title' },
+    { key: 'SIDEBAR.ORDER_TYPES', path: 'order-types' },
+    { key: 'SIDEBAR.APPROVAL_STATUS', path: 'approval-status' },
+    { key: 'SIDEBAR.HOLIDAYS', path: 'holidays' },
+    { key: 'SIDEBAR.ABSENCE_TYPES', path: 'absence-types' },
+    { key: 'SIDEBAR.FUNDING_PROGRAMS', path: 'funding-programs' },
+    { key: 'SIDEBAR.PROJECT_STATUS', path: 'project-status' },
+    { key: 'SIDEBAR.PROJECT_FUNNELS', path: 'project-funnels' },
+    {
+      key: 'SIDEBAR.REALIZATION_PROBABILITIES',
+      path: 'realization-probabilities',
+    },
+    { key: 'SIDEBAR.BILLERS', path: 'billers' },
+    { key: 'SIDEBAR.DUNNING_LEVELS', path: 'dunning-levels' },
+    { key: 'SIDEBAR.SALES_TAX', path: 'sales-tax' },
+    { key: 'SIDEBAR.BILLING_METHODS', path: 'billing-methods' },
+    { key: 'SIDEBAR.CONTRACT_STATUS', path: 'contract-status' },
+    { key: 'SIDEBAR.TERMS_OF_PAYMENT', path: 'terms-of-payment' },
+    { key: 'SIDEBAR.EMPLOYEE_QUALIFICATION', path: 'employee-qualification' },
+    { key: 'SIDEBAR.NETWORKS', path: 'networks' },
+    { key: 'SIDEBAR.SYSTEM_CONSTANTS', path: 'system-constants' },
+    { key: 'SIDEBAR.TEXTS', path: 'texts' },
+  ];
+
   private getMasterDataSidebar(): any[] {
-    return [
-      {
-        label: this.translate.instant('SIDEBAR.USER'),
-        routerLink: ['/master-data/user'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.ROLES'),
-        routerLink: ['/master-data/roles'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.IWS_STAFF'),
-        routerLink: ['/master-data/iws-staff'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.IWS_COMMISSIONS'),
-        routerLink: ['/master-data/iws-commissions'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.IWS_TEAMS'),
-        routerLink: ['/master-data/iws-teams'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.COUNTRIES'),
-        routerLink: ['/master-data/countries'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.STATES'),
-        routerLink: ['/master-data/states'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.TITLE'),
-        routerLink: ['/master-data/title'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.ORDER_TYPES'),
-        routerLink: ['/master-data/order-types'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.APPROVAL_STATUS'),
-        routerLink: ['/master-data/approval-status'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.HOLIDAYS'),
-        routerLink: ['/master-data/holidays'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.ABSENCE_TYPES'),
-        routerLink: ['/master-data/absence-types'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.FUNDING_PROGRAMS'),
-        routerLink: ['/master-data/funding-programs'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.PROJECT_STATUS'),
-        routerLink: ['/master-data/project-status'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.PROJECT_FUNNELS'),
-        routerLink: ['/master-data/project-funnels'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.REALIZATION_PROBABILITIES'),
-        routerLink: ['/master-data/realization-probabilities'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.BILLERS'),
-        routerLink: ['/master-data/billers'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.DUNNING_LEVELS'),
-        routerLink: ['/master-data/dunning-levels'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.SALES_TAX'),
-        routerLink: ['/master-data/sales-tax'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.BILLING_METHODS'),
-        routerLink: ['/master-data/billing-methods'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.CONTRACT_STATUS'),
-        routerLink: ['/master-data/contract-status'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.TERMS_OF_PAYMENT'),
-        routerLink: ['/master-data/terms-of-payment'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.EMPLOYEE_QUALIFICATION'),
-        routerLink: ['/master-data/employee-qualification'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.NETWORKS'),
-        routerLink: ['/master-data/networks'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.SYSTEM_CONSTANTS'),
-        routerLink: ['/master-data/system-constants'],
-      },
-      {
-        label: this.translate.instant('SIDEBAR.TEXTS'),
-        routerLink: ['/master-data/texts'],
-      },
-    ];
+    return this.items.map((item) => ({
+      label: this.translate.instant(item.key),
+      routerLink: [`/master-data/${item.path}`],
+    }));
   }
 }
