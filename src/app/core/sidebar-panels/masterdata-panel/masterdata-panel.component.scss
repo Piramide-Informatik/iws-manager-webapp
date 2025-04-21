@@ -1,148 +1,77 @@
 @use "variables" as *;
 
-:host {
-  position: absolute;
-  top: 60px; // Ajusta si el header es más alto
-  left: 0;
-  width: 100%;
+.scroll-wrapper {
   display: flex;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 9999;
-  margin-bottom: 1rem;
+  align-items: center;
+  background: $accent-color;
+  padding: 0.25rem 1rem;
+  overflow: hidden;
+  position: relative;
 }
 
-.sidebar {
-  width: auto;
-  background: transparent !important;
+.scroll-container {
   display: flex;
-  box-shadow: none !important;
-  overflow: visible;
-  min-height: 150px;
-  .sidebar-content {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: flex-start;
-    background: none !important;
-    pointer-events: all;
-  }
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex: 1;
+  padding: 0 1rem;
 
-  .menu-group {
-    flex: 1 1 200px;
-    max-width: 250px;
-    padding: 1.5rem;
-    border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: box-shadow 0.3s ease;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.4s ease forwards;
-
-    &:hover {
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
-  }
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .menu-group + .menu-group::before {
-    content: "";
-    height: 80%;
-    width: 1px;
-    background-color: rgba(0, 0, 0, 0.1);
-    position: absolute;
-    left: -1rem;
-    top: 10%;
-  }
-
-  .menu-group-title {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: #2e2e2e;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 0.5rem;
-  }
-
-  .menu-group-items {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
-  .grouped-item {
-    width: 100%;
-
-    a {
-      display: block;
-      width: 100%;
-      padding: 0.5rem 1rem;
-      text-align: center;
-      text-decoration: none;
-      font-weight: 600;
-      color: $primary-dark;
-      border-radius: 6px;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background-color: $primary-dark;
-        color: $primary-light !important;
-      }
-    }
-  }
-
-  .p-menuitem-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #accde7;
-    cursor: pointer;
-
-    i {
-      font-size: 1.5rem;
-      margin-right: 10px;
-    }
-  }
-
-  &.collapsed .menu-item-text {
+  &::-webkit-scrollbar {
     display: none;
   }
+}
 
-  @media (max-width: 768px) {
-    .sidebar-content {
-      padding: 1rem;
-      gap: 1rem;
-    }
+.menu-item {
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
 
-    .menu-group {
-      max-width: 100%;
-      flex: 1 1 100%;
-      padding: 1rem;
-    }
+  color: $primary-dark;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 
-    .menu-group-title {
-      font-size: 1rem;
-    }
+  &:hover {
+    background: $primary-dark;
+    color: $primary-light;
+  }
 
-    .grouped-item a {
-      font-size: 0.95rem;
-    }
+  &.active {
+    background: $primary-dark;
+    color: $primary-light;
+  }
+}
+
+.scroll-btn {
+  background: $primary-dark;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s;
+
+  &.left {
+    margin-right: 0.5rem;
+  }
+
+  &.right {
+    margin-left: 0.5rem;
+  }
+
+  &:hover {
+    background-color: lighten($primary-dark, 10%);
+  }
+
+  &:active {
+    background-color: darken($primary-dark, 5%);
   }
 }

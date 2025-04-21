@@ -1,28 +1,16 @@
-<div class="sidebar">
-  <div class="sidebar-content">
-    <ng-container *ngFor="let group of masterDataGroups">
-      <div
-        class="menu-group"
-        (mouseenter)="group.open = true"
-        (mouseleave)="group.open = false"
-      >
-        <div class="menu-group-title">
-          {{ group.label }}
-        </div>
+<div class="scroll-wrapper">
+  <button class="scroll-btn left" (click)="scroll('left')">‹</button>
 
-        <div class="menu-group-items" *ngIf="group.open">
-          <div
-            *ngFor="let item of group.items"
-            class="grouped-item"
-            [routerLink]="item.routerLink"
-            routerLinkActive="active"
-          >
-            <a class="p-menuitem-link">
-              <span class="menu-item-text">{{ item.label }}</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </ng-container>
+  <div class="scroll-container" #scrollMenu>
+    <div
+      *ngFor="let item of masterDataGroups"
+      class="menu-item"
+      [routerLink]="item.routerLink"
+      routerLinkActive="active"
+    >
+      {{ item.label }}
+    </div>
   </div>
+
+  <button class="scroll-btn right" (click)="scroll('right')">›</button>
 </div>

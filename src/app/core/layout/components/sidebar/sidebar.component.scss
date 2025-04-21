@@ -2,13 +2,12 @@
 
 .sidebar {
   width: 100%;
-
   background: $accent-color;
   transition: width 0.3s;
   position: relative;
   overflow: visible;
 
-  .flat-item {
+  .menu-items {
     cursor: pointer;
     width: 100%;
     display: flex;
@@ -52,27 +51,21 @@
     height: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 2rem;
-    width: 100%;
-
-    box-sizing: border-box;
-    align-items: flex-start;
+    align-items: flex-start; // Alinea los elementos a la izquierda
   }
 
   .p-menuitem-link {
     display: flex;
     align-items: center;
-    justify-content: center;
     margin: 12px 0;
     text-align: center;
     text-decoration: none;
     color: #accde7;
-    cursor: pointer;
+    justify-content: center;
 
     i {
-      font-size: 1.5rem;
-      margin-right: 10px;
+      font-size: 1.5rem; // Tamaño del ícono en estado normal
+      margin-right: 10px; // Espaciado entre el ícono y el texto
     }
   }
 
@@ -95,44 +88,6 @@
 
     &:hover {
       background: $primary-color;
-    }
-  }
-  .menu-group {
-    flex: 1 1 200px;
-    max-width: 250px;
-    margin: 0 1rem 2rem;
-    padding: 1rem;
-    background-color: rgba(255, 255, 255, 0.4);
-    border-radius: 8px;
-    transition: background-color 0.2s;
-  }
-
-  .menu-group-title {
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    color: #2e2e2e;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 0.25rem;
-  }
-
-  @media (max-width: 1024px) {
-    .sidebar-content {
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .menu-group {
-      max-width: 100%;
-      text-align: center;
-    }
-
-    .menu-items {
-      align-items: stretch;
     }
   }
 }
