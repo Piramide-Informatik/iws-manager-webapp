@@ -1,0 +1,47 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" header="Bewilligungsstatus bearbeiten">
+    <form [formGroup]="editProjectCarrierForm" (ngSubmit)="onSubmit()">
+        <div class="form-container">
+            <!-- Grupo: Bewilligungsstatus -->
+            <div class="form-group">
+                <label for="absenceType">Bewilligungsstatus</label>
+                <input pInputText type="text" id="absenceType" formControlName="absenceType" autocomplete="off" />
+            </div>
+
+            <!-- Grupo: Reihenfolge -->
+            <div class="form-group">
+                <label for="absenceTypeLabel">Reihenfolge</label>
+                <input pInputText type="text" id="absenceTypeLabel" formControlName="absenceTypeLabel" autocomplete="off" />
+            </div>
+
+            <!-- Grupo: gilt für Projekte -->
+            <div class="form-group-check">
+                <label for="isHolidayChecked">gilt für Projekte</label>
+                <p-toggleswitch formControlName="isHoliday">
+                    <ng-template #handle let-checked="checked">
+                        <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+                    </ng-template>
+                </p-toggleswitch>
+            </div>
+
+            <!-- Grupo: gilt fur Netzwerke -->
+            <div class="form-group-check">
+                <label for="canBeBookedChecked">gilt fur Netzwerke</label>
+                <p-toggleswitch formControlName="canBeBooked">
+                    <ng-template #handle let-checked="checked">
+                        <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+                    </ng-template>
+                </p-toggleswitch>
+            </div>
+
+            <!-- Botones -->
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <p-button class="save me-2" size="small" [label]="'STATES.BUTTON.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                </div>
+                <div class="col-auto">
+                    <p-button class="cancel me-2" size="small" [label]="'STATES.BUTTON.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</p-card>

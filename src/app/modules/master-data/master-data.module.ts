@@ -25,10 +25,8 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
-
 import { ListboxModule } from 'primeng/listbox';
 import { CheckboxModule } from 'primeng/checkbox';
-
 import { DropdownModule } from 'primeng/dropdown';
 
 //Components
@@ -38,13 +36,15 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
 import { StatesComponent } from './components/states/states.component';
 import { StateFormComponent } from './components/states/components/state-form/state-form.component';
 import { StatesTableComponent } from './components/states/components/states-table/states-table.component';
+import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
+import { ApprovalStatusTableComponent } from './components/approval-status/components/approval-status-project/approval-status-table/approval-status-table.component';
+import { EditApprovalStatusComponent } from './components/approval-status/components/approval-status-project/edit-approval-status/edit-approval-status.component';
 import { AddressComponent } from './components/address/address.component';
 import { AddressTableComponent } from './components/address/components/address-table/address-table.component';
 import { EditSalutationComponent } from './components/address/components/edit-salutation/edit-salutation.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { RolTableComponent } from './components/roles/components/rol-table/rol-table.component';
 import { RolFormComponent } from './components/roles/components/rol-form/rol-form.component';
-
 import { UserTableComponent } from './components/user/components/user-table/user-table.component';
 import { EditUserFormComponent } from './components/user/components/edit-user-form/edit-user-form.component';
 import { UserComponent } from './components/user/user.component';
@@ -58,6 +58,9 @@ import { UserComponent } from './components/user/user.component';
     StatesComponent,
     StateFormComponent,
     StatesTableComponent,
+    ApprovalStatusProjectComponent,
+    ApprovalStatusTableComponent,
+    EditApprovalStatusComponent,
     UserTableComponent,
     EditUserFormComponent,
     AddressComponent,
@@ -92,7 +95,7 @@ import { UserComponent } from './components/user/user.component';
     FormsModule,
     ListboxModule,
     CheckboxModule,
-    DropdownModule,
+    DropdownModule
   ],
 })
 export class MasterDataModule {}
