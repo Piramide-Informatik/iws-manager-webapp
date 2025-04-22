@@ -18,6 +18,11 @@
     "FRAMEWORK_AGREEMENTS": "Rahmenverträge",
     "CONTRACTORS": "Auftragnehmer",
     "SUBCONTRACTS": "Unteraufträge",
+    "GOODS_ENTRY": "Wareneingang",
+    "STOCK_CONTROL": "Bestandskontrolle",
+    "PRODUCTS": "Produkte",
+    "SALES": "Verkauf",
+    "INVENTORY": "Inventar",
 
     "USER": "Benutzer",
     "ROLES": "Benutzerrollen",
