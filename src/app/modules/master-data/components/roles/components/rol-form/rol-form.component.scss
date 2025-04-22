@@ -1,0 +1,42 @@
+@use 'variables' as *;
+
+.rol-form{
+    label{
+        width: 90px;
+    }
+
+    input{
+        width: 250px;
+    }
+
+    .p-select{
+        width: 250px;
+    }
+}
+
+//Styles table head
+.thead {
+    background: $primary-color;
+    color: #fff;
+    min-width: 6.25rem;//=100px
+  
+    &:hover {
+      background: $accent-color;
+      color: $primary-dark;
+    }
+}
+
+.thead-bg-blue {
+    background: $primary-color;
+}
+
+.thead-input-id {
+    width: 4.4rem;//=70px
+}
+
+.thead-input-width {
+    width: 100%;
+}
+.align-right {
+    text-align: right;
+  }

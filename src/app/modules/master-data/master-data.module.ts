@@ -25,8 +25,12 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
+
 import { ListboxModule } from 'primeng/listbox';
 import { CheckboxModule } from 'primeng/checkbox';
+
+import { DropdownModule } from 'primeng/dropdown';
+
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -35,6 +39,10 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
 import { StatesComponent } from './components/states/states.component';
 import { StateFormComponent } from './components/states/components/state-form/state-form.component';
 import { StatesTableComponent } from './components/states/components/states-table/states-table.component';
+import { RolesComponent } from './components/roles/roles.component';
+import { RolTableComponent } from './components/roles/components/rol-table/rol-table.component';
+import { RolFormComponent } from './components/roles/components/rol-form/rol-form.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { UserTableComponent } from './components/user/components/user-table/user-table.component';
 import { EditUserFormComponent } from './components/user/components/edit-user-form/edit-user-form.component';
@@ -51,6 +59,10 @@ import { UserComponent } from './components/user/user.component';
     StatesTableComponent,
     UserTableComponent,
     EditUserFormComponent,
+    RolesComponent,
+    RolTableComponent,
+    RolFormComponent,
+
   ],
   imports: [
     ButtonModule,
@@ -77,6 +89,8 @@ import { UserComponent } from './components/user/user.component';
     FormsModule,
     ListboxModule,
     CheckboxModule,
+    DropdownModule
+
   ],
 })
 export class MasterDataModule {}

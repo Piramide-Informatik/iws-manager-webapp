@@ -232,5 +232,29 @@
       "STATE": "Bundesland",
       "EDIT_STATE": "Bundesland bearbeiten"
     }
+  },
+  "ROLES": {
+    "TABLE_ROLES": {
+      "USER_ROL": "Benutzerrolle"
+    },
+    "TABLE_MODULES": {
+      "FUNCTION": "Funktion",
+      "READ": "lesen",
+      "INSERT": "einfügen",
+      "MODIFY": "ändern",
+      "DELETE": "löschen",
+      "EXECUTE": "ausführen"
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_ROL": "Rollen bearbeiten",
+      "ROL": "Benutzerrolle",
+      "MODULE": "Modul"
+      
+    }
   }
 }
