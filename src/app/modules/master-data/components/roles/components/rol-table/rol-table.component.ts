@@ -5,7 +5,6 @@ import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { GERMAN_ROLES } from './roles.data';
 
-
 @Component({
   selector: 'app-rol-table',
   standalone: false,

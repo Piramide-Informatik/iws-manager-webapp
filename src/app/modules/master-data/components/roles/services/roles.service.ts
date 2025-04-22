@@ -5,7 +5,7 @@ import { RolesDatastoreService } from './roles-datastore.service';
   providedIn: 'root',
 })
 export class RolesService {
-  constructor(private datastore: RolesDatastoreService) {}
+  constructor(private readonly datastore: RolesDatastoreService) {}
 
   list() {
     return this.datastore.list();

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
-import { CheckboxModule } from 'primeng/checkbox';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Rol } from '../../../../../../Entities/rol';
 import { RolesService } from '../../services/roles.service';
@@ -35,7 +34,7 @@ export class RolFormComponent implements OnInit{
 
   editStateForm!: FormGroup;
 
-   constructor( private rolService: RolesService ){ }
+   constructor( private readonly rolService: RolesService ){ }
 
   ngOnInit(): void {
     this.editStateForm = new FormGroup({
