@@ -21,15 +21,15 @@
     </ng-template>
     <ng-template #header let-columns>
       <tr>
-        <th></th>
-        <th *ngFor="let col of columns; let i = index">
+        <th id="list-customers-table-options-field"></th>
+        <th id="list-customers-table-search-field" *ngFor="let col of columns; let i = index">
           <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
             (input)="applyFilter($event, col.field)" />
         </th>
       </tr>
       <tr>
-        <th class="thead-bg-blue"></th>
-        <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
+        <th id="list-customers-table-options" class="thead-bg-blue"></th>
+        <th id="list-customers-table-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
           col.header }} <p-sortIcon [field]="col.field" />
         </th>
       </tr>
