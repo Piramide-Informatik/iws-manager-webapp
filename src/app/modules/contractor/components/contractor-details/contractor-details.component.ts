@@ -1,7 +1,6 @@
 import { Component, signal, computed, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-contractor-details',
   standalone: false,
@@ -44,9 +43,9 @@ export class ContractorDetailsComponent implements OnInit {
     this.contractorName().trim().length > 0
   );
 
-  constructor(private fb: FormBuilder,
+  constructor(private readonly fb: FormBuilder,
     private readonly router: Router, 
-    private activatedRoute: ActivatedRoute,) {
+    private readonly activatedRoute: ActivatedRoute,) {
       this.formDetailContract = this.fb.group({
         customer: [],
         contractorLabel: [''],
