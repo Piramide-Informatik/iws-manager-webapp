@@ -46,16 +46,19 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
         networks: 'X',
       },
     ];
-
+  
+    this.updateColumnHeaders();
+  
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.updateColumnHeaders();
+    });
+  }
+  
+  private updateColumnHeaders(): void {
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
-
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
-      this.selectedColumns = [...this.cols];
-    });
-}
-
+  }
+  
   loadColHeaders(): void {
     this.cols = [
       { field: 'approvalStatus', minWidth: 110, header: this.translate.instant(_('APPROVAL_STATUS.TABLE.APPROVAL_STATUS')) },

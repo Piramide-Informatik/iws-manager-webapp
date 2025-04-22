@@ -7,17 +7,21 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './edit-approval-status.component.html',
   styleUrl: './edit-approval-status.component.scss',
 })
-export class EditApprovalStatusComponent implements OnInit{
+export class EditApprovalStatusComponent implements OnInit {
   editProjectCarrierForm!: FormGroup;
   isHoliday: boolean = false;
   canBeBooked: boolean = false;
 
   ngOnInit(): void {
     this.editProjectCarrierForm = new FormGroup({
-      absenceType: new FormControl('', [Validators.required]),
-      absenceTypeLabel: new FormControl('', [Validators.required]),
-      shareOfDay: new FormControl('', [Validators.required]),
+      absenceType: this.requiredControl(),
+      absenceTypeLabel: this.requiredControl(),
+      shareOfDay: this.requiredControl(),
     });
+  }
+
+  private requiredControl(): FormControl {
+    return new FormControl('', [Validators.required]);
   }
 
   onSubmit(): void {
