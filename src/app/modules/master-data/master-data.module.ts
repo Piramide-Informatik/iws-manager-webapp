@@ -34,6 +34,9 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
 import { StatesComponent } from './components/states/states.component';
 import { StateFormComponent } from './components/states/components/state-form/state-form.component';
 import { StatesTableComponent } from './components/states/components/states-table/states-table.component';
+import { AddressComponent } from './components/address/address.component';
+import { AddressTableComponent } from './components/address/components/address-table/address-table.component';
+import { EditSalutationComponent } from './components/address/components/edit-salutation/edit-salutation.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { RolTableComponent } from './components/roles/components/rol-table/rol-table.component';
 import { RolFormComponent } from './components/roles/components/rol-form/rol-form.component';
@@ -47,9 +50,12 @@ import { CheckboxModule } from 'primeng/checkbox';
     StatesComponent,
     StateFormComponent,
     StatesTableComponent,
+    AddressComponent,
+    AddressTableComponent,
+    EditSalutationComponent,
     RolesComponent,
     RolTableComponent,
-    RolFormComponent,
+    RolFormComponent
   ],
   imports: [
     ButtonModule,
