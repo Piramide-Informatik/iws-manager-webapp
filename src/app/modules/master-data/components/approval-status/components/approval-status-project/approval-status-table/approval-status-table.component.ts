@@ -3,7 +3,7 @@ import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Router } from '@angular/router';
-
+import { approvalStatus } from './approval-status.data'; 
 
 @Component({
   selector: 'app-approval-types-table',
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './approval-status-table.component.scss',
 })
 export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
-  appovalStatuses: any[] = [];
+  appovalStatuses = [...approvalStatus];
   cols: any[] = [];
   selectedColumns: any[] = [];
 
@@ -23,30 +23,6 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   constructor(private readonly translate: TranslateService, private readonly router: Router) { }
 
   ngOnInit() {
-    this.appovalStatuses = [
-      {
-        id: 1,
-        approvalStatus: 'Antrag',
-        order: '1',
-        projects: 'X',
-        networks: 'X',
-      },
-      {
-        id: 2,
-        approvalStatus: 'Planung',
-        order: '2',
-        projects: 'X',
-        networks: 'X',
-      },
-      {
-        id: 3,
-        approvalStatus: 'Planung',
-        order: '3',
-        projects: 'X',
-        networks: 'X',
-      },
-    ];
-  
     this.updateColumnHeaders();
   
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
