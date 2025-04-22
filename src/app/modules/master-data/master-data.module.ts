@@ -25,6 +25,8 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
+import { ListboxModule } from 'primeng/listbox';
+import { CheckboxModule } from 'primeng/checkbox';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -33,11 +35,14 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
 import { StatesComponent } from './components/states/states.component';
 import { StateFormComponent } from './components/states/components/state-form/state-form.component';
 import { StatesTableComponent } from './components/states/components/states-table/states-table.component';
+
 import { UserTableComponent } from './components/user/components/user-table/user-table.component';
 import { EditUserFormComponent } from './components/user/components/edit-user-form/edit-user-form.component';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
+    UserComponent,
     AbsenceTypesComponent,
     AbsenceTypesTableComponent,
     EditProjectCarrierComponent,
@@ -70,6 +75,8 @@ import { EditUserFormComponent } from './components/user/components/edit-user-fo
     MessageModule,
     SelectModule,
     FormsModule,
+    ListboxModule,
+    CheckboxModule,
   ],
 })
 export class MasterDataModule {}

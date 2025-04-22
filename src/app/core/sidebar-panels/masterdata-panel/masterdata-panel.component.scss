@@ -31,13 +31,17 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
-
   &:hover {
     background: $primary-dark;
     color: $primary-light;
   }
 
   &.active {
+    background: lighten($primary-dark, 35%);
+    color: $primary-dark;
+  }
+
+  &.active:hover {
     background: $primary-dark;
     color: $primary-light;
   }
