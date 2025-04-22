@@ -42,9 +42,9 @@
                 <td>
                     <div class="flex items-center justify-center gap-2">
                         <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-                            (click)="editApprovalStatus(row)"></button>
+                            ></button>
                         <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
-                            (click)="deleteApprovalStatus(row.id)"></button>
+                            ></button>
                     </div>
                 </td>
                 <td *ngFor="let col of columns">{{ row[col.field] }}</td>
@@ -62,7 +62,7 @@
 
     <p-toolbar>
         <ng-template #start>
-            <p-button [label]="'ABSENCE_TYPES.BUTTON.NEW' | translate" icon="pi pi-plus" (click)="createApprovalStatus()" (keydown.enter)="createApprovalStatus()" />
+            <p-button [label]="'ABSENCE_TYPES.BUTTON.NEW' | translate" icon="pi pi-plus" />
         </ng-template>
     </p-toolbar>
 </div>

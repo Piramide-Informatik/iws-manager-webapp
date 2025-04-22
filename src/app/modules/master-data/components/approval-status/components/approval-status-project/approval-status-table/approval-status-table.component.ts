@@ -50,18 +50,6 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  editApprovalStatus(approvaStatus: any) {
-    console.log('Editing', approvaStatus);
-  }
-
-  deleteApprovalStatus(id: number) {
-    console.log('Deleting by ID approval status', id);
-  }
-
-  createApprovalStatus() {
-    console.log('Creating new approval status');
-  }
-
   applyFilter(event: any, field: string) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
