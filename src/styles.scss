@@ -112,3 +112,18 @@ th {
   background: $accent-color;
   color: $primary-dark;
 }
+
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider{
+  background: #267bbf !important;
+}
+
+.p-toggleswitch-handle{
+  background: #fff !important;
+  color: #267bbf !important;
+  border-color: #267bbf !important;
+}
+
+.p-toggleswitch-slider{
+  background: #fff !important;
+  border-color: #267bbf !important;
+}
