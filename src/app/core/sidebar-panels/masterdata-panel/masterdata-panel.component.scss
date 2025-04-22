@@ -31,13 +31,17 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
-
   &:hover {
     background: $primary-dark;
     color: $primary-light;
   }
 
   &.active {
+    background: $primary-color;
+    color: $primary-light;
+  }
+
+  &.active:hover {
     background: $primary-dark;
     color: $primary-light;
   }
@@ -68,10 +72,12 @@
   }
 
   &:hover {
-    background-color: lighten($primary-dark, 10%);
+    background: $primary-color;
+    color: $primary-light;
   }
 
   &:active {
-    background-color: darken($primary-dark, 5%);
+    background: $primary-dark;
+    color: $primary-light;
   }
 }

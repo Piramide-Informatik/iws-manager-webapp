@@ -5,13 +5,14 @@ import { RolesComponent } from './components/roles/roles.component';
 import { StatesComponent } from './components/states/states.component';
 import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
 import { AddressComponent } from './components/address/address.component';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
-  { path: '', component: AbsenceTypesComponent },
-  { path: 'address', component: AddressComponent },
+  { path: 'absence-types', component: AbsenceTypesComponent },
   { path: 'states', component: StatesComponent },
   { path: 'approval-status', component: ApprovalStatusProjectComponent },
-
+  { path: 'roles', component: RolesComponent },
+  { path: 'user', component: UserComponent },
   { path: 'roles', component: RolesComponent }
 ];
 

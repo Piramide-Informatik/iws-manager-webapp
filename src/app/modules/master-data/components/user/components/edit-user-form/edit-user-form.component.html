@@ -1,0 +1,140 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  header="Benutzer bearbeiten"
+>
+  <form [formGroup]="userForm">
+    <div class="align-items-center mb-2">
+      <!-- Benutzername -->
+      <div class="absence-form mb-2">
+        <label for="username">Benutzername</label>
+        <input
+          pInputText
+          type="text"
+          id="username"
+          formControlName="username"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Vorname -->
+      <div class="absence-form mb-2">
+        <label for="firstName">Vorname</label>
+        <input
+          pInputText
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Nachname -->
+      <div class="absence-form mb-2">
+        <label for="lastName">Nachname</label>
+        <input
+          pInputText
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Mailadresse -->
+      <div class="absence-form mb-2">
+        <label for="email">Mailadresse</label>
+        <input
+          pInputText
+          type="email"
+          id="email"
+          formControlName="email"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Kennwort -->
+      <div class="absence-form mb-2">
+        <label for="password">Kennwort</label>
+        <input
+          pPassword
+          id="password"
+          formControlName="password"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Aktiv -->
+      <div class="absence-form-check mb-2">
+        <label for="active">Aktiv</label>
+        <p-toggleswitch formControlName="active">
+          <ng-template #handle let-checked="checked">
+            <i
+              [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"
+            ></i>
+          </ng-template>
+        </p-toggleswitch>
+      </div>
+      <!-- ROLES -->
+      <div class="grid mt-4">
+        <!-- Zugewiesene Rollen -->
+        <div class="col">
+          <label for="assignedRolesListbox">Zugewiesene Rollen</label>
+          <p-listbox
+            id="assignedRolesListbox"
+            [options]="assignedRoles"
+            [(ngModel)]="selectedAssignedRoles"
+            [multiple]="true"
+          ></p-listbox>
+        </div>
+
+        <!-- BOTONES -->
+        <div
+          class="col flex flex-column justify-content-center align-items-center gap-2"
+        >
+          <p-button
+            icon="pi pi-angle-right"
+            (onClick)="moveToAssigned()"
+          ></p-button>
+          <p-button
+            icon="pi pi-angle-double-right"
+            (onClick)="moveAllToAssigned()"
+          ></p-button>
+          <p-button
+            icon="pi pi-angle-left"
+            (onClick)="moveToAvailable()"
+          ></p-button>
+          <p-button
+            icon="pi pi-angle-double-left"
+            (onClick)="moveAllToAvailable()"
+          ></p-button>
+        </div>
+
+        <!-- Verfügbare Rollen -->
+        <div class="col">
+          <label for="availableRolesListbox">Verfügbare Rollen</label>
+          <p-listbox
+            id="availableRolesListbox"
+            [options]="availableRoles"
+            [(ngModel)]="selectedAvailableRoles"
+            [multiple]="true"
+          ></p-listbox>
+        </div>
+      </div>
+
+      <!-- BOTONES -->
+      <div class="mt-3 flex gap-2">
+        <p-button
+          label="Speichern"
+          icon="pi pi-save"
+          (onClick)="saveUser()"
+        ></p-button>
+
+        <p-button
+          label="Abbrechen"
+          severity="secondary"
+          icon="pi pi-times"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</p-card>
