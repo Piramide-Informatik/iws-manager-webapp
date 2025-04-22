@@ -45,6 +45,13 @@ button.p-ripple.p-button.p-component {
   border: #267bbf;
 }
 
+//Cancel button
+.cancel button.p-ripple.p-button {
+  background-color: #fff ;
+  color:rgb(38,123,191);
+  border: 1px solid rgb(38,123,191);
+}
+
 .active {
   background-color: #267bbf;
   border-color: #267bbf;
@@ -111,4 +118,19 @@ th {
 .p-datatable-thead > tr > th.p-datatable-column-sorted {
   background: $accent-color;
   color: $primary-dark;
+}
+
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider{
+  background: #267bbf !important;
+}
+
+.p-toggleswitch-handle{
+  background: #fff !important;
+  color: #267bbf !important;
+  border-color: #267bbf !important;
+}
+
+.p-toggleswitch-slider{
+  background: #fff !important;
+  border-color: #267bbf !important;
 }
