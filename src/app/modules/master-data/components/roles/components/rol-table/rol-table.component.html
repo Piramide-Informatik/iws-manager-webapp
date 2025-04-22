@@ -35,9 +35,9 @@
                 <td>
                     <div class="flex items-center justify-center gap-2">
                         <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-                            (click)="editRol(row)"></button>
+                            ></button>
                         <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
-                            (click)="deleteRol(row.id)"></button>
+                            ></button>
                     </div>
                 </td>
                 <td *ngFor="let col of columns">{{ row[col.field] }}</td>
@@ -55,7 +55,7 @@
 
     <p-toolbar>
         <ng-template #start>
-            <p-button [label]="'ROLES.BUTTON.NEW' | translate" icon="pi pi-plus" (click)="createRol()" (keydown.enter)="createRol()" />
+            <p-button [label]="'ROLES.BUTTON.NEW' | translate" icon="pi pi-plus" />
         </ng-template>
     </p-toolbar>
 </div>

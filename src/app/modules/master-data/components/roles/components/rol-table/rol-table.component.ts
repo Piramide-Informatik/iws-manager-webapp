@@ -51,18 +51,6 @@ export class RolTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  editRol(rol: any) {
-    //this.logAction('Editing', rol);
-  }
-
-  deleteRol(id: number) {
-    //this.logAction('Deleting', id);
-  }
-
-  createRol() {
-    //this.logAction('Creating new state');
-  }
-
   applyFilter(event: any, field: string) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
