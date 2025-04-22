@@ -73,19 +73,7 @@ export class ContractorDetailsComponent implements OnInit {
   onSubmit() {
     if (!this.isFormValid()) {
       alert('Bitte fülle alle Pflichtfelder aus.');
-      return;
     }
-
-    let contractor = {
-      customer: this.customer(),
-      contractorLabel: this.contractorLabel(),
-      contractorName: this.contractorName(),
-      countryname: this.countryname(),
-      street: this.street(),
-      zipcode: this.zipcode(),
-      city: this.city(),
-      taxNumber: this.taxNumber()
-    };
   }
 
   onDelete() {
