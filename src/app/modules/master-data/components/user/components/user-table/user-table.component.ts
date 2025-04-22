@@ -12,12 +12,6 @@ export class UserTableComponent {
     { username: 'paze', name: 'Zessin Patrick', active: true },
     { username: 'mariah', name: 'Hernandez Maria', active: false },
     { username: 'jdoe', name: 'Doe John', active: true },
-    { username: 'adamsa', name: 'Adams Sarah', active: true },
-    { username: 'mgonzalez', name: 'Gonzalez Miguel', active: false },
-    { username: 'klausw', name: 'Weber Klaus', active: true },
-    { username: 'tanja', name: 'Müller Tanja', active: true },
-    { username: 'bernardf', name: 'Fischer Bernard', active: false },
-    { username: 'ljimenez', name: 'Jimenez Luis', active: true },
   ];
 
   cols = [
@@ -28,10 +22,11 @@ export class UserTableComponent {
 
   selectedColumns = [...this.cols];
 
-  applyFilter(event: any, field: string) {
-    const value = (event.target as HTMLInputElement).value;
+  applyFilter(event: Event, field: string) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.trim().toLowerCase();
 
-    console.log(`Filtrar por ${field}: ${value}`);
+    console.log(`Filtrando por "${field}": ${value}`);
   }
 
   editUser(user: any) {
@@ -39,7 +34,8 @@ export class UserTableComponent {
   }
 
   deleteUser(username: string) {
-    console.log('Eliminando usuario:', username);
+    this.users = this.users.filter((user) => user.username !== username);
+    console.log('Usuario eliminado:', username);
   }
 
   createUser() {

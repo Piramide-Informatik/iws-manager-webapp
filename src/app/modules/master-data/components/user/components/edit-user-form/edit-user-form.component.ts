@@ -14,17 +14,17 @@ export class EditUserFormComponent {
     { username: 'loschu', name: 'Schulte Lothar', active: true },
     { username: 'paze', name: 'Zessin Patrick', active: true },
     { username: 'mariah', name: 'Hernandez Maria', active: false },
-    { username: 'jdoe', name: 'Doe John', active: true },
-    { username: 'adamsa', name: 'Adams Sarah', active: true },
-    { username: 'mgonzalez', name: 'Gonzalez Miguel', active: false },
-    { username: 'klausw', name: 'Weber Klaus', active: true },
-    { username: 'tanja', name: 'Müller Tanja', active: true },
-    { username: 'bernardf', name: 'Fischer Bernard', active: false },
-    { username: 'ljimenez', name: 'Jimenez Luis', active: true },
   ];
 
-  assignedRoles: string[] = ['Projekte', 'Rolle 3', 'Zeiterfassung'];
-  availableRoles: string[] = ['Administrator', 'Finanzen'];
+  allRoles: string[] = [
+    'Projekte',
+    'Rolle 3',
+    'Zeiterfassung',
+    'Administrator',
+    'Finanzen',
+  ];
+  assignedRoles: string[] = [];
+  availableRoles: string[] = [];
 
   selectedAssignedRoles: string[] = [];
   selectedAvailableRoles: string[] = [];
@@ -38,6 +38,15 @@ export class EditUserFormComponent {
       password: [''],
       active: [true],
     });
+
+    this.resetRoles();
+  }
+
+  private resetRoles() {
+    this.assignedRoles = [];
+    this.availableRoles = [...this.allRoles];
+    this.selectedAssignedRoles = [];
+    this.selectedAvailableRoles = [];
   }
 
   editUser(user: any) {
@@ -51,59 +60,46 @@ export class EditUserFormComponent {
     });
 
     this.assignedRoles = user.assignedRoles ?? [];
-    this.availableRoles = ['Administrator', 'Finanzen'].filter(
+    this.availableRoles = this.allRoles.filter(
       (role) => !this.assignedRoles.includes(role)
     );
   }
 
   saveUser() {
     const formValue = this.userForm.value;
+    const name = `${formValue.firstName} ${formValue.lastName}`;
+    const updatedUser = {
+      ...formValue,
+      name,
+      assignedRoles: [...this.assignedRoles],
+    };
 
-    const existingIndex = this.users.findIndex(
+    const index = this.users.findIndex(
       (u) => u.username === formValue.username
     );
 
-    const updatedUser = {
-      ...formValue,
-      name: `${formValue.firstName} ${formValue.lastName}`,
-    };
-
-    if (existingIndex !== -1) {
-      this.users[existingIndex] = updatedUser;
+    if (index !== -1) {
+      this.users[index] = updatedUser;
     } else {
       this.users.push(updatedUser);
     }
 
-    this.userForm.reset({
-      username: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      active: true,
-    });
-    this.assignedRoles = [];
-    this.availableRoles = ['Administrator', 'Finanzen'];
+    this.userForm.reset({ active: true });
+    this.resetRoles();
   }
 
-  private transferRoles(
-    from: string[],
-    to: string[],
-    selected: string[]
-  ): void {
+  private transferRoles(from: string[], to: string[], selected: string[]) {
     selected.forEach((role) => {
-      if (!to.includes(role)) {
-        to.push(role);
-      }
+      if (!to.includes(role)) to.push(role);
     });
-    const updatedFrom = from.filter((role) => !selected.includes(role));
-    from.length = 0;
-    from.push(...updatedFrom);
+    from = from.filter((role) => !selected.includes(role));
     selected.length = 0;
+
+    return from;
   }
 
   moveToAssigned() {
-    this.transferRoles(
+    this.availableRoles = this.transferRoles(
       this.availableRoles,
       this.assignedRoles,
       this.selectedAvailableRoles
@@ -111,13 +107,15 @@ export class EditUserFormComponent {
   }
 
   moveAllToAssigned() {
-    this.transferRoles(this.availableRoles, this.assignedRoles, [
-      ...this.availableRoles,
-    ]);
+    this.assignedRoles.push(
+      ...this.availableRoles.filter((r) => !this.assignedRoles.includes(r))
+    );
+    this.availableRoles = [];
+    this.selectedAvailableRoles = [];
   }
 
   moveToAvailable() {
-    this.transferRoles(
+    this.assignedRoles = this.transferRoles(
       this.assignedRoles,
       this.availableRoles,
       this.selectedAssignedRoles
@@ -125,8 +123,10 @@ export class EditUserFormComponent {
   }
 
   moveAllToAvailable() {
-    this.transferRoles(this.assignedRoles, this.availableRoles, [
-      ...this.assignedRoles,
-    ]);
+    this.availableRoles.push(
+      ...this.assignedRoles.filter((r) => !this.availableRoles.includes(r))
+    );
+    this.assignedRoles = [];
+    this.selectedAssignedRoles = [];
   }
 }
