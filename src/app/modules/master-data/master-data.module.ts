@@ -25,6 +25,7 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
+import { DropdownModule } from 'primeng/dropdown';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -33,6 +34,10 @@ import { EditProjectCarrierComponent } from './components/absence-types/componen
 import { StatesComponent } from './components/states/states.component';
 import { StateFormComponent } from './components/states/components/state-form/state-form.component';
 import { StatesTableComponent } from './components/states/components/states-table/states-table.component';
+import { RolesComponent } from './components/roles/roles.component';
+import { RolTableComponent } from './components/roles/components/rol-table/rol-table.component';
+import { RolFormComponent } from './components/roles/components/rol-form/rol-form.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -42,6 +47,9 @@ import { StatesTableComponent } from './components/states/components/states-tabl
     StatesComponent,
     StateFormComponent,
     StatesTableComponent,
+    RolesComponent,
+    RolTableComponent,
+    RolFormComponent,
   ],
   imports: [
     ButtonModule,
@@ -66,6 +74,8 @@ import { StatesTableComponent } from './components/states/components/states-tabl
     MessageModule,
     SelectModule,
     FormsModule,
+    CheckboxModule,
+    DropdownModule
   ],
 })
 export class MasterDataModule {}
