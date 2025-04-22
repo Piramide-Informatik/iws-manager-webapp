@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
-import { TranslateService, _ } from "@ngx-translate/core";
-import { Router } from '@angular/router';
+import { TranslateService } from "@ngx-translate/core";
 import { approvalStatus } from './approval-status.data'; 
+import { MasterDataService } from '../../../../../master-data.service';
 
 @Component({
   selector: 'app-approval-types-table',
@@ -20,7 +20,10 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
 
   private langSubscription!: Subscription;
 
-  constructor(private readonly translate: TranslateService, private readonly router: Router) { }
+  constructor(
+    private readonly translate: TranslateService,
+    private readonly masterDataService: MasterDataService
+    ) { }
 
   ngOnInit() {
     this.updateColumnHeaders();
@@ -36,12 +39,7 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   }
   
   loadColHeaders(): void {
-    this.cols = [
-      { field: 'approvalStatus', minWidth: 110, header: this.translate.instant(_('APPROVAL_STATUS.TABLE.APPROVAL_STATUS')) },
-      { field: 'order', minWidth: 110, header: this.translate.instant(_('APPROVAL_STATUS.TABLE.ORDER')) },
-      { field: 'projects', minWidth: 110, header: this.translate.instant(_('APPROVAL_STATUS.TABLE.PROJECTS')) },
-      { field: 'networks', minWidth: 110, header: this.translate.instant(_('APPROVAL_STATUS.TABLE.NETWORKS')) }
-    ];
+    this.cols = this.masterDataService.getApprovalStatusColumns();
   }
 
   ngOnDestroy(): void {
