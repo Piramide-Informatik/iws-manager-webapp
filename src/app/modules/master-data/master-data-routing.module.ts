@@ -5,14 +5,15 @@ import { RolesComponent } from './components/roles/roles.component';
 import { StatesComponent } from './components/states/states.component';
 import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
 import { UserComponent } from './components/user/user.component';
+import { AddressComponent } from './components/address/address.component';
 
 const routes: Routes = [
   { path: 'absence-types', component: AbsenceTypesComponent },
-  { path: 'states', component: StatesComponent },
-  { path: 'approval-status', component: ApprovalStatusProjectComponent },
-  { path: 'roles', component: RolesComponent },
+  { path: 'address', component: AddressComponent },
   { path: 'user', component: UserComponent },
-  { path: 'roles', component: RolesComponent }
+  { path: 'roles', component: RolesComponent },
+  { path: 'approval-status', component: ApprovalStatusProjectComponent },
+  { path: 'states', component: StatesComponent }
 ];
 
 @NgModule({
