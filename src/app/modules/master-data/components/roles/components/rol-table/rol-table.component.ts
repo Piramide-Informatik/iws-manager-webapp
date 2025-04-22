@@ -17,29 +17,25 @@ export class RolTableComponent implements OnInit, OnDestroy {
   roles = [...GERMAN_ROLES];
   cols: any[] = [];
   selectedColumns: any[] = [];
-  @ViewChild('dt2') dt2!: Table;
+  @ViewChild('dt') dt!: Table;
 
   private langSubscription!: Subscription;
 
-  constructor(
-    private readonly translate: TranslateService,
-    private readonly router: Router
-  ) {}
+  constructor(private readonly router: Router, private readonly translate: TranslateService ) { }
 
   ngOnInit() {
     this.updateHeadersAndColumns();
-
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
     });
   }
 
   updateHeadersAndColumns() {
-    this.loadColHeaders();
+    this.loadColumnHeaders();
     this.selectedColumns = [...this.cols];
   }
 
-  loadColHeaders(): void {
+  loadColumnHeaders(): void {
     this.cols = [
       {
         field: 'rol',
@@ -49,39 +45,28 @@ export class RolTableComponent implements OnInit, OnDestroy {
     ];
   }
 
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]);
-    });
-  }
-
-  ngOnDestroy(): void {
+  ngOnDestroy() : void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
   }
 
-  logAction(action: string, data?: any) {
-    console.log(`${action}`, data ?? '');
-  }
-
-  editRol(absenceType: any) {
-    this.logAction('Editing', absenceType);
+  editRol(rol: any) {
+    //this.logAction('Editing', rol);
   }
 
   deleteRol(id: number) {
-    this.logAction('Deleting ID', id);
+    //this.logAction('Deleting', id);
   }
 
   createRol() {
-    this.logAction('Creating new state');
+    //this.logAction('Creating new state');
   }
 
   applyFilter(event: any, field: string) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
+      this.dt.filter(inputElement.value, field, 'contains');
     }
   }
 }
