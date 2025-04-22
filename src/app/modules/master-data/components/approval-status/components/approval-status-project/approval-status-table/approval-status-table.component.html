@@ -1,6 +1,6 @@
 <div class="card">
     <p-table #dt2 
-        [value]="approvalStates" 
+        [value]="appovalStatuses" 
         dataKey="id" 
         [rows]="15" 
         [columns]="selectedColumns"
@@ -42,9 +42,9 @@
                 <td>
                     <div class="flex items-center justify-center gap-2">
                         <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-                            (click)="editAbsenceType(row)"></button>
+                            (click)="editApprovalStatus(row)"></button>
                         <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
-                            (click)="deleteAbsenceType(row.id)"></button>
+                            (click)="deleteApprovalStatus(row.id)"></button>
                     </div>
                 </td>
                 <td *ngFor="let col of columns">{{ row[col.field] }}</td>
@@ -62,7 +62,7 @@
 
     <p-toolbar>
         <ng-template #start>
-            <p-button [label]="'ABSENCE_TYPES.BUTTON.NEW' | translate" icon="pi pi-plus" (click)="createAbsenceType()" (keydown.enter)="createAbsenceType()" />
+            <p-button [label]="'ABSENCE_TYPES.BUTTON.NEW' | translate" icon="pi pi-plus" (click)="createApprovalStatus()" (keydown.enter)="createApprovalStatus()" />
         </ng-template>
     </p-toolbar>
 </div>

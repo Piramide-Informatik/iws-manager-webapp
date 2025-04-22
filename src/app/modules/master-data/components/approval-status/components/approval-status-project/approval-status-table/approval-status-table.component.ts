@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './approval-status-table.component.scss',
 })
 export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
-  approvalStates: any[] = [];
+  appovalStatuses: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
 
@@ -23,7 +23,7 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   constructor(private readonly translate: TranslateService, private readonly router: Router) { }
 
   ngOnInit() {
-    this.approvalStates = [
+    this.appovalStatuses = [
       {
         id: 1,
         approvalStatus: 'Antrag',
@@ -68,36 +68,28 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
     ];
   }
 
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-      })
-    })
-  }
-
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
   }
 
-  editAbsenceType(absenceType: any) {
-    console.log('Editing', absenceType);
+  editApprovalStatus(approvaStatus: any) {
+    console.log('Editing', approvaStatus);
   }
 
-  deleteAbsenceType(id: number) {
-    console.log('Deleting ID', id);
+  deleteApprovalStatus(id: number) {
+    console.log('Deleting by ID approval status', id);
   }
 
-  createAbsenceType() {
-    console.log('Creating new absence type');
+  createApprovalStatus() {
+    console.log('Creating new approval status');
   }
 
   applyFilter(event: any, field: string) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
       this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
+    }
+  }
 }
