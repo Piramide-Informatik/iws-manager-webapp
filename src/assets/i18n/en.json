@@ -233,5 +233,29 @@
       "STATE": "Federal State",
       "EDIT_STATE": "Edit State"
     }
+  },
+  "ROLES": {
+    "TABLE_ROLES": {
+      "USER_ROL": "User Roles"
+    },
+    "TABLE_MODULES": {
+      "FUNCTION": "Function",
+      "READ": "Read",
+      "INSERT": "Insert",
+      "MODIFY": "Modify",
+      "DELETE": "Delete",
+      "EXECUTE": "Execute"
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_ROL": "Edit Rol",
+      "ROL": "Rol",
+      "MODULE": "Module"
+      
+    }
   }
 }
