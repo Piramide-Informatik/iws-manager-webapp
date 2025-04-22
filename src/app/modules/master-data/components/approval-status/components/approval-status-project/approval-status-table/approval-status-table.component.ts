@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './approval-status-table.component.scss',
 })
 export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
-  absenceTypes: any[] = [];
+  approvalStates: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
 
@@ -23,7 +23,7 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   constructor(private readonly translate: TranslateService, private readonly router: Router) { }
 
   ngOnInit() {
-    this.absenceTypes = [
+    this.approvalStates = [
       {
         id: 1,
         approvalStatus: 'Antrag',
@@ -42,55 +42,6 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
         id: 3,
         approvalStatus: 'Planung',
         order: '3',
-        projects: 'X',
-        networks: 'X',
-      },
-      {
-        id: 4,
-        approvalStatus: 'Bewilligt',
-        order: '4',
-        projects: 'X',
-        networks: '',
-      },
-      {
-        id: 5,
-        approvalStatus: 'Bewilligt',
-        order: '8',
-        projects: '',
-        networks: '',
-      },
-      {
-        id: 6,
-        approvalStatus: 'Planung',
-        order: '2',
-        projects: 'X',
-        networks: 'X',
-      },
-      {
-        id: 7,
-        approvalStatus: 'Planung',
-        order: '7',
-        projects: '',
-        networks: 'X',
-      },
-      {
-        id: 8,
-        approvalStatus: 'Bewilligt',
-        order: '4',
-        projects: 'X',
-        networks: 'X',
-      },
-      {
-        id: 9,
-        approvalStatus: 'Bewilligt',
-        order: '1',
-        projects: 'X',
-        networks: 'X',
-      },
-      {
-        id: 10,
-        approvalStatus: 'Bewilligt',
-        order: '2',
         projects: 'X',
         networks: 'X',
       },
