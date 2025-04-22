@@ -19,15 +19,12 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DialogModule } from 'primeng/dialog';
 
-
-
-//Componentes
+//Components
 import { ContactComponent } from './components/contact/contact.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 
-import { TranslateDirective, TranslateModule } from '@ngx-translate/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
