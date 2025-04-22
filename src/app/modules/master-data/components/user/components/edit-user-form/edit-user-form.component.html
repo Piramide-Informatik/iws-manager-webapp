@@ -1,0 +1,55 @@
+<form [formGroup]="userForm">
+  <div class="field">
+    <label>Benutzername</label>
+    <input pInputText formControlName="username" />
+  </div>
+  <div class="field">
+    <label>Vorname</label>
+    <input pInputText formControlName="firstName" />
+  </div>
+  <div class="field">
+    <label>Nachname</label>
+    <input pInputText formControlName="lastName" />
+  </div>
+  <div class="field">
+    <label>Mailadresse</label>
+    <input pInputText formControlName="email" />
+  </div>
+  <div class="field">
+    <label>Kennwort</label>
+    <input pPassword formControlName="password" />
+  </div>
+  <div class="field">
+    <p-checkbox
+      formControlName="active"
+      binary="true"
+      label="aktiv"
+    ></p-checkbox>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <label>Zugewiesene Rollen</label>
+      <p-listbox [options]="assignedRoles" multiple="true"></p-listbox>
+    </div>
+    <div class="col flex flex-column justify-content-center">
+      <p-button icon="pi pi-angle-right"></p-button>
+      <p-button icon="pi pi-angle-double-right"></p-button>
+      <p-button icon="pi pi-angle-left"></p-button>
+      <p-button icon="pi pi-angle-double-left"></p-button>
+    </div>
+    <div class="col">
+      <label>Verfügbare Rollen</label>
+      <p-listbox [options]="availableRoles" multiple="true"></p-listbox>
+    </div>
+  </div>
+
+  <div class="mt-3 flex gap-2">
+    <p-button label="Speichern" icon="pi pi-save"></p-button>
+    <p-button
+      label="Abbrechen"
+      severity="secondary"
+      icon="pi pi-times"
+    ></p-button>
+  </div>
+</form>
