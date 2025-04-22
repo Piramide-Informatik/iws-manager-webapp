@@ -31,7 +31,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor(private customerService: CustomerService, private translate: TranslateService, public router: Router) { }
+  constructor(private readonly customerService: CustomerService, private readonly translate: TranslateService, private readonly router: Router) { }
 
   ngOnInit(): void {
 
