@@ -22,7 +22,7 @@
             <ng-template #header let-columns>
                 <tr>
 
-                    <th></th>
+                    <th id="employee-overview-table-options"></th>
                    
 
                     <th id="employee-overview-field-search" *ngFor="let col of selectedFilterColumns; let i = index">
@@ -32,8 +32,8 @@
                     </th>
                 </tr>
                 <tr>
-                    <th class="thead-bg-blue"></th>
-                    <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn
+                    <th id="employee-overview-options-field" class="thead-bg-blue"></th>
+                    <th id="employee-overview-table-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn
                         class="thead">{{
                         col.header }} <p-sortIcon [field]="col.field" />
                     </th>

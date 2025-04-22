@@ -42,23 +42,18 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   public cols!: Column[];
   private langSubscription!: Subscription;
 
-  //public cols!: Column[];
-
   public selectedColumns!: Column[];
-
   public filterCols!: Column[];
-
   public selectedFilterColumns!: Column[];
 
 
-  constructor(private employeeService: EmployeeService,
-    private messageService: MessageService,
-    private translate: TranslateService,
-    public router: Router,
-    private confirmationService: ConfirmationService) { }
+  constructor(private readonly employeeService: EmployeeService,
+    private readonly messageService: MessageService,
+    private readonly translate: TranslateService,
+    private readonly router: Router,
+    private readonly confirmationService: ConfirmationService) { }
 
   ngOnInit() {
-    //this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
     this.loadColHeaders();
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
