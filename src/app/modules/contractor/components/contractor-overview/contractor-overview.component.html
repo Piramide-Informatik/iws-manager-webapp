@@ -26,9 +26,9 @@
         </th>
       </tr>
       <tr>
-      <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
+      <th id="contractor-table-options" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
   
-        <th *ngFor="let col of columns; let i = index" 
+        <th id="contractor-table-field" *ngFor="let col of columns; let i = index" 
           [pSortableColumn]="col.field" 
           class="thead" 
           pResizableColumn>
