@@ -7,10 +7,9 @@ import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   { path: 'absence-types', component: AbsenceTypesComponent },
+  { path: 'address', component: AddressComponent },
   { path: 'states', component: StatesComponent },
-
   { path: 'user', component: UserComponent },
-
   { path: 'roles', component: RolesComponent }
 
 ];
