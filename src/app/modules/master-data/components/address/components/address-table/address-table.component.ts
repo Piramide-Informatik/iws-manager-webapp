@@ -51,26 +51,19 @@ export class AddressTableComponent implements OnInit, OnDestroy {
     ];
   }
 
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-      })
-    })
-  }
-
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
   }
 
-  editSalutation(salutation: any) {
-    console.log('Editing', salutation);
+  editSalutation(salut: any) {
+    const indexSalutation = this.salutations.findIndex( salutation => salutation.id == salut.id);
+    this.salutations[indexSalutation].salutation = salut.salutation;
   }
 
   deleteSalutation(id: number) {
-    console.log('Deleting ID', id);
+    this.salutations = this.salutations.filter( salutation => salutation.id != id);
   }
 
   createSalutation() {
