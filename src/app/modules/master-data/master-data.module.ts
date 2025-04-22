@@ -31,7 +31,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 
 import { DropdownModule } from 'primeng/dropdown';
 
-
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
 import { AbsenceTypesTableComponent } from './components/absence-types/components/absence-types-table/absence-types-table.component';
@@ -42,7 +41,6 @@ import { StatesTableComponent } from './components/states/components/states-tabl
 import { RolesComponent } from './components/roles/roles.component';
 import { RolTableComponent } from './components/roles/components/rol-table/rol-table.component';
 import { RolFormComponent } from './components/roles/components/rol-form/rol-form.component';
-import { CheckboxModule } from 'primeng/checkbox';
 
 import { UserTableComponent } from './components/user/components/user-table/user-table.component';
 import { EditUserFormComponent } from './components/user/components/edit-user-form/edit-user-form.component';
@@ -62,7 +60,6 @@ import { UserComponent } from './components/user/user.component';
     RolesComponent,
     RolTableComponent,
     RolFormComponent,
-
   ],
   imports: [
     ButtonModule,
@@ -89,8 +86,7 @@ import { UserComponent } from './components/user/user.component';
     FormsModule,
     ListboxModule,
     CheckboxModule,
-    DropdownModule
-
+    DropdownModule,
   ],
 })
 export class MasterDataModule {}
