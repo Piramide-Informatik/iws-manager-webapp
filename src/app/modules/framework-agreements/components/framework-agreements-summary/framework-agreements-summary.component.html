@@ -3,13 +3,10 @@
     <label for="SearchCustomer">Kunde</label>
     <p-iconfield class="px-4">
       <p-inputicon styleClass="pi pi-search px-4" />
-      <input pInputText type="text" placeholder=""  [(ngModel)]="customer"/>
+      <input pInputText type="text" placeholder="" [(ngModel)]="customer" />
     </p-iconfield>
   </div>
-  <p-table
-    #dt2
-    [value]="frameworkAgreements"
-    dataKey="id" [rows]="15" [columns]="selectedColumns"
+  <p-table #dt2 [value]="frameworkAgreements" dataKey="id" [rows]="15" [columns]="selectedColumns"
     [rowsPerPageOptions]="[15, 30, 50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
     showGridlines [resizableColumns]="true" columnResizeMode="expand" [scrollable]="true" scrollHeight="60vh"
@@ -21,38 +18,33 @@
     </ng-template>
     <ng-template #header let-columns>
       <tr>
-
-        <th></th>
-
-        <th *ngFor="let col of columns; let i = index">
+        <th id="framework-agreement-table-options-field"></th>
+        <th id="framework-agreement-table-search-field" *ngFor="let col of columns; let i = index">
           <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
             (input)="applyFilter($event, col.field)" />
         </th>
       </tr>
       <tr>
-
-        <th class="thead-bg-blue"></th>
-
-        <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
+        <th id="framework-agreement-table-options" class="thead-bg-blue"></th>
+        <th id="framework-agreement-table-field" *ngFor="let col of columns; let i = index"
+          [pSortableColumn]="col.field" pResizableColumn class="thead">{{
           col.header }} <p-sortIcon [field]="col.field" />
         </th>
-
       </tr>
-
     </ng-template>
     <ng-template #body let-agreement let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
-              <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info" 
-                [routerLink]="['/framework-agreements/framework-agreement-details', agreement.id]"        
-              ></button>
-              <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option" (click)="deleteFrameworkAgreement(agreement.id)"></button>
+            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"
+              [routerLink]="['/framework-agreements/framework-agreement-details', agreement.id]"></button>
+            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
+              (click)="deleteFrameworkAgreement(agreement.id)"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns; let j = index" 
-           [ngClass]="{'align-right': col.field === 'id', 'text-center': j == 2}">
-           {{ agreement[col.field] }}
+        <td *ngFor="let col of columns; let j = index"
+          [ngClass]="{'align-right': col.field === 'id', 'text-center': j == 2}">
+          {{ agreement[col.field] }}
         </td>
       </tr>
     </ng-template>
@@ -66,8 +58,7 @@
   </p-table>
   <p-toolbar>
     <ng-template #start>
-      <p-button label="Neu" icon="pi pi-plus" routerLink="/framework-agreements/framework-agreement-details"
-    ></p-button>
+      <p-button label="Neu" icon="pi pi-plus" routerLink="/framework-agreements/framework-agreement-details"></p-button>
     </ng-template>
     <ng-template #end>
     </ng-template>
