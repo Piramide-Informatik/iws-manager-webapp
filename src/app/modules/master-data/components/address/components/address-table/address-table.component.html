@@ -14,13 +14,6 @@
         scrollHeight="60vh"
         [tableStyle]="{'min-width': '5%', 'border-spacing': '1px'}">
 
-        <ng-template #caption>
-            <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-                selectedItemsLabel="{0} columns selected"
-                [style]="{ 'min-width': '10%', 'font-size': '14px', 'line-height': '16.8px' }"
-                placeholder="Choose Columns" />
-        </ng-template>
-
         <ng-template #header let-columns>
             <tr>
                 <th id="salutation-table-options"></th>
@@ -47,7 +40,7 @@
                             (click)="deleteSalutation(row.id)"></button>
                     </div>
                 </td>
-                <td *ngFor="let col of columns">{{ row[col.field] }}</td>
+                <td *ngFor="let col of columns" class="salutation-table-data">{{ row[col.field] }}</td>
             </tr>
         </ng-template>
 

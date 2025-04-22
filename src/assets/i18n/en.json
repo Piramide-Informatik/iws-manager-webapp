@@ -215,6 +215,11 @@
       "NEW": "New"
     }
   },
+  "ADDRESS": {
+    "TABLE": {
+      "SALUTATION": "Salutation"
+    }
+  },
   "STATES": {
     "TABLE": {
       "STATE": "Federal State"

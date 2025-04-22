@@ -219,6 +219,11 @@
       "NEW": "Neu"
     }
   },
+  "ADDRESS": {
+    "TABLE": {
+      "SALUTATION": "Anreden"
+    }
+  },
   "STATES": {
     "TABLE": {
       "STATE": "Bundesland"

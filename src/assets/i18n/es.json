@@ -215,6 +215,11 @@
       "NEW": "Nuevo"
     }
   },
+  "ADDRESS": {
+    "TABLE": {
+      "SALUTATION": "Saludo"
+    }
+  },
   "STATES": {
     "TABLE": {
       "STATE": "Estado Federal"
