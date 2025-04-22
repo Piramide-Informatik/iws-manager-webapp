@@ -37,8 +37,8 @@
   }
 
   &.active {
-    background: lighten($primary-dark, 35%);
-    color: $primary-dark;
+    background: $primary-color;
+    color: $primary-light;
   }
 
   &.active:hover {
@@ -72,10 +72,12 @@
   }
 
   &:hover {
-    background-color: lighten($primary-dark, 10%);
+    background: $primary-color;
+    color: $primary-light;
   }
 
   &:active {
-    background-color: darken($primary-dark, 5%);
+    background: $primary-dark;
+    color: $primary-light;
   }
 }
