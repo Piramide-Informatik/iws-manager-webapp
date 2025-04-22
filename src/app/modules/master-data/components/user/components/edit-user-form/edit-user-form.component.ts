@@ -51,7 +51,6 @@ export class EditUserFormComponent {
     });
 
     this.assignedRoles = user.assignedRoles ?? [];
-
     this.availableRoles = ['Administrator', 'Finanzen'].filter(
       (role) => !this.assignedRoles.includes(role)
     );
@@ -64,58 +63,70 @@ export class EditUserFormComponent {
       (u) => u.username === formValue.username
     );
 
+    const updatedUser = {
+      ...formValue,
+      name: `${formValue.firstName} ${formValue.lastName}`,
+    };
+
     if (existingIndex !== -1) {
-      this.users[existingIndex] = {
-        ...formValue,
-        name: `${formValue.firstName} ${formValue.lastName}`,
-      };
+      this.users[existingIndex] = updatedUser;
     } else {
-      this.users.push({
-        ...formValue,
-        name: `${formValue.firstName} ${formValue.lastName}`,
-      });
+      this.users.push(updatedUser);
     }
 
-    this.userForm.reset({ active: true });
+    this.userForm.reset({
+      username: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      active: true,
+    });
+    this.assignedRoles = [];
+    this.availableRoles = ['Administrator', 'Finanzen'];
+  }
+
+  private transferRoles(
+    from: string[],
+    to: string[],
+    selected: string[]
+  ): void {
+    selected.forEach((role) => {
+      if (!to.includes(role)) {
+        to.push(role);
+      }
+    });
+    const updatedFrom = from.filter((role) => !selected.includes(role));
+    from.length = 0;
+    from.push(...updatedFrom);
+    selected.length = 0;
   }
 
   moveToAssigned() {
-    this.selectedAvailableRoles.forEach((role) => {
-      if (!this.assignedRoles.includes(role)) {
-        this.assignedRoles.push(role);
-      }
-    });
-    this.availableRoles = this.availableRoles.filter(
-      (role) => !this.selectedAvailableRoles.includes(role)
+    this.transferRoles(
+      this.availableRoles,
+      this.assignedRoles,
+      this.selectedAvailableRoles
     );
-    this.selectedAvailableRoles = [];
   }
 
   moveAllToAssigned() {
-    this.assignedRoles.push(
-      ...this.availableRoles.filter((r) => !this.assignedRoles.includes(r))
-    );
-    this.availableRoles = [];
-    this.selectedAvailableRoles = [];
+    this.transferRoles(this.availableRoles, this.assignedRoles, [
+      ...this.availableRoles,
+    ]);
   }
 
   moveToAvailable() {
-    this.selectedAssignedRoles.forEach((role) => {
-      if (!this.availableRoles.includes(role)) {
-        this.availableRoles.push(role);
-      }
-    });
-    this.assignedRoles = this.assignedRoles.filter(
-      (role) => !this.selectedAssignedRoles.includes(role)
+    this.transferRoles(
+      this.assignedRoles,
+      this.availableRoles,
+      this.selectedAssignedRoles
     );
-    this.selectedAssignedRoles = [];
   }
 
   moveAllToAvailable() {
-    this.availableRoles.push(
-      ...this.assignedRoles.filter((r) => !this.availableRoles.includes(r))
-    );
-    this.assignedRoles = [];
-    this.selectedAssignedRoles = [];
+    this.transferRoles(this.assignedRoles, this.availableRoles, [
+      ...this.assignedRoles,
+    ]);
   }
 }
