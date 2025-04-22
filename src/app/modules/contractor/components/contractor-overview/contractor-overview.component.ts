@@ -31,7 +31,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor(private contractorService: ContractorService, private translate: TranslateService, public router:Router) { }
+  constructor(private readonly contractorService: ContractorService, private readonly translate: TranslateService, private readonly router:Router) { }
 
   ngOnInit():void {
     this.loadColHeaders();
