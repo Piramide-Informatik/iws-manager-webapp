@@ -4,7 +4,6 @@ import { AbsenceTypesComponent } from './components/absence-types/absence-types.
 import { RolesComponent } from './components/roles/roles.component';
 import { StatesComponent } from './components/states/states.component';
 import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
-import { AddressComponent } from './components/address/address.component';
 import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
