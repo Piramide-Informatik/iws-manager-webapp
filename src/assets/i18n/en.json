@@ -25,7 +25,7 @@
     "INVENTORY": "Inventory",
 
     "ABSENCE_TYPES": "Absence Types",
-    "TITLE": "Titles",
+    "ADDRESS": "Address",
     "ORDER_TYPES": "Order Types",
     "USER": "User",
     "ROLES": "Roles",
@@ -37,6 +37,7 @@
     "IWS_COMMISSIONS": "IWS - Commissions",
     "IWS_TEAMS": "IWS - Teams",
     "COUNTRIES": "Countries",
+    "COST": "Cost",
     "DUNNING_LEVELS": "Dunning Levels",
     "EMPLOYEE_QUALIFICATION": "Employee Qualification",
     "NETWORKS": "Networks",
@@ -45,7 +46,13 @@
     "REALIZATION_PROBABILITIES": "Realization Probability",
     "BILLERS": "Biller",
     "SYSTEM_CONSTANTS": "System Constants",
-    "TEXTS": "Texts"
+    "TEXTS": "Texts",
+    "TITLE": "Titles",
+    "SALES_TAX": "Sales Tax",
+    "TYPES_OF_COMPANIES": "Types of Companies",
+    "BILLING_METHODS": "Billing Methods",
+    "CONTRACT_STATUS": "Contract Status",
+    "TERMS_OF_PAYMENT": "Terms of Payment"
   },
   "COMMON": {
     "CUSTOMER_NAME": "Customer"
