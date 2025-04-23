@@ -219,17 +219,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     );
   }
 
-  createUniqueId(): number {
-    let id: number;
-    do {
-      id = Math.floor(Math.random() * 1000);
-    } while (
-      this.contracts.some(
-        (currentContract) => currentContract.employeeId === id
-      )
-    );
-    return id;
-  }
   getSeverity(status: string) {
     if (status === 'Active') {
       return 'success';
@@ -249,7 +238,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
         : this.workContractsService.addProduct({
           ...this.currentContract,
           employeeId:
-            this.currentContract.employeeId || this.createUniqueId(),
+            this.currentContract.employeeId,
         });
 
       productAction.then(() => {
