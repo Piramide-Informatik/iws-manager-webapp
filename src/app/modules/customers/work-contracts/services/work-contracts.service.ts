@@ -67,6 +67,10 @@ export class WorkContractsService {
 
   }
 
+  getWorkContractsColumns() {
+    return this.datastore.getWorkConstractsColums();
+  }
+
   addProduct(workContract: WorkContract) {
     this.workContracts.push(workContract);
     return Promise.resolve(this.workContracts);

@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
+import { TranslateService, _ } from '@ngx-translate/core';
+
+interface Column {
+  field: string,
+  header: string
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkContractsDataService {
-  constructor() { }
+  constructor(
+    private readonly translate: TranslateService,
+  ) { }
 
   list(): WorkContract[] {
     return [
@@ -61,6 +69,22 @@ export class WorkContractsDataService {
         maxHrsPerDay: 9,
         hourlyRate: 215
       }
+    ];
+  }
+
+  getWorkConstractsColums(): Column[] {
+    return [
+      { field: 'employeeId', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))},
+      { field: 'firstName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
+      { field: 'lastName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
+      { field: 'startDate', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
+      { field: 'salaryPerMonth',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
+      { field: 'weeklyHours',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
+      { field: 'worksShortTime',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
+      { field: 'specialPayment',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
+      { field: 'maxHrspPerMonth', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
+      { field: 'maxHrsPerDay',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
+      { field: 'hourlyRate',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
     ];
   }
 }

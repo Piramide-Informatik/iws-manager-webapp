@@ -73,19 +73,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   }
 
   loadColHeaders(): void {
-    this.cols = [
-      { field: 'employeeId', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))},
-      { field: 'firstName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
-      { field: 'lastName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
-      { field: 'startDate', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
-      { field: 'salaryPerMonth',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
-      { field: 'weeklyHours',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
-      { field: 'worksShortTime',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
-      { field: 'specialPayment',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
-      { field: 'maxHrspPerMonth', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
-      { field: 'maxHrsPerDay',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
-      { field: 'hourlyRate',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
-    ];
+    this.cols = this.workContractsService.getWorkContractsColumns();
   }
 
   ngOnDestroy(): void {
@@ -95,12 +83,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   }
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/${url}`]).then(() => {
-        //console.log(`After navigation I am on:${this.router.url}`)
       })
     })
   }
@@ -126,37 +111,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**loadWorkContracts() {
-    this.workContractsService
-      .list()
-      .then((data) => {
-        console.log('Datos cargados:', data);
-        this.contracts = data || [];
-        this.loading = false;
-      })
-      .catch((error) => {
-        console.error('Error al cargar los contratos:', error);
-      });
-  }
-  /** 
-  openNew() {
-    this.currentContract = {
-      employeeId: 0,
-      firstName: '',
-      lastName: '',
-      date: '',
-      salary: 0,
-      weeklyHours: 0,
-      maxHrsDay: 0,
-      maxHrsMonth: 0,
-      abbreviation: '',
-      hourlyRate: 0,
-      noteLine: '',
-    };
-    this.submitted = false;
-    this.productDialog = true;
-  }
-*/
   editWorkContract(currentContract: WorkContract) {
     this.currentContract = { ...currentContract };
     this.productDialog = true;
@@ -261,13 +215,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** 
-  loadProducts() {
-    this.workContractsService.list().then((data) => {
-      this.contracts = data;
-    });
-  }
-*/
   resetProductDialog() {
     this.productDialog = false;
     this.currentContract = {} as WorkContract;
