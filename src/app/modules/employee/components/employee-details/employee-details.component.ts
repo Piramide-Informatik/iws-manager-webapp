@@ -7,8 +7,7 @@ import { Salutation } from '../../models/salutation';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {TranslateService, _} from "@ngx-translate/core";
-import {TranslatePipe, TranslateDirective} from "@ngx-translate/core";
+import {TranslateService, TranslatePipe, TranslateDirective, _} from "@ngx-translate/core";
 
 interface Column {
   field: string,
@@ -24,23 +23,14 @@ interface Column {
 })
 export class EmployeeDetailsComponent implements OnInit {
   
-
   public cols!: Column[];
-
   public selectedColumns!: Column[];
-
   titles: Title[] | undefined;
-
   salutations: Salutation[] | undefined;
-
   qualificationsFZ: QualificationFZ[] | undefined;
-
   employeeContracts!: EmployeeContract[];
-
   statuses!: SelectItem[];
-
   clonedEmployeeContracts: { [s: string]: EmployeeContract } = {};
-
   orderForm!: FormGroup;
 
   @Input() customerName!: string | undefined;
@@ -61,7 +51,6 @@ export class EmployeeDetailsComponent implements OnInit {
 
   constructor(private employeeContractService: EmployeeContractService, private messageService: MessageService,
     private router: Router, private activatedRoute: ActivatedRoute) {
-    //console.log(this.router.getCurrentNavigation().extras.state);
   }
 
   ngOnInit(): void {
@@ -84,23 +73,6 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeContracts = data;
     });
 
-    /** 
-    this.orderForm = new FormGroup({
-      customerName: new FormControl('', [Validators.required]),
-      employeeNumber: new FormControl('', [Validators.required]),
-      salutationId: new FormControl('', [Validators.required]),
-      titleId: new FormControl('', [Validators.required]),
-      employeeFirstName: new FormControl('', [Validators.required]),
-      employeeLastName: new FormControl('', [Validators.required]),
-      employeeEmail: new FormControl('', [Validators.required]),
-      generalManagerSinceDate: new FormControl('', [Validators.required]),
-      shareholderSinceDate: new FormControl('', [Validators.required]),
-      solePropietorSinceDate: new FormControl('', [Validators.required]),
-      coentrepreneurSinceDate: new FormControl('', [Validators.required]),
-      qualificationFzId: new FormControl('', [Validators.required]),
-      qualificationKMUi: new FormControl('', [Validators.required])
-    });
-*/
     this.salutations = [
       { id: 0, name: '', description: '' },
       { id: 1, name: 'Frau', description: 'Men' },
@@ -113,18 +85,14 @@ export class EmployeeDetailsComponent implements OnInit {
       { id: 1, name: 'Dr.', description: 'title' },
       { id: 2, name: 'Prof.', description: 'title' },
       { id: 3, name: 'Prof. Doc.', description: 'title' }
-
     ];
-
 
     this.qualificationsFZ = [
       { id: 1, name: 'Micro', description: 'title' },
       { id: 2, name: 'Small', description: 'title' },
       { id: 3, name: 'Medium', description: 'title' }
-
     ];
 
-    //Init colums
     this.cols = [
       { field: 'startDate', header: 'Datum' },
       { field: 'salaryPerMonth', header: 'Gehalt' },
@@ -138,7 +106,4 @@ export class EmployeeDetailsComponent implements OnInit {
 
     this.selectedColumns = this.cols;
   }
-
-
-
 }
