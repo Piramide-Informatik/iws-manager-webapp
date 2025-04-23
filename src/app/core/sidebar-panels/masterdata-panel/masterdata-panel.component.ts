@@ -50,7 +50,7 @@ export class MasterdataPanelComponent implements OnInit, OnDestroy {
   }
   private readonly items: { key: string; path: string }[] = [
     { key: 'ABSENCE_TYPES', path: 'absence-types' },
-    { key: 'TITLE', path: 'title' },
+    { key: 'ADDRESS', path: 'address' },
     { key: 'ORDER_TYPES', path: 'order-types' },
     { key: 'USER', path: 'user' },
     { key: 'ROLES', path: 'roles' },
@@ -62,6 +62,7 @@ export class MasterdataPanelComponent implements OnInit, OnDestroy {
     { key: 'IWS_COMMISSIONS', path: 'iws-commissions' },
     { key: 'IWS_TEAMS', path: 'iws-teams' },
     { key: 'COUNTRIES', path: 'countries' },
+    { key: 'COST', path: 'cost' },
     { key: 'DUNNING_LEVELS', path: 'dunning-levels' },
     { key: 'EMPLOYEE_QUALIFICATION', path: 'employee-qualification' },
     { key: 'NETWORKS', path: 'networks' },
@@ -71,6 +72,12 @@ export class MasterdataPanelComponent implements OnInit, OnDestroy {
     { key: 'BILLERS', path: 'billers' },
     { key: 'SYSTEM_CONSTANTS', path: 'system-constants' },
     { key: 'TEXTS', path: 'texts' },
+    { key: 'TITLE', path: 'title' },
+    { key: 'SALES_TAX', path: 'sales-tax' },
+    { key: 'TYPES_OF_COMPANIES', path: 'type-companies' },
+    { key: 'BILLING_METHODS', path: 'billing-methods' },
+    { key: 'CONTRACT_STATUS', path: 'contract-status' },
+    { key: 'TERMS_OF_PAYMENT', path: 'terms-payment' },
   ];
 
   private getMasterDataSidebar(): any[] {

@@ -25,7 +25,7 @@
     "INVENTORY": "Inventario",
 
     "ABSENCE_TYPES": "Tipos de Ausencia",
-    "TITLE": "Tratamientos",
+    "ADDRESS": "Dirección",
     "ORDER_TYPES": "Tipos de Orden",
     "USER": "Usuario",
     "ROLES": "Roles",
@@ -37,6 +37,7 @@
     "IWS_COMMISSIONS": "IWS - Comisiones",
     "IWS_TEAMS": "IWS - Equipos",
     "COUNTRIES": "Países",
+    "COST": "Costo",
     "DUNNING_LEVELS": "Niveles de Cobranza",
     "EMPLOYEE_QUALIFICATION": "Calificación del Empleado",
     "NETWORKS": "Redes",
@@ -45,7 +46,13 @@
     "REALIZATION_PROBABILITIES": "Probabilidad de Ejecución",
     "BILLERS": "Facturador",
     "SYSTEM_CONSTANTS": "Constantes del Sistema",
-    "TEXTS": "Textos"
+    "TEXTS": "Textos",
+    "TITLE": "Tratamientos",
+    "SALES_TAX": "Impuesto Sobre las Ventas",
+    "TYPES_OF_COMPANIES": "Tipos de Empresas",
+    "BILLING_METHODS": "Métodos de Facturación",
+    "CONTRACT_STATUS": "Estado del Contrato",
+    "TERMS_OF_PAYMENT": "Condiciones de Pago"
   },
   "COMMON": {
     "CUSTOMER_NAME": "Cliente"
