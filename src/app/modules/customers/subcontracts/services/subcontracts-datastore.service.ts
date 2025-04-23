@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subcontract } from '../../../../Entities/subcontract';
 
 @Injectable({
   providedIn: 'root',
@@ -7,40 +6,208 @@ import { Subcontract } from '../../../../Entities/subcontract';
 export class SubcontractDatastoreService {
   constructor() {}
 
-  list(): Subcontract[] {
+  list(): any[] {
     return [
       {
-        orderId: 1,
-        contractor: 'Digital Creations LLC',
-        invoiceNumber: 'INV-2025-0001',
-        invoiceDate: '2025-02-01',
-        isNet: true,
-        amount: 7500.0,
-        afa: true,
-        afaDuration: 24,
-        description: 'Development of frontend and backend for client system.',
+        orderTitle: "Website Development",
+        contractor: "Digital Creations LLC",
+        project: "E-commerce Platform",
+        date: "12.01.2023",
+        invoiceNumber: "INV-2023-0012",
+        net: 7500.00,
+        gross: 8925.00,
+        share: 0.35
       },
       {
-        orderId: 2,
-        contractor: 'Workspace Solutions Inc.',
-        invoiceNumber: 'INV-2025-0002',
-        invoiceDate: '2025-03-10',
-        isNet: false,
-        amount: 18500.0,
-        afa: false,
-        description: 'Office furniture delivery and setup.',
+        orderTitle: "Office Furniture",
+        contractor: "Workspace Solutions Inc.",
+        project: "New Headquarters",
+        date: "25.02.2023",
+        invoiceNumber: "INV-2023-0025",
+        net: 18500.00,
+        gross: 22015.00,
+        share: 0.45
       },
       {
-        orderId: 3,
-        contractor: 'BrandBoost Agency',
-        invoiceNumber: 'INV-2025-0003',
-        invoiceDate: '2025-04-18',
-        isNet: true,
-        amount: 32000.0,
-        afa: true,
-        afaDuration: 36,
-        description: 'Marketing campaign for product launch.',
+        orderTitle: "Marketing Campaign",
+        contractor: "BrandBoost Agency",
+        project: "Product Launch",
+        date: "08.03.2023",
+        invoiceNumber: "INV-2023-0038",
+        net: 32000.00,
+        gross: 38080.00,
+        share: 0.20
       },
+      {
+        orderTitle: "Cloud Services",
+        contractor: "Nimbus Cloud",
+        project: "IT Infrastructure",
+        date: "15.04.2023",
+        invoiceNumber: "INV-2023-0045",
+        net: 4200.00,
+        gross: 4998.00,
+        share: 1.00
+      },
+      {
+        orderTitle: "Security System",
+        contractor: "SafeGuard Technologies",
+        project: "Facility Upgrade",
+        date: "22.05.2023",
+        invoiceNumber: "INV-2023-0052",
+        net: 12500.00,
+        gross: 14875.00,
+        share: 0.30
+      },
+      {
+        orderTitle: "Graphic Design",
+        contractor: "Creative Minds Studio",
+        project: "Rebranding",
+        date: "03.06.2023",
+        invoiceNumber: "INV-2023-0063",
+        net: 6800.00,
+        gross: 8092.00,
+        share: 0.25
+      },
+      {
+        orderTitle: "Legal Services",
+        contractor: "Lex & Partners",
+        project: "Contract Review",
+        date: "18.07.2023",
+        invoiceNumber: "INV-2023-0078",
+        net: 9500.00,
+        gross: 11305.00,
+        share: 0.15
+      },
+      {
+        orderTitle: "Cleaning Services",
+        contractor: "Spotless Maintenance",
+        project: "Office Maintenance",
+        date: "29.08.2023",
+        invoiceNumber: "INV-2023-0089",
+        net: 3200.00,
+        gross: 3808.00,
+        share: 0.10
+      },
+      {
+        orderTitle: "Software License",
+        contractor: "TechSoft Inc.",
+        project: "Productivity Suite",
+        date: "11.09.2023",
+        invoiceNumber: "INV-2023-0091",
+        net: 15000.00,
+        gross: 17850.00,
+        share: 0.60
+      },
+      {
+        orderTitle: "Event Planning",
+        contractor: "Memorable Events Co.",
+        project: "Annual Conference",
+        date: "24.10.2023",
+        invoiceNumber: "INV-2023-0104",
+        net: 28500.00,
+        gross: 33915.00,
+        share: 0.40
+      },
+      {
+        orderTitle: "Printing Services",
+        contractor: "QuickPrint Solutions",
+        project: "Marketing Materials",
+        date: "05.11.2023",
+        invoiceNumber: "INV-2023-0115",
+        net: 4200.00,
+        gross: 4998.00,
+        share: 0.18
+      },
+      {
+        orderTitle: "Consulting Services",
+        contractor: "Business Insights Ltd.",
+        project: "Strategy Development",
+        date: "17.12.2023",
+        invoiceNumber: "INV-2023-0127",
+        net: 22500.00,
+        gross: 26775.00,
+        share: 0.35
+      },
+      {
+        orderTitle: "IT Equipment",
+        contractor: "TechGear Suppliers",
+        project: "Workstation Upgrade",
+        date: "09.01.2024",
+        invoiceNumber: "INV-2024-0009",
+        net: 18700.00,
+        gross: 22253.00,
+        share: 0.50
+      },
+      {
+        orderTitle: "Translation Services",
+        contractor: "Global Languages Inc.",
+        project: "Document Localization",
+        date: "22.02.2024",
+        invoiceNumber: "INV-2024-0022",
+        net: 6800.00,
+        gross: 8092.00,
+        share: 0.22
+      },
+      {
+        orderTitle: "Catering Services",
+        contractor: "Gourmet Delights",
+        project: "Employee Appreciation",
+        date: "14.03.2024",
+        invoiceNumber: "INV-2024-0034",
+        net: 9500.00,
+        gross: 11305.00,
+        share: 0.28
+      },
+      {
+        orderTitle: "Video Production",
+        contractor: "Motion Picture Studios",
+        project: "Corporate Video",
+        date: "27.04.2024",
+        invoiceNumber: "INV-2024-0047",
+        net: 15200.00,
+        gross: 18088.00,
+        share: 0.33
+      },
+      {
+        orderTitle: "HR Software",
+        contractor: "PeopleTech Solutions",
+        project: "HR System Implementation",
+        date: "08.05.2024",
+        invoiceNumber: "INV-2024-0058",
+        net: 32000.00,
+        gross: 38080.00,
+        share: 0.75
+      },
+      {
+        orderTitle: "Travel Expenses",
+        contractor: "Global Travel Partners",
+        project: "Client Meetings",
+        date: "19.06.2024",
+        invoiceNumber: "INV-2024-0069",
+        net: 12500.00,
+        gross: 14875.00,
+        share: 0.42
+      },
+      {
+        orderTitle: "Market Research",
+        contractor: "DataInsight Analytics",
+        project: "Consumer Study",
+        date: "02.07.2024",
+        invoiceNumber: "INV-2024-0072",
+        net: 28500.00,
+        gross: 33915.00,
+        share: 0.30
+      },
+      {
+        orderTitle: "Insurance Premium",
+        contractor: "SafeCover Insurance",
+        project: "Annual Coverage",
+        date: "15.08.2024",
+        invoiceNumber: "INV-2024-0085",
+        net: 18700.00,
+        gross: 22253.00,
+        share: 1.00
+      }
     ];
   }
 }
