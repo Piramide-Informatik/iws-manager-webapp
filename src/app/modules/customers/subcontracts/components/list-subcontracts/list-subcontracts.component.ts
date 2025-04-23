@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
-import {TranslateService, _} from "@ngx-translate/core";
+import { TranslateService } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { SubcontractsService } from '../../services/subcontracts.service';
@@ -54,16 +54,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   }
 
   loadColHeaders(): void {
-    this.cols = [
-          { field: 'orderTitle', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))},
-          { field: 'contractor', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR'))},
-          { field: 'project', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT'))},
-          { field: 'date', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE'))},
-          { field: 'invoiceNumber', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER'))},
-          { field: 'net', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE'))},
-          { field: 'gross', header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE'))},
-          { field: 'share',header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE'))}
-        ];
+    this.cols = this.subcontractsService.getSubcontractsColums();
   }
 
   ngOnDestroy(): void {
@@ -73,12 +64,9 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   }
 
   reloadComponent(self:boolean,urlToNavigateTo ?:string){
-    //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
    const url=self ? this.router.url :urlToNavigateTo;
    this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
      this.router.navigate([`/${url}`]).then(()=>{
-  //console.log(`After navigation I am on:${this.router.url}`)
      })
    })
  }

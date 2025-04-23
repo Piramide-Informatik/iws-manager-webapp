@@ -10,4 +10,8 @@ export class SubcontractsService {
   list() {
     return this.datastore.list();
   }
+
+  getSubcontractsColums() {
+    return this.datastore.getSubcontractsColumns();
+  }
 }

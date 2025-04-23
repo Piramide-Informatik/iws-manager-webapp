@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
+import {TranslateService, _} from "@ngx-translate/core";
+
+interface Column {
+  field: string,
+  header: string
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubcontractDatastoreService {
-  constructor() {}
+  constructor(
+    private readonly translate: TranslateService,
+  ) {}
 
   list(): any[] {
     return [
@@ -208,6 +216,19 @@ export class SubcontractDatastoreService {
         gross: 22253.00,
         share: 1.00
       }
+    ];
+  }
+
+  getSubcontractsColumns(): Column[] {
+    return [
+      { field: 'orderTitle', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))},
+      { field: 'contractor', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR'))},
+      { field: 'project', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT'))},
+      { field: 'date', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE'))},
+      { field: 'invoiceNumber', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER'))},
+      { field: 'net', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE'))},
+      { field: 'gross', header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE'))},
+      { field: 'share',header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE'))}
     ];
   }
 }
