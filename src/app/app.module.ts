@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule  } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import {
   TranslateModule,
@@ -15,14 +15,16 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 //Modules
 import { AppRoutingModule } from './app-routing.module';
-import { CustomerModule } from './modules/customer/customer.module';
-import { EmployeeModule } from './modules/employee/employee.module';
+import { CustomerModule } from './modules/customers/customer/customer.module';
+import { EmployeeModule } from './modules/customers/employee/employee.module';
 import { LayoutModule } from './core/layout/layout.module';
 import { MasterDataModule } from './modules/master-data/master-data.module';
-import { ProjectModule } from './modules/projects/project.module';
-import { FrameworkAgreementsModule } from './modules/framework-agreements/framework-agreements.module';
-import { SubcontractsModule } from './modules/subcontracts/subcontracts.module';
-import { WorkContractsModule } from './modules/work-contracts/work-contracts.module';
+import { ProjectModule } from './modules/customers/projects/project.module';
+import { FrameworkAgreementsModule } from './modules/customers/framework-agreements/framework-agreements.module';
+import { SubcontractsModule } from './modules/customers/subcontracts/subcontracts.module';
+import { WorkContractsModule } from './modules/customers/work-contracts/work-contracts.module';
+import { OrdersModule } from './modules/customers/orders/orders.module';
+import { ContractorModule } from './modules/customers/contractor/contractor.module';
 
 //Prime NG
 import { ButtonModule } from 'primeng/button';
@@ -36,8 +38,6 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 
 //Components
 import { AppComponent } from './app.component';
-import { OrdersModule } from './modules/orders/orders.module';
-import { ContractorModule } from './modules/contractor/contractor.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -62,6 +62,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrdersModule,
     OverlayPanelModule,
     ProjectModule,
+    HttpClientModule,
     SplitButtonModule,
     SubcontractsModule,
     WorkContractsModule,
