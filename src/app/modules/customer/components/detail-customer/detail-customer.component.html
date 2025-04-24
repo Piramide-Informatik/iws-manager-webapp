@@ -168,7 +168,7 @@
       showGridlines
       scrollable="true"
       scrollHeight="200px"
-      currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
+      [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
       [showCurrentPageReport]="true"
       [rowsPerPageOptions]="[15, 30, 50]"
       [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"

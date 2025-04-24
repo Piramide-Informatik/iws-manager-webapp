@@ -57,6 +57,9 @@
   "COMMON": {
     "CUSTOMER_NAME": "Customer"
   },
+  "TABLES":{
+    "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries"
+  },
   "BUTTONS": {
     "NEW": "New",
     "SAVE": "Save",

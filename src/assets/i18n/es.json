@@ -57,6 +57,9 @@
   "COMMON": {
     "CUSTOMER_NAME": "Cliente"
   },
+  "TABLES":{
+    "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas"
+  },
   "BUTTONS": {
     "NEW": "Nuevo",
     "SAVE": "Guardar",
@@ -75,7 +78,7 @@
   "CUSTOMERS": {
     "CUSTOMER_NAME": "Cliente",
     "TABLE": {
-      "CUSTOMER_ID": "ID Cliente",
+      "CUSTOMER_ID": "Número de Cliente",
       "COMPANY_NAME": "Nombre de la Compañia",
       "NAME_LINE_2": "Nombre Linea",
       "COMPANY_TYPE": "Tipo de Compañia",
