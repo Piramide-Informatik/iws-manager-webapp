@@ -5,12 +5,12 @@
       <div class="md:col-6 lg:col-6 lg:pr-8 md:pr-8">
 
         <div class="field">
-          <label for="customerNo">Kunden-Nr.</label>
+          <label for="customerNo">{{ 'CUSTOMERS.FORM.CUSTOMER_ID' | translate }}</label>
           <input type="text" pInputText id="customerNo" formControlName="customerNo"/>
         </div>
 
         <div class="field align-items-start">
-          <label for="companyName" class="mt-2">Company Name</label>
+          <label for="companyName" class="mt-2">{{ 'CUSTOMERS.FORM.COMPANY_NAME' | translate }}</label>
           <div class="flex flex-column w-full">
             <input type="text" id="companyName1" class="mb-1" pInputText formControlName="companyText1"/>
             <input type="text" id="companyName2" pInputText formControlName="companyText2"/>
@@ -19,7 +19,7 @@
 
         <!-- Select country -->
         <div class="field">
-          <label for="country">Land</label>
+          <label for="country">{{ 'CUSTOMERS.FORM.COUNTRY' | translate }}</label>
           <p-select formControlName="selectedCountry" 
             id="country"
             [options]="countries"
@@ -53,12 +53,12 @@
         </div>
 
         <div class="field">
-          <label for="street">Street</label>
+          <label for="street">{{ 'CUSTOMERS.FORM.STREET' | translate }}</label>
           <input type="text" id="street" pInputText formControlName="street"/>
         </div>
 
         <div class="field">
-          <label for="">PLZ / Ort</label>
+          <label for="">{{ 'CUSTOMERS.FORM.ZIP_CITY' | translate }}</label>
           <div class="postal-city">
             <input type="text" id="postalCode" class="postal" pInputText formControlName="postalCode"/>
             <input type="text" id="city" class="city" pInputText formControlName="city"/>
@@ -66,7 +66,7 @@
         </div>
 
         <div class="field">
-          <label for="">Unternehmensart</label>
+          <label for="">{{ 'CUSTOMERS.FORM.COMPANY_TYPE' | translate }}</label>
           <p-select formControlName="selectedTypeCompany" 
           id="typeCompany"
           [options]="typesCompany" 
@@ -75,7 +75,7 @@
         </div>
 
         <div class="field">
-          <label for="">Wirtschaftszweig</label>
+          <label for="">{{ 'CUSTOMERS.FORM.INDUSTRY' | translate }}</label>
           <p-select formControlName="selectedSector" 
           id="sector"
           [options]="sectors" 
@@ -84,7 +84,7 @@
         </div>
 
         <div class="field">
-          <label for="state">Bundesland</label>
+          <label for="state">{{ 'CUSTOMERS.FORM.FEDERAL_STATE' | translate }}</label>
           <p-select formControlName="selectedState" 
           id="state"
           [options]="states" 
@@ -93,13 +93,13 @@
         </div>
 
         <div class="field relative">
-          <label for="homepage">Webseite</label>
+          <label for="homepage">{{ 'CUSTOMERS.FORM.WEB_SITE' | translate }}</label>
           <input type="text" id="homepage" pInputText formControlName="homepage"/>
           <i class="pi pi-globe" style="color: #12435d"></i>
         </div>
 
         <div class="field">
-          <label for="phone">Telefon</label>
+          <label for="phone">{{ 'CUSTOMERS.FORM.PHONE' | translate }}</label>
           <input type="text" id="phone" pInputText formControlName="phone"/>
         </div>
       </div>
@@ -108,38 +108,38 @@
       <div class="md:col-6 lg:col-6 lg:pl-8 md:pl-8">
         
         <div class="field">
-          <label for="invoiceEmail">Email Rechnung</label>
+          <label for="invoiceEmail">{{ 'CUSTOMERS.FORM.EMAIL_INVOICE' | translate }}</label>
           <input type="text" id="invoiceEmail" pInputText formControlName="invoiceEmail"/>
         </div>
 
         <div class="field">
-          <label for="weekWorkingHours">Unternehmerische Wochenarbeitszeit</label>
+          <label for="weekWorkingHours">{{ 'CUSTOMERS.FORM.ENTREPRENEURIAL_WEEKLY_WORKING_HOURS' | translate }}</label>
           <input type="text" id="weekWorkingHours" pInputText formControlName="weekWorkingHours"/>
         </div>
 
         <div class="field">
-          <label for="taxNumber">Steuernummer</label>
+          <label for="taxNumber">{{ 'CUSTOMERS.FORM.TAX_NUMBER' | translate }}</label>
           <input type="text" id="taxNumber" pInputText formControlName="taxNumber"/>
         </div>
 
         <div class="field">
-          <label for="headcount">Finanzamt</label>
+          <label for="headcount">{{ 'CUSTOMERS.FORM.FINANCE' | translate }}</label>
           <input type="number" id="headcount" pInputText formControlName="headcount"/>
         </div>
 
         <div class="field">
-          <label for="maxHoursMonth">Max. Stunden / Monat</label>
+          <label for="maxHoursMonth">{{ 'CUSTOMERS.FORM.MAX_HOURS_MONTH' | translate }}</label>
           <input type="number" id="maxHoursMonth" pInputText formControlName="maxHoursMonth"/>
         </div>
 
         <div class="field">
-          <label for="maxHoursYear">Max. Stunden / Jahr</label>
+          <label for="maxHoursYear">{{ 'CUSTOMERS.FORM.MAX_HOURS_YEAR' | translate }}</label>
           <input type="number" id="maxHoursYear" pInputText formControlName="maxHoursYear"/>
         </div>
 
         <p-floatlabel variant="on">
           <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="6" cols="30" style="resize: none" class="w-full"></textarea>
-          <label for="textAreaComment">Kommentar</label>
+          <label for="textAreaComment">{{ 'CUSTOMERS.FORM.COMMENT' | translate }}</label>
         </p-floatlabel>
 
       </div>
@@ -149,13 +149,13 @@
   <div class="contact-person flex flex-column">
 
     <div class="flex flex-row gap-3 align-items-center my-2">
-      <span class="font-semibold">Contact Person</span>
-      <p-button (keydown.enter)="showDialog()" icon="pi pi-plus" label="Neu" id="new-contact-person" (click)="showDialog()"></p-button>
-      <p-dialog header="Ansprechpartner bearbeiten" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
+      <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
+      <p-button (keydown.enter)="showDialog()" icon="pi pi-plus" [label]="'BUTTONS.NEW' | translate" id="new-contact-person" (click)="showDialog()"></p-button>
+      <p-dialog [header]="'CONTACT.LABELS.TITLE_DIALOG' | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
         <app-contact></app-contact>
         <div class="buttons flex justify-content-center my-2">
-          <p-button label="Speichern" icon="pi pi-check" class="mx-4" severity="success"></p-button>
-          <p-button (keydown.enter)="visible = false" label="Abbrechen" icon="pi pi-times" severity="secondary" (click)="visible = false" [style]="{ 'background-color': 'black', 'color': 'white', 'border': 'none' }"/>
+          <p-button [label]="'BUTTONS.SAVE' | translate" id="new-contact-person" icon="pi pi-check" class="mx-4" severity="success"></p-button>
+          <p-button (keydown.enter)="visible = false" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" severity="secondary" (click)="visible = false" [style]="{ 'background-color': 'black', 'color': 'white', 'border': 'none' }"/>
          </div>
       </p-dialog>
     </div>
@@ -188,7 +188,7 @@
       </ng-template>
       <ng-template #header let-columns>
         <tr>
-          <th id="customer-Details-options" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}">Option</th>
+          <th id="customer-Details-options" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
 
 
           <th id="detail-customer-col-field" *ngFor="let col of columns; let i = index" 
@@ -237,11 +237,11 @@
     </p-table>  
     <br>
     <div class="form-row flex flex-wrap gap-3 justify-content-center">
-      <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check"
+      <p-button class="Save me-2" size="small" [label]="'BUTTONS.NEW' | translate" icon="pi pi-check"
           iconPos="left" />
-      <p-button class="Delete me-2" size="small" label="Löschen" icon="pi pi-trash"
+      <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
           iconPos="left" [style]="{ background: '#ef4444' }" />
-      <p-button class="Cancel me-2" size="small" label="Abbrechen" icon="pi pi-times"
+      <p-button class="Cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
           iconPos="left" [style]="{ background: '#000' }" routerLink="/customers"/>
   </div>
   </div>

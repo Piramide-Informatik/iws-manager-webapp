@@ -1,8 +1,10 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
+import { Subscription } from 'rxjs';
+import { TranslateService, _ } from '@ngx-translate/core';
 
 interface Column {
   field: string,
@@ -15,7 +17,7 @@ interface Column {
   templateUrl: './detail-customer.component.html',
   styleUrl: './detail-customer.component.scss'
 })
-export class DetailCustomerComponent implements OnInit {
+export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public selectedCountry!: string;
 
@@ -24,6 +26,8 @@ export class DetailCustomerComponent implements OnInit {
   public selectedColumns!: Column[];
 
   public customers!: Customer[];
+
+  private langSubscription!: Subscription;
 
   public countries: any[] = [
     { name: 'Germany', code: 'DE', flag: 'https://flagsapi.com/DE/flat/64.png' },
@@ -92,7 +96,9 @@ export class DetailCustomerComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private readonly router: Router,
+    private readonly translate: TranslateService 
   ) {
 
     this.formDetailCustomer = this.fb.group({
@@ -121,6 +127,10 @@ export class DetailCustomerComponent implements OnInit {
   visible: boolean = false;
 
   ngOnInit(): void {
+    this.updateHeadersAndColumns();
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.updateHeadersAndColumns();
+    });
     this.formDetailCustomer.get('customerNo')?.disable();
     this.customers = this.customerService.list();
 
@@ -147,12 +157,43 @@ export class DetailCustomerComponent implements OnInit {
     this.selectedColumns = this.cols;
   }
 
-  deletePerson(contact: any) {
-    this.persons = this.persons.filter(person => person.id !== contact.id);
+  updateHeadersAndColumns() {
+    this.loadColumnHeaders();
+    this.selectedColumns = [...this.cols];
   }
 
-  addNewPerson() {
+  loadColumnHeaders(): void {
 
+    this.cols = [
+      { field: 'name', header: 'Name' },
+      { field: 'function', header: 'Funktion' },
+      { field: 'right', header: 'Rech' },
+    ];
+
+    this.cols = [
+      {
+        field: 'name',
+        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.NAME'))
+      },
+      {
+        field: 'function',
+        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.FUNCTION'))
+      },
+      {
+        field: 'rigth',
+        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.LAW'))
+      }
+    ];
+  }
+
+  ngOnDestroy() : void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
+
+  deletePerson(contact: any) {
+    this.persons = this.persons.filter(person => person.id !== contact.id);
   }
 
   showDialog() {

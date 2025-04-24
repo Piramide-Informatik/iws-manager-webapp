@@ -76,12 +76,55 @@
     "CUSTOMER_NAME": "Cliente",
     "TABLE": {
       "CUSTOMER_ID": "ID Cliente",
-      "COMPANY_NAME": "Nombre de Empresa",
+      "COMPANY_NAME": "Nombre de la Compañia",
       "NAME_LINE_2": "Nombre Linea",
-      "COMPANY_TYPE": "Tipo de la Empresa",
+      "COMPANY_TYPE": "Tipo de Compañia",
       "COUNTRY_NAME": "País",
       "CITY": "Ciudad",
       "CONTACT_PERSON": "Contacto"
+    },
+    "FORM": {
+      "CUSTOMER_ID": "Número de Cliente",
+      "COMPANY_NAME": "Nombre de la Compañia",
+      "COUNTRY": "País",
+      "STREET": "Calle",
+      "ZIP_CITY": "Código Postal / Ciudad",
+      "COMPANY_TYPE": "Tipo de Compañia",
+      "INDUSTRY": "Industria",
+      "FEDERAL_STATE": "Estado Federal",
+      "WEB_SITE": "Sitio Web",
+      "PHONE": "Teléfono",
+      "EMAIL_INVOICE": "Email de Facturación",
+      "ENTREPRENEURIAL_WEEKLY_WORKING_HOURS": "Horario Laboral Semanal Empresarial",
+      "TAX_NUMBER": "Número de Contribuyente",
+      "FINANCE": "Financiación",
+      "MAX_HOURS_MONTH": "Máx. Horas/Mes",
+      "MAX_HOURS_YEAR": "Máx. Horas/Año",
+      "COMMENT": "Comentario"
+    },
+    "LABELS": {
+      "CONTACT_PERSON": "Persona de Contacto"
+    },
+    "CONTACT_TABLE": {
+      "NAME": "Nombre",
+      "FUNCTION": "Función",
+      "LAW": "Ley"
+
+    }
+  },
+  "CONTACT": {
+    "FORM": {
+      "LAST_NAME": "Apellidos",
+      "FIRST_NAME": "Nombre",
+      "SALUTATION": "Saludo",
+      "TITLE": "Título",
+      "FUNCTION": "Función",
+      "EMAIL_ADDRESS": "Correo Electrónico"
+    },
+    "LABELS": {
+      "TITLE_DIALOG":"Editar Persona de Contacto",
+      "INVOICE" : "Destinatario de Facturas",
+      "IS_INVOICE_RECIPIENT": "¿Es el destinatario de la factura?"
     }
   },
   "EMPLOYEES": {
