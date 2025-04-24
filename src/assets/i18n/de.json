@@ -52,6 +52,9 @@
   "COMMON": {
     "CUSTOMER_NAME": "Kunde"
   },
+  "TABLES":{
+    "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
+  },
   "BUTTONS": {
     "NEW": "Neu",
     "SAVE": "Speichern",
@@ -77,6 +80,50 @@
       "COUNTRY_NAME": "Land",
       "CITY": "Ort",
       "CONTACT_PERSON": "Ansprechpartner"
+    },
+    "FORM": {
+      "CUSTOMER_ID": "Kunden-Nr.",
+      "COMPANY_NAME": "Unternehmensname",
+      "COUNTRY": "Land",
+      "STREET": "Straße",
+      "ZIP_CITY": "PLZ / Ort",
+      "COMPANY_TYPE": "Unternehmensart",
+      "INDUSTRY": "Wirtschaftszweig",
+      "FEDERAL_STATE": "Bundesland",
+      "WEB_SITE": "Webseite",
+      "PHONE": "Telefon",
+      "EMAIL_INVOICE": "Email Rechnung",
+      "ENTREPRENEURIAL_WEEKLY_WORKING_HOURS": "Unternehmerische Wochenarbeitszeit",
+      "TAX_NUMBER": "Steuernummer",
+      "FINANCE": "Finanzamt",
+      "MAX_HOURS_MONTH": "Max. Stunden / Monat",
+      "MAX_HOURS_YEAR": "Max. Stunden / Jahr",
+      "COMMENT": "Kommentar"
+    },
+    "LABELS": {
+      "CONTACT_PERSON": "Ansprechpartner"
+    },
+    "CONTACT_TABLE": {
+      "NAME": "Name",
+      "FUNCTION": "Funktion",
+      "LAW": "Rech"
+
+    }
+  },
+  "CONTACT": {
+    "FORM": {
+      "LAST_NAME": "Nachname",
+      "FIRST_NAME": "Vorname",
+      "SALUTATION": "Anrede",
+      "TITLE": "Titel",
+      "FUNCTION": "Funktion",
+      "EMAIL_ADDRESS": "Mailadresse"
+    },
+    "LABELS": {
+      "TITLE_DIALOG":"Ansprechpartner bearbeiten",
+      "INVOICE" : "Rechnungsempfänger",
+      "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
+
     }
   },
   "EMPLOYEES": {

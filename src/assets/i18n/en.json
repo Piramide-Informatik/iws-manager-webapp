@@ -58,7 +58,7 @@
     "CUSTOMER_NAME": "Customer"
   },
   "BUTTONS": {
-    "NEW": "Neu",
+    "NEW": "New",
     "SAVE": "Save",
     "DELETE": "Delete",
     "CANCEL": "Cancel"
@@ -82,6 +82,50 @@
       "COUNTRY_NAME": "Country",
       "CITY": "City",
       "CONTACT_PERSON": "Contact"
+    },
+    "FORM": {
+      "CUSTOMER_ID": "Customer Number",
+      "COMPANY_NAME": "Company Name",
+      "COUNTRY": "Country",
+      "STREET": "Street",
+      "ZIP_CITY": "ZIP / City",
+      "COMPANY_TYPE": "Company Type",
+      "INDUSTRY": "Industry",
+      "FEDERAL_STATE": "Federal State",
+      "WEB_SITE": "Website",
+      "PHONE": "Phone",
+      "EMAIL_INVOICE": "Email Invoice",
+      "ENTREPRENEURIAL_WEEKLY_WORKING_HOURS": "Entrepreneurial weekly working hours",
+      "TAX_NUMBER": "Tax Number",
+      "FINANCE": "Finance",
+      "MAX_HOURS_MONTH": "Max. Hours / Month",
+      "MAX_HOURS_YEAR": "Max. Hours / Year",
+      "COMMENT": "Comment"
+    },
+    "LABELS": {
+      "CONTACT_PERSON": "Contact Person"
+    },
+    "CONTACT_TABLE": {
+      "NAME": "Name",
+      "FUNCTION": "Function",
+      "LAW": "Law"
+
+    }
+  },
+  "CONTACT": {
+    "FORM": {
+      "LAST_NAME": "Last Name",
+      "FIRST_NAME": "First Name",
+      "SALUTATION": "Salutation",
+      "TITLE": "Title",
+      "FUNCTION": "Function",
+      "EMAIL_ADDRESS": "Email Address"
+    },
+    "LABELS": {
+      "TITLE_DIALOG":"Edit Contact Person",
+      "INVOICE" : "Invoice Recipient",
+      "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
+
     }
   },
   "EMPLOYEES": {
