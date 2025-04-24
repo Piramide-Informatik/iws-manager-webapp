@@ -58,6 +58,9 @@ import { EditHolidayComponent } from './components/holidays/components/edit-holi
 import { FundingProgramsTableComponent } from './components/funding-programs/components/funding-programs-table/funding-programs-table.component';
 import { EditFundingProgramComponent } from './components/funding-programs/components/edit-funding-program/edit-funding-program.component';
 import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
+import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
+import { GenaralTableComponent } from './genaral-table/genaral-table.component';
+import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +91,9 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
     FundingProgramsTableComponent,
     EditFundingProgramComponent,
     FundingProgramsComponent,
+    DunningLevelsComponent,
+    GenaralTableComponent,
+    EditDunningLevelComponent
   ],
   imports: [
     ButtonModule,
