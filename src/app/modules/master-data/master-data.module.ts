@@ -28,6 +28,7 @@ import { SelectModule } from 'primeng/select';
 import { ListboxModule } from 'primeng/listbox';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
+import { TextareaModule } from 'primeng/textarea';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -48,6 +49,9 @@ import { RolFormComponent } from './components/roles/components/rol-form/rol-for
 import { UserTableComponent } from './components/user/components/user-table/user-table.component';
 import { EditUserFormComponent } from './components/user/components/edit-user-form/edit-user-form.component';
 import { UserComponent } from './components/user/user.component';
+import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
+import { GenaralTableComponent } from './genaral-table/genaral-table.component';
+import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +72,10 @@ import { UserComponent } from './components/user/user.component';
     EditSalutationComponent,
     RolesComponent,
     RolTableComponent,
-    RolFormComponent
+    RolFormComponent,
+    DunningLevelsComponent,
+    GenaralTableComponent,
+    EditDunningLevelComponent
   ],
   imports: [
     ButtonModule,
@@ -95,7 +102,8 @@ import { UserComponent } from './components/user/user.component';
     FormsModule,
     ListboxModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    TextareaModule
   ],
 })
 export class MasterDataModule {}
