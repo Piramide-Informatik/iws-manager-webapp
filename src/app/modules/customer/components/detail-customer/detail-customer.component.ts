@@ -96,7 +96,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private customerService: CustomerService,
+    private readonly customerService: CustomerService,
     private readonly router: Router,
     private readonly translate: TranslateService 
   ) {
