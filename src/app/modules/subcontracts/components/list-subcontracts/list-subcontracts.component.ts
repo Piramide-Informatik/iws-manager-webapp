@@ -30,7 +30,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor( private translate: TranslateService, public router:Router){}
+  constructor( private readonly translate: TranslateService, private readonly router:Router){}
 
   
   ngOnInit(): void {
