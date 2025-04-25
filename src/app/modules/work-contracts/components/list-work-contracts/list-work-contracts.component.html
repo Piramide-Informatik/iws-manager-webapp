@@ -33,8 +33,8 @@
     </ng-template>
     <ng-template #header let-columns>
       <tr>
-        <th></th>
-        <th *ngFor="let col of columns; let i = index">
+        <th id="work-contracts-table-options"></th>
+        <th id="work-contracts-table-search-field" *ngFor="let col of columns; let i = index">
           <input 
             pInputText
             pSize="small"
@@ -44,8 +44,8 @@
         </th>
       </tr>
       <tr>
-        <th class="thead-bg-blue"></th>
-        <th *ngFor="let col of columns; let i = index"
+        <th id="work-contracts-table-options-field" class="thead-bg-blue"></th>
+        <th id="work-contracts-table-field" *ngFor="let col of columns; let i = index"
           [pSortableColumn]="col.field"
           pResizableColumn class="thead">{{
           col.header }} 
