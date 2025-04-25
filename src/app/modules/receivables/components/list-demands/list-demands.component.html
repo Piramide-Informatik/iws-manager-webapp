@@ -37,9 +37,9 @@
   </ng-template>
   <ng-template #header let-columns>
     <tr>
-      <th>
+      <th id="list-demands-table-options">
       </th>
-      <th *ngFor="let col of selectedColumns; let i = index" >
+      <th id="list-demands-table-search-field" *ngFor="let col of selectedColumns; let i = index" >
         
         <input
           pInputText 
@@ -53,9 +53,9 @@
     </tr>
     <tr>
 
-      <th class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
+      <th id="list-demands-table-options-field" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
 
-      <th *ngFor="let col of columns; let i = index" 
+      <th id="list-demands-table-field" *ngFor="let col of columns; let i = index" 
         [pSortableColumn]="col.field" 
         class="thead" 
         pResizableColumn>
