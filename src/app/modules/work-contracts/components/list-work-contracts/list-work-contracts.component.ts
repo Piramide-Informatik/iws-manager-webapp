@@ -52,9 +52,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     private workContractsService: WorkContractsService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private cd: ChangeDetectorRef,
-    private translate: TranslateService,
-    public router: Router
+    private readonly cd: ChangeDetectorRef,
+    private readonly translate: TranslateService,
+    private readonly router: Router
   ) { }
 
   ngOnInit(): void {
