@@ -7,6 +7,7 @@ import { ApprovalStatusProjectComponent } from './components/approval-status/com
 import { UserComponent } from './components/user/user.component';
 import { AddressComponent } from './components/address/address.component';
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
+import { HolidaysComponent } from './components/holidays/holidays.component';
 
 const routes: Routes = [
   { path: 'absence-types', component: AbsenceTypesComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'approval-status', component: ApprovalStatusProjectComponent },
   { path: 'states', component: StatesComponent },
   { path: 'dunning-levels', component: DunningLevelsComponent },
+  { path: 'holidays', component: HolidaysComponent },
 ];
 
 @NgModule({
