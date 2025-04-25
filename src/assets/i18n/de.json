@@ -342,18 +342,6 @@
       "DATE": "Datum"
     }
   },
-  "DUNNING_LEVELS": {
-    "LABEL": {
-      "DUNNING_LEVEL": "Mahnstufe",
-      "TEXT": "Text",
-      "EDIT_DUNNING_LEVEL": "Mahnstufe bearbeiten",
-      "DESIGNATION": "Bezeichnung",
-      "FEE": "Gebühr",
-      "DEFAULT_INTEREST": "Verzugszinsen",
-      "PAYMENT_TERM": "Zahlungsgziel (Tagen)",
-      "REMINDER_TEXT": "Mahntext" 
-    }
-  },
   "FUNDING": {
     "TABLE": {
       "PROGRAM": "Förderprogramm",
