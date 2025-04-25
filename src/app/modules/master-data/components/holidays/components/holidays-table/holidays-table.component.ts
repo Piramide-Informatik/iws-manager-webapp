@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-holidays-table',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './holidays-table.component.html',
   styleUrls: ['./holidays-table.component.scss'],
 })
-export class HolidaysTableComponent implements OnInit {
+export class HolidaysTableComponent {
   holidays = [
     { id: 1, sort: 1, name: 'Neujahr' },
     { id: 2, sort: 2, name: 'Heilige Drei Könige' },
@@ -24,8 +24,6 @@ export class HolidaysTableComponent implements OnInit {
   ];
 
   selectedColumns = [...this.cols];
-
-  ngOnInit(): void {}
 
   applyFilter(event: Event, field: 'sort' | 'name') {
     const filterValue = (event.target as HTMLInputElement).value
