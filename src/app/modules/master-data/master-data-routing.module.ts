@@ -21,7 +21,6 @@ const routes: Routes = [
   { path: 'dunning-levels', component: DunningLevelsComponent },
   { path: 'holidays', component: HolidaysComponent },
   { path: 'funding-programs', component: FundingProgramsComponent },
-  { path: 'dunning-levels', component: DunningLevelsComponent },
 ];
 
 @NgModule({

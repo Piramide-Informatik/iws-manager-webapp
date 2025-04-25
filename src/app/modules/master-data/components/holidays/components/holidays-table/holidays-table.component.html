@@ -71,7 +71,6 @@
       </tr>
     </ng-template>
 
-    <!-- CUERPO -->
     <ng-template #body let-holiday let-i="rowIndex">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td class="col-actions">
@@ -95,7 +94,6 @@
       </tr>
     </ng-template>
 
-    <!-- SIN DATOS -->
     <ng-template #emptymessage>
       <tr>
         <td colspan="3">
@@ -107,7 +105,6 @@
     </ng-template>
   </p-table>
 
-  <!-- TOOLBAR -->
   <p-toolbar>
     <ng-template #start>
       <p-button

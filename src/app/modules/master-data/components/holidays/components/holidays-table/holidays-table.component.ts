@@ -25,8 +25,6 @@ export class HolidaysTableComponent {
 
   selectedColumns = [...this.cols];
 
-  ngOnInit(): void {}
-
   applyFilter(event: Event, field: 'sort' | 'name') {
     const filterValue = (event.target as HTMLInputElement).value
       .trim()

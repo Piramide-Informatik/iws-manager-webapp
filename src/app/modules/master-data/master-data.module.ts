@@ -49,9 +49,6 @@ import { RolFormComponent } from './components/roles/components/rol-form/rol-for
 import { UserTableComponent } from './components/user/components/user-table/user-table.component';
 import { EditUserFormComponent } from './components/user/components/edit-user-form/edit-user-form.component';
 import { UserComponent } from './components/user/user.component';
-import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
-import { GenaralTableComponent } from './genaral-table/genaral-table.component';
-import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
 import { HolidaysComponent } from './components/holidays/holidays.component';
 import { HolidaysTableComponent } from './components/holidays/components/holidays-table/holidays-table.component';
 import { EditHolidayComponent } from './components/holidays/components/edit-holiday/edit-holiday.component';
@@ -61,6 +58,7 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { GenaralTableComponent } from './genaral-table/genaral-table.component';
 import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
+
 
 @NgModule({
   declarations: [
@@ -82,9 +80,6 @@ import { EditDunningLevelComponent } from './components/dunning-levels/component
     RolesComponent,
     RolTableComponent,
     RolFormComponent,
-    DunningLevelsComponent,
-    GenaralTableComponent,
-    EditDunningLevelComponent,
     HolidaysComponent,
     HolidaysTableComponent,
     EditHolidayComponent,
@@ -122,6 +117,7 @@ import { EditDunningLevelComponent } from './components/dunning-levels/component
     CheckboxModule,
     DropdownModule,
     TextareaModule
+
   ],
 })
 export class MasterDataModule {}
