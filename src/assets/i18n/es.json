@@ -347,5 +347,34 @@
       "YEAR": "Año",
       "DATE": "Fecha"
     }
+  },
+
+  "FUNDING": {
+    "TABLE": {
+      "PROGRAM": "Programa",
+      "RATE": "Tasa (%)",
+      "PERSONNEL_RATE": "Tasa de personal (%)",
+      "RESEARCH_SHARE": "Porcentaje de investigación",
+      "PRODUCTIVE_HOURS": "Horas productivas / año",
+      "PAGE_INFO": "Mostrando de {first} a {last} de {totalRecords} registros",
+      "COLUMNS_SELECTED": "{0} columnas seleccionadas",
+      "CHOOSE_COLUMNS": "Seleccionar columnas",
+      "NO_DATA": "No se encontraron programas de financiación."
+    },
+    "LABEL": {
+      "PROGRAM": "Programa",
+      "RATE": "Tasa (%)",
+      "PERSONNEL_RATE": "Tasa de personal (%)",
+      "RESEARCH_SHARE": "Porcentaje de investigación",
+      "PRODUCTIVE_HOURS": "Horas productivas / año"
+    },
+    "BUTTON": {
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar",
+      "NEW": "Nuevo programa"
+    },
+    "HEADER": {
+      "EDIT_FUNDING": "Editar programa de financiación"
+    }
   }
 }

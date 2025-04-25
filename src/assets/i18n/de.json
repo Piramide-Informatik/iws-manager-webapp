@@ -341,5 +341,34 @@
       "YEAR": "Jahr",
       "DATE": "Datum"
     }
+  },
+
+  "FUNDING": {
+    "TABLE": {
+      "PROGRAM": "Förderprogramm",
+      "RATE": "Fördersatz (%)",
+      "PERSONNEL_RATE": "Personalpauschale (%)",
+      "RESEARCH_SHARE": "Anteil Forschungsauftrag",
+      "PRODUCTIVE_HOURS": "Produktive Std. / Jahr",
+      "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Förderprogramme gefunden."
+    },
+    "LABEL": {
+      "PROGRAM": "Förderprogramm",
+      "RATE": "Fördersatz (%)",
+      "PERSONNEL_RATE": "Personalpauschale (%)",
+      "RESEARCH_SHARE": "Anteil Forschungsauftrag",
+      "PRODUCTIVE_HOURS": "Produktive Std. / Jahr"
+    },
+    "BUTTON": {
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen",
+      "NEW": "Neues Programm"
+    },
+    "HEADER": {
+      "EDIT_FUNDING": "Förderprogramm bearbeiten"
+    }
   }
 }
