@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   selector: 'app-dunning-levels',
   standalone: false,
   templateUrl: './dunning-levels.component.html',
-  styleUrl: './dunning-levels.component.scss'
+  styles: []
 })
 export class DunningLevelsComponent implements OnInit, OnDestroy {
   dunningLevels: any[] = [];
