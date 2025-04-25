@@ -52,7 +52,7 @@
   "COMMON": {
     "CUSTOMER_NAME": "Kunde"
   },
-  "TABLES":{
+  "TABLES": {
     "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
   },
   "BUTTONS": {
@@ -107,7 +107,6 @@
       "NAME": "Name",
       "FUNCTION": "Funktion",
       "LAW": "Rech"
-
     }
   },
   "CONTACT": {
@@ -120,10 +119,9 @@
       "EMAIL_ADDRESS": "Mailadresse"
     },
     "LABELS": {
-      "TITLE_DIALOG":"Ansprechpartner bearbeiten",
-      "INVOICE" : "Rechnungsempfänger",
+      "TITLE_DIALOG": "Ansprechpartner bearbeiten",
+      "INVOICE": "Rechnungsempfänger",
       "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
-
     }
   },
   "EMPLOYEES": {
@@ -315,7 +313,62 @@
       "EDIT_ROL": "Rollen bearbeiten",
       "ROL": "Benutzerrolle",
       "MODULE": "Modul"
-      
+    }
+  },
+  "HOLIDAYS": {
+    "HEADER": {
+      "EDIT_HOLIDAY": "Feiertag bearbeiten"
+    },
+    "LABEL": {
+      "HOLIDAY_NAME": "Feiertag",
+      "SORT": "Sortierung",
+      "FIXED_DATE": "Festes Datum"
+    },
+    "BUTTON": {
+      "SAVE": "Speichern",
+      "NEW_YEAR": "Neues Jahr",
+      "NEW": "Neuer"
+    },
+    "TABLE": {
+      "SORT": "Sort",
+      "NAME": "Feiertag",
+      "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Feiertage gefunden.",
+      "BUNDESLAND": "Bundesland",
+      "SELECT": "Auswählen",
+      "YEAR": "Jahr",
+      "DATE": "Datum"
+    }
+  },
+
+  "FUNDING": {
+    "TABLE": {
+      "PROGRAM": "Förderprogramm",
+      "RATE": "Fördersatz (%)",
+      "PERSONNEL_RATE": "Personalpauschale (%)",
+      "RESEARCH_SHARE": "Anteil Forschungsauftrag",
+      "PRODUCTIVE_HOURS": "Produktive Std. / Jahr",
+      "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Förderprogramme gefunden."
+    },
+    "LABEL": {
+      "PROGRAM": "Förderprogramm",
+      "RATE": "Fördersatz (%)",
+      "PERSONNEL_RATE": "Personalpauschale (%)",
+      "RESEARCH_SHARE": "Anteil Forschungsauftrag",
+      "PRODUCTIVE_HOURS": "Produktive Std. / Jahr"
+    },
+    "BUTTON": {
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen",
+      "NEW": "Neues Programm"
+    },
+    "HEADER": {
+      "EDIT_FUNDING": "Förderprogramm bearbeiten"
     }
   }
 }
