@@ -45,7 +45,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
-    private translate: TranslateService,
+    private readonly translate: TranslateService,
     public router:Router
   ) {
   }
