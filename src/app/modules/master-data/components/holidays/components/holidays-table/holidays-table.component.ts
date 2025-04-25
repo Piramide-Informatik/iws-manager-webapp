@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component } from '@angular/core';
+=======
+import { Component, OnInit } from '@angular/core';
+>>>>>>> e03ce21 (implemented holidays UI and respective traslate)
 
 @Component({
   selector: 'app-holidays-table',
@@ -6,7 +10,11 @@ import { Component } from '@angular/core';
   templateUrl: './holidays-table.component.html',
   styleUrls: ['./holidays-table.component.scss'],
 })
+<<<<<<< HEAD
 export class HolidaysTableComponent {
+=======
+export class HolidaysTableComponent implements OnInit {
+>>>>>>> e03ce21 (implemented holidays UI and respective traslate)
   holidays = [
     { id: 1, sort: 1, name: 'Neujahr' },
     { id: 2, sort: 2, name: 'Heilige Drei Könige' },
@@ -25,6 +33,11 @@ export class HolidaysTableComponent {
 
   selectedColumns = [...this.cols];
 
+<<<<<<< HEAD
+=======
+  ngOnInit(): void {}
+
+>>>>>>> e03ce21 (implemented holidays UI and respective traslate)
   applyFilter(event: Event, field: 'sort' | 'name') {
     const filterValue = (event.target as HTMLInputElement).value
       .trim()
