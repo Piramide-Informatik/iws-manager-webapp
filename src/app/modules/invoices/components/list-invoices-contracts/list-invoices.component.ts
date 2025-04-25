@@ -52,7 +52,8 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly cd: ChangeDetectorRef,
-    private translate: TranslateService, public router:Router
+    private readonly translate: TranslateService, 
+    private readonly router:Router
   ) {}
 
   ngOnInit():void {
@@ -91,12 +92,9 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
   }
 
   reloadComponent(self:boolean,urlToNavigateTo ?:string){
-    //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
    const url=self ? this.router.url :urlToNavigateTo;
    this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
      this.router.navigate([`/${url}`]).then(()=>{
-  //console.log(`After navigation I am on:${this.router.url}`)
      })
    })
  }

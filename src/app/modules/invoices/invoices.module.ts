@@ -2,9 +2,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
-//Modulos
+//Modules
 import { InvoicesRoutingModule } from './invoices-routing.module';
 
 //Prime NG
@@ -36,7 +35,6 @@ import { ListInvoicesComponent } from './components/list-invoices-contracts/list
     Dialog,
     FileUpload,
     FormsModule,
-    HttpClientModule,
     IconFieldModule,
     InputNumber,
     InputIconModule,
