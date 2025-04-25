@@ -8,14 +8,14 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './contract-details.component.html',
   styleUrl: './contract-details.component.scss'
 })
-export class ContractDetailsComponent implements OnInit{
+export class ContractDetailsComponent implements OnInit {
 
-    ContractDetailsForm!: FormGroup;
-    public customer!: string;
+  ContractDetailsForm!: FormGroup;
+  public customer!: string;
 
-    constructor(
-      private readonly activatedRoute: ActivatedRoute
-    ) {}
+  constructor(
+    private readonly activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.ContractDetailsForm = new FormGroup({
@@ -35,21 +35,19 @@ export class ContractDetailsComponent implements OnInit{
 
     this.activatedRoute.params
       .subscribe(params => {
-        const customerId = params['id'];
-        this.ContractDetailsForm.get('customer')?.setValue(history.state.customer) ;
-        this.ContractDetailsForm.get('personalnr')?.setValue(history.state.workContract.employeeId) ;
-        this.ContractDetailsForm.get('vorname')?.setValue(history.state.workContract.firstName) ;
-        this.ContractDetailsForm.get('nachname')?.setValue(history.state.workContract.lastName) ;
-        this.ContractDetailsForm.get('datum')?.setValue(history.state.workContract.startDate) ;
-        this.ContractDetailsForm.get('gehalt')?.setValue(history.state.workContract.salaryPerMonth) ;
-        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.weeklyHours) ;
-        this.ContractDetailsForm.get('gehalt')?.setValue(history.state.workContract.worksShortTime) ;
-        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.specialPayment) ;
-        this.ContractDetailsForm.get('gehalt')?.setValue(history.state.workContract.maxHrspPerMonth) ;
-        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.maxHrsPerDay) ;
-        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.hourlyRate) ;
+        this.ContractDetailsForm.get('customer')?.setValue(history.state.customer);
+        this.ContractDetailsForm.get('personalnr')?.setValue(history.state.workContract.employeeId);
+        this.ContractDetailsForm.get('vorname')?.setValue(history.state.workContract.firstName);
+        this.ContractDetailsForm.get('nachname')?.setValue(history.state.workContract.lastName);
+        this.ContractDetailsForm.get('datum')?.setValue(history.state.workContract.startDate);
+        this.ContractDetailsForm.get('gehalt')?.setValue(history.state.workContract.salaryPerMonth);
+        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.weeklyHours);
+        this.ContractDetailsForm.get('gehalt')?.setValue(history.state.workContract.worksShortTime);
+        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.specialPayment);
+        this.ContractDetailsForm.get('gehalt')?.setValue(history.state.workContract.maxHrspPerMonth);
+        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.maxHrsPerDay);
+        this.ContractDetailsForm.get('wochenstunden')?.setValue(history.state.workContract.hourlyRate);
       })
-
   }
 
   onSubmit(): void {
