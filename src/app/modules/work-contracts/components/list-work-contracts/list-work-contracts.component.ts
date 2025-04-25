@@ -2,12 +2,11 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@ang
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { WorkContractsService } from '../../services/work-contracts.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
 import { Table } from 'primeng/table';
 
-import { TranslateService, _, TranslatePipe, TranslateDirective } from '@ngx-translate/core';
+import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Column {
   field: string;
