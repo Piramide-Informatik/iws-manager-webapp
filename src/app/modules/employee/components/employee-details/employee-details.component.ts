@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MessageService, SelectItem } from 'primeng/api';
 import { EmployeeContract } from '../../models/employee-contract';
 import { EmployeeContractService } from '../../services/employee-contract.service';
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Salutation } from '../../models/salutation';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {TranslateService, TranslatePipe, TranslateDirective, _} from "@ngx-translate/core";
+import { FormGroup } from '@angular/forms';
+import { TranslatePipe, TranslateDirective} from "@ngx-translate/core";
 
 interface Column {
   field: string,

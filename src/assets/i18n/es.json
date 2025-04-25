@@ -57,7 +57,7 @@
   "COMMON": {
     "CUSTOMER_NAME": "Cliente"
   },
-  "TABLES":{
+  "TABLES": {
     "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas"
   },
   "BUTTONS": {
@@ -112,7 +112,6 @@
       "NAME": "Nombre",
       "FUNCTION": "Función",
       "LAW": "Ley"
-
     }
   },
   "CONTACT": {
@@ -125,8 +124,8 @@
       "EMAIL_ADDRESS": "Correo Electrónico"
     },
     "LABELS": {
-      "TITLE_DIALOG":"Editar Persona de Contacto",
-      "INVOICE" : "Destinatario de Facturas",
+      "TITLE_DIALOG": "Editar Persona de Contacto",
+      "INVOICE": "Destinatario de Facturas",
       "IS_INVOICE_RECIPIENT": "¿Es el destinatario de la factura?"
     }
   },
@@ -319,7 +318,63 @@
       "EDIT_ROL": "Editar Rol",
       "ROL": "Rol",
       "MODULE": "Módulo"
-      
+    }
+  },
+
+  "HOLIDAYS": {
+    "HEADER": {
+      "EDIT_HOLIDAY": "Editar festivo"
+    },
+    "LABEL": {
+      "HOLIDAY_NAME": "Nombre del festivo",
+      "SORT": "Orden",
+      "FIXED_DATE": "Fecha fija"
+    },
+    "BUTTON": {
+      "SAVE": "Guardar",
+      "NEW_YEAR": "Nuevo año",
+      "NEW": "Nuevo"
+    },
+    "TABLE": {
+      "SORT": "Orden",
+      "NAME": "Festivo",
+      "PAGE_INFO": "Se muestran de {first} a {last} de {totalRecords} registros",
+      "COLUMNS_SELECTED": "{0} columnas seleccionadas",
+      "CHOOSE_COLUMNS": "Elegir columnas",
+      "NO_DATA": "No se encontraron festivos.",
+      "BUNDESLAND": "Estado federado",
+      "SELECT": "Seleccionar",
+      "YEAR": "Año",
+      "DATE": "Fecha"
+    }
+  },
+
+  "FUNDING": {
+    "TABLE": {
+      "PROGRAM": "Programa",
+      "RATE": "Tasa (%)",
+      "PERSONNEL_RATE": "Tasa de personal (%)",
+      "RESEARCH_SHARE": "Porcentaje de investigación",
+      "PRODUCTIVE_HOURS": "Horas productivas / año",
+      "PAGE_INFO": "Mostrando de {first} a {last} de {totalRecords} registros",
+      "COLUMNS_SELECTED": "{0} columnas seleccionadas",
+      "CHOOSE_COLUMNS": "Seleccionar columnas",
+      "NO_DATA": "No se encontraron programas de financiación."
+    },
+    "LABEL": {
+      "PROGRAM": "Programa",
+      "RATE": "Tasa (%)",
+      "PERSONNEL_RATE": "Tasa de personal (%)",
+      "RESEARCH_SHARE": "Porcentaje de investigación",
+      "PRODUCTIVE_HOURS": "Horas productivas / año"
+    },
+    "BUTTON": {
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar",
+      "NEW": "Nuevo programa"
+    },
+    "HEADER": {
+      "EDIT_FUNDING": "Editar programa de financiación"
     }
   }
 }
