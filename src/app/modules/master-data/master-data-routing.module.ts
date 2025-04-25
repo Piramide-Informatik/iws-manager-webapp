@@ -6,7 +6,6 @@ import { StatesComponent } from './components/states/states.component';
 import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
 import { UserComponent } from './components/user/user.component';
 import { AddressComponent } from './components/address/address.component';
-import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { HolidaysComponent } from './components/holidays/holidays.component';
 import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
