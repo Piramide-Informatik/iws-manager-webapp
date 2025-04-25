@@ -3,9 +3,9 @@ import { Table } from 'primeng/table';
 import { Order } from '../../../../Entities/order';
 import { OrderService } from '../../services/order.service';
 
-import { TranslateService, _, TranslatePipe, TranslateDirective } from '@ngx-translate/core';
+import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Column {
   field: string,
@@ -32,7 +32,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor(private orderService: OrderService, private translate: TranslateService, public router: Router) { }
+  constructor(private readonly orderService: OrderService, private readonly translate: TranslateService, private readonly router: Router) { }
 
   ngOnInit():void {
     this.loadColHeaders();
@@ -72,12 +72,9 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   }
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/${url}`]).then(() => {
-        //console.log(`After navigation I am on:${this.router.url}`)
       })
     })
   }

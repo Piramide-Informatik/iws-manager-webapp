@@ -48,6 +48,12 @@ import { RolFormComponent } from './components/roles/components/rol-form/rol-for
 import { UserTableComponent } from './components/user/components/user-table/user-table.component';
 import { EditUserFormComponent } from './components/user/components/edit-user-form/edit-user-form.component';
 import { UserComponent } from './components/user/user.component';
+import { HolidaysComponent } from './components/holidays/holidays.component';
+import { HolidaysTableComponent } from './components/holidays/components/holidays-table/holidays-table.component';
+import { EditHolidayComponent } from './components/holidays/components/edit-holiday/edit-holiday.component';
+import { FundingProgramsTableComponent } from './components/funding-programs/components/funding-programs-table/funding-programs-table.component';
+import { EditFundingProgramComponent } from './components/funding-programs/components/edit-funding-program/edit-funding-program.component';
+import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +74,13 @@ import { UserComponent } from './components/user/user.component';
     EditSalutationComponent,
     RolesComponent,
     RolTableComponent,
-    RolFormComponent
+    RolFormComponent,
+    HolidaysComponent,
+    HolidaysTableComponent,
+    EditHolidayComponent,
+    FundingProgramsTableComponent,
+    EditFundingProgramComponent,
+    FundingProgramsComponent,
   ],
   imports: [
     ButtonModule,
@@ -95,7 +107,7 @@ import { UserComponent } from './components/user/user.component';
     FormsModule,
     ListboxModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
   ],
 })
 export class MasterDataModule {}
