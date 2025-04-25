@@ -1,0 +1,135 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  [header]="'HOLIDAYS.HEADER.EDIT_HOLIDAY' | translate"
+>
+  <form [formGroup]="holidayForm">
+    <div class="align-items-center mb-2">
+      <div class="holiday-form mb-2">
+        <label for="name">{{
+          "HOLIDAYS.LABEL.HOLIDAY_NAME" | translate
+        }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="holiday-form mb-2">
+        <label for="sort">{{ "HOLIDAYS.LABEL.SORT" | translate }}</label>
+        <input pInputText type="number" id="sort" formControlName="sort" />
+      </div>
+
+      <div class="holiday-form mb-2 flex align-items-center gap-2">
+        <label for="fixedDate" style="min-width: 100px">{{
+          "HOLIDAYS.LABEL.FIXED_DATE" | translate
+        }}</label>
+        <p-checkbox
+          inputId="fixedDate"
+          binary="true"
+          formControlName="fixed"
+        ></p-checkbox>
+        <p-datepicker
+          formControlName="fixedDate"
+          showIcon="true"
+          dateFormat="dd.mm.yy"
+        ></p-datepicker>
+        <p-button
+          [label]="'HOLIDAYS.BUTTON.SAVE' | translate"
+          icon="pi pi-check"
+          class="p-button-sm"
+          (click)="saveHoliday()"
+          (keydown.enter)="saveHoliday()"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+
+  <div class="grid">
+    <div class="col-6">
+      <p-table
+        [value]="bundeslands"
+        showGridlines
+        stripedRows
+        [tableStyle]="{ 'min-width': '100%' }"
+        [rows]="12"
+        scrollable="true"
+        scrollHeight="200px"
+      >
+        <ng-template #header>
+          <tr>
+            <th class="thead" scope="col">
+              {{ "HOLIDAYS.TABLE.BUNDESLAND" | translate }}
+            </th>
+            <th class="thead align-center" scope="col">
+              {{ "HOLIDAYS.TABLE.SELECT" | translate }}
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-bl let-i="rowIndex">
+          <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+            <td>{{ bl.name }}</td>
+            <td class="align-center">
+              <p-checkbox [(ngModel)]="bl.selected" binary="true"></p-checkbox>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="2">
+              <p-message severity="info">
+                {{ "HOLIDAYS.MESSAGE.NO_BUNDESLANDS" | translate }}
+              </p-message>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="col-6">
+      <p-table
+        [value]="years"
+        showGridlines
+        stripedRows
+        [tableStyle]="{ 'min-width': '100%' }"
+        [rows]="12"
+        scrollable="true"
+        scrollHeight="200px"
+      >
+        <ng-template #header>
+          <tr>
+            <th class="thead" scope="col">
+              {{ "HOLIDAYS.TABLE.YEAR" | translate }}
+            </th>
+            <th class="thead" scope="col">
+              {{ "HOLIDAYS.TABLE.DATE" | translate }}
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-year let-i="rowIndex">
+          <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+            <td>{{ year.year }}</td>
+            <td>{{ formatDate(year.date) }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Botón -->
+  <div class="buttons mt-3 flex gap-2 justify-content-left">
+    <p-button
+      class="p-button-sm"
+      size="small"
+      [label]="'HOLIDAYS.BUTTON.NEW_YEAR' | translate"
+      icon="pi pi-plus"
+      (click)="addYear()"
+      (keydown.enter)="addYear()"
+    ></p-button>
+  </div>
+</p-card>

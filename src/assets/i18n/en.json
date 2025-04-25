@@ -57,7 +57,7 @@
   "COMMON": {
     "CUSTOMER_NAME": "Customer"
   },
-  "TABLES":{
+  "TABLES": {
     "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries"
   },
   "BUTTONS": {
@@ -112,7 +112,6 @@
       "NAME": "Name",
       "FUNCTION": "Function",
       "LAW": "Law"
-
     }
   },
   "CONTACT": {
@@ -125,10 +124,9 @@
       "EMAIL_ADDRESS": "Email Address"
     },
     "LABELS": {
-      "TITLE_DIALOG":"Edit Contact Person",
-      "INVOICE" : "Invoice Recipient",
+      "TITLE_DIALOG": "Edit Contact Person",
+      "INVOICE": "Invoice Recipient",
       "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
-
     }
   },
   "EMPLOYEES": {
@@ -320,7 +318,34 @@
       "EDIT_ROL": "Edit Rol",
       "ROL": "Rol",
       "MODULE": "Module"
-      
+    }
+  },
+
+  "HOLIDAYS": {
+    "HEADER": {
+      "EDIT_HOLIDAY": "Edit Holiday"
+    },
+    "LABEL": {
+      "HOLIDAY_NAME": "Holiday Name",
+      "SORT": "Sort Order",
+      "FIXED_DATE": "Fixed Date"
+    },
+    "BUTTON": {
+      "SAVE": "Save",
+      "NEW_YEAR": "New Year",
+      "NEW": "New"
+    },
+    "TABLE": {
+      "SORT": "Sort",
+      "NAME": "Holiday",
+      "PAGE_INFO": "Showing {first} to {last} of {totalRecords} entries",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose Columns",
+      "NO_DATA": "No holidays found.",
+      "BUNDESLAND": "State",
+      "SELECT": "Select",
+      "YEAR": "Year",
+      "DATE": "Date"
     }
   }
 }
