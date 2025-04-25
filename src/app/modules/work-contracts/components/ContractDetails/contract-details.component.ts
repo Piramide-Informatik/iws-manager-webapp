@@ -14,7 +14,7 @@ export class ContractDetailsComponent implements OnInit{
     public customer!: string;
 
     constructor(
-      private activatedRoute: ActivatedRoute
+      private readonly activatedRoute: ActivatedRoute
     ) {}
 
   ngOnInit(): void {
