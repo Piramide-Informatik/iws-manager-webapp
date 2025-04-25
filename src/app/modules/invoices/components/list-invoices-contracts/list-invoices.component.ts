@@ -52,7 +52,8 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly cd: ChangeDetectorRef,
-    private translate: TranslateService, public router:Router
+    private readonly translate: TranslateService, 
+    private readonly router:Router
   ) {}
 
   ngOnInit():void {
