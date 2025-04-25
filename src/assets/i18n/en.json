@@ -347,5 +347,34 @@
       "YEAR": "Year",
       "DATE": "Date"
     }
+  },
+
+  "FUNDING": {
+    "TABLE": {
+      "PROGRAM": "Program",
+      "RATE": "Rate (%)",
+      "PERSONNEL_RATE": "Personnel rate (%)",
+      "RESEARCH_SHARE": "Research share",
+      "PRODUCTIVE_HOURS": "Productive hours / year",
+      "PAGE_INFO": "Showing {first} to {last} of {totalRecords} entries",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Select columns",
+      "NO_DATA": "No funding programs found."
+    },
+    "LABEL": {
+      "PROGRAM": "Program",
+      "RATE": "Rate (%)",
+      "PERSONNEL_RATE": "Personnel rate (%)",
+      "RESEARCH_SHARE": "Research share",
+      "PRODUCTIVE_HOURS": "Productive hours / year"
+    },
+    "BUTTON": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "NEW": "New program"
+    },
+    "HEADER": {
+      "EDIT_FUNDING": "Edit funding program"
+    }
   }
 }

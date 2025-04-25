@@ -1,0 +1,100 @@
+<p-table
+  [value]="fundingPrograms"
+  [columns]="selectedColumns"
+  dataKey="id"
+  [paginator]="true"
+  [rows]="15"
+  [rowsPerPageOptions]="[15, 30, 50]"
+  [resizableColumns]="true"
+  [scrollable]="true"
+  showGridlines
+  scrollHeight="60vh"
+  [style]="{ 'table-layout': 'fixed' }"
+  [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
+  currentPageReportTemplate="{{ 'FUNDING.TABLE.PAGE_INFO' | translate }}"
+  [showCurrentPageReport]="true"
+>
+  <ng-template #caption>
+    <p-multiselect
+      display="chip"
+      [options]="[
+        { field: 'program', header: ('FUNDING.TABLE.PROGRAM' | translate) },
+        { field: 'rate', header: ('FUNDING.TABLE.RATE' | translate) }
+      ]"
+      [(ngModel)]="selectedColumns"
+      optionLabel="header"
+      selectedItemsLabel="{{ 'FUNDING.TABLE.COLUMNS_SELECTED' | translate }}"
+      placeholder="{{ 'FUNDING.TABLE.CHOOSE_COLUMNS' | translate }}"
+    />
+  </ng-template>
+
+  <ng-template #header let-columns>
+    <tr>
+      <th scope="col" *ngFor="let col of columns; let i = index">
+        <input
+          pInputText
+          pSize="small"
+          type="text"
+          [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
+          (input)="applyFilter($event, col.field)"
+        />
+      </th>
+    </tr>
+    <tr>
+      <th scope="col" class="thead-bg-blue"></th>
+      <th
+        scope="col"
+        *ngFor="let col of columns"
+        [pSortableColumn]="col.field"
+        pResizableColumn
+        class="thead"
+      >
+        {{ col.header | translate }}
+        <p-sortIcon [field]="col.field" />
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-program let-i="rowIndex" let-columns="columns">
+    <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+      <td class="col-actions">
+        <div class="flex items-center justify-center gap-2">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-info button-option"
+            (click)="editFundingProgram(program)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger button-option"
+            (click)="deleteFundingProgram(program.id)"
+          ></button>
+        </div>
+      </td>
+      <td *ngFor="let col of columns">{{ program[col.field] }}</td>
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="6">
+        <p-message severity="info">
+          {{ "FUNDING.TABLE.NO_DATA" | translate }}
+        </p-message>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-toolbar>
+  <ng-template #start>
+    <p-button
+      [label]="'FUNDING.BUTTON.NEW' | translate"
+      icon="pi pi-plus"
+      (click)="createFundingProgram()"
+      (keydown.enter)="createFundingProgram()"
+    />
+  </ng-template>
+</p-toolbar>
