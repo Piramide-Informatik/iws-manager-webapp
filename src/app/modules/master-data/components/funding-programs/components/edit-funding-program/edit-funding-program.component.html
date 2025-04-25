@@ -1,0 +1,79 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  [header]="'FUNDING.HEADER.EDIT_FUNDING' | translate"
+>
+  <form [formGroup]="fundingForm">
+    <div class="align-items-center mb-2">
+      <div class="funding-form mb-2">
+        <label for="name">{{ "FUNDING.LABEL.PROGRAM" | translate }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form mb-2">
+        <label for="rate">{{ "FUNDING.LABEL.RATE" | translate }}</label>
+        <input pInputText type="number" id="rate" formControlName="rate" />
+      </div>
+
+      <div class="funding-form mb-2">
+        <label for="personnelRate">{{
+          "FUNDING.LABEL.PERSONNEL_RATE" | translate
+        }}</label>
+        <input
+          pInputText
+          type="number"
+          id="personnelRate"
+          formControlName="personnelRate"
+        />
+      </div>
+
+      <div class="funding-form mb-2">
+        <label for="researchShare">{{
+          "FUNDING.LABEL.RESEARCH_SHARE" | translate
+        }}</label>
+        <input
+          pInputText
+          type="number"
+          id="researchShare"
+          formControlName="researchShare"
+        />
+      </div>
+
+      <div class="funding-form mb-2">
+        <label for="productiveHours">{{
+          "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate
+        }}</label>
+        <input
+          pInputText
+          type="number"
+          id="productiveHours"
+          formControlName="productiveHours"
+        />
+      </div>
+    </div>
+  </form>
+
+  <div class="buttons mt-3 flex gap-2 justify-content-left">
+    <p-button
+      class="p-button-sm"
+      size="small"
+      [label]="'FUNDING.BUTTON.SAVE' | translate"
+      icon="pi pi-check"
+      (click)="saveFundingProgram()"
+      (keydown)="saveFundingProgram()"
+    ></p-button>
+    <p-button
+      class="p-button-sm"
+      size="small"
+      [label]="'FUNDING.BUTTON.CANCEL' | translate"
+      icon="pi pi-times"
+      (click)="cancelEdit()"
+      (keydown)="cancelEdit()"
+    ></p-button>
+  </div>
+</p-card>
