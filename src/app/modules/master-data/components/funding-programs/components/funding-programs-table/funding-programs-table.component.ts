@@ -1,57 +1,91 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Table } from 'primeng/table';
+import { Subscription } from 'rxjs';
+import { TranslateService, _ } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-funding-programs-table',
   standalone: false,
   templateUrl: './funding-programs-table.component.html',
-  styleUrls: ['./funding-programs-table.component.scss'],
+  styleUrl: './funding-programs-table.component.scss',
 })
-export class FundingProgramsTableComponent {
-  fundingPrograms = [
-    { id: 1, program: 'BMWi', rate: 25 },
-    { id: 2, program: 'ZIM', rate: 45 },
-    { id: 3, program: 'Eurostars', rate: 30 },
-    { id: 4, program: 'Marketing', rate: 20 },
-    { id: 5, program: 'FUE-Verw', rate: 40 },
-    { id: 6, program: 'FZ', rate: 35 },
-    { id: 7, program: 'Go-Inno', rate: 28 },
-    { id: 8, program: 'GreenEconomy.IN.NRW', rate: 50 },
-    { id: 9, program: 'KMU-Innovativ', rate: 38 },
-    { id: 10, program: 'LuFo', rate: 32 },
-    { id: 11, program: 'Messe', rate: 22 },
-    { id: 12, program: 'NEXT.IN.NRW', rate: 27 },
-    { id: 13, program: 'Sonstiges', rate: 33 },
-    { id: 14, program: 'Studie', rate: 18 },
-  ];
+export class FundingProgramsTableComponent implements OnInit, OnDestroy {
+  fundingPrograms: any[] = [];
+  cols: any[] = [];
+  selectedColumns: any[] = [];
 
-  originalFundingPrograms = [...this.fundingPrograms];
-  cols = [
-    { field: 'program', header: 'FUNDING.TABLE.PROGRAM' },
-    { field: 'rate', header: 'FUNDING.TABLE.RATE' },
-  ];
+  @ViewChild('dt2') dt2!: Table;
 
-  selectedColumns = [...this.cols];
+  private langSub!: Subscription;
 
-  applyFilter(event: Event, field: 'program' | 'rate') {
-    const filterValue = (event.target as HTMLInputElement).value
-      .trim()
-      .toLowerCase();
-    this.fundingPrograms = this.originalFundingPrograms.filter((fp) => {
-      const value = fp[field].toString().toLowerCase();
-      return value.includes(filterValue);
+  constructor(
+    private readonly translateService: TranslateService,
+    private readonly routerService: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.fundingPrograms = [
+      { id: 1, name: 'EFRE', sort: 1 },
+      { id: 2, name: 'Eurostars', sort: 2 },
+      { id: 3, name: 'Horizon 2020', sort: 3 },
+    ];
+
+    this.initializeColumns();
+    this.selectedColumns = [...this.cols];
+
+    this.langSub = this.translateService.onLangChange.subscribe(() => {
+      this.initializeColumns();
+      this.selectedColumns = [...this.cols];
     });
   }
 
-  editFundingProgram(program: any) {
-    console.log('Editing program:', program);
+  initializeColumns(): void {
+    this.cols = [
+      {
+        field: 'name',
+        minWidth: 150,
+        header: this.translateService.instant(_('FUNDING.TABLE.PROGRAM')),
+      },
+      {
+        field: 'sort',
+        minWidth: 60,
+        header: this.translateService.instant(_('FUNDING.TABLE.RATE')),
+      },
+    ];
   }
 
-  deleteFundingProgram(id: number) {
-    this.fundingPrograms = this.fundingPrograms.filter((fp) => fp.id !== id);
-    this.originalFundingPrograms = [...this.fundingPrograms];
+  reloadComponent(self: boolean, targetUrl?: string): void {
+    const url = self ? this.routerService.url : targetUrl;
+    this.routerService
+      .navigateByUrl('/', { skipLocationChange: true })
+      .then(() => {
+        this.routerService.navigate([`/${url}`]).then(() => {});
+      });
   }
 
-  createFundingProgram() {
-    console.log('Creating new funding program...');
+  ngOnDestroy(): void {
+    if (this.langSub) {
+      this.langSub.unsubscribe();
+    }
+  }
+
+  editFundingProgram(program: any): void {
+    console.log('Edit action:', program);
+  }
+
+  deleteFundingProgram(id: number): void {
+    console.log('Delete action - ID:', id);
+  }
+
+  createFundingProgram(): void {
+    console.log('Create new funding program');
+  }
+
+  applyFilter(event: any, field: string): void {
+    const value = (event.target as HTMLInputElement).value;
+    if (value) {
+      this.dt2.filter(value, field, 'contains');
+    }
   }
 }

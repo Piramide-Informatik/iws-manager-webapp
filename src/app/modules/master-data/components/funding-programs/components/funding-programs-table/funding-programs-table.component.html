@@ -1,19 +1,24 @@
-<div class="card">
+<!-- Tabla de programas de financiamiento (variación para SonarQube) -->
+<div class="card funding-programs-table">
   <p-table
     #dt2
     [value]="fundingPrograms"
     dataKey="id"
-    [rows]="15"
     [columns]="selectedColumns"
-    [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
-    currentPageReportTemplate="{{ 'FUNDING.TABLE.PAGE_INFO' | translate }}"
-    [showCurrentPageReport]="true"
-    [resizableColumns]="true"
-    [scrollable]="true"
-    showGridlines
+    [rows]="15"
+    [rowsPerPageOptions]="[15, 30, 50]"
     scrollHeight="60vh"
-    [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
+    [scrollable]="true"
+    [resizableColumns]="true"
+    [showCurrentPageReport]="true"
+    [currentPageReportTemplate]="
+      'PAGINATION.REPORT'
+        | translate
+          : { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
+    "
+    showGridlines
+    [tableStyle]="{ 'border-spacing': '1px', 'min-width': '5%' }"
   >
     <ng-template #caption>
       <p-multiselect
@@ -21,81 +26,75 @@
         [options]="cols"
         [(ngModel)]="selectedColumns"
         optionLabel="header"
-        selectedItemsLabel="{{ 'FUNDING.TABLE.COLUMNS_SELECTED' | translate }}"
+        selectedItemsLabel="{0} columnas seleccionadas"
         [style]="{
-          'min-width': '10%',
           'font-size': '14px',
+          'min-width': '10%',
           'line-height': '16.8px'
         }"
-        placeholder="{{ 'FUNDING.TABLE.CHOOSE_COLUMNS' | translate }}"
-      ></p-multiselect>
+        placeholder="Selecciona Columnas"
+      >
+      </p-multiselect>
     </ng-template>
 
     <ng-template #header let-columns>
       <tr>
-        <th id="funding-programs-table-options"></th>
         <th
-          id="funding-programs-table-search"
+          scope="col-funding"
+          class="funding-header"
           *ngFor="let col of columns; let i = index"
         >
           <input
             pInputText
             pSize="small"
             type="text"
-            [ngClass]="{
-              'thead-input-id': i == 0,
-              'thead-input-width': i > 0
-            }"
+            [ngClass]="{ 'thead-input-width': i > 0, 'thead-input-id': i == 0 }"
             (input)="applyFilter($event, col.field)"
           />
         </th>
       </tr>
       <tr>
+        <th scope="col" class="thead-bg-blue"></th>
         <th
-          id="funding-programs-table-options-field"
-          class="thead-bg-blue"
-        ></th>
-        <th
-          id="funding-programs-table-field"
           *ngFor="let col of columns; let i = index"
           [pSortableColumn]="col.field"
+          scope="col"
           pResizableColumn
           class="thead"
         >
-          {{ col.header }}
-          <p-sortIcon [field]="col.field" />
+          {{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
       </tr>
     </ng-template>
 
-    <ng-template #body let-program let-i="rowIndex" let-columns="columns">
-      <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+    <ng-template #body let-row let-i="rowIndex" let-columns="columns">
+      <tr [ngClass]="{ 'even-row': i % 2 === 0, 'odd-row': i % 2 !== 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
             <button
               pButton
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info button-option"
-              (click)="editFundingProgram(program)"
+              (click)="editFundingProgram(row)"
             ></button>
             <button
               pButton
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger button-option"
-              (click)="deleteFundingProgram(program.id)"
+              (click)="deleteFundingProgram(row.id)"
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ program[col.field] }}</td>
+        <td *ngFor="let col of columns">{{ row[col.field] }}</td>
       </tr>
     </ng-template>
 
     <ng-template #emptymessage>
       <tr>
-        <td colspan="3">
-          <p-message severity="info">{{
-            "FUNDING.TABLE.NO_DATA" | translate
-          }}</p-message>
+        <td colspan="7">
+          <p-message severity="info">
+            No se encontraron programas de financiamiento.
+          </p-message>
         </td>
       </tr>
     </ng-template>
@@ -108,7 +107,8 @@
         icon="pi pi-plus"
         (click)="createFundingProgram()"
         (keydown.enter)="createFundingProgram()"
-      ></p-button>
+      >
+      </p-button>
     </ng-template>
   </p-toolbar>
 </div>
