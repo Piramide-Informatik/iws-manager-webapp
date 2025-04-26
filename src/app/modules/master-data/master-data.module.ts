@@ -28,6 +28,7 @@ import { SelectModule } from 'primeng/select';
 import { ListboxModule } from 'primeng/listbox';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
+import { TextareaModule } from 'primeng/textarea';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -54,6 +55,10 @@ import { EditHolidayComponent } from './components/holidays/components/edit-holi
 import { FundingProgramsTableComponent } from './components/funding-programs/components/funding-programs-table/funding-programs-table.component';
 import { EditFundingProgramComponent } from './components/funding-programs/components/edit-funding-program/edit-funding-program.component';
 import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
+import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
+import { GenaralTableComponent } from './genaral-table/genaral-table.component';
+import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
+
 
 @NgModule({
   declarations: [
@@ -81,6 +86,9 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
     FundingProgramsTableComponent,
     EditFundingProgramComponent,
     FundingProgramsComponent,
+    DunningLevelsComponent,
+    GenaralTableComponent,
+    EditDunningLevelComponent
   ],
   imports: [
     ButtonModule,
@@ -108,6 +116,8 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
     ListboxModule,
     CheckboxModule,
     DropdownModule,
+    TextareaModule
+
   ],
 })
 export class MasterDataModule {}
