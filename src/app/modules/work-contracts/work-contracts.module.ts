@@ -2,7 +2,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 //Modulos
 import { WorkContractsRoutingModule } from './work-contracts-routing.module';
@@ -45,7 +44,6 @@ import { ContractDetailsComponent } from './components/ContractDetails/contract-
     Dialog,
     FileUpload,
     FormsModule,
-    HttpClientModule,
     IconFieldModule,
     InputNumber,
     InputIconModule,
