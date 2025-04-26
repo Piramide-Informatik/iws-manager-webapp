@@ -422,5 +422,9 @@
       "CHOOSE_COLUMNS": "Elegir columnas",
       "NO_DATA": "No se encontraron empleados"
     }
+  },
+
+  "PAGINATION": {
+    "REPORT": "Se muestran {{first}} a {{last}} de {{totalRecords}} registros"
   }
 }

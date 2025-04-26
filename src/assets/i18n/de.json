@@ -416,5 +416,9 @@
       "CHOOSE_COLUMNS": "Spalten auswählen",
       "NO_DATA": "Keine Mitarbeiter gefunden."
     }
+  },
+
+  "PAGINATION": {
+    "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
   }
 }

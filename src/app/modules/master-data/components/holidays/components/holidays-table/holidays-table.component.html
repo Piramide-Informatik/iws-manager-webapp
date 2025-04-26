@@ -7,7 +7,11 @@
     [columns]="selectedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
-    currentPageReportTemplate="Se muestran {first} a {last} de {totalRecords} registros"
+    [currentPageReportTemplate]="
+      'PAGINATION.REPORT'
+        | translate
+          : { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
+    "
     [showCurrentPageReport]="true"
     [resizableColumns]="true"
     [scrollable]="true"
@@ -33,8 +37,7 @@
 
     <ng-template #header let-columns>
       <tr>
-        <th></th>
-        <th *ngFor="let col of columns; let i = index">
+        <th scope="col" *ngFor="let col of columns; let i = index">
           <input
             pInputText
             pSize="small"
@@ -45,10 +48,11 @@
         </th>
       </tr>
       <tr>
-        <th class="thead-bg-blue"></th>
+        <th scope="col-table" class="thead-bg-blue"></th>
         <th
           *ngFor="let col of columns; let i = index"
           [pSortableColumn]="col.field"
+          scope="col"
           pResizableColumn
           class="thead"
         >

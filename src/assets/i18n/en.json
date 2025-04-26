@@ -422,5 +422,8 @@
       "CHOOSE_COLUMNS": "Choose columns",
       "NO_DATA": "No staff found"
     }
+  },
+  "PAGINATION": {
+    "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
   }
 }
