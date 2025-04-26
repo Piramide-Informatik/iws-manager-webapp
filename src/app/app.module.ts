@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient  } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import {
   TranslateModule,
@@ -55,7 +55,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     WorkContractsModule,
     ProjectModule,
     FrameworkAgreementsModule,
-    HttpClientModule,
     MatButtonModule,
     LayoutModule,
     MatButtonModule,
@@ -91,6 +90,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         },
       },
     }),
+    provideHttpClient(),
   ],
   bootstrap: [AppComponent],
 })
