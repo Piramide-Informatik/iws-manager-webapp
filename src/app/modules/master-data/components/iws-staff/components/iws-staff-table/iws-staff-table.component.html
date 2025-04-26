@@ -1,14 +1,14 @@
 <div class="card">
   <p-table
     #dt2
-    [value]="holidays"
+    [value]="iwsStaff"
     dataKey="id"
     [rows]="15"
     [columns]="selectedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
+    currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
     [showCurrentPageReport]="true"
-    currentPageReportTemplate="{{ 'HOLIDAYS.TABLE.PAGE_INFO' | translate }}"
     [resizableColumns]="true"
     [scrollable]="true"
     showGridlines
@@ -21,15 +21,23 @@
         [options]="cols"
         [(ngModel)]="selectedColumns"
         optionLabel="header"
-        selectedItemsLabel="{{ 'HOLIDAYS.TABLE.COLUMNS_SELECTED' | translate }}"
-        placeholder="{{ 'HOLIDAYS.TABLE.CHOOSE_COLUMNS' | translate }}"
+        selectedItemsLabel="{0} columns selected"
+        [style]="{
+          'min-width': '10%',
+          'font-size': '14px',
+          'line-height': '16.8px'
+        }"
+        placeholder="Choose Columns"
       />
     </ng-template>
 
     <ng-template #header let-columns>
       <tr>
-        <th></th>
-        <th *ngFor="let col of columns; let i = index">
+        <th id="iws-staff-table-options"></th>
+        <th
+          id="iws-staff-table-search"
+          *ngFor="let col of columns; let i = index"
+        >
           <input
             pInputText
             pSize="small"
@@ -40,20 +48,20 @@
         </th>
       </tr>
       <tr>
-        <th class="thead-bg-blue"></th>
+        <th id="iws-staff-table-options-field" class="thead-bg-blue"></th>
         <th
-          *ngFor="let col of columns"
+          id="iws-staff-table-field"
+          *ngFor="let col of columns; let i = index"
           [pSortableColumn]="col.field"
           pResizableColumn
           class="thead"
         >
-          {{ col.header }}
-          <p-sortIcon [field]="col.field" />
+          {{ col.header }} <p-sortIcon [field]="col.field" />
         </th>
       </tr>
     </ng-template>
 
-    <ng-template #body let-holiday let-i="rowIndex" let-columns="columns">
+    <ng-template #body let-staff let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
@@ -61,26 +69,24 @@
               pButton
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info button-option"
-              (click)="editHoliday(holiday)"
+              (click)="editIwsStaff(staff)"
             ></button>
             <button
               pButton
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger button-option"
-              (click)="deleteHoliday(holiday.id)"
+              (click)="deleteIwsStaff(staff.id)"
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ holiday[col.field] }}</td>
+        <td *ngFor="let col of columns">{{ staff[col.field] }}</td>
       </tr>
     </ng-template>
 
     <ng-template #emptymessage>
       <tr>
-        <td colspan="3">
-          <p-message severity="info">{{
-            "HOLIDAYS.TABLE.NO_DATA" | translate
-          }}</p-message>
+        <td colspan="7">
+          <p-message severity="info">Keine IWS Mitarbeiter gefunden.</p-message>
         </td>
       </tr>
     </ng-template>
@@ -89,10 +95,10 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        [label]="'HOLIDAYS.BUTTON.NEW' | translate"
+        [label]="'IWS_STAFF.BUTTON.NEW' | translate"
         icon="pi pi-plus"
-        (click)="createHoliday()"
-        (keydown.enter)="createHoliday()"
+        (click)="createIwsStaff()"
+        (keydown.enter)="createIwsStaff()"
       />
     </ng-template>
   </p-toolbar>

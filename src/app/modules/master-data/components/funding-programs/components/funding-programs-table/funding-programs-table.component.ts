@@ -1,57 +1,77 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Table } from 'primeng/table';
+import { Subscription } from 'rxjs';
+import { TranslateService, _ } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-funding-programs-table',
   standalone: false,
   templateUrl: './funding-programs-table.component.html',
-  styleUrls: ['./funding-programs-table.component.scss'],
+  styleUrl: './funding-programs-table.component.scss',
 })
-export class FundingProgramsTableComponent {
-  fundingPrograms = [
-    { id: 1, program: 'BMWi', rate: 25 },
-    { id: 2, program: 'ZIM', rate: 45 },
-    { id: 3, program: 'Eurostars', rate: 30 },
-    { id: 4, program: 'Marketing', rate: 20 },
-    { id: 5, program: 'FUE-Verw', rate: 40 },
-    { id: 6, program: 'FZ', rate: 35 },
-    { id: 7, program: 'Go-Inno', rate: 28 },
-    { id: 8, program: 'GreenEconomy.IN.NRW', rate: 50 },
-    { id: 9, program: 'KMU-Innovativ', rate: 38 },
-    { id: 10, program: 'LuFo', rate: 32 },
-    { id: 11, program: 'Messe', rate: 22 },
-    { id: 12, program: 'NEXT.IN.NRW', rate: 27 },
-    { id: 13, program: 'Sonstiges', rate: 33 },
-    { id: 14, program: 'Studie', rate: 18 },
-  ];
+export class FundingProgramsTableComponent implements OnInit, OnDestroy {
+  fundingPrograms: any[] = [];
+  cols: any[] = [];
+  selectedColumns: any[] = [];
 
-  originalFundingPrograms = [...this.fundingPrograms];
-  cols = [
-    { field: 'program', header: 'FUNDING.TABLE.PROGRAM' },
-    { field: 'rate', header: 'FUNDING.TABLE.RATE' },
-  ];
+  @ViewChild('dt2') dt2!: Table;
 
-  selectedColumns = [...this.cols];
+  private langSubscription!: Subscription;
 
-  applyFilter(event: Event, field: 'program' | 'rate') {
-    const filterValue = (event.target as HTMLInputElement).value
-      .trim()
-      .toLowerCase();
-    this.fundingPrograms = this.originalFundingPrograms.filter((fp) => {
-      const value = fp[field].toString().toLowerCase();
-      return value.includes(filterValue);
+  constructor(private readonly translate: TranslateService) {}
+
+  ngOnInit() {
+    this.fundingPrograms = [
+      { id: 1, program: 'BMWi', rate: 25 },
+      { id: 2, program: 'ZIM', rate: 45 },
+      { id: 3, program: 'Eurostars', rate: 30 },
+      { id: 4, program: 'Marketing', rate: 20 },
+    ];
+
+    this.loadColHeaders();
+    this.selectedColumns = [...this.cols];
+
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.selectedColumns = [...this.cols];
     });
   }
 
+  loadColHeaders(): void {
+    this.cols = [
+      {
+        field: 'program',
+        header: this.translate.instant(_('FUNDING.TABLE.PROGRAM')),
+      },
+      {
+        field: 'rate',
+        header: this.translate.instant(_('FUNDING.TABLE.RATE')),
+      },
+    ];
+  }
+
+  applyFilter(event: any, field: string) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      this.dt2.filter(inputElement.value, field, 'contains');
+    }
+  }
+
   editFundingProgram(program: any) {
-    console.log('Editing program:', program);
+    console.log('Editing Funding Program:', program);
   }
 
   deleteFundingProgram(id: number) {
-    this.fundingPrograms = this.fundingPrograms.filter((fp) => fp.id !== id);
-    this.originalFundingPrograms = [...this.fundingPrograms];
+    console.log('Deleting Funding Program with ID:', id);
   }
 
   createFundingProgram() {
-    console.log('Creating new funding program...');
+    console.log('Creating New Funding Program');
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 }
