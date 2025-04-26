@@ -7,44 +7,49 @@ import { TranslateService, _ } from '@ngx-translate/core';
   selector: 'app-funding-programs-table',
   standalone: false,
   templateUrl: './funding-programs-table.component.html',
-  styleUrl: './funding-programs-table.component.scss',
+  styleUrls: ['./funding-programs-table.component.scss'],
 })
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
-  fundingPrograms = [
-    { id: 1, program: 'BMWi', rate: 25 },
-    { id: 2, program: 'ZIM', rate: 45 },
-    { id: 3, program: 'Eurostars', rate: 30 },
-    { id: 4, program: 'Marketing', rate: 20 },
-  ];
-
-  colsBase = [
-    { field: 'program', headerKey: 'PROGRAM' },
-    { field: 'rate', headerKey: 'RATE' },
-  ];
-
+  fundingPrograms: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
 
   @ViewChild('dt2') dt2!: Table;
+
   private langSubscription!: Subscription;
 
   constructor(private readonly translate: TranslateService) {}
 
   ngOnInit() {
-    this.updateColumns();
+    this.fundingPrograms = [
+      { id: 1, program: 'BMWi', rate: 25 },
+      { id: 2, program: 'ZIM', rate: 45 },
+      { id: 3, program: 'Eurostars', rate: 30 },
+      { id: 4, program: 'Marketing', rate: 20 },
+    ];
+
+    this.loadColHeaders();
+    this.selectedColumns = [...this.cols];
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.updateColumns();
+      this.loadColHeaders();
+      this.selectedColumns = [...this.cols];
     });
   }
 
-  updateColumns(): void {
-    this.cols = this.colsBase.map((col) => ({
-      field: col.field,
-      header: this.translate.instant(_('FUNDING.TABLE.' + col.headerKey)),
-    }));
-
-    this.selectedColumns = [...this.cols];
+  loadColHeaders(): void {
+    this.cols = [
+      {
+        field: 'program',
+        minWidth: 110,
+        header: this.translate.instant(_('FUNDING.TABLE.PROGRAM')),
+      },
+      {
+        field: 'rate',
+        minWidth: 110,
+        header: this.translate.instant(_('FUNDING.TABLE.RATE')),
+      },
+    ];
   }
 
   applyFilter(event: any, field: string) {
@@ -55,18 +60,20 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   }
 
   editFundingProgram(program: any) {
-    console.log('Editar Programa:', program);
+    console.log('Editing', program);
   }
 
   deleteFundingProgram(id: number) {
-    console.log('Eliminar Programa con ID:', id);
+    console.log('Deleting ID', id);
   }
 
   createFundingProgram() {
-    console.log('Crear Nuevo Programa');
+    console.log('Creating new funding program');
   }
 
   ngOnDestroy(): void {
-    this.langSubscription?.unsubscribe();
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 }
