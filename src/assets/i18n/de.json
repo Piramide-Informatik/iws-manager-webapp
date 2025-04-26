@@ -381,5 +381,12 @@
       "PAYMENT_TERM": "Zahlungsgziel (Tagen)",
       "REMINDER_TEXT": "Mahntext" 
     }
+  },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Qualifikation bearbeiten",
+      "QUALIFICATION": "Qualifikation",
+      "ABBREVIATION": "Kürzel"
+    }
   }
 }

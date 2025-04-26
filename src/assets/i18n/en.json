@@ -387,5 +387,12 @@
       "PAYMENT_TERM": "Payment Term (Days)",
       "REMINDER_TEXT": "Reminder Text" 
     }
+  },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Edit qualification",
+      "QUALIFICATION": "Qualification",
+      "ABBREVIATION": "Abbreviation"
+    }
   }
 }

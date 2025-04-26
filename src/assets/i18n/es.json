@@ -387,5 +387,12 @@
       "PAYMENT_TERM": "Plazo de Pago (Días)",
       "REMINDER_TEXT": "Texto Recordatorio" 
     }
+  },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Editar calificación",
+      "QUALIFICATION": "Calificación",
+      "ABBREVIATION": "Abreviatura"
+    }
   }
 }
