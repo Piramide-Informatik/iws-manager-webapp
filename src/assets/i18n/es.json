@@ -423,7 +423,24 @@
       "NO_DATA": "No se encontraron empleados"
     }
   },
-
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "Desde valor",
+      "PERCENTAGE": "Comisión (%)",
+      "MIN_COMMISSION": "Comisión mínima"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo"
+    },
+    "FORM": {
+      "HEADER": "Editar Comisión IWS",
+      "THRESHOLD": "Desde valor de exigencia",
+      "PERCENTAGE": "Comisión (%)",
+      "MIN_COMMISSION": "Comisión mínima",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    }
+  },
   "PAGINATION": {
     "REPORT": "Se muestran {{first}} a {{last}} de {{totalRecords}} registros"
   }

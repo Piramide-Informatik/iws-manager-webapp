@@ -61,7 +61,9 @@ import { EditDunningLevelComponent } from './components/dunning-levels/component
 import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
 import { IwsStaffTableComponent } from './components/iws-staff/components/iws-staff-table/iws-staff-table.component';
 import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iws-staff/edit-iws-staff.component';
-
+import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
+import { IwsCommissionsTableComponent } from './components/iws-commissions/components/iws-commissions-table/iws-commissions-table.component';
+import { EditIwsCommissionsComponent } from './components/iws-commissions/components/edit-iws-commissions/edit-iws-commissions.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +96,10 @@ import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iw
     EditDunningLevelComponent,
     IwsStaffComponent,
     IwsStaffTableComponent,
-    EditIwsStaffComponent
+    EditIwsStaffComponent,
+    IwsCommissionsComponent,
+    IwsCommissionsTableComponent,
+    EditIwsCommissionsComponent,
   ],
   imports: [
     ButtonModule,
@@ -122,8 +127,7 @@ import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iw
     ListboxModule,
     CheckboxModule,
     DropdownModule,
-    TextareaModule
-
+    TextareaModule,
   ],
 })
 export class MasterDataModule {}
