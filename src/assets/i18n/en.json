@@ -256,7 +256,8 @@
     }
   },
   "ABSENCE_TYPES": {
-    "TABLE": {
+    "LABEL": {
+      "TITLE_FORM": "Edit project sponsor",
       "TYPE": "Absence Type",
       "ABBREVIATION": "Abbreviation",
       "FRACTION_OF_DAY": "Fraction of Day",

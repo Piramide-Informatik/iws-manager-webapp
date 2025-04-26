@@ -53,11 +53,11 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'type', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.TABLE.TYPE')) },
-      { field: 'abbreviation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.TABLE.ABBREVIATION')) },
-      { field: 'fractionOfDay', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.TABLE.FRACTION_OF_DAY')) },
-      { field: 'isVacation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.TABLE.IS_VACATION')) },
-      { field: 'canBeBooked', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.TABLE.CAN_BE_BOOKED')) }
+      { field: 'type', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')) },
+      { field: 'abbreviation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.ABBREVIATION')) },
+      { field: 'fractionOfDay', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
+      { field: 'isVacation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
+      { field: 'canBeBooked', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.CAN_BE_BOOKED')) }
     ];
   }
 

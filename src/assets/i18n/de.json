@@ -251,7 +251,8 @@
     }
   },
   "ABSENCE_TYPES": {
-    "TABLE": {
+    "LABEL": {
+      "TITLE_FORM": "Projektträger bearbeiten",
       "TYPE": "Abwesenheitsart",
       "ABBREVIATION": "Kürzel",
       "FRACTION_OF_DAY": "Anteil Tag",
