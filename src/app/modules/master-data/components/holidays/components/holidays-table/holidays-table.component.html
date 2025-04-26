@@ -1,94 +1,105 @@
 <div class="card">
   <p-table
-    #dt2
+    #dt
     [value]="holidays"
     dataKey="id"
     [rows]="15"
-    [columns]="selectedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
-    [currentPageReportTemplate]="
-      'PAGINATION.REPORT'
-        | translate
-          : { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
-    "
+    currentPageReportTemplate="{{ 'HOLIDAYS.TABLE.PAGE_INFO' | translate }}"
     [showCurrentPageReport]="true"
     [resizableColumns]="true"
     [scrollable]="true"
-    showGridlines
     scrollHeight="60vh"
+    [style]="{ 'table-layout': 'fixed' }"
     [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
   >
+    <!-- FILTRO DE COLUMNAS -->
     <ng-template #caption>
       <p-multiselect
         display="chip"
-        [options]="cols"
+        [options]="[
+          { field: 'sort', header: ('HOLIDAYS.TABLE.SORT' | translate) },
+          { field: 'name', header: ('HOLIDAYS.TABLE.NAME' | translate) }
+        ]"
         [(ngModel)]="selectedColumns"
         optionLabel="header"
-        selectedItemsLabel="{0} columnas seleccionadas"
+        selectedItemsLabel="{{ 'HOLIDAYS.TABLE.COLUMNS_SELECTED' | translate }}"
         [style]="{
           'min-width': '10%',
           'font-size': '14px',
           'line-height': '16.8px'
         }"
-        placeholder="Selecciona Columnas"
+        placeholder="{{ 'HOLIDAYS.TABLE.CHOOSE_COLUMNS' | translate }}"
       />
     </ng-template>
 
-    <ng-template #header let-columns>
+    <!-- ENCABEZADOS FILTRO -->
+    <ng-template #header>
       <tr>
-        <th scope="col" *ngFor="let col of columns; let i = index">
+        <th id="holidays-table-options"></th>
+        <th scope="col">
           <input
             pInputText
             pSize="small"
             type="text"
-            [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
-            (input)="applyFilter($event, col.field)"
+            class="thead-input-id"
+            (input)="applyFilter($event, 'sort')"
+          />
+        </th>
+        <th scope="col">
+          <input
+            pInputText
+            pSize="small"
+            type="text"
+            class="thead-input-width"
+            (input)="applyFilter($event, 'name')"
           />
         </th>
       </tr>
       <tr>
-        <th scope="col-table" class="thead-bg-blue"></th>
-        <th
-          *ngFor="let col of columns; let i = index"
-          [pSortableColumn]="col.field"
-          scope="col"
-          pResizableColumn
-          class="thead"
-        >
-          {{ col.header }} <p-sortIcon [field]="col.field" />
+        <th class="thead-bg-blue" scope="col"></th>
+        <th class="thead" pSortableColumn="sort" pResizableColumn scope="col">
+          {{ "HOLIDAYS.TABLE.SORT" | translate }}
+          <p-sortIcon field="sort" />
+        </th>
+
+        <th class="thead" pSortableColumn="name" pResizableColumn scope="col">
+          {{ "HOLIDAYS.TABLE.NAME" | translate }}
+          <p-sortIcon field="name" />
         </th>
       </tr>
     </ng-template>
 
-    <ng-template #body let-row let-i="rowIndex" let-columns="columns">
+    <ng-template #body let-holiday let-i="rowIndex">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-        <td>
+        <td class="col-actions">
           <div class="flex items-center justify-center gap-2">
             <button
               pButton
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info button-option"
-              (click)="editHoliday(row)"
+              (click)="editHoliday(holiday)"
             ></button>
             <button
               pButton
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger button-option"
-              (click)="deleteHoliday(row.id)"
+              (click)="deleteHoliday(holiday.id)"
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ row[col.field] }}</td>
+        <td>{{ holiday.sort }}</td>
+        <td>{{ holiday.name }}</td>
       </tr>
     </ng-template>
 
     <ng-template #emptymessage>
       <tr>
-        <td colspan="7">
-          <p-message severity="info"
-            >No se encontraron días festivos.</p-message
-          >
+        <td colspan="3">
+          <p-message severity="info">
+            {{ "HOLIDAYS.TABLE.NO_DATA" | translate }}
+          </p-message>
         </td>
       </tr>
     </ng-template>
@@ -97,7 +108,6 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        label="Nuevo"
         [label]="'HOLIDAYS.BUTTON.NEW' | translate"
         icon="pi pi-plus"
         (click)="createHoliday()"
