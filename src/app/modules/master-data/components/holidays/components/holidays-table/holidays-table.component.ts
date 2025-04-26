@@ -1,58 +1,90 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Table } from 'primeng/table';
+import { Subscription } from 'rxjs';
+import { TranslateService, _ } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-holidays-table',
   standalone: false,
   templateUrl: './holidays-table.component.html',
-  styleUrls: ['./holidays-table.component.scss'],
+  styleUrl: './holidays-table.component.scss',
 })
-export class HolidaysTableComponent {
-  holidays = [
-    { id: 1, sort: 1, name: 'Neujahr' },
-    { id: 2, sort: 2, name: 'Heilige Drei Könige' },
-    { id: 3, sort: 3, name: 'Rosenmontag' },
-    { id: 4, sort: 4, name: 'Internationaler Frauentag' },
-    { id: 5, sort: 5, name: 'Gründonnerstag' },
-    { id: 6, sort: 6, name: 'Karfreitag' },
-  ];
+export class HolidaysTableComponent implements OnInit, OnDestroy {
+  holidays: any[] = [];
+  cols: any[] = [];
+  selectedColumns: any[] = [];
 
-  originalHolidays = [...this.holidays];
+  @ViewChild('dt2') dt2!: Table;
 
-  cols = [
-    { field: 'sort', header: 'Sort' },
-    { field: 'name', header: 'Feiertag' },
-  ];
+  private langSubscription!: Subscription;
 
-  selectedColumns = [...this.cols];
+  constructor(
+    private readonly translate: TranslateService,
+    private readonly router: Router
+  ) {}
 
-  applyFilter(event: Event, field: 'sort' | 'name') {
-    const filterValue = (event.target as HTMLInputElement).value
-      .trim()
-      .toLowerCase();
+  ngOnInit() {
+    this.holidays = [
+      { id: 1, sort: 1, name: 'Neujahr' },
+      { id: 2, sort: 2, name: 'Heilige Drei Könige' },
+      { id: 3, sort: 3, name: 'Rosenmontag' },
+      { id: 4, sort: 4, name: 'Internationaler Frauentag' },
+    ];
 
-    this.holidays = this.originalHolidays.filter((h) => {
-      const value = h[field];
-      return value.toString().toLowerCase().includes(filterValue);
+    this.loadColHeaders();
+    this.selectedColumns = [...this.cols];
+
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.selectedColumns = [...this.cols];
     });
   }
 
+  loadColHeaders(): void {
+    this.cols = [
+      {
+        field: 'sort',
+        minWidth: 60,
+        header: this.translate.instant(_('HOLIDAYS.TABLE.SORT')),
+      },
+      {
+        field: 'name',
+        minWidth: 150,
+        header: this.translate.instant(_('HOLIDAYS.TABLE.NAME')),
+      },
+    ];
+  }
+
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {});
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
+
   editHoliday(holiday: any) {
-    console.log('Edit:', holiday);
+    console.log('Editing', holiday);
   }
 
   deleteHoliday(id: number) {
-    this.holidays = this.holidays.filter((h) => h.id !== id);
-    this.originalHolidays = this.originalHolidays.filter((h) => h.id !== id);
+    console.log('Deleting ID', id);
   }
 
   createHoliday() {
-    const newHoliday = {
-      id: this.holidays.length + 1,
-      sort: this.holidays.length + 1,
-      name: 'Neuer Feiertag',
-    };
-    this.holidays.push(newHoliday);
-    this.originalHolidays.push(newHoliday);
-    console.log('Nuevo Feiertag', newHoliday);
+    console.log('Creating new holiday');
+  }
+
+  applyFilter(event: any, field: string) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      this.dt2.filter(inputElement.value, field, 'contains');
+    }
   }
 }
