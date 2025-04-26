@@ -1,23 +1,23 @@
-<div class="card">
+<div class="card holidays-table">
   <p-table
     #dt2
     [value]="holidays"
     dataKey="id"
-    [rows]="15"
     [columns]="selectedColumns"
-    [rowsPerPageOptions]="[15, 30, 50]"
+    [scrollable]="true"
+    [resizableColumns]="true"
+    scrollHeight="60vh"
     [paginator]="true"
+    [rows]="15"
+    [rowsPerPageOptions]="[15, 30, 50]"
+    [showCurrentPageReport]="true"
     [currentPageReportTemplate]="
       'PAGINATION.REPORT'
         | translate
           : { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
     "
-    [showCurrentPageReport]="true"
-    [resizableColumns]="true"
-    [scrollable]="true"
     showGridlines
-    scrollHeight="60vh"
-    [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
+    [tableStyle]="{ 'border-spacing': '1px', 'min-width': '5%' }"
   >
     <ng-template #caption>
       <p-multiselect
@@ -27,22 +27,27 @@
         optionLabel="header"
         selectedItemsLabel="{0} columnas seleccionadas"
         [style]="{
-          'min-width': '10%',
           'font-size': '14px',
-          'line-height': '16.8px'
+          'line-height': '16.8px',
+          'min-width': '10%'
         }"
         placeholder="Selecciona Columnas"
-      />
+      >
+      </p-multiselect>
     </ng-template>
 
     <ng-template #header let-columns>
       <tr>
-        <th scope="col" *ngFor="let col of columns; let i = index">
+        <th
+          scope="col"
+          class="holiday-header"
+          *ngFor="let col of columns; let i = index"
+        >
           <input
             pInputText
             pSize="small"
             type="text"
-            [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
+            [ngClass]="{ 'even-row': i % 2 === 0, 'odd-row': i % 2 !== 0 }"
             (input)="applyFilter($event, col.field)"
           />
         </th>
@@ -56,13 +61,13 @@
           pResizableColumn
           class="thead"
         >
-          {{ col.header }} <p-sortIcon [field]="col.field" />
+          {{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
       </tr>
     </ng-template>
 
     <ng-template #body let-row let-i="rowIndex" let-columns="columns">
-      <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
+      <tr [ngClass]="{ 'even-row': i % 2 === 0, 'odd-row': i % 2 !== 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
             <button
@@ -86,9 +91,9 @@
     <ng-template #emptymessage>
       <tr>
         <td colspan="7">
-          <p-message severity="info"
-            >No se encontraron días festivos.</p-message
-          >
+          <p-message severity="info">
+            No se encontraron días festivos.
+          </p-message>
         </td>
       </tr>
     </ng-template>
@@ -97,12 +102,12 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        label="Nuevo"
         [label]="'HOLIDAYS.BUTTON.NEW' | translate"
         icon="pi pi-plus"
         (click)="createHoliday()"
         (keydown.enter)="createHoliday()"
-      />
+      >
+      </p-button>
     </ng-template>
   </p-toolbar>
 </div>
