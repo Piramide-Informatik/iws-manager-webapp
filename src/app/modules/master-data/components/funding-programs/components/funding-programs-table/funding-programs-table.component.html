@@ -7,11 +7,7 @@
     [columns]="selectedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
-    [currentPageReportTemplate]="
-      'PAGINATION.REPORT'
-        | translate
-          : { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
-    "
+    currentPageReportTemplate="{{ 'FUNDING.TABLE.PAGE_INFO' | translate }}"
     [showCurrentPageReport]="true"
     [resizableColumns]="true"
     [scrollable]="true"
@@ -25,43 +21,54 @@
         [options]="cols"
         [(ngModel)]="selectedColumns"
         optionLabel="header"
-        selectedItemsLabel="{0} columnas seleccionadas"
+        selectedItemsLabel="{{ 'FUNDING.TABLE.COLUMNS_SELECTED' | translate }}"
         [style]="{
           'min-width': '10%',
           'font-size': '14px',
           'line-height': '16.8px'
         }"
-        placeholder="Selecciona Columnas"
-      />
+        placeholder="{{ 'FUNDING.TABLE.CHOOSE_COLUMNS' | translate }}"
+      ></p-multiselect>
     </ng-template>
 
     <ng-template #header let-columns>
       <tr>
-        <th scope="col-table" *ngFor="let col of columns; let i = index">
+        <th id="funding-programs-table-options"></th>
+        <th
+          id="funding-programs-table-search"
+          *ngFor="let col of columns; let i = index"
+        >
           <input
             pInputText
             pSize="small"
             type="text"
-            [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
+            [ngClass]="{
+              'thead-input-id': i == 0,
+              'thead-input-width': i > 0
+            }"
             (input)="applyFilter($event, col.field)"
           />
         </th>
       </tr>
       <tr>
-        <th scope="col" class="thead-bg-blue"></th>
         <th
+          id="funding-programs-table-options-field"
+          class="thead-bg-blue"
+        ></th>
+        <th
+          id="funding-programs-table-field"
           *ngFor="let col of columns; let i = index"
           [pSortableColumn]="col.field"
-          id="col"
           pResizableColumn
           class="thead"
         >
-          {{ col.header }} <p-sortIcon [field]="col.field" />
+          {{ col.header }}
+          <p-sortIcon [field]="col.field" />
         </th>
       </tr>
     </ng-template>
 
-    <ng-template #body let-row let-i="rowIndex" let-columns="columns">
+    <ng-template #body let-program let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
@@ -69,26 +76,26 @@
               pButton
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info button-option"
-              (click)="editFundingProgram(row)"
+              (click)="editFundingProgram(program)"
             ></button>
             <button
               pButton
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger button-option"
-              (click)="deleteFundingProgram(row.id)"
+              (click)="deleteFundingProgram(program.id)"
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ row[col.field] }}</td>
+        <td *ngFor="let col of columns">{{ program[col.field] }}</td>
       </tr>
     </ng-template>
 
     <ng-template #emptymessage>
       <tr>
-        <td colspan="7">
-          <p-message severity="info"
-            >No se encontraron programas de financiamiento.</p-message
-          >
+        <td colspan="3">
+          <p-message severity="info">{{
+            "FUNDING.TABLE.NO_DATA" | translate
+          }}</p-message>
         </td>
       </tr>
     </ng-template>
@@ -97,12 +104,11 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        label="Nuevo"
         [label]="'FUNDING.BUTTON.NEW' | translate"
         icon="pi pi-plus"
         (click)="createFundingProgram()"
         (keydown.enter)="createFundingProgram()"
-      />
+      ></p-button>
     </ng-template>
   </p-toolbar>
 </div>
