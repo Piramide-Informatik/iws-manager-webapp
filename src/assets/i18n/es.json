@@ -348,7 +348,6 @@
       "DATE": "Fecha"
     }
   },
-
   "FUNDING": {
     "TABLE": {
       "PROGRAM": "Programa",
@@ -375,6 +374,18 @@
     },
     "HEADER": {
       "EDIT_FUNDING": "Editar programa de financiación"
+    }
+  },
+  "DUNNING_LEVELS": {
+    "LABEL": {
+      "DUNNING_LEVEL": "Nivel de reclamación",
+      "TEXT": "Texto",
+      "EDIT_DUNNING_LEVEL": "Editar Nivel de Reclamación",
+      "DESIGNATION": "Designación",
+      "FEE": "Tarifa",
+      "DEFAULT_INTEREST": "Interés Predeterminado",
+      "PAYMENT_TERM": "Plazo de Pago (Días)",
+      "REMINDER_TEXT": "Texto Recordatorio" 
     }
   }
 }
