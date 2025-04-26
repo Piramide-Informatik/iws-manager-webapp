@@ -7,8 +7,8 @@
     [columns]="selectedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
+    currentPageReportTemplate="Se muestran {first} a {last} de {totalRecords} registros"
     [showCurrentPageReport]="true"
-    currentPageReportTemplate="{{ 'HOLIDAYS.TABLE.PAGE_INFO' | translate }}"
     [resizableColumns]="true"
     [scrollable]="true"
     showGridlines
@@ -21,14 +21,20 @@
         [options]="cols"
         [(ngModel)]="selectedColumns"
         optionLabel="header"
-        selectedItemsLabel="{{ 'HOLIDAYS.TABLE.COLUMNS_SELECTED' | translate }}"
-        placeholder="{{ 'HOLIDAYS.TABLE.CHOOSE_COLUMNS' | translate }}"
+        selectedItemsLabel="{0} columnas seleccionadas"
+        [style]="{
+          'min-width': '10%',
+          'font-size': '14px',
+          'line-height': '16.8px'
+        }"
+        placeholder="Selecciona Columnas"
       />
     </ng-template>
 
     <ng-template #header let-columns>
       <tr>
-        <th scope="col" *ngFor="let col of columns; let i = index">
+        <th></th>
+        <th *ngFor="let col of columns; let i = index">
           <input
             pInputText
             pSize="small"
@@ -39,21 +45,19 @@
         </th>
       </tr>
       <tr>
-        <th scope="col" class="thead-bg-blue"></th>
+        <th class="thead-bg-blue"></th>
         <th
-          scope="col"
-          *ngFor="let col of columns"
+          *ngFor="let col of columns; let i = index"
           [pSortableColumn]="col.field"
           pResizableColumn
           class="thead"
         >
-          {{ col.header }}
-          <p-sortIcon [field]="col.field" />
+          {{ col.header }} <p-sortIcon [field]="col.field" />
         </th>
       </tr>
     </ng-template>
 
-    <ng-template #body let-holiday let-i="rowIndex" let-columns="columns">
+    <ng-template #body let-row let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
@@ -61,26 +65,26 @@
               pButton
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info button-option"
-              (click)="editHoliday(holiday)"
+              (click)="editHoliday(row)"
             ></button>
             <button
               pButton
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger button-option"
-              (click)="deleteHoliday(holiday.id)"
+              (click)="deleteHoliday(row.id)"
             ></button>
           </div>
         </td>
-        <td *ngFor="let col of columns">{{ holiday[col.field] }}</td>
+        <td *ngFor="let col of columns">{{ row[col.field] }}</td>
       </tr>
     </ng-template>
 
     <ng-template #emptymessage>
       <tr>
-        <td colspan="3">
-          <p-message severity="info">{{
-            "HOLIDAYS.TABLE.NO_DATA" | translate
-          }}</p-message>
+        <td colspan="7">
+          <p-message severity="info"
+            >No se encontraron días festivos.</p-message
+          >
         </td>
       </tr>
     </ng-template>
@@ -89,6 +93,7 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
+        label="Nuevo"
         [label]="'HOLIDAYS.BUTTON.NEW' | translate"
         icon="pi pi-plus"
         (click)="createHoliday()"
