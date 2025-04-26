@@ -31,4 +31,33 @@ export class MasterDataService {
           }
         ];
       }
+
+  getDunningLevelsData(): any[] {
+    return [
+      {
+        dunningLevel: 1,
+        text: 'Zahlungserinnerung',
+        fee: 5,
+        defaultInterest: 1,
+        paymentTerm: 1,
+        reminderText: ''
+      },
+      {
+        dunningLevel: 2,
+        text: 'Mahnung',
+        fee: 7,
+        defaultInterest: 3,
+        paymentTerm: 1,
+        reminderText: ''
+      },
+      {
+        dunningLevel: 3,
+        text: 'Mahnung',
+        fee: 7,
+        defaultInterest: 3,
+        paymentTerm: 1,
+        reminderText: ''
+      },
+    ];
+  }
 };
