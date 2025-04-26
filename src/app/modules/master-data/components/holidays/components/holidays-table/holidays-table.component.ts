@@ -25,11 +25,12 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
     { id: 12, sort: 12, name: '1. Weihnachtstag' },
   ];
 
-  cols = [
+  colsBase = [
     { field: 'sort', headerKey: 'SORT' },
     { field: 'name', headerKey: 'NAME' },
   ];
 
+  cols: any[] = [];
   selectedColumns: any[] = [];
 
   @ViewChild('dt2') dt2!: Table;
@@ -38,20 +39,18 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
   constructor(private readonly translate: TranslateService) {}
 
   ngOnInit() {
-    this.setTranslatedHeaders();
-    this.selectedColumns = [...this.cols];
-
+    this.updateColumns();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.setTranslatedHeaders();
-      this.selectedColumns = [...this.cols];
+      this.updateColumns();
     });
   }
 
-  setTranslatedHeaders(): void {
-    this.cols = this.cols.map((col) => ({
-      ...col,
+  updateColumns(): void {
+    this.cols = this.colsBase.map((col) => ({
+      field: col.field,
       header: this.translate.instant(_(`HOLIDAYS.TABLE.${col.headerKey}`)),
     }));
+    this.selectedColumns = [...this.cols];
   }
 
   applyFilter(event: any, field: string) {
@@ -62,15 +61,15 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
   }
 
   editHoliday(holiday: any) {
-    console.log('Editar Feriado:', holiday);
+    console.log('Editando Feriado:', holiday);
   }
 
   deleteHoliday(id: number) {
-    console.log('Eliminar Feriado con ID:', id);
+    console.log('Eliminando Feriado con ID:', id);
   }
 
   createHoliday() {
-    console.log('Crear Nuevo Feriado');
+    console.log('Creando Nuevo Feriado');
   }
 
   ngOnDestroy(): void {

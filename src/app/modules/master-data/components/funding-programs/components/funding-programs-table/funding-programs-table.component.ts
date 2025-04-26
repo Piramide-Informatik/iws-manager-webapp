@@ -17,11 +17,12 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     { id: 4, program: 'Marketing', rate: 20 },
   ];
 
-  cols = [
+  colsBase = [
     { field: 'program', headerKey: 'PROGRAM' },
     { field: 'rate', headerKey: 'RATE' },
   ];
 
+  cols: any[] = [];
   selectedColumns: any[] = [];
 
   @ViewChild('dt2') dt2!: Table;
@@ -30,20 +31,20 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   constructor(private readonly translate: TranslateService) {}
 
   ngOnInit() {
-    this.setTranslatedHeaders();
-    this.selectedColumns = [...this.cols];
+    this.updateColumns();
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.setTranslatedHeaders();
-      this.selectedColumns = [...this.cols];
+      this.updateColumns();
     });
   }
 
-  setTranslatedHeaders(): void {
-    this.cols = this.cols.map((col) => ({
-      ...col,
-      header: this.translate.instant(_(`FUNDING.TABLE.${col.headerKey}`)),
+  updateColumns(): void {
+    this.cols = this.colsBase.map((col) => ({
+      field: col.field,
+      header: this.translate.instant(_('FUNDING.TABLE.' + col.headerKey)),
     }));
+
+    this.selectedColumns = [...this.cols];
   }
 
   applyFilter(event: any, field: string) {
@@ -66,8 +67,6 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
+    this.langSubscription?.unsubscribe();
   }
 }
