@@ -262,9 +262,6 @@
       "FRACTION_OF_DAY": "Fracción del Día",
       "IS_VACATION": "Es Vacación",
       "CAN_BE_BOOKED": "Se Puede Reservar"
-    },
-    "BUTTON": {
-      "NEW": "Nuevo"
     }
   },
   "ADDRESS": {

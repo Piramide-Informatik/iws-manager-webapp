@@ -257,9 +257,6 @@
       "FRACTION_OF_DAY": "Anteil Tag",
       "IS_VACATION": "Ist Urlaub",
       "CAN_BE_BOOKED": "Kann gebucht werden"
-    },
-    "BUTTON": {
-      "NEW": "Neu"
     }
   },
   "ADDRESS": {
