@@ -10,44 +10,40 @@ import { TranslateService, _ } from '@ngx-translate/core';
   styleUrl: './funding-programs-table.component.scss',
 })
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
-  fundingPrograms: any[] = [];
-  cols: any[] = [];
+  fundingPrograms = [
+    { id: 1, program: 'BMWi', rate: 25 },
+    { id: 2, program: 'ZIM', rate: 45 },
+    { id: 3, program: 'Eurostars', rate: 30 },
+    { id: 4, program: 'Marketing', rate: 20 },
+  ];
+
+  cols = [
+    { field: 'program', headerKey: 'PROGRAM' },
+    { field: 'rate', headerKey: 'RATE' },
+  ];
+
   selectedColumns: any[] = [];
 
   @ViewChild('dt2') dt2!: Table;
-
   private langSubscription!: Subscription;
 
   constructor(private readonly translate: TranslateService) {}
 
   ngOnInit() {
-    this.fundingPrograms = [
-      { id: 1, program: 'BMWi', rate: 25 },
-      { id: 2, program: 'ZIM', rate: 45 },
-      { id: 3, program: 'Eurostars', rate: 30 },
-      { id: 4, program: 'Marketing', rate: 20 },
-    ];
-
-    this.loadColHeaders();
+    this.setTranslatedHeaders();
     this.selectedColumns = [...this.cols];
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
+      this.setTranslatedHeaders();
       this.selectedColumns = [...this.cols];
     });
   }
 
-  loadColHeaders(): void {
-    this.cols = [
-      {
-        field: 'program',
-        header: this.translate.instant(_('FUNDING.TABLE.PROGRAM')),
-      },
-      {
-        field: 'rate',
-        header: this.translate.instant(_('FUNDING.TABLE.RATE')),
-      },
-    ];
+  setTranslatedHeaders(): void {
+    this.cols = this.cols.map((col) => ({
+      ...col,
+      header: this.translate.instant(_(`FUNDING.TABLE.${col.headerKey}`)),
+    }));
   }
 
   applyFilter(event: any, field: string) {
@@ -58,15 +54,15 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   }
 
   editFundingProgram(program: any) {
-    console.log('Editing Funding Program:', program);
+    console.log('Editar Programa:', program);
   }
 
   deleteFundingProgram(id: number) {
-    console.log('Deleting Funding Program with ID:', id);
+    console.log('Eliminar Programa con ID:', id);
   }
 
   createFundingProgram() {
-    console.log('Creating New Funding Program');
+    console.log('Crear Nuevo Programa');
   }
 
   ngOnDestroy(): void {

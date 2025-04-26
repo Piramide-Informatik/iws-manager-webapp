@@ -28,8 +28,7 @@
 
     <ng-template #header let-columns>
       <tr>
-        <th></th>
-        <th *ngFor="let col of columns; let i = index">
+        <th scope="col" *ngFor="let col of columns; let i = index">
           <input
             pInputText
             pSize="small"
@@ -40,8 +39,9 @@
         </th>
       </tr>
       <tr>
-        <th class="thead-bg-blue"></th>
+        <th scope="col" class="thead-bg-blue"></th>
         <th
+          scope="col"
           *ngFor="let col of columns"
           [pSortableColumn]="col.field"
           pResizableColumn
