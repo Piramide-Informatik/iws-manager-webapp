@@ -1,0 +1,36 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'DUNNING_LEVELS.LABEL.EDIT_DUNNING_LEVEL' | translate ">
+    <form [formGroup]="editDunningLevelForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column align-items-center mb-2">
+            <div class="dunning-level-form mb-2">
+                <label for="dunning-level">{{ 'DUNNING_LEVELS.LABEL.DUNNING_LEVEL' | translate }}</label>
+                <input pInputText type="text" id="dunning-level" formControlName="dunningLevel" autocomplete="off" />
+            </div>
+            <div class="dunning-level-form mb-2">
+                <label for="designation">{{ 'DUNNING_LEVELS.LABEL.DESIGNATION' | translate }}</label>
+                <input pInputText type="text" id="designation" formControlName="designation" autocomplete="off" />
+            </div>
+            <div class="dunning-level-form mb-2">
+                <label for="fee">{{ 'DUNNING_LEVELS.LABEL.FEE' | translate }}</label>
+                <input pInputText type="text" id="fee" formControlName="fee" autocomplete="off" />
+            </div>
+            <div class="dunning-level-form mb-2">
+                <label for="default-interest">{{ 'DUNNING_LEVELS.LABEL.DEFAULT_INTEREST' | translate }}</label>
+                <input pInputText type="text" id="default-interest" formControlName="defaultInterest" autocomplete="off" />
+            </div>
+            <div class="dunning-level-form mb-2">
+                <label for="dunning-level">{{ 'DUNNING_LEVELS.LABEL.PAYMENT_TERM' | translate }}</label>
+                <input pInputText type="text" id="dunning-level" formControlName="paymentTerm" autocomplete="off" />
+            </div>
+            <div class="dunning-level-form mb-2 flex">
+                <label for="reminder-text">{{ 'DUNNING_LEVELS.LABEL.REMINDER_TEXT' | translate }}</label>
+                <textarea pTextarea id="reminder-text" rows="3" formControlName="reminderText" style="resize: none;" ></textarea>
+            </div>
+            <div class="row">
+                <div class="col flex justify-content-center">
+                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</p-card>

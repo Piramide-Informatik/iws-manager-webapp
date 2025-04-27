@@ -346,7 +346,6 @@
       "DATE": "Date"
     }
   },
-
   "FUNDING": {
     "TABLE": {
       "PROGRAM": "Program",
@@ -373,6 +372,18 @@
     },
     "HEADER": {
       "EDIT_FUNDING": "Edit funding program"
+    }
+  },
+  "DUNNING_LEVELS": {
+    "LABEL": {
+      "DUNNING_LEVEL": "Dunning level",
+      "TEXT": "Text",
+      "EDIT_DUNNING_LEVEL": "Edit Dunning Level",
+      "DESIGNATION": "Designation",
+      "FEE": "Fee",
+      "DEFAULT_INTEREST": "Default Interes",
+      "PAYMENT_TERM": "Payment Term (Days)",
+      "REMINDER_TEXT": "Reminder Text" 
     }
   }
 }
