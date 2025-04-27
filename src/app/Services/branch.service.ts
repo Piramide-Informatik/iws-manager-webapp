@@ -8,12 +8,12 @@ import { Observable, catchError, map, of, tap } from 'rxjs';
 })
 export class BranchService {
 
-  private http = inject(HttpClient);
-  private apiUrl = 'assets/data/branch.json';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = 'assets/data/branch.json';
 
-  private _branches = signal<Branch[]>([]);
-  private _loading = signal<boolean>(false);
-  private _error = signal<string | null>(null);
+  private readonly _branches = signal<Branch[]>([]);
+  private readonly _loading = signal<boolean>(false);
+  private readonly _error = signal<string | null>(null);
 
   public branches = this._branches.asReadonly();
   public loading = this._loading.asReadonly();

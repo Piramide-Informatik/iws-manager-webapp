@@ -30,7 +30,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
   public countries!: Country[];
 
-  private branchService = inject(BranchService);
+  private readonly branchService = inject(BranchService);
 
   public typesCompany: any[] = [
     { name: 'Public', code: 'PB' },
