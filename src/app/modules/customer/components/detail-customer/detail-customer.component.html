@@ -68,7 +68,7 @@
           <label for="">{{ 'CUSTOMERS.FORM.INDUSTRY' | translate }}</label>
           <p-select formControlName="selectedSector" 
           id="sector"
-          [options]="sectors" 
+          [options]="sectors()" 
           optionLabel="name" 
           />
         </div>
