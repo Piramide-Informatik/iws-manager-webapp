@@ -251,15 +251,13 @@
     }
   },
   "ABSENCE_TYPES": {
-    "TABLE": {
+    "LABEL": {
+      "TITLE_FORM": "Projektträger bearbeiten",
       "TYPE": "Abwesenheitsart",
       "ABBREVIATION": "Kürzel",
       "FRACTION_OF_DAY": "Anteil Tag",
       "IS_VACATION": "Ist Urlaub",
       "CAN_BE_BOOKED": "Kann gebucht werden"
-    },
-    "BUTTON": {
-      "NEW": "Neu"
     }
   },
   "ADDRESS": {
