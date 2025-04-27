@@ -377,7 +377,46 @@
       "FEE": "Gebühr",
       "DEFAULT_INTEREST": "Verzugszinsen",
       "PAYMENT_TERM": "Zahlungsgziel (Tagen)",
-      "REMINDER_TEXT": "Mahntext" 
+      "REMINDER_TEXT": "Mahntext"
     }
+  },
+  "IWS_STAFF": {
+    "HEADER": {
+      "EDIT_STAFF": "Mitarbeiter bearbeiten"
+    },
+    "LABEL": {
+      "STAFF_ID": "Mitarbeiter-Nr.",
+      "SHORT_NAME": "Kürzel",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "EMAIL": "E-Mail",
+      "TEAM": "Team IWS",
+      "STAFF_SINCE": "Mitarbeiter seit",
+      "STAFF_UNTIL": "Mitarbeiter bis",
+      "SELECT_TEAM": "Team wählen"
+    },
+    "BUTTON": {
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen",
+      "NEW": "Neuer Mitarbeiter"
+    },
+    "TABLE": {
+      "STAFF_NUMBER": "Mitarbeiter-Nr.",
+      "SHORT_NAME": "Kürzel",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "EMAIL": "E-Mail",
+      "TEAM": "Team",
+      "STAFF_SINCE": "Seit",
+      "STAFF_UNTIL": "Bis",
+      "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Mitarbeiter gefunden."
+    }
+  },
+
+  "PAGINATION": {
+    "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
   }
 }

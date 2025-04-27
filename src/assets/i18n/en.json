@@ -383,7 +383,45 @@
       "FEE": "Fee",
       "DEFAULT_INTEREST": "Default Interes",
       "PAYMENT_TERM": "Payment Term (Days)",
-      "REMINDER_TEXT": "Reminder Text" 
+      "REMINDER_TEXT": "Reminder Text"
     }
+  },
+  "IWS_STAFF": {
+    "HEADER": {
+      "EDIT_STAFF": "Edit Staff"
+    },
+    "LABEL": {
+      "STAFF_ID": "Staff Number",
+      "SHORT_NAME": "Short Name",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "TEAM": "IWS Team",
+      "STAFF_SINCE": "Staff Since",
+      "STAFF_UNTIL": "Staff Until",
+      "SELECT_TEAM": "Select Team"
+    },
+    "BUTTON": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "NEW": "New Staff"
+    },
+    "TABLE": {
+      "STAFF_NUMBER": "Staff No.",
+      "SHORT_NAME": "Short Name",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "TEAM": "Team",
+      "STAFF_SINCE": "Since",
+      "STAFF_UNTIL": "Until",
+      "PAGE_INFO": "Showing {first} to {last} of {totalRecords} entries",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose columns",
+      "NO_DATA": "No staff found"
+    }
+  },
+  "PAGINATION": {
+    "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
   }
 }
