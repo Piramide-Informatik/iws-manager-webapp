@@ -1,0 +1,19 @@
+{
+    "branches": [
+        {
+            "uuid": "3a7f8d2b-4c5e-4f3a-8b9d-1c2e3f4a5b6c",
+            "id": 1,
+            "name": "Economics Department"
+        },
+        {
+            "uuid": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
+            "id": 2,
+            "name": "Human Talent Management"
+        },
+        {
+            "uuid": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+            "id": 3,
+            "name": "Financial Services"
+        }
+    ]
+}

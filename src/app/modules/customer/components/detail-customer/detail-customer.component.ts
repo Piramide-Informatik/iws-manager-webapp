@@ -1,12 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
-import { Subscription } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Country } from '../../../../Entities/country.model';
 import { CountryService } from '../../services/country.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BranchService } from '../../../../Services/branch.service';
 
 interface Column {
   field: string,
@@ -22,16 +24,13 @@ interface Column {
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public selectedCountry!: string;
-
   public cols!: Column[];
-
   public selectedColumns!: Column[];
-
   public customers!: Customer[];
-
   private langSubscription!: Subscription;
-
   public countries!: Country[];
+
+  private readonly branchService = inject(BranchService);
 
   public typesCompany: any[] = [
     { name: 'Public', code: 'PB' },
@@ -39,11 +38,15 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     { name: 'Other', code: 'OT' }
   ]
 
-  public sectors: any[] = [
-    { name: 'Economic', code: 'EC' },
-    { name: 'Financial', code: 'FI' },
-    { name: 'Human Resources', code: 'HR' }
-  ]
+  public sectors = toSignal(
+    this.branchService.getAllBranches().pipe(
+      map(branches => branches.map(branch => ({
+        name: branch.name,
+        code: branch.id.toString()
+      })))
+    ),
+    { initialValue: [] }
+  );
 
   public states: any[] = [
     { name: 'Bavaria', code: 'BY' },
