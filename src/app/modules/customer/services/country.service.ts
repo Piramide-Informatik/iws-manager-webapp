@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Country } from '../../../Entities/country.model';
@@ -10,7 +10,7 @@ export class CountryService {
 
   private readonly ROOT_URL = `${environment.BACK_END_HOST_DEV}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   // Get all countries
   getCountries(): Country[] {

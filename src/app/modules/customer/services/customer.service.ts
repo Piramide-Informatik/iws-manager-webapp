@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../../../Entities/customer';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class CustomerService {
 
   private readonly ROOT_URL = `${environment.BACK_END_HOST_DEV}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   // Get all countries
   getCustomers(): Customer[] {
