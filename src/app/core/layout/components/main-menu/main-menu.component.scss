@@ -1,15 +1,15 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 .p-menu {
-    .p-menu-close {
-      background-color: #accde7 !important; 
-      color: white !important;
-      border: none !important; 
-      border-radius: 50% !important; 
-      width: 2rem; 
-      height: 2rem; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .p-menu-close {
+    background-color: #accde7 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+}
