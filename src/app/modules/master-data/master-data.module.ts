@@ -58,6 +58,8 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { GenaralTableComponent } from './genaral-table/genaral-table.component';
 import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
+import { EmployeeQualificationComponent } from './components/employee-qualification/employee-qualification.component';
+import { EditQualificationComponent } from './components/employee-qualification/components/edit-qualification/edit-qualification.component';
 import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
 import { IwsStaffTableComponent } from './components/iws-staff/components/iws-staff-table/iws-staff-table.component';
 import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iws-staff/edit-iws-staff.component';
@@ -92,6 +94,8 @@ import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iw
     DunningLevelsComponent,
     GenaralTableComponent,
     EditDunningLevelComponent,
+    EmployeeQualificationComponent,
+    EditQualificationComponent,
     IwsStaffComponent,
     IwsStaffTableComponent,
     EditIwsStaffComponent
