@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { MasterDataService } from '../../master-data.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { RouterUtilsService } from '../../router-utils.service';
 
 @Component({
   selector: 'app-employee-qualification',
@@ -19,7 +19,7 @@ export class EmployeeQualificationComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
-    private readonly router: Router
+    private readonly routerUtils: RouterUtilsService
   ){}
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class EmployeeQualificationComponent implements OnInit, OnDestroy {
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
-      this.reloadComponent(true);
+      this.routerUtils.reloadComponent(true);
     });
   }
 
@@ -38,14 +38,6 @@ export class EmployeeQualificationComponent implements OnInit, OnDestroy {
       { field: 'qualification', styles: {'width': 'auto' }, header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION')) },
       { field: 'abbreviation', styles: {'width': 'auto'},  header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION')) },
     ];
-  }
-
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-      })
-    })
   }
 
   ngOnDestroy(): void {
