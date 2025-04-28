@@ -1,7 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Table } from 'primeng/table';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Rol } from '../../../../../../Entities/rol';
 import { SystemConstantService } from '../../services/system-constant.service';
 import { System } from '../../../../../../Entities/system';
 
