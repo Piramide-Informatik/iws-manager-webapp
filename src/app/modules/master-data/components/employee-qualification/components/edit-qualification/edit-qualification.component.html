@@ -1,0 +1,20 @@
+<p-card [style]="{ background: 'var(--light-cyan)', height: '220px' }" [header]="'EMPLOYEE_QUALIFICATION.LABEL.TITLE_FORM' | translate">
+    <form [formGroup]="editQualificationForm">
+        <div class="align-items-center mb-2">
+            <div class="qualification-form mb-2 mt-4">
+                <label for="qualification">{{ 'EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION' | translate }}</label>
+                <input pInputText type="text" id="qualification" formControlName="qualification" autocomplete="off" />
+            </div>
+            <div class="qualification-form mb-4">
+                <label for="abbreviation">{{ 'EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION' | translate }}</label>
+                <input pInputText type="text" id="abbreviation" formControlName="abbreviation" autocomplete="off" />
+            </div>
+            <div class="row">
+                <div class="col flex justify-content-center">
+                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</p-card>

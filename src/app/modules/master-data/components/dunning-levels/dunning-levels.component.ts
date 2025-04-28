@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
-import { Router } from '@angular/router';
+import { RouterUtilsService } from '../../router-utils.service';
 
 @Component({
   selector: 'app-dunning-levels',
@@ -19,7 +19,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
-    private readonly router: Router
+    private readonly routerUtils: RouterUtilsService
   ){}
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
-      this.reloadComponent(true);
+      this.routerUtils.reloadComponent(true);
     });
   }
 
@@ -38,14 +38,6 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
       { field: 'dunningLevel', styles: {'width': '100px'}, header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')) },
       { field: 'text', styles: {'width': 'auto'},  header: this.translate.instant(_('DUNNING_LEVELS.LABEL.TEXT')) },
     ];
-  }
-
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-      })
-    })
   }
 
   ngOnDestroy(): void {

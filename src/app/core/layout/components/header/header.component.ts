@@ -5,10 +5,13 @@ import { MenuItem } from 'primeng/api';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  standalone: false
+  standalone: false,
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit {
   @Input() username: string = '';
+
+  @Input() currentMenuKey: string = '';
+
   @Output() toggleMenu = new EventEmitter<void>();
   @Output() menuSelected = new EventEmitter<string>();
   @Input() items: any[] = [];
@@ -19,44 +22,43 @@ export class HeaderComponent implements OnInit{
       {
         label: 'Profile',
         icon: 'pi pi-user',
-        routerLink: ['/profile']
+        routerLink: ['/profile'],
       },
       {
         label: 'Change Password',
         icon: 'pi pi-key',
-        routerLink: ['/change-password']
+        routerLink: ['/change-password'],
       },
       {
         label: 'Settings',
         icon: 'pi pi-cog',
-        routerLink: ['/settings']
+        routerLink: ['/settings'],
       },
       {
-        separator: true
+        separator: true,
       },
       {
         label: 'Logout',
         icon: 'pi pi-sign-out',
-        command: () => this.logout()
-      }
+        command: () => this.logout(),
+      },
     ];
   }
-  
-  onMenuSelect(menu: string, index:number): void {
+
+  onMenuSelect(menu: string, index: number): void {
     this.menuSelected.emit(menu);
-    const menuOptions: HTMLCollectionOf<Element> = document.getElementsByClassName('menu-options');
+    const menuOptions: HTMLCollectionOf<Element> =
+      document.getElementsByClassName('menu-options');
     const option = menuOptions[index];
 
-    Array.from(menuOptions).forEach( element => {
+    Array.from(menuOptions).forEach((element) => {
       element.classList.remove('active');
-    })
+    });
     option.classList.add('active');
-
-  }  
+  }
 
   logout() {
     // Implement logout logic
     console.log('Logging out...');
   }
-
 }

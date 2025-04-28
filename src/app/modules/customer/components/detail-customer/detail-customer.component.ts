@@ -1,12 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
-import { Subscription } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Country } from '../../../../Entities/country.model';
 import { CountryService } from '../../services/country.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BranchService } from '../../../../Services/branch.service';
+import { ContactPersonService } from '../../../../Services/contact-person.service';
+import { CompanyTypeService } from '../../../../Services/company-type.service';
 
 interface Column {
   field: string,
@@ -22,28 +26,35 @@ interface Column {
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public selectedCountry!: string;
-
   public cols!: Column[];
-
   public selectedColumns!: Column[];
-
   public customers!: Customer[];
-
   private langSubscription!: Subscription;
-
   public countries!: Country[];
 
-  public typesCompany: any[] = [
-    { name: 'Public', code: 'PB' },
-    { name: 'Private', code: 'PR' },
-    { name: 'Other', code: 'OT' }
-  ]
+  private readonly branchService = inject(BranchService);
+  private readonly companyTypeService = inject(CompanyTypeService);
+  private readonly contactPersonService = inject(ContactPersonService);
 
-  public sectors: any[] = [
-    { name: 'Economic', code: 'EC' },
-    { name: 'Financial', code: 'FI' },
-    { name: 'Human Resources', code: 'HR' }
-  ]
+  public companyTypes = toSignal(
+    this.companyTypeService.getAllCompanyTypes().pipe(
+      map(companyTypes => companyTypes.map(compayType => ({
+        name: compayType.typeName,
+        code: compayType.id.toString()
+      })))
+    ),
+    { initialValue: [] }
+  );
+
+  public sectors = toSignal(
+    this.branchService.getAllBranches().pipe(
+      map(branches => branches.map(branch => ({
+        name: branch.name,
+        code: branch.id.toString()
+      })))
+    ),
+    { initialValue: [] }
+  );
 
   public states: any[] = [
     { name: 'Bavaria', code: 'BY' },
@@ -53,28 +64,17 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public formDetailCustomer!: FormGroup;
 
-  public persons = [
-    { id: 1, name: 'Dr. Anna Müller', function: 'Chief Financial Officer', right: 1 },
-    { id: 2, name: 'James Carter', function: 'Power of Attorney', right: 1 },
-    { id: 3, name: 'Elena Petrova', function: 'Head of Data Protection', right: 1 },
-    { id: 4, name: "Marcus Holloway", function: "Cybersecurity Specialist", right: 0 },
-    { id: 5, name: "Eliza Chen", function: "Biomedical Researcher", right: 1 },
-    { id: 6, name: "Darius Johnson", function: "Urban Planner", right: 1 },
-    { id: 7, name: "Sophia Rivera", function: "Federal Judge", right: 0 },
-    { id: 8, name: "Trevor O'Neil", function: "Power Grid Operator", right: 1 },
-    { id: 9, name: "Priya Patel", function: "Pharmaceutical Director", right: 1 },
-    { id: 10, name: "Jamal Washington", function: "Air Traffic Controller", right: 1 },
-    { id: 11, name: "Natalie Brooks", function: "Meteorology Chief", right: 1 },
-    { id: 12, name: "Connor Shaw", function: "FBI Field Agent", right: 0 },
-    { id: 13, name: "Isabella Morales", function: "Water Treatment Manager", right: 1 },
-    { id: 14, name: "Ethan Zhang", function: "Stock Exchange Analyst", right: 1 },
-    { id: 15, name: "Olivia Kensington", function: "Nuclear Engineer", right: 1 },
-    { id: 16, name: "Miguel Alvarez", function: "Border Patrol Supervisor", right: 1 },
-    { id: 17, name: "Avery Sinclair", function: "CDC Epidemiologist", right: 1 },
-    { id: 18, name: "Jasmine Williams", function: "Federal Reserve Economist", right: 1 },
-    { id: 19, name: "Caleb Donovan", function: "NASA Flight Director", right: 1 },
-    { id: 20, name: "Violet Chang", function: "Social Media CTO", right: 1 }
-  ]
+  public contactPersons = toSignal(
+    this.contactPersonService.getAllContactPersons().pipe(
+      map(persons => persons.map(person => ({
+        id: person.id,
+        name: `${person.firstName} ${person.lastName}`,
+        function: person.function,
+        right: person.forInvoincing ?? 0 
+      })))
+    ),
+    { initialValue: [] }
+  );
 
   constructor(
     private fb: FormBuilder,
@@ -166,7 +166,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.FUNCTION'))
       },
       {
-        field: 'rigth',
+        field: 'right',
         header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.LAW'))
       }
     ];
@@ -179,7 +179,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   deletePerson(contact: any) {
-    this.persons = this.persons.filter(person => person.id !== contact.id);
+    this.contactPersonService.deleteContactPerson(
+      this.contactPersonService.contactPersons()
+        .find(p => p.id === contact.id)?.uuid ?? ''
+    );
   }
 
   showDialog() {

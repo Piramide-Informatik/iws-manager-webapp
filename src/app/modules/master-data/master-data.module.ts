@@ -61,7 +61,14 @@ import { EditDunningLevelComponent } from './components/dunning-levels/component
 import { SystemConstantsComponent } from './components/system-constants/system-constants.component';
 import { SystemConstantTableComponent } from './components/system-constants/components/system-constant-table/system-constant-table.component';
 import { SystemConstantFormComponent } from './components/system-constants/components/system-constant-form/system-constant-form.component';
-
+import { EmployeeQualificationComponent } from './components/employee-qualification/employee-qualification.component';
+import { EditQualificationComponent } from './components/employee-qualification/components/edit-qualification/edit-qualification.component';
+import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
+import { IwsStaffTableComponent } from './components/iws-staff/components/iws-staff-table/iws-staff-table.component';
+import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iws-staff/edit-iws-staff.component';
+import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
+import { IwsCommissionsTableComponent } from './components/iws-commissions/components/iws-commissions-table/iws-commissions-table.component';
+import { EditIwsCommissionsComponent } from './components/iws-commissions/components/edit-iws-commissions/edit-iws-commissions.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +101,15 @@ import { SystemConstantFormComponent } from './components/system-constants/compo
     EditDunningLevelComponent,
     SystemConstantsComponent,
     SystemConstantTableComponent,
-    SystemConstantFormComponent
+    SystemConstantFormComponent,
+    EmployeeQualificationComponent,
+    EditQualificationComponent,
+    IwsStaffComponent,
+    IwsStaffTableComponent,
+    EditIwsStaffComponent,
+    IwsCommissionsComponent,
+    IwsCommissionsTableComponent,
+    EditIwsCommissionsComponent,
   ],
   imports: [
     ButtonModule,
@@ -122,8 +137,7 @@ import { SystemConstantFormComponent } from './components/system-constants/compo
     ListboxModule,
     CheckboxModule,
     DropdownModule,
-    TextareaModule
-
+    TextareaModule,
   ],
 })
 export class MasterDataModule {}

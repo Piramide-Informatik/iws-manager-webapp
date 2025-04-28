@@ -59,7 +59,7 @@
           <label for="">{{ 'CUSTOMERS.FORM.COMPANY_TYPE' | translate }}</label>
           <p-select formControlName="selectedTypeCompany" 
           id="typeCompany"
-          [options]="typesCompany" 
+          [options]="companyTypes()" 
           optionLabel="name" 
           />
         </div>
@@ -68,7 +68,7 @@
           <label for="">{{ 'CUSTOMERS.FORM.INDUSTRY' | translate }}</label>
           <p-select formControlName="selectedSector" 
           id="sector"
-          [options]="sectors" 
+          [options]="sectors()" 
           optionLabel="name" 
           />
         </div>
@@ -151,7 +151,7 @@
     </div>
     
     <p-table 
-      [value]="persons" 
+      [value]="contactPersons()" 
       [columns]="selectedColumns"
       [paginator]="true"
       [rows]="15"

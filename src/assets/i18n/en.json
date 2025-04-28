@@ -256,15 +256,13 @@
     }
   },
   "ABSENCE_TYPES": {
-    "TABLE": {
+    "LABEL": {
+      "TITLE_FORM": "Edit project sponsor",
       "TYPE": "Absence Type",
       "ABBREVIATION": "Abbreviation",
       "FRACTION_OF_DAY": "Fraction of Day",
       "IS_VACATION": "Is Vacation",
       "CAN_BE_BOOKED": "Can be Booked"
-    },
-    "BUTTON": {
-      "NEW": "New"
     }
   },
   "ADDRESS": {
@@ -385,7 +383,49 @@
       "FEE": "Fee",
       "DEFAULT_INTEREST": "Default Interes",
       "PAYMENT_TERM": "Payment Term (Days)",
-      "REMINDER_TEXT": "Reminder Text" 
+      "REMINDER_TEXT": "Reminder Text"
+    }
+  },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Edit qualification",
+      "QUALIFICATION": "Qualification",
+      "ABBREVIATION": "Abbreviation"
+    }
+  },
+  "IWS_STAFF": {
+    "HEADER": {
+      "EDIT_STAFF": "Edit Staff"
+    },
+    "LABEL": {
+      "STAFF_ID": "Staff Number",
+      "SHORT_NAME": "Short Name",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "TEAM": "IWS Team",
+      "STAFF_SINCE": "Staff Since",
+      "STAFF_UNTIL": "Staff Until",
+      "SELECT_TEAM": "Select Team"
+    },
+    "BUTTON": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "NEW": "New Staff"
+    },
+    "TABLE": {
+      "STAFF_NUMBER": "Staff No.",
+      "SHORT_NAME": "Short Name",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "TEAM": "Team",
+      "STAFF_SINCE": "Since",
+      "STAFF_UNTIL": "Until",
+      "PAGE_INFO": "Showing {first} to {last} of {totalRecords} entries",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose columns",
+      "NO_DATA": "No staff found"
     }
   },
   "SYSTEM_CONSTANT": {
@@ -413,5 +453,26 @@
     "PAGINATION": {
       "FOOTER": "Displaying {{initValue}} to {{endValue}} of {{totalValue}} entries."
     }
+  },
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "Threshold",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission"
+    },
+    "BUTTON": {
+      "NEW": "New"
+    },
+    "FORM": {
+      "HEADER": "Edit IWS Commission",
+      "THRESHOLD": "Threshold Value",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    }
+  },
+  "PAGINATION": {
+    "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
   }
 }
