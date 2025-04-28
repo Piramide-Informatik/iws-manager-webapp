@@ -380,6 +380,7 @@
       "REMINDER_TEXT": "Mahntext"
     }
   },
+<<<<<<< HEAD
   "EMPLOYEE_QUALIFICATION": {
     "LABEL": {
       "TITLE_FORM": "Qualifikation bearbeiten",
@@ -422,6 +423,28 @@
       "NO_DATA": "Keine Mitarbeiter gefunden."
     }
   },
+
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "ab Wert",
+      "PERCENTAGE": "Provision in %",
+      "MIN_COMMISSION": "Mindestprovision"
+    },
+    "BUTTON": {
+      "NEW": "Neu"
+    },
+    "FORM": {
+      "HEADER": "IWS Provision bearbeiten",
+      "THRESHOLD": "ab Forderungswert",
+      "PERCENTAGE": "Provision in %",
+      "MIN_COMMISSION": "Mindestprovision",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    }
+  },
+  "PAGINATION": {
+    "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
+=======
   "SYSTEM_CONSTANT": {
     "TABLE_SYSTEM_CONSTANT": {
       "CONSTANT": "Konstante",
@@ -447,27 +470,6 @@
     "PAGINATION": {
       "FOOTER": "Es werden {{initValue}} bis {{endValue}} von {{totalValue}} Einträgen angezeigt."
     }
- },
-
-  "IWS_COMMISSIONS": {
-    "TABLE": {
-      "THRESHOLD": "ab Wert",
-      "PERCENTAGE": "Provision in %",
-      "MIN_COMMISSION": "Mindestprovision"
-    },
-    "BUTTON": {
-      "NEW": "Neu"
-    },
-    "FORM": {
-      "HEADER": "IWS Provision bearbeiten",
-      "THRESHOLD": "ab Forderungswert",
-      "PERCENTAGE": "Provision in %",
-      "MIN_COMMISSION": "Mindestprovision",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
-    }
-  },
-  "PAGINATION": {
-    "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
+>>>>>>> 6d0bf46 (Add system constants component)
   }
 }

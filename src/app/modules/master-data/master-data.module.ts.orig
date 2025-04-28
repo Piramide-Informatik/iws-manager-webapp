@@ -58,9 +58,7 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { GenaralTableComponent } from './genaral-table/genaral-table.component';
 import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
-import { SystemConstantsComponent } from './components/system-constants/system-constants.component';
-import { SystemConstantTableComponent } from './components/system-constants/components/system-constant-table/system-constant-table.component';
-import { SystemConstantFormComponent } from './components/system-constants/components/system-constant-form/system-constant-form.component';
+<<<<<<< HEAD
 import { EmployeeQualificationComponent } from './components/employee-qualification/employee-qualification.component';
 import { EditQualificationComponent } from './components/employee-qualification/components/edit-qualification/edit-qualification.component';
 import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
@@ -69,6 +67,12 @@ import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iw
 import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
 import { IwsCommissionsTableComponent } from './components/iws-commissions/components/iws-commissions-table/iws-commissions-table.component';
 import { EditIwsCommissionsComponent } from './components/iws-commissions/components/edit-iws-commissions/edit-iws-commissions.component';
+=======
+import { SystemConstantsComponent } from './components/system-constants/system-constants.component';
+import { SystemConstantTableComponent } from './components/system-constants/components/system-constant-table/system-constant-table.component';
+import { SystemConstantFormComponent } from './components/system-constants/components/system-constant-form/system-constant-form.component';
+
+>>>>>>> 6d0bf46 (Add system constants component)
 
 @NgModule({
   declarations: [
@@ -99,9 +103,7 @@ import { EditIwsCommissionsComponent } from './components/iws-commissions/compon
     DunningLevelsComponent,
     GenaralTableComponent,
     EditDunningLevelComponent,
-    SystemConstantsComponent,
-    SystemConstantTableComponent,
-    SystemConstantFormComponent,
+<<<<<<< HEAD
     EmployeeQualificationComponent,
     EditQualificationComponent,
     IwsStaffComponent,
@@ -110,6 +112,11 @@ import { EditIwsCommissionsComponent } from './components/iws-commissions/compon
     IwsCommissionsComponent,
     IwsCommissionsTableComponent,
     EditIwsCommissionsComponent,
+=======
+    SystemConstantsComponent,
+    SystemConstantTableComponent,
+    SystemConstantFormComponent
+>>>>>>> 6d0bf46 (Add system constants component)
   ],
   imports: [
     ButtonModule,

@@ -1,0 +1,59 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'SYSTEM_CONSTANT.LABEL.EDIT_SYSTEM_CONSTANT' | translate">
+    <form [formGroup]="editSystemConstantForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="system-constant-form mb-2 flex">
+                <label for="name">{{ 'SYSTEM_CONSTANT.LABEL.CONSANT' | translate }}</label>
+                <div>
+                    <input pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': editSystemConstantForm.get('name')?.invalid && 
+                     editSystemConstantForm.get('name')?.dirty && editSystemConstantForm.get('name')?.touched}" autocomplete="off" />
+                     <p-message severity="error" variant="simple" size="small" *ngIf="
+                         editSystemConstantForm.get('name')?.invalid && 
+                         editSystemConstantForm.get('name')?.dirty && 
+                         editSystemConstantForm.get('name')!.hasError('required')
+                         ">
+                         {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}</p-message>
+                </div>
+                
+            </div>
+            <div class="system-constant-form mb-2 flex">
+                <label for="valuenum">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_NUMERIC' | translate }}</label>
+                <div>
+                    <input pInputText type="text" id="valuenum" formControlName="valuenum" [ngClass]="{'ng-invalid': editSystemConstantForm.get('valuenum')?.invalid && 
+                    editSystemConstantForm.get('valuenum')?.dirty && editSystemConstantForm.get('valuenum')?.touched}" autocomplete="off" />
+                    <p-message severity="error" variant="simple" size="small" *ngIf="
+                        editSystemConstantForm.get('valuenum')?.invalid && 
+                        editSystemConstantForm.get('valuenum')?.dirty && 
+                        editSystemConstantForm.get('valuenum')!.hasError('pattern')
+                        ">
+                        {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}</p-message> 
+                </div>
+            </div>
+            <div class="system-constant-form mb-2 flex">
+                <label for="valuechar">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_ALPHANUMERIC' | translate }}</label>
+                <div>
+                    <input pInputText type="text" id="valuechar" formControlName="valuechar" [ngClass]="{'ng-invalid': editSystemConstantForm.get('valuechar')?.invalid && 
+                    editSystemConstantForm.get('valuechar')?.dirty && editSystemConstantForm.get('valuechar')?.touched}" autocomplete="off" />
+                    <p-message severity="error" variant="simple" size="small" *ngIf="
+                        editSystemConstantForm.get('valuechar')?.invalid && 
+                        editSystemConstantForm.get('valuechar')?.dirty && 
+                        editSystemConstantForm.get('valuechar')!.hasError('pattern')
+                        ">
+                        {{ 'SYSTEM_CONSTANT.ERROR.ONLY_ALPHANUMERIC_REQUIRED' | translate }}</p-message >  
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    <div class="buttons">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <p-button class="save me-2" size="small" [label]="'SYSTEM_CONSTANT.BUTTON.SAVE' | translate" icon="pi pi-check"
+                    iconPos="left" />
+                <p-button class="cancel me-2" size="small" [label]="'SYSTEM_CONSTANT.BUTTON.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" />
+            </div>
+        </div>
+    </div>
+</p-card>
