@@ -3,13 +3,10 @@
 .scroll-wrapper {
   width: 100%;
   background: $accent-color;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   box-sizing: border-box;
-
   position: relative;
   overflow: hidden;
 
@@ -22,6 +19,8 @@
     scroll-behavior: smooth;
     flex: 1;
     cursor: grab;
+    scrollbar-width: none; //  Firefox oculta el scroll
+    -ms-overflow-style: none; //  IE 10+
 
     &:active {
       cursor: grabbing;
