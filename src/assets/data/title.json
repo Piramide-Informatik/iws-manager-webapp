@@ -1,0 +1,19 @@
+{
+    "titles": [
+        {
+            "uuidTitle": "1a2b3c4d-1234-5678-9101-abcdef123456",
+            "idTitle": 1,
+            "nameTitle": "Dr."
+        },
+        {
+            "uuidTitle": "2b3c4d5e-2345-6789-1011-bcdef2345678",
+            "idTitle": 2,
+            "nameTitle": "Prof."
+        },
+        {
+            "uuidTitle": "3c4d5e6f-3456-7890-1121-cdef34567890",
+            "idTitle": 3,
+            "nameTitle": "Prof. Dr."
+        }
+    ]
+}
