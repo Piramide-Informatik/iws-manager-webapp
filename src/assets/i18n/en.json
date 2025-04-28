@@ -428,6 +428,24 @@
       "NO_DATA": "No staff found"
     }
   },
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "Threshold",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission"
+    },
+    "BUTTON": {
+      "NEW": "New"
+    },
+    "FORM": {
+      "HEADER": "Edit IWS Commission",
+      "THRESHOLD": "Threshold Value",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    }
+  },
   "PAGINATION": {
     "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
   }
