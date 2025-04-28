@@ -1,0 +1,71 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  [header]="'IWS_COMMISSIONS.FORM.HEADER' | translate"
+>
+  <form [formGroup]="editCommissionForm" (ngSubmit)="onSubmit()">
+    <div class="align-items-center mb-2">
+      <div class="commission-form mb-2">
+        <label for="threshold">{{
+          "IWS_COMMISSIONS.FORM.THRESHOLD" | translate
+        }}</label>
+        <input
+          pInputText
+          type="number"
+          id="threshold"
+          formControlName="threshold"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="commission-form mb-2">
+        <label for="percentage">{{
+          "IWS_COMMISSIONS.FORM.PERCENTAGE" | translate
+        }}</label>
+        <input
+          pInputText
+          type="number"
+          id="percentage"
+          formControlName="percentage"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="commission-form mb-2">
+        <label for="minCommission">{{
+          "IWS_COMMISSIONS.FORM.MIN_COMMISSION" | translate
+        }}</label>
+        <input
+          pInputText
+          type="number"
+          id="minCommission"
+          formControlName="minCommission"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <p-button
+            class="save me-2"
+            size="small"
+            [label]="'IWS_COMMISSIONS.FORM.SAVE' | translate"
+            icon="pi pi-check"
+            iconPos="left"
+            type="submit"
+          ></p-button>
+        </div>
+        <div class="col">
+          <p-button
+            class="cancel me-2"
+            size="small"
+            [label]="'IWS_COMMISSIONS.FORM.CANCEL' | translate"
+            icon="pi pi-times"
+            iconPos="left"
+            (click)="onCancel()"
+            (keydown)="onCancel()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</p-card>

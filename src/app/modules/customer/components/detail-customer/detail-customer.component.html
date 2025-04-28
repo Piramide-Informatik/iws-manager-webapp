@@ -59,7 +59,7 @@
           <label for="">{{ 'CUSTOMERS.FORM.COMPANY_TYPE' | translate }}</label>
           <p-select formControlName="selectedTypeCompany" 
           id="typeCompany"
-          [options]="typesCompany" 
+          [options]="companyTypes()" 
           optionLabel="name" 
           />
         </div>

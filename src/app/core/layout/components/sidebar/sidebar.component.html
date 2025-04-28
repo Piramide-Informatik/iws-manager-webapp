@@ -1,4 +1,4 @@
-<div class="sidebar" [class.collapsed]="isCollapsed">
+<div class="sidebar">
   <div class="sidebar-content">
     <div
       *ngFor="let item of menuItems"
@@ -6,12 +6,8 @@
       [routerLink]="item.routerLink"
       routerLinkActive="active"
     >
-      <a
-        class="p-menuitem-link"
-        [pTooltip]="isCollapsed ? item.label : ''"
-        tooltipPosition="right"
-        [tooltipStyleClass]="'custom-tooltip'"
-      >
+      <a class="p-menuitem-link">
+        <i *ngIf="item.icon" [class]="item.icon"></i>
         <span class="menu-item-text">{{ item.label }}</span>
       </a>
     </div>

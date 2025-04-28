@@ -10,6 +10,7 @@ import { CountryService } from '../../services/country.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BranchService } from '../../../../Services/branch.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
+import { CompanyTypeService } from '../../../../Services/company-type.service';
 
 interface Column {
   field: string,
@@ -32,14 +33,18 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public countries!: Country[];
 
   private readonly branchService = inject(BranchService);
-
+  private readonly companyTypeService = inject(CompanyTypeService);
   private readonly contactPersonService = inject(ContactPersonService);
-  
-  public typesCompany: any[] = [
-    { name: 'Public', code: 'PB' },
-    { name: 'Private', code: 'PR' },
-    { name: 'Other', code: 'OT' }
-  ]
+
+  public companyTypes = toSignal(
+    this.companyTypeService.getAllCompanyTypes().pipe(
+      map(companyTypes => companyTypes.map(compayType => ({
+        name: compayType.typeName,
+        code: compayType.id.toString()
+      })))
+    ),
+    { initialValue: [] }
+  );
 
   public sectors = toSignal(
     this.branchService.getAllBranches().pipe(
@@ -65,7 +70,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         id: person.id,
         name: `${person.firstName} ${person.lastName}`,
         function: person.function,
-        right: person.forInvoincing || 0 
+        right: person.forInvoincing ?? 0 
       })))
     ),
     { initialValue: [] }
@@ -176,7 +181,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   deletePerson(contact: any) {
     this.contactPersonService.deleteContactPerson(
       this.contactPersonService.contactPersons()
-        .find(p => p.id === contact.id)?.uuid || ''
+        .find(p => p.id === contact.id)?.uuid ?? ''
     );
   }
 

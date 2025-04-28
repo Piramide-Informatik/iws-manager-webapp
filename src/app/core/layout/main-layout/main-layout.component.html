@@ -2,12 +2,14 @@
   <app-header
     [username]="'Patrick Zessin'"
     [items]="mainMenuItems"
+    [currentMenuKey]="currentMenuKey"
     (menuSelected)="onMainMenuSelect($event)"
   >
   </app-header>
 
   <div class="layout-content">
     <app-sidebar
+      *ngIf="currentMenuKey === 'customers'"
       [isCollapsed]="sidebarCollapsed"
       [menuItems]="currentSidebarItems"
       (toggleCollapse)="toggleSidebar()"

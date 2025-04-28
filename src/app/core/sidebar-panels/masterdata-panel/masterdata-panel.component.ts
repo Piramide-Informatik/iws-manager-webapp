@@ -35,6 +35,21 @@ export class MasterdataPanelComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    const container = this.scrollMenu.nativeElement as HTMLElement;
+
+    container.addEventListener(
+      'wheel',
+      (event: WheelEvent) => {
+        if (event.deltaY === 0) return;
+        event.preventDefault();
+        container.scrollBy({
+          left: event.deltaY * 3,
+        });
+      },
+      { passive: false }
+    );
+  }
   ngOnInit(): void {
     this.masterDataGroups = this.getMasterDataSidebar();
 
