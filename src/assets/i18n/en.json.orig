@@ -386,6 +386,7 @@
       "REMINDER_TEXT": "Reminder Text"
     }
   },
+<<<<<<< HEAD
   "EMPLOYEE_QUALIFICATION": {
     "LABEL": {
       "TITLE_FORM": "Edit qualification",
@@ -428,6 +429,27 @@
       "NO_DATA": "No staff found"
     }
   },
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "Threshold",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission"
+    },
+    "BUTTON": {
+      "NEW": "New"
+    },
+    "FORM": {
+      "HEADER": "Edit IWS Commission",
+      "THRESHOLD": "Threshold Value",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    }
+  },
+  "PAGINATION": {
+    "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
+=======
   "SYSTEM_CONSTANT": {
     "TABLE_SYSTEM_CONSTANT": {
       "CONSTANT": "Constant",
@@ -453,26 +475,6 @@
     "PAGINATION": {
       "FOOTER": "Displaying {{initValue}} to {{endValue}} of {{totalValue}} entries."
     }
-  },
-  "IWS_COMMISSIONS": {
-    "TABLE": {
-      "THRESHOLD": "Threshold",
-      "PERCENTAGE": "Commission (%)",
-      "MIN_COMMISSION": "Minimum Commission"
-    },
-    "BUTTON": {
-      "NEW": "New"
-    },
-    "FORM": {
-      "HEADER": "Edit IWS Commission",
-      "THRESHOLD": "Threshold Value",
-      "PERCENTAGE": "Commission (%)",
-      "MIN_COMMISSION": "Minimum Commission",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
-    }
-  },
-  "PAGINATION": {
-    "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
+>>>>>>> 6d0bf46 (Add system constants component)
   }
 }
