@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 export class EmployeeQualificationComponent implements OnInit, OnDestroy {
 
   public employeesQualifications: any[] = [];
-  public columsHeaderField: any[] = [];
+  public columsHeaderFieldEmployee: any[] = [];
   private langSubscription!: Subscription;
 
   constructor(
@@ -34,7 +34,7 @@ export class EmployeeQualificationComponent implements OnInit, OnDestroy {
   }
 
   loadColHeaders(): void {
-    this.columsHeaderField = [
+    this.columsHeaderFieldEmployee = [
       { field: 'qualification', styles: {'width': 'auto' }, header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION')) },
       { field: 'abbreviation', styles: {'width': 'auto'},  header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION')) },
     ];
