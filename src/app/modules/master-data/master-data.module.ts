@@ -58,6 +58,9 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { GenaralTableComponent } from './genaral-table/genaral-table.component';
 import { EditDunningLevelComponent } from './components/dunning-levels/components/edit-dunning-level/edit-dunning-level.component';
+import { SystemConstantsComponent } from './components/system-constants/system-constants.component';
+import { SystemConstantTableComponent } from './components/system-constants/components/system-constant-table/system-constant-table.component';
+import { SystemConstantFormComponent } from './components/system-constants/components/system-constant-form/system-constant-form.component';
 
 
 @NgModule({
@@ -88,7 +91,10 @@ import { EditDunningLevelComponent } from './components/dunning-levels/component
     FundingProgramsComponent,
     DunningLevelsComponent,
     GenaralTableComponent,
-    EditDunningLevelComponent
+    EditDunningLevelComponent,
+    SystemConstantsComponent,
+    SystemConstantTableComponent,
+    SystemConstantFormComponent
   ],
   imports: [
     ButtonModule,

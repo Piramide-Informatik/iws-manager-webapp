@@ -381,5 +381,31 @@
       "PAYMENT_TERM": "Zahlungsgziel (Tagen)",
       "REMINDER_TEXT": "Mahntext" 
     }
+  },
+  "SYSTEM_CONSTANT": {
+    "TABLE_SYSTEM_CONSTANT": {
+      "CONSTANT": "Konstante",
+      "VALUE": "Wert",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_SYSTEM_CONSTANT": "Systemkonstante bearbeiten",
+      "CONSANT": "Konstante",
+      "VALUE_NUMERIC": "Wert numerisch",
+      "VALUE_ALPHANUMERIC": "Wert alphanumerisch"
+    },
+    "ERROR": {
+      "NAME_REQUIRED": "Name ist erforderlich",
+      "ONLY_NUMBER_REQUIRED": "Geben Sie nur Zahlen ein",
+      "ONLY_ALPHANUMERIC_REQUIRED": "Geben Sie nur alphanumerische Zeichen ein"
+    },
+    "PAGINATION": {
+      "FOOTER": "Es werden {{initValue}} bis {{endValue}} von {{totalValue}} Einträgen angezeigt."
+    }
   }
 }

@@ -387,5 +387,31 @@
       "PAYMENT_TERM": "Payment Term (Days)",
       "REMINDER_TEXT": "Reminder Text" 
     }
+  },
+  "SYSTEM_CONSTANT": {
+    "TABLE_SYSTEM_CONSTANT": {
+      "CONSTANT": "Constant",
+      "VALUE": "Value",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_SYSTEM_CONSTANT": "Edit System Constant",
+      "CONSANT": "Constant",
+      "VALUE_NUMERIC": "Value numeric",
+      "VALUE_ALPHANUMERIC": "Value alphanumeric"
+    },
+    "ERROR": {
+      "NAME_REQUIRED": "Name is required",
+      "ONLY_NUMBER_REQUIRED": "Enter only numbers",
+      "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters."
+    },
+    "PAGINATION": {
+      "FOOTER": "Displaying {{initValue}} to {{endValue}} of {{totalValue}} entries."
+    }
   }
 }

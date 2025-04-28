@@ -387,5 +387,31 @@
       "PAYMENT_TERM": "Plazo de Pago (Días)",
       "REMINDER_TEXT": "Texto Recordatorio" 
     }
+  },
+  "SYSTEM_CONSTANT": {
+    "TABLE_SYSTEM_CONSTANT": {
+      "CONSTANT": "Constante",
+      "VALUE": "Valor",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "EDIT_SYSTEM_CONSTANT": "Editar Constantes del Sistema",
+      "CONSANT": "Constante",
+      "VALUE_NUMERIC": "Valor numerico",
+      "VALUE_ALPHANUMERIC": "Valor alfanumerico"
+    },
+    "ERROR": {
+      "NAME_REQUIRED": "Nombre es requerido",
+      "ONLY_NUMBER_REQUIRED": "Ingrese solo numeros",
+      "ONLY_ALPHANUMERIC_REQUIRED": "Ingrese solo valores alfanumericos"
+    },
+    "PAGINATION": {
+      "FOOTER": "Mostrando del {{initValue}} al {{endValue}} de {{totalValue}} resultados."
+    }
   }
 }
