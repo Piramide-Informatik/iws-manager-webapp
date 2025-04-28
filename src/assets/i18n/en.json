@@ -386,6 +386,13 @@
       "REMINDER_TEXT": "Reminder Text"
     }
   },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Edit qualification",
+      "QUALIFICATION": "Qualification",
+      "ABBREVIATION": "Abbreviation"
+    }
+  },
   "IWS_STAFF": {
     "HEADER": {
       "EDIT_STAFF": "Edit Staff"
@@ -419,6 +426,24 @@
       "COLUMNS_SELECTED": "{0} columns selected",
       "CHOOSE_COLUMNS": "Choose columns",
       "NO_DATA": "No staff found"
+    }
+  },
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "Threshold",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission"
+    },
+    "BUTTON": {
+      "NEW": "New"
+    },
+    "FORM": {
+      "HEADER": "Edit IWS Commission",
+      "THRESHOLD": "Threshold Value",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
     }
   },
   "PAGINATION": {

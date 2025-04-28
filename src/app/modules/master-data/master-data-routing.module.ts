@@ -9,7 +9,9 @@ import { AddressComponent } from './components/address/address.component';
 import { HolidaysComponent } from './components/holidays/holidays.component';
 import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
+import { EmployeeQualificationComponent } from './components/employee-qualification/employee-qualification.component';
 import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
+import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
 
 const routes: Routes = [
   { path: 'absence-types', component: AbsenceTypesComponent },
@@ -21,7 +23,9 @@ const routes: Routes = [
   { path: 'dunning-levels', component: DunningLevelsComponent },
   { path: 'holidays', component: HolidaysComponent },
   { path: 'funding-programs', component: FundingProgramsComponent },
+  { path: 'employee-qualification', component: EmployeeQualificationComponent },
   { path: 'iws-staff', component: IwsStaffComponent },
+  { path: 'iws-commissions', component: IwsCommissionsComponent },
 ];
 
 @NgModule({

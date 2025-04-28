@@ -1,19 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
+import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../router-utils.service';
 
 @Component({
-  selector: 'app-dunning-levels',
+  selector: 'app-employee-qualification',
   standalone: false,
-  templateUrl: './dunning-levels.component.html',
-  styles: []
+  templateUrl: './employee-qualification.component.html',
+  styles: ``
 })
-export class DunningLevelsComponent implements OnInit, OnDestroy {
-  dunningLevels: any[] = [];
-  columsHeaderField: any[] = [];
+export class EmployeeQualificationComponent implements OnInit, OnDestroy {
 
+  public employeesQualifications: any[] = [];
+  public columsHeaderFieldEmployee: any[] = [];
   private langSubscription!: Subscription;
 
   constructor(
@@ -23,7 +23,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(): void {
-    this.dunningLevels = this.masterDataService.getDunningLevelsData();
+    this.employeesQualifications = this.masterDataService.getEmployeeQualificationData();
 
     this.loadColHeaders();
 
@@ -34,9 +34,9 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   }
 
   loadColHeaders(): void {
-    this.columsHeaderField = [
-      { field: 'dunningLevel', styles: {'width': '100px'}, header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')) },
-      { field: 'text', styles: {'width': 'auto'},  header: this.translate.instant(_('DUNNING_LEVELS.LABEL.TEXT')) },
+    this.columsHeaderFieldEmployee = [
+      { field: 'qualification', styles: {'width': 'auto' }, header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION')) },
+      { field: 'abbreviation', styles: {'width': 'auto'},  header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION')) },
     ];
   }
 

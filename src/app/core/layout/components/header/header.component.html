@@ -1,17 +1,29 @@
 <div class="header">
-      <div class="grid m-0 h-full align-items-center px-3 menu-options" *ngFor="let item of items; let i = index">
-        <div class="col" (click)="onMenuSelect(item.command?? 'customers', i)">
-          <span class="menu-item-text">{{ item.label }}</span>
-        </div>        
-      </div>
-    <div class="header-right">
-      <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
-      <button pButton 
-              type="button"
-              class="p-button-text user-button"
-              [label]="username"
-              (click)="userMenu.toggle($event)">
-              <p-avatar image="assets/user/PatrickZessin.jpg" shape="circle" />
-      </button>
+  <div
+    class="grid m-0 h-full align-items-center px-3 menu-options"
+    *ngFor="let item of items; let i = index"
+    [ngClass]="{ active: item.command === currentMenuKey }"
+  >
+    <div
+      id="col"
+      class="col"
+      (click)="onMenuSelect(item.command, i)"
+      (keydown.enter)="onMenuSelect(item.command, i)"
+    >
+      <span class="menu-item-text">{{ item.label }}</span>
     </div>
   </div>
+
+  <div class="header-right">
+    <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
+    <button
+      pButton
+      type="button"
+      class="p-button-text user-button"
+      [label]="username"
+      (click)="userMenu.toggle($event)"
+    >
+      <p-avatar image="assets/user/PatrickZessin.jpg" shape="circle" />
+    </button>
+  </div>
+</div>
