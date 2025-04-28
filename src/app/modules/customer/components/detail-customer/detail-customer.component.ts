@@ -9,6 +9,7 @@ import { Country } from '../../../../Entities/country.model';
 import { CountryService } from '../../services/country.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BranchService } from '../../../../Services/branch.service';
+import { CompanyTypeService } from '../../../../Services/company-type.service';
 
 interface Column {
   field: string,
@@ -31,12 +32,17 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public countries!: Country[];
 
   private readonly branchService = inject(BranchService);
+  private readonly companyTypeService = inject(CompanyTypeService);
 
-  public typesCompany: any[] = [
-    { name: 'Public', code: 'PB' },
-    { name: 'Private', code: 'PR' },
-    { name: 'Other', code: 'OT' }
-  ]
+  public companyTypes = toSignal(
+    this.companyTypeService.getAllCompanyTypes().pipe(
+      map(companyTypes => companyTypes.map(compayType => ({
+        name: compayType.typeName,
+        code: compayType.id.toString()
+      })))
+    ),
+    { initialValue: [] }
+  );
 
   public sectors = toSignal(
     this.branchService.getAllBranches().pipe(
