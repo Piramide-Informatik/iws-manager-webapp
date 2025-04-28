@@ -60,4 +60,12 @@ export class MasterDataService {
       },
     ];
   }
+
+  getEmployeeQualificationData(): any[]{
+    return [
+      { qualification: 'Sonstige', abbreviation: 'Sonst.'},
+      { qualification: 'Techniker', abbreviation: 'Tech.'},
+      { qualification: 'Wissenschaftler', abbreviation: 'Wiss.'},
+    ]
+  }
 };

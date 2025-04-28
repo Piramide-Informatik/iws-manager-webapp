@@ -380,6 +380,13 @@
       "REMINDER_TEXT": "Mahntext"
     }
   },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Qualifikation bearbeiten",
+      "QUALIFICATION": "Qualifikation",
+      "ABBREVIATION": "Kürzel"
+    }
+  },
   "IWS_STAFF": {
     "HEADER": {
       "EDIT_STAFF": "Mitarbeiter bearbeiten"
@@ -416,6 +423,24 @@
     }
   },
 
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "ab Wert",
+      "PERCENTAGE": "Provision in %",
+      "MIN_COMMISSION": "Mindestprovision"
+    },
+    "BUTTON": {
+      "NEW": "Neu"
+    },
+    "FORM": {
+      "HEADER": "IWS Provision bearbeiten",
+      "THRESHOLD": "ab Forderungswert",
+      "PERCENTAGE": "Provision in %",
+      "MIN_COMMISSION": "Mindestprovision",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    }
+  },
   "PAGINATION": {
     "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
   }

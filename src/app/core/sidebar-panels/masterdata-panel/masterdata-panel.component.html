@@ -1,6 +1,5 @@
 <div class="scroll-wrapper">
   <button class="scroll-btn left" (click)="scroll('left')">‹</button>
-
   <div class="scroll-container" #scrollMenu>
     <div
       *ngFor="let item of masterDataGroups"
@@ -11,6 +10,5 @@
       {{ item.label }}
     </div>
   </div>
-
   <button class="scroll-btn right" (click)="scroll('right')">›</button>
 </div>
