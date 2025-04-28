@@ -38,7 +38,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.loadColHeaders();
-    this.customers = this.customerService.list();
+    this.customers = this.customerService.getCustomers();
 
     this.selectedColumns = this.cols;
 

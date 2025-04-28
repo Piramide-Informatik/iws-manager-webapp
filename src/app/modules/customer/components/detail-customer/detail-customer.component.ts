@@ -1,10 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
-import { Subscription } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
+import { Country } from '../../../../Entities/country.model';
+import { CountryService } from '../../services/country.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BranchService } from '../../../../Services/branch.service';
 
 interface Column {
   field: string,
@@ -20,35 +24,13 @@ interface Column {
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public selectedCountry!: string;
-
   public cols!: Column[];
-
   public selectedColumns!: Column[];
-
   public customers!: Customer[];
-
   private langSubscription!: Subscription;
+  public countries!: Country[];
 
-  public countries: any[] = [
-    { name: 'Germany', code: 'DE', flag: 'https://flagsapi.com/DE/flat/64.png' },
-    { name: 'Switzerland', code: 'CH', flag: 'https://flagsapi.com/CH/flat/64.png' },
-    { name: 'France', code: 'FR', flag: 'https://flagsapi.com/FR/flat/64.png' },
-    { name: 'Japan', code: 'JP', flag: 'https://flagsapi.com/JP/flat/64.png' },
-    { name: 'USA', code: 'US', flag: 'https://flagsapi.com/US/flat/64.png' },
-    { name: 'UK', code: 'GB', flag: 'https://flagsapi.com/GB/flat/64.png' },
-    { name: 'Canada', code: 'CA', flag: 'https://flagsapi.com/CA/flat/64.png' },
-    { name: 'Spain', code: 'ES', flag: 'https://flagsapi.com/ES/flat/64.png' },
-    { name: 'Italy', code: 'IT', flag: 'https://flagsapi.com/IT/flat/64.png' },
-    { name: 'Netherlands', code: 'NL', flag: 'https://flagsapi.com/NL/flat/64.png' },
-    { name: 'India', code: 'IN', flag: 'https://flagsapi.com/IN/flat/64.png' },
-    { name: 'Brazil', code: 'BR', flag: 'https://flagsapi.com/BR/flat/64.png' },
-    { name: 'Mexico', code: 'MX', flag: 'https://flagsapi.com/MX/flat/64.png' },
-    { name: 'Argentina', code: 'AR', flag: 'https://flagsapi.com/AR/flat/64.png' },
-    { name: 'South Korea', code: 'KR', flag: 'https://flagsapi.com/KR/flat/64.png' },
-    { name: 'Australia', code: 'AU', flag: 'https://flagsapi.com/AU/flat/64.png' },
-    { name: 'Russia', code: 'RU', flag: 'https://flagsapi.com/RU/flat/64.png' }
-  ];
-
+  private readonly branchService = inject(BranchService);
 
   public typesCompany: any[] = [
     { name: 'Public', code: 'PB' },
@@ -56,11 +38,15 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     { name: 'Other', code: 'OT' }
   ]
 
-  public sectors: any[] = [
-    { name: 'Economic', code: 'EC' },
-    { name: 'Financial', code: 'FI' },
-    { name: 'Human Resources', code: 'HR' }
-  ]
+  public sectors = toSignal(
+    this.branchService.getAllBranches().pipe(
+      map(branches => branches.map(branch => ({
+        name: branch.name,
+        code: branch.id.toString()
+      })))
+    ),
+    { initialValue: [] }
+  );
 
   public states: any[] = [
     { name: 'Bavaria', code: 'BY' },
@@ -96,6 +82,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
+    private readonly countryService : CountryService,
     private readonly customerService: CustomerService,
     private readonly router: Router,
     private readonly translate: TranslateService 
@@ -127,12 +114,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   visible: boolean = false;
 
   ngOnInit(): void {
+
+    this.countries = this.countryService.getCountries();
     this.updateHeadersAndColumns();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
     });
     this.formDetailCustomer.get('customerNo')?.disable();
-    this.customers = this.customerService.list();
+    this.customers = this.customerService.getCustomers();
 
     this.selectedCountry = (history.state.customerData.land);
     this.activatedRoute.params

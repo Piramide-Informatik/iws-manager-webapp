@@ -29,11 +29,6 @@
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
               <div class="flex align-items-center gap-2" *ngIf="country">
-                <img 
-                  [src]="country.flag" 
-                  style="width: 24px; height: 16px; object-fit: cover" 
-                  alt="flag" 
-                />
                 <span>{{ country.name }}</span>
               </div>
             </ng-template>
@@ -41,11 +36,6 @@
            <!-- Personalización de cada opción -->
             <ng-template let-country pTemplate="item">
               <div class="flex align-items-center gap-2">
-                <img 
-                  [src]="country.flag" 
-                  style="width: 24px; height: 16px; object-fit: cover" 
-                  alt="flag" 
-                />
                 <span>{{ country.name }}</span>
               </div>
             </ng-template>
@@ -78,7 +68,7 @@
           <label for="">{{ 'CUSTOMERS.FORM.INDUSTRY' | translate }}</label>
           <p-select formControlName="selectedSector" 
           id="sector"
-          [options]="sectors" 
+          [options]="sectors()" 
           optionLabel="name" 
           />
         </div>

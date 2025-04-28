@@ -256,15 +256,13 @@
     }
   },
   "ABSENCE_TYPES": {
-    "TABLE": {
+    "LABEL": {
+      "TITLE_FORM": "Editar patrocinador del proyecto",
       "TYPE": "Tipo de Ausencia",
       "ABBREVIATION": "Abreviatura",
       "FRACTION_OF_DAY": "Fracción del Día",
       "IS_VACATION": "Es Vacación",
       "CAN_BE_BOOKED": "Se Puede Reservar"
-    },
-    "BUTTON": {
-      "NEW": "Nuevo"
     }
   },
   "ADDRESS": {
@@ -385,7 +383,7 @@
       "FEE": "Tarifa",
       "DEFAULT_INTEREST": "Interés Predeterminado",
       "PAYMENT_TERM": "Plazo de Pago (Días)",
-      "REMINDER_TEXT": "Texto Recordatorio" 
+      "REMINDER_TEXT": "Texto Recordatorio"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -394,5 +392,44 @@
       "QUALIFICATION": "Calificación",
       "ABBREVIATION": "Abreviatura"
     }
+  },
+  "IWS_STAFF": {
+    "HEADER": {
+      "EDIT_STAFF": "Editar Empleado"
+    },
+    "LABEL": {
+      "STAFF_ID": "Número de Empleado",
+      "SHORT_NAME": "Abreviatura",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellido",
+      "EMAIL": "Correo Electrónico",
+      "TEAM": "Equipo IWS",
+      "STAFF_SINCE": "Empleado desde",
+      "STAFF_UNTIL": "Empleado hasta",
+      "SELECT_TEAM": "Seleccionar equipo"
+    },
+    "BUTTON": {
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar",
+      "NEW": "Nuevo Empleado"
+    },
+    "TABLE": {
+      "STAFF_NUMBER": "N° de Empleado",
+      "SHORT_NAME": "Abreviatura",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellido",
+      "EMAIL": "Correo",
+      "TEAM": "Equipo",
+      "STAFF_SINCE": "Desde",
+      "STAFF_UNTIL": "Hasta",
+      "PAGE_INFO": "Mostrando {first} a {last} de {totalRecords} registros",
+      "COLUMNS_SELECTED": "{0} columnas seleccionadas",
+      "CHOOSE_COLUMNS": "Elegir columnas",
+      "NO_DATA": "No se encontraron empleados"
+    }
+  },
+
+  "PAGINATION": {
+    "REPORT": "Se muestran {{first}} a {{last}} de {{totalRecords}} registros"
   }
 }
