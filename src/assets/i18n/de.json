@@ -380,6 +380,13 @@
       "REMINDER_TEXT": "Mahntext"
     }
   },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Qualifikation bearbeiten",
+      "QUALIFICATION": "Qualifikation",
+      "ABBREVIATION": "Kürzel"
+    }
+  },
   "IWS_STAFF": {
     "HEADER": {
       "EDIT_STAFF": "Mitarbeiter bearbeiten"

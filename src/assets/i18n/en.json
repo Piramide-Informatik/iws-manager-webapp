@@ -386,6 +386,13 @@
       "REMINDER_TEXT": "Reminder Text"
     }
   },
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Edit qualification",
+      "QUALIFICATION": "Qualification",
+      "ABBREVIATION": "Abbreviation"
+    }
+  },
   "IWS_STAFF": {
     "HEADER": {
       "EDIT_STAFF": "Edit Staff"
