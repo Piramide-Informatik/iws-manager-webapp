@@ -18,7 +18,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   mainMenuItems: any[] = [];
 
   private langSubscription!: Subscription;
-  public currentMenuKey: string = 'customers';
+  public currentMenuKey: string = '';
 
   private readonly sidebarItemsConfig: Record<
     string,
@@ -86,11 +86,9 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadMainMenuItems();
-    this.loadSidebarItems(this.currentMenuKey);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadMainMenuItems();
-      this.loadSidebarItems(this.currentMenuKey);
     });
   }
 
