@@ -1,0 +1,224 @@
+{
+    "contactPersons": [
+        {
+            "uuid": "3a7f8d2b-4c5e-4f3a-8b9d-1c2e3f4a5b6c",
+            "id": 1,
+            "firstName": "Anna",
+            "lastName": "Müller",
+            "forInvoincing": 1,
+            "function": "Chief Financial Officer",
+            "salutationId": 1,
+            "titleId": 1,
+            "customerId": 1
+        },
+        {
+            "uuid": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
+            "id": 2,
+            "firstName": "James",
+            "lastName": "Carter",
+            "forInvoincing": 1,
+            "function": "Power of Attorney",
+            "salutationId": 1,
+            "titleId": 2,
+            "customerId": 1
+        },
+        {
+            "uuid": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+            "id": 3,
+            "firstName": "Elena",
+            "lastName": "Petrova",
+            "forInvoincing": 1,
+            "function": "Head of Data Protection",
+            "salutationId": 2,
+            "titleId": 3,
+            "customerId": 1
+        },
+        {
+            "uuid": "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
+            "id": 4,
+            "firstName": "Marcus",
+            "lastName": "Holloway",
+            "forInvoincing": 0,
+            "function": "Cybersecurity Specialist",
+            "salutationId": 1,
+            "titleId": 4,
+            "customerId": 2
+        },
+        {
+            "uuid": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+            "id": 5,
+            "firstName": "Eliza",
+            "lastName": "Chen",
+            "forInvoincing": 1,
+            "function": "Biomedical Researcher",
+            "salutationId": 2,
+            "titleId": 5,
+            "customerId": 2
+        },
+        {
+            "uuid": "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c",
+            "id": 6,
+            "firstName": "Darius",
+            "lastName": "Johnson",
+            "forInvoincing": 1,
+            "function": "Urban Planner",
+            "salutationId": 1,
+            "titleId": 6,
+            "customerId": 3
+        },
+        {
+            "uuid": "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
+            "id": 7,
+            "firstName": "Sophia",
+            "lastName": "Rivera",
+            "forInvoincing": 0,
+            "function": "Federal Judge",
+            "salutationId": 2,
+            "titleId": 7,
+            "customerId": 3
+        },
+        {
+            "uuid": "8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e",
+            "id": 8,
+            "firstName": "Trevor",
+            "lastName": "O'Neil",
+            "forInvoincing": 1,
+            "function": "Power Grid Operator",
+            "salutationId": 1,
+            "titleId": 8,
+            "customerId": 4
+        },
+        {
+            "uuid": "9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f",
+            "id": 9,
+            "firstName": "Priya",
+            "lastName": "Patel",
+            "forInvoincing": 1,
+            "function": "Pharmaceutical Director",
+            "salutationId": 2,
+            "titleId": 9,
+            "customerId": 4
+        },
+        {
+            "uuid": "0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a",
+            "id": 10,
+            "firstName": "Jamal",
+            "lastName": "Washington",
+            "forInvoincing": 1,
+            "function": "Air Traffic Controller",
+            "salutationId": 1,
+            "titleId": 10,
+            "customerId": 5
+        },
+        {
+            "uuid": "1e2f3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b",
+            "id": 11,
+            "firstName": "Natalie",
+            "lastName": "Brooks",
+            "forInvoincing": 1,
+            "function": "Meteorology Chief",
+            "salutationId": 2,
+            "titleId": 11,
+            "customerId": 5
+        },
+        {
+            "uuid": "2f3a4b5c-6d7e-8f9a-0b1c-2d3e4f5a6b7c",
+            "id": 12,
+            "firstName": "Connor",
+            "lastName": "Shaw",
+            "forInvoincing": 0,
+            "function": "FBI Field Agent",
+            "salutationId": 1,
+            "titleId": 12,
+            "customerId": 6
+        },
+        {
+            "uuid": "3a4b5c6d-7e8f-9a0b-1c2d-3e4f5a6b7c8d",
+            "id": 13,
+            "firstName": "Isabella",
+            "lastName": "Morales",
+            "forInvoincing": 1,
+            "function": "Water Treatment Manager",
+            "salutationId": 2,
+            "titleId": 13,
+            "customerId": 6
+        },
+        {
+            "uuid": "4b5c6d7e-8f9a-0b1c-2d3e-4f5a6b7c8d9e",
+            "id": 14,
+            "firstName": "Ethan",
+            "lastName": "Zhang",
+            "forInvoincing": 1,
+            "function": "Stock Exchange Analyst",
+            "salutationId": 1,
+            "titleId": 14,
+            "customerId": 7
+        },
+        {
+            "uuid": "5c6d7e8f-9a0b-1c2d-3e4f-5a6b7c8d9e0f",
+            "id": 15,
+            "firstName": "Olivia",
+            "lastName": "Kensington",
+            "forInvoincing": 1,
+            "function": "Nuclear Engineer",
+            "salutationId": 2,
+            "titleId": 15,
+            "customerId": 7
+        },
+        {
+            "uuid": "6d7e8f9a-0b1c-2d3e-4f5a-6b7c8d9e0f1a",
+            "id": 16,
+            "firstName": "Miguel",
+            "lastName": "Alvarez",
+            "forInvoincing": 1,
+            "function": "Border Patrol Supervisor",
+            "salutationId": 1,
+            "titleId": 16,
+            "customerId": 8
+        },
+        {
+            "uuid": "7e8f9a0b-1c2d-3e4f-5a6b-7c8d9e0f1a2b",
+            "id": 17,
+            "firstName": "Avery",
+            "lastName": "Sinclair",
+            "forInvoincing": 1,
+            "function": "CDC Epidemiologist",
+            "salutationId": 1,
+            "titleId": 17,
+            "customerId": 8
+        },
+        {
+            "uuid": "8f9a0b1c-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
+            "id": 18,
+            "firstName": "Jasmine",
+            "lastName": "Williams",
+            "forInvoincing": 1,
+            "function": "Federal Reserve Economist",
+            "salutationId": 2,
+            "titleId": 18,
+            "customerId": 9
+        },
+        {
+            "uuid": "9a0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d",
+            "id": 19,
+            "firstName": "Caleb",
+            "lastName": "Donovan",
+            "forInvoincing": 1,
+            "function": "NASA Flight Director",
+            "salutationId": 1,
+            "titleId": 19,
+            "customerId": 9
+        },
+        {
+            "uuid": "a0b1c2d3-e4f5-a6b7-c8d9-e0f1a2b3c4d5",
+            "id": 20,
+            "firstName": "Violet",
+            "lastName": "Chang",
+            "forInvoincing": 1,
+            "function": "Social Media CTO",
+            "salutationId": 2,
+            "titleId": 20,
+            "customerId": 10
+        }
+    ]
+}
