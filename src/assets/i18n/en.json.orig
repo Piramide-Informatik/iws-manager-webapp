@@ -1,0 +1,480 @@
+{
+  "MENU": {
+    "DASHBOARD": "Dashboard",
+    "CUSTOMERS": "Customers",
+    "PROJECTS": "Projects",
+    "INVOICING": "Invoicing",
+    "CONTROLLING": "Controlling",
+    "MASTER_DATA": "Master Data"
+  },
+  "SIDEBAR": {
+    "CUSTOMER": "Customer",
+    "EMPLOYEES": "Employees",
+    "EMPLOYMENT_CONTRACTS": "Employment Contracts",
+    "PROJECTS": "Projects",
+    "ORDERS": "Orders",
+    "DEMANDS": "Receivables",
+    "INVOICES": "Invoices",
+    "FRAMEWORK_AGREEMENTS": "Framework Agreements",
+    "CONTRACTORS": "Contractors",
+    "SUBCONTRACTS": "Subcontracts",
+    "GOODS_ENTRY": "Goods Entry",
+    "STOCK_CONTROL": "Stock Control",
+    "PRODUCTS": "Products",
+    "SALES": "Sales",
+    "INVENTORY": "Inventory",
+
+    "ABSENCE_TYPES": "Absence Types",
+    "ADDRESS": "Address",
+    "ORDER_TYPES": "Order Types",
+    "USER": "User",
+    "ROLES": "Roles",
+    "APPROVAL_STATUS": "Approval Status",
+    "STATES": "States",
+    "HOLIDAYS": "Holidays",
+    "FUNDING_PROGRAMS": "Funding Programs",
+    "IWS_STAFF": "IWS - Staff",
+    "IWS_COMMISSIONS": "IWS - Commissions",
+    "IWS_TEAMS": "IWS - Teams",
+    "COUNTRIES": "Countries",
+    "COST": "Cost",
+    "DUNNING_LEVELS": "Dunning Levels",
+    "EMPLOYEE_QUALIFICATION": "Employee Qualification",
+    "NETWORKS": "Networks",
+    "PROJECT_STATUS": "Project Status",
+    "PROJECT_FUNNELS": "Project Responsible",
+    "REALIZATION_PROBABILITIES": "Realization Probability",
+    "BILLERS": "Biller",
+    "SYSTEM_CONSTANTS": "System Constants",
+    "TEXTS": "Texts",
+    "TITLE": "Titles",
+    "SALES_TAX": "Sales Tax",
+    "TYPES_OF_COMPANIES": "Types of Companies",
+    "BILLING_METHODS": "Billing Methods",
+    "CONTRACT_STATUS": "Contract Status",
+    "TERMS_OF_PAYMENT": "Terms of Payment"
+  },
+  "COMMON": {
+    "CUSTOMER_NAME": "Customer"
+  },
+  "TABLES": {
+    "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries"
+  },
+  "BUTTONS": {
+    "NEW": "New",
+    "SAVE": "Save",
+    "DELETE": "Delete",
+    "CANCEL": "Cancel"
+  },
+  "DIALOG": {
+    "CONFIRM_TITLE": "Confirmation",
+    "DELETE": "Are you sure you want to delete {{value}}?",
+    "SUCCESSFUL_MESSAGE": "Successful",
+    "EMPLOYEE_SUCCESS_DELETED_MESSAGE": "Employee deleted.",
+    "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Work Contract deleted.",
+    "ACCEPT_LABEL": "Yes",
+    "REJECT_LABEL": "No"
+  },
+  "CUSTOMERS": {
+    "CUSTOMER_NAME": "Customer",
+    "TABLE": {
+      "CUSTOMER_ID": "Customer Number",
+      "COMPANY_NAME": "Company Name",
+      "NAME_LINE_2": "Name Line 2",
+      "COMPANY_TYPE": "Company Type",
+      "COUNTRY_NAME": "Country",
+      "CITY": "City",
+      "CONTACT_PERSON": "Contact"
+    },
+    "FORM": {
+      "CUSTOMER_ID": "Customer Number",
+      "COMPANY_NAME": "Company Name",
+      "COUNTRY": "Country",
+      "STREET": "Street",
+      "ZIP_CITY": "ZIP / City",
+      "COMPANY_TYPE": "Company Type",
+      "INDUSTRY": "Industry",
+      "FEDERAL_STATE": "Federal State",
+      "WEB_SITE": "Website",
+      "PHONE": "Phone",
+      "EMAIL_INVOICE": "Email Invoice",
+      "ENTREPRENEURIAL_WEEKLY_WORKING_HOURS": "Entrepreneurial weekly working hours",
+      "TAX_NUMBER": "Tax Number",
+      "FINANCE": "Finance",
+      "MAX_HOURS_MONTH": "Max. Hours / Month",
+      "MAX_HOURS_YEAR": "Max. Hours / Year",
+      "COMMENT": "Comment"
+    },
+    "LABELS": {
+      "CONTACT_PERSON": "Contact Person"
+    },
+    "CONTACT_TABLE": {
+      "NAME": "Name",
+      "FUNCTION": "Function",
+      "LAW": "Law"
+    }
+  },
+  "CONTACT": {
+    "FORM": {
+      "LAST_NAME": "Last Name",
+      "FIRST_NAME": "First Name",
+      "SALUTATION": "Salutation",
+      "TITLE": "Title",
+      "FUNCTION": "Function",
+      "EMAIL_ADDRESS": "Email Address"
+    },
+    "LABELS": {
+      "TITLE_DIALOG": "Edit Contact Person",
+      "INVOICE": "Invoice Recipient",
+      "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
+    }
+  },
+  "EMPLOYEES": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Employee Number",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "GM_SINCE_DATE": "GF",
+      "SH_SINCE_DATE": "Ges.",
+      "SP_DATE": "EU",
+      "CE_SINCE_DATE": "MU",
+      "QUALI_FZ": "Quali FZ",
+      "QUALI_MKUI": "Quali KMU-i"
+    }
+  },
+  "EMPLOYEE-CONTRACTS": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Employee ID",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "START_DATE": "Start Date",
+      "SALARY_PER_MONTH": "Salary per Month",
+      "WEEKLY_HOURS": "Weekly Hours",
+      "WORK_SHORT_TIME": "Percentage Decrease",
+      "SPECIAL_PAYMENT": "Special Payment",
+      "MAX_HOURS_PER_MONTH": "Max. Hours/Month",
+      "MAX_HOURS_PER_DAY": "Max. Hours/Day",
+      "HOURLY_RATE": "Hourly Rate"
+    }
+  },
+  "PROJECTS": {
+    "TABLE": {
+      "PROJECT_LABEL": "Label",
+      "PROJECT_NAME": "Name",
+      "FUNDING_PROGRAM": "Funding Program",
+      "PROMOTER": "Promoter",
+      "FUNDING_LABEL": "Funding Label",
+      "START_DATE": "Start Date",
+      "END_DATE": "End Date",
+      "AUTH_DATE": "Auth. Date",
+      "FUNDING_RATE": "Funding Rate"
+    }
+  },
+  "ORDERS": {
+    "TABLE": {
+      "ORDER_ID": "Order ID",
+      "ORDER_LABEL": "Label",
+      "ORDER_TYPE": "Type",
+      "ORDER_DATE": "Date",
+      "ACRONYM": "Acronym",
+      "FUNDING_PROGRAM": "Funding Program",
+      "VALUE": "Value",
+      "CONTRACT_STATUS": "Contract Status",
+      "CONTRACT_NRO": "Contract Number",
+      "CONTRACT_TITLE": "Contract Title",
+      "IWS_PERCENT": "IWS %",
+      "IWS_PERCENT_VALUE": "IWS-Value"
+    }
+  },
+  "RECEIVABLES": {
+    "TABLE": {
+      "CLAIM_NUMBER": "Claim Number",
+      "ORDER_NUMBER": "Order Number",
+      "ORDER_TITLE": "Order Title",
+      "FUNDING_PROGRAM": "Funding Program",
+      "PROJECT_SPONSOR": "Project Sponsor",
+      "FUNDING_CONCENTRATION": "Funding Concentration",
+      "PROJECT_START_DATE": "Project Start Date",
+      "PROJECT_END_DATE": "Project End Date",
+      "PROJECT_COST": "Project Cost",
+      "BILLING_START_DATE": "Billing Start Date",
+      "BILLING_END_DATE": "Billing End Date",
+      "NET_AMOUNT": "Net Amount",
+      "GROSS_AMOUNT": "Gross Amount",
+      "VAT_AMOUNT": "VAT Amount",
+      "RECEIVED_AMOUNT": "Received Amount",
+      "OPEN_AMOUNT": "Outstanding Balance",
+      "IWS_PERCENT": "IWS-%"
+    }
+  },
+  "INVOICES": {
+    "TABLE": {
+      "INVOICE_NUMBER": "Invoice Number",
+      "INVOICE_DATE": "Date",
+      "DESCRIPTION": "Description",
+      "INVOICE_TYPE": "Type",
+      "NETWORK": "Network",
+      "ORDER_NUMBER": "Order Number",
+      "ORDER_TITLE": "Order Title",
+      "NET_AMOUNT": "Net Amount",
+      "TAX_AMOUNT": "Tax Amount",
+      "AMOUNT_GROSS": "Gross Amount"
+    }
+  },
+  "FRAMEWORK-AGREEMENTS": {
+    "TABLE": {
+      "CONTRACT_NUMBER": "Contract Number",
+      "CONTRACT_LABEL": "Contract Label",
+      "DATE": "Date",
+      "FUNDING_PROGRAM": "Funding Program",
+      "CONTRACT_STATUS": "Contract Status",
+      "IWS_EMPLOYEE": "IWS Enployees"
+    }
+  },
+  "CONTRACTS": {
+    "TABLE": {
+      "CONTRACTOR_LABEL": "Label",
+      "CONTRACTOR_NAME": "Name",
+      "COUNTRY_LABEL": "Country",
+      "STREET": "Street",
+      "ZIP_CODE": "Zip Code",
+      "CITY": "City",
+      "TAX_NUMBER": "Tax Number"
+    }
+  },
+  "SUB-CONTRACTS": {
+    "TABLE": {
+      "ORDER_TITLE": "Order Title",
+      "CONTRACTOR": "Contractor",
+      "PROJECT": "Project",
+      "DATE": "Date",
+      "INVOICE_NUMBER": "Invoice Number",
+      "NET_INVOICE": "Net Invoice Amount",
+      "GROSS_INVOICE": "Gross Invoice Amount",
+      "SHARE": "Share"
+    }
+  },
+  "ABSENCE_TYPES": {
+    "LABEL": {
+      "TITLE_FORM": "Edit project sponsor",
+      "TYPE": "Absence Type",
+      "ABBREVIATION": "Abbreviation",
+      "FRACTION_OF_DAY": "Fraction of Day",
+      "IS_VACATION": "Is Vacation",
+      "CAN_BE_BOOKED": "Can be Booked"
+    }
+  },
+  "ADDRESS": {
+    "TABLE": {
+      "SALUTATION": "Salutation"
+    }
+  },
+  "STATES": {
+    "TABLE": {
+      "STATE": "Federal State"
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "STATE": "Federal State",
+      "EDIT_STATE": "Edit State"
+    }
+  },
+  "APPROVAL_STATUS": {
+    "TABLE": {
+      "APPROVAL_STATUS": "Approval Status",
+      "ORDER": "Order",
+      "PROJECTS": "Projects",
+      "NETWORKS": "Networks"
+    },
+    "BUTTON": {
+      "NEW": "New"
+    }
+  },
+  "ROLES": {
+    "TABLE_ROLES": {
+      "USER_ROL": "User Roles"
+    },
+    "TABLE_MODULES": {
+      "FUNCTION": "Function",
+      "READ": "Read",
+      "INSERT": "Insert",
+      "MODIFY": "Modify",
+      "DELETE": "Delete",
+      "EXECUTE": "Execute"
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_ROL": "Edit Rol",
+      "ROL": "Rol",
+      "MODULE": "Module"
+    }
+  },
+
+  "HOLIDAYS": {
+    "HEADER": {
+      "EDIT_HOLIDAY": "Edit Holiday"
+    },
+    "LABEL": {
+      "HOLIDAY_NAME": "Holiday Name",
+      "SORT": "Sort Order",
+      "FIXED_DATE": "Fixed Date"
+    },
+    "BUTTON": {
+      "SAVE": "Save",
+      "NEW_YEAR": "New Year",
+      "NEW": "New"
+    },
+    "TABLE": {
+      "SORT": "Sort",
+      "NAME": "Holiday",
+      "PAGE_INFO": "Showing {first} to {last} of {totalRecords} entries",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose Columns",
+      "NO_DATA": "No holidays found.",
+      "BUNDESLAND": "State",
+      "SELECT": "Select",
+      "YEAR": "Year",
+      "DATE": "Date"
+    }
+  },
+  "FUNDING": {
+    "TABLE": {
+      "PROGRAM": "Program",
+      "RATE": "Rate (%)",
+      "PERSONNEL_RATE": "Personnel rate (%)",
+      "RESEARCH_SHARE": "Research share",
+      "PRODUCTIVE_HOURS": "Productive hours / year",
+      "PAGE_INFO": "Showing {first} to {last} of {totalRecords} entries",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Select columns",
+      "NO_DATA": "No funding programs found."
+    },
+    "LABEL": {
+      "PROGRAM": "Program",
+      "RATE": "Rate (%)",
+      "PERSONNEL_RATE": "Personnel rate (%)",
+      "RESEARCH_SHARE": "Research share",
+      "PRODUCTIVE_HOURS": "Productive hours / year"
+    },
+    "BUTTON": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "NEW": "New program"
+    },
+    "HEADER": {
+      "EDIT_FUNDING": "Edit funding program"
+    }
+  },
+  "DUNNING_LEVELS": {
+    "LABEL": {
+      "DUNNING_LEVEL": "Dunning level",
+      "TEXT": "Text",
+      "EDIT_DUNNING_LEVEL": "Edit Dunning Level",
+      "DESIGNATION": "Designation",
+      "FEE": "Fee",
+      "DEFAULT_INTEREST": "Default Interes",
+      "PAYMENT_TERM": "Payment Term (Days)",
+      "REMINDER_TEXT": "Reminder Text"
+    }
+  },
+<<<<<<< HEAD
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Edit qualification",
+      "QUALIFICATION": "Qualification",
+      "ABBREVIATION": "Abbreviation"
+    }
+  },
+  "IWS_STAFF": {
+    "HEADER": {
+      "EDIT_STAFF": "Edit Staff"
+    },
+    "LABEL": {
+      "STAFF_ID": "Staff Number",
+      "SHORT_NAME": "Short Name",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "TEAM": "IWS Team",
+      "STAFF_SINCE": "Staff Since",
+      "STAFF_UNTIL": "Staff Until",
+      "SELECT_TEAM": "Select Team"
+    },
+    "BUTTON": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "NEW": "New Staff"
+    },
+    "TABLE": {
+      "STAFF_NUMBER": "Staff No.",
+      "SHORT_NAME": "Short Name",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "TEAM": "Team",
+      "STAFF_SINCE": "Since",
+      "STAFF_UNTIL": "Until",
+      "PAGE_INFO": "Showing {first} to {last} of {totalRecords} entries",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose columns",
+      "NO_DATA": "No staff found"
+    }
+  },
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "Threshold",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission"
+    },
+    "BUTTON": {
+      "NEW": "New"
+    },
+    "FORM": {
+      "HEADER": "Edit IWS Commission",
+      "THRESHOLD": "Threshold Value",
+      "PERCENTAGE": "Commission (%)",
+      "MIN_COMMISSION": "Minimum Commission",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    }
+  },
+  "PAGINATION": {
+    "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
+=======
+  "SYSTEM_CONSTANT": {
+    "TABLE_SYSTEM_CONSTANT": {
+      "CONSTANT": "Constant",
+      "VALUE": "Value",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_SYSTEM_CONSTANT": "Edit System Constant",
+      "CONSANT": "Constant",
+      "VALUE_NUMERIC": "Value numeric",
+      "VALUE_ALPHANUMERIC": "Value alphanumeric"
+    },
+    "ERROR": {
+      "NAME_REQUIRED": "Name is required",
+      "ONLY_NUMBER_REQUIRED": "Enter only numbers",
+      "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters."
+    },
+    "PAGINATION": {
+      "FOOTER": "Displaying {{initValue}} to {{endValue}} of {{totalValue}} entries."
+    }
+>>>>>>> 6d0bf46 (Add system constants component)
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "MENU": {
+    "DASHBOARD": "Dash-Board",
+    "CUSTOMERS": "Kunden",
+    "PROJECTS": "Projekte",
+    "INVOICING": "Rechnungsstellung",
+    "CONTROLLING": "Controlling",
+    "MASTER_DATA": "Stammdaten"
+  },
+  "SIDEBAR": {
+    "CUSTOMER": "Kunde",
+    "EMPLOYEES": "Mitarbeiter",
+    "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
+    "PROJECTS": "Projekte",
+    "ORDERS": "Aufträge",
+    "DEMANDS": "Forderungen",
+    "INVOICES": "Rechnungen",
+    "FRAMEWORK_AGREEMENTS": "Rahmenverträge",
+    "CONTRACTORS": "Auftragnehmer",
+    "SUBCONTRACTS": "Unteraufträge",
+
+    "ABSENCE_TYPES": "Abwesenheitsarten",
+    "ADDRESS": "Anreden",
+    "ORDER_TYPES": "Auftragsarten",
+    "USER": "Benutzer",
+    "ROLES": "Benutzerrollen",
+    "APPROVAL_STATUS": "Bewilligungsstati",
+    "STATES": "Bundesländer",
+    "HOLIDAYS": "Feiertage",
+    "FUNDING_PROGRAMS": "Förderprogramme",
+    "IWS_STAFF": "IWS - Mitarbeiter",
+    "IWS_COMMISSIONS": "IWS - Provisionen",
+    "IWS_TEAMS": "IWS - Teams",
+    "COUNTRIES": "Länder",
+    "COST": "Kostenarten",
+    "DUNNING_LEVELS": "Mahnungstufen",
+    "EMPLOYEE_QUALIFICATION": "Mitarbeiter-Qualifikationen",
+    "NETWORKS": "Netzwerke",
+    "PROJECT_STATUS": "Projektstatus",
+    "PROJECT_FUNNELS": "Projektträger",
+    "REALIZATION_PROBABILITIES": "Realisierungswahrscheinlichkeit",
+    "BILLERS": "Rechnungsersteller",
+    "SYSTEM_CONSTANTS": "Systemkonstanten",
+    "TEXTS": "Texte",
+    "TITLE": "Anreden",
+    "SALES_TAX": "Umsatzsteuer",
+    "TYPES_OF_COMPANIES": "Unternehmensarten",
+    "BILLING_METHODS": "Abrechnungsmethoden",
+    "CONTRACT_STATUS": "Vertragsstatus",
+    "TERMS_OF_PAYMENT": "Zahlungsbedingungen"
+  },
+  "COMMON": {
+    "CUSTOMER_NAME": "Kunde"
+  },
+  "TABLES": {
+    "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
+  },
+  "BUTTONS": {
+    "NEW": "Neu",
+    "SAVE": "Speichern",
+    "DELETE": "Löschen",
+    "CANCEL": "Abbrechen"
+  },
+  "DIALOG": {
+    "CONFIRM_TITLE": "Bestätigen",
+    "DELETE": "Möchten Sie wirklich löschen {{value}} ?",
+    "SUCCESSFUL_MESSAGE": "Erfolgreich",
+    "EMPLOYEE_SUCCESS_DELETED_MESSAGE": "Mitarbeiter gelöscht",
+    "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Arbeitsvertrag gelöscht",
+    "ACCEPT_LABEL": "Ja",
+    "REJECT_LABEL": "Nein"
+  },
+  "CUSTOMERS": {
+    "CUSTOMER_NAME": "Kunde",
+    "TABLE": {
+      "CUSTOMER_ID": "Nr.",
+      "COMPANY_NAME": "Unternehmensname",
+      "NAME_LINE_2": "Name Zeile 2",
+      "COMPANY_TYPE": "Art",
+      "COUNTRY_NAME": "Land",
+      "CITY": "Ort",
+      "CONTACT_PERSON": "Ansprechpartner"
+    },
+    "FORM": {
+      "CUSTOMER_ID": "Kunden-Nr.",
+      "COMPANY_NAME": "Unternehmensname",
+      "COUNTRY": "Land",
+      "STREET": "Straße",
+      "ZIP_CITY": "PLZ / Ort",
+      "COMPANY_TYPE": "Unternehmensart",
+      "INDUSTRY": "Wirtschaftszweig",
+      "FEDERAL_STATE": "Bundesland",
+      "WEB_SITE": "Webseite",
+      "PHONE": "Telefon",
+      "EMAIL_INVOICE": "Email Rechnung",
+      "ENTREPRENEURIAL_WEEKLY_WORKING_HOURS": "Unternehmerische Wochenarbeitszeit",
+      "TAX_NUMBER": "Steuernummer",
+      "FINANCE": "Finanzamt",
+      "MAX_HOURS_MONTH": "Max. Stunden / Monat",
+      "MAX_HOURS_YEAR": "Max. Stunden / Jahr",
+      "COMMENT": "Kommentar"
+    },
+    "LABELS": {
+      "CONTACT_PERSON": "Ansprechpartner"
+    },
+    "CONTACT_TABLE": {
+      "NAME": "Name",
+      "FUNCTION": "Funktion",
+      "LAW": "Rech"
+    }
+  },
+  "CONTACT": {
+    "FORM": {
+      "LAST_NAME": "Nachname",
+      "FIRST_NAME": "Vorname",
+      "SALUTATION": "Anrede",
+      "TITLE": "Titel",
+      "FUNCTION": "Funktion",
+      "EMAIL_ADDRESS": "Mailadresse"
+    },
+    "LABELS": {
+      "TITLE_DIALOG": "Ansprechpartner bearbeiten",
+      "INVOICE": "Rechnungsempfänger",
+      "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
+    }
+  },
+  "EMPLOYEES": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Pers.Nr.",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "EMAIL": "Email",
+      "GM_SINCE_DATE": "GF",
+      "SH_SINCE_DATE": "Ges.",
+      "SP_SINCE_DATE": "EU",
+      "CE_SINCE_DATE": "MU",
+      "QUALI_FZ": "Quali FZ",
+      "QUALI_MKUI": "Quali KMU-i"
+    }
+  },
+  "EMPLOYEE-CONTRACTS": {
+    "TABLE": {
+      "EMPLOYEE_ID": "Pers.Nr.",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "START_DATE": "Datum",
+      "SALARY_PER_MONTH": "Gehalt",
+      "WEEKLY_HOURS": "WoStd",
+      "WORK_SHORT_TIME": "Kurz",
+      "SPECIAL_PAYMENT": "Max.Std Mon",
+      "MAX_HOURS_PER_MONTH": "Max Std Tag",
+      "MAX_HOURS_PER_DAY": "Std.Satz",
+      "HOURLY_RATE": "JaSoZa"
+    }
+  },
+  "PROJECTS": {
+    "TABLE": {
+      "PROJECT_LABEL": "Projekt",
+      "PROJECT_NAME": "Langname",
+      "FUNDING_PROGRAM": "Förd.Programm",
+      "PROMOTER": "Projektträger",
+      "FUNDING_LABEL": "Förderkennzeichen",
+      "START_DATE": "Start",
+      "END_DATE": "Ende",
+      "AUTH_DATE": "Förderkennzeichen",
+      "FUNDING_RATE": "Fördersatz"
+    }
+  },
+  "ORDERS": {
+    "TABLE": {
+      "ORDER_ID": "A-Nr.",
+      "ORDER_LABEL": "Auftrag",
+      "ORDER_TYPE": "Art",
+      "ORDER_DATE": "Datum",
+      "ACRONYM": "Akronym",
+      "FUNDING_PROGRAM": "Förderprogramm",
+      "VALUE": "Wert",
+      "CONTRACT_STATUS": "V-Status",
+      "CONTRACT_NRO": "RV-Nr.",
+      "CONTRACT_TITLE": "RV",
+      "IWS_PERCENT": "IWS %",
+      "IWS_PERCENT_VALUE": "IWS-Wert"
+    }
+  },
+  "RECEIVABLES": {
+    "TABLE": {
+      "CLAIM_NUMBER": "Ford.-Nr.",
+      "ORDER_NUMBER": "Auftr.-Nr.",
+      "ORDER_TITLE": "Auftrag",
+      "FUNDING_PROGRAM": "Förderp",
+      "PROJECT_SPONSOR": "Projekttr.",
+      "FUNDING_CONCENTRATION": "Förder-KZ",
+      "PROJECT_START_DATE": "Proj.Start.",
+      "PROJECT_END_DATE": "Proj.Ende",
+      "PROJECT_COST": "Proj.Koste",
+      "BILLING_START_DATE": "Abr.Start.",
+      "BILLING_END_DATE": "Abr.Ende.",
+      "NET_AMOUNT": "Zuwendunge",
+      "GROSS_AMOUNT": "ZA netto.",
+      "VAT_AMOUNT": "ZA MwSt. ^v.",
+      "RECEIVED_AMOUNT": "ZA brutto.",
+      "OPEN_AMOUNT": "ZA erhalten.",
+      "IWS_PERCENT": "IWS-%"
+    }
+  },
+  "INVOICES": {
+    "TABLE": {
+      "INVOICE_NUMBER": "Rechnung-Nr.",
+      "INVOICE_DATE": "Datum",
+      "DESCRIPTION": "Beschreibung",
+      "INVOICE_TYPE": "Typ",
+      "NETWORK": "Netzwerk",
+      "ORDER_NUMBER": "Auftrag-Nr.",
+      "ORDER_TITLE": "Auftrag",
+      "NET_AMOUNT": "Netto",
+      "TAX_AMOUNT": "MwSt.",
+      "AMOUNT_GROSS": "Summe"
+    }
+  },
+  "FRAMEWORK-AGREEMENTS": {
+    "TABLE": {
+      "CONTRACT_NUMBER": "RV-Nr.",
+      "CONTRACT_LABEL": "Rahmenvertrag",
+      "DATE": "Datum",
+      "FUNDING_PROGRAM": "Förderprogramm",
+      "CONTRACT_STATUS": "Vertragsstatus",
+      "IWS_EMPLOYEE": "IWS MA"
+    }
+  },
+  "CONTRACTS": {
+    "TABLE": {
+      "CONTRACTOR_LABEL": "Kurzname",
+      "CONTRACTOR_NAME": "Name",
+      "COUNTRY_LABEL": "Land",
+      "STREET": "Straße",
+      "ZIP_CODE": "PLZ",
+      "CITY": "Ort",
+      "TAX_NUMBER": "USt.-Ident-Nr."
+    }
+  },
+  "SUB-CONTRACTS": {
+    "TABLE": {
+      "ORDER_TITLE": "Autrag",
+      "CONTRACTOR": "Auftragnehmer",
+      "PROJECT": "Projekt",
+      "DATE": "Datum",
+      "INVOICE_NUMBER": "Rechnung-Nr.",
+      "NET_INVOICE": "Netto",
+      "GROSS_INVOICE": "Brutto",
+      "SHARE": "Anteil"
+    }
+  },
+  "ABSENCE_TYPES": {
+    "LABEL": {
+      "TITLE_FORM": "Projektträger bearbeiten",
+      "TYPE": "Abwesenheitsart",
+      "ABBREVIATION": "Kürzel",
+      "FRACTION_OF_DAY": "Anteil Tag",
+      "IS_VACATION": "Ist Urlaub",
+      "CAN_BE_BOOKED": "Kann gebucht werden"
+    }
+  },
+  "ADDRESS": {
+    "TABLE": {
+      "SALUTATION": "Anreden"
+    }
+  },
+  "STATES": {
+    "TABLE": {
+      "STATE": "Bundesland"
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "STATE": "Bundesland",
+      "EDIT_STATE": "Bundesland bearbeiten"
+    }
+  },
+  "APPROVAL_STATUS": {
+    "TABLE": {
+      "APPROVAL_STATUS": "Bewilligungsstatus",
+      "ORDER": "Reihenfolge",
+      "PROJECTS": "Projekte",
+      "NETWORKS": "Netzwerke"
+    },
+    "BUTTON": {
+      "NEW": "Neu"
+    }
+  },
+  "ROLES": {
+    "TABLE_ROLES": {
+      "USER_ROL": "Benutzerrolle"
+    },
+    "TABLE_MODULES": {
+      "FUNCTION": "Funktion",
+      "READ": "lesen",
+      "INSERT": "einfügen",
+      "MODIFY": "ändern",
+      "DELETE": "löschen",
+      "EXECUTE": "ausführen"
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_ROL": "Rollen bearbeiten",
+      "ROL": "Benutzerrolle",
+      "MODULE": "Modul"
+    }
+  },
+  "HOLIDAYS": {
+    "HEADER": {
+      "EDIT_HOLIDAY": "Feiertag bearbeiten"
+    },
+    "LABEL": {
+      "HOLIDAY_NAME": "Feiertag",
+      "SORT": "Sortierung",
+      "FIXED_DATE": "Festes Datum"
+    },
+    "BUTTON": {
+      "SAVE": "Speichern",
+      "NEW_YEAR": "Neues Jahr",
+      "NEW": "Neuer"
+    },
+    "TABLE": {
+      "SORT": "Sort",
+      "NAME": "Feiertag",
+      "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Feiertage gefunden.",
+      "BUNDESLAND": "Bundesland",
+      "SELECT": "Auswählen",
+      "YEAR": "Jahr",
+      "DATE": "Datum"
+    }
+  },
+  "FUNDING": {
+    "TABLE": {
+      "PROGRAM": "Förderprogramm",
+      "RATE": "Fördersatz (%)",
+      "PERSONNEL_RATE": "Personalpauschale (%)",
+      "RESEARCH_SHARE": "Anteil Forschungsauftrag",
+      "PRODUCTIVE_HOURS": "Produktive Std. / Jahr",
+      "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Förderprogramme gefunden."
+    },
+    "LABEL": {
+      "PROGRAM": "Förderprogramm",
+      "RATE": "Fördersatz (%)",
+      "PERSONNEL_RATE": "Personalpauschale (%)",
+      "RESEARCH_SHARE": "Anteil Forschungsauftrag",
+      "PRODUCTIVE_HOURS": "Produktive Std. / Jahr"
+    },
+    "BUTTON": {
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen",
+      "NEW": "Neues Programm"
+    },
+    "HEADER": {
+      "EDIT_FUNDING": "Förderprogramm bearbeiten"
+    }
+  },
+  "DUNNING_LEVELS": {
+    "LABEL": {
+      "DUNNING_LEVEL": "Mahnstufe",
+      "TEXT": "Text",
+      "EDIT_DUNNING_LEVEL": "Mahnstufe bearbeiten",
+      "DESIGNATION": "Bezeichnung",
+      "FEE": "Gebühr",
+      "DEFAULT_INTEREST": "Verzugszinsen",
+      "PAYMENT_TERM": "Zahlungsgziel (Tagen)",
+      "REMINDER_TEXT": "Mahntext"
+    }
+  },
+<<<<<<< HEAD
+  "EMPLOYEE_QUALIFICATION": {
+    "LABEL": {
+      "TITLE_FORM": "Qualifikation bearbeiten",
+      "QUALIFICATION": "Qualifikation",
+      "ABBREVIATION": "Kürzel"
+    }
+  },
+  "IWS_STAFF": {
+    "HEADER": {
+      "EDIT_STAFF": "Mitarbeiter bearbeiten"
+    },
+    "LABEL": {
+      "STAFF_ID": "Mitarbeiter-Nr.",
+      "SHORT_NAME": "Kürzel",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "EMAIL": "E-Mail",
+      "TEAM": "Team IWS",
+      "STAFF_SINCE": "Mitarbeiter seit",
+      "STAFF_UNTIL": "Mitarbeiter bis",
+      "SELECT_TEAM": "Team wählen"
+    },
+    "BUTTON": {
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen",
+      "NEW": "Neuer Mitarbeiter"
+    },
+    "TABLE": {
+      "STAFF_NUMBER": "Mitarbeiter-Nr.",
+      "SHORT_NAME": "Kürzel",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "EMAIL": "E-Mail",
+      "TEAM": "Team",
+      "STAFF_SINCE": "Seit",
+      "STAFF_UNTIL": "Bis",
+      "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Mitarbeiter gefunden."
+    }
+  },
+
+  "IWS_COMMISSIONS": {
+    "TABLE": {
+      "THRESHOLD": "ab Wert",
+      "PERCENTAGE": "Provision in %",
+      "MIN_COMMISSION": "Mindestprovision"
+    },
+    "BUTTON": {
+      "NEW": "Neu"
+    },
+    "FORM": {
+      "HEADER": "IWS Provision bearbeiten",
+      "THRESHOLD": "ab Forderungswert",
+      "PERCENTAGE": "Provision in %",
+      "MIN_COMMISSION": "Mindestprovision",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    }
+  },
+  "PAGINATION": {
+    "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
+=======
+  "SYSTEM_CONSTANT": {
+    "TABLE_SYSTEM_CONSTANT": {
+      "CONSTANT": "Konstante",
+      "VALUE": "Wert",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_SYSTEM_CONSTANT": "Systemkonstante bearbeiten",
+      "CONSANT": "Konstante",
+      "VALUE_NUMERIC": "Wert numerisch",
+      "VALUE_ALPHANUMERIC": "Wert alphanumerisch"
+    },
+    "ERROR": {
+      "NAME_REQUIRED": "Name ist erforderlich",
+      "ONLY_NUMBER_REQUIRED": "Geben Sie nur Zahlen ein",
+      "ONLY_ALPHANUMERIC_REQUIRED": "Geben Sie nur alphanumerische Zeichen ein"
+    },
+    "PAGINATION": {
+      "FOOTER": "Es werden {{initValue}} bis {{endValue}} von {{totalValue}} Einträgen angezeigt."
+    }
+>>>>>>> 6d0bf46 (Add system constants component)
+  }
+}

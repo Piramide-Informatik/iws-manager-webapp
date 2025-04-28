@@ -3,7 +3,7 @@
         [value]="systemConstants" 
         dataKey="id" 
         [rows]="15" 
-        [columns]="selectedColumns"
+        [columns]="displayedColumns"
         [rowsPerPageOptions]="[15, 30, 50]" 
         [paginator]="true"
         [currentPageReportTemplate]="'SYSTEM_CONSTANT.PAGINATION.FOOTER' | translate: {initValue: dt.first ,endValue: dt.rows , totalValue: dt.totalRecords}" 
@@ -20,7 +20,7 @@
                 <th id="system-constants-table-search" *ngFor="let col of columns; let i = index">
                     <input pInputText pSize="small" type="text"
                         [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
-                        (input)="applyFilter($event, col.field)" />
+                        (input)="applySystemConstantFilter($event, col.field)" />
                 </th>
             </tr>
             <tr>

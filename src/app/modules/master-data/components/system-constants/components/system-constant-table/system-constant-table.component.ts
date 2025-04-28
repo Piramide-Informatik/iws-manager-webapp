@@ -14,29 +14,29 @@ import { SYSTEM_CONSTANT } from './system.constants.data';
 export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
   systemConstants = [...SYSTEM_CONSTANT];
-  cols: any[] = [];
-  selectedColumns: any[] = [];
+  systemConstantColumns: any[] = [];
+  displayedColumns: any[] = [];
   paginationMessage = '';
   @ViewChild('dt') dt!: Table;
 
-  private langSubscription!: Subscription;
+  private langConstantsSubscription!: Subscription;
 
   constructor(private readonly router: Router, private readonly translate: TranslateService ) { }
 
   ngOnInit() {
-    this.updateHeadersAndColumns();
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.updateHeadersAndColumns();
+    this.loadHeadersAndColumns();
+    this.langConstantsSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadHeadersAndColumns();
     });
   }
 
-  updateHeadersAndColumns() {
-    this.loadColumnHeaders();
-    this.selectedColumns = [...this.cols];
+  loadHeadersAndColumns() {
+    this.loadColumnSystemConstantHeaders();
+    this.displayedColumns = [...this.systemConstantColumns];
   }
 
-  loadColumnHeaders(): void {
-    this.cols = [
+  loadColumnSystemConstantHeaders(): void {
+    this.systemConstantColumns = [
       {
         field: 'constant',
         minWidth: 110,
@@ -51,15 +51,15 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() : void {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
+    if (this.langConstantsSubscription) {
+      this.langConstantsSubscription.unsubscribe();
     }
   }
 
-  applyFilter(event: any, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt.filter(inputElement.value, field, 'contains');
+  applySystemConstantFilter(event: any, field: string) {
+    const inputFilterElement = event.target as HTMLInputElement;
+    if (inputFilterElement) {
+      this.dt.filter(inputFilterElement.value, field, 'contains');
     }
   }
 }
