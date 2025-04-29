@@ -474,5 +474,26 @@
   },
   "PAGINATION": {
     "REPORT": "Se muestran {{first}} a {{last}} de {{totalRecords}} registros"
+  },
+  "TEXT": {
+    "TABLE_TEXT": {
+      "TEXT_LABEL": "Etiqueta de texto",
+      "TEXT": "Texto",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "EDIT_TEXT": "Editar Etiqueta de Texto",
+      "TEXT_LABEL": "Etiqueta de texto",
+      "TEXT_VALUE": "Texto"
+    },
+    "ERROR": {
+      "TEXT_LABEL_REQUIRED": "Etiqueta de texto es requerido",
+      "TEXT_VALUE_REQUIRED": "Texto es requerido"
+    }
   }
 }
