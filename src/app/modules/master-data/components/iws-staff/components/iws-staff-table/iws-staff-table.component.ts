@@ -1,117 +1,127 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Table } from 'primeng/table';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { RouterUtilsService } from '../../../../router-utils.service';
 
 @Component({
   selector: 'app-iws-staff-table',
-  standalone: false,
   templateUrl: './iws-staff-table.component.html',
-  styleUrl: './iws-staff-table.component.scss',
+  styleUrls: ['./iws-staff-table.component.scss'],
+  standalone: false,
 })
 export class IwsStaffTableComponent implements OnInit, OnDestroy {
   iwsStaff: any[] = [];
-  cols: any[] = [];
-  selectedColumns: any[] = [];
-
-  @ViewChild('dt2') dt2!: Table;
-
+  columnsHeaderFieldIwsStaff: any[] = [];
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly router: Router
+    private readonly routerUtils: RouterUtilsService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.iwsStaff = [
       {
         id: 1,
-        staffNumber: '001',
-        firstName: 'Markus',
+        abbreviation: 'PaZe',
+        firstName: 'Patrick',
         lastName: 'Zessin',
-        email: 'zessin@iws-world.de',
+        email: 'p.zessin@iws-nord.de',
       },
       {
         id: 2,
-        staffNumber: '002',
+        abbreviation: 'PhiG',
         firstName: 'Philipp',
-        lastName: 'Glockner',
-        email: 'glockner@iws-world.de',
+        lastName: 'Glöckner',
+        email: 'p.glockner@iws-nord.de',
       },
       {
         id: 3,
-        staffNumber: '003',
-        firstName: 'Helga',
-        lastName: 'Zacherle',
-        email: 'zacherle@iws-world.de',
+        abbreviation: 'MilZ',
+        firstName: 'Miljan',
+        lastName: 'Zekovic',
+        email: 'm.zekovic@iws-nord.de',
+      },
+      {
+        id: 4,
+        abbreviation: 'LoSc',
+        firstName: 'Lothar',
+        lastName: 'Schulte',
+        email: 'l.schulte@iws-nord.de',
+      },
+      {
+        id: 5,
+        abbreviation: 'KWe',
+        firstName: 'Kai',
+        lastName: 'Wellmann',
+        email: 'k.wellmann@iws-nord.de',
+      },
+      {
+        id: 6,
+        abbreviation: 'GeKa',
+        firstName: 'Gernot',
+        lastName: 'Karten',
+        email: 'g.karten@iws-nord.de',
+      },
+      {
+        id: 7,
+        abbreviation: 'CaSc',
+        firstName: 'Carmen',
+        lastName: 'Schulte',
+        email: 'c.schulte@iws-nord.de',
+      },
+      {
+        id: 8,
+        abbreviation: 'BaIb',
+        firstName: 'Bassel',
+        lastName: 'Ibrahim',
+        email: 'b.ibrahim@iws-nord.de',
+      },
+      {
+        id: 9,
+        abbreviation: 'AnGi',
+        firstName: 'Antje',
+        lastName: 'Gittel',
+        email: 'a.gittel@iws-nord.de',
       },
     ];
 
-    this.loadColHeaders();
-    this.selectedColumns = [...this.cols];
+    this.loadColHeadersIwsStaff();
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
-      this.selectedColumns = [...this.cols];
+      this.loadColHeadersIwsStaff();
+      this.routerUtils.reloadComponent(true);
     });
   }
 
-  loadColHeaders(): void {
-    this.cols = [
+  loadColHeadersIwsStaff(): void {
+    this.columnsHeaderFieldIwsStaff = [
       {
-        field: 'staffNumber',
-        minWidth: 100,
-        header: this.translate.instant(_('IWS_STAFF.TABLE.STAFF_NUMBER')),
+        field: 'abbreviation',
+        styles: { width: '100px' },
+        header: this.translate.instant(_('IWS_STAFF.TABLE.SHORT_NAME')),
       },
       {
         field: 'firstName',
-        minWidth: 100,
+        styles: { width: '150px' },
         header: this.translate.instant(_('IWS_STAFF.TABLE.FIRST_NAME')),
       },
       {
         field: 'lastName',
-        minWidth: 100,
+        styles: { width: '150px' },
         header: this.translate.instant(_('IWS_STAFF.TABLE.LAST_NAME')),
       },
       {
         field: 'email',
-        minWidth: 150,
+        styles: { width: 'auto' },
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
     ];
   }
 
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]);
-    });
-  }
-
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
-    }
-  }
-
-  editIwsStaff(staff: any) {
-    console.log('Editing IWS Staff:', staff);
-  }
-
-  deleteIwsStaff(id: number) {
-    console.log('Deleting Staff ID:', id);
-  }
-
-  createIwsStaff() {
-    console.log('Creating new IWS Staff');
-  }
-
-  applyFilter(event: any, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
     }
   }
 }

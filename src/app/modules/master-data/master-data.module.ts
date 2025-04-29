@@ -64,7 +64,7 @@ import { SystemConstantTableComponent } from './components/system-constants/comp
 import { SystemConstantFormComponent } from './components/system-constants/components/system-constant-form/system-constant-form.component';
 import { EmployeeQualificationComponent } from './components/employee-qualification/employee-qualification.component';
 import { EditQualificationComponent } from './components/employee-qualification/components/edit-qualification/edit-qualification.component';
-import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
+import { IwsStaffComponent } from './components/iws-staff/iws-staff.component';
 import { IwsStaffTableComponent } from './components/iws-staff/components/iws-staff-table/iws-staff-table.component';
 import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iws-staff/edit-iws-staff.component';
 import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
