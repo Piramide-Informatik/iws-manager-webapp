@@ -1,0 +1,64 @@
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Table } from 'primeng/table';
+import { Subscription } from 'rxjs';
+import { TranslateService, _ } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { TEXT } from './text.data';
+
+@Component({
+  selector: 'app-text-table',
+  standalone: false,
+  templateUrl: './text-table.component.html',
+  styleUrl: './text-table.component.scss'
+})
+export class TextTableComponent implements OnInit, OnDestroy {
+
+  text = [...TEXT];
+  textColumns: any[] = [];
+  textDisplayedColumns: any[] = [];
+  @ViewChild('dt') dt!: Table;
+
+  private langTextSubscription!: Subscription;
+
+  constructor(private readonly router: Router, private readonly translate: TranslateService ) { }
+
+  ngOnInit() {
+    this.loadTextHeadersAndColumns();
+    this.langTextSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadTextHeadersAndColumns();
+    });
+  }
+
+  loadTextHeadersAndColumns() {
+    this.loadTextHeaders();
+    this.textDisplayedColumns = [...this.textColumns];
+  }
+
+  loadTextHeaders(): void {
+    this.textColumns = [
+      {
+        field: 'label',
+        minWidth: 110,
+        header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT_LABEL'))
+      },
+      {
+        field: 'text',
+        minWidth: 110,
+        header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT'))
+      }
+    ];
+  }
+
+  ngOnDestroy() : void {
+    if (this.langTextSubscription) {
+      this.langTextSubscription.unsubscribe();
+    }
+  }
+
+  applyTextFilter(event: any, field: string) {
+    const inputTextFilterElement = event.target as HTMLInputElement;
+    if (inputTextFilterElement) {
+      this.dt.filter(inputTextFilterElement.value, field, 'contains');
+    }
+  }
+}
