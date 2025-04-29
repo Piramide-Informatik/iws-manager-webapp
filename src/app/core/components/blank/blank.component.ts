@@ -4,9 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-blank',
   standalone: false,
   template: `
-    <p>
-      blank works!
-    </p>
   `,
   styles: ``
 })
