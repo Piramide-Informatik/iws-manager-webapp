@@ -1,14 +1,17 @@
-.absence-form {
+.user-form {
   label {
     width: 111px;
   }
 
   input {
     width: 13em;
+    color: rgba(0, 0, 0, 0.35);
+    font-weight: 500;
+    font-size: 0.9rem;
   }
 }
 
-.absence-form-check {
+.user-form-check {
   display: flex;
   align-items: center;
 

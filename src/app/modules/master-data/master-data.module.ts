@@ -29,6 +29,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
+import { PasswordModule } from 'primeng/password';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -138,6 +139,7 @@ import { EditIwsCommissionsComponent } from './components/iws-commissions/compon
     CheckboxModule,
     DropdownModule,
     TextareaModule,
+    PasswordModule,
   ],
 })
 export class MasterDataModule {}

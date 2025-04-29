@@ -290,6 +290,28 @@
       "NEW": "Neu"
     }
   },
+
+  "USERS": {
+    "TABLE": {
+      "USERNAME": "Benutzername",
+      "NAME": "Name",
+      "ACTIVE": "Aktiv"
+    },
+    "FORM": {
+      "EDIT_TITLE": "Benutzer bearbeiten",
+      "USERNAME": "Benutzername",
+      "FIRSTNAME": "Vorname",
+      "LASTNAME": "Nachname",
+      "EMAIL": "E-Mail-Adresse",
+      "PASSWORD": "Kennwort",
+      "ACTIVE": "Aktiv",
+      "ASSIGNED_ROLES": "Zugewiesene Rollen",
+      "AVAILABLE_ROLES": "Verfügbare Rollen",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    }
+  },
+
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "Benutzerrolle"
@@ -447,7 +469,7 @@
     "PAGINATION": {
       "FOOTER": "Es werden {{initValue}} bis {{endValue}} von {{totalValue}} Einträgen angezeigt."
     }
- },
+  },
 
   "IWS_COMMISSIONS": {
     "TABLE": {
