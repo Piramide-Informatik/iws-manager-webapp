@@ -23,18 +23,29 @@
       </div>
 
       <div class="holiday-form mb-2 flex align-items-center gap-2">
-        <label for="fixedDate" style="min-width: 100px">{{
-          "HOLIDAYS.LABEL.FIXED_DATE" | translate
-        }}</label>
-        <p-checkbox
-          inputId="fixedDate"
-          binary="true"
-          formControlName="fixed"
-        ></p-checkbox>
+        <div class="holiday-form-check mb-2">
+          <label for="fixed">{{
+            "HOLIDAYS.LABEL.FIXED_DATE" | translate
+          }}</label>
+          <p-toggleswitch formControlName="fixed">
+            <ng-template #handle let-checked="checked">
+              <i
+                [ngClass]="[
+                  '!text-xs',
+                  'pi',
+                  checked ? 'pi-check' : 'pi-times'
+                ]"
+              ></i>
+            </ng-template>
+          </p-toggleswitch>
+        </div>
+
         <p-datepicker
           formControlName="fixedDate"
           showIcon="true"
           dateFormat="dd.mm.yy"
+          [showButtonBar]="true"
+          [placeholder]="'dd.mm.yy'"
         ></p-datepicker>
         <p-button
           [label]="'HOLIDAYS.BUTTON.SAVE' | translate"
@@ -73,7 +84,20 @@
           <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
             <td>{{ bl.name }}</td>
             <td class="align-center">
-              <p-checkbox [(ngModel)]="bl.selected" binary="true"></p-checkbox>
+              <p-toggleswitch
+                [(ngModel)]="bl.selected"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <ng-template #handle let-checked="checked">
+                  <i
+                    [ngClass]="[
+                      '!text-xs',
+                      'pi',
+                      checked ? 'pi-check' : 'pi-times'
+                    ]"
+                  ></i>
+                </ng-template>
+              </p-toggleswitch>
             </td>
           </tr>
         </ng-template>
@@ -120,7 +144,6 @@
       </p-table>
     </div>
   </div>
-
 
   <div class="buttons mt-3 flex gap-2 justify-content-left">
     <p-button
