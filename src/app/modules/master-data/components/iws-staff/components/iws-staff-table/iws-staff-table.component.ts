@@ -6,8 +6,8 @@ import { RouterUtilsService } from '../../../../router-utils.service';
 @Component({
   selector: 'app-iws-staff-table',
   templateUrl: './iws-staff-table.component.html',
-  styleUrls: ['./iws-staff-table.component.scss'],
   standalone: false,
+  styles: ``,
 })
 export class IwsStaffTableComponent implements OnInit, OnDestroy {
   iwsStaff: any[] = [];
@@ -19,6 +19,11 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     private readonly routerUtils: RouterUtilsService
   ) {}
 
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+  }
   ngOnInit(): void {
     this.iwsStaff = [
       {
@@ -63,27 +68,6 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
         lastName: 'Karten',
         email: 'g.karten@iws-nord.de',
       },
-      {
-        id: 7,
-        abbreviation: 'CaSc',
-        firstName: 'Carmen',
-        lastName: 'Schulte',
-        email: 'c.schulte@iws-nord.de',
-      },
-      {
-        id: 8,
-        abbreviation: 'BaIb',
-        firstName: 'Bassel',
-        lastName: 'Ibrahim',
-        email: 'b.ibrahim@iws-nord.de',
-      },
-      {
-        id: 9,
-        abbreviation: 'AnGi',
-        firstName: 'Antje',
-        lastName: 'Gittel',
-        email: 'a.gittel@iws-nord.de',
-      },
     ];
 
     this.loadColHeadersIwsStaff();
@@ -117,11 +101,5 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
     ];
-  }
-
-  ngOnDestroy(): void {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
   }
 }

@@ -7,7 +7,7 @@ import { RouterUtilsService } from '../../../../router-utils.service';
   selector: 'app-iws-commissions-table',
   standalone: false,
   templateUrl: './iws-commissions-table.component.html',
-  styleUrls: ['./iws-commissions-table.component.scss'],
+  styles: ``,
 })
 export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   commissions: any[] = [];
