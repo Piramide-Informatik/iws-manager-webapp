@@ -14,7 +14,7 @@
             
             <div class="field">
                 <label class="col-md-4 control-label" for="customerName">Anrede</label>
-                <p-select [options]="salutations" [(ngModel)]="salutationId"
+                <p-select [options]="salutations()"  
                     [editable]="true" [showClear]="true" optionLabel="name" />
             </div>
             
