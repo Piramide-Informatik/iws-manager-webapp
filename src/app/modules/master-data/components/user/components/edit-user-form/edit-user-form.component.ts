@@ -51,7 +51,6 @@ export class EditUserFormComponent {
       firstName: 'Patrick',
       lastName: 'Zessin',
       email: 'p.zessin@ws-nord.de',
-      password: '***************',
       active: true,
     });
 
