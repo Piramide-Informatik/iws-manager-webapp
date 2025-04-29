@@ -33,6 +33,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
 import { AvatarModule } from 'primeng/avatar';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { MessageModule } from 'primeng/message'
 
 //Components
 import { AppComponent } from './app.component';
@@ -69,6 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContractorModule,
     MenubarModule,
     MenuModule,
+    MessageModule,
     AvatarModule,
     TranslatePipe,
     TranslateDirective,
