@@ -14,6 +14,7 @@ import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.co
 import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
   { path: 'absence-types', component: AbsenceTypesComponent },
   { path: 'address', component: AddressComponent },
   { path: 'user', component: UserComponent },
