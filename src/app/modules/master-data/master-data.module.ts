@@ -70,6 +70,9 @@ import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iw
 import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
 import { IwsCommissionsTableComponent } from './components/iws-commissions/components/iws-commissions-table/iws-commissions-table.component';
 import { EditIwsCommissionsComponent } from './components/iws-commissions/components/edit-iws-commissions/edit-iws-commissions.component';
+import { TextComponent } from './components/text/text.component';
+import { TextTableComponent } from './components/text/components/text-table/text-table.component';
+import { TextFormComponent } from './components/text/components/text-form/text-form.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +114,9 @@ import { EditIwsCommissionsComponent } from './components/iws-commissions/compon
     IwsCommissionsComponent,
     IwsCommissionsTableComponent,
     EditIwsCommissionsComponent,
+    TextComponent,
+    TextTableComponent,
+    TextFormComponent,
   ],
   imports: [
     ButtonModule,

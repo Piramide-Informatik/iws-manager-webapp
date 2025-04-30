@@ -470,9 +470,6 @@
       "NAME_REQUIRED": "Name is required",
       "ONLY_NUMBER_REQUIRED": "Enter only numbers",
       "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters."
-    },
-    "PAGINATION": {
-      "FOOTER": "Displaying {{initValue}} to {{endValue}} of {{totalValue}} entries."
     }
   },
   "IWS_COMMISSIONS": {
@@ -495,5 +492,26 @@
   },
   "PAGINATION": {
     "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
+  },
+  "TEXT": {
+    "TABLE_TEXT": {
+      "TEXT_LABEL": "Text Label",
+      "TEXT": "Text",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_TEXT": "Edit Text",
+      "TEXT_LABEL": "Text label",
+      "TEXT_VALUE": "Text"
+    },
+    "ERROR": {
+      "TEXT_LABEL_REQUIRED": "Text label is required",
+      "TEXT_VALUE_REQUIRED": "Text value is required"
+    }
   }
 }
