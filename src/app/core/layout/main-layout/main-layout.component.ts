@@ -17,13 +17,23 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   currentSidebarItems: MenuItem[] = [];
   mainMenuItems: any[] = [];
-
+  
   private langSubscription!: Subscription;
   public currentMenuKey: string = 'dashboard';
-
+  
+  private readonly menuConfigs:  
+  {label: string, command: string, absoluteRoute: string}[] = [
+    { label: 'MENU.DASHBOARD', command: 'dashboard', absoluteRoute: '/dashboard' },
+    { label: 'MENU.CUSTOMERS', command: 'customers', absoluteRoute: '/customers' },
+    { label: 'MENU.PROJECTS', command: 'projects', absoluteRoute: '/projects' },
+    { label: 'MENU.INVOICING', command: 'invoicing', absoluteRoute: '/invoicing' },
+    { label: 'MENU.CONTROLLING', command: 'controlling', absoluteRoute: '/controlling' },
+    { label: 'MENU.MASTER_DATA', command: 'masterdata', absoluteRoute: '/master-data' },
+  ];
+  
   private readonly sidebarItemsConfig: Record<
     string,
-    { labelKey: string; icon?: string; route: string }[]
+    { labelKey: string; route: string }[]
   > = {
     dashboard: [
       { labelKey: 'MENU.DASHBOARD', route: '/dashboard' }
@@ -81,38 +91,11 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   loadMainMenuItems(): void {
-    this.mainMenuItems = [
-      {
-        label: this.translate.instant('MENU.DASHBOARD'),
-        command: 'dashboard',
-        absoluteRoute: '/dashboard'
-      },
-      {
-        label: this.translate.instant('MENU.CUSTOMERS'),
-        command: 'customers',
-        absoluteRoute: '/customers'
-      },
-      {
-        label: this.translate.instant('MENU.PROJECTS'),
-        command: 'projects',
-        absoluteRoute: '/projects'
-      },
-      {
-        label: this.translate.instant('MENU.INVOICING'),
-        command: 'invoicing',
-        absoluteRoute: '/invoicing'
-      },
-      {
-        label: this.translate.instant('MENU.CONTROLLING'),
-        command: 'controlling',
-        absoluteRoute: '/controlling'
-      },
-      {
-        label: this.translate.instant('MENU.MASTER_DATA'),
-        command: 'masterdata',
-        absoluteRoute: '/master-data'
-      },
-    ];
+    this.mainMenuItems = this.menuConfigs.map((menu)=> ({
+      label: this.translate.instant(menu.label),
+      command: menu.command,
+      absoluteRoute: menu.absoluteRoute
+    }))
   }
 
   toggleSidebar(): void {
@@ -138,7 +121,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       if (Array.isArray(config)) {
         this.currentSidebarItems = config.map((item) => ({
           label: this.translate.instant(item.labelKey),
-          icon: item.icon,
           routerLink: [item.route],
         }));
       } else {
