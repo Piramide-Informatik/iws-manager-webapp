@@ -84,37 +84,31 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.mainMenuItems = [
       {
         label: this.translate.instant('MENU.DASHBOARD'),
-        icon: 'pi pi-cog',
         command: 'dashboard',
         absoluteRoute: '/dashboard'
       },
       {
         label: this.translate.instant('MENU.CUSTOMERS'),
-        icon: 'pi pi-cog',
         command: 'customers',
         absoluteRoute: '/customers'
       },
       {
         label: this.translate.instant('MENU.PROJECTS'),
-        icon: 'pi pi-box',
         command: 'projects',
         absoluteRoute: '/projects'
       },
       {
         label: this.translate.instant('MENU.INVOICING'),
-        icon: 'pi pi-shopping-cart',
         command: 'invoicing',
         absoluteRoute: '/invoicing'
       },
       {
         label: this.translate.instant('MENU.CONTROLLING'),
-        icon: 'pi pi-chart-bar',
         command: 'controlling',
         absoluteRoute: '/controlling'
       },
       {
         label: this.translate.instant('MENU.MASTER_DATA'),
-        icon: 'pi pi-cog',
         command: 'masterdata',
         absoluteRoute: '/master-data'
       },
@@ -137,7 +131,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.currentMenuKey = menu;
 
     if (menu === 'masterdata') {
-      console.log('entro');
       this.currentSidebarItems = [];
     } else {
       const config = this.sidebarItemsConfig[menu];
