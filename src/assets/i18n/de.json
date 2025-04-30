@@ -491,5 +491,26 @@
   },
   "PAGINATION": {
     "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
+  },
+  "TEXT": {
+    "TABLE_TEXT": {
+      "TEXT_LABEL": "Textlabel",
+      "TEXT": "Text",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_TEXT": "Text bearbeiten",
+      "TEXT_LABEL": "Textlabel",
+      "TEXT_VALUE": "Text"
+    },
+    "ERROR": {
+      "TEXT_LABEL_REQUIRED": "Textlabel ist erforderlich",
+      "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
+    }
   }
 }
