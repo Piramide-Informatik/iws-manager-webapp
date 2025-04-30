@@ -12,6 +12,7 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 
 //Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -72,6 +73,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MessageModule,
     AvatarModule,
     TranslatePipe,
+    DatePipe,
     TranslateDirective,
     TranslateModule.forRoot({
       loader: {
@@ -93,6 +95,10 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     provideHttpClient(),
+    {
+      provide: DATE_PIPE_DEFAULT_OPTIONS,
+      useValue: { dateFormat: "longDate" }
+    }
   ],
   bootstrap: [AppComponent],
 })

@@ -490,5 +490,28 @@
       "TEXT_LABEL_REQUIRED": "Textlabel ist erforderlich",
       "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
     }
+  },
+  "SALES_TAX": {
+    "TABLE_SALES_TAX": {
+      "SALES_TAX": "Umsatzsteuer",
+      "CURRENT_TAX_RATE": "akt Steuersatz",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "TABLE_SALES_TAX_FORM": {
+      "FROM_DATE": "ab Datum",
+      "SENTENCE": "Satz"
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_SALES_TAX": "Steuersätze",
+      "SALES_TAX_LABEL": "Umsatzsteuer"
+    },
+    "ERROR": {
+      "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
+    }
   }
 }

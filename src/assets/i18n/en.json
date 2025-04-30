@@ -492,5 +492,28 @@
       "TEXT_LABEL_REQUIRED": "Text label is required",
       "TEXT_VALUE_REQUIRED": "Text value is required"
     }
+  },
+  "SALES_TAX": {
+    "TABLE_SALES_TAX": {
+      "SALES_TAX": "Sales Tax",
+      "CURRENT_TAX_RATE": "Current Tax Rate",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "TABLE_SALES_TAX_FORM": {
+      "FROM_DATE": "From Date",
+      "SENTENCE": "Sentence"
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_SALES_TAX": "Edit Sales Tax",
+      "SALES_TAX_LABEL": "Sales Tax"
+    },
+    "ERROR": {
+      "SALES_TAX_REQUIRED": "Sales Tax is required"
+    }
   }
 }
