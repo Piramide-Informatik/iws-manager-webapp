@@ -295,6 +295,27 @@
       "NEW": "New"
     }
   },
+  "USERS": {
+    "TABLE": {
+      "USERNAME": "Username",
+      "NAME": "Name",
+      "ACTIVE": "Active"
+    },
+    "FORM": {
+      "EDIT_TITLE": "Edit User",
+      "USERNAME": "Username",
+      "FIRSTNAME": "First Name",
+      "LASTNAME": "Last Name",
+      "EMAIL": "Email Address",
+      "PASSWORD": "Password",
+      "ACTIVE": "Active",
+      "ASSIGNED_ROLES": "Assigned Roles",
+      "AVAILABLE_ROLES": "Available Roles",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    }
+  },
+
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "User Roles"

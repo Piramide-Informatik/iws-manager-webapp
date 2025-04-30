@@ -29,6 +29,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
+import { PasswordModule } from 'primeng/password';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -144,6 +145,7 @@ import { TextFormComponent } from './components/text/components/text-form/text-f
     CheckboxModule,
     DropdownModule,
     TextareaModule,
+    PasswordModule,
   ],
 })
 export class MasterDataModule {}

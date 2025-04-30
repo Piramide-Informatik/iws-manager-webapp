@@ -295,6 +295,27 @@
       "NEW": "Nuevo"
     }
   },
+  "USERS": {
+    "TABLE": {
+      "USERNAME": "Nombre de usuario",
+      "NAME": "Nombre",
+      "ACTIVE": "Activo"
+    },
+    "FORM": {
+      "EDIT_TITLE": "Editar Usuario",
+      "USERNAME": "Nombre de usuario",
+      "FIRSTNAME": "Nombre",
+      "LASTNAME": "Apellido",
+      "EMAIL": "Correo electrónico",
+      "PASSWORD": "Contraseña",
+      "ACTIVE": "Activo",
+      "ASSIGNED_ROLES": "Roles asignados",
+      "AVAILABLE_ROLES": "Roles disponibles",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    }
+  },
+
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "Roles de Usuario"
