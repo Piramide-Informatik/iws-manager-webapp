@@ -62,9 +62,9 @@ export class EmployeeDetailsComponent implements OnInit {
   searchText: string = '';
   nextId: number = 1;
 
-  constructor(private employeeContractService: EmployeeContractService,
+  constructor(private  readonly employeeContractService: EmployeeContractService,
     private readonly salutationsService: SalutationService,
-    private messageService: MessageService,
+    private readonly messageService: MessageService,
     private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
