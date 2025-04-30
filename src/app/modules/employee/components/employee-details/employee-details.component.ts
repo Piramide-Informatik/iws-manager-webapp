@@ -1,13 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MessageService, SelectItem } from 'primeng/api';
 import { EmployeeContract } from '../../models/employee-contract';
 import { EmployeeContractService } from '../../services/employee-contract.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Salutation } from '../../models/salutation';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
 import { FormGroup } from '@angular/forms';
-import { TranslatePipe, TranslateDirective} from "@ngx-translate/core";
+import { TranslatePipe, TranslateDirective } from "@ngx-translate/core";
+import { SalutationService } from '../../../../Services/salutation.service';
+import { map } from 'rxjs';
 
 interface Column {
   field: string,
@@ -22,16 +24,27 @@ interface Column {
   styleUrl: './employee-details.component.scss'
 })
 export class EmployeeDetailsComponent implements OnInit {
-  
+
   public cols!: Column[];
   public selectedColumns!: Column[];
   titles: Title[] | undefined;
-  salutations: Salutation[] | undefined;
   qualificationsFZ: QualificationFZ[] | undefined;
   employeeContracts!: EmployeeContract[];
   statuses!: SelectItem[];
   clonedEmployeeContracts: { [s: string]: EmployeeContract } = {};
   orderForm!: FormGroup;
+
+  private readonly salutationService = inject(SalutationService);
+
+  public salutations = toSignal(
+    this.salutationService.getAllSalutations().pipe(
+      map(salutations => salutations.map(salutation => ({
+        name: salutation.salutation,
+        code: salutation.uuid
+      })))
+    ),
+    { initialValue: [] }
+  );
 
   @Input() customerName!: string | undefined;
   @Input() employeeNumber!: string | undefined;
@@ -49,7 +62,9 @@ export class EmployeeDetailsComponent implements OnInit {
   searchText: string = '';
   nextId: number = 1;
 
-  constructor(private employeeContractService: EmployeeContractService, private messageService: MessageService,
+  constructor(private  readonly employeeContractService: EmployeeContractService,
+    private readonly salutationsService: SalutationService,
+    private readonly messageService: MessageService,
     private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
@@ -73,12 +88,6 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeContracts = data;
     });
 
-    this.salutations = [
-      { id: 0, name: '', description: '' },
-      { id: 1, name: 'Frau', description: 'Men' },
-      { id: 2, name: 'Herr', description: 'Women' },
-
-    ];
 
     this.titles = [
       { id: 0, name: '', description: '' },
