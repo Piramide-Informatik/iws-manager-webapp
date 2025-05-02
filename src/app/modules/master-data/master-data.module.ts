@@ -73,6 +73,8 @@ import { EditIwsCommissionsComponent } from './components/iws-commissions/compon
 import { TextComponent } from './components/text/text.component';
 import { TextTableComponent } from './components/text/components/text-table/text-table.component';
 import { TextFormComponent } from './components/text/components/text-form/text-form.component';
+import { ProjectStatusComponent } from './components/project-status/project-status.component';
+import { EditProjectStatusComponent } from './components/project-status/components/edit-project-status/edit-project-status.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,8 @@ import { TextFormComponent } from './components/text/components/text-form/text-f
     TextComponent,
     TextTableComponent,
     TextFormComponent,
+    ProjectStatusComponent,
+    EditProjectStatusComponent,
   ],
   imports: [
     ButtonModule,
