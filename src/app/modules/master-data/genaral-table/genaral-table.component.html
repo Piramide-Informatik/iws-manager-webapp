@@ -99,7 +99,7 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        [label]="'BUTTONS.NEW' | translate"
+        [label]="nameNewButton || 'BUTTONS.NEW' | translate"
         icon="pi pi-plus"
         (click)="createRegister('new register')"
         (keydown.enter)="createRegister('new register')"
