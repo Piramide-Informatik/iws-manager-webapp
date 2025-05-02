@@ -512,5 +512,14 @@
       "TEXT_LABEL_REQUIRED": "Textlabel ist erforderlich",
       "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
     }
+  },
+  "NETWORKS": {
+    "LABEL": {
+      "NETWORK": "Netzwerk",
+      "EDIT_NETWORK": "Netzwerk bearbeiten",
+      "CUSTOMER": "Kunde",
+      "PARTNER": "Partner",
+      "NEW_PARTNER": "Neuer Partner"
+    }
   }
 }

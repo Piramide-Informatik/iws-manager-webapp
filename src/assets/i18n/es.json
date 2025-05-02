@@ -516,5 +516,14 @@
       "TEXT_LABEL_REQUIRED": "Etiqueta de texto es requerido",
       "TEXT_VALUE_REQUIRED": "Texto es requerido"
     }
+  },
+  "NETWORKS": {
+    "LABEL": {
+      "NETWORK": "Red",
+      "EDIT_NETWORK": "Editar red",
+      "CUSTOMER": "Cliente",
+      "PARTNER": "Socio",
+      "NEW_PARTNER": "Nuevo Socio"
+    }
   }
 }
