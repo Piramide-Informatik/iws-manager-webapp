@@ -512,5 +512,19 @@
       "TEXT_LABEL_REQUIRED": "Textlabel ist erforderlich",
       "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
     }
+  },
+  "PROJECT_FUNNELS": {
+    "TABLE": {
+      "PROJECT_SPONSOR": "Projektträger"
+    },
+    "FORM": {
+      "TITLE_FORM": "Projektträger bearbeiten",
+      "PROJECT_SPONSOR_ID": "Projektträger-Nr.",
+      "ABBREVIATION": "Kürzel",
+      "NAME": "Name",
+      "LAND": "Land",
+      "STREET": "Straße",
+      "ZIP_CITY":"PLZ / Ort"
+    }
   }
 }

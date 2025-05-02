@@ -516,5 +516,19 @@
       "TEXT_LABEL_REQUIRED": "Etiqueta de texto es requerido",
       "TEXT_VALUE_REQUIRED": "Texto es requerido"
     }
+  },
+  "PROJECT_FUNNELS": {
+    "TABLE": {
+      "PROJECT_SPONSOR": "Patrocinador del Proyecto"
+    },
+    "FORM": {
+      "TITLE_FORM": "Editar Patrocinador del Proyecto",
+      "PROJECT_SPONSOR_ID": "No-Patrocinador del Proyecto",
+      "ABBREVIATION": "Abreviatura",
+      "NAME": "Nombre",
+      "LAND": "tierra",
+      "STREET": "Calle",
+      "ZIP_CITY":"Código Postal / Ciudad"
+    }
   }
 }

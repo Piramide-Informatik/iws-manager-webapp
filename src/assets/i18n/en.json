@@ -513,5 +513,19 @@
       "TEXT_LABEL_REQUIRED": "Text label is required",
       "TEXT_VALUE_REQUIRED": "Text value is required"
     }
+  },
+  "PROJECT_FUNNELS": {
+    "TABLE": {
+      "PROJECT_SPONSOR": "Project Sponsor"
+    },
+    "FORM": {
+      "TITLE_FORM": "Edit project sponsor",
+      "PROJECT_SPONSOR_ID": "Project Sponsor-Nr",
+      "ABBREVIATION": "Abbreviation",
+      "NAME": "Name",
+      "LAND": "Land",
+      "STREET": "Street",
+      "ZIP_CITY":"ZIP / City"
+    }
   }
 }
