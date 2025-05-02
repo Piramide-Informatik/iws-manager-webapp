@@ -512,5 +512,9 @@
       "TEXT_LABEL_REQUIRED": "Textlabel ist erforderlich",
       "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
     }
+  },
+  "PROJECT_STATUS": {
+    "PROJECT_STATUS": "Projektstatus",
+    "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten"
   }
 }

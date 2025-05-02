@@ -513,5 +513,9 @@
       "TEXT_LABEL_REQUIRED": "Text label is required",
       "TEXT_VALUE_REQUIRED": "Text value is required"
     }
+  },
+  "PROJECT_STATUS": {
+    "PROJECT_STATUS": "Project Status",
+    "EDIT_PROJECT_STATUS": "Edit Project Status"
   }
 }
