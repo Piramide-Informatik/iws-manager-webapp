@@ -1,0 +1,15 @@
+@use 'variables' as *;
+
+.text-form {
+    label {
+        width: 120px;
+    }
+
+    input {
+        width: 250px;
+    }
+
+    textarea {
+        width: 250px;
+    }
+}

@@ -79,6 +79,10 @@ import { EditCountryComponent } from './components/countries/components/edit-cou
 import { CostsTableComponent } from './components/cost/components/costs-table/costs-table.component';
 import { EditCostComponent } from './components/cost/components/edit-cost/edit-cost.component';
 import { CostsComponent } from './components/cost/costs.component';
+import { TextComponent } from './components/text/text.component';
+import { TextTableComponent } from './components/text/components/text-table/text-table.component';
+import { TextFormComponent } from './components/text/components/text-form/text-form.component';
+
 
 @NgModule({
   declarations: [
@@ -129,6 +133,10 @@ import { CostsComponent } from './components/cost/costs.component';
     CostsTableComponent,
     EditCostComponent,
     CostsComponent,
+    TextComponent,
+    TextTableComponent,
+    TextFormComponent,
+
   ],
   imports: [
     ButtonModule,

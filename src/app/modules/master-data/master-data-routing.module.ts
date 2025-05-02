@@ -16,6 +16,8 @@ import { IwsCommissionsComponent } from './components/iws-commissions/iws-commis
 import { IwsTeamsComponent } from './components/iws-teams/iws-teams.component';
 import { CountriesComponent } from './components/countries/countries.component';
 import { CostsComponent } from './components/cost/costs.component';
+import { TextComponent } from './components/text/text.component';
+
 
 const routes: Routes = [
   { path: 'absence-types', component: AbsenceTypesComponent },
@@ -28,6 +30,7 @@ const routes: Routes = [
   { path: 'holidays', component: HolidaysComponent },
   { path: 'funding-programs', component: FundingProgramsComponent },
   { path: 'system-constants', component: SystemConstantsComponent },
+  { path: 'texts', component: TextComponent },
   { path: 'employee-qualification', component: EmployeeQualificationComponent },
   { path: 'iws-staff', component: IwsStaffComponent },
   { path: 'iws-commissions', component: IwsCommissionsComponent },
