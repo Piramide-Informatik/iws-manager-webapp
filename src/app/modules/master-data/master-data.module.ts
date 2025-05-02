@@ -73,6 +73,8 @@ import { EditIwsCommissionsComponent } from './components/iws-commissions/compon
 import { TextComponent } from './components/text/text.component';
 import { TextTableComponent } from './components/text/components/text-table/text-table.component';
 import { TextFormComponent } from './components/text/components/text-form/text-form.component';
+import { ProjectFunnelsComponent } from './components/project-funnels/project-funnels.component';
+import { EditProjectFunnelComponent } from './components/project-funnels/components/edit-project-funnel/edit-project-funnel.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,8 @@ import { TextFormComponent } from './components/text/components/text-form/text-f
     TextComponent,
     TextTableComponent,
     TextFormComponent,
+    ProjectFunnelsComponent,
+    EditProjectFunnelComponent,
   ],
   imports: [
     ButtonModule,

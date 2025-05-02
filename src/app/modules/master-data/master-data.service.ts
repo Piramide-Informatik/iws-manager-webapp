@@ -68,4 +68,12 @@ export class MasterDataService {
       { qualification: 'Wissenschaftler', abbreviation: 'Wiss.'},
     ]
   }
+
+  getProjectFunnelsData(): any[]{
+    return [
+      { id: '1601', projectSponsor: 'Deutsches Zentrum für Luft- und Raumfahrt e.V.' },
+      { id: '1448', projectSponsor: 'VDI/VDE-Gesellschaft Mess- und Automatisierungstechnik' },
+      { id: '1447', projectSponsor: 'VDI/VDE Innovation + Technik GmbH' },
+    ];
+  }
 };
