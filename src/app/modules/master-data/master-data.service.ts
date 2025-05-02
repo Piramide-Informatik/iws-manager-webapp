@@ -68,4 +68,27 @@ export class MasterDataService {
       { qualification: 'Wissenschaftler', abbreviation: 'Wiss.'},
     ]
   }
+
+  getNetworksData(): any[]{
+    return [
+      { network: "merepa11" },
+      { network: "merepa21" },
+      { network: "merepa22" },
+      { network: "parcel11" },
+      { network: "parcel21" },
+      { network: "parcel22" },
+      { network: "seeds11" },
+      { network: "seeds21" },
+      { network: "seeds22" },
+    ];
+  }
+
+  getPartnersData(): any[]{
+    return [
+      { id: '1', customerNumber: '1617', partner: 'Capture-Media-Beteiligungs-GmbH' },
+      { id: '2', customerNumber: '1529', partner: 'cibX GmbH' },
+      { id: '3', customerNumber: '1100', partner: 'CorporateHealth - die Gesundheits' },
+      { id: '4', customerNumber: '1622', partner: 'Datico Sport & Health GmbH' },
+    ];
+  }
 };

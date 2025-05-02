@@ -73,6 +73,8 @@ import { EditIwsCommissionsComponent } from './components/iws-commissions/compon
 import { TextComponent } from './components/text/text.component';
 import { TextTableComponent } from './components/text/components/text-table/text-table.component';
 import { TextFormComponent } from './components/text/components/text-form/text-form.component';
+import { NetworksComponent } from './components/networks/networks.component';
+import { EditNetworkComponent } from './components/networks/components/edit-network/edit-network.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,8 @@ import { TextFormComponent } from './components/text/components/text-form/text-f
     TextComponent,
     TextTableComponent,
     TextFormComponent,
+    NetworksComponent,
+    EditNetworkComponent,
   ],
   imports: [
     ButtonModule,
