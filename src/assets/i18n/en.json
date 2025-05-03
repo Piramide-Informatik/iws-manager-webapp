@@ -595,5 +595,8 @@
     "ERROR": {
       "SALES_TAX_REQUIRED": "Sales Tax is required"
     }
+  },
+  "REALIZATION_PROBABILITIES": {
+    "TITLE_FORM": "Edit Realization Probabilities" 
   }
 }

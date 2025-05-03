@@ -599,5 +599,8 @@
     "ERROR": {
       "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
     }
+  },
+  "REALIZATION_PROBABILITIES": {
+    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
   }
 }
