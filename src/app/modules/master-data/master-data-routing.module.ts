@@ -20,6 +20,7 @@ import { TextComponent } from './components/text/text.component';
 import { ProjectStatusComponent } from './components/project-status/project-status.component';
 import { NetworksComponent } from './components/networks/networks.component';
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
+import { TermsPaymentComponent } from './components/terms-payment/terms-payment.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'iws-teams', component: IwsTeamsComponent },
   { path: 'countries', component: CountriesComponent },
   { path: 'cost', component: CostsComponent },
+  { path: 'terms-payment', component: TermsPaymentComponent },
 ];
 
 @NgModule({

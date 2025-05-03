@@ -89,6 +89,8 @@ import { EditNetworkComponent } from './components/networks/components/edit-netw
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
 import { SalesTaxFormComponent } from './components/sales-tax/components/sales-tax-form/sales-tax-form.component';
 import { SalesTaxTableComponent } from './components/sales-tax/components/sales-tax-table/sales-tax-table.component';
+import { TermsPaymentComponent } from './components/terms-payment/terms-payment.component';
+import { EditTermPaymentComponent } from './components/terms-payment/components/edit-term-payment/edit-term-payment.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +151,8 @@ import { SalesTaxTableComponent } from './components/sales-tax/components/sales-
     SalesTaxComponent,
     SalesTaxFormComponent,
     SalesTaxTableComponent,
+    TermsPaymentComponent,
+    EditTermPaymentComponent,
   ],
   imports: [
     ButtonModule,

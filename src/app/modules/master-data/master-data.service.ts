@@ -103,4 +103,12 @@ export class MasterDataService {
       { id: '4', customerNumber: '1622', partner: 'Datico Sport & Health GmbH' },
     ];
   }
+
+  getTermsPaymentData(): any[]{
+    return [
+      { termsPayment: '12 Wo nach ZB', termPayment: 84 },
+      { termsPayment: '14 Tage', termPayment: 14 },
+      { termsPayment: 'verhandelbar' },
+    ];
+  }
 };
