@@ -18,11 +18,6 @@
     "FRAMEWORK_AGREEMENTS": "Framework Agreements",
     "CONTRACTORS": "Contractors",
     "SUBCONTRACTS": "Subcontracts",
-    "GOODS_ENTRY": "Goods Entry",
-    "STOCK_CONTROL": "Stock Control",
-    "PRODUCTS": "Products",
-    "SALES": "Sales",
-    "INVENTORY": "Inventory",
 
     "ABSENCE_TYPES": "Absence Types",
     "ADDRESS": "Address",
@@ -490,6 +485,57 @@
       "CANCEL": "Cancel"
     }
   },
+  "IWS_TEAMS": {
+    "HEADER": {
+      "EDIT_TEAM": "Edit Team"
+    },
+    "LABEL": {
+      "TEAM_NAME": "Team Name",
+      "TEAM_LEADER": "Team Leader"
+    },
+    "PLACEHOLDER": {
+      "SELECT_LEADER": "Select Leader"
+    }
+  },
+  "COUNTRIES": {
+    "HEADER": {
+      "EDIT_COUNTRY": "Edit Country"
+    },
+    "LABEL": {
+      "NAME": "Name",
+      "ABBREVIATION": "Abbreviation",
+      "IS_STANDARD": "Is Standard?"
+    },
+
+    "TABLE": {
+      "NAME": "Name",
+      "ABBREVIATION": "Abbreviation",
+      "IS_STANDARD": "Standard?",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose columns",
+      "NO_DATA": "No countries available.",
+      "PAGE_INFO": "Showing {first} - {last} of {totalRecords}"
+    },
+    "MESSAGE": {
+      "NO_COUNTRIES": "No countries found."
+    }
+  },
+
+  "COSTS": {
+    "HEADER": {
+      "EDIT_COST": "Edit Cost Type"
+    },
+    "LABEL": {
+      "NAME": "Cost Type Name",
+      "SORT": "Sort Order"
+    },
+    "TABLE": {
+      "NAME": "Cost Type",
+      "SORT": "Sort",
+      "NO_DATA": "No cost types found"
+    }
+  },
+
   "PAGINATION": {
     "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
   },
@@ -521,6 +567,29 @@
       "CUSTOMER": "Customer",
       "PARTNER": "Partner",
       "NEW_PARTNER": "New Partner"
+    }
+  },
+  "SALES_TAX": {
+    "TABLE_SALES_TAX": {
+      "SALES_TAX": "Sales Tax",
+      "CURRENT_TAX_RATE": "Current Tax Rate",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "TABLE_SALES_TAX_FORM": {
+      "FROM_DATE": "From Date",
+      "SENTENCE": "Sentence"
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_SALES_TAX": "Edit Sales Tax",
+      "SALES_TAX_LABEL": "Sales Tax"
+    },
+    "ERROR": {
+      "SALES_TAX_REQUIRED": "Sales Tax is required"
     }
   }
 }

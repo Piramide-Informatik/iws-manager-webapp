@@ -18,11 +18,6 @@
     "FRAMEWORK_AGREEMENTS": "Acuerdos Marco",
     "CONTRACTORS": "Contratistas",
     "SUBCONTRACTS": "Subcontratos",
-    "GOODS_ENTRY": "Ingreso de Mercancía",
-    "STOCK_CONTROL": "Control de Stock",
-    "PRODUCTS": "Productos",
-    "SALES": "Ventas",
-    "INVENTORY": "Inventario",
 
     "ABSENCE_TYPES": "Tipos de Ausencia",
     "ADDRESS": "Dirección",
@@ -493,6 +488,62 @@
       "CANCEL": "Cancelar"
     }
   },
+
+  "IWS_TEAMS": {
+    "HEADER": {
+      "EDIT_TEAM": "Editar Equipo"
+    },
+    "LABEL": {
+      "TEAM_NAME": "Nombre del Equipo",
+      "TEAM_LEADER": "Líder del Equipo"
+    },
+    "PLACEHOLDER": {
+      "SELECT_LEADER": "Seleccionar Líder"
+    }
+  },
+  "COUNTRIES": {
+    "HEADER": {
+      "EDIT_COUNTRY": "Editar País"
+    },
+    "LABEL": {
+      "NAME": "Nombre",
+      "ABBREVIATION": "Abreviatura",
+      "IS_STANDARD": "¿Es estándar?"
+    },
+    "BUTTON": {
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar",
+      "NEW": "Nuevo"
+    },
+    "TABLE": {
+      "NAME": "Nombre",
+      "ABBREVIATION": "Abreviatura",
+      "IS_STANDARD": "¿Estándar?",
+      "COLUMNS_SELECTED": "{0} columnas seleccionadas",
+      "CHOOSE_COLUMNS": "Elegir columnas",
+      "NO_DATA": "No hay países registrados.",
+      "PAGE_INFO": "Mostrando {first} - {last} de {totalRecords}"
+    },
+    "MESSAGE": {
+      "NO_COUNTRIES": "No se encontraron países."
+    }
+  },
+
+  "COSTS": {
+    "HEADER": {
+      "EDIT_COST": "Editar Tipo de Costo"
+    },
+    "LABEL": {
+      "NAME": "Nombre del Tipo de Costo",
+      "SORT": "Orden"
+    },
+    "TABLE": {
+      "NAME": "Tipo de Costo",
+      "SORT": "Orden",
+      "NO_DATA": "No se encontraron tipos de costo"
+    }
+  },
+
   "PAGINATION": {
     "REPORT": "Se muestran {{first}} a {{last}} de {{totalRecords}} registros"
   },
@@ -524,6 +575,29 @@
       "CUSTOMER": "Cliente",
       "PARTNER": "Socio",
       "NEW_PARTNER": "Nuevo Socio"
+    }
+  },
+  "SALES_TAX": {
+    "TABLE_SALES_TAX": {
+      "SALES_TAX": "Impuesto Sobre las Ventas",
+      "CURRENT_TAX_RATE": "Tasa Impositiva Actual",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "TABLE_SALES_TAX_FORM": {
+      "FROM_DATE": "Desde la Fecha",
+      "SENTENCE": "Tasa"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "EDIT_SALES_TAX": "Editar Impuesto Sobre las Ventas",
+      "SALES_TAX_LABEL": "Impuesto Sobre la Venta"
+    },
+    "ERROR": {
+      "SALES_TAX_REQUIRED": "Impuesto sobre la venta requerido"
     }
   }
 }

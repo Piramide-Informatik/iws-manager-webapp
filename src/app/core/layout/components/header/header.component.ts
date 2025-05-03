@@ -46,6 +46,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onMenuSelect(menu: string, index: number): void {
+    console.log('menu:', menu);
+    
     this.menuSelected.emit(menu);
     const menuOptions: HTMLCollectionOf<Element> =
       document.getElementsByClassName('menu-options');
