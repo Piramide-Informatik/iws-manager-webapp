@@ -2,7 +2,8 @@
   <div
     class="grid m-0 h-full align-items-center px-3 menu-options"
     *ngFor="let item of items; let i = index"
-    [ngClass]="{ active: item.command === currentMenuKey }"
+    [routerLink]="item.absoluteRoute"
+    routerLinkActive="active"
   >
     <div
       id="col"

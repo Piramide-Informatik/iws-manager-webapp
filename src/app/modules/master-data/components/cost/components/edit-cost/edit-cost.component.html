@@ -1,0 +1,51 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  [header]="'COSTS.HEADER.EDIT_COST' | translate"
+>
+  <form [formGroup]="costForm">
+    <div class="align-items-center mb-2">
+      <div class="cost-form mb-2">
+        <label for="name">{{ "COSTS.LABEL.NAME" | translate }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="cost-form mb-2">
+        <label for="sort">{{ "COSTS.LABEL.SORT" | translate }}</label>
+        <input
+          pInputText
+          type="number"
+          id="sort"
+          formControlName="sort"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <p-button
+          class="p-button-sm"
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          (click)="saveCost()"
+          (keydown)="saveCost()"
+        ></p-button>
+        <p-button
+          class="cancel me-2"
+          size="small"
+          [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times"
+          severity="secondary"
+          (keydown)="cancelEdit()"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</p-card>

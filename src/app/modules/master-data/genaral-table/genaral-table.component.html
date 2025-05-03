@@ -7,13 +7,10 @@
     [columns]="selectedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
-    [currentPageReportTemplate]="
-      'PAGINATION.REPORT'
-        | translate
-          : { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' }
-    "
+    [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
     [showCurrentPageReport]="true"
     [resizableColumns]="true"
+    columnResizeMode="expand"
     [scrollable]="true"
     showGridlines
     scrollHeight="60vh"
@@ -99,7 +96,7 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        [label]="'BUTTONS.NEW' | translate"
+        [label]="nameNewButton || 'BUTTONS.NEW' | translate"
         icon="pi pi-plus"
         (click)="createRegister('new register')"
         (keydown.enter)="createRegister('new register')"

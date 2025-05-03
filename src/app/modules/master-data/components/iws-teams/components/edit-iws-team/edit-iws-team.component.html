@@ -1,0 +1,58 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  [header]="'IWS_TEAMS.HEADER.EDIT_TEAM' | translate"
+>
+  <form [formGroup]="teamForm">
+    <div class="align-items-center mb-2">
+      <div class="team-form mb-2">
+        <label for="teamName">{{
+          "IWS_TEAMS.LABEL.TEAM_NAME" | translate
+        }}</label>
+        <input
+          pInputText
+          id="teamName"
+          formControlName="teamName"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="team-form mb-2">
+        <label for="teamLeader">{{
+          "IWS_TEAMS.LABEL.TEAM_LEADER" | translate
+        }}</label>
+        <p-dropdown
+          id="teamLeader"
+          [options]="leaders"
+          optionLabel="fullName"
+          formControlName="teamLeader"
+          placeholder="{{ 'IWS_TEAMS.PLACEHOLDER.SELECT_LEADER' | translate }}"
+          [showClear]="true"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <p-button
+          class="save me-2"
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          (click)="saveTeam()"
+          (keydown)="saveTeam()"
+        ></p-button>
+      </div>
+      <div class="col">
+        <p-button
+          class="cancel me-2"
+          size="small"
+          [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times"
+          severity="secondary"
+          (keydown)="cancelEdit()"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</p-card>

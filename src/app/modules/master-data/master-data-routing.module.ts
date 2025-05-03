@@ -11,12 +11,18 @@ import { FundingProgramsComponent } from './components/funding-programs/funding-
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { SystemConstantsComponent } from './components/system-constants/system-constants.component';
 import { EmployeeQualificationComponent } from './components/employee-qualification/employee-qualification.component';
-import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
+import { IwsStaffComponent } from './components/iws-staff/iws-staff.component';
 import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
+import { IwsTeamsComponent } from './components/iws-teams/iws-teams.component';
+import { CountriesComponent } from './components/countries/countries.component';
+import { CostsComponent } from './components/cost/costs.component';
 import { TextComponent } from './components/text/text.component';
 import { ProjectStatusComponent } from './components/project-status/project-status.component';
+import { NetworksComponent } from './components/networks/networks.component';
+import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
   { path: 'absence-types', component: AbsenceTypesComponent },
   { path: 'address', component: AddressComponent },
   { path: 'user', component: UserComponent },
@@ -32,6 +38,11 @@ const routes: Routes = [
   { path: 'iws-staff', component: IwsStaffComponent },
   { path: 'iws-commissions', component: IwsCommissionsComponent },
   { path: 'project-status', component: ProjectStatusComponent },
+  { path: 'networks', component: NetworksComponent },
+  { path: 'sales-tax', component: SalesTaxComponent },
+  { path: 'iws-teams', component: IwsTeamsComponent },
+  { path: 'countries', component: CountriesComponent },
+  { path: 'cost', component: CostsComponent },
 ];
 
 @NgModule({

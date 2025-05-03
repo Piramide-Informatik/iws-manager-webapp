@@ -101,23 +101,29 @@
         ></p-datepicker>
       </div>
 
-      <div class="buttons mt-3 flex gap-2 justify-content-left">
-        <p-button
-          class="p-button-sm"
-          size="small"
-          [label]="'IWS_STAFF.BUTTON.SAVE' | translate"
-          icon="pi pi-check"
-          type="submit"
-        ></p-button>
-        <p-button
-          class="p-button-sm"
-          size="small"
-          [label]="'IWS_STAFF.BUTTON.CANCEL' | translate"
-          icon="pi pi-times"
-          type="button"
-          (click)="cancelEdit()"
-          (keydown)="cancelEdit()"
-        ></p-button>
+      <div class="row mt-4">
+        <div class="col">
+          <p-button
+            class="save me-2"
+            size="small"
+            [label]="'BUTTONS.SAVE' | translate"
+            icon="pi pi-check"
+            iconPos="left"
+            type="submit"
+          ></p-button>
+        </div>
+        <div class="col">
+          <p-button
+            class="cancel me-2"
+            size="small"
+            [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times"
+            iconPos="left"
+            (click)="cancelEdit()"
+            type="button"
+            (keydown)="cancelEdit()"
+          ></p-button>
+        </div>
       </div>
     </div>
   </form>
