@@ -489,6 +489,57 @@
       "CANCEL": "Abbrechen"
     }
   },
+  "IWS_TEAMS": {
+    "HEADER": {
+      "EDIT_TEAM": "IWS Team bearbeiten"
+    },
+    "LABEL": {
+      "TEAM_NAME": "Teamname",
+      "TEAM_LEADER": "Teamleiter"
+    },
+    "PLACEHOLDER": {
+      "SELECT_LEADER": "Teamleiter auswählen"
+    }
+  },
+  "COUNTRIES": {
+    "HEADER": {
+      "EDIT_COUNTRY": "Land bearbeiten"
+    },
+    "LABEL": {
+      "NAME": "Land",
+      "ABBREVIATION": "Kürzel",
+      "IS_STANDARD": "Ist Standard?"
+    },
+
+    "TABLE": {
+      "NAME": "Land",
+      "ABBREVIATION": "Kürzel",
+      "IS_STANDARD": "Standard?",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Länder gefunden.",
+      "PAGE_INFO": "{first} - {last} von {totalRecords} Einträgen"
+    },
+    "MESSAGE": {
+      "NO_COUNTRIES": "Keine Länder vorhanden."
+    }
+  },
+
+  "COSTS": {
+    "HEADER": {
+      "EDIT_COST": "Kostenart bearbeiten"
+    },
+    "LABEL": {
+      "NAME": "Bezeichnung der Kostenart",
+      "SORT": "Sortierung"
+    },
+    "TABLE": {
+      "NAME": "Kostenart",
+      "SORT": "Sortierung",
+      "NO_DATA": "Keine Kostenarten gefunden"
+    }
+  },
+
   "PAGINATION": {
     "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
   },
@@ -525,6 +576,42 @@
       "LAND": "Land",
       "STREET": "Straße",
       "ZIP_CITY":"PLZ / Ort"
+    }
+  },
+  "PROJECT_STATUS": {
+    "PROJECT_STATUS": "Projektstatus",
+    "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten"
+  },
+  "NETWORKS": {
+    "LABEL": {
+      "NETWORK": "Netzwerk",
+      "EDIT_NETWORK": "Netzwerk bearbeiten",
+      "CUSTOMER": "Kunde",
+      "PARTNER": "Partner",
+      "NEW_PARTNER": "Neuer Partner"
+    }
+  },
+  "SALES_TAX": {
+    "TABLE_SALES_TAX": {
+      "SALES_TAX": "Umsatzsteuer",
+      "CURRENT_TAX_RATE": "akt Steuersatz",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "TABLE_SALES_TAX_FORM": {
+      "FROM_DATE": "ab Datum",
+      "SENTENCE": "Satz"
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_SALES_TAX": "Steuersätze",
+      "SALES_TAX_LABEL": "Umsatzsteuer"
+    },
+    "ERROR": {
+      "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
     }
   }
 }

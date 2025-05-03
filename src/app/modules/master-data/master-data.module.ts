@@ -64,17 +64,33 @@ import { SystemConstantTableComponent } from './components/system-constants/comp
 import { SystemConstantFormComponent } from './components/system-constants/components/system-constant-form/system-constant-form.component';
 import { EmployeeQualificationComponent } from './components/employee-qualification/employee-qualification.component';
 import { EditQualificationComponent } from './components/employee-qualification/components/edit-qualification/edit-qualification.component';
-import { IwsStaffComponent } from './components/iws-staff/iws-staff/iws-staff.component';
+import { IwsStaffComponent } from './components/iws-staff/iws-staff.component';
 import { IwsStaffTableComponent } from './components/iws-staff/components/iws-staff-table/iws-staff-table.component';
 import { EditIwsStaffComponent } from './components/iws-staff/components/edit-iws-staff/edit-iws-staff.component';
 import { IwsCommissionsComponent } from './components/iws-commissions/iws-commissions.component';
 import { IwsCommissionsTableComponent } from './components/iws-commissions/components/iws-commissions-table/iws-commissions-table.component';
 import { EditIwsCommissionsComponent } from './components/iws-commissions/components/edit-iws-commissions/edit-iws-commissions.component';
+import { IwsTeamsComponent } from './components/iws-teams/iws-teams.component';
+import { IwsTeamsTableComponent } from './components/iws-teams/components/iws-teams-table/iws-teams-table.component';
+import { EditIwsTeamComponent } from './components/iws-teams/components/edit-iws-team/edit-iws-team.component';
+import { CountriesComponent } from './components/countries/countries.component';
+import { CountriesTableComponent } from './components/countries/components/countries-table/countries-table.component';
+import { EditCountryComponent } from './components/countries/components/edit-country/edit-country.component';
+import { CostsTableComponent } from './components/cost/components/costs-table/costs-table.component';
+import { EditCostComponent } from './components/cost/components/edit-cost/edit-cost.component';
+import { CostsComponent } from './components/cost/costs.component';
 import { TextComponent } from './components/text/text.component';
 import { TextTableComponent } from './components/text/components/text-table/text-table.component';
 import { TextFormComponent } from './components/text/components/text-form/text-form.component';
 import { ProjectFunnelsComponent } from './components/project-funnels/project-funnels.component';
 import { EditProjectFunnelComponent } from './components/project-funnels/components/edit-project-funnel/edit-project-funnel.component';
+import { ProjectStatusComponent } from './components/project-status/project-status.component';
+import { EditProjectStatusComponent } from './components/project-status/components/edit-project-status/edit-project-status.component';
+import { NetworksComponent } from './components/networks/networks.component';
+import { EditNetworkComponent } from './components/networks/components/edit-network/edit-network.component';
+import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
+import { SalesTaxFormComponent } from './components/sales-tax/components/sales-tax-form/sales-tax-form.component';
+import { SalesTaxTableComponent } from './components/sales-tax/components/sales-tax-table/sales-tax-table.component';
 
 @NgModule({
   declarations: [
@@ -116,11 +132,27 @@ import { EditProjectFunnelComponent } from './components/project-funnels/compone
     IwsCommissionsComponent,
     IwsCommissionsTableComponent,
     EditIwsCommissionsComponent,
+    IwsTeamsComponent,
+    IwsTeamsTableComponent,
+    EditIwsTeamComponent,
+    CountriesComponent,
+    CountriesTableComponent,
+    EditCountryComponent,
+    CostsTableComponent,
+    EditCostComponent,
+    CostsComponent,
     TextComponent,
     TextTableComponent,
     TextFormComponent,
     ProjectFunnelsComponent,
     EditProjectFunnelComponent,
+    ProjectStatusComponent,
+    EditProjectStatusComponent,
+    NetworksComponent,
+    EditNetworkComponent,
+    SalesTaxComponent,
+    SalesTaxFormComponent,
+    SalesTaxTableComponent,
   ],
   imports: [
     ButtonModule,

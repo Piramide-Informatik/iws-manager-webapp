@@ -16,7 +16,6 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   systemConstants = [...SYSTEM_CONSTANT];
   systemConstantColumns: any[] = [];
   displayedColumns: any[] = [];
-  paginationMessage = '';
   @ViewChild('dt') dt!: Table;
 
   private langConstantsSubscription!: Subscription;

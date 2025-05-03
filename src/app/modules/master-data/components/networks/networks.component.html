@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+      <div class="col-6">
+        <master-data-genaral-table
+          [tableValues]="networks"
+          tableTitle="networks"
+          [columns]="columsHeaderFieldNetworks"
+          [hideColumns]="false"
+        ></master-data-genaral-table>
+      </div>
+      <div class="col-6">
+        <master-data-edit-network></master-data-edit-network>
+      </div>
+    </div>
+</div>
