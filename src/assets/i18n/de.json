@@ -599,5 +599,8 @@
     "ERROR": {
       "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
     }
+  },
+  "BILLERS": {
+    "TITLE_FORM": "Rechnungsersteller bearbeiten"
   }
 }

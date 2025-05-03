@@ -1,0 +1,16 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'BILLERS.TITLE_FORM' | translate ">
+    <form [formGroup]="editBillerForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column mb-2 mt-4 px-5">
+            <div class="billers-form flex flex-row mb-6 align-items-center gap-4">
+                <label for="biller">{{ 'SIDEBAR.BILLERS' | translate }}</label>
+                <input pInputText type="text" id="biller" formControlName="biller" autocomplete="off" />
+            </div>
+            <div class="row">
+                <div class="col flex justify-content-center">
+                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</p-card>

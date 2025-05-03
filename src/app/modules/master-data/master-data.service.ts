@@ -103,4 +103,10 @@ export class MasterDataService {
       { id: '4', customerNumber: '1622', partner: 'Datico Sport & Health GmbH' },
     ];
   }
+
+  getBillersData(): any[]{
+    return [
+      { biller: 'IWS GmbH' }, { biller: 'Steinbeis' }
+    ];
+  }
 };

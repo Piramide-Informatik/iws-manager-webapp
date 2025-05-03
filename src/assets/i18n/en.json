@@ -595,5 +595,8 @@
     "ERROR": {
       "SALES_TAX_REQUIRED": "Sales Tax is required"
     }
+  },
+  "BILLERS": {
+    "TITLE_FORM": "Edit Biller"
   }
 }
