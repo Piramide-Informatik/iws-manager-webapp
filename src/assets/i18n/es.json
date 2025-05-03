@@ -572,5 +572,28 @@
       "TEXT_LABEL_REQUIRED": "Etiqueta de texto es requerido",
       "TEXT_VALUE_REQUIRED": "Texto es requerido"
     }
+  },
+  "SALES_TAX": {
+    "TABLE_SALES_TAX": {
+      "SALES_TAX": "Impuesto Sobre las Ventas",
+      "CURRENT_TAX_RATE": "Tasa Impositiva Actual",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "TABLE_SALES_TAX_FORM": {
+      "FROM_DATE": "Desde la Fecha",
+      "SENTENCE": "Tasa"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "EDIT_SALES_TAX": "Editar Impuesto Sobre las Ventas",
+      "SALES_TAX_LABEL": "Impuesto Sobre la Venta"
+    },
+    "ERROR": {
+      "SALES_TAX_REQUIRED": "Impuesto sobre la venta requerido"
+    }
   }
 }
