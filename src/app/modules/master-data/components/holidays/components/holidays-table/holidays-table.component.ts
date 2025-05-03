@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService, _ } from '@ngx-translate/core';
+import { MasterDataService } from '../../../../master-data.service';
+import { Subscription } from 'rxjs';
+import { RouterUtilsService } from '../../../../router-utils.service';
 
 @Component({
   selector: 'app-holidays-table',
@@ -6,53 +10,59 @@ import { Component } from '@angular/core';
   templateUrl: './holidays-table.component.html',
   styleUrls: ['./holidays-table.component.scss'],
 })
-export class HolidaysTableComponent {
-  holidays = [
-    { id: 1, sort: 1, name: 'Neujahr' },
-    { id: 2, sort: 2, name: 'Heilige Drei Könige' },
-    { id: 3, sort: 3, name: 'Rosenmontag' },
-    { id: 4, sort: 4, name: 'Internationaler Frauentag' },
-    { id: 5, sort: 5, name: 'Gründonnerstag' },
-    { id: 6, sort: 6, name: 'Karfreitag' },
-  ];
+export class HolidaysTableComponent implements OnInit, OnDestroy {
+  holidayUI: any[] = [];
+  columnsHeaderFieldHoliday: any[] = [];
+  private langSubscription!: Subscription;
 
-  originalHolidays = [...this.holidays];
+  constructor(
+    private readonly translate: TranslateService,
+    private readonly masterDataService: MasterDataService,
+    private readonly routerUtils: RouterUtilsService
+  ) {}
 
-  cols = [
-    { field: 'sort', header: 'Sort' },
-    { field: 'name', header: 'Feiertag' },
-  ];
+  ngOnInit(): void {
+    this.holidayUI = [
+      { id: 1, sort: 1, name: 'Neujahr' },
+      { id: 2, sort: 2, name: 'Heilige Drei Könige' },
+      { id: 3, sort: 3, name: 'Rosenmontag' },
+      { id: 4, sort: 4, name: 'Internationaler Frauentag' },
+      { id: 5, sort: 5, name: 'Gründonnerstag' },
+      { id: 6, sort: 6, name: 'Karfreitag' },
+      { id: 7, sort: 7, name: 'Ostersonntag' },
+      { id: 8, sort: 8, name: 'Ostermontag' },
+      { id: 9, sort: 9, name: 'Tag der Arbeit' },
+      { id: 10, sort: 10, name: 'Christi Himmelfahrt' },
+      { id: 11, sort: 11, name: 'Pfingstmontag' },
+      { id: 12, sort: 12, name: 'Fronleichnam' },
+    ];
 
-  selectedColumns = [...this.cols];
+    this.loadColHeadersHoliday();
 
-  applyFilter(event: Event, field: 'sort' | 'name') {
-    const filterValue = (event.target as HTMLInputElement).value
-      .trim()
-      .toLowerCase();
-
-    this.holidays = this.originalHolidays.filter((h) => {
-      const value = h[field];
-      return value.toString().toLowerCase().includes(filterValue);
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeadersHoliday();
+      this.routerUtils.reloadComponent(true);
     });
   }
 
-  editHoliday(holiday: any) {
-    console.log('Edit:', holiday);
+  loadColHeadersHoliday(): void {
+    this.columnsHeaderFieldHoliday = [
+      {
+        field: 'sort',
+        styles: { width: '100px' },
+        header: this.translate.instant(_('HOLIDAYS.TABLE.SORT')),
+      },
+      {
+        field: 'name',
+        styles: { width: 'auto' },
+        header: this.translate.instant(_('HOLIDAYS.TABLE.NAME')),
+      },
+    ];
   }
 
-  deleteHoliday(id: number) {
-    this.holidays = this.holidays.filter((h) => h.id !== id);
-    this.originalHolidays = this.originalHolidays.filter((h) => h.id !== id);
-  }
-
-  createHoliday() {
-    const newHoliday = {
-      id: this.holidays.length + 1,
-      sort: this.holidays.length + 1,
-      name: 'Neuer Feiertag',
-    };
-    this.holidays.push(newHoliday);
-    this.originalHolidays.push(newHoliday);
-    console.log('Nuevo Feiertag', newHoliday);
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 }

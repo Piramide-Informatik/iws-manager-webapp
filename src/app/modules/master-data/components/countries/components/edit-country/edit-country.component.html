@@ -1,0 +1,66 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  [header]="'COUNTRIES.HEADER.EDIT_COUNTRY' | translate"
+>
+  <form [formGroup]="countryForm">
+    <div class="align-items-center mb-2">
+      <div class="country-form mb-2">
+        <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="country-form mb-2">
+        <label for="abbreviation">{{
+          "COUNTRIES.LABEL.ABBREVIATION" | translate
+        }}</label>
+        <input
+          pInputText
+          type="text"
+          id="abbreviation"
+          formControlName="abbreviation"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="country-form-check mb-2">
+        <label for="isStandardChecked">{{
+          "COUNTRIES.LABEL.IS_STANDARD" | translate
+        }}</label>
+        <p-toggleswitch formControlName="isStandard">
+          <ng-template #handle let-checked="checked">
+            <i
+              [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"
+            ></i>
+          </ng-template>
+        </p-toggleswitch>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <p-button
+            class="p-button-sm"
+            size="small"
+            [label]="'BUTTONS.SAVE' | translate"
+            icon="pi pi-check"
+            (click)="saveCountry()"
+            (keydown)="saveCountry()"
+          ></p-button>
+          <p-button
+            class="cancel me-2"
+            size="small"
+            [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times"
+            severity="secondary"
+            (keydown)="cancelEdit()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</p-card>

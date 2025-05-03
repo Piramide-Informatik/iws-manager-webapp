@@ -6,7 +6,7 @@
         [columns]="displayedColumns"
         [rowsPerPageOptions]="[15, 30, 50]" 
         [paginator]="true"
-        [currentPageReportTemplate]="'SYSTEM_CONSTANT.PAGINATION.FOOTER' | translate: {initValue: dt.first ,endValue: dt.rows , totalValue: dt.totalRecords}" 
+        [currentPageReportTemplate]="'PAGINATION.REPORT' | translate: {first: '{first}' ,last: '{last}' , totalRecords: '{totalRecords}'}" 
         [showCurrentPageReport]="true"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         [resizableColumns]="true" 
         [scrollable]="true" 

@@ -295,6 +295,27 @@
       "NEW": "Nuevo"
     }
   },
+  "USERS": {
+    "TABLE": {
+      "USERNAME": "Nombre de usuario",
+      "NAME": "Nombre",
+      "ACTIVE": "Activo"
+    },
+    "FORM": {
+      "EDIT_TITLE": "Editar Usuario",
+      "USERNAME": "Nombre de usuario",
+      "FIRSTNAME": "Nombre",
+      "LASTNAME": "Apellido",
+      "EMAIL": "Correo electrónico",
+      "PASSWORD": "Contraseña",
+      "ACTIVE": "Activo",
+      "ASSIGNED_ROLES": "Roles asignados",
+      "AVAILABLE_ROLES": "Roles disponibles",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    }
+  },
+
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "Roles de Usuario"
@@ -472,7 +493,84 @@
       "CANCEL": "Cancelar"
     }
   },
+
+  "IWS_TEAMS": {
+    "HEADER": {
+      "EDIT_TEAM": "Editar Equipo"
+    },
+    "LABEL": {
+      "TEAM_NAME": "Nombre del Equipo",
+      "TEAM_LEADER": "Líder del Equipo"
+    },
+    "PLACEHOLDER": {
+      "SELECT_LEADER": "Seleccionar Líder"
+    }
+  },
+  "COUNTRIES": {
+    "HEADER": {
+      "EDIT_COUNTRY": "Editar País"
+    },
+    "LABEL": {
+      "NAME": "Nombre",
+      "ABBREVIATION": "Abreviatura",
+      "IS_STANDARD": "¿Es estándar?"
+    },
+    "BUTTON": {
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar",
+      "NEW": "Nuevo"
+    },
+    "TABLE": {
+      "NAME": "Nombre",
+      "ABBREVIATION": "Abreviatura",
+      "IS_STANDARD": "¿Estándar?",
+      "COLUMNS_SELECTED": "{0} columnas seleccionadas",
+      "CHOOSE_COLUMNS": "Elegir columnas",
+      "NO_DATA": "No hay países registrados.",
+      "PAGE_INFO": "Mostrando {first} - {last} de {totalRecords}"
+    },
+    "MESSAGE": {
+      "NO_COUNTRIES": "No se encontraron países."
+    }
+  },
+
+  "COSTS": {
+    "HEADER": {
+      "EDIT_COST": "Editar Tipo de Costo"
+    },
+    "LABEL": {
+      "NAME": "Nombre del Tipo de Costo",
+      "SORT": "Orden"
+    },
+    "TABLE": {
+      "NAME": "Tipo de Costo",
+      "SORT": "Orden",
+      "NO_DATA": "No se encontraron tipos de costo"
+    }
+  },
+
   "PAGINATION": {
     "REPORT": "Se muestran {{first}} a {{last}} de {{totalRecords}} registros"
+  },
+  "TEXT": {
+    "TABLE_TEXT": {
+      "TEXT_LABEL": "Etiqueta de texto",
+      "TEXT": "Texto",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "EDIT_TEXT": "Editar Etiqueta de Texto",
+      "TEXT_LABEL": "Etiqueta de texto",
+      "TEXT_VALUE": "Texto"
+    },
+    "ERROR": {
+      "TEXT_LABEL_REQUIRED": "Etiqueta de texto es requerido",
+      "TEXT_VALUE_REQUIRED": "Texto es requerido"
+    }
   }
 }

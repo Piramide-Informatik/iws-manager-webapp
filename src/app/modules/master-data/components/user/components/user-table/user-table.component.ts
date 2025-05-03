@@ -1,44 +1,65 @@
 import { Component } from '@angular/core';
+import { TranslateService, _ } from '@ngx-translate/core';
+import { MasterDataService } from '../../../../master-data.service';
+import { Subscription } from 'rxjs';
+import { RouterUtilsService } from '../../../../router-utils.service';
 
 @Component({
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
-  styleUrls: ['./user-table.component.scss'],
+  styles: ``,
   standalone: false,
 })
 export class UserTableComponent {
-  users = [
-    { username: 'loschu', name: 'Schulte Lothar', active: true },
-    { username: 'paze', name: 'Zessin Patrick', active: true },
-    { username: 'mariah', name: 'Hernandez Maria', active: false },
-    { username: 'jdoe', name: 'Doe John', active: true },
-  ];
+  public userUI: any[] = [];
+  public columsHeaderFieldUser: any[] = [];
+  private langSubscription!: Subscription;
 
-  cols = [
-    { field: 'username', header: 'Benutzer' },
-    { field: 'name', header: 'Name' },
-    { field: 'active', header: 'Aktiv' },
-  ];
+  constructor(
+    private readonly translate: TranslateService,
+    private readonly masterDataService: MasterDataService,
+    private readonly routerUtils: RouterUtilsService
+  ) {}
 
-  selectedColumns = [...this.cols];
+  ngOnInit(): void {
+    this.userUI = [
+      { username: 'loschu', name: 'Schulte Lothar', active: true },
+      { username: 'paze', name: 'Zessin Patrick', active: true },
+      { username: 'mariah', name: 'Hernandez Maria', active: false },
+      { username: 'jdoe', name: 'Doe John', active: true },
+    ];
 
-  applyFilter(event: Event, field: string) {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.trim().toLowerCase();
+    this.loadColHeadersUserUI();
 
-    console.log(`Filtrando por "${field}": ${value}`);
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeadersUserUI();
+      this.routerUtils.reloadComponent(true);
+    });
   }
 
-  editUser(user: any) {
-    console.log('Editando usuario:', user);
+  loadColHeadersUserUI(): void {
+    this.columsHeaderFieldUser = [
+      {
+        field: 'username',
+        styles: { width: '150px' },
+        header: this.translate.instant(_('USERS.TABLE.USERNAME')),
+      },
+      {
+        field: 'name',
+        styles: { width: 'auto' },
+        header: this.translate.instant(_('USERS.TABLE.NAME')),
+      },
+      {
+        field: 'active',
+        styles: { width: '80px' },
+        header: this.translate.instant(_('USERS.TABLE.ACTIVE')),
+      },
+    ];
   }
 
-  deleteUser(username: string) {
-    this.users = this.users.filter((user) => user.username !== username);
-    console.log('Usuario eliminado:', username);
-  }
-
-  createUser() {
-    console.log('Creando nuevo usuario');
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 }

@@ -295,6 +295,27 @@
       "NEW": "New"
     }
   },
+  "USERS": {
+    "TABLE": {
+      "USERNAME": "Username",
+      "NAME": "Name",
+      "ACTIVE": "Active"
+    },
+    "FORM": {
+      "EDIT_TITLE": "Edit User",
+      "USERNAME": "Username",
+      "FIRSTNAME": "First Name",
+      "LASTNAME": "Last Name",
+      "EMAIL": "Email Address",
+      "PASSWORD": "Password",
+      "ACTIVE": "Active",
+      "ASSIGNED_ROLES": "Assigned Roles",
+      "AVAILABLE_ROLES": "Available Roles",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    }
+  },
+
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "User Roles"
@@ -449,9 +470,6 @@
       "NAME_REQUIRED": "Name is required",
       "ONLY_NUMBER_REQUIRED": "Enter only numbers",
       "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters."
-    },
-    "PAGINATION": {
-      "FOOTER": "Displaying {{initValue}} to {{endValue}} of {{totalValue}} entries."
     }
   },
   "IWS_COMMISSIONS": {
@@ -472,7 +490,79 @@
       "CANCEL": "Cancel"
     }
   },
+  "IWS_TEAMS": {
+    "HEADER": {
+      "EDIT_TEAM": "Edit Team"
+    },
+    "LABEL": {
+      "TEAM_NAME": "Team Name",
+      "TEAM_LEADER": "Team Leader"
+    },
+    "PLACEHOLDER": {
+      "SELECT_LEADER": "Select Leader"
+    }
+  },
+  "COUNTRIES": {
+    "HEADER": {
+      "EDIT_COUNTRY": "Edit Country"
+    },
+    "LABEL": {
+      "NAME": "Name",
+      "ABBREVIATION": "Abbreviation",
+      "IS_STANDARD": "Is Standard?"
+    },
+
+    "TABLE": {
+      "NAME": "Name",
+      "ABBREVIATION": "Abbreviation",
+      "IS_STANDARD": "Standard?",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose columns",
+      "NO_DATA": "No countries available.",
+      "PAGE_INFO": "Showing {first} - {last} of {totalRecords}"
+    },
+    "MESSAGE": {
+      "NO_COUNTRIES": "No countries found."
+    }
+  },
+
+  "COSTS": {
+    "HEADER": {
+      "EDIT_COST": "Edit Cost Type"
+    },
+    "LABEL": {
+      "NAME": "Cost Type Name",
+      "SORT": "Sort Order"
+    },
+    "TABLE": {
+      "NAME": "Cost Type",
+      "SORT": "Sort",
+      "NO_DATA": "No cost types found"
+    }
+  },
+
   "PAGINATION": {
     "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
+  },
+  "TEXT": {
+    "TABLE_TEXT": {
+      "TEXT_LABEL": "Text Label",
+      "TEXT": "Text",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_TEXT": "Edit Text",
+      "TEXT_LABEL": "Text label",
+      "TEXT_VALUE": "Text"
+    },
+    "ERROR": {
+      "TEXT_LABEL_REQUIRED": "Text label is required",
+      "TEXT_VALUE_REQUIRED": "Text value is required"
+    }
   }
 }

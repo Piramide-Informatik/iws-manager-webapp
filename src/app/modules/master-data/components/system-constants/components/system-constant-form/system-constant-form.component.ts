@@ -18,7 +18,7 @@ export class SystemConstantFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.editSystemConstantForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl({value: '', disabled: true}),
       valuenum: new FormControl('', [Validators.pattern('^[0-9]*$')]),
       valuechar: new FormControl('', [Validators.pattern('^[a-zA-Z0-9]*$')]),
     });
