@@ -13,6 +13,7 @@ export class GenaralTableComponent implements OnInit {
   @Input() columns: any[] = [];
   @Input() hideColumns: boolean = true;
   @Input() filterByColumns: boolean = true;
+  @Input() nameNewButton: string = '';
   selectedColumns: any[] = [];
 
   @Output() onEditRegister = new EventEmitter<string>();

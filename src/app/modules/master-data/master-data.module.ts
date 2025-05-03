@@ -82,10 +82,11 @@ import { CostsComponent } from './components/cost/costs.component';
 import { TextComponent } from './components/text/text.component';
 import { TextTableComponent } from './components/text/components/text-table/text-table.component';
 import { TextFormComponent } from './components/text/components/text-form/text-form.component';
+import { NetworksComponent } from './components/networks/networks.component';
+import { EditNetworkComponent } from './components/networks/components/edit-network/edit-network.component';
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
 import { SalesTaxFormComponent } from './components/sales-tax/components/sales-tax-form/sales-tax-form.component';
 import { SalesTaxTableComponent } from './components/sales-tax/components/sales-tax-table/sales-tax-table.component';
-
 
 @NgModule({
   declarations: [
@@ -139,6 +140,8 @@ import { SalesTaxTableComponent } from './components/sales-tax/components/sales-
     TextComponent,
     TextTableComponent,
     TextFormComponent,
+    NetworksComponent,
+    EditNetworkComponent,
     SalesTaxComponent,
     SalesTaxFormComponent,
     SalesTaxTableComponent,

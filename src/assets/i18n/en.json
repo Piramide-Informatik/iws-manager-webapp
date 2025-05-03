@@ -560,6 +560,15 @@
       "TEXT_VALUE_REQUIRED": "Text value is required"
     }
   },
+  "NETWORKS": {
+    "LABEL": {
+      "NETWORK": "Network",
+      "EDIT_NETWORK": "Edit Network",
+      "CUSTOMER": "Customer",
+      "PARTNER": "Partner",
+      "NEW_PARTNER": "New Partner"
+    }
+  },
   "SALES_TAX": {
     "TABLE_SALES_TAX": {
       "SALES_TAX": "Sales Tax",

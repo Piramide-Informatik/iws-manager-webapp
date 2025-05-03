@@ -568,6 +568,15 @@
       "TEXT_VALUE_REQUIRED": "Texto es requerido"
     }
   },
+  "NETWORKS": {
+    "LABEL": {
+      "NETWORK": "Red",
+      "EDIT_NETWORK": "Editar red",
+      "CUSTOMER": "Cliente",
+      "PARTNER": "Socio",
+      "NEW_PARTNER": "Nuevo Socio"
+    }
+  },
   "SALES_TAX": {
     "TABLE_SALES_TAX": {
       "SALES_TAX": "Impuesto Sobre las Ventas",
