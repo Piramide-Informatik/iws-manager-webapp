@@ -66,9 +66,21 @@ export class MasterDataService {
       { qualification: 'Sonstige', abbreviation: 'Sonst.'},
       { qualification: 'Techniker', abbreviation: 'Tech.'},
       { qualification: 'Wissenschaftler', abbreviation: 'Wiss.'},
-    ]
+    ];
   }
 
+  getProjectStatusData(): any[]{
+    return [
+      { projectStatus: 'Alle' },
+      { projectStatus: 'Angebot' },
+      { projectStatus: 'Antrag' },
+      { projectStatus: 'Bewilligt' },
+      { projectStatus: 'Gestoppt' },
+      { projectStatus: 'Stufe1' },
+      { projectStatus: 'Stufe2' },
+    ];
+  }
+  
   getNetworksData(): any[]{
     return [
       { network: "merepa11" },

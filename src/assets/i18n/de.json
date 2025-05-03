@@ -564,6 +564,10 @@
       "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
     }
   },
+  "PROJECT_STATUS": {
+    "PROJECT_STATUS": "Projektstatus",
+    "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten"
+  },
   "NETWORKS": {
     "LABEL": {
       "NETWORK": "Netzwerk",

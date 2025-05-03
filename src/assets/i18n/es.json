@@ -568,6 +568,10 @@
       "TEXT_VALUE_REQUIRED": "Texto es requerido"
     }
   },
+  "PROJECT_STATUS": {
+    "PROJECT_STATUS": "Estado del Proyecto",
+    "EDIT_PROJECT_STATUS": "Editar Estado del Proyecto"
+  },
   "NETWORKS": {
     "LABEL": {
       "NETWORK": "Red",

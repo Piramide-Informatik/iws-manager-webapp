@@ -82,6 +82,8 @@ import { CostsComponent } from './components/cost/costs.component';
 import { TextComponent } from './components/text/text.component';
 import { TextTableComponent } from './components/text/components/text-table/text-table.component';
 import { TextFormComponent } from './components/text/components/text-form/text-form.component';
+import { ProjectStatusComponent } from './components/project-status/project-status.component';
+import { EditProjectStatusComponent } from './components/project-status/components/edit-project-status/edit-project-status.component';
 import { NetworksComponent } from './components/networks/networks.component';
 import { EditNetworkComponent } from './components/networks/components/edit-network/edit-network.component';
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
@@ -140,6 +142,8 @@ import { SalesTaxTableComponent } from './components/sales-tax/components/sales-
     TextComponent,
     TextTableComponent,
     TextFormComponent,
+    ProjectStatusComponent,
+    EditProjectStatusComponent,
     NetworksComponent,
     EditNetworkComponent,
     SalesTaxComponent,

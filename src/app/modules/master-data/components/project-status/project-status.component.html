@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+      <div class="col-6">
+        <master-data-genaral-table
+          [tableValues]="projects"
+          [columns]="columsHeaderFieldProjects"
+          [hideColumns]="false"
+          tableTitle="PROJECT_STATUS.PROJECT_STATUS"
+        ></master-data-genaral-table>
+      </div>
+      <div class="col-6">
+        <master-data-edit-project-status></master-data-edit-project-status>
+      </div>
+    </div>
+</div>
