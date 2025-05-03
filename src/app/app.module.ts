@@ -39,13 +39,14 @@ import { MessageModule } from 'primeng/message'
 import { AppComponent } from './app.component';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ContractorModule } from './modules/contractor/contractor.module';
+import { BlankComponent } from './core/components/blank/blank.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, BlankComponent],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,

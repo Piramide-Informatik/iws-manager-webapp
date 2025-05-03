@@ -20,6 +20,7 @@ import { TextComponent } from './components/text/text.component';
 
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
   { path: 'absence-types', component: AbsenceTypesComponent },
   { path: 'address', component: AddressComponent },
   { path: 'user', component: UserComponent },
