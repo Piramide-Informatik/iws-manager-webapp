@@ -295,6 +295,27 @@
       "NEW": "New"
     }
   },
+  "USERS": {
+    "TABLE": {
+      "USERNAME": "Username",
+      "NAME": "Name",
+      "ACTIVE": "Active"
+    },
+    "FORM": {
+      "EDIT_TITLE": "Edit User",
+      "USERNAME": "Username",
+      "FIRSTNAME": "First Name",
+      "LASTNAME": "Last Name",
+      "EMAIL": "Email Address",
+      "PASSWORD": "Password",
+      "ACTIVE": "Active",
+      "ASSIGNED_ROLES": "Assigned Roles",
+      "AVAILABLE_ROLES": "Available Roles",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    }
+  },
+
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "User Roles"
@@ -469,6 +490,57 @@
       "CANCEL": "Cancel"
     }
   },
+  "IWS_TEAMS": {
+    "HEADER": {
+      "EDIT_TEAM": "Edit Team"
+    },
+    "LABEL": {
+      "TEAM_NAME": "Team Name",
+      "TEAM_LEADER": "Team Leader"
+    },
+    "PLACEHOLDER": {
+      "SELECT_LEADER": "Select Leader"
+    }
+  },
+  "COUNTRIES": {
+    "HEADER": {
+      "EDIT_COUNTRY": "Edit Country"
+    },
+    "LABEL": {
+      "NAME": "Name",
+      "ABBREVIATION": "Abbreviation",
+      "IS_STANDARD": "Is Standard?"
+    },
+
+    "TABLE": {
+      "NAME": "Name",
+      "ABBREVIATION": "Abbreviation",
+      "IS_STANDARD": "Standard?",
+      "COLUMNS_SELECTED": "{0} columns selected",
+      "CHOOSE_COLUMNS": "Choose columns",
+      "NO_DATA": "No countries available.",
+      "PAGE_INFO": "Showing {first} - {last} of {totalRecords}"
+    },
+    "MESSAGE": {
+      "NO_COUNTRIES": "No countries found."
+    }
+  },
+
+  "COSTS": {
+    "HEADER": {
+      "EDIT_COST": "Edit Cost Type"
+    },
+    "LABEL": {
+      "NAME": "Cost Type Name",
+      "SORT": "Sort Order"
+    },
+    "TABLE": {
+      "NAME": "Cost Type",
+      "SORT": "Sort",
+      "NO_DATA": "No cost types found"
+    }
+  },
+
   "PAGINATION": {
     "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
   },

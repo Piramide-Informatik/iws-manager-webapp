@@ -290,6 +290,28 @@
       "NEW": "Neu"
     }
   },
+
+  "USERS": {
+    "TABLE": {
+      "USERNAME": "Benutzername",
+      "NAME": "Name",
+      "ACTIVE": "Aktiv"
+    },
+    "FORM": {
+      "EDIT_TITLE": "Benutzer bearbeiten",
+      "USERNAME": "Benutzername",
+      "FIRSTNAME": "Vorname",
+      "LASTNAME": "Nachname",
+      "EMAIL": "E-Mail-Adresse",
+      "PASSWORD": "Kennwort",
+      "ACTIVE": "Aktiv",
+      "ASSIGNED_ROLES": "Zugewiesene Rollen",
+      "AVAILABLE_ROLES": "Verfügbare Rollen",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    }
+  },
+
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "Benutzerrolle"
@@ -447,7 +469,7 @@
     "PAGINATION": {
       "FOOTER": "Es werden {{initValue}} bis {{endValue}} von {{totalValue}} Einträgen angezeigt."
     }
- },
+  },
 
   "IWS_COMMISSIONS": {
     "TABLE": {
@@ -467,6 +489,57 @@
       "CANCEL": "Abbrechen"
     }
   },
+  "IWS_TEAMS": {
+    "HEADER": {
+      "EDIT_TEAM": "IWS Team bearbeiten"
+    },
+    "LABEL": {
+      "TEAM_NAME": "Teamname",
+      "TEAM_LEADER": "Teamleiter"
+    },
+    "PLACEHOLDER": {
+      "SELECT_LEADER": "Teamleiter auswählen"
+    }
+  },
+  "COUNTRIES": {
+    "HEADER": {
+      "EDIT_COUNTRY": "Land bearbeiten"
+    },
+    "LABEL": {
+      "NAME": "Land",
+      "ABBREVIATION": "Kürzel",
+      "IS_STANDARD": "Ist Standard?"
+    },
+
+    "TABLE": {
+      "NAME": "Land",
+      "ABBREVIATION": "Kürzel",
+      "IS_STANDARD": "Standard?",
+      "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
+      "CHOOSE_COLUMNS": "Spalten auswählen",
+      "NO_DATA": "Keine Länder gefunden.",
+      "PAGE_INFO": "{first} - {last} von {totalRecords} Einträgen"
+    },
+    "MESSAGE": {
+      "NO_COUNTRIES": "Keine Länder vorhanden."
+    }
+  },
+
+  "COSTS": {
+    "HEADER": {
+      "EDIT_COST": "Kostenart bearbeiten"
+    },
+    "LABEL": {
+      "NAME": "Bezeichnung der Kostenart",
+      "SORT": "Sortierung"
+    },
+    "TABLE": {
+      "NAME": "Kostenart",
+      "SORT": "Sortierung",
+      "NO_DATA": "Keine Kostenarten gefunden"
+    }
+  },
+
   "PAGINATION": {
     "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
   },

@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="row">
+    <master-data-genaral-table
+      [tableValues]="countries"
+      [columns]="columnsHeaderFieldCoutries"
+      (editItem)="editCountry($event)"
+    ></master-data-genaral-table>
+  </div>
+</div>
