@@ -103,4 +103,11 @@ export class MasterDataService {
       { id: '4', customerNumber: '1622', partner: 'Datico Sport & Health GmbH' },
     ];
   }
+
+  getRealizationProbabilitiesData(): any[]{
+    return [
+      { realizationProbabilities: '10'}, { realizationProbabilities: '50' },
+      { realizationProbabilities: '75'}, { realizationProbabilities: '100' },
+    ];
+  }
 };
