@@ -560,6 +560,20 @@
       "TEXT_VALUE_REQUIRED": "Text value is required"
     }
   },
+  "PROJECT_FUNNELS": {
+    "TABLE": {
+      "PROJECT_SPONSOR": "Project Sponsor"
+    },
+    "FORM": {
+      "TITLE_FORM": "Edit project sponsor",
+      "PROJECT_SPONSOR_ID": "Project Sponsor-Nr",
+      "ABBREVIATION": "Abbreviation",
+      "NAME": "Name",
+      "LAND": "Land",
+      "STREET": "Street",
+      "ZIP_CITY":"ZIP / City"
+    }
+  },
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Project Status",
     "EDIT_PROJECT_STATUS": "Edit Project Status"

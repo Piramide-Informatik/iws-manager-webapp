@@ -17,6 +17,7 @@ import { IwsTeamsComponent } from './components/iws-teams/iws-teams.component';
 import { CountriesComponent } from './components/countries/countries.component';
 import { CostsComponent } from './components/cost/costs.component';
 import { TextComponent } from './components/text/text.component';
+import { ProjectFunnelsComponent } from './components/project-funnels/project-funnels.component';
 import { ProjectStatusComponent } from './components/project-status/project-status.component';
 import { NetworksComponent } from './components/networks/networks.component';
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'employee-qualification', component: EmployeeQualificationComponent },
   { path: 'iws-staff', component: IwsStaffComponent },
   { path: 'iws-commissions', component: IwsCommissionsComponent },
+  { path: 'project-funnels', component: ProjectFunnelsComponent },
   { path: 'project-status', component: ProjectStatusComponent },
   { path: 'networks', component: NetworksComponent },
   { path: 'sales-tax', component: SalesTaxComponent },
