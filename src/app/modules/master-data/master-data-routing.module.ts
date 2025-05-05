@@ -21,6 +21,7 @@ import { ProjectFunnelsComponent } from './components/project-funnels/project-fu
 import { ProjectStatusComponent } from './components/project-status/project-status.component';
 import { NetworksComponent } from './components/networks/networks.component';
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
+import { BillersComponent } from './components/billers/billers.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
 
 const routes: Routes = [
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'iws-teams', component: IwsTeamsComponent },
   { path: 'countries', component: CountriesComponent },
   { path: 'cost', component: CostsComponent },
+  { path: 'billers', component: BillersComponent },
   { path: 'realization-probabilities', component: RealitationProbabilitiesComponent },
 ];
 

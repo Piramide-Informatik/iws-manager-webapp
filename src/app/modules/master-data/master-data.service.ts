@@ -104,6 +104,12 @@ export class MasterDataService {
     ];
   }
 
+  getBillersData(): any[]{
+    return [
+      { biller: 'IWS GmbH' }, { biller: 'Steinbeis' }
+    ];
+  }
+  
   getRealizationProbabilitiesData(): any[]{
     return [
       { realizationProbabilities: '10'}, { realizationProbabilities: '50' },

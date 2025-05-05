@@ -618,6 +618,9 @@
       "SALES_TAX_REQUIRED": "Impuesto sobre la venta requerido"
     }
   },
+  "BILLERS": {
+    "TITLE_FORM": "Editar Facturador"
+  },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Editar Probabilidad de Ejecución" 
   }

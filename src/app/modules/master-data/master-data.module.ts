@@ -91,6 +91,8 @@ import { EditNetworkComponent } from './components/networks/components/edit-netw
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
 import { SalesTaxFormComponent } from './components/sales-tax/components/sales-tax-form/sales-tax-form.component';
 import { SalesTaxTableComponent } from './components/sales-tax/components/sales-tax-table/sales-tax-table.component';
+import { BillersComponent } from './components/billers/billers.component';
+import { EditBillerComponent } from './components/billers/components/edit-biller/edit-biller.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
 import { EditRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/edit-realization-probabilities/edit-realization-probabilities.component';
 
@@ -155,6 +157,8 @@ import { EditRealizationProbabilitiesComponent } from './components/realitation-
     SalesTaxComponent,
     SalesTaxFormComponent,
     SalesTaxTableComponent,
+    BillersComponent,
+    EditBillerComponent,
     RealitationProbabilitiesComponent,
     EditRealizationProbabilitiesComponent,
   ],

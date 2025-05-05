@@ -614,6 +614,9 @@
       "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
     }
   },
+  "BILLERS": {
+    "TITLE_FORM": "Rechnungsersteller bearbeiten"
+  },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
   }
