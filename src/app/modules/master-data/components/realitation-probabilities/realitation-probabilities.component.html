@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+      <div class="col-6">
+        <master-data-genaral-table
+          [tableValues]="probabilities"
+          tableTitle="realization probabilities"
+          [columns]="columsHeaderFieldProbabilities"
+          [hideColumns]="false"
+        ></master-data-genaral-table>
+      </div>
+      <div class="col-6">
+        <master-data-edit-realization-probabilities/>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'REALIZATION_PROBABILITIES.TITLE_FORM' | translate ">
+    <form [formGroup]="editProbablitiesForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column mb-2 mt-4 px-4">
+            <div class="realization-probabilities-form flex flex-row mb-4 align-items-center gap-8">
+                <label id="label-probability" for="realization-probabilities">{{ 'SIDEBAR.REALIZATION_PROBABILITIES' | translate }}</label>
+                <input pInputText type="text" class="text-right" id="realization-probabilities" formControlName="probability" autocomplete="off" />
+            </div>
+            <div class="row mt-2">
+                <div class="col flex justify-content-center">
+                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</p-card>

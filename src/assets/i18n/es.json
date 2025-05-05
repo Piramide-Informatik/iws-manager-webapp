@@ -568,6 +568,20 @@
       "TEXT_VALUE_REQUIRED": "Texto es requerido"
     }
   },
+  "PROJECT_FUNNELS": {
+    "TABLE": {
+      "PROJECT_SPONSOR": "Patrocinador del Proyecto"
+    },
+    "FORM": {
+      "TITLE_FORM": "Editar Patrocinador del Proyecto",
+      "PROJECT_SPONSOR_ID": "No-Patrocinador del Proyecto",
+      "ABBREVIATION": "Abreviatura",
+      "NAME": "Nombre",
+      "LAND": "tierra",
+      "STREET": "Calle",
+      "ZIP_CITY":"Código Postal / Ciudad"
+    }
+  },
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Estado del Proyecto",
     "EDIT_PROJECT_STATUS": "Editar Estado del Proyecto"
@@ -610,5 +624,11 @@
     "TITLE_FORM": "Editar Condición de Pago",
     "TERM_OF_PAYMENT_DAYS": "Condición de Pago (Días)",
     "INVOICE_TEXT": "Texto de la Factura"
+  },
+  "BILLERS": {
+    "TITLE_FORM": "Editar Facturador"
+  },
+  "REALIZATION_PROBABILITIES": {
+    "TITLE_FORM": "Editar Probabilidad de Ejecución"
   }
 }

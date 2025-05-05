@@ -564,6 +564,20 @@
       "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
     }
   },
+  "PROJECT_FUNNELS": {
+    "TABLE": {
+      "PROJECT_SPONSOR": "Projektträger"
+    },
+    "FORM": {
+      "TITLE_FORM": "Projektträger bearbeiten",
+      "PROJECT_SPONSOR_ID": "Projektträger-Nr.",
+      "ABBREVIATION": "Kürzel",
+      "NAME": "Name",
+      "LAND": "Land",
+      "STREET": "Straße",
+      "ZIP_CITY":"PLZ / Ort"
+    }
+  },
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Projektstatus",
     "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten"
@@ -606,5 +620,11 @@
     "TITLE_FORM": "Zahlungsbedingung bearbeiten",
     "TERM_OF_PAYMENT_DAYS": "Zahlungsziel (Tage)",
     "INVOICE_TEXT": "Rechnungstext"
+  },
+  "BILLERS": {
+    "TITLE_FORM": "Rechnungsersteller bearbeiten"
+  },
+  "REALIZATION_PROBABILITIES": {
+    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
   }
 }

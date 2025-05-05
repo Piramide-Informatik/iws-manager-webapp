@@ -82,6 +82,8 @@ import { CostsComponent } from './components/cost/costs.component';
 import { TextComponent } from './components/text/text.component';
 import { TextTableComponent } from './components/text/components/text-table/text-table.component';
 import { TextFormComponent } from './components/text/components/text-form/text-form.component';
+import { ProjectFunnelsComponent } from './components/project-funnels/project-funnels.component';
+import { EditProjectFunnelComponent } from './components/project-funnels/components/edit-project-funnel/edit-project-funnel.component';
 import { ProjectStatusComponent } from './components/project-status/project-status.component';
 import { EditProjectStatusComponent } from './components/project-status/components/edit-project-status/edit-project-status.component';
 import { NetworksComponent } from './components/networks/networks.component';
@@ -91,6 +93,10 @@ import { SalesTaxFormComponent } from './components/sales-tax/components/sales-t
 import { SalesTaxTableComponent } from './components/sales-tax/components/sales-tax-table/sales-tax-table.component';
 import { TermsPaymentComponent } from './components/terms-payment/terms-payment.component';
 import { EditTermPaymentComponent } from './components/terms-payment/components/edit-term-payment/edit-term-payment.component';
+import { BillersComponent } from './components/billers/billers.component';
+import { EditBillerComponent } from './components/billers/components/edit-biller/edit-biller.component';
+import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
+import { EditRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/edit-realization-probabilities/edit-realization-probabilities.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +150,8 @@ import { EditTermPaymentComponent } from './components/terms-payment/components/
     TextComponent,
     TextTableComponent,
     TextFormComponent,
+    ProjectFunnelsComponent,
+    EditProjectFunnelComponent,
     ProjectStatusComponent,
     EditProjectStatusComponent,
     NetworksComponent,
@@ -153,6 +161,10 @@ import { EditTermPaymentComponent } from './components/terms-payment/components/
     SalesTaxTableComponent,
     TermsPaymentComponent,
     EditTermPaymentComponent,
+    BillersComponent,
+    EditBillerComponent,
+    RealitationProbabilitiesComponent,
+    EditRealizationProbabilitiesComponent,
   ],
   imports: [
     ButtonModule,
