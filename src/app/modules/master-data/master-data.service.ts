@@ -103,4 +103,12 @@ export class MasterDataService {
       { id: '4', customerNumber: '1622', partner: 'Datico Sport & Health GmbH' },
     ];
   }
+
+  getProjectFunnelsData(): any[]{
+    return [
+      { id: '1601', projectSponsor: 'Deutsches Zentrum für Luft- und Raumfahrt e.V.' },
+      { id: '1448', projectSponsor: 'VDI/VDE-Gesellschaft Mess- und Automatisierungstechnik' },
+      { id: '1447', projectSponsor: 'VDI/VDE Innovation + Technik GmbH' },
+    ];
+  }
 };
