@@ -104,6 +104,13 @@ export class MasterDataService {
     ];
   }
 
+  getRealizationProbabilitiesData(): any[]{
+    return [
+      { realizationProbabilities: '10'}, { realizationProbabilities: '50' },
+      { realizationProbabilities: '75'}, { realizationProbabilities: '100' },
+    ];
+  }
+
   getProjectFunnelsData(): any[]{
     return [
       { id: '1601', projectSponsor: 'Deutsches Zentrum für Luft- und Raumfahrt e.V.' },
