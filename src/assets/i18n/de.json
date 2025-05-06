@@ -564,6 +564,13 @@
       "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
     }
   },
+  "TERMS_OF_PAYMENT": {
+    "TERMS_OF_PAYMENT": "Zahlungsbedingung",
+    "TERM_OF_PAYMENT": "Zahlungsziel",
+    "TITLE_FORM": "Zahlungsbedingung bearbeiten",
+    "TERM_OF_PAYMENT_DAYS": "Zahlungsziel (Tage)",
+    "INVOICE_TEXT": "Rechnungstext"
+  },
   "BILLERS": {
     "TITLE_FORM": "Rechnungsersteller bearbeiten"
   },

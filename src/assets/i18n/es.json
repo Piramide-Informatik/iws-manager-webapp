@@ -564,10 +564,17 @@
       "SALES_TAX_REQUIRED": "Impuesto sobre la venta requerido"
     }
   },
+  "TERMS_OF_PAYMENT": {
+    "TERMS_OF_PAYMENT": "Condiciones de Pago",
+    "TERM_OF_PAYMENT": "Condición de Pago",
+    "TITLE_FORM": "Editar Condición de Pago",
+    "TERM_OF_PAYMENT_DAYS": "Condición de Pago (Días)",
+    "INVOICE_TEXT": "Texto de la Factura"
+  },
   "BILLERS": {
     "TITLE_FORM": "Editar Facturador"
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Editar Probabilidad de Ejecución" 
+    "TITLE_FORM": "Editar Probabilidad de Ejecución"
   }
 }
