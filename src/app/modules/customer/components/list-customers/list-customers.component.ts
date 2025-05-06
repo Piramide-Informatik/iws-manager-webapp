@@ -2,10 +2,9 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
 import { Table } from 'primeng/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Column {
   field: string,
@@ -33,7 +32,9 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   constructor(private readonly customerService: CustomerService, 
     private readonly translate: TranslateService,
-    private readonly router: Router) { }
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
 
@@ -86,8 +87,11 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     })
   }
 
-    goToCustomerDetails(currentCustomer: Customer) {
-      this.router.navigateByUrl('/customers/customer-details', { state: { customer: "Joe Doe", customerData: currentCustomer } });
-    }
+  goToCustomerDetails(currentCustomer: Customer) {
+    this.router.navigate(['customer-details'], { 
+      relativeTo: this.route,
+      state: { customer: "Joe Doe", customerData: currentCustomer } 
+    });
+  }
 
 }
