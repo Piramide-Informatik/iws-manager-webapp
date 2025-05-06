@@ -21,6 +21,14 @@ const routes: Routes = [
   },
   {
     path: 'customers',
+    component: MainLayoutComponent,
+    loadChildren: () =>
+      import('./modules/customer/customer.module').then(
+        (c) => c.CustomerModule
+      ),
+  },
+  {
+    path: 'customers',
 
     component: MainLayoutComponent,
     children: [

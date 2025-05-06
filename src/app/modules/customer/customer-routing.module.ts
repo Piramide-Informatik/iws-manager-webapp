@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 import { DetailCustomerComponent } from './components/detail-customer/detail-customer.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { PageCustomerComponent } from './components/page-customer/page-customer.component';
 
 
 const routes: Routes = [
@@ -11,6 +12,15 @@ const routes: Routes = [
   {path: 'customer-details/:id', component: DetailCustomerComponent},
   {path: 'contact', component: ContactComponent},
   {path: 'contact/:id', component: ContactComponent},
+  { path: 'pr', component: PageCustomerComponent},
+  { 
+    path: 'pr/employees', 
+    component: PageCustomerComponent,
+    loadChildren: () =>
+      import('../../modules/employee/employee.module').then(
+        (e) => e.EmployeeModule
+      ),
+  },
 ];
 
 @NgModule({

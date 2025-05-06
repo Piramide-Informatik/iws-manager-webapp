@@ -35,37 +35,25 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     string,
     { labelKey: string; route: string }[]
   > = {
-    dashboard: [
-      { labelKey: 'MENU.DASHBOARD', route: '/dashboard' }
-    ],
     customers: [
-      { labelKey: 'SIDEBAR.CUSTOMER', route: '/customers/customers' },
-      { labelKey: 'SIDEBAR.EMPLOYEES', route: '/customers/employees' },
-      { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: '/customers/work-contracts' },
-      { labelKey: 'SIDEBAR.PROJECTS', route: '/customers/projects' },
-      { labelKey: 'SIDEBAR.ORDERS', route: '/customers/orders' },
-      { labelKey: 'SIDEBAR.DEMANDS', route: '/customers/demands' },
-      { labelKey: 'SIDEBAR.INVOICES', route: '/customers/invoices' },
-      { labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS', route: '/customers/framework-agreements' },
-      { labelKey: 'SIDEBAR.CONTRACTORS', route: '/customers/contractors' },
-      { labelKey: 'SIDEBAR.SUBCONTRACTS', route: '/customers/subcontracts' },
+      // { labelKey: 'SIDEBAR.CUSTOMER', route: '/customers/customers' },
+      // { labelKey: 'SIDEBAR.EMPLOYEES', route: '/customers/employees' },
+      // { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: '/customers/work-contracts' },
+      // { labelKey: 'SIDEBAR.PROJECTS', route: '/customers/projects' },
+      // { labelKey: 'SIDEBAR.ORDERS', route: '/customers/orders' },
+      // { labelKey: 'SIDEBAR.DEMANDS', route: '/customers/demands' },
+      // { labelKey: 'SIDEBAR.INVOICES', route: '/customers/invoices' },
+      // { labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS', route: '/customers/framework-agreements' },
+      // { labelKey: 'SIDEBAR.CONTRACTORS', route: '/customers/contractors' },
+      // { labelKey: 'SIDEBAR.SUBCONTRACTS', route: '/customers/subcontracts' },
     ],
     projects: [
-      { labelKey: 'SIDEBAR.GOODS_ENTRY', route: '/inventory/input' },
-      { labelKey: 'SIDEBAR.STOCK_CONTROL', route: '/inventory/stock' },
-      { labelKey: 'SIDEBAR.PRODUCTS', route: '/inventory/products' },
     ],
     invoicing: [
-      { labelKey: 'SIDEBAR.ORDERS', route: '/sales/orders' },
-      { labelKey: 'SIDEBAR.CUSTOMERS', route: '/sales/customers' },
     ],
     controlling: [
-      { labelKey: 'SIDEBAR.SALES', route: '/reports/sales', },
-      { labelKey: 'SIDEBAR.INVENTORY', route: '/reports/inventory' },
     ],
     masterdata: [
-      { labelKey: 'SIDEBAR.SALES', route: '/reports/sales', },
-      { labelKey: 'SIDEBAR.INVENTORY', route: '/reports/inventory' },
     ],
   };
 

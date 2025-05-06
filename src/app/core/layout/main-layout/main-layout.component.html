@@ -9,7 +9,7 @@
 
   <div class="layout-content">
     <app-sidebar
-      *ngIf="currentMenuKey === 'customers'"
+      *ngIf="currentSidebarItems.length > 0"
       [isCollapsed]="sidebarCollapsed"
       [menuItems]="currentSidebarItems"
       (toggleCollapse)="toggleSidebar()"
