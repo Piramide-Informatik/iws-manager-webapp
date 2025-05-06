@@ -59,7 +59,8 @@
     "NEW": "Neu",
     "SAVE": "Speichern",
     "DELETE": "Löschen",
-    "CANCEL": "Abbrechen"
+    "CANCEL": "Abbrechen",
+    "NEW_YEAR": "Neues Jahr"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",
@@ -269,11 +270,6 @@
     "TABLE": {
       "STATE": "Bundesland"
     },
-    "BUTTON": {
-      "NEW": "Neu",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
-    },
     "LABEL": {
       "STATE": "Bundesland",
       "EDIT_STATE": "Bundesland bearbeiten"
@@ -285,9 +281,6 @@
       "ORDER": "Reihenfolge",
       "PROJECTS": "Projekte",
       "NETWORKS": "Netzwerke"
-    },
-    "BUTTON": {
-      "NEW": "Neu"
     }
   },
 
@@ -306,9 +299,7 @@
       "PASSWORD": "Kennwort",
       "ACTIVE": "Aktiv",
       "ASSIGNED_ROLES": "Zugewiesene Rollen",
-      "AVAILABLE_ROLES": "Verfügbare Rollen",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
+      "AVAILABLE_ROLES": "Verfügbare Rollen"
     }
   },
 
@@ -324,11 +315,6 @@
       "DELETE": "löschen",
       "EXECUTE": "ausführen"
     },
-    "BUTTON": {
-      "NEW": "Neu",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
-    },
     "LABEL": {
       "EDIT_ROL": "Rollen bearbeiten",
       "ROL": "Benutzerrolle",
@@ -343,11 +329,6 @@
       "HOLIDAY_NAME": "Feiertag",
       "SORT": "Sortierung",
       "FIXED_DATE": "Festes Datum"
-    },
-    "BUTTON": {
-      "SAVE": "Speichern",
-      "NEW_YEAR": "Neues Jahr",
-      "NEW": "Neuer"
     },
     "TABLE": {
       "SORT": "Sort",
@@ -380,11 +361,6 @@
       "PERSONNEL_RATE": "Personalpauschale (%)",
       "RESEARCH_SHARE": "Anteil Forschungsauftrag",
       "PRODUCTIVE_HOURS": "Produktive Std. / Jahr"
-    },
-    "BUTTON": {
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen",
-      "NEW": "Neues Programm"
     },
     "HEADER": {
       "EDIT_FUNDING": "Förderprogramm bearbeiten"
@@ -424,11 +400,6 @@
       "STAFF_UNTIL": "Mitarbeiter bis",
       "SELECT_TEAM": "Team wählen"
     },
-    "BUTTON": {
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen",
-      "NEW": "Neuer Mitarbeiter"
-    },
     "TABLE": {
       "STAFF_NUMBER": "Mitarbeiter-Nr.",
       "SHORT_NAME": "Kürzel",
@@ -449,11 +420,6 @@
       "CONSTANT": "Konstante",
       "VALUE": "Wert",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
-    },
-    "BUTTON": {
-      "NEW": "Neu",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
     },
     "LABEL": {
       "EDIT_SYSTEM_CONSTANT": "Systemkonstante bearbeiten",
@@ -477,16 +443,11 @@
       "PERCENTAGE": "Provision in %",
       "MIN_COMMISSION": "Mindestprovision"
     },
-    "BUTTON": {
-      "NEW": "Neu"
-    },
     "FORM": {
       "HEADER": "IWS Provision bearbeiten",
       "THRESHOLD": "ab Forderungswert",
       "PERCENTAGE": "Provision in %",
-      "MIN_COMMISSION": "Mindestprovision",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
+      "MIN_COMMISSION": "Mindestprovision"
     }
   },
   "IWS_TEAMS": {
@@ -510,7 +471,6 @@
       "ABBREVIATION": "Kürzel",
       "IS_STANDARD": "Ist Standard?"
     },
-
     "TABLE": {
       "NAME": "Land",
       "ABBREVIATION": "Kürzel",
@@ -548,11 +508,6 @@
       "TEXT_LABEL": "Textlabel",
       "TEXT": "Text",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
-    },
-    "BUTTON": {
-      "NEW": "Neu",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
     },
     "LABEL": {
       "EDIT_TEXT": "Text bearbeiten",
@@ -600,11 +555,6 @@
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "ab Datum",
       "SENTENCE": "Satz"
-    },
-    "BUTTON": {
-      "NEW": "Neu",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Steuersätze",

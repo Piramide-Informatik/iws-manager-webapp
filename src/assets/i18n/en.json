@@ -59,7 +59,8 @@
     "NEW": "New",
     "SAVE": "Save",
     "DELETE": "Delete",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "NEW_YEAR": "New Year"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmation",
@@ -269,11 +270,6 @@
     "TABLE": {
       "STATE": "Federal State"
     },
-    "BUTTON": {
-      "NEW": "New",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
-    },
     "LABEL": {
       "STATE": "Federal State",
       "EDIT_STATE": "Edit State"
@@ -285,9 +281,6 @@
       "ORDER": "Order",
       "PROJECTS": "Projects",
       "NETWORKS": "Networks"
-    },
-    "BUTTON": {
-      "NEW": "New"
     }
   },
   "USERS": {
@@ -305,9 +298,7 @@
       "PASSWORD": "Password",
       "ACTIVE": "Active",
       "ASSIGNED_ROLES": "Assigned Roles",
-      "AVAILABLE_ROLES": "Available Roles",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
+      "AVAILABLE_ROLES": "Available Roles"
     }
   },
 
@@ -322,11 +313,6 @@
       "MODIFY": "Modify",
       "DELETE": "Delete",
       "EXECUTE": "Execute"
-    },
-    "BUTTON": {
-      "NEW": "New",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
     },
     "LABEL": {
       "EDIT_ROL": "Edit Rol",
@@ -343,11 +329,6 @@
       "HOLIDAY_NAME": "Holiday Name",
       "SORT": "Sort Order",
       "FIXED_DATE": "Fixed Date"
-    },
-    "BUTTON": {
-      "SAVE": "Save",
-      "NEW_YEAR": "New Year",
-      "NEW": "New"
     },
     "TABLE": {
       "SORT": "Sort",
@@ -380,11 +361,6 @@
       "PERSONNEL_RATE": "Personnel rate (%)",
       "RESEARCH_SHARE": "Research share",
       "PRODUCTIVE_HOURS": "Productive hours / year"
-    },
-    "BUTTON": {
-      "SAVE": "Save",
-      "CANCEL": "Cancel",
-      "NEW": "New program"
     },
     "HEADER": {
       "EDIT_FUNDING": "Edit funding program"
@@ -424,11 +400,6 @@
       "STAFF_UNTIL": "Staff Until",
       "SELECT_TEAM": "Select Team"
     },
-    "BUTTON": {
-      "SAVE": "Save",
-      "CANCEL": "Cancel",
-      "NEW": "New Staff"
-    },
     "TABLE": {
       "STAFF_NUMBER": "Staff No.",
       "SHORT_NAME": "Short Name",
@@ -450,11 +421,6 @@
       "VALUE": "Value",
       "NO_RESULTS_FOUND": "No results found."
     },
-    "BUTTON": {
-      "NEW": "New",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
-    },
     "LABEL": {
       "EDIT_SYSTEM_CONSTANT": "Edit System Constant",
       "CONSANT": "Constant",
@@ -473,16 +439,11 @@
       "PERCENTAGE": "Commission (%)",
       "MIN_COMMISSION": "Minimum Commission"
     },
-    "BUTTON": {
-      "NEW": "New"
-    },
     "FORM": {
       "HEADER": "Edit IWS Commission",
       "THRESHOLD": "Threshold Value",
       "PERCENTAGE": "Commission (%)",
-      "MIN_COMMISSION": "Minimum Commission",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
+      "MIN_COMMISSION": "Minimum Commission"
     }
   },
   "IWS_TEAMS": {
@@ -506,7 +467,6 @@
       "ABBREVIATION": "Abbreviation",
       "IS_STANDARD": "Is Standard?"
     },
-
     "TABLE": {
       "NAME": "Name",
       "ABBREVIATION": "Abbreviation",
@@ -544,11 +504,6 @@
       "TEXT_LABEL": "Text Label",
       "TEXT": "Text",
       "NO_RESULTS_FOUND": "No results found."
-    },
-    "BUTTON": {
-      "NEW": "New",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
     },
     "LABEL": {
       "EDIT_TEXT": "Edit Text",
@@ -596,11 +551,6 @@
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "From Date",
       "SENTENCE": "Sentence"
-    },
-    "BUTTON": {
-      "NEW": "New",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Edit Sales Tax",
