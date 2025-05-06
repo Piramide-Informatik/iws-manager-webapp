@@ -6,7 +6,7 @@ import { Table } from 'primeng/table';
 
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Column {
   field: string;
@@ -49,12 +49,13 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   exportColumns!: ExportColumn[];
   constructor(
-    private workContractsService: WorkContractsService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
+    private readonly workContractsService: WorkContractsService,
+    private readonly messageService: MessageService,
+    private readonly confirmationService: ConfirmationService,
     private readonly cd: ChangeDetectorRef,
     private readonly translate: TranslateService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -95,12 +96,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   }
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/${url}`]).then(() => {
-        //console.log(`After navigation I am on:${this.router.url}`)
       })
     })
   }
@@ -113,9 +111,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   }
 
   exportCSV() {
-    if (this.contracts && this.contracts.length) {
+    if (this.contracts?.length) {
       setTimeout(() => {
-        if (this.dt2 && this.dt2.exportCSV) {
+        if (this.dt2?.exportCSV) {
           this.dt2.exportCSV();
         } else {
           console.error('La tabla no tiene el método exportCSV disponible');
@@ -126,37 +124,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**loadWorkContracts() {
-    this.workContractsService
-      .list()
-      .then((data) => {
-        console.log('Datos cargados:', data);
-        this.contracts = data || [];
-        this.loading = false;
-      })
-      .catch((error) => {
-        console.error('Error al cargar los contratos:', error);
-      });
-  }
-  /** 
-  openNew() {
-    this.currentContract = {
-      employeeId: 0,
-      firstName: '',
-      lastName: '',
-      date: '',
-      salary: 0,
-      weeklyHours: 0,
-      maxHrsDay: 0,
-      maxHrsMonth: 0,
-      abbreviation: '',
-      hourlyRate: 0,
-      noteLine: '',
-    };
-    this.submitted = false;
-    this.productDialog = true;
-  }
-*/
   editWorkContract(currentContract: WorkContract) {
     this.currentContract = { ...currentContract };
     this.productDialog = true;
@@ -185,7 +152,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   hideDialog() {
     this.productDialog = false;
     this.submitted = false;
-    this.currentContract;
   }
 
   deleteWorkContract(workContract: WorkContract) {
@@ -210,9 +176,12 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     });
   }
 
-    goToWorkCOntractDetails(currentWContract: WorkContract) {
-      this.router.navigateByUrl('/work-contracts/contractDetails', { state: { customer: "Joe Doe", workContract: currentWContract } });
-    }
+  goToWorkCOntractDetails(currentWContract: WorkContract) {
+    this.router.navigate(['contractDetails'], { 
+      relativeTo: this.route,
+      state: { customer: "Joe Doe", workContract: currentWContract } 
+    });
+  }
 
   findIndexById(id: number): number {
     return this.contracts.findIndex(
@@ -241,13 +210,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     return 'info';
   }
 
-  onInputChange(event: Event, field: string): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
-
   saveProduct() {
     this.submitted = true;
 
@@ -261,7 +223,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
         });
 
       productAction.then(() => {
-        // this.loadProducts();
 
         this.cd.detectChanges();
 
@@ -281,13 +242,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** 
-  loadProducts() {
-    this.workContractsService.list().then((data) => {
-      this.contracts = data;
-    });
-  }
-*/
   resetProductDialog() {
     this.productDialog = false;
     this.currentContract = {} as WorkContract;
