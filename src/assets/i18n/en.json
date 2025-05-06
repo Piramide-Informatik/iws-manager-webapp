@@ -610,6 +610,13 @@
       "SALES_TAX_REQUIRED": "Sales Tax is required"
     }
   },
+  "TERMS_OF_PAYMENT": {
+    "TERMS_OF_PAYMENT": "Terms of Payment",
+    "TERM_OF_PAYMENT": "Term of Payment",
+    "TITLE_FORM": "Edit Term of Payment",
+    "TERM_OF_PAYMENT_DAYS": "Term of Payment (Days)",
+    "INVOICE_TEXT": "Invoice Text"
+  },
   "BILLERS": {
     "TITLE_FORM": "Edit Biller"
   },
