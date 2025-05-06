@@ -32,7 +32,11 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor(private readonly orderService: OrderService, private readonly translate: TranslateService, private readonly router: Router) { }
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly translate: TranslateService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit():void {
     this.loadColHeaders();
@@ -87,7 +91,4 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteCustomer(id: number) {
-    //this.contractors = this.contractors.filter( contractor => contractor.contractorLabel !== id);
-  }
 }
