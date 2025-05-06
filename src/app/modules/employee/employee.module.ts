@@ -1,8 +1,7 @@
 // Angular
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //Modulos
 import { EmployeeRountingModule } from "./employee-routing.module";
@@ -26,6 +25,7 @@ import { Dialog } from 'primeng/dialog';
 import { EmployeeOverviewComponent } from "./components/employee-overview/employee-overview.component";
 import { EmployeeDetailsComponent } from "./components/employee-details/employee-details.component";
 
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
     declarations: [
@@ -49,7 +49,10 @@ import { EmployeeDetailsComponent } from "./components/employee-details/employee
         ReactiveFormsModule,
         ConfirmDialog,
         MessageModule,
-        Dialog
+        Dialog,
+        TranslateModule,
+        TranslatePipe,
+        TranslateDirective,
     ]
 
 })
