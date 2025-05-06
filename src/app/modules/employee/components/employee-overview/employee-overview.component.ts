@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -51,7 +51,9 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
     private readonly router: Router,
-    private readonly confirmationService: ConfirmationService) { }
+    private readonly confirmationService: ConfirmationService,
+    private readonly route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.loadColHeaders();
@@ -112,34 +114,26 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   }
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/${url}`]).then(() => {
-        //console.log(`After navigation I am on:${this.router.url}`)
       })
     })
   }
 
 
   goToEmployeeDetails(currentEmployee: Employee) {
-    this.router.navigateByUrl('/employees/employee-details', { state: { customer: "Joe Doe", employee: currentEmployee } });
+    this.router.navigate(['employee-details'], { 
+      relativeTo: this.route,
+      state: { customer: "Joe Doe", employee: currentEmployee } 
+    });
   }
 
   searchEmployee(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    if (inputElement && inputElement.value) {
+    if (inputElement?.value) {
       this.dt2.filterGlobal(inputElement.value, 'contains');
     }
-  }
-
-  onInputChange(event: Event): void {
-
-  }
-
-  createEmployee() {
-    this.router.navigateByUrl('/employees/employee-details');
   }
 
   applyFilter(event: Event, field: string) {
