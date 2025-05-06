@@ -4,7 +4,7 @@ import { Contractor } from '../../../../Entities/contractor';
 import { ContractorService } from '../../services/contractor.service';
 import {TranslateService, _} from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Column {
   field: string,
@@ -31,7 +31,12 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor(private readonly contractorService: ContractorService, private readonly translate: TranslateService, private readonly router:Router) { }
+  constructor(
+    private readonly contractorService: ContractorService, 
+    private readonly translate: TranslateService, 
+    private readonly router:Router,
+    private readonly route: ActivatedRoute
+  ) { }
 
   ngOnInit():void {
     this.loadColHeaders();
@@ -66,12 +71,9 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   }
 
   reloadComponent(self:boolean,urlToNavigateTo ?:string){
-    //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
    const url=self ? this.router.url :urlToNavigateTo;
    this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
      this.router.navigate([`/${url}`]).then(()=>{
-  //console.log(`After navigation I am on:${this.router.url}`)
      })
    })
  }
@@ -85,10 +87,10 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   }
 
   goToContractDetails(currentContract: Contractor) {
-    this.router.navigateByUrl('/contractors/contract-details', { state: { customer: "Joe Doe", contractData: currentContract } });
+    this.router.navigate(['contract-details'], { 
+      relativeTo: this.route,
+      state: { customer: "Joe Doe", contractData: currentContract } 
+    });
   }
 
-  deleteCustomer(id: number) {
-    //this.contractors = this.contractors.filter( contractor => contractor.contractorLabel !== id);
-  }
 }
