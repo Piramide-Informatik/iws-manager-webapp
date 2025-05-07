@@ -25,6 +25,8 @@ import { MessageModule } from 'primeng/message';
 //Components
 import { ListInvoicesComponent } from './components/list-invoices-contracts/list-invoices.component';
 
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+
 @NgModule({
   declarations: [ListInvoicesComponent],
   imports: [
@@ -46,6 +48,9 @@ import { ListInvoicesComponent } from './components/list-invoices-contracts/list
     MultiSelectModule,
     MessageModule,
     InvoicesRoutingModule,
+    TranslateModule,
+    TranslatePipe,
+    TranslateDirective
   ],
 })
 export class InvoicesModule {}

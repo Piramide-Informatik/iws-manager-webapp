@@ -18,6 +18,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ContractorDetailsComponent } from './components/contractor-details/contractor-details.component';
 import { DropdownModule } from 'primeng/dropdown';
 
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+
 @NgModule({
   declarations: [
     ContractorOverviewComponent,
@@ -36,7 +38,10 @@ import { DropdownModule } from 'primeng/dropdown';
     DropdownModule,
     TableModule,
     ToastModule,
-    ToolbarModule
+    ToolbarModule,
+    TranslateModule,
+    TranslatePipe,
+    TranslateDirective
 ]
 })
 export class ContractorModule { }

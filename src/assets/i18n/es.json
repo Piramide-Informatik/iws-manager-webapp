@@ -59,7 +59,12 @@
     "NEW": "Nuevo",
     "SAVE": "Guardar",
     "DELETE": "Eliminar",
-    "CANCEL": "Cancelar"
+    "CANCEL": "Cancelar",
+    "NEW_YEAR": "Nuevo año",
+    "GENERATE_PDF_SUBCONTRACT": "Generar PDF",
+    "IMPORT_INVOICES": "Importar Facturas",
+    "GENERATE_PDF_ORDER": "Generar PDF",
+    "IMPORT_EMPLOYEE_CONTRACTS": "Importar Contratos Laborales"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmación",
@@ -269,11 +274,6 @@
     "TABLE": {
       "STATE": "Estado Federal"
     },
-    "BUTTON": {
-      "NEW": "Nuevo",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
-    },
     "LABEL": {
       "STATE": "Estado Federal",
       "EDIT_STATE": "Editar Estado"
@@ -285,9 +285,6 @@
       "ORDER": "Orden",
       "PROJECTS": "Proyectos",
       "NETWORKS": "Redes"
-    },
-    "BUTTON": {
-      "NEW": "Nuevo"
     }
   },
   "USERS": {
@@ -305,9 +302,7 @@
       "PASSWORD": "Contraseña",
       "ACTIVE": "Activo",
       "ASSIGNED_ROLES": "Roles asignados",
-      "AVAILABLE_ROLES": "Roles disponibles",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
+      "AVAILABLE_ROLES": "Roles disponibles"
     }
   },
 
@@ -322,11 +317,6 @@
       "MODIFY": "Modificar",
       "DELETE": "Eliminar",
       "EXECUTE": "Ejecutar"
-    },
-    "BUTTON": {
-      "NEW": "Nuevo",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
     },
     "LABEL": {
       "EDIT_ROL": "Editar Rol",
@@ -343,11 +333,6 @@
       "HOLIDAY_NAME": "Nombre del festivo",
       "SORT": "Orden",
       "FIXED_DATE": "Fecha fija"
-    },
-    "BUTTON": {
-      "SAVE": "Guardar",
-      "NEW_YEAR": "Nuevo año",
-      "NEW": "Nuevo"
     },
     "TABLE": {
       "SORT": "Orden",
@@ -381,11 +366,6 @@
       "RESEARCH_SHARE": "Porcentaje de investigación",
       "PRODUCTIVE_HOURS": "Horas productivas / año"
     },
-    "BUTTON": {
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar",
-      "NEW": "Nuevo programa"
-    },
     "HEADER": {
       "EDIT_FUNDING": "Editar programa de financiación"
     }
@@ -407,11 +387,6 @@
       "CONSTANT": "Constante",
       "VALUE": "Valor",
       "NO_RESULTS_FOUND": "No se encontraron resultados."
-    },
-    "BUTTON": {
-      "NEW": "Nuevo",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
     },
     "LABEL": {
       "EDIT_SYSTEM_CONSTANT": "Editar Constantes del Sistema",
@@ -450,11 +425,6 @@
       "STAFF_UNTIL": "Empleado hasta",
       "SELECT_TEAM": "Seleccionar equipo"
     },
-    "BUTTON": {
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar",
-      "NEW": "Nuevo Empleado"
-    },
     "TABLE": {
       "STAFF_NUMBER": "N° de Empleado",
       "SHORT_NAME": "Abreviatura",
@@ -476,16 +446,11 @@
       "PERCENTAGE": "Comisión (%)",
       "MIN_COMMISSION": "Comisión mínima"
     },
-    "BUTTON": {
-      "NEW": "Nuevo"
-    },
     "FORM": {
       "HEADER": "Editar Comisión IWS",
       "THRESHOLD": "Desde valor de exigencia",
       "PERCENTAGE": "Comisión (%)",
-      "MIN_COMMISSION": "Comisión mínima",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
+      "MIN_COMMISSION": "Comisión mínima"
     }
   },
 
@@ -509,11 +474,6 @@
       "NAME": "Nombre",
       "ABBREVIATION": "Abreviatura",
       "IS_STANDARD": "¿Es estándar?"
-    },
-    "BUTTON": {
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar",
-      "NEW": "Nuevo"
     },
     "TABLE": {
       "NAME": "Nombre",
@@ -552,11 +512,6 @@
       "TEXT_LABEL": "Etiqueta de texto",
       "TEXT": "Texto",
       "NO_RESULTS_FOUND": "No se encontraron resultados."
-    },
-    "BUTTON": {
-      "NEW": "Nuevo",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
     },
     "LABEL": {
       "EDIT_TEXT": "Editar Etiqueta de Texto",
@@ -604,11 +559,6 @@
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "Desde la Fecha",
       "SENTENCE": "Tasa"
-    },
-    "BUTTON": {
-      "NEW": "Nuevo",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Editar Impuesto Sobre las Ventas",
