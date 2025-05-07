@@ -84,6 +84,6 @@ export class ContractorDetailsComponent implements OnInit {
     }
   }
   onCancel() {
-    this.router.navigate(['/contractors']);
+    this.router.navigate(['/customers/contractors']);
   }
 }
