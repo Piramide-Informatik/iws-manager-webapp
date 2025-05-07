@@ -29,6 +29,8 @@ import { SubcontractComponent } from './components/subcontracts-detail/subcontra
 import { ProjectAllocationComponent } from './components/subcontracts-detail/project-allocation/project-allocation.component';
 import { DepreciationScheduleComponent } from './components/subcontracts-detail/depreciation-schedule/depreciation-schedule.component';
 
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+
 @NgModule({
   declarations: [
     ListSubcontractsComponent,
@@ -58,7 +60,10 @@ import { DepreciationScheduleComponent } from './components/subcontracts-detail/
     CardModule,
     InputIconModule,
     ToastModule,
-    TextareaModule
+    TextareaModule,
+    TranslateModule,
+    TranslatePipe,
+    TranslateDirective
   ],
 })
 export class SubcontractsModule {}
