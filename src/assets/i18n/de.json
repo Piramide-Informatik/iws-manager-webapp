@@ -8,10 +8,15 @@
     "MASTER_DATA": "Stammdaten"
   },
   "SIDEBAR": {
+    "PEOPLE": "Personal",
+    "LOCATION": "Standort",
+    "PROJECTS": "Projekte",
+    "FINANCE": "Finanzen",
+    "CONFIGURATION": "Konfiguration",
+    "OPERATIONS": "Abläufe",
     "CUSTOMER": "Kunde",
     "EMPLOYEES": "Mitarbeiter",
     "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
-    "PROJECTS": "Projekte",
     "ORDERS": "Aufträge",
     "DEMANDS": "Forderungen",
     "INVOICES": "Rechnungen",
@@ -575,7 +580,7 @@
       "NAME": "Name",
       "LAND": "Land",
       "STREET": "Straße",
-      "ZIP_CITY":"PLZ / Ort"
+      "ZIP_CITY": "PLZ / Ort"
     }
   },
   "PROJECT_STATUS": {
@@ -625,6 +630,6 @@
     "TITLE_FORM": "Rechnungsersteller bearbeiten"
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
+    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten"
   }
 }
