@@ -1,8 +1,8 @@
 <div class="card">
     <p-table #dt
-        [value]="title" 
-        dataKey="id" 
-        [rows]="15" 
+        [value]="titles" 
+        dataKey="titleId" 
+        [rows]="15"
         [columns]="titleDisplayedColumns"
         [rowsPerPageOptions]="[15, 30, 50]" 
         [paginator]="true"
@@ -40,7 +40,7 @@
                             ></button>
                     </div>
                 </td>
-                <td class="nowrap-row" *ngFor="let col of columns">{{ row[col.field] }}</td>
+                <td *ngFor="let col of columns">{{ row[col.field] }}</td>
             </tr>
         </ng-template>
 

@@ -13,7 +13,7 @@ import { TITLE } from './title.data';
 })
 export class TitleTableComponent implements OnInit, OnDestroy {
 
-  title = [...TITLE];
+  titles = [...TITLE];
   titleColumns: any[] = [];
   titleDisplayedColumns: any[] = [];
   @ViewChild('dt') dt!: Table;

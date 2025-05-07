@@ -632,12 +632,10 @@
     },
     "LABEL": {
       "EDIT_TITLE": "Titel bearbeiten",
-      "TITLE_LABEL": "Titellabel",
-      "TITLE_VALUE": "Titel"
+      "TITLE_LABEL": "Titel"
     },
     "ERROR": {
-      "TITLE_LABEL_REQUIRED": "Titellabel ist erforderlich",
-      "TITLE_VALUE_REQUIRED": "Titel ist erforderlich"
+      "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
     }
   }
 }

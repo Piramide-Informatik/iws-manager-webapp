@@ -2,14 +2,14 @@
     <form [formGroup]="editTitleForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
             <div class="title-form mb-2 flex">
-                <label for="label">{{ 'TITLE.LABEL.TITLE_LABEL' | translate }}</label>
+                <label for="title">{{ 'TITLE.LABEL.TITLE_LABEL' | translate }}</label>
                 <div>
-                    <input pInputTitle type="title" id="label" formControlName="label" [ngClass]="{'ng-invalid': editTitleForm.get('label')?.invalid && 
-                      editTitleForm.get('label')?.dirty && editTitleForm.get('label')?.touched}" autocomplete="off" />
+                    <input pInputTitle type="text" id="title" formControlName="title" [ngClass]="{'ng-invalid': editTitleForm.get('label')?.invalid && 
+                      editTitleForm.get('title')?.dirty && editTitleForm.get('title')?.touched}" autocomplete="off" />
                      <p-message severity="error" variant="simple" size="small" *ngIf="
-                         editTitleForm.get('label')?.invalid && 
-                         editTitleForm.get('label')?.dirty && 
-                         editTitleForm.get('label')!.hasError('required')
+                         editTitleForm.get('title')?.invalid && 
+                         editTitleForm.get('title')?.dirty && 
+                         editTitleForm.get('title')!.hasError('required')
                          ">
                          {{ 'TITLE.ERROR.TITLE_LABEL_REQUIRED' | translate }}</p-message>
                 </div>

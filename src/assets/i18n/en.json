@@ -628,12 +628,10 @@
     },
     "LABEL": {
       "EDIT_TITLE": "Edit Title",
-      "TITLE_LABEL": "Title label",
-      "TITLE_VALUE": "Title"
+      "TITLE_LABEL": "Title"
     },
     "ERROR": {
-      "TITLE_LABEL_REQUIRED": "Title label is required",
-      "TITLE_VALUE_REQUIRED": "Title value is required"
+      "TITLE_LABEL_REQUIRED": "Title is required"
     }
   }
 }

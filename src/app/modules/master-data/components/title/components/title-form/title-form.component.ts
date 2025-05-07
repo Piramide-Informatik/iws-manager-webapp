@@ -18,7 +18,6 @@ export class TitleFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.editTitleForm = new FormGroup({
-      label: new FormControl({value: '', disabled: true}),
       title: new FormControl('', [Validators.required])
     });
   }

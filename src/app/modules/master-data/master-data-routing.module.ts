@@ -50,7 +50,7 @@ const routes: Routes = [
   { path: 'cost', component: CostsComponent },
   { path: 'billers', component: BillersComponent },
   { path: 'realization-probabilities', component: RealitationProbabilitiesComponent },
-  { path: 'titles', component: TitleComponent },
+  { path: 'title', component: TitleComponent },
 ];
 
 @NgModule({

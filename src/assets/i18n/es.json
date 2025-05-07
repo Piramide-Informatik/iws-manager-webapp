@@ -635,13 +635,11 @@
       "CANCEL": "Cancelar"
     },
     "LABEL": {
-      "EDIT_TITLE": "Editar Etiqueta de Titulo",
-      "TITLE_LABEL": "Etiqueta de titulo",
-      "TITLE_VALUE": "Titulo"
+      "EDIT_TITLE": "Editar Titulo",
+      "TITLE_LABEL": "Titulo"
     },
     "ERROR": {
-      "TITLE_LABEL_REQUIRED": "Etiqueta de titulo es requerido",
-      "TITLE_VALUE_REQUIRED": "Titulo es requerido"
+      "TITLE_LABEL_REQUIRED": "Titulo es requerido"
     }
   }
 }
