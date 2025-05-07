@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService, _ } from '@ngx-translate/core';
-import { MenuItem } from 'primeng/api';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-page-customer',
   standalone: false,
   providers: [ConfirmationService, MessageService],
   templateUrl: './page-customer.component.html',
-  styleUrl: './page-customer.component.scss'
+  styles: ''
 })
 export class PageCustomerComponent implements OnInit {
   public customer!: string;
@@ -28,7 +26,6 @@ export class PageCustomerComponent implements OnInit {
   ];
 
   constructor(
-    private readonly translate: TranslateService,
     private readonly activatedRoute: ActivatedRoute
   ){}
 
