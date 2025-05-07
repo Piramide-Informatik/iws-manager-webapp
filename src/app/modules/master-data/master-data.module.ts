@@ -95,6 +95,9 @@ import { BillersComponent } from './components/billers/billers.component';
 import { EditBillerComponent } from './components/billers/components/edit-biller/edit-biller.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
 import { EditRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/edit-realization-probabilities/edit-realization-probabilities.component';
+import { TitleComponent } from './components/title/title.component';
+import { TitleTableComponent } from './components/title/components/title-table/title-table.component';
+import { TitleFormComponent } from './components/title/components/title-form/title-form.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +164,9 @@ import { EditRealizationProbabilitiesComponent } from './components/realitation-
     EditBillerComponent,
     RealitationProbabilitiesComponent,
     EditRealizationProbabilitiesComponent,
+    TitleComponent,
+    TitleTableComponent,
+    TitleFormComponent,
   ],
   imports: [
     ButtonModule,

@@ -615,5 +615,25 @@
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Edit Realization Probabilities" 
+  },
+  "TITLE": {
+    "TABLE_TITLE": {
+      "TITLE": "Title",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_TITLE": "Edit Title",
+      "TITLE_LABEL": "Title label",
+      "TITLE_VALUE": "Title"
+    },
+    "ERROR": {
+      "TITLE_LABEL_REQUIRED": "Title label is required",
+      "TITLE_VALUE_REQUIRED": "Title value is required"
+    }
   }
 }

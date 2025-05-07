@@ -619,5 +619,25 @@
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
+  },
+  "TITLE": {
+    "TABLE_TITLE": {
+      "TITLE": "Titel",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_TITLE": "Titel bearbeiten",
+      "TITLE_LABEL": "Titellabel",
+      "TITLE_VALUE": "Titel"
+    },
+    "ERROR": {
+      "TITLE_LABEL_REQUIRED": "Titellabel ist erforderlich",
+      "TITLE_VALUE_REQUIRED": "Titel ist erforderlich"
+    }
   }
 }

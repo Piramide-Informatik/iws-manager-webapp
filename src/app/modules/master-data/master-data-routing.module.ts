@@ -23,6 +23,7 @@ import { NetworksComponent } from './components/networks/networks.component';
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
 import { BillersComponent } from './components/billers/billers.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
+import { TitleComponent } from './components/title/title.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'cost', component: CostsComponent },
   { path: 'billers', component: BillersComponent },
   { path: 'realization-probabilities', component: RealitationProbabilitiesComponent },
+  { path: 'titles', component: TitleComponent },
 ];
 
 @NgModule({

@@ -623,5 +623,25 @@
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Editar Probabilidad de Ejecución" 
+  },
+  "TITLE": {
+    "TABLE_TITLE": {
+      "TITLE": "Titulo",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "EDIT_TITLE": "Editar Etiqueta de Titulo",
+      "TITLE_LABEL": "Etiqueta de titulo",
+      "TITLE_VALUE": "Titulo"
+    },
+    "ERROR": {
+      "TITLE_LABEL_REQUIRED": "Etiqueta de titulo es requerido",
+      "TITLE_VALUE_REQUIRED": "Titulo es requerido"
+    }
   }
 }
