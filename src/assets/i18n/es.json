@@ -630,5 +630,23 @@
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Editar Probabilidad de Ejecución"
+  },
+  "TYPE_OF_COMPANIES": {
+    "TABLE_TYPE_OF_COMPANIES": {
+      "COMPANY_TYPE": "Tipo de Empresa",
+      "NO_RESULTS_FOUND": "No se encontraron resultados"
+    },
+    "BUTTON": {
+      "NEW": "Nuevo",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar"
+    },
+    "LABEL": {
+      "EDIT_COMPANY_TYPE": "Editar Tipo de Empresa",
+      "COMPANY_TYPE": "Tipo de Empresa"
+    },
+    "ERROR": {
+      "COMPANY_TYPE_REQUIRED": "Tipo de Empresa es requerido"
+    }
   }
 }
