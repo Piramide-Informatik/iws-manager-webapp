@@ -17,6 +17,8 @@ export class EditProjectCarrierComponent implements OnInit{
       absenceType: new FormControl('', [Validators.required]),
       absenceTypeLabel: new FormControl('', [Validators.required]),
       shareOfDay: new FormControl('', [Validators.required]),
+      isHoliday: new FormControl('', [Validators.required]),
+      canBeBooked: new FormControl('', [Validators.required]),
     });
   }
 
