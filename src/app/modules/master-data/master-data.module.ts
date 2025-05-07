@@ -91,10 +91,15 @@ import { EditNetworkComponent } from './components/networks/components/edit-netw
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
 import { SalesTaxFormComponent } from './components/sales-tax/components/sales-tax-form/sales-tax-form.component';
 import { SalesTaxTableComponent } from './components/sales-tax/components/sales-tax-table/sales-tax-table.component';
+import { TermsPaymentComponent } from './components/terms-payment/terms-payment.component';
+import { EditTermPaymentComponent } from './components/terms-payment/components/edit-term-payment/edit-term-payment.component';
 import { BillersComponent } from './components/billers/billers.component';
 import { EditBillerComponent } from './components/billers/components/edit-biller/edit-biller.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
 import { EditRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/edit-realization-probabilities/edit-realization-probabilities.component';
+import { TypesOfCompaniesComponent } from './components/types-of-companies/types-of-companies.component';
+import { TypesOfCompaniesFormComponent } from './components/types-of-companies/components/types-of-companies-form/types-of-companies-form.component';
+import { TypesOfCompaniesTableComponent } from './components/types-of-companies/components/types-of-companies-table/types-of-companies-table.component';
 
 @NgModule({
   declarations: [
@@ -157,10 +162,15 @@ import { EditRealizationProbabilitiesComponent } from './components/realitation-
     SalesTaxComponent,
     SalesTaxFormComponent,
     SalesTaxTableComponent,
+    TermsPaymentComponent,
+    EditTermPaymentComponent,
     BillersComponent,
     EditBillerComponent,
     RealitationProbabilitiesComponent,
     EditRealizationProbabilitiesComponent,
+    TypesOfCompaniesComponent,
+    TypesOfCompaniesFormComponent,
+    TypesOfCompaniesTableComponent,
   ],
   imports: [
     ButtonModule,

@@ -33,8 +33,8 @@
       </ng-template>
       <ng-template #header let-columns>
         <tr>
-          <th></th>
-          <th *ngFor="let col of columns; let i = index">
+          <th scope="col"></th>
+          <th scope="col" *ngFor="let col of columns; let i = index">
             <input 
               pInputText 
               pSize="small" 
@@ -44,8 +44,8 @@
           </th>
         </tr>
         <tr>
-          <th class="thead-bg-blue"></th>
-          <th *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
+          <th scope="col" class="thead-bg-blue"></th>
+          <th scope="col" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn class="thead">{{
             col.header }} <p-sortIcon [field]="col.field" />
           </th>
         </tr>
@@ -59,13 +59,13 @@
                 pButton 
                 icon="pi pi-pencil" 
                 class="p-button-rounded p-button-info button-option"
-                [routerLink]="['/orders/order-details']"
+                [routerLink]="['order-details']"
               ></button>
               <button 
                 pButton 
                 icon="pi pi-trash" 
                 class="p-button-rounded p-button-danger button-option"
-                (click)="deleteCustomer(customer.id)"></button>
+              ></button>
             </div>
           </td>
           <td *ngFor="let col of columns; let i = index" 
@@ -85,7 +85,7 @@
   
     <p-toolbar>
       <ng-template #start>
-        <p-button label="Neu" icon="pi pi-plus" routerLink="/orders/order-details"
+        <p-button [label]="'BUTTONS.NEW' | translate" icon="pi pi-plus" routerLink="order-details"
       ></p-button>
       </ng-template>
       <ng-template #end>

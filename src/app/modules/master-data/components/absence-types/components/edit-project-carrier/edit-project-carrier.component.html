@@ -15,16 +15,16 @@
                 <input pInputText type="text" id="shareOfDay" formControlName="shareOfDay" autocomplete="off" />
             </div>
             <div class="absence-form-check mb-2">
-                <label for="isHolidayChecked">{{ 'ABSENCE_TYPES.LABEL.IS_VACATION' | translate }}</label>
-                <p-toggleswitch [(ngModel)]="isHoliday">
+                <label for="isHoliday">{{ 'ABSENCE_TYPES.LABEL.IS_VACATION' | translate }}</label>
+                <p-toggleswitch id="isHoliday" formControlName="isHoliday">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>
                 </p-toggleswitch>
             </div>
             <div class="absence-form-check mb-2">
-                <label for="canBeBookedChecked">{{ 'ABSENCE_TYPES.LABEL.CAN_BE_BOOKED' | translate }}</label>
-                <p-toggleswitch [(ngModel)]="canBeBooked">
+                <label for="canBeBooked">{{ 'ABSENCE_TYPES.LABEL.CAN_BE_BOOKED' | translate }}</label>
+                <p-toggleswitch id="canBeBooked" formControlName="canBeBooked">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>

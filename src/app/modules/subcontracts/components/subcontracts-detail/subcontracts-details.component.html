@@ -23,7 +23,7 @@
         <p-button
           class="order_PDF"
           size="small"
-          label="Subcontract-PDF erzeugen"
+          [label]="'BUTTONS.GENERATE_PDF_SUBCONTRACT' | translate"
           icon="pi pi-file-pdf"
           iconPos="right"
           [style]="{ background: '#656565' }"
@@ -34,14 +34,14 @@
         <p-button
           class="Save me-2"
           size="small"
-          label="Speichern"
+          [label]="'BUTTONS.SAVE' | translate"
           icon="pi pi-check"
           iconPos="left"
         ></p-button>
         <p-button
           class="Delete me-2"
           size="small"
-          label="Löschen"
+          [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash"
           iconPos="left"
           [style]="{ background: '#ef4444' }"
@@ -49,10 +49,11 @@
         <p-button
           class="Cancel me-2"
           size="small"
-          label="Abbrechen"
+          [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times"
           iconPos="left"
           [style]="{ background: '#000' }"
+          routerLink="/customers/subcontracts"
         ></p-button>
       </div>
     </div>

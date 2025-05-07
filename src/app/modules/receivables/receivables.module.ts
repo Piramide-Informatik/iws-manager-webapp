@@ -19,7 +19,7 @@ import { TableModule } from 'primeng/table';
 //Components
 import { ListDemandsComponent } from './components/list-demands/list-demands.component';
 
-
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,10 @@ import { ListDemandsComponent } from './components/list-demands/list-demands.com
     MultiSelectModule,
     ReceivablesRoutingModule,
     TableModule,
-    ToolbarModule
+    ToolbarModule,
+    TranslateModule,
+    TranslatePipe,
+    TranslateDirective
   ]
 })
 export class ReceivablesModule { }

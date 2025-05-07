@@ -21,8 +21,10 @@ import { ProjectFunnelsComponent } from './components/project-funnels/project-fu
 import { ProjectStatusComponent } from './components/project-status/project-status.component';
 import { NetworksComponent } from './components/networks/networks.component';
 import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
+import { TermsPaymentComponent } from './components/terms-payment/terms-payment.component';
 import { BillersComponent } from './components/billers/billers.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
+import { TypesOfCompaniesComponent } from './components/types-of-companies/types-of-companies.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
@@ -47,8 +49,10 @@ const routes: Routes = [
   { path: 'iws-teams', component: IwsTeamsComponent },
   { path: 'countries', component: CountriesComponent },
   { path: 'cost', component: CostsComponent },
+  { path: 'terms-payment', component: TermsPaymentComponent },
   { path: 'billers', component: BillersComponent },
   { path: 'realization-probabilities', component: RealitationProbabilitiesComponent },
+  { path: 'type-companies', component: TypesOfCompaniesComponent}
 ];
 
 @NgModule({

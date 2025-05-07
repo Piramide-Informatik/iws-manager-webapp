@@ -31,6 +31,8 @@ import { SelectModule } from 'primeng/select';
 import { ListWorkContractsComponent } from './components/list-work-contracts/list-work-contracts.component';
 import { ContractDetailsComponent } from './components/ContractDetails/contract-details.component';
 
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+
 @NgModule({
   declarations: [
     ListWorkContractsComponent,
@@ -59,6 +61,9 @@ import { ContractDetailsComponent } from './components/ContractDetails/contract-
     AutoCompleteModule,
     FloatLabel,
     SelectModule,
+    TranslateModule,
+    TranslatePipe,
+    TranslateDirective
   ],
 })
 export class WorkContractsModule {}
