@@ -580,5 +580,23 @@
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
+  },
+  "TYPE_OF_COMPANIES": {
+    "TABLE_TYPE_OF_COMPANIES": {
+      "COMPANY_TYPE": "Unternehmensart",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "BUTTON": {
+      "NEW": "Neu",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "LABEL": {
+      "EDIT_COMPANY_TYPE": "Unternehmensart bearbeiten",
+      "COMPANY_TYPE": "Unternehmensart"
+    },
+    "ERROR": {
+      "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich"
+    }
   }
 }

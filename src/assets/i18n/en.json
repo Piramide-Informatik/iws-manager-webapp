@@ -576,5 +576,23 @@
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Edit Realization Probabilities" 
+  },
+  "TYPE_OF_COMPANIES": {
+    "TABLE_TYPE_OF_COMPANIES": {
+      "COMPANY_TYPE": "Company Type",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "BUTTON": {
+      "NEW": "New",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "LABEL": {
+      "EDIT_COMPANY_TYPE": "Edit Company Type",
+      "COMPANY_TYPE": "Company Type"
+    },
+    "ERROR": {
+      "COMPANY_TYPE_REQUIRED": "Company Type is required"
+    }
   }
 }

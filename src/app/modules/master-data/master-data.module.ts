@@ -97,6 +97,9 @@ import { BillersComponent } from './components/billers/billers.component';
 import { EditBillerComponent } from './components/billers/components/edit-biller/edit-biller.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
 import { EditRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/edit-realization-probabilities/edit-realization-probabilities.component';
+import { TypesOfCompaniesComponent } from './components/types-of-companies/types-of-companies.component';
+import { TypesOfCompaniesFormComponent } from './components/types-of-companies/components/types-of-companies-form/types-of-companies-form.component';
+import { TypesOfCompaniesTableComponent } from './components/types-of-companies/components/types-of-companies-table/types-of-companies-table.component';
 
 @NgModule({
   declarations: [
@@ -165,6 +168,9 @@ import { EditRealizationProbabilitiesComponent } from './components/realitation-
     EditBillerComponent,
     RealitationProbabilitiesComponent,
     EditRealizationProbabilitiesComponent,
+    TypesOfCompaniesComponent,
+    TypesOfCompaniesFormComponent,
+    TypesOfCompaniesTableComponent,
   ],
   imports: [
     ButtonModule,
