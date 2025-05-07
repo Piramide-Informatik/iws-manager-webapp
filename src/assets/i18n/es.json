@@ -60,7 +60,11 @@
     "SAVE": "Guardar",
     "DELETE": "Eliminar",
     "CANCEL": "Cancelar",
-    "NEW_YEAR": "Nuevo año"
+    "NEW_YEAR": "Nuevo año",
+    "GENERATE_PDF_SUBCONTRACT": "Generar PDF",
+    "IMPORT_INVOICES": "Importar Facturas",
+    "GENERATE_PDF_ORDER": "Generar PDF",
+    "IMPORT_EMPLOYEE_CONTRACTS": "Importar Contratos Laborales"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmación",

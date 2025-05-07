@@ -63,10 +63,10 @@
   <p-toolbar>
 
     <ng-template #start>
-      <p-button label="Neu" icon="pi pi-plus" [routerLink]="['contractDetails']"
+      <p-button [label]="'BUTTONS.NEW' | translate" icon="pi pi-plus" [routerLink]="['contractDetails']"
         class="mr-3 inline-block" />
       <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="importEmployContracts"
-        chooseLabel="Arbeitsverträge importieren" auto customUpload class="inline-block" />
+        [chooseLabel]="'BUTTONS.IMPORT_EMPLOYEE_CONTRACTS' | translate" auto customUpload class="inline-block" />
     </ng-template>
   </p-toolbar>
   <p-confirmDialog [style]="{ width: '450px' }" />

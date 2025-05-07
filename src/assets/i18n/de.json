@@ -60,7 +60,11 @@
     "SAVE": "Speichern",
     "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
-    "NEW_YEAR": "Neues Jahr"
+    "NEW_YEAR": "Neues Jahr",
+    "GENERATE_PDF_SUBCONTRACT": "Subcontract-PDF erzeugen",
+    "IMPORT_INVOICES": "Rechnungen importieren",
+    "GENERATE_PDF_ORDER": "Auftrags-PDF erzeugen",
+    "IMPORT_EMPLOYEE_CONTRACTS": "Arbeitsverträge importieren"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",

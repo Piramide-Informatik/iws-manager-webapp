@@ -31,7 +31,7 @@ import { ProjectComponent } from './components/order-detail/project/project.comp
 import { IwsProvisionComponent } from './components/order-detail/iws-provision/iws-provision.component';
 import { OrdersOverviewComponent } from './components/orders-overview/orders-overview.component';
 
-
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,10 @@ import { OrdersOverviewComponent } from './components/orders-overview/orders-ove
     IconFieldModule,
     InputIconModule,
     FormsModule,
-    MessageModule
+    MessageModule,
+    TranslateModule,
+    TranslatePipe,
+    TranslateDirective
   ],
 })
 export class OrdersModule { }

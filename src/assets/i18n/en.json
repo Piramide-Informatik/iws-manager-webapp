@@ -60,7 +60,11 @@
     "SAVE": "Save",
     "DELETE": "Delete",
     "CANCEL": "Cancel",
-    "NEW_YEAR": "New Year"
+    "NEW_YEAR": "New Year",
+    "GENERATE_PDF_SUBCONTRACT": "Generate PDF",
+    "IMPORT_INVOICES": "Import Invoices",
+    "GENERATE_PDF_ORDER": "Generate PDF",
+    "IMPORT_EMPLOYEE_CONTRACTS": "Import Employee Contracts"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmation",
