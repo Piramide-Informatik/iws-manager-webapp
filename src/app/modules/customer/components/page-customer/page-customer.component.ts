@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -15,24 +16,27 @@ export class PageCustomerComponent implements OnInit {
   public currentSidebarItems: MenuItem[] = [];
 
   private readonly sidebarItemsConfig: { labelKey: string; route: string;}[] = [
-    { labelKey: 'SIDEBAR.EMPLOYEES', route: '/customers/pr/employees' },
-    { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: '/customers/work-contracts' },
-    { labelKey: 'SIDEBAR.PROJECTS', route: '/customers/projects' },
-    { labelKey: 'SIDEBAR.ORDERS', route: '/customers/orders' },
-    { labelKey: 'SIDEBAR.DEMANDS', route: '/customers/demands' },
-    { labelKey: 'SIDEBAR.INVOICES', route: '/customers/invoices' },
-    { labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS', route: '/customers/framework-agreements' },
-    { labelKey: 'SIDEBAR.CONTRACTORS', route: '/customers/contractors' },
-    { labelKey: 'SIDEBAR.SUBCONTRACTS', route: '/customers/subcontracts' },
+    { labelKey: 'SIDEBAR.EMPLOYEES', route: 'employees' },
+    { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: 'work-contracts' },
+    { labelKey: 'SIDEBAR.PROJECTS', route: 'projects' },
+    { labelKey: 'SIDEBAR.ORDERS', route: 'orders' },
+    { labelKey: 'SIDEBAR.DEMANDS', route: 'demands' },
+    { labelKey: 'SIDEBAR.INVOICES', route: 'invoices' },
+    { labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS', route: 'framework-agreements' },
+    { labelKey: 'SIDEBAR.CONTRACTORS', route: 'contractors' },
+    { labelKey: 'SIDEBAR.SUBCONTRACTS', route: 'subcontracts' },
   ];
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly activatedRoute: ActivatedRoute
   ){}
 
 
   ngOnInit(): void {
-    this.customer = 'Joe Doe'
+    this.activatedRoute.params.subscribe( params => {
+      this.customer = params['id']
+    })
     this.loadSidebarItems();
   }
 
