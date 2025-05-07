@@ -36,16 +36,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     { labelKey: string; route: string }[]
   > = {
     customers: [
-      // { labelKey: 'SIDEBAR.CUSTOMER', route: '/customers/customers' },
-      // { labelKey: 'SIDEBAR.EMPLOYEES', route: '/customers/employees' },
-      // { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: '/customers/work-contracts' },
-      // { labelKey: 'SIDEBAR.PROJECTS', route: '/customers/projects' },
-      // { labelKey: 'SIDEBAR.ORDERS', route: '/customers/orders' },
-      // { labelKey: 'SIDEBAR.DEMANDS', route: '/customers/demands' },
-      // { labelKey: 'SIDEBAR.INVOICES', route: '/customers/invoices' },
-      // { labelKey: 'SIDEBAR.FRAMEWORK_AGREEMENTS', route: '/customers/framework-agreements' },
-      // { labelKey: 'SIDEBAR.CONTRACTORS', route: '/customers/contractors' },
-      // { labelKey: 'SIDEBAR.SUBCONTRACTS', route: '/customers/subcontracts' },
     ],
     projects: [
     ],
