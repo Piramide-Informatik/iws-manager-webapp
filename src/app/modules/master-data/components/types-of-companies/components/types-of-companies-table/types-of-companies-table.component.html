@@ -1,9 +1,9 @@
 <div class="card">
     <p-table #dt
-        [value]="salesTaxes" 
-        dataKey="salesTaxesid" 
+        [value]="typeOfCompanies" 
+        dataKey="typeOfCompaniesId" 
         [rows]="15" 
-        [columns]="salesTaxesColumns"
+        [columns]="typeOfCompaniesDisplayedColumns"
         [rowsPerPageOptions]="[15, 30, 50]" 
         [paginator]="true"
         [currentPageReportTemplate]="'PAGINATION.REPORT' | translate: {first: '{first}' ,last: '{last}' , totalRecords: '{totalRecords}'}" 
@@ -16,16 +16,16 @@
 
         <ng-template #header let-columns>
             <tr>
-                <th id="sales-taxes-table-options"></th>
-                <th id="sales-taxes-table-search" *ngFor="let col of columns; let i = index">
+                <th id="type-of-companies-table-options"></th>
+                <th id="type-of-companies-table-search" *ngFor="let col of columns; let i = index">
                     <input pInputText pSize="small" type="text"
                         [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
-                        (input)="applySalesTaxesFilter($event, col.field)" />
+                        (input)="applyTypeOfCompaniesFilter($event, col.field)" />
                 </th>
             </tr>
             <tr>
-                <th id="sales-taxes-table-options-field" class="thead-bg-blue"></th>
-                <th id="sales-taxes-table-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn
+                <th id="type-of-companies-table-options-field" class="thead-bg-blue"></th>
+                <th id="type-of-companies-table-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn
                     class="thead">{{ col.header }} <p-sortIcon [field]="col.field" /></th>
             </tr>
         </ng-template>
@@ -40,14 +40,14 @@
                             ></button>
                     </div>
                 </td>
-                <td *ngFor="let col of columns">{{ row[col.field] }}</td>
+                <td class="nowrap-row" *ngFor="let col of columns">{{ row[col.field] }}</td>
             </tr>
         </ng-template>
 
         <ng-template #emptymessage>
             <tr>
                 <td colspan="7">
-                    <p-message severity="info">{{ 'SALES_TAX.TABLE_SALES_TAX.NO_RESULTS_FOUND' | translate }}</p-message>
+                    <p-message severity="info">{{ 'TYPE_OF_COMPANIES.TABLE_TYPE_OF_COMPANIES.NO_RESULTS_FOUND' | translate }}</p-message>
                 </td>
             </tr>
         </ng-template>
@@ -55,7 +55,7 @@
 
     <p-toolbar>
         <ng-template #start>
-            <p-button [label]="'BUTTONS.NEW' | translate" icon="pi pi-plus" />
+            <p-button [label]="'TYPE_OF_COMPANIES.BUTTON.NEW' | translate" icon="pi pi-plus" />
         </ng-template>
     </p-toolbar>
 </div>

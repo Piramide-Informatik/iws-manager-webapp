@@ -81,14 +81,14 @@
   <p-toolbar>
     <ng-template #start>
       <div class="flex gap-2">
-        <p-button label="Neu" icon="pi pi-plus" routerLink="" />
+        <p-button  [label]="'BUTTONS.NEW' | translate" icon="pi pi-plus" routerLink="" />
   
         <p-fileUpload
           mode="basic"
           accept=".pdf,.xml,.csv"
           [maxFileSize]="5000000"
           label="importInvoices"
-          chooseLabel="Rechnungen importieren"
+          [chooseLabel]="'BUTTONS.IMPORT_INVOICES' | translate"
           auto
           customUpload
           class="mr-2 inline-block"
