@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -7,7 +7,7 @@ import { Table } from 'primeng/table';
   templateUrl: './genaral-table.component.html',
   styleUrl: './genaral-table.component.scss'
 })
-export class GenaralTableComponent implements OnInit {
+export class GenaralTableComponent implements OnInit, OnChanges {
   @Input() tableTitle: string = 'Table title';
   @Input() tableValues: any[] = [];
   @Input() columns: any[] = [];
@@ -24,6 +24,14 @@ export class GenaralTableComponent implements OnInit {
 
   constructor(
   ){}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    let columnsChange = changes['columns'];
+    if (!columnsChange.firstChange) {
+      this.columns = columnsChange.currentValue;
+      this.selectedColumns = [...this.columns];
+    }
+  }
 
   ngOnInit() {
     this.selectedColumns = [...this.columns];
