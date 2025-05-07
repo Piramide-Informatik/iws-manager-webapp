@@ -36,7 +36,7 @@ import { FrameworkAgreementsDetailsComponent } from './components/framework-agre
 import { OrderComponent } from './components/framework-agreement-details/order/order.component';
 import { IwsProvisionComponent } from './components/framework-agreement-details/iws-provision/iws-provision.component';
 
-
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
     declarations: [
@@ -68,7 +68,10 @@ import { IwsProvisionComponent } from './components/framework-agreement-details/
         ToastModule,
         ToolbarModule,
         CardModule,
-        ReactiveFormsModule,     
+        ReactiveFormsModule,
+        TranslateModule,
+        TranslatePipe,
+        TranslateDirective    
     ]
 
 })
