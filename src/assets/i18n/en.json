@@ -53,7 +53,8 @@
     "CUSTOMER_NAME": "Customer"
   },
   "TABLES": {
-    "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries"
+    "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries",
+    "NO_RESULTS_FOUND": "No results found."
   },
   "BUTTONS": {
     "NEW": "New",
@@ -593,6 +594,19 @@
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Company Type is required"
+    }
+  },
+  "BILLING_METHODS": {
+    "TABLE_BILLING_METHODS": {
+      "BILLING_TYPE": "Billing Type",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "LABEL": {
+      "EDIT_BILLING_TYPE": "Edit Billing Type",
+      "BILLING_TYPE": "Billing Type"
+    },
+    "ERROR": {
+      "BILLING_TYPE_REQUIRED": "Billing Type is required"
     }
   },
   "CONTRACT_STATUS": {
