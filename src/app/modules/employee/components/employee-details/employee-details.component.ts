@@ -62,11 +62,11 @@ export class EmployeeDetailsComponent implements OnInit {
   searchText: string = '';
   nextId: number = 1;
 
-  constructor(private  readonly employeeContractService: EmployeeContractService,
-    private readonly salutationsService: SalutationService,
-    private readonly messageService: MessageService,
-    private router: Router, private activatedRoute: ActivatedRoute) {
-  }
+  constructor(
+    private readonly employeeContractService: EmployeeContractService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
 
@@ -115,4 +115,8 @@ export class EmployeeDetailsComponent implements OnInit {
 
     this.selectedColumns = this.cols;
   }
+
+  goBack() {
+  this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+}
 }
