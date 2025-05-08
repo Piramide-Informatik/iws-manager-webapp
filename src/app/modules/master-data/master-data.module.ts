@@ -103,6 +103,9 @@ import { TypesOfCompaniesTableComponent } from './components/types-of-companies/
 import { TitleComponent } from './components/title/title.component';
 import { TitleTableComponent } from './components/title/components/title-table/title-table.component';
 import { TitleFormComponent } from './components/title/components/title-form/title-form.component';
+import { ContractStatusComponent } from './components/contract-status/contract-status.component';
+import { ContractStatusFormComponent } from './components/contract-status/components/contract-status-form/contract-status-form.component';
+import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
 
 @NgModule({
   declarations: [
@@ -177,6 +180,9 @@ import { TitleFormComponent } from './components/title/components/title-form/tit
     TitleComponent,
     TitleTableComponent,
     TitleFormComponent,
+    ContractStatusComponent,
+    ContractStatusFormComponent,
+    ContractStatusTableComponent,
   ],
   imports: [
     ButtonModule,

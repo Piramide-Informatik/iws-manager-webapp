@@ -611,5 +611,18 @@
     "ERROR": {
       "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
     }
+  },
+  "CONTRACT_STATUS": {
+    "TABLE_CONTRACT_STATUS": {
+      "CONTRACT_STATUS": "Vertragsstatus",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "LABEL": {
+      "EDIT_CONTRACT_STATUS": "Vertragsstatus bearbeiten",
+      "CONTRACT_STATUS": "Vertragsstatus"
+    },
+    "ERROR": {
+      "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
+    }
   }
 }
