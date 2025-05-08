@@ -1,18 +1,24 @@
 .funding-form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+
   label {
-    width: 111px;
+      width: 150px;
+      font-weight: 500;
   }
 
-  input {
-    width: 13em;
+  input,
+  p-toggleswitch {
+      flex: 1;
+      max-width: 300px;
+      margin-left: 1rem;
   }
 }
 
-.absence-form-check {
-  display: flex;
-  align-items: center;
-
-  label {
-    width: 150px;
-  }
+.button-row {
+  display: flex;                
+  justify-content: center;      
+  gap: 6px;                   
+  margin-top: 1.5rem;           
 }
