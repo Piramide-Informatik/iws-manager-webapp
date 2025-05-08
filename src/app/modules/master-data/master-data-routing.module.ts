@@ -26,6 +26,7 @@ import { BillersComponent } from './components/billers/billers.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
 import { TypesOfCompaniesComponent } from './components/types-of-companies/types-of-companies.component';
 import { BillingMethodsComponent } from './components/billing-methods/billing-methods.component';
+import { ContractStatusComponent } from './components/contract-status/contract-status.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
@@ -54,7 +55,8 @@ const routes: Routes = [
   { path: 'billers', component: BillersComponent },
   { path: 'realization-probabilities', component: RealitationProbabilitiesComponent },
   { path: 'type-companies', component: TypesOfCompaniesComponent},
-  { path: 'billing-methods', component: BillingMethodsComponent}
+  { path: 'billing-methods', component: BillingMethodsComponent},
+  { path: 'contract-status', component: ContractStatusComponent}
 ];
 
 @NgModule({

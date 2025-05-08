@@ -103,6 +103,9 @@ import { TypesOfCompaniesTableComponent } from './components/types-of-companies/
 import { BillingMethodsComponent } from './components/billing-methods/billing-methods.component';
 import { BillingMethodsFormComponent } from './components/billing-methods/components/billing-methods-form/billing-methods-form.component';
 import { BillingMethodsTableComponent } from './components/billing-methods/components/billing-methods-table/billing-methods-table.component';
+import { ContractStatusComponent } from './components/contract-status/contract-status.component';
+import { ContractStatusFormComponent } from './components/contract-status/components/contract-status-form/contract-status-form.component';
+import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
 
 @NgModule({
   declarations: [
@@ -177,6 +180,9 @@ import { BillingMethodsTableComponent } from './components/billing-methods/compo
     BillingMethodsComponent,
     BillingMethodsFormComponent,
     BillingMethodsTableComponent,
+    ContractStatusComponent,
+    ContractStatusFormComponent,
+    ContractStatusTableComponent,
   ],
   imports: [
     ButtonModule,
