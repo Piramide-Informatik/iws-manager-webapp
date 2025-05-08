@@ -5,11 +5,7 @@
         width: 90px;
     }
 
-    input{
-        width: 250px;
-    }
-
-    .p-select{
+    input, .p-select{
         width: 250px;
     }
 }
@@ -18,25 +14,10 @@
 .thead {
     background: $primary-color;
     color: #fff;
-    min-width: 6.25rem;//=100px
+    min-width: 6.25rem;
   
     &:hover {
-      background: $accent-color;
+      background-color: $accent-color;
       color: $primary-dark;
     }
 }
-
-.thead-bg-blue {
-    background: $primary-color;
-}
-
-.thead-input-id {
-    width: 4.4rem;//=70px
-}
-
-.thead-input-width {
-    width: 100%;
-}
-.align-right {
-    text-align: right;
-  }

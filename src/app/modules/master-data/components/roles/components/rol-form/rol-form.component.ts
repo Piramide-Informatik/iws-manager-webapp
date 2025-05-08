@@ -32,25 +32,20 @@ export class RolFormComponent implements OnInit{
     { name: 'Modul 3', code: 'M3' }
   ]
 
-  editStateForm!: FormGroup;
+  public editRolForm!: FormGroup;
 
-   constructor( private readonly rolService: RolesService ){ }
+  constructor( private readonly rolService: RolesService ){ }
 
   ngOnInit(): void {
-    this.editStateForm = new FormGroup({
-      absenceType: new FormControl('', [Validators.required]),
-      absenceTypeLabel: new FormControl('', [Validators.required]),
-      shareOfDay: new FormControl('', [Validators.required]),
+    this.editRolForm = new FormGroup({
+      stateName: new FormControl('', [Validators.required]),
+      selectedModule: new FormControl('', [Validators.required])
     });
 
     this.roles = this.rolService.list();
   }
 
   onSubmit(): void {
-    if (this.editStateForm.valid) {
-      console.log(this.editStateForm.value);
-    } else {
-      console.log("Ungültiges Formular");
-    }
+    console.log(this.editRolForm.value); 
   }
 }
