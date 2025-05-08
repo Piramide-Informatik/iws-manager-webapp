@@ -1,0 +1,91 @@
+@use "variables" as *;
+
+.sidebar {
+  width: 100%;
+  background: $accent-color;
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  .sidebar-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .menu-items {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    margin: 0.2rem 0.4rem;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    a {
+      justify-content: center;
+      text-align: center;
+      color: $primary-dark;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      i {
+        font-size: 1.4rem;
+        margin-right: 10px;
+      }
+
+      .menu-item-text {
+        white-space: nowrap;
+        transition: text-shadow 0.3s ease;
+      }
+    }
+
+    &:hover {
+      background-color: $primary-dark;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+      a {
+        color: $primary-light !important;
+
+        .menu-item-text {
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+      }
+    }
+
+    &.active {
+      background-color: $primary-color;
+      transform: scale(1.15);
+      padding: 0.4rem 1rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15),
+        0 0 8px rgba(38, 123, 191, 0.3);
+
+      a {
+        color: $primary-light !important;
+        font-weight: 700;
+
+        .menu-item-text {
+          text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+        }
+      }
+    }
+  }
+}
