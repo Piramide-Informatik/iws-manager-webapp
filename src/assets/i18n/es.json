@@ -53,7 +53,8 @@
     "CUSTOMER_NAME": "Cliente"
   },
   "TABLES": {
-    "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas"
+    "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas",
+    "NO_RESULTS_FOUND": "No se encontraron resultados"
   },
   "BUTTONS": {
     "NEW": "Nuevo",
@@ -597,6 +598,19 @@
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Tipo de Empresa es requerido"
+    }
+  },
+  "CONTRACT_STATUS": {
+    "TABLE_CONTRACT_STATUS": {
+      "CONTRACT_STATUS": "Estado del Contrato",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "LABEL": {
+      "EDIT_CONTRACT_STATUS": "Editar Estado del Contrato",
+      "CONTRACT_STATUS": "Estado del Contrato"
+    },
+    "ERROR": {
+      "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido"
     }
   }
 }

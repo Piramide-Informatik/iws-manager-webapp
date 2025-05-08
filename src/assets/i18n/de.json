@@ -53,7 +53,8 @@
     "CUSTOMER_NAME": "Kunde"
   },
   "TABLES": {
-    "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
+    "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+    "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
   },
   "BUTTONS": {
     "NEW": "Neu",
@@ -597,6 +598,19 @@
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich"
+    }
+  },
+  "CONTRACT_STATUS": {
+    "TABLE_CONTRACT_STATUS": {
+      "CONTRACT_STATUS": "Vertragsstatus",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "LABEL": {
+      "EDIT_CONTRACT_STATUS": "Vertragsstatus bearbeiten",
+      "CONTRACT_STATUS": "Vertragsstatus"
+    },
+    "ERROR": {
+      "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
     }
   }
 }
