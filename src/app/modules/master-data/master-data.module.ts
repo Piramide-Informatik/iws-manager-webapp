@@ -100,6 +100,9 @@ import { EditRealizationProbabilitiesComponent } from './components/realitation-
 import { TypesOfCompaniesComponent } from './components/types-of-companies/types-of-companies.component';
 import { TypesOfCompaniesFormComponent } from './components/types-of-companies/components/types-of-companies-form/types-of-companies-form.component';
 import { TypesOfCompaniesTableComponent } from './components/types-of-companies/components/types-of-companies-table/types-of-companies-table.component';
+import { BillingMethodsComponent } from './components/billing-methods/billing-methods.component';
+import { BillingMethodsFormComponent } from './components/billing-methods/components/billing-methods-form/billing-methods-form.component';
+import { BillingMethodsTableComponent } from './components/billing-methods/components/billing-methods-table/billing-methods-table.component';
 import { ContractStatusComponent } from './components/contract-status/contract-status.component';
 import { ContractStatusFormComponent } from './components/contract-status/components/contract-status-form/contract-status-form.component';
 import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
@@ -174,6 +177,9 @@ import { ContractStatusTableComponent } from './components/contract-status/compo
     TypesOfCompaniesComponent,
     TypesOfCompaniesFormComponent,
     TypesOfCompaniesTableComponent,
+    BillingMethodsComponent,
+    BillingMethodsFormComponent,
+    BillingMethodsTableComponent,
     ContractStatusComponent,
     ContractStatusFormComponent,
     ContractStatusTableComponent,
