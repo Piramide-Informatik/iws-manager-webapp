@@ -598,5 +598,18 @@
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Tipo de Empresa es requerido"
     }
+  },
+  "BILLING_METHODS": {
+    "TABLE_BILLING_METHODS": {
+      "BILLING_TYPE": "Tipo de Facturación",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "LABEL": {
+      "EDIT_BILLING_TYPE": "Editar Tipo de Facturación",
+      "BILLING_TYPE": "Tipo de Facturación"
+    },
+    "ERROR": {
+      "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido"
+    }
   }
 }
