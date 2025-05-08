@@ -286,6 +286,11 @@
       "ORDER": "Reihenfolge",
       "PROJECTS": "Projekte",
       "NETWORKS": "Netzwerke"
+    },
+    "FORM": {
+      "TITLE_FORM": "Bewilligungsstatus bearbeiten",
+      "APPLIES_TO_PROJECT": "gilt für Projekte",
+      "APPLIES_TO_NETWORK": "gilt fur Netzwerke"
     }
   },
 

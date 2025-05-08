@@ -1,21 +1,21 @@
-<p-card [style]="{ background: 'var(--light-cyan)' }" header="Bewilligungsstatus bearbeiten">
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'APPROVAL_STATUS.FORM.TITLE_FORM' | translate">
     <form [formGroup]="editApprovalStatusForm" (ngSubmit)="onSubmit()">
         <div class="form-container">
             <!-- Grupo: Bewilligungsstatus -->
             <div class="form-group">
-                <label for="approvalStatus">Bewilligungsstatus</label>
+                <label for="approvalStatus">{{ 'APPROVAL_STATUS.TABLE.APPROVAL_STATUS' | translate }}</label>
                 <input pInputText type="text" id="approvalStatus" formControlName="approvalStatus" autocomplete="off" />
             </div>
 
             <!-- Grupo: Reihenfolge -->
             <div class="form-group">
-                <label for="series">Reihenfolge</label>
-                <input pInputText type="text" id="series" formControlName="series" autocomplete="off" />
+                <label for="order">{{ 'APPROVAL_STATUS.TABLE.ORDER' | translate }}</label>
+                <input pInputText type="text" id="order" formControlName="order" autocomplete="off" />
             </div>
 
             <!-- Grupo: gilt für Projekte -->
             <div class="form-group-check">
-                <label for="appliesToProject">gilt für Projekte</label>
+                <label for="appliesToProject">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_PROJECT' | translate }}</label>
                 <p-toggleswitch formControlName="appliesToProject" id="appliesToProject">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
@@ -25,7 +25,7 @@
 
             <!-- Grupo: gilt fur Netzwerke -->
             <div class="form-group-check">
-                <label for="appliesToNetwork">gilt fur Netzwerke</label>
+                <label for="appliesToNetwork">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_NETWORK' | translate }}</label>
                 <p-toggleswitch formControlName="appliesToNetwork" id="appliesToNetwork">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
@@ -34,7 +34,7 @@
             </div>
 
             <!-- Botones -->
-            <div class="flex justify-content-center gap-2">
+            <div class="flex justify-content-center gap-2 mt-4">
                 <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                 <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
             </div>

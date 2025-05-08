@@ -286,6 +286,11 @@
       "ORDER": "Order",
       "PROJECTS": "Projects",
       "NETWORKS": "Networks"
+    },
+    "FORM": {
+      "TITLE_FORM": "Edit approval status",
+      "APPLIES_TO_PROJECT": "Applies to Project",
+      "APPLIES_TO_NETWORK": "Applies to Network"
     }
   },
   "USERS": {
