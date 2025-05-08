@@ -24,6 +24,7 @@ import { SalesTaxComponent } from './components/sales-tax/sales-tax.component';
 import { TermsPaymentComponent } from './components/terms-payment/terms-payment.component';
 import { BillersComponent } from './components/billers/billers.component';
 import { RealitationProbabilitiesComponent } from './components/realitation-probabilities/realitation-probabilities.component';
+import { TypesOfCompaniesComponent } from './components/types-of-companies/types-of-companies.component';
 import { TitleComponent } from './components/title/title.component';
 
 const routes: Routes = [
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'terms-payment', component: TermsPaymentComponent },
   { path: 'billers', component: BillersComponent },
   { path: 'realization-probabilities', component: RealitationProbabilitiesComponent },
+  { path: 'type-companies', component: TypesOfCompaniesComponent}
   { path: 'title', component: TitleComponent },
 ];
 

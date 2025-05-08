@@ -1,0 +1,32 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'TYPE_OF_COMPANIES.LABEL.EDIT_COMPANY_TYPE' | translate">
+    <form [formGroup]="companyTypeForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="type-of-companies-form mb-2 flex">
+                <label for="companyType">{{ 'TYPE_OF_COMPANIES.LABEL.COMPANY_TYPE' | translate }}</label>
+                <div>
+                    <input pInputText type="text" id="companyType" formControlName="companyType" [ngClass]="{'ng-invalid': companyTypeForm.get('companyType')?.invalid && 
+                      companyTypeForm.get('companyType')?.dirty && companyTypeForm.get('companyType')?.touched}" autocomplete="off" />
+                     <p-message severity="error" variant="simple" size="small" *ngIf="
+                         companyTypeForm.get('companyType')?.invalid && 
+                         companyTypeForm.get('companyType')?.dirty && 
+                         companyTypeForm.get('companyType')!.hasError('required')
+                         ">
+                         {{ 'TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_REQUIRED' | translate }}</p-message>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    <div class="buttons">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <p-button class="save me-2" size="small" [label]="'TYPE_OF_COMPANIES.BUTTON.SAVE' | translate" icon="pi pi-check"
+                    iconPos="left" />
+                <p-button class="cancel me-2" size="small" [label]="'TYPE_OF_COMPANIES.BUTTON.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" />
+            </div>
+        </div>
+    </div>
+</p-card>

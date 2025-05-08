@@ -9,14 +9,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class EditProjectCarrierComponent implements OnInit{
   editProjectCarrierForm!: FormGroup;
-  isHoliday: boolean = false;
-  canBeBooked: boolean = false;
 
   ngOnInit(): void {
     this.editProjectCarrierForm = new FormGroup({
       absenceType: new FormControl('', [Validators.required]),
       absenceTypeLabel: new FormControl('', [Validators.required]),
       shareOfDay: new FormControl('', [Validators.required]),
+      isHoliday: new FormControl('', [Validators.required]),
+      canBeBooked: new FormControl('', [Validators.required]),
     });
   }
 
