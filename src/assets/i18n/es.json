@@ -53,7 +53,8 @@
     "CUSTOMER_NAME": "Cliente"
   },
   "TABLES": {
-    "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas"
+    "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas",
+    "NO_RESULTS_FOUND": "No se encontraron resultados"
   },
   "BUTTONS": {
     "NEW": "Nuevo",
