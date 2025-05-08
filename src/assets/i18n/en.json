@@ -594,5 +594,18 @@
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Company Type is required"
     }
+  },
+  "CONTRACT_STATUS": {
+    "TABLE_CONTRACT_STATUS": {
+      "CONTRACT_STATUS": "Contract Status",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "LABEL": {
+      "EDIT_CONTRACT_STATUS": "Edit Contract Status",
+      "CONTRACT_STATUS": "Contract Status"
+    },
+    "ERROR": {
+      "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
+    }
   }
 }
