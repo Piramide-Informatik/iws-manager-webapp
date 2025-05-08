@@ -604,11 +604,6 @@
       "TITLE": "Titulo",
       "NO_RESULTS_FOUND": "No se encontraron resultados."
     },
-    "BUTTON": {
-      "NEW": "Nuevo",
-      "SAVE": "Guardar",
-      "CANCEL": "Cancelar"
-    },
     "LABEL": {
       "EDIT_TITLE": "Editar Titulo",
       "TITLE_LABEL": "Titulo"

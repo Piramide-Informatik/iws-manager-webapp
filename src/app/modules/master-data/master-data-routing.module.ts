@@ -53,7 +53,7 @@ const routes: Routes = [
   { path: 'terms-payment', component: TermsPaymentComponent },
   { path: 'billers', component: BillersComponent },
   { path: 'realization-probabilities', component: RealitationProbabilitiesComponent },
-  { path: 'type-companies', component: TypesOfCompaniesComponent}
+  { path: 'type-companies', component: TypesOfCompaniesComponent},
   { path: 'title', component: TitleComponent },
 ];
 

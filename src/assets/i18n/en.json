@@ -600,11 +600,6 @@
       "TITLE": "Title",
       "NO_RESULTS_FOUND": "No results found."
     },
-    "BUTTON": {
-      "NEW": "New",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
-    },
     "LABEL": {
       "EDIT_TITLE": "Edit Title",
       "TITLE_LABEL": "Title"

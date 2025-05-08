@@ -16,6 +16,7 @@ export class TitleTableComponent implements OnInit, OnDestroy {
   titles = [...TITLE];
   titleColumns: any[] = [];
   titleDisplayedColumns: any[] = [];
+  isChipsVisible = false;
   @ViewChild('dt') dt!: Table;
 
   private langTitleSubscription!: Subscription;
