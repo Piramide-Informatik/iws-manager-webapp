@@ -100,6 +100,9 @@ import { EditRealizationProbabilitiesComponent } from './components/realitation-
 import { TypesOfCompaniesComponent } from './components/types-of-companies/types-of-companies.component';
 import { TypesOfCompaniesFormComponent } from './components/types-of-companies/components/types-of-companies-form/types-of-companies-form.component';
 import { TypesOfCompaniesTableComponent } from './components/types-of-companies/components/types-of-companies-table/types-of-companies-table.component';
+import { ContractStatusComponent } from './components/contract-status/contract-status.component';
+import { ContractStatusFormComponent } from './components/contract-status/components/contract-status-form/contract-status-form.component';
+import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
 
 @NgModule({
   declarations: [
@@ -171,6 +174,9 @@ import { TypesOfCompaniesTableComponent } from './components/types-of-companies/
     TypesOfCompaniesComponent,
     TypesOfCompaniesFormComponent,
     TypesOfCompaniesTableComponent,
+    ContractStatusComponent,
+    ContractStatusFormComponent,
+    ContractStatusTableComponent,
   ],
   imports: [
     ButtonModule,

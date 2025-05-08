@@ -1,0 +1,32 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'CONTRACT_STATUS.LABEL.EDIT_CONTRACT_STATUS' | translate">
+    <form [formGroup]="contractStatusForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="contract-status-form mb-2 flex">
+                <label for="contractStatus">{{ 'CONTRACT_STATUS.LABEL.CONTRACT_STATUS' | translate }}</label>
+                <div>
+                    <input pInputText type="text" id="contractStatus" formControlName="contractStatus" [ngClass]="{'ng-invalid': contractStatusForm.get('contractStatus')?.invalid && 
+                      contractStatusForm.get('contractStatus')?.dirty && contractStatusForm.get('contractStatus')?.touched}" autocomplete="off" />
+                     <p-message severity="error" variant="simple" size="small" *ngIf="
+                         contractStatusForm.get('contractStatus')?.invalid && 
+                         contractStatusForm.get('contractStatus')?.dirty && 
+                         contractStatusForm.get('contractStatus')!.hasError('required')
+                         ">
+                         {{ 'CONTRACT_STATUS.ERROR.CONTRACT_STATUS_REQUIRED' | translate }}</p-message>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    <div class="contract-status-form buttons">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+                    iconPos="left" />
+                <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" />
+            </div>
+        </div>
+    </div>
+</p-card>
