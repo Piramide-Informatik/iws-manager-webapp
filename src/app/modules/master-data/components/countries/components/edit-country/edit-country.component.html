@@ -32,7 +32,7 @@
         <label for="isStandardChecked">{{
           "COUNTRIES.LABEL.IS_STANDARD" | translate
         }}</label>
-        <p-toggleswitch formControlName="isStandard">
+        <p-toggleswitch formControlName="isStandard" class="flex">
           <ng-template #handle let-checked="checked">
             <i
               [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"
@@ -41,25 +41,22 @@
         </p-toggleswitch>
       </div>
 
-      <div class="row">
-        <div class="col">
-          <p-button
-            class="p-button-sm"
-            size="small"
-            [label]="'BUTTONS.SAVE' | translate"
-            icon="pi pi-check"
-            (click)="saveCountry()"
-            (keydown)="saveCountry()"
-          ></p-button>
-          <p-button
-            class="cancel me-2"
-            size="small"
-            [label]="'BUTTONS.CANCEL' | translate"
-            icon="pi pi-times"
-            severity="secondary"
-            (keydown)="cancelEdit()"
-          ></p-button>
-        </div>
+      <div class="flex justify-content-center gap-2 mt-4">
+        <p-button
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          (click)="saveCountry()"
+          (keydown)="saveCountry()"
+        ></p-button>
+        <p-button
+          class="cancel"
+          size="small"
+          [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times"
+          severity="secondary"
+          (keydown)="cancelEdit()"
+        ></p-button>
       </div>
     </div>
   </form>
