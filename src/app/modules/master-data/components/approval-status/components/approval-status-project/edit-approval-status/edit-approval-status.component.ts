@@ -18,8 +18,4 @@ export class EditApprovalStatusComponent implements OnInit {
       appliesToNetwork: new FormControl('', [Validators.required]),
     });
   }
-
-  onSubmit(): void {
-    console.log(this.editApprovalStatusForm.value);
-  }
 }
