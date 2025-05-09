@@ -289,7 +289,7 @@
     },
     "FORM": {
       "TITLE_FORM": "Editar Estado de Aprobación",
-      "APPLIES_TO_PROJECT": "Aplica a Projectos",
+      "APPLIES_TO_PROJECT": "Aplica a Proyectos",
       "APPLIES_TO_NETWORK": "Aplica a Redes"
     }
   },
