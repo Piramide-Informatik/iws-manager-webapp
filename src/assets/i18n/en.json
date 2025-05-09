@@ -601,6 +601,19 @@
       "COMPANY_TYPE_REQUIRED": "Company Type is required"
     }
   },
+  "TITLE": {
+    "TABLE_TITLE": {
+      "TITLE": "Title",
+      "NO_RESULTS_FOUND": "No results found."
+    },
+    "LABEL": {
+      "EDIT_TITLE": "Edit Title",
+      "TITLE_LABEL": "Title"
+    },
+    "ERROR": {
+      "TITLE_LABEL_REQUIRED": "Title is required"
+    }
+  },
   "BILLING_METHODS": {
     "TABLE_BILLING_METHODS": {
       "BILLING_TYPE": "Billing Type",

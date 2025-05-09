@@ -605,6 +605,19 @@
       "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich"
     }
   },
+  "TITLE": {
+    "TABLE_TITLE": {
+      "TITLE": "Titel",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "LABEL": {
+      "EDIT_TITLE": "Titel bearbeiten",
+      "TITLE_LABEL": "Titel"
+    },
+    "ERROR": {
+      "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
+    }
+  },
   "BILLING_METHODS": {
     "TABLE_BILLING_METHODS": {
       "BILLING_TYPE": "Verrechnungsart ",

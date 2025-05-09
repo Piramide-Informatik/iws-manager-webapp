@@ -1,0 +1,32 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'TITLE.LABEL.EDIT_TITLE' | translate">
+    <form [formGroup]="editTitleForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="title-form mb-2 flex">
+                <label for="title">{{ 'TITLE.LABEL.TITLE_LABEL' | translate }}</label>
+                <div>
+                    <input pInputTitle type="text" id="title" formControlName="title" [ngClass]="{'ng-invalid': editTitleForm.get('label')?.invalid && 
+                      editTitleForm.get('title')?.dirty && editTitleForm.get('title')?.touched}" autocomplete="off" />
+                     <p-message severity="error" variant="simple" size="small" *ngIf="
+                         editTitleForm.get('title')?.invalid && 
+                         editTitleForm.get('title')?.dirty && 
+                         editTitleForm.get('title')!.hasError('required')
+                         ">
+                         {{ 'TITLE.ERROR.TITLE_LABEL_REQUIRED' | translate }}</p-message>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    <div class="buttons">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+                    iconPos="left" />
+                <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" />
+            </div>
+        </div>
+    </div>
+</p-card>
