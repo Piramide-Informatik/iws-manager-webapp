@@ -600,6 +600,19 @@
       "COMPANY_TYPE_REQUIRED": "Tipo de Empresa es requerido"
     }
   },
+  "TITLE": {
+    "TABLE_TITLE": {
+      "TITLE": "Titulo",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "LABEL": {
+      "EDIT_TITLE": "Editar Titulo",
+      "TITLE_LABEL": "Titulo"
+    },
+    "ERROR": {
+      "TITLE_LABEL_REQUIRED": "Titulo es requerido"
+    }
+  },
   "BILLING_METHODS": {
     "TABLE_BILLING_METHODS": {
       "BILLING_TYPE": "Tipo de Facturación",
