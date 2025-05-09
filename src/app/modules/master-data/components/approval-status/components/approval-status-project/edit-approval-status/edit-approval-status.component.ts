@@ -13,13 +13,9 @@ export class EditApprovalStatusComponent implements OnInit {
   ngOnInit(): void {
     this.editApprovalStatusForm = new FormGroup({
       approvalStatus: new FormControl('', [Validators.required]),
-      series: new FormControl('', [Validators.required]),
+      order: new FormControl('', [Validators.required]),
       appliesToProject: new FormControl('', [Validators.required]),
       appliesToNetwork: new FormControl('', [Validators.required]),
     });
-  }
-
-  onSubmit(): void {
-    console.log(this.editApprovalStatusForm.value);
   }
 }
