@@ -1,0 +1,32 @@
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'BILLING_METHODS.LABEL.EDIT_BILLING_TYPE' | translate">
+    <form [formGroup]="billingMethodForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
+            <div class="billing-method-form mb-2 flex">
+                <label for="invoiceType">{{ 'BILLING_METHODS.LABEL.BILLING_TYPE' | translate }}</label>
+                <div>
+                    <input pInputText type="text" id="invoiceType" formControlName="invoiceType" [ngClass]="{'ng-invalid': billingMethodForm.get('invoiceType')?.invalid && 
+                      billingMethodForm.get('invoiceType')?.dirty && billingMethodForm.get('invoiceType')?.touched}" autocomplete="off" />
+                     <p-message severity="error" variant="simple" size="small" *ngIf="
+                         billingMethodForm.get('invoiceType')?.invalid && 
+                         billingMethodForm.get('invoiceType')?.dirty && 
+                         billingMethodForm.get('invoiceType')!.hasError('required')
+                         ">
+                         {{ 'BILLING_METHODS.ERROR.BILLING_TYPE_REQUIRED' | translate }}</p-message>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    <div class="billing-method-form buttons">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-8">
+                <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+                    iconPos="left" />
+                <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" />
+            </div>
+        </div>
+    </div>
+</p-card>

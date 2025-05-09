@@ -53,7 +53,8 @@
     "CUSTOMER_NAME": "Kunde"
   },
   "TABLES": {
-    "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
+    "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
+    "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
   },
   "BUTTONS": {
     "NEW": "Neu",
@@ -610,6 +611,19 @@
     },
     "ERROR": {
       "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
+    }
+  },
+  "BILLING_METHODS": {
+    "TABLE_BILLING_METHODS": {
+      "BILLING_TYPE": "Verrechnungsart ",
+      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    },
+    "LABEL": {
+      "EDIT_BILLING_TYPE": "Verrechnungsart bearbeiten",
+      "BILLING_TYPE": "Verrechnungsart"
+    },
+    "ERROR": {
+      "BILLING_TYPE_REQUIRED": "Verrechnungsart ist erforderlich"
     }
   },
   "CONTRACT_STATUS": {

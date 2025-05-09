@@ -1,0 +1,15 @@
+<div class="sidebar">
+    <div class="sidebar-content">
+      <div
+        *ngFor="let item of menuItems"
+        class="menu-items"
+        [routerLink]="item.routerLink"
+        routerLinkActive="active"
+      >
+        <a class="p-menuitem-link">
+          <i *ngIf="item.icon" [class]="item.icon"></i>
+          <span class="menu-item-text">{{ item.label || '' | translate }}</span>
+        </a>
+      </div>
+    </div>
+</div>

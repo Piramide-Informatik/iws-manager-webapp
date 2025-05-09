@@ -30,13 +30,9 @@
                     </ng-template>
                 </p-toggleswitch>
             </div>
-            <div class="row">
-                <div class="col">
-                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                </div>
-                <div class="col">
-                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
-                </div>
+            <div class="flex justify-content-center gap-2">
+                <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
             </div>
         </div>
     </form>

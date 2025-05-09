@@ -103,6 +103,9 @@ import { TypesOfCompaniesTableComponent } from './components/types-of-companies/
 import { TitleComponent } from './components/title/title.component';
 import { TitleTableComponent } from './components/title/components/title-table/title-table.component';
 import { TitleFormComponent } from './components/title/components/title-form/title-form.component';
+import { BillingMethodsComponent } from './components/billing-methods/billing-methods.component';
+import { BillingMethodsFormComponent } from './components/billing-methods/components/billing-methods-form/billing-methods-form.component';
+import { BillingMethodsTableComponent } from './components/billing-methods/components/billing-methods-table/billing-methods-table.component';
 import { ContractStatusComponent } from './components/contract-status/contract-status.component';
 import { ContractStatusFormComponent } from './components/contract-status/components/contract-status-form/contract-status-form.component';
 import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
@@ -180,6 +183,9 @@ import { ContractStatusTableComponent } from './components/contract-status/compo
     TitleComponent,
     TitleTableComponent,
     TitleFormComponent,
+    BillingMethodsComponent,
+    BillingMethodsFormComponent,
+    BillingMethodsTableComponent,
     ContractStatusComponent,
     ContractStatusFormComponent,
     ContractStatusTableComponent,
