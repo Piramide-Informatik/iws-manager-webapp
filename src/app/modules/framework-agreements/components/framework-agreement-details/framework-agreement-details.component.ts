@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-framework-agreement-details',
@@ -10,11 +10,17 @@ import { ActivatedRoute } from '@angular/router';
 export class FrameworkAgreementsDetailsComponent implements OnInit {
   agreementId: string | null = null;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
+
+  ) {}
 
   ngOnInit(): void {
     this.agreementId = this.route.snapshot.paramMap.get('id');
-    // Aquí puedes cargar los datos del acuerdo usando el ID
-    console.log('Agreement ID:', this.agreementId);
+  }
+
+  goBackFrameworksAgreement() {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

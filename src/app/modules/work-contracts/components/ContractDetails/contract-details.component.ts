@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-contract-details',
@@ -14,6 +14,7 @@ export class ContractDetailsComponent implements OnInit {
   public customer!: string;
 
   constructor(
+    private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ) { }
 
@@ -50,11 +51,7 @@ export class ContractDetailsComponent implements OnInit {
       })
   }
 
-  onSubmit(): void {
-    if (this.ContractDetailsForm.valid) {
-      console.log(this.ContractDetailsForm.value);
-    } else {
-      console.log("Formulario no válido");
-    }
+  goBackListContracts() {
+    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }

@@ -1,22 +1,22 @@
-<p-card [style]="{ background: 'var(--light-cyan)' }" header="Bewilligungsstatus bearbeiten">
-    <form [formGroup]="editProjectCarrierForm" (ngSubmit)="onSubmit()">
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'APPROVAL_STATUS.FORM.TITLE_FORM' | translate">
+    <form [formGroup]="editApprovalStatusForm">
         <div class="form-container">
             <!-- Grupo: Bewilligungsstatus -->
             <div class="form-group">
-                <label for="absenceType">Bewilligungsstatus</label>
-                <input pInputText type="text" id="absenceType" formControlName="absenceType" autocomplete="off" />
+                <label for="approvalStatus">{{ 'APPROVAL_STATUS.TABLE.APPROVAL_STATUS' | translate }}</label>
+                <input pInputText type="text" id="approvalStatus" formControlName="approvalStatus" autocomplete="off" />
             </div>
 
             <!-- Grupo: Reihenfolge -->
             <div class="form-group">
-                <label for="absenceTypeLabel">Reihenfolge</label>
-                <input pInputText type="text" id="absenceTypeLabel" formControlName="absenceTypeLabel" autocomplete="off" />
+                <label for="order">{{ 'APPROVAL_STATUS.TABLE.ORDER' | translate }}</label>
+                <input pInputText type="text" id="order" formControlName="order" autocomplete="off" />
             </div>
 
             <!-- Grupo: gilt für Projekte -->
             <div class="form-group-check">
-                <label for="isHolidayChecked">gilt für Projekte</label>
-                <p-toggleswitch formControlName="isHoliday">
+                <label for="appliesToProject">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_PROJECT' | translate }}</label>
+                <p-toggleswitch formControlName="appliesToProject" id="appliesToProject">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>
@@ -25,8 +25,8 @@
 
             <!-- Grupo: gilt fur Netzwerke -->
             <div class="form-group-check">
-                <label for="canBeBookedChecked">gilt fur Netzwerke</label>
-                <p-toggleswitch formControlName="canBeBooked">
+                <label for="appliesToNetwork">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_NETWORK' | translate }}</label>
+                <p-toggleswitch formControlName="appliesToNetwork" id="appliesToNetwork">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>
@@ -34,13 +34,9 @@
             </div>
 
             <!-- Botones -->
-            <div class="row justify-content-center">
-                <div class="col-auto">
-                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                </div>
-                <div class="col-auto">
-                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
-                </div>
+            <div class="flex justify-content-center gap-2 mt-4">
+                <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
             </div>
         </div>
     </form>
