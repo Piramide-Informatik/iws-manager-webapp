@@ -117,6 +117,6 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   goBack() {
-  this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-}
+    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+  }
 }
