@@ -13,9 +13,9 @@ import { SYSTEM_CONSTANT } from './system.constants.data';
 })
 export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
-  systemConstants = [...SYSTEM_CONSTANT];
-  systemConstantColumns: any[] = [];
-  displayedColumns: any[] = [];
+  systemConstantsValues = [...SYSTEM_CONSTANT];
+  systemConstantsColumns: any[] = [];
+  isSystemConstantsChipVisible = false;
   @ViewChild('dt') dt!: Table;
 
   private langConstantsSubscription!: Subscription;
@@ -30,12 +30,11 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   }
 
   loadHeadersAndColumns() {
-    this.loadColumnSystemConstantHeaders();
-    this.displayedColumns = [...this.systemConstantColumns];
+    this.systemConstantsColumns = this.loadColumnSystemConstantHeaders();;
   }
 
-  loadColumnSystemConstantHeaders(): void {
-    this.systemConstantColumns = [
+  loadColumnSystemConstantHeaders(): any[] {
+    return  [
       {
         field: 'constant',
         minWidth: 110,
@@ -52,13 +51,6 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     if (this.langConstantsSubscription) {
       this.langConstantsSubscription.unsubscribe();
-    }
-  }
-
-  applySystemConstantFilter(event: any, field: string) {
-    const inputFilterElement = event.target as HTMLInputElement;
-    if (inputFilterElement) {
-      this.dt.filter(inputFilterElement.value, field, 'contains');
     }
   }
 }
