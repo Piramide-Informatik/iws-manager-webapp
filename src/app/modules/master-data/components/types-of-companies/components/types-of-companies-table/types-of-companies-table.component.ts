@@ -13,8 +13,9 @@ import { TYPES_OF_COMPANIES } from './types-of-companies.data';
 })
 export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
 
-  typeOfCompanies = [...TYPES_OF_COMPANIES];
-  typeOfCompaniesDisplayedColumns: any[] = [];
+  typeOfCompaniesValues = [...TYPES_OF_COMPANIES];
+  typeOfCompaniesColumns: any[] = [];
+  isTypeOfCompaniesChipVisible = false;
   @ViewChild('dt') dt!: Table;
 
   private langTypeOfCompaniesSubscription!: Subscription;
@@ -29,7 +30,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
   }
 
   loadTypeOfCompaniesHeadersAndColumns() {
-    this.typeOfCompaniesDisplayedColumns = this.loadTextHeaders();;
+    this.typeOfCompaniesColumns = this.loadTextHeaders();;
   }
 
   loadTextHeaders(): any[] {
@@ -45,13 +46,6 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     if (this.langTypeOfCompaniesSubscription) {
       this.langTypeOfCompaniesSubscription.unsubscribe();
-    }
-  }
-
-  applyTypeOfCompaniesFilter(event: any, field: string) {
-    const inputTypeOfCompaniesFilterElement = event.target as HTMLInputElement;
-    if (inputTypeOfCompaniesFilterElement) {
-      this.dt.filter(inputTypeOfCompaniesFilterElement.value, field, 'contains');
     }
   }
 }
