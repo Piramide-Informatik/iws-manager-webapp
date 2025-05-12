@@ -1,4 +1,4 @@
-<form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="ContractDetailsForm">
     <div class="contract_form_wrapper">
         <div class="contract_input kunde mb-2">
             <label for="SearchCustomer">Kunde</label>
@@ -75,7 +75,7 @@
         <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
           [style]="{ background: '#ef4444' }" />
           <p-button class="Cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-          iconPos="left" [style]="{ background: '#000' }" [routerLink]="['/customers/work-contracts']"/>      
+          iconPos="left" [style]="{ background: '#000' }" (onClick)="goBackListContracts()"/>      
       </div>
     </div>
   </form>

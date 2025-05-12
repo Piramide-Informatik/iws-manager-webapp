@@ -83,7 +83,7 @@ export class ContractorDetailsComponent implements OnInit {
       }
     }
   }
-  onCancel() {
-    this.router.navigate(['/customers/contractors']);
+  goBackListContractors() {
+    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }

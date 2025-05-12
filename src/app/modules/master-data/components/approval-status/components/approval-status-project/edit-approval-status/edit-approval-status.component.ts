@@ -8,27 +8,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrl: './edit-approval-status.component.scss',
 })
 export class EditApprovalStatusComponent implements OnInit {
-  editProjectCarrierForm!: FormGroup;
-  isHoliday: boolean = false;
-  canBeBooked: boolean = false;
+  public editApprovalStatusForm!: FormGroup;
 
   ngOnInit(): void {
-    this.editProjectCarrierForm = new FormGroup({
-      absenceType: this.requiredControl(),
-      absenceTypeLabel: this.requiredControl(),
-      shareOfDay: this.requiredControl(),
+    this.editApprovalStatusForm = new FormGroup({
+      approvalStatus: new FormControl('', [Validators.required]),
+      order: new FormControl('', [Validators.required]),
+      appliesToProject: new FormControl('', [Validators.required]),
+      appliesToNetwork: new FormControl('', [Validators.required]),
     });
-  }
-
-  private requiredControl(): FormControl {
-    return new FormControl('', [Validators.required]);
-  }
-
-  onSubmit(): void {
-    if (this.editProjectCarrierForm.valid) {
-      console.log(this.editProjectCarrierForm.value);
-    } else {
-      console.log("Ungültiges Formular");
-    }
   }
 }
