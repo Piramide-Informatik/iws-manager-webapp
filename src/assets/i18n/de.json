@@ -269,6 +269,10 @@
   "ADDRESS": {
     "TABLE": {
       "SALUTATION": "Anreden"
+    },
+    "FORM": {
+      "TITLE_FORM": "Anrede bearbeiten",
+      "LABEL_SALUTATION": "Anrede"
     }
   },
   "STATES": {
