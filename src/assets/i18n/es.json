@@ -269,6 +269,10 @@
   "ADDRESS": {
     "TABLE": {
       "SALUTATION": "Saludo"
+    },
+    "FORM": {
+      "TITLE_FORM": "Editar Saludo",
+      "LABEL_SALUTATION": "Saludo"
     }
   },
   "STATES": {
