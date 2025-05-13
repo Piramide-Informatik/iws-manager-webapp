@@ -1,22 +1,52 @@
 @use "variables" as *;
 
 .sidebar {
-  width: 100%;
+  width: 200px;
   background: $accent-color;
   transition: width 0.3s ease;
   position: relative;
   overflow: hidden;
+  height: 100%;
+
+  &.collapsed {
+    width: 70px;
+
+    .menu-item-text {
+      display: none;
+    }
+
+    .p-menuitem-link {
+      margin: 5px 0; // Reduce el espacio entre las opciones
+      justify-content: center; // Centra los íconos horizontalmente
+    }
+
+    .menu-items {
+       
+      a {
+        justify-content: center;
+
+        i {
+          font-size: 1.8rem; // Aumenta el tamaño del ícono
+          margin: 0;
+        }
+      }
+    }
+
+    .sidebar-content {
+      padding: 0rem 1rem;
+      align-items: center;
+    }
+  }
 
   .sidebar-content {
     position: relative;
-    height: 100%;
+    height: 80%;
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 0.5rem 1rem;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 1.5rem 2rem;
     overflow-x: auto;
     scroll-behavior: smooth;
-
     scrollbar-width: none;
     -ms-overflow-style: none;
 
@@ -37,8 +67,7 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     a {
-      justify-content: center;
-      text-align: center;
+      justify-content: start    ;
       color: $primary-dark;
       font-weight: 600;
       display: flex;
@@ -47,9 +76,9 @@
       text-decoration: none;
       transition: all 0.3s ease;
 
-      i {
-        font-size: 1.4rem;
-        margin-right: 10px;
+      .pi {
+        font-size: 1.4rem !important;
+        margin-right: 6px;
       }
 
       .menu-item-text {
@@ -87,5 +116,11 @@
         }
       }
     }
+  }
+
+  .collapse-button {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
   }
 }
