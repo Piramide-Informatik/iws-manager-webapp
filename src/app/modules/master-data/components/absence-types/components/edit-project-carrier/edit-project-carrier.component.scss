@@ -1,19 +1,15 @@
-.absence-form {
+.absence-form, .absence-form-check {
+  display: flex;
+  align-items: center;
 
-    label {
-        width: 111px;
-    }
-
-    input {
-        width: 13em;
-    }
-}
-
-.absence-form-check {
-    display: flex;
-    align-items: center; 
-
-    label {
-        width: 150px;
-    }
+  label {
+      width: 150px;
+      font-weight: 500;
+  }
+  input,
+  p-toggleswitch {
+      flex: 1;
+      max-width: 300px;
+      margin-left: 1rem;
+  }
 }
