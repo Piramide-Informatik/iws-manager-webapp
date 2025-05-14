@@ -18,8 +18,9 @@ import { SalesTax } from '../../../../../../Entities/salesTax';
 })
 export class SalesTaxTableComponent implements OnInit, OnDestroy {
 
-  salesTaxes: any[] = [...SALES_TAXES];
+  salesTaxesValues: any[] = [...SALES_TAXES];
   salesTaxesColumns: any[] = [];
+  isSalesTaxesChipVisible = false;
   @ViewChild('dt') dt!: Table;
 
   private langSalesTaxSubscription!: Subscription;
@@ -33,7 +34,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
     });
     const salesTaxesRatesData: SalesTaxRate[] = SALES_TAX_RATES;
     const salesTaxesData: SalesTax[] = SALES_TAXES;
-    this.salesTaxes = salesTaxesData.map( (sales: SalesTax) => {
+    this.salesTaxesValues = salesTaxesData.map( (sales: SalesTax) => {
         return {
           vatlabel: sales.vatlabel,
           rate: salesTaxesRatesData.filter( (salesTaxRate: SalesTaxRate) => salesTaxRate.salesTaxId === sales.id)
@@ -47,8 +48,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   }
 
   loadSalesTaxHeadersAndColumns() {
-    const columns = this.loadColumnSalesTaxHeaders();
-    this.salesTaxesColumns = [...columns];
+    this.salesTaxesColumns = this.loadColumnSalesTaxHeaders();
   }
 
   loadColumnSalesTaxHeaders(): any [] {
@@ -69,13 +69,6 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     if (this.langSalesTaxSubscription) {
       this.langSalesTaxSubscription.unsubscribe();
-    }
-  }
-
-  applySalesTaxesFilter(event: any, field: string) {
-    const inputFilterSalesTaxElement = event.target as HTMLInputElement;
-    if (inputFilterSalesTaxElement) {
-      this.dt.filter(inputFilterSalesTaxElement.value, field, 'contains');
     }
   }
 }

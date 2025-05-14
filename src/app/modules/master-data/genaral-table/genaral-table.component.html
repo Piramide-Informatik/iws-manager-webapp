@@ -78,7 +78,7 @@
             ></button>
           </div>
         </td>
-        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns">{{ row[col.field] }}</td>
+        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns">{{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}</td>
       </tr>
     </ng-template>
 
