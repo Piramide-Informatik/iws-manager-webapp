@@ -8,6 +8,10 @@
     "MASTER_DATA": "Stammdaten"
   },
   "SIDEBAR": {
+    "LABEL": {
+      "EXPAND": "Die Navigation erweitern",
+      "COLLAPSE": "Navigation reduzieren"
+    },
     "CUSTOMER": "Kunde",
     "EMPLOYEES": "Mitarbeiter",
     "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",

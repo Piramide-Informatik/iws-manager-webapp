@@ -15,6 +15,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { MasterdataPanelComponent } from '../sidebar-panels/masterdata-panel/masterdata-panel.component';
+import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,9 @@ import { MasterdataPanelComponent } from '../sidebar-panels/masterdata-panel/mas
     MenuModule,
     AvatarModule,
     AvatarGroupModule,
+    TranslateDirective,
+    TranslateModule,
+    TranslatePipe
   ],
   exports: [MainLayoutComponent],
 })
