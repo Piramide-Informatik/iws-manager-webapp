@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-sidebar',
@@ -9,10 +9,8 @@ import { MenuItem } from 'primeng/api';
 })
 export class SidebarComponent {
   @Input() isCollapsed: boolean = false;
-  @Input() menuItems: MenuItem[] = [];
+  @Input() menuItems: any[] = [];
   @Input() menuKey: string = '';
-
-  toggleCollapse() {
-    this.isCollapsed = !this.isCollapsed;
-  }
+  @Output() toggleCollapse = new EventEmitter<void>();
+  
 }

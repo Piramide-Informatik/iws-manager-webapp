@@ -6,9 +6,9 @@
   .layout-content {
     display: flex;
     margin-top: 0;
-    height: calc(100vh - 60px); // Ajusta según la altura de tu header
+    height: calc(100vh - 50px); // Ajusta según la altura de tu header
     overflow: hidden; // Evita que el contenido principal y el sidebar hagan scroll
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .sidebar {

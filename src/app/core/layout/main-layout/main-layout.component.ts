@@ -22,13 +22,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   public currentMenuKey: string = 'dashboard';
   
   private readonly menuConfigs:  
-  {label: string, command: string, absoluteRoute: string}[] = [
-    { label: 'MENU.DASHBOARD', command: 'dashboard', absoluteRoute: '/dashboard' },
-    { label: 'MENU.CUSTOMERS', command: 'customers', absoluteRoute: '/customers' },
-    { label: 'MENU.PROJECTS', command: 'projects', absoluteRoute: '/projects' },
-    { label: 'MENU.INVOICING', command: 'invoicing', absoluteRoute: '/invoicing' },
-    { label: 'MENU.CONTROLLING', command: 'controlling', absoluteRoute: '/controlling' },
-    { label: 'MENU.MASTER_DATA', command: 'masterdata', absoluteRoute: '/master-data' },
+  {label: string, icon: string, command: string, absoluteRoute: string}[] = [
+    { label: 'MENU.DASHBOARD', icon: 'pi pi-chart-bar', command: 'dashboard', absoluteRoute: '/dashboard' },
+    { label: 'MENU.CUSTOMERS', icon: 'pi pi-users', command: 'customers', absoluteRoute: '/customers' },
+    { label: 'MENU.PROJECTS', icon: 'pi pi-book', command: 'projects', absoluteRoute: '/projects' },
+    { label: 'MENU.INVOICING', icon: 'pi pi-receipt', command: 'invoicing', absoluteRoute: '/invoicing' },
+    { label: 'MENU.CONTROLLING', icon: 'pi pi-sliders-v', command: 'controlling', absoluteRoute: '/controlling' },
+    { label: 'MENU.MASTER_DATA', icon: 'pi pi-cog', command: 'masterdata', absoluteRoute: '/master-data' },
   ];
   
   private readonly sidebarItemsConfig: Record<
@@ -71,6 +71,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   loadMainMenuItems(): void {
     this.mainMenuItems = this.menuConfigs.map((menu)=> ({
       label: this.translate.instant(menu.label),
+      icon: menu.icon,
       command: menu.command,
       absoluteRoute: menu.absoluteRoute
     }))

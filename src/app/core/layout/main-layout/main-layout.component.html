@@ -1,7 +1,7 @@
 <div class="layout">
   <app-header
     [username]="'Patrick Zessin'"
-    [items]="mainMenuItems"
+    
     [currentMenuKey]="currentMenuKey"
     (menuSelected)="onMainMenuSelect($event)"
   >
@@ -9,9 +9,8 @@
 
   <div class="layout-content">
     <app-sidebar
-      *ngIf="currentSidebarItems.length > 0"
       [isCollapsed]="sidebarCollapsed"
-      [menuItems]="currentSidebarItems"
+      [menuItems]="mainMenuItems"
       (toggleCollapse)="toggleSidebar()"
     >
     </app-sidebar>

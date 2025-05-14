@@ -1,15 +1,20 @@
-<div class="sidebar">
+<div class="sidebar" [class.collapsed]="isCollapsed">
   <div class="sidebar-content">
     <div
       *ngFor="let item of menuItems"
       class="menu-items"
-      [routerLink]="item.routerLink"
+      [routerLink]="item.absoluteRoute"
       routerLinkActive="active"
     >
       <a class="p-menuitem-link">
-        <i *ngIf="item.icon" [class]="item.icon"></i>
+        <i [class]="item.icon"></i>
         <span class="menu-item-text">{{ item.label }}</span>
       </a>
     </div>
   </div>
+  <p-button 
+    [icon]="isCollapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'" 
+    class="collapse-button" 
+    (click)="toggleCollapse.emit()"
+    onkeypress="toggleCollapse.emit()"/>
 </div>
