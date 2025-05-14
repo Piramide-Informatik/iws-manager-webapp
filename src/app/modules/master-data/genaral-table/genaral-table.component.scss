@@ -32,3 +32,11 @@ p-button {
 .align-right {
     text-align: right;
 }
+
+.nowrap-row {
+  cursor: zoom-in;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 10rem;
+}

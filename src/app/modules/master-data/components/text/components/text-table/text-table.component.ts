@@ -16,6 +16,7 @@ export class TextTableComponent implements OnInit, OnDestroy {
   text = [...TEXT];
   textColumns: any[] = [];
   textDisplayedColumns: any[] = [];
+  isTextChipVisible = false;
   @ViewChild('dt') dt!: Table;
 
   private langTextSubscription!: Subscription;
@@ -43,6 +44,7 @@ export class TextTableComponent implements OnInit, OnDestroy {
       },
       {
         field: 'text',
+        customClasses: ['nowrap-row'],
         minWidth: 110,
         header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT'))
       }
