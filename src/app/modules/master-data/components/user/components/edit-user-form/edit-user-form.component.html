@@ -1,7 +1,4 @@
-<p-card
-  [style]="{ background: 'var(--light-cyan)', height: '550px' }"
-  [header]="'USERS.FORM.EDIT_TITLE' | translate"
->
+<p-card [style]="{ background: 'var(--light-cyan)', height: '550px' }" [header]="'USERS.FORM.EDIT_TITLE' | translate">
   <form [formGroup]="userForm">
     <div class="align-items-center mb-2">
       <div class="user-form mb-2">
@@ -26,13 +23,8 @@
 
       <div class="user-form mb-2">
         <label for="password">{{ "USERS.FORM.PASSWORD" | translate }}</label>
-        <p-password
-          id="password"
-          formControlName="password"
-          [feedback]="false"
-          [toggleMask]="false"
-          [placeholder]="'********'"
-        ></p-password>
+        <p-password formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'">
+        </p-password>
       </div>
 
       <div class="user-form-check mb-2">
