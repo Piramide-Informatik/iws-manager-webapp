@@ -8,10 +8,15 @@
     "MASTER_DATA": "Master Data"
   },
   "SIDEBAR": {
+    "PEOPLE": "People",
+    "LOCATION": "Location",
+    "PROJECTS": "Projects",
+    "FINANCE": "Finance",
+    "CONFIGURATION": "Configuration",
+    "OPERATIONS": "Operations",
     "CUSTOMER": "Customer",
     "EMPLOYEES": "Employees",
     "EMPLOYMENT_CONTRACTS": "Employment Contracts",
-    "PROJECTS": "Projects",
     "ORDERS": "Orders",
     "DEMANDS": "Receivables",
     "INVOICES": "Invoices",
@@ -540,7 +545,7 @@
       "NAME": "Name",
       "LAND": "Land",
       "STREET": "Street",
-      "ZIP_CITY":"ZIP / City"
+      "ZIP_CITY": "ZIP / City"
     }
   },
   "PROJECT_STATUS": {
@@ -585,63 +590,6 @@
     "TITLE_FORM": "Edit Biller"
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Edit Realization Probabilities" 
-  },
-  "TYPE_OF_COMPANIES": {
-    "TABLE_TYPE_OF_COMPANIES": {
-      "COMPANY_TYPE": "Company Type",
-      "NO_RESULTS_FOUND": "No results found."
-    },
-    "BUTTON": {
-      "NEW": "New",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
-    },
-    "LABEL": {
-      "EDIT_COMPANY_TYPE": "Edit Company Type",
-      "COMPANY_TYPE": "Company Type"
-    },
-    "ERROR": {
-      "COMPANY_TYPE_REQUIRED": "Company Type is required"
-    }
-  },
-  "TITLE": {
-    "TABLE_TITLE": {
-      "TITLE": "Title",
-      "NO_RESULTS_FOUND": "No results found."
-    },
-    "LABEL": {
-      "EDIT_TITLE": "Edit Title",
-      "TITLE_LABEL": "Title"
-    },
-    "ERROR": {
-      "TITLE_LABEL_REQUIRED": "Title is required"
-    }
-  },
-  "BILLING_METHODS": {
-    "TABLE_BILLING_METHODS": {
-      "BILLING_TYPE": "Billing Type",
-      "NO_RESULTS_FOUND": "No results found."
-    },
-    "LABEL": {
-      "EDIT_BILLING_TYPE": "Edit Billing Type",
-      "BILLING_TYPE": "Billing Type"
-    },
-    "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Billing Type is required"
-    }
-  },
-  "CONTRACT_STATUS": {
-    "TABLE_CONTRACT_STATUS": {
-      "CONTRACT_STATUS": "Contract Status",
-      "NO_RESULTS_FOUND": "No results found."
-    },
-    "LABEL": {
-      "EDIT_CONTRACT_STATUS": "Edit Contract Status",
-      "CONTRACT_STATUS": "Contract Status"
-    },
-    "ERROR": {
-      "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
-    }
+    "TITLE_FORM": "Edit Realization Probabilities"
   }
 }

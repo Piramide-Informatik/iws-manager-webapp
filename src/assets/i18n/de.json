@@ -8,10 +8,15 @@
     "MASTER_DATA": "Stammdaten"
   },
   "SIDEBAR": {
+    "PEOPLE": "Personal",
+    "LOCATION": "Standort",
+    "PROJECTS": "Projekte",
+    "FINANCE": "Finanzen",
+    "CONFIGURATION": "Konfiguration",
+    "OPERATIONS": "Abläufe",
     "CUSTOMER": "Kunde",
     "EMPLOYEES": "Mitarbeiter",
     "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
-    "PROJECTS": "Projekte",
     "ORDERS": "Aufträge",
     "DEMANDS": "Forderungen",
     "INVOICES": "Rechnungen",
@@ -544,7 +549,7 @@
       "NAME": "Name",
       "LAND": "Land",
       "STREET": "Straße",
-      "ZIP_CITY":"PLZ / Ort"
+      "ZIP_CITY": "PLZ / Ort"
     }
   },
   "PROJECT_STATUS": {
@@ -589,63 +594,6 @@
     "TITLE_FORM": "Rechnungsersteller bearbeiten"
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
-  },
-  "TYPE_OF_COMPANIES": {
-    "TABLE_TYPE_OF_COMPANIES": {
-      "COMPANY_TYPE": "Unternehmensart",
-      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
-    },
-    "BUTTON": {
-      "NEW": "Neu",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
-    },
-    "LABEL": {
-      "EDIT_COMPANY_TYPE": "Unternehmensart bearbeiten",
-      "COMPANY_TYPE": "Unternehmensart"
-    },
-    "ERROR": {
-      "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich"
-    }
-  },
-  "TITLE": {
-    "TABLE_TITLE": {
-      "TITLE": "Titel",
-      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
-    },
-    "LABEL": {
-      "EDIT_TITLE": "Titel bearbeiten",
-      "TITLE_LABEL": "Titel"
-    },
-    "ERROR": {
-      "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
-    }
-  },
-  "BILLING_METHODS": {
-    "TABLE_BILLING_METHODS": {
-      "BILLING_TYPE": "Verrechnungsart ",
-      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
-    },
-    "LABEL": {
-      "EDIT_BILLING_TYPE": "Verrechnungsart bearbeiten",
-      "BILLING_TYPE": "Verrechnungsart"
-    },
-    "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Verrechnungsart ist erforderlich"
-    }
-  },
-  "CONTRACT_STATUS": {
-    "TABLE_CONTRACT_STATUS": {
-      "CONTRACT_STATUS": "Vertragsstatus",
-      "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
-    },
-    "LABEL": {
-      "EDIT_CONTRACT_STATUS": "Vertragsstatus bearbeiten",
-      "CONTRACT_STATUS": "Vertragsstatus"
-    },
-    "ERROR": {
-      "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
-    }
+    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten"
   }
 }

@@ -11,14 +11,18 @@
     "CUSTOMER": "Cliente",
     "EMPLOYEES": "Empleados",
     "EMPLOYMENT_CONTRACTS": "Contratos Laborales",
-    "PROJECTS": "Proyectos",
     "ORDERS": "Pedidos",
     "DEMANDS": "Creditos",
     "INVOICES": "Facturas",
     "FRAMEWORK_AGREEMENTS": "Acuerdos Marco",
     "CONTRACTORS": "Contratistas",
     "SUBCONTRACTS": "Subcontratos",
-
+    "PEOPLE": "Personas",
+    "LOCATION": "Ubicación",
+    "PROJECTS": "Proyectos",
+    "FINANCE": "Finanzas",
+    "CONFIGURATION": "Configuración",
+    "OPERATIONS": "Operaciones",
     "ABSENCE_TYPES": "Tipos de Ausencia",
     "ADDRESS": "Dirección",
     "ORDER_TYPES": "Tipos de Orden",
@@ -544,7 +548,7 @@
       "NAME": "Nombre",
       "LAND": "tierra",
       "STREET": "Calle",
-      "ZIP_CITY":"Código Postal / Ciudad"
+      "ZIP_CITY": "Código Postal / Ciudad"
     }
   },
   "PROJECT_STATUS": {

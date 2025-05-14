@@ -1,107 +1,129 @@
 @use "variables" as *;
 
-.scroll-wrapper {
-  width: 100%;
-  background: $accent-color;
+.group-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
+  background-color: $accent-color;
+  padding: 0.2rem 1rem 0.1rem;
+  justify-content: center;
+  gap: 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.group-tab {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: $primary-dark;
+  background-color: transparent;
+  padding: 1rem 1.2rem;
+  min-width: 140px;
+  text-align: center;
+  border-radius: 12px 12px 0 0;
   position: relative;
-  overflow: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.4s ease,
+    box-shadow 0.4s ease;
 
-  .scroll-container {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    flex: 1;
-    cursor: grab;
-    scrollbar-width: none; //  Firefox oculta el scroll
-    -ms-overflow-style: none; //  IE 10+
-
-    &:active {
-      cursor: grabbing;
-    }
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  .menu-item {
-    width: 100%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 0.3rem 0.7rem;
-    margin: 0.2rem 0.4rem;
-    border-radius: 12px;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: $primary-dark;
-    font-weight: 600;
-    white-space: nowrap;
-
-    &:hover {
-      background-color: $primary-dark;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      color: $primary-light !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    }
-
-    &.active {
-      background-color: $primary-color;
-      transform: scale(1.15);
-      padding: 0.4rem 1rem;
-      color: $primary-light !important;
-      font-weight: 700;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15),
-        0 0 8px rgba(38, 123, 191, 0.3);
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
-    }
-  }
-
-  .scroll-btn {
-    background: $primary-dark; // semi-transparente
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: $primary-light;
-    cursor: pointer;
-    z-index: 5;
-    width: 38px;
-    height: 38px;
-    font-size: 1.3rem;
-    border-radius: 50%;
+  a {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(6px);
-    transition: all 0.3s ease;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
 
-    &.left {
-      margin-right: 0.5rem;
-    }
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background-color: $primary-light;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease-out;
+  }
 
-    &.right {
-      margin-left: 0.5rem;
-    }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: $primary-light;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 
-    &:hover {
-      background: rgba(38, 123, 191, 0.8);
-      border-color: rgba(38, 123, 191, 0.8);
-      color: #fff;
-      transform: scale(1.15);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    &::after {
+      transform: scaleX(1);
     }
+  }
 
-    &:active {
-      transform: scale(1);
-      background: rgba(0, 0, 0, 0.2);
-      box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.6);
-      color: $primary-light;
+  &.active {
+    background-color: $primary-color;
+    color: $primary-light;
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 10px rgba(38, 123, 191, 0.4),
+      inset 0 -2px 5px rgba(0, 0, 0, 0.2);
+
+    &::after {
+      transform: scaleX(1);
+      background-color: $primary-light;
     }
+  }
+}
+
+.item-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $accent-color;
+  padding: 0.6rem 1.5rem;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.menu-item {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  color: $primary-dark;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  animation: fadeUp 0.5s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: $primary-dark;
+    color: $primary-light;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+
+  &.active {
+    background-color: $primary-color;
+    transform: scale(1.12);
+    color: $primary-light;
+    font-weight: 700;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 10px rgba(38, 123, 191, 0.4);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
