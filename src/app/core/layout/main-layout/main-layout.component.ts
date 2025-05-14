@@ -4,6 +4,7 @@ import { Sidebar } from 'primeng/sidebar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { LayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -49,10 +50,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly layoutService: LayoutService
   ) {}
 
   ngOnInit(): void {
+    this.layoutService.sidebarCollapsed$.subscribe(collapsed => {
+      this.sidebarCollapsed = collapsed;
+    });
     this.loadMainMenuItems();
     this.determineMainRoute();
 
@@ -78,7 +83,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   toggleSidebar(): void {
-    this.sidebarCollapsed = !this.sidebarCollapsed;
+    this.layoutService.toggleSidebar();
   }
 
   toggleMainMenu(): void {

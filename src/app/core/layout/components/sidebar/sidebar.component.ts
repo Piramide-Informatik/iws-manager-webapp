@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 
 @Component({
@@ -7,10 +7,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./sidebar.component.scss'],
   standalone: false,
 })
-export class SidebarComponent {
-  @Input() isCollapsed: boolean = false;
+export class SidebarComponent implements OnChanges {
+  @Input() isCollapsed!: boolean;
   @Input() menuItems: any[] = [];
   @Input() menuKey: string = '';
   @Output() toggleCollapse = new EventEmitter<void>();
-  
+
+  public collapse!: boolean;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['isCollapsed']){
+      this.collapse = this.isCollapsed;
+    }
+  }
 }
