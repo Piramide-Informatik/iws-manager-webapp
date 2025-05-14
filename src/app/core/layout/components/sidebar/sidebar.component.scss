@@ -2,7 +2,7 @@
 
 .sidebar {
   width: 200px;
-  background: $accent-color;
+  background: $primary-dark;
   transition: width 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -10,117 +10,169 @@
 
   &.collapsed {
     width: 70px;
-
+    transition: width 0.4s ease-in-out;
     .menu-item-text {
       display: none;
     }
 
     .p-menuitem-link {
-      margin: 5px 0; // Reduce el espacio entre las opciones
-      justify-content: center; // Centra los íconos horizontalmente
+      justify-content: center;
+      margin: 4px 0;
     }
 
-    .menu-items {
-       
-      a {
-        justify-content: center;
+    .menu-items a {
+      justify-content: center;
 
-        i {
-          font-size: 1.8rem; // Aumenta el tamaño del ícono
-          margin: 0;
-        }
+      i {
+        font-size: 1.6rem;
+        margin: 0;
       }
     }
 
     .sidebar-content {
-      padding: 0rem 1rem;
+      padding: 0rem 0.8rem;
       align-items: center;
+      transition: width 0.4s ease-in-out;
     }
+
+    .collapse-button {
+      right: 10px;
+      transform: rotate(180deg);
+    }
+  }
+
+  .menu-items,
+  .collapse-button {
+    cursor: pointer;
   }
 
   .sidebar-content {
     position: relative;
-    height: 80%;
+    height: calc(100% - 60px);
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    padding: 1.5rem 2rem;
-    overflow-x: auto;
-    scroll-behavior: smooth;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1rem 1.3rem;
+    gap: 5rem;
+    overflow-y: auto;
     scrollbar-width: none;
-    -ms-overflow-style: none;
 
     &::-webkit-scrollbar {
       display: none;
     }
   }
 
+  .sidebar-content::before,
+  .sidebar-content::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+  }
+
   .menu-items {
-    cursor: pointer;
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 0.3rem 0.7rem;
-    margin: 0.2rem 0.4rem;
-    border-radius: 12px;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.85rem 1.2rem;
 
-    a {
-      justify-content: start    ;
-      color: $primary-dark;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      width: 100%;
-      text-decoration: none;
-      transition: all 0.3s ease;
-
-      .pi {
-        font-size: 1.4rem !important;
-        margin-right: 6px;
-      }
-
-      .menu-item-text {
-        white-space: nowrap;
-        transition: text-shadow 0.3s ease;
-      }
-    }
+    font-size: 0.94rem;
+    border-radius: 8px;
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      background-color: $primary-dark;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-
-      a {
-        color: $primary-light !important;
-
-        .menu-item-text {
-          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-        }
-      }
+      background-color: #30465d;
+      transform: scale(1.02) scaleX(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      padding-left: 0.95rem;
     }
 
     &.active {
       background-color: $primary-color;
-      transform: scale(1.15);
-      padding: 0.4rem 1rem;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15),
-        0 0 8px rgba(38, 123, 191, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 4px 12px rgba(0, 0, 0, 0.2), 0 0 10px rgba(60, 83, 114, 0.4);
+      transform: scaleX(1.02);
+      padding-left: 1rem;
 
       a {
-        color: $primary-light !important;
         font-weight: 700;
+      }
+    }
 
-        .menu-item-text {
-          text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
-        }
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      color: $primary-light;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      .pi {
+        font-size: 1.2rem !important;
+        margin-right: 0.5rem;
+      }
+
+      .menu-item-text {
+        white-space: nowrap;
+        flex-grow: 1;
+        transition: text-shadow 0.3s ease;
+      }
+
+      .arrow-icon {
+        font-size: 1rem;
+        color: $primary-light;
+        opacity: 0.6;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+
+      &:hover .arrow-icon {
+        transform: translateX(4px);
+        opacity: 1;
       }
     }
   }
 
   .collapse-button {
     position: absolute;
-    bottom: 30px;
-    right: 20px;
+    bottom: 20px;
+    border: none;
+    background: none;
+    appearance: none;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    background-color: $primary-color;
+    color: white;
+    border-radius: 50%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+    z-index: 999;
+
+    &:hover {
+      background-color: $primary-color;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2),
+        0 6px 14px rgba(0, 0, 0, 0.4);
+      transform: scale(1.15);
+    }
+
+    &.rotate {
+      transform: rotate(180deg);
+    }
+
+    ::ng-deep .pi {
+      font-size: 1.2rem;
+      transition: transform 0.4s ease-in-out;
+    }
   }
 }

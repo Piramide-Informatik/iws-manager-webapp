@@ -1,27 +1,27 @@
 <div class="layout">
   <app-header
     [username]="'Patrick Zessin'"
-    
     [currentMenuKey]="currentMenuKey"
     (menuSelected)="onMainMenuSelect($event)"
-  >
-  </app-header>
+  ></app-header>
 
   <div class="layout-content">
     <app-sidebar
       [isCollapsed]="sidebarCollapsed"
       [menuItems]="mainMenuItems"
       (toggleCollapse)="toggleSidebar()"
-    >
-    </app-sidebar>
+    ></app-sidebar>
 
-    <app-masterdata-panel
-      *ngIf="currentMenuKey === 'masterdata' || currentMenuKey === 'master-data'"
-    ></app-masterdata-panel>
+    <div class="content-wrapper">
+      <app-masterdata-panel
+        *ngIf="
+          currentMenuKey === 'masterdata' || currentMenuKey === 'master-data'
+        "
+      ></app-masterdata-panel>
 
-
-    <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
-      <router-outlet></router-outlet>
+      <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 

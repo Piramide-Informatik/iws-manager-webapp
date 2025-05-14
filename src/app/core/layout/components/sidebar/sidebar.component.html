@@ -9,12 +9,15 @@
       <a class="p-menuitem-link">
         <i [class]="item.icon"></i>
         <span class="menu-item-text">{{ item.label }}</span>
+        <i class="pi pi-angle-right arrow-icon"></i>
       </a>
     </div>
   </div>
-  <p-button 
-    [icon]="isCollapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'" 
-    class="collapse-button" 
+  <button
+    class="collapse-button"
+    [ngClass]="{ rotate: isCollapsed }"
     (click)="toggleCollapse.emit()"
-    onkeypress="toggleCollapse.emit()"/>
+  >
+    <i class="pi pi-chevron-left"></i>
+  </button>
 </div>
