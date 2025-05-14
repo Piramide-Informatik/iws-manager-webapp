@@ -8,19 +8,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   standalone: false,
 })
 export class EditUserFormComponent {
-  @Input() allRoles: string[] = [
-    'Projekte',
-    'Rolle 3',
-    'Zeiterfassung',
-    'Administrator',
-    'Finanzen',
-  ];
 
   @Output() userSaved = new EventEmitter<any>();
 
   userForm: FormGroup;
-  assignedRoles: string[] = [];
-  availableRoles: string[] = [];
+  allRoles: { name: string }[] = [
+    { name: 'Projekte' },
+    { name: 'Rolle 3' },
+    { name: 'Zeiterfassung' },
+    { name: 'Administrator' },
+    { name: 'Finanzen' }
+  ];
+
+  assignedRoles: { name: string }[] = [];
+  availableRoles: { name: string }[] = [];
 
   selectedAssignedRoles: string[] = [];
   selectedAvailableRoles: string[] = [];
@@ -46,6 +47,14 @@ export class EditUserFormComponent {
     this.selectedAvailableRoles = [];
   }
   ngOnInit(): void {
+    const initialAssigned = ['Projekte', 'Rolle 3', 'Zeiterfassung'];
+    this.assignedRoles = this.allRoles.filter(role =>
+      initialAssigned.includes(role.name)
+    );
+    this.availableRoles = this.allRoles.filter(role =>
+      !initialAssigned.includes(role.name)
+    );
+
     this.userForm.patchValue({
       username: 'paze',
       firstName: 'Patrick',
@@ -53,9 +62,6 @@ export class EditUserFormComponent {
       email: 'p.zessin@ws-nord.de',
       active: true,
     });
-
-    this.assignedRoles = ['Projekte', 'Rolle 3', 'Zeiterfassung'];
-    this.availableRoles = ['Administrator', 'Finanzen'];
   }
 
   public editUser(user: any): void {
@@ -80,57 +86,12 @@ export class EditUserFormComponent {
     const updatedUser = {
       ...formValue,
       name,
-      assignedRoles: [...this.assignedRoles],
+      assignedRoles: this.assignedRoles.map(role => role.name),
     };
 
     this.userSaved.emit(updatedUser);
-
     this.userForm.reset({ active: true });
     this.resetRoles();
   }
 
-  private transferRoles(
-    from: string[],
-    to: string[],
-    selected: string[]
-  ): string[] {
-    selected.forEach((role) => {
-      if (!to.includes(role)) to.push(role);
-    });
-    from = from.filter((role) => !selected.includes(role));
-    selected.length = 0;
-    return from;
-  }
-
-  public moveToAssigned(): void {
-    this.availableRoles = this.transferRoles(
-      this.availableRoles,
-      this.assignedRoles,
-      this.selectedAvailableRoles
-    );
-  }
-
-  public moveAllToAssigned(): void {
-    this.assignedRoles.push(
-      ...this.availableRoles.filter((r) => !this.assignedRoles.includes(r))
-    );
-    this.availableRoles = [];
-    this.selectedAvailableRoles = [];
-  }
-
-  public moveToAvailable(): void {
-    this.assignedRoles = this.transferRoles(
-      this.assignedRoles,
-      this.availableRoles,
-      this.selectedAssignedRoles
-    );
-  }
-
-  public moveAllToAvailable(): void {
-    this.availableRoles.push(
-      ...this.assignedRoles.filter((r) => !this.availableRoles.includes(r))
-    );
-    this.assignedRoles = [];
-    this.selectedAssignedRoles = [];
-  }
 }
