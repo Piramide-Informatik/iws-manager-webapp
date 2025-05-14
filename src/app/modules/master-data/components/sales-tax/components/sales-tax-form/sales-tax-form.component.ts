@@ -73,8 +73,6 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.editSalesTaxForm.valid) {
       console.log(this.editSalesTaxForm);
-    } else {
-      console.log("Ungültiges Formular");
     }
   }
 }
