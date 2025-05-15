@@ -5,7 +5,6 @@
   background: $primary-dark;
   transition: width 0.3s ease;
   position: relative;
-  overflow: hidden;
   height: 100%;
 
   &.collapsed {
@@ -54,11 +53,25 @@
     align-items: flex-start;
     padding: 1rem 1.3rem;
     gap: 1rem;
-    overflow-y: auto;
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    .popup-master-data {
+      position: absolute !important;
+      bottom: 270px !important;
+      left: 173px;
+
+      .p-tieredmenu-item-link {
+        background-color: $primary-dark;
+        color: #fff;
+
+        &:hover {
+          background-color: $primary-color;
+        }
+      }
     }
   }
 

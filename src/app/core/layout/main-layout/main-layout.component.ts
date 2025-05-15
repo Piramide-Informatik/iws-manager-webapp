@@ -28,7 +28,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     { label: 'MENU.PROJECTS', icon: 'pi pi-book', command: 'projects', absoluteRoute: '/projects' },
     { label: 'MENU.INVOICING', icon: 'pi pi-receipt', command: 'invoicing', absoluteRoute: '/invoicing' },
     { label: 'MENU.CONTROLLING', icon: 'pi pi-sliders-v', command: 'controlling', absoluteRoute: '/controlling' },
-    { label: 'MENU.MASTER_DATA', icon: 'pi pi-cog', command: 'masterdata', absoluteRoute: '/master-data' },
+    
   ];
   
   private readonly sidebarItemsConfig: Record<
