@@ -18,7 +18,7 @@ export class SidebarComponent {
   public showPopup: boolean = false;
   public masterDataGroups: any[] = [];
   private langSubscription!: Subscription;
-  public itemMasterData = 
+  private readonly itemMasterData = 
     { 
       label: 'MENU.MASTER_DATA', 
       icon: 'pi pi-cog', 
