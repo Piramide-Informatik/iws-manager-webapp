@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { filter, Subscription } from 'rxjs';
+import { debounceTime, filter, Subscription } from 'rxjs';
 
 
 @Component({
@@ -9,6 +9,7 @@ import { filter, Subscription } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarComponent {
   @Input() isCollapsed: boolean = false;
@@ -25,8 +26,8 @@ export class SidebarComponent {
         }[];
     }[] = [];
   private langSubscription!: Subscription;
-  private readonly itemMasterData = 
-    { 
+  private static readonly MASTER_DATA_MENU_ITEM = 
+  { 
       label: 'MENU.MASTER_DATA', 
       icon: 'pi pi-cog', 
       items: [
@@ -95,11 +96,10 @@ export class SidebarComponent {
             { label: 'TYPES_OF_COMPANIES', path: 'type-companies' },
           ],
         },
-      ],
-      command: 'masterdata', 
-      absoluteRoute: '/master-data' 
-    }
-
+      ]
+  }
+  private readonly itemMasterData = SidebarComponent.MASTER_DATA_MENU_ITEM;
+  
   constructor(
     private readonly translate: TranslateService,
     private readonly router: Router,
@@ -107,21 +107,23 @@ export class SidebarComponent {
   ){}
 
   ngOnInit(){
-    this.updateActiveStates();
     this.masterDataGroups = this.getOptionsMasterData();
+    this.updateActiveStates();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.masterDataGroups = this.getOptionsMasterData();
+      this.updateActiveStates();
     });
 
     this.checkMasterDataRoute();
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
+        debounceTime(50)
       )
       .subscribe(() => {
         this.checkMasterDataRoute();
-        this.cdRef.detectChanges();
         this.updateActiveStates();
+        this.cdRef.markForCheck();
       });
   }
   
@@ -152,16 +154,13 @@ export class SidebarComponent {
   private updateActiveStates() {
     this.masterDataGroups.forEach(group => {
       group.isActive = group.items.some(item => 
-        this.router.isActive(item.routerLink[0], {
+        this.router.isActive(this.router.createUrlTree(item.routerLink), {
           paths: 'subset',
           queryParams: 'subset',
           fragment: 'ignored',
           matrixParams: 'ignored'
         })
       );
-      console.log('activo:',group.isActive);
-      console.log('array:',this.masterDataGroups);
-      
     });
   }
 }
