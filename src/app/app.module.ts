@@ -41,6 +41,7 @@ import { AppComponent } from './app.component';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ContractorModule } from './modules/contractor/contractor.module';
 import { BlankComponent } from './core/components/blank/blank.component';
+import { UserPreferenceService } from './Services/user-preferences.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -99,7 +100,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: DATE_PIPE_DEFAULT_OPTIONS,
       useValue: { dateFormat: "longDate" }
-    }
+    },
+    UserPreferenceService
   ],
   bootstrap: [AppComponent],
 })

@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { TEXT } from './text.data';
+import { UserPreference } from '../../../../../../Entities/user-preference';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 
 @Component({
   selector: 'app-text-table',
@@ -17,17 +19,27 @@ export class TextTableComponent implements OnInit, OnDestroy {
   textColumns: any[] = [];
   textDisplayedColumns: any[] = [];
   isTextChipVisible = false;
+  userPreferences: UserPreference = {};
+  tableKey: string = 'Text'
+  dataKeys = ['label', 'text'];
+  
   @ViewChild('dt') dt!: Table;
 
   private langTextSubscription!: Subscription;
 
-  constructor(private readonly router: Router, private readonly translate: TranslateService ) { }
+  constructor(private readonly router: Router, private readonly userPreferenceService: UserPreferenceService, private readonly translate: TranslateService ) { }
 
   ngOnInit() {
     this.loadTextHeadersAndColumns();
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.textDisplayedColumns)
     this.langTextSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadTextHeadersAndColumns();
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.textDisplayedColumns)
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   loadTextHeadersAndColumns() {

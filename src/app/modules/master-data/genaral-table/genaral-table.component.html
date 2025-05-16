@@ -4,7 +4,7 @@
     [value]="tableValues"
     dataKey="id"
     [rows]="15"
-    [columns]="selectedColumns"
+    [columns]="this.userPreferences[this.tableId]?.displayedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
     [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
@@ -15,12 +15,15 @@
     showGridlines
     scrollHeight="60vh"
     [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
+    [globalFilterFields]="dataKeys"
+    (onFilter)="onTableFilterChange($event)"
   >
     <ng-template #caption *ngIf="hideColumns">
       <p-multiselect
         display="chip"
         [options]="columns"
-        [(ngModel)]="selectedColumns"
+        [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
+        (onChange)="changeSelect($event)"
         optionLabel="header"
         selectedItemsLabel="{0} columns selected"
         [style]="{
@@ -33,18 +36,6 @@
     </ng-template>
 
     <ng-template #header let-columns>
-      <tr *ngIf="filterByColumns">
-        <th scope="col"></th>
-        <th scope="col" *ngFor="let col of columns; let i = index">
-          <input
-            pInputText
-            pSize="small"
-            type="text"
-            [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
-            (input)="applyFilter($event, col.field)"
-          />
-        </th>
-      </tr>
       <tr>
         <th scope="col" class="thead-bg-blue"></th>
         <th
@@ -56,6 +47,17 @@
           class="thead"
         >
           {{ col.header }} <p-sortIcon [field]="col.field" />
+        </th>
+      </tr>
+      <tr *ngIf="filterByColumns">
+        <th scope="col"></th>
+        <th scope="col" *ngFor="let col of columns; let i = index">
+            <p-columnFilter
+                type="text"
+                [field]="col.field"
+                placeholder="Search"
+                ariaLabel="Filter Name"
+            ></p-columnFilter>        
         </th>
       </tr>
     </ng-template>

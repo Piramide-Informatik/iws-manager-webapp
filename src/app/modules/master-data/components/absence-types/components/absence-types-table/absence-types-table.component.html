@@ -2,8 +2,12 @@
     <div class="row">
       <div class>
         <master-data-genaral-table
+          [tableId]="tableKey"
           [tableValues]="absenceTypes"
           [columns]="cols"
+          [userPreferences]="userPreferences"
+          [dataKeys]="dataKeys"
+          (onColumnChanges)="onUserPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
     </div>
