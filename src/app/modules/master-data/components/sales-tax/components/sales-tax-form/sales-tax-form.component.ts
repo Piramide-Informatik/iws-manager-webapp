@@ -19,10 +19,11 @@ import { SALES_TAX_RATES } from '../../sales.tax.rate.data';
 export class SalesTaxFormComponent implements OnInit, OnDestroy {
 
   salesTax!: SalesTax;
-  salesTaxRates!: SalesTaxRate[];
+  salesTaxRatesValues!: SalesTaxRate[];
   editSalesTaxForm!: FormGroup;
-  salesTaxRateColumns: any[] = [];
+  salesTaxRatesColumns: any[] = [];
   salesTaxId!: number;
+  isSalesTaxRatesChipVisible = false;
   private langSalesTaxRateSubscription!: Subscription;
 
   @ViewChild('dt') dt!: Table;
@@ -38,7 +39,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       this.loadSalesTaxRateHeadersAndColumns();
     });
     this.salesTaxId = 1;
-    this.salesTaxRates = SALES_TAX_RATES.filter((element: any) => element.salesTaxId === this.salesTaxId);
+    this.salesTaxRatesValues = SALES_TAX_RATES.filter((element: any) => element.salesTaxId === this.salesTaxId);
   }
 
   ngOnDestroy() : void {
@@ -49,8 +50,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
 
 
   loadSalesTaxRateHeadersAndColumns() {
-    const columns = this.generateSalesTaxColumns();
-    this.salesTaxRateColumns = [...columns];
+    this.salesTaxRatesColumns = this.generateSalesTaxColumns();
   }
 
   generateSalesTaxColumns() {
@@ -58,7 +58,9 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       {
         field: 'fromDate',
         minWidth: 110,
-        header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE'))
+        header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')),
+        type: 'date',
+        format: 'ddMMYYYY'
       },
       {
         field: 'rate',
@@ -71,15 +73,6 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.editSalesTaxForm.valid) {
       console.log(this.editSalesTaxForm);
-    } else {
-      console.log("Ungültiges Formular");
-    }
-  }
-
-  applyTaxDetailFilter(event: any, field: string) {
-    const inputSalesTaxFormFilterElement = event.target as HTMLInputElement;
-    if (inputSalesTaxFormFilterElement) {
-      this.dt.filter(inputSalesTaxFormFilterElement.value, field, 'contains');
     }
   }
 }
