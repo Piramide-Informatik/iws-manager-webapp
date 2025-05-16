@@ -39,11 +39,6 @@
       transform: rotate(180deg);
     }
 
-    .popup-master-data {
-      position: absolute !important;
-      bottom: 270px !important;
-      left: 54px !important;
-    }
   }
 
   .menu-items,
@@ -65,19 +60,8 @@
       display: none;
     }
 
-    .popup-master-data {
-      position: absolute !important;
-      bottom: 270px !important;
-      left: 173px;
-
-      .p-tieredmenu-item-link {
-        background-color: $primary-dark;
-        color: #fff;
-
-        &:hover {
-          background-color: $primary-color;
-        }
-      }
+    .p-tieredmenu-item-link {
+      color: #fff; 
     }
   }
 

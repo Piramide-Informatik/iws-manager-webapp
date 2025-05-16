@@ -16,7 +16,14 @@ export class SidebarComponent {
   @Input() menulabel: string = '';
   @Output() toggleCollapse = new EventEmitter<void>();
   public showPopup: boolean = false;
-  public masterDataGroups: any[] = [];
+  public masterDataGroups: {
+        label: any;
+        isActive: boolean;
+        items: {
+            label: any;
+            routerLink: string[];
+        }[];
+    }[] = [];
   private langSubscription!: Subscription;
   private readonly itemMasterData = 
     { 
@@ -25,6 +32,7 @@ export class SidebarComponent {
       items: [
         {
           label: 'PEOPLE',
+          isActive: false,
           items: [
             { label: 'USER', path: 'user' },
             { label: 'ROLES', path: 'roles' },
@@ -36,6 +44,7 @@ export class SidebarComponent {
         },
         {
           label: 'FINANCE',
+          isActive: false,
           items: [
             { label: 'FUNDING_PROGRAMS', path: 'funding-programs' },
             { label: 'COST', path: 'cost' },
@@ -49,6 +58,7 @@ export class SidebarComponent {
         },
         {
           label: 'OPERATIONS',
+          isActive: false,
           items: [
             { label: 'ORDER_TYPES', path: 'order-types' },
             { label: 'APPROVAL_STATUS', path: 'approval-status' },
@@ -60,6 +70,7 @@ export class SidebarComponent {
         },
         {
           label: 'LOCATION',
+          isActive: false,
           items: [
             { label: 'ADDRESS', path: 'address' },
             { label: 'COUNTRIES', path: 'countries' },
@@ -68,6 +79,7 @@ export class SidebarComponent {
         },
         {
           label: 'PROJECTS',
+          isActive: false,
           items: [
             { label: 'PROJECT_STATUS', path: 'project-status' },
             { label: 'PROJECT_FUNNELS', path: 'project-funnels' },
@@ -76,6 +88,7 @@ export class SidebarComponent {
         },
         {
           label: 'CONFIGURATION',
+          isActive: false,
           items: [
             { label: 'SYSTEM_CONSTANTS', path: 'system-constants' },
             { label: 'TEXTS', path: 'texts' },
@@ -94,6 +107,7 @@ export class SidebarComponent {
   ){}
 
   ngOnInit(){
+    this.updateActiveStates();
     this.masterDataGroups = this.getOptionsMasterData();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.masterDataGroups = this.getOptionsMasterData();
@@ -107,12 +121,14 @@ export class SidebarComponent {
       .subscribe(() => {
         this.checkMasterDataRoute();
         this.cdRef.detectChanges();
+        this.updateActiveStates();
       });
   }
   
   private getOptionsMasterData() {
     return this.itemMasterData.items.map((group) => ({
       label: this.translate.instant(`SIDEBAR.${group.label}`),
+      isActive: group.isActive,
       items: group.items.map((item) => ({
         label: this.translate.instant(`SIDEBAR.${item.label}`),
         routerLink: [`/master-data/${item.path}`],
@@ -131,5 +147,21 @@ export class SidebarComponent {
     } else {
       masterDataItem.classList.remove('active');
     }
+  }
+
+  private updateActiveStates() {
+    this.masterDataGroups.forEach(group => {
+      group.isActive = group.items.some(item => 
+        this.router.isActive(item.routerLink[0], {
+          paths: 'subset',
+          queryParams: 'subset',
+          fragment: 'ignored',
+          matrixParams: 'ignored'
+        })
+      );
+      console.log('activo:',group.isActive);
+      console.log('array:',this.masterDataGroups);
+      
+    });
   }
 }
