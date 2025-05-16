@@ -25,52 +25,53 @@ export class SidebarComponent {
         }[];
     }[] = [];
   private langSubscription!: Subscription;
+  private static readonly MENU_SECTIONS: Record<string, { label: string, path: string }[]> = {
+    PEOPLE: [
+      { label: 'USER', path: 'user' },
+      { label: 'ROLES', path: 'roles' },
+      { label: 'IWS_STAFF', path: 'iws-staff' },
+      { label: 'IWS_COMMISSIONS', path: 'iws-commissions' },
+      { label: 'IWS_TEAMS', path: 'iws-teams' },
+      { label: 'EMPLOYEE_QUALIFICATION', path: 'employee-qualification' },
+    ],
+    FINANCE: [
+      { label: 'FUNDING_PROGRAMS', path: 'funding-programs' },
+      { label: 'COST', path: 'cost' },
+      { label: 'BILLERS', path: 'billers' },
+      { label: 'SALES_TAX', path: 'sales-tax' },
+      { label: 'DUNNING_LEVELS', path: 'dunning-levels' },
+      { label: 'BILLING_METHODS', path: 'billing-methods' },
+      { label: 'TERMS_OF_PAYMENT', path: 'terms-payment' },
+      { label: 'CONTRACT_STATUS', path: 'contract-status' },
+    ],
+    OPERATIONS: [
+      { label: 'ORDER_TYPES', path: 'order-types' },
+      { label: 'APPROVAL_STATUS', path: 'approval-status' },
+      { label: 'ABSENCE_TYPES', path: 'absence-types' },
+      { label: 'HOLIDAYS', path: 'holidays' },
+      { label: 'STATES', path: 'states' },
+      { label: 'NETWORKS', path: 'networks' },
+    ],
+    LOCATION: [
+      { label: 'ADDRESS', path: 'address' },
+      { label: 'COUNTRIES', path: 'countries' },
+      { label: 'TITLE', path: 'title' },
+    ],
+    PROJECTS: [
+      { label: 'PROJECT_STATUS', path: 'project-status' },
+      { label: 'PROJECT_FUNNELS', path: 'project-funnels' },
+      { label: 'REALIZATION_PROBABILITIES', path: 'realization-probabilities' },
+    ],
+    CONFIGURATION: [
+      { label: 'SYSTEM_CONSTANTS', path: 'system-constants' },
+      { label: 'TEXTS', path: 'texts' },
+      { label: 'TYPES_OF_COMPANIES', path: 'type-companies' },
+    ]
+  };
   private readonly itemMasterData: MainMenu = {
     label: 'MENU.MASTER_DATA',
     icon: 'pi pi-cog',
-    items: [
-      this.createMenuSection('PEOPLE', [
-        { label: 'USER', path: 'user' },
-        { label: 'ROLES', path: 'roles' },
-        { label: 'IWS_STAFF', path: 'iws-staff' },
-        { label: 'IWS_COMMISSIONS', path: 'iws-commissions' },
-        { label: 'IWS_TEAMS', path: 'iws-teams' },
-        { label: 'EMPLOYEE_QUALIFICATION', path: 'employee-qualification' },
-      ]),
-      this.createMenuSection('FINANCE', [
-        { label: 'FUNDING_PROGRAMS', path: 'funding-programs' },
-        { label: 'COST', path: 'cost' },
-        { label: 'BILLERS', path: 'billers' },
-        { label: 'SALES_TAX', path: 'sales-tax' },
-        { label: 'DUNNING_LEVELS', path: 'dunning-levels' },
-        { label: 'BILLING_METHODS', path: 'billing-methods' },
-        { label: 'TERMS_OF_PAYMENT', path: 'terms-payment' },
-        { label: 'CONTRACT_STATUS', path: 'contract-status' },
-      ]),
-      this.createMenuSection('OPERATIONS', [
-        { label: 'ORDER_TYPES', path: 'order-types' },
-        { label: 'APPROVAL_STATUS', path: 'approval-status' },
-        { label: 'ABSENCE_TYPES', path: 'absence-types' },
-        { label: 'HOLIDAYS', path: 'holidays' },
-        { label: 'STATES', path: 'states' },
-        { label: 'NETWORKS', path: 'networks' },
-      ]),
-      this.createMenuSection('LOCATION', [
-        { label: 'ADDRESS', path: 'address' },
-        { label: 'COUNTRIES', path: 'countries' },
-        { label: 'TITLE', path: 'title' },
-      ]),
-      this.createMenuSection('PROJECTS', [
-        { label: 'PROJECT_STATUS', path: 'project-status' },
-        { label: 'PROJECT_FUNNELS', path: 'project-funnels' },
-        { label: 'REALIZATION_PROBABILITIES', path: 'realization-probabilities' },
-      ]),
-      this.createMenuSection('CONFIGURATION', [
-        { label: 'SYSTEM_CONSTANTS', path: 'system-constants' },
-        { label: 'TEXTS', path: 'texts' },
-        { label: 'TYPES_OF_COMPANIES', path: 'type-companies' },
-      ])
-    ]
+    items: this.generateMenuSections()
   };
   
   constructor(
@@ -134,11 +135,13 @@ export class SidebarComponent {
     });
   }
 
-  private createMenuSection(label: string, items: MenuItem[], isActive: boolean = false): MenuSection {
-    return {
-      label,
-      isActive,
-      items,
-    };
-  }
+  private generateMenuSections(): MenuSection[] {
+  return Object.entries(SidebarComponent.MENU_SECTIONS).map(([label, items]) =>
+    this.createMenuSection(label, items)
+  );
+}
+
+private createMenuSection(label: string, items: MenuItem[], isActive: boolean = false): MenuSection {
+  return { label, isActive, items };
+}
 }
