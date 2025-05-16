@@ -141,7 +141,7 @@ export class SidebarComponent {
   );
 }
 
-private createMenuSection(label: string, items: MenuItem[], isActive: boolean = false): MenuSection {
-  return { label, isActive, items };
-}
+  private createMenuSection(label: string, items: MenuItem[], isActive: boolean = false): MenuSection {
+    return { label, isActive, items };
+  }
 }
