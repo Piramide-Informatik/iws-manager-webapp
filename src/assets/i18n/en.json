@@ -8,10 +8,15 @@
     "MASTER_DATA": "Master Data"
   },
   "SIDEBAR": {
+    "PEOPLE": "People",
+    "LOCATION": "Location",
+    "PROJECTS": "Projects",
+    "FINANCE": "Finance",
+    "CONFIGURATION": "Configuration",
+    "OPERATIONS": "Operations",
     "CUSTOMER": "Customer",
     "EMPLOYEES": "Employees",
     "EMPLOYMENT_CONTRACTS": "Employment Contracts",
-    "PROJECTS": "Projects",
     "ORDERS": "Orders",
     "DEMANDS": "Receivables",
     "INVOICES": "Invoices",
@@ -334,7 +339,6 @@
       "MODULE": "Module"
     }
   },
-
   "HOLIDAYS": {
     "HEADER": {
       "EDIT_HOLIDAY": "Edit Holiday"
@@ -540,7 +544,7 @@
       "NAME": "Name",
       "LAND": "Land",
       "STREET": "Street",
-      "ZIP_CITY":"ZIP / City"
+      "ZIP_CITY": "ZIP / City"
     }
   },
   "PROJECT_STATUS": {
@@ -585,7 +589,7 @@
     "TITLE_FORM": "Edit Biller"
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Edit Realization Probabilities" 
+    "TITLE_FORM": "Edit Realization Probabilities"
   },
   "TYPE_OF_COMPANIES": {
     "TABLE_TYPE_OF_COMPANIES": {

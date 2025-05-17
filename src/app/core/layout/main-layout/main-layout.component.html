@@ -1,28 +1,23 @@
 <div class="layout">
   <app-header
     [username]="'Patrick Zessin'"
-    [items]="mainMenuItems"
     [currentMenuKey]="currentMenuKey"
     (menuSelected)="onMainMenuSelect($event)"
-  >
-  </app-header>
+  ></app-header>
 
   <div class="layout-content">
     <app-sidebar
-      *ngIf="currentSidebarItems.length > 0"
       [isCollapsed]="sidebarCollapsed"
-      [menuItems]="currentSidebarItems"
+      [menuItems]="mainMenuItems"
       (toggleCollapse)="toggleSidebar()"
-    >
-    </app-sidebar>
+    ></app-sidebar>
 
-    <app-masterdata-panel
-      *ngIf="currentMenuKey === 'masterdata' || currentMenuKey === 'master-data'"
-    ></app-masterdata-panel>
+    <div class="content-wrapper">
+      
 
-
-    <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
-      <router-outlet></router-outlet>
+      <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 
