@@ -1,6 +1,6 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'ROLES.LABEL.EDIT_ROL' | translate">
     <form [formGroup]="editRolForm" (ngSubmit)="onSubmit()">
-        <div class="align-items-center mb-2">
+        <div class="align-items-center mb-4">
             <div class="rol-form mb-2">
                 <label for="stateName">{{ 'ROLES.LABEL.ROL' | translate }}</label>
                 <input pInputText type="text" id="stateName" formControlName="stateName" autocomplete="off" />

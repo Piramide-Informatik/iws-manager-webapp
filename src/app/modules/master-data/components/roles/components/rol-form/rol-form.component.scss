@@ -1,13 +1,20 @@
 @use 'variables' as *;
 
 .rol-form{
-    label{
-        width: 90px;
-    }
+  display: flex;
+  align-items: center;
 
-    input, .p-select{
-        width: 250px;
-    }
+  label {
+    width: 120px;
+    font-weight: 500;
+    margin-left: 25px;
+  }
+
+  input,
+  .p-select {
+    flex: 1;
+    max-width: 490px;
+  }
 }
 
 //Styles table head

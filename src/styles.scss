@@ -134,3 +134,14 @@ th {
   background: #fff !important;
   border-color: #267bbf !important;
 }
+
+/* Stiles checkboxs */
+.p-checkbox-box {
+  border: 2px solid #ced4da !important;
+  background: #ffffff !important;
+}
+
+.p-checkbox.p-checkbox-checked .p-checkbox-box{
+  background: #267bbf !important;
+  border-color: #267bbf !important;
+}
