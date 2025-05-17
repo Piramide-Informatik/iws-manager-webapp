@@ -5,6 +5,8 @@
       class="menu-items"
       [routerLink]="item.absoluteRoute"
       routerLinkActive="active"
+      [pTooltip]="isCollapsed? (item.label | translate) : ''"
+      tooltipPosition="right"
     >
       <a class="p-menuitem-link">
         <i [class]="item.icon"></i>
@@ -16,6 +18,8 @@
       <div
         id="item-master-data"
         class="menu-items"
+        [pTooltip]="isCollapsed? ('MENU.MASTER_DATA' | translate) : ''"
+        tooltipPosition="right"
         (click)="menu.toggle($event)"
         (keypress)="menu.toggle($event)"
       >
@@ -58,6 +62,8 @@
     class="collapse-button"
     [ngClass]="{ rotate: isCollapsed }"
     (click)="toggleCollapse.emit()"
+    [pTooltip]="isCollapsed? ('SIDEBAR.LABEL.EXPAND' | translate) : 'SIDEBAR.LABEL.COLLAPSE' | translate" 
+    tooltipPosition="right"
   >
     <i class="pi pi-chevron-left"></i>
   </button>

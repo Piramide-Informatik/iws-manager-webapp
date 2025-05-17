@@ -8,6 +8,10 @@
     "MASTER_DATA": "Datos Maestros"
   },
   "SIDEBAR": {
+    "LABEL": {
+      "EXPAND": "Expandir la navegación",
+      "COLLAPSE": "Colapsar la navegación"
+    },
     "PEOPLE": "Personas",
     "LOCATION": "Ubicación",
     "PROJECTS": "Proyectos",
