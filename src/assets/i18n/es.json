@@ -8,6 +8,12 @@
     "MASTER_DATA": "Datos Maestros"
   },
   "SIDEBAR": {
+    "PEOPLE": "Personas",
+    "LOCATION": "Ubicación",
+    "PROJECTS": "Proyectos",
+    "FINANCE": "Finanzas",
+    "CONFIGURATION": "Configuración",
+    "OPERATIONS": "Operaciones",
     "CUSTOMER": "Cliente",
     "EMPLOYEES": "Empleados",
     "EMPLOYMENT_CONTRACTS": "Contratos Laborales",
@@ -17,12 +23,7 @@
     "FRAMEWORK_AGREEMENTS": "Acuerdos Marco",
     "CONTRACTORS": "Contratistas",
     "SUBCONTRACTS": "Subcontratos",
-    "PEOPLE": "Personas",
-    "LOCATION": "Ubicación",
-    "PROJECTS": "Proyectos",
-    "FINANCE": "Finanzas",
-    "CONFIGURATION": "Configuración",
-    "OPERATIONS": "Operaciones",
+
     "ABSENCE_TYPES": "Tipos de Ausencia",
     "ADDRESS": "Dirección",
     "ORDER_TYPES": "Tipos de Orden",
@@ -338,7 +339,6 @@
       "MODULE": "Módulo"
     }
   },
-
   "HOLIDAYS": {
     "HEADER": {
       "EDIT_HOLIDAY": "Editar festivo"
@@ -396,27 +396,6 @@
       "REMINDER_TEXT": "Texto Recordatorio"
     }
   },
-  "SYSTEM_CONSTANT": {
-    "TABLE_SYSTEM_CONSTANT": {
-      "CONSTANT": "Constante",
-      "VALUE": "Valor",
-      "NO_RESULTS_FOUND": "No se encontraron resultados."
-    },
-    "LABEL": {
-      "EDIT_SYSTEM_CONSTANT": "Editar Constantes del Sistema",
-      "CONSANT": "Constante",
-      "VALUE_NUMERIC": "Valor numerico",
-      "VALUE_ALPHANUMERIC": "Valor alfanumerico"
-    },
-    "ERROR": {
-      "NAME_REQUIRED": "Nombre es requerido",
-      "ONLY_NUMBER_REQUIRED": "Ingrese solo numeros",
-      "ONLY_ALPHANUMERIC_REQUIRED": "Ingrese solo valores alfanumericos"
-    },
-    "PAGINATION": {
-      "FOOTER": "Mostrando del {{initValue}} al {{endValue}} de {{totalValue}} resultados."
-    }
-  },
   "EMPLOYEE_QUALIFICATION": {
     "LABEL": {
       "TITLE_FORM": "Editar calificación",
@@ -454,6 +433,24 @@
       "NO_DATA": "No se encontraron empleados"
     }
   },
+  "SYSTEM_CONSTANT": {
+    "TABLE_SYSTEM_CONSTANT": {
+      "CONSTANT": "Constante",
+      "VALUE": "Valor",
+      "NO_RESULTS_FOUND": "No se encontraron resultados."
+    },
+    "LABEL": {
+      "EDIT_SYSTEM_CONSTANT": "Editar Constantes del Sistema",
+      "CONSANT": "Constante",
+      "VALUE_NUMERIC": "Valor numerico",
+      "VALUE_ALPHANUMERIC": "Valor alfanumerico"
+    },
+    "ERROR": {
+      "NAME_REQUIRED": "Nombre es requerido",
+      "ONLY_NUMBER_REQUIRED": "Ingrese solo numeros",
+      "ONLY_ALPHANUMERIC_REQUIRED": "Ingrese solo valores alfanumericos"
+    }
+  },
   "IWS_COMMISSIONS": {
     "TABLE": {
       "THRESHOLD": "Desde valor",
@@ -467,7 +464,6 @@
       "MIN_COMMISSION": "Comisión mínima"
     }
   },
-
   "IWS_TEAMS": {
     "HEADER": {
       "EDIT_TEAM": "Editar Equipo"
