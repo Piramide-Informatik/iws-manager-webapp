@@ -8,6 +8,10 @@
     "MASTER_DATA": "Stammdaten"
   },
   "SIDEBAR": {
+    "LABEL": {
+      "EXPAND": "Die Navigation erweitern",
+      "COLLAPSE": "Navigation reduzieren"
+    },
     "PEOPLE": "Personal",
     "LOCATION": "Standort",
     "PROJECTS": "Projekte",
