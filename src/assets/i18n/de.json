@@ -8,10 +8,19 @@
     "MASTER_DATA": "Stammdaten"
   },
   "SIDEBAR": {
+    "LABEL": {
+      "EXPAND": "Die Navigation erweitern",
+      "COLLAPSE": "Navigation reduzieren"
+    },
+    "PEOPLE": "Personal",
+    "LOCATION": "Standort",
+    "PROJECTS": "Projekte",
+    "FINANCE": "Finanzen",
+    "CONFIGURATION": "Konfiguration",
+    "OPERATIONS": "Abläufe",
     "CUSTOMER": "Kunde",
     "EMPLOYEES": "Mitarbeiter",
     "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
-    "PROJECTS": "Projekte",
     "ORDERS": "Aufträge",
     "DEMANDS": "Forderungen",
     "INVOICES": "Rechnungen",
@@ -297,7 +306,6 @@
       "APPLIES_TO_NETWORK": "gilt fur Netzwerke"
     }
   },
-
   "USERS": {
     "TABLE": {
       "USERNAME": "Benutzername",
@@ -445,12 +453,8 @@
       "NAME_REQUIRED": "Name ist erforderlich",
       "ONLY_NUMBER_REQUIRED": "Geben Sie nur Zahlen ein",
       "ONLY_ALPHANUMERIC_REQUIRED": "Geben Sie nur alphanumerische Zeichen ein"
-    },
-    "PAGINATION": {
-      "FOOTER": "Es werden {{initValue}} bis {{endValue}} von {{totalValue}} Einträgen angezeigt."
     }
   },
-
   "IWS_COMMISSIONS": {
     "TABLE": {
       "THRESHOLD": "ab Wert",
@@ -544,7 +548,7 @@
       "NAME": "Name",
       "LAND": "Land",
       "STREET": "Straße",
-      "ZIP_CITY":"PLZ / Ort"
+      "ZIP_CITY": "PLZ / Ort"
     }
   },
   "PROJECT_STATUS": {
@@ -589,7 +593,7 @@
     "TITLE_FORM": "Rechnungsersteller bearbeiten"
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten" 
+    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten"
   },
   "TYPE_OF_COMPANIES": {
     "TABLE_TYPE_OF_COMPANIES": {

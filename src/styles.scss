@@ -135,6 +135,50 @@ th {
   border-color: #267bbf !important;
 }
 
+// Popup sidebar expanded
+div.p-tieredmenu.p-component.p-tieredmenu-overlay {
+  width: 170px;
+  background-color: $primary-dark;
+  top: -95px !important;
+  left: 185px !important;
+
+  .p-tieredmenu-submenu {
+    background-color: $primary-dark;
+  }
+
+  .p-tieredmenu-item {
+    padding: 1px 5px;
+  }
+}
+
+// Selected item popup
+.p-tieredmenu-item-content  {
+  color: #fff !important;
+  background: transparent !important;
+  border-radius: 6px !important;
+}
+
+.p-tieredmenu-item-active > .p-tieredmenu-item-content {
+  color: #fff !important;
+  background: #30465d !important;
+  border-radius: 6px !important;
+}
+
+// Hover item popup
+.p-tieredmenu-item:not(.p-disabled) > .p-tieredmenu-item-content:hover {
+  color: #fff !important;
+  background: #30465d !important;
+  border-radius: 6px;
+}
+
+// Position collapsed popup
+.sidebar.collapsed {
+  div.p-tieredmenu.p-component.p-tieredmenu-overlay {
+    width: 170px;
+    top: -95px !important;
+    left: 60px !important;
+  }
+}
 /* Stiles checkboxs */
 .p-checkbox-box {
   border: 2px solid #ced4da !important;
