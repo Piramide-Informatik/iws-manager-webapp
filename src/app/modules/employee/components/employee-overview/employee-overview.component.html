@@ -1,9 +1,19 @@
 <div class="card">
-    <p-table #dt2 [value]="employees" [rows]="15" stripedRows [columns]="selectedColumns" [rowsPerPageOptions]="[15, 30, 50]"
+    <p-table #dt2 
+        [value]="employees" 
+        [rows]="15" 
+        stripedRows 
+        [columns]="selectedColumns" 
+        [rowsPerPageOptions]="[15, 30, 50]"
         [paginator]="true"
-        currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
-        [showCurrentPageReport]="true" [resizableColumns]="true" [scrollable]="true" showGridlines
-        scrollHeight="60vh" [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}">
+        [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
+        [showCurrentPageReport]="true" 
+        [resizableColumns]="true" 
+        columnResizeMode="expand"
+        [scrollable]="true" 
+        showGridlines
+        scrollHeight="60vh" 
+        [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}">
         <ng-template #caption>
             <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
                 selectedItemsLabel="{0} columns selected"
