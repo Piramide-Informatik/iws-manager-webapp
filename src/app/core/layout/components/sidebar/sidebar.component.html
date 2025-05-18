@@ -1,15 +1,70 @@
-<div class="sidebar">
+<div class="sidebar" [class.collapsed]="isCollapsed">
   <div class="sidebar-content">
     <div
       *ngFor="let item of menuItems"
       class="menu-items"
-      [routerLink]="item.routerLink"
+      [routerLink]="item.absoluteRoute"
       routerLinkActive="active"
+      [pTooltip]="isCollapsed? (item.label | translate) : ''"
+      tooltipPosition="right"
     >
       <a class="p-menuitem-link">
-        <i *ngIf="item.icon" [class]="item.icon"></i>
+        <i [class]="item.icon"></i>
         <span class="menu-item-text">{{ item.label }}</span>
+        <i class="pi pi-angle-right arrow-icon"></i>
       </a>
     </div>
+    <div class="relative w-full">
+      <div
+        id="item-master-data"
+        class="menu-items"
+        [pTooltip]="isCollapsed? ('MENU.MASTER_DATA' | translate) : ''"
+        tooltipPosition="right"
+        (click)="menu.toggle($event)"
+        (keypress)="menu.toggle($event)"
+      >
+        <a class="p-menuitem-link">
+          <i class="pi pi-cog"></i>
+          <span class="menu-item-text">{{ 'MENU.MASTER_DATA' | translate }}</span>
+          <i class="pi pi-angle-right arrow-icon"></i>
+        </a>
+      </div>
+      <p-tieredmenu #menu [model]="masterDataGroups" [popup]="true">
+        <ng-template #item let-item let-hasSubmenu="hasSubmenu">
+          <ng-container *ngIf="item.routerLink; else withoutRoute">
+            <a [routerLink]="item.routerLink" 
+               routerLinkActive="active" 
+               [routerLinkActiveOptions]="{exact: false}"
+               class="p-tieredmenu-item-link">
+              <span class="ml-2">{{ item.label }}</span>
+              <span *ngIf="hasSubmenu" class="pi pi-angle-right ml-auto"></span>
+            </a>
+          </ng-container>
+          <ng-template #withoutRoute>
+            <ng-container *ngIf="item.url; else withoutUrl">
+              <a [href]="item.url" [target]="item.target" class="p-tieredmenu-item-link">
+                <span class="ml-2">{{ item.label }}</span>
+                <span *ngIf="hasSubmenu" class="pi pi-angle-right ml-auto"></span>
+              </a>
+            </ng-container>
+            <ng-template #withoutUrl>
+              <a class="p-tieredmenu-item-link" [class.active]="item.isActive">
+                <span class="ml-2">{{ item.label }}</span>
+                <span *ngIf="hasSubmenu" class="pi pi-angle-right ml-auto"></span>
+              </a>
+            </ng-template>
+          </ng-template>
+        </ng-template>
+      </p-tieredmenu>      
+    </div>
   </div>
+  <button
+    class="collapse-button"
+    [ngClass]="{ rotate: isCollapsed }"
+    (click)="toggleCollapse.emit()"
+    [pTooltip]="isCollapsed? ('SIDEBAR.LABEL.EXPAND' | translate) : 'SIDEBAR.LABEL.COLLAPSE' | translate" 
+    tooltipPosition="right"
+  >
+    <i class="pi pi-chevron-left"></i>
+  </button>
 </div>
