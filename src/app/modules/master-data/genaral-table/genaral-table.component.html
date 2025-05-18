@@ -16,9 +16,6 @@
     scrollHeight="60vh"
     [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
   >
-    <!-- Puedes eliminar el caption si solo quieres el multiselect en el header -->
-    <!-- <ng-template #caption *ngIf="hideColumns"> ... </ng-template> -->
-
     <ng-template #header>
       <tr *ngIf="filterByColumns">
         <th scope="col"></th>

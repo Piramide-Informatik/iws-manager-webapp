@@ -191,7 +191,6 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
   border-color: #267bbf !important;
 }
 
-
 /* Hide columns in cell table */ 
 #list-customers-table-options {
   overflow: inherit;
@@ -212,5 +211,9 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
 
   .p-multiselect-dropdown {
     color: white;
-}
   }
+
+  .p-multiselect-dropdown-icon {
+    color: #fff !important; 
+  }
+}
