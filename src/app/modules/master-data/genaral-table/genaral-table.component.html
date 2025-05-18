@@ -16,26 +16,13 @@
     scrollHeight="60vh"
     [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
   >
-    <ng-template #caption *ngIf="hideColumns">
-      <p-multiselect
-        display="chip"
-        [options]="columns"
-        [(ngModel)]="selectedColumns"
-        optionLabel="header"
-        selectedItemsLabel="{0} columns selected"
-        [style]="{
-          'min-width': '10%',
-          'font-size': '14px',
-          'line-height': '16.8px'
-        }"
-        placeholder="Choose Columns"
-      />
-    </ng-template>
+    <!-- Puedes eliminar el caption si solo quieres el multiselect en el header -->
+    <!-- <ng-template #caption *ngIf="hideColumns"> ... </ng-template> -->
 
-    <ng-template #header let-columns>
+    <ng-template #header>
       <tr *ngIf="filterByColumns">
         <th scope="col"></th>
-        <th scope="col" *ngFor="let col of columns; let i = index">
+        <th scope="col" *ngFor="let col of selectedColumns; let i = index">
           <input
             pInputText
             pSize="small"
@@ -46,10 +33,20 @@
         </th>
       </tr>
       <tr>
-        <th scope="col" class="thead-bg-blue"></th>
+        <th id="list-customers-table-options" class="thead-bg-blue">
+          <p-multiselect 
+            [options]="columns" 
+            [(ngModel)]="selectedColumns" 
+            optionLabel="header"
+            selectedItemsLabel="Hide columns"
+            placeholder="Choose Columns" 
+            [maxSelectedLabels]="0"
+            [appendTo]="'body'"
+          />
+        </th>
         <th
           scope="col"
-          *ngFor="let col of columns; let i = index"
+          *ngFor="let col of selectedColumns; let i = index"
           [ngStyle]="col.styles"
           [pSortableColumn]="col.field"
           pResizableColumn
@@ -60,7 +57,7 @@
       </tr>
     </ng-template>
 
-    <ng-template #body let-row let-i="rowIndex" let-columns="columns">
+    <ng-template #body let-row let-i="rowIndex">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
@@ -78,7 +75,9 @@
             ></button>
           </div>
         </td>
-        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns">{{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}</td>
+        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of selectedColumns">
+          {{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}
+        </td>
       </tr>
     </ng-template>
 
