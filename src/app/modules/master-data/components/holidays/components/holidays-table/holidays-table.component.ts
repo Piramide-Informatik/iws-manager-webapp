@@ -23,7 +23,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
-    private userPreferenceService: UserPreferenceService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 

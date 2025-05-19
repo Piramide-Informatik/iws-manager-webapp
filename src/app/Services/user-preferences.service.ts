@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Title } from '../Entities/title';
 import { UserPreference, UserPreferenceItem } from '../Entities/user-preference';
-import { Observable, catchError, map, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
