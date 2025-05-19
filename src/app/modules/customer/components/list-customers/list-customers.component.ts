@@ -30,6 +30,9 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
+  public countries!: { nameCountry: string }[];
+  public selectedCountries: any[] = [];
+
   constructor(private readonly customerService: CustomerService, 
     private readonly translate: TranslateService,
     private readonly router: Router,
@@ -41,6 +44,10 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     this.loadColHeaders();
     this.customers = this.customerService.getCustomers();
 
+    this.countries = Array.from(new Set(this.customers.map(customer => customer.land)))
+                              .map(country => ({ nameCountry: country }));
+    this.countries.sort((a, b) => a.nameCountry.localeCompare(b.nameCountry));
+    
     this.selectedColumns = this.cols;
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -74,6 +81,15 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       this.dt2.filter(inputElement.value, field, 'contains');
     }
   }
+
+  filterByCountry() {
+  if (this.selectedCountries && this.selectedCountries.length > 0) {
+    const countriesNames: string[] = this.selectedCountries.map(country => country.nameCountry);
+    this.dt2.filter(countriesNames, 'land', 'in');
+  } else {
+    this.dt2.filter(null, 'land', 'in');
+  }
+}
 
   deleteCustomer(id: number) {
     this.customers = this.customers.filter(customer => customer.id !== id);

@@ -191,6 +191,19 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
   border-color: #267bbf !important;
 }
 
+#select-countries-filter {
+  height: 25px !important;
+
+  .p-multiselect-label {
+    padding: 0.3rem 0 0.3rem 0.7rem !important;
+    font-weight: lighter !important;
+  }
+}
+#select-countries-filter_list {
+  min-width: 150px !important;
+  width: min-content !important;
+}
+
 /* Hide columns in cell table */ 
 #list-customers-table-options {
   overflow: inherit;
