@@ -18,26 +18,21 @@
     [globalFilterFields]="dataKeys"
     (onFilter)="onTableFilterChange($event)"
   >
-    <ng-template #caption *ngIf="hideColumns">
-      <p-multiselect
-        display="chip"
-        [options]="columns"
-        [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
-        (onChange)="changeSelect($event)"
-        optionLabel="header"
-        selectedItemsLabel="{0} columns selected"
-        [style]="{
-          'min-width': '10%',
-          'font-size': '14px',
-          'line-height': '16.8px'
-        }"
-        placeholder="Choose Columns"
-      />
-    </ng-template>
 
     <ng-template #header let-columns>
       <tr>
-        <th scope="col" class="thead-bg-blue"></th>
+          <th id="list-customers-table-options" class="thead-bg-blue">
+              <p-multiselect 
+                [options]="this.columns" 
+                [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
+                (onChange)="changeSelect($event)"
+                optionLabel="header"
+                selectedItemsLabel="Hide columns"
+                placeholder="Choose Columns" 
+                [maxSelectedLabels]="0"
+                [appendTo]="'body'"
+              />
+        </th>
         <th
           scope="col"
           *ngFor="let col of columns; let i = index"
