@@ -30,6 +30,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
 import { PasswordModule } from 'primeng/password';
+import { PickListModule } from 'primeng/picklist';
 
 //Components
 import { AbsenceTypesComponent } from './components/absence-types/absence-types.component';
@@ -219,6 +220,7 @@ import { UserPreferenceService } from '../../Services/user-preferences.service';
     DropdownModule,
     TextareaModule,
     PasswordModule,
+    PickListModule,
   ],
   providers: [UserPreferenceService]
 })
