@@ -190,3 +190,30 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
   background: #267bbf !important;
   border-color: #267bbf !important;
 }
+
+/* Hide columns in cell table */ 
+#list-customers-table-options {
+  overflow: inherit;
+  padding: 0 !important;
+
+  .p-multiselect {
+    background: none;
+    border: none;
+    border-radius: 0%;
+    width: 100%;
+  }
+
+  .p-multiselect-label {
+    padding: 0.3rem !important;
+    padding-left: 0.7rem !important;
+    color: white !important;
+  }
+
+  .p-multiselect-dropdown {
+    color: white;
+  }
+
+  .p-multiselect-dropdown-icon {
+    color: #fff !important; 
+  }
+}
