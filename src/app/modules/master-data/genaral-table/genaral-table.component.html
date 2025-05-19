@@ -17,39 +17,25 @@
     [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
   >
     <ng-template #header>
-      <tr *ngIf="filterByColumns">
-        <th scope="col"></th>
-        <th scope="col" *ngFor="let col of selectedColumns; let i = index">
-          <input
-            pInputText
-            pSize="small"
-            type="text"
-            [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
-            (input)="applyFilter($event, col.field)"
-          />
-        </th>
-      </tr>
       <tr>
         <th id="list-customers-table-options" class="thead-bg-blue">
           <p-multiselect 
             [options]="columns" 
             [(ngModel)]="selectedColumns" 
             optionLabel="header"
-            selectedItemsLabel="Hide columns"
+            selectedItemsLabel="Hide columns" 
             placeholder="Choose Columns" 
             [maxSelectedLabels]="0"
-            [appendTo]="'body'"
-          />
+            [appendTo]="'body'" />
         </th>
-        <th
-          scope="col"
-          *ngFor="let col of selectedColumns; let i = index"
-          [ngStyle]="col.styles"
-          [pSortableColumn]="col.field"
-          pResizableColumn
-          class="thead"
-        >
-          {{ col.header }} <p-sortIcon [field]="col.field" />
+        <th scope="col" *ngFor="let col of selectedColumns; let i = index" [ngStyle]="col.styles"
+          [pSortableColumn]="col.field" pResizableColumn class="thead">
+          <div class="flex items-center gap-2">
+            {{ col.header }}
+            <p-sortIcon [field]="col.field" />
+            <p-columnFilter [type]="col.type === 'date' ? 'date' : (col.type === 'number' ? 'numeric' : 'text')"
+              [field]="col.field" display="menu" [showOperator]="false" [showAddButton]="false"></p-columnFilter>
+          </div>
         </th>
       </tr>
     </ng-template>
