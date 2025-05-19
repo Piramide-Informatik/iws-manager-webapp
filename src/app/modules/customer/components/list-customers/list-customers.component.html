@@ -15,7 +15,7 @@
     scrollHeight="60vh"
     [tableStyle]="{'min-width': '5%','border-spacing': '1px'}">
     <ng-template #caption>
-      <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+      <p-multiselect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
         selectedItemsLabel="{0} columns selected"
         [style]="{ 'min-width': '10%', 'font-size': '14px', 'line-height': '16.8px' }"
          placeholder="Choose Columns" />
@@ -24,8 +24,20 @@
       <tr>
         <th id="list-customers-table-options-field"></th>
         <th id="list-customers-table-search-field" *ngFor="let col of columns; let i = index">
-          <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
-            (input)="applyFilter($event, col.field)" />
+          @if (i == 4) {
+            <p-multiSelect [options]="countries" [(ngModel)]="selectedCountries" 
+              id="select-countries-filter"
+              optionLabel="nameCountry" 
+              [showToggleAll]="false"
+              appendTo="body" 
+              styleClass="p-column-filter"
+              [maxSelectedLabels]="0"
+              selectedItemsLabel="{0} lands selected"
+              (onChange)="filterByCountry()"/>
+          }@else {
+            <input pInputText pSize="small" type="text" [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
+              (input)="applyFilter($event, col.field)" />
+          }
         </th>
       </tr>
       <tr>
