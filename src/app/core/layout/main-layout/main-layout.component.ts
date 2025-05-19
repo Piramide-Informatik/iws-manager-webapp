@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Sidebar } from 'primeng/sidebar';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,9 @@ import { SidebarStateService } from '../sidebar-state.service'
   standalone: false,
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
-  sidebarCollapsed!: boolean;
+  sidebarState = inject(SidebarStateService);
+  sidebarCollapsed$ = this.sidebarState.sidebarCollapsed$;
+  isStateLoaded = false;
   mainMenuVisible: boolean = false;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   currentSidebarItems: MenuItem[] = [];
@@ -51,14 +53,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly router: Router,
-    private readonly sidebarState: SidebarStateService
-  ) {}
+  ) {
+    this.sidebarState.sidebarCollapsed$.subscribe(() => {
+      this.isStateLoaded = true;
+    });
+  }
 
   ngOnInit(): void {
-    this.sidebarState.sidebarCollapsed$.subscribe((collapsed) => {
-      this.sidebarCollapsed = collapsed;
-    });
-
     this.loadMainMenuItems();
     this.determineMainRoute();
 

@@ -24,9 +24,4 @@ export class SidebarStateService {
     this._sidebarCollapsed.next(newState);
     localStorage.setItem('sidebarCollapsed', String(newState));
   }
-
-  setCollapsedLocalStorage(collapsed: boolean): void {
-    this._sidebarCollapsed.next(collapsed);
-    localStorage.setItem('sidebarCollapsed', String(collapsed));
-  }
 }

@@ -5,16 +5,16 @@
     (menuSelected)="onMainMenuSelect($event)"
   ></app-header>
 
-  <div class="layout-content">
+  <div class="layout-content" *ngIf="isStateLoaded">
     <app-sidebar
-      [isCollapsed]="sidebarCollapsed"
+      [isCollapsed]="(sidebarCollapsed$ | async) ?? false"
       [menuItems]="mainMenuItems"
     ></app-sidebar>
 
     <div class="content-wrapper">
       
 
-      <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
+      <div class="main-content" [class.sidebar-collapsed]="(sidebarCollapsed$ | async) ?? false">
         <router-outlet></router-outlet>
       </div>
     </div>
