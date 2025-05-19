@@ -14,52 +14,40 @@
         showGridlines
         scrollHeight="60vh" 
         [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}">
-        <ng-template #caption>
-            <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-                selectedItemsLabel="{0} columns selected"
-                [style]="{ 'min-width': '10%', 'font-size': '14px', 'line-height': '16.8px' }"
-                placeholder="Choose Columns" />
-        </ng-template>
-        <ng-template #header let-columns>
+        <ng-template #header let-columns>           
             <tr>
-
                 <th id="employee-overview-table-options"></th>
-               
-
-                <th id="employee-overview-field-search" *ngFor="let col of selectedFilterColumns; let i = index">
+                <th id="employee-overview-field-search" *ngFor="let col of selectedColumns; let i = index">
                     <input pInputText pSize="small" type="text"
                         [ngClass]="{'thead-input-id': i == 0, 'thead-input-width': i > 0}"
                         (input)="applyFilter($event, col.field)" />
                 </th>
             </tr>
             <tr>
-                <th id="employee-overview-options-field" class="thead-bg-blue"></th>
-                <th id="employee-overview-table-field" *ngFor="let col of columns; let i = index" [pSortableColumn]="col.field" pResizableColumn
-                    class="thead">{{
+                <th id="hide-columns" class="thead-bg-blue">
+                    <p-multiselect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                        selectedItemsLabel="Hide columns" placeholder="Choose Columns" [maxSelectedLabels]="0" />
+                </th>
+                <th id="employee-overview-table-field" *ngFor="let col of selectedColumns; let i = index"
+                    [pSortableColumn]="col.field" pResizableColumn class="thead">{{
                     col.header }} <p-sortIcon [field]="col.field" />
                 </th>
             </tr>
         </ng-template>
-        <ng-template #body let-employee let-i="rowIndex" let-columns="columns">
+
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-columns="columns">
             <tr>
                 <td>
                     <div class="flex items-center justify-center gap-2">
                         <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info"
-                            (click)="goToEmployeeDetails(employee)"></button>
+                            (click)="goToEmployeeDetails(rowData)"></button>
                         <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                            (click)="deleteEmployee(employee)"></button>
+                            (click)="deleteEmployee(rowData)"></button>
                     </div>
                 </td>
-                <td class="align-right">{{ employee.id }}</td>
-                <td>{{ employee.firstName }}</td>
-                <td>{{ employee.lastName }}</td>
-                <td>{{ employee.email }}</td>
-                <td class="text-center">{{ employee.generalManagerSince }}</td>
-                <td class="text-center">{{ employee.shareholderSince }}</td>
-                <td class="text-center">{{ employee.soleProprietorSince }}</td>
-                <td class="text-center">{{ employee.coEntrepreneurSince }}</td>
-                <td>{{ employee.qualificationFz }}</td>
-                <td>{{ employee.qualificationKmui }}</td>
+                <td *ngFor="let col of selectedColumns">
+                    {{ rowData[col.field] }}
+                </td>
             </tr>
         </ng-template>
     </p-table>
