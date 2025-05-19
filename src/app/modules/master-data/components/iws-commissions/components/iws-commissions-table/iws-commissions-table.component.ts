@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-iws-commissions-table',
@@ -12,10 +14,14 @@ import { RouterUtilsService } from '../../../../router-utils.service';
 export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   commissions: any[] = [];
   columnsHeaderFieldCommissions: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'IwsCommissions'
+  dataKeys = ['threshold', 'percentage', 'minCommission'];
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 
@@ -27,11 +33,16 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersCommissions();
-
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCommissions);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersCommissions();
       this.routerUtils.reloadComponent(true);
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCommissions);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   loadColHeadersCommissions(): void {

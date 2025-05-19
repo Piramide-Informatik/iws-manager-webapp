@@ -2,9 +2,12 @@
   <div class="row">
     <div class>
       <master-data-genaral-table
+        [tableId]="tableKey"
         [tableValues]="typeOfCompaniesValues"
         [columns]="typeOfCompaniesColumns"
-        [hideColumns]="isTypeOfCompaniesChipVisible"
+        [userPreferences]="userPreferences"
+        [dataKeys]="dataKeys"
+        (onColumnChanges)="onUserPreferencesChanges($event)"
       ></master-data-genaral-table>
     </div>
   </div>

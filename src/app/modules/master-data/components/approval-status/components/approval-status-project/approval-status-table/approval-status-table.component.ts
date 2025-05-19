@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from "@ngx-translate/core";
 import { approvalStatus } from './approval-status.data'; 
 import { MasterDataService } from '../../../../../master-data.service';
+import { UserPreferenceService } from '../../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-approval-types-table',
@@ -15,6 +17,9 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   appovalStatuses = [...approvalStatus];
   cols: any[] = [];
   selectedColumns: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'ApprovalType'
+  dataKeys = ['approvalStatus', 'order', 'projects', 'networks'];
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -22,6 +27,7 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly masterDataService: MasterDataService
     ) { }
 
@@ -31,6 +37,10 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateColumnHeaders();
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
   
   private updateColumnHeaders(): void {
@@ -47,11 +57,4 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
       this.langSubscription.unsubscribe();
     }
   }
-
-  applyFilter(event: any, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
 }

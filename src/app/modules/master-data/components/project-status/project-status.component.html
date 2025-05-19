@@ -2,10 +2,14 @@
     <div class="row">
       <div class="col-6">
         <master-data-genaral-table
+          [tableId]="tableKey"
           [tableValues]="projects"
           [columns]="columsHeaderFieldProjects"
           [hideColumns]="false"
           tableTitle="PROJECT_STATUS.PROJECT_STATUS"
+          [userPreferences]="userPreferences"
+          [dataKeys]="dataKeys"
+          (onColumnChanges)="onUserPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-6">

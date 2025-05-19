@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../../../master-data.service';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'master-data-edit-network',
@@ -15,11 +17,15 @@ export class EditNetworkComponent {
   public editNetworkForm!: FormGroup;
   public partners!: any[];
   public columsHeaderFieldPartner: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'EditNetwork'
+  dataKeys = ['customerNumber', 'partner'];
 
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly masterDataService: MasterDataService,
   ){}
 
@@ -29,10 +35,16 @@ export class EditNetworkComponent {
     });
     
     this.loadColHeadersPartner();
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
     this.partners = this.masterDataService.getPartnersData();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersPartner();
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   loadColHeadersPartner(): void {

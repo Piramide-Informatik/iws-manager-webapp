@@ -6,11 +6,15 @@
                 <input pInputText type="text" id="network" formControlName="network" autocomplete="off" />
             </div>
             <master-data-genaral-table
+                [tableId]="tableKey"
                 [tableValues]="partners"
                 [columns]="columsHeaderFieldPartner"
                 [filterByColumns]="false"
                 [hideColumns]="false"
                 nameNewButton="NETWORKS.LABEL.NEW_PARTNER"
+                [userPreferences]="userPreferences"
+                [dataKeys]="dataKeys"
+                (onColumnChanges)="onUserPreferencesChanges($event)"
             ></master-data-genaral-table>
             <div class="row mt-2">
                 <div class="col flex justify-content-center">

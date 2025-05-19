@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { GERMAN_ROLES } from './roles.data';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-rol-table',
@@ -16,17 +18,29 @@ export class RolTableComponent implements OnInit, OnDestroy {
   roles = [...GERMAN_ROLES];
   cols: any[] = [];
   selectedColumns: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'Rol'
+  dataKeys = ['rol'];
+
   @ViewChild('dt') dt!: Table;
 
   private langSubscription!: Subscription;
 
-  constructor(private readonly router: Router, private readonly translate: TranslateService ) { }
+  constructor(private readonly router: Router,
+              private userPreferenceService: UserPreferenceService, 
+              private readonly translate: TranslateService ) { }
 
   ngOnInit() {
     this.updateHeadersAndColumns();
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   updateHeadersAndColumns() {

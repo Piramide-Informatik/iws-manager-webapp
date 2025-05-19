@@ -97,11 +97,4 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   createAbsenceType() {
     console.log('Creating new absence type');
   }
-
-  applyFilter(event: any, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
 }

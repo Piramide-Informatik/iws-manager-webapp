@@ -2,9 +2,13 @@
     <div class="row">
       <div class="col-6">
         <master-data-genaral-table
+          [tableId]="tableKey"
           [tableValues]="projectFunnels"
           [columns]="columsHeaderFieldProjecFunnels"
           [hideColumns]="false"
+          [userPreferences]="userPreferences"
+          [dataKeys]="dataKeys"
+          (onColumnChanges)="onUserPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-6">

@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../../../router-utils.service';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-iws-staff-table',
@@ -12,10 +14,15 @@ import { RouterUtilsService } from '../../../../router-utils.service';
 export class IwsStaffTableComponent implements OnInit, OnDestroy {
   iwsStaff: any[] = [];
   columnsHeaderFieldIwsStaff: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'IwsStaffT'
+  dataKeys = ['type', 'abbreviation', 'firstName', 'lastName', 'email'];
+
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 
@@ -71,11 +78,16 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersIwsStaff();
-
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersIwsStaff();
       this.routerUtils.reloadComponent(true);
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   loadColHeadersIwsStaff(): void {

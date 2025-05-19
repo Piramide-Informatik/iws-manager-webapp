@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-funding-programs-table',
@@ -12,10 +14,14 @@ import { RouterUtilsService } from '../../../../router-utils.service';
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   fundingProgramsUI: any[] = [];
   columnsHeaderFieldFundingProgram: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'FundingPrograms'
+  dataKeys = ['program', 'rate'];
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 
@@ -38,11 +44,16 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersFundingProgram();
-
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersFundingProgram();
       this.routerUtils.reloadComponent(true);
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   loadColHeadersFundingProgram(): void {

@@ -3,6 +3,8 @@ import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-realitation-probabilities',
@@ -13,12 +15,16 @@ import { RouterUtilsService } from '../../router-utils.service';
 export class RealitationProbabilitiesComponent {
   public probabilities: any[] = [];
   public columsHeaderFieldProbabilities: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'RealitationProbabilities'
+  dataKeys = ['realizationProbabilities'];
 
   private langSubscription!: Subscription;
   
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
@@ -26,11 +32,16 @@ export class RealitationProbabilitiesComponent {
     this.probabilities = this.masterDataService.getRealizationProbabilitiesData();
 
     this.loadColHeadersProbabilities();
-
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersProbabilities();
       this.routerUtils.reloadComponent(true);
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
   
   loadColHeadersProbabilities(): void {

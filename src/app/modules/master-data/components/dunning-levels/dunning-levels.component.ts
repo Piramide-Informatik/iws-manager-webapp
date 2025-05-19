@@ -3,6 +3,8 @@ import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-dunning-levels',
@@ -13,24 +15,33 @@ import { RouterUtilsService } from '../../router-utils.service';
 export class DunningLevelsComponent implements OnInit, OnDestroy {
   dunningLevels: any[] = [];
   columsHeaderField: any[] = [];
+  userPreferences: UserPreference = {};
+  tableKey: string = 'Dunning'
+  dataKeys = ['dunningLevel', 'text'];
 
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
   ngOnInit(): void {
     this.dunningLevels = this.masterDataService.getDunningLevelsData();
-
     this.loadColHeaders();
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.routerUtils.reloadComponent(true);
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   loadColHeaders(): void {

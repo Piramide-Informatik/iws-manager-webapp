@@ -3,6 +3,8 @@ import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-terms-payment',
@@ -13,12 +15,15 @@ import { RouterUtilsService } from '../../router-utils.service';
 export class TermsPaymentComponent {
   public termsPayment: any[] = [];
   public columsHeaderFieldTermsPayment: any[] = [];
-  
+  userPreferences: UserPreference = {};
+  tableKey: string = 'TermsPayment'
+  dataKeys = ['termsPayment', 'termPayment'];
   private langSubscription!: Subscription;
   
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
@@ -26,11 +31,16 @@ export class TermsPaymentComponent {
     this.termsPayment = this.masterDataService.getTermsPaymentData();
 
     this.loadColHeadersTermsPayment();
-
+    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldTermsPayment);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersTermsPayment();
       this.routerUtils.reloadComponent(true);
+      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldTermsPayment);
     });
+  }
+
+  onUserPreferencesChanges(userPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
   loadColHeadersTermsPayment(): void {
