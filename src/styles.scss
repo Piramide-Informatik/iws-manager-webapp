@@ -230,3 +230,22 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
     color: #fff !important; 
   }
 }
+
+/*Styles password*/
+.user-form .p-password, .p-password-input {
+  width: 100% !important;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+p-password {
+  flex: 1;
+  max-width: 390px;
+  margin-left: 1rem;
+  display: flex;
+}
+
+/* Cambia el color de los íconos de los controles del PickList */
+.p-picklist .p-button svg {
+  color: #ffffff !important; 
+}
