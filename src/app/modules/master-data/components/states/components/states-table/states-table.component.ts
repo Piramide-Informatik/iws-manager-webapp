@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { GERMAN_STATES } from './states.data';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-states-table',
@@ -15,21 +17,31 @@ export class StatesTableComponent implements OnInit, OnDestroy {
   states = [...GERMAN_STATES];
   cols: any[] = [];
   selectedColumns: any[] = [];
+  userStatesPreferences: UserPreference = {};
+  tableKey: string = 'States'
+  dataKeys = ['state'];
+
   @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router
   ) {}
 
   ngOnInit() {
     this.updateHeadersAndColumns();
-
+    this.userStatesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
+      this.userStatesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
+  }
+
+  onUserStatesPreferencesChanges(userStatesPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userStatesPreferences));
   }
 
   updateHeadersAndColumns() {

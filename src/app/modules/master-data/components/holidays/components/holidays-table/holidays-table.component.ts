@@ -3,6 +3,8 @@ import { TranslateService, _ } from '@ngx-translate/core';
 import { MasterDataService } from '../../../../master-data.service';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-holidays-table',
@@ -13,11 +15,15 @@ import { RouterUtilsService } from '../../../../router-utils.service';
 export class HolidaysTableComponent implements OnInit, OnDestroy {
   holidayUI: any[] = [];
   columnsHeaderFieldHoliday: any[] = [];
+  userHolidaysPreferences: UserPreference = {};
+  tableKey: string = 'Holidays'
+  dataKeys = ['sort', 'name'];
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 
@@ -38,11 +44,16 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersHoliday();
-
+    this.userHolidaysPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldHoliday);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersHoliday();
       this.routerUtils.reloadComponent(true);
+      this.userHolidaysPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldHoliday);
     });
+  }
+
+  onUserHolidaysPreferencesChanges(userHolidaysPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userHolidaysPreferences));
   }
 
   loadColHeadersHoliday(): void {

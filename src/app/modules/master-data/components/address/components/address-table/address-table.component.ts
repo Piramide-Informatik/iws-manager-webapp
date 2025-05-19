@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'master-data-address-table',
@@ -14,6 +16,9 @@ export class AddressTableComponent implements OnInit, OnDestroy {
   salutations: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
+  userAddressPreferences: UserPreference = {};
+  tableKey: string = 'Address'
+  dataKeys = ['salutation'];
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -21,6 +26,7 @@ export class AddressTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router
   ) {}
 
@@ -38,11 +44,17 @@ export class AddressTableComponent implements OnInit, OnDestroy {
 
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
+    this.userAddressPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = [...this.cols];
+      this.userAddressPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
+  }
+
+  onUserAddressPreferencesChanges(userAddressPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userAddressPreferences));
   }
 
   loadColHeaders(): void {
@@ -68,12 +80,5 @@ export class AddressTableComponent implements OnInit, OnDestroy {
 
   createSalutation() {
     console.log('Creating new salutation');
-  }
-
-  applyFilter(event: any, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
   }
 }

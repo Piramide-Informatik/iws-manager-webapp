@@ -1,8 +1,12 @@
 <div class="container">
   <div class="row">
     <master-data-genaral-table
+      [tableId]="tableKey"
       [tableValues]="commissions"
       [columns]="columnsHeaderFieldCommissions"
+      [userPreferences]="userIwsCommissionsPreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserIwsCommissionsPreferencesChanges($event)"
     ></master-data-genaral-table>
   </div>
 </div>

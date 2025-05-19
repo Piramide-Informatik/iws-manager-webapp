@@ -110,6 +110,7 @@ import { BillingMethodsTableComponent } from './components/billing-methods/compo
 import { ContractStatusComponent } from './components/contract-status/contract-status.component';
 import { ContractStatusFormComponent } from './components/contract-status/components/contract-status-form/contract-status-form.component';
 import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
+import { UserPreferenceService } from '../../Services/user-preferences.service';
 
 @NgModule({
   declarations: [
@@ -221,5 +222,6 @@ import { ContractStatusTableComponent } from './components/contract-status/compo
     PasswordModule,
     PickListModule,
   ],
+  providers: [UserPreferenceService]
 })
 export class MasterDataModule {}
