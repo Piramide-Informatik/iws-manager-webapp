@@ -232,22 +232,22 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
 }
 
 /* Styles filter advanced */
-filtericon svg.p-icon, .p-datatable-column-filter-button svg.p-icon {
+.p-datatable-column-filter-button svg.p-icon {
   color: #ffffff; 
 }
 
-div.flex.items-center.gap-2:hover  svg.p-icon {
-  color: #000 !important; 
+.p-datatable-resizable-column:hover svg.p-icon {
+  color: #000 !important;
 }
 
 .p-datatable-column-filter-button {
   background: none !important;
 }
 
-.p-ripple.p-button.p-component.p-button-outlined.p-button-sm {
-   color: #fff !important;
+th.p-datatable-column-sorted svg.p-icon {
+  color: #478574 !important;
 }
 
-th.p-datatable-column-sorted .p-datatable-column-filter-button svg.p-icon {
-  color: #478574 !important;
+th.p-datatable-column-sorted:hover svg.p-icon {
+  color: #000 !important;
 }
