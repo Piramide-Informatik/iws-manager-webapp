@@ -10,17 +10,10 @@
   }
 
   input,
-  p-toggleswitch,
-  ::ng-deep p-password {
+  p-toggleswitch {
     flex: 1;
     max-width: 390px;
     margin-left: 1rem;
     display: flex;
-  }
-
-  ::ng-deep p-password .p-password-input {
-    flex: 1;
-    width: 390px !important;
-    max-width: 390px !important;
-  }
+  } 
 }
