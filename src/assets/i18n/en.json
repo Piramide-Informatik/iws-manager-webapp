@@ -651,5 +651,10 @@
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
     }
-  }
+  },
+  "TABLE_GENERAL": {
+    "TABLE": {
+      "LABEL_HIDE": "Hide Column"
+    }
+  } 
 }

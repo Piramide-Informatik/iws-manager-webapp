@@ -23,7 +23,7 @@
             [options]="columns" 
             [(ngModel)]="selectedColumns" 
             optionLabel="header"
-            selectedItemsLabel="Hide columns" 
+            [selectedItemsLabel]= "'TABLE_GENERAL.TABLE.LABEL_HIDE' | translate" 
             placeholder="Choose Columns" 
             [maxSelectedLabels]="0"
             [appendTo]="'body'" />

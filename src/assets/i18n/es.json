@@ -651,5 +651,10 @@
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido"
     }
-  }
+  },
+  "TABLE_GENERAL": {
+    "TABLE": {
+      "LABEL_HIDE": "Ocultar columnas"
+    }
+  } 
 }

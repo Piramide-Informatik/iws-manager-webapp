@@ -651,5 +651,10 @@
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
     }
-  }
+  },
+  "TABLE_GENERAL": {
+    "TABLE": {
+      "LABEL_HIDE": "Spalten ausbl."
+    }
+  }   
 }
