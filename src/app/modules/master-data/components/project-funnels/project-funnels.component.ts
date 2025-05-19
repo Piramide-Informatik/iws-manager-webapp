@@ -16,7 +16,7 @@ export class ProjectFunnelsComponent {
 
   public projectFunnels: any[] = [];
   columsHeaderFieldProjecFunnels: any[] = [];
-  userPreferences: UserPreference = {};
+  userProjectFunnelsPreferences: UserPreference = {};
   tableKey: string = 'ProjectFunnels'
   dataKeys = ['id','projectSponsor'];
 
@@ -33,16 +33,16 @@ export class ProjectFunnelsComponent {
     this.projectFunnels = this.masterDataService.getProjectFunnelsData();
 
     this.loadColHeadersProjectFunnels();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjecFunnels);
+    this.userProjectFunnelsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjecFunnels);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersProjectFunnels();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjecFunnels);
+      this.userProjectFunnelsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjecFunnels);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserProjectFunnelsPreferencesChanges(userProjectFunnelsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userProjectFunnelsPreferences));
   }
 
   loadColHeadersProjectFunnels(): void {

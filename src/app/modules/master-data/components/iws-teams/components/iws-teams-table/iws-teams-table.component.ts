@@ -15,7 +15,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   IwsTeams: any[] = [];
   columnsHeaderIwsTeams: any[] = [];
   private langSubscription!: Subscription;
-  userPreferences: UserPreference = {};
+  userIwsTeamsPreferences: UserPreference = {};
   tableKey: string = 'IwsTeams'
   dataKeys = ['name'];
 
@@ -40,16 +40,16 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColumnsIwsTeams();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderIwsTeams);
+    this.userIwsTeamsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderIwsTeams);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumnsIwsTeams();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderIwsTeams);
+      this.userIwsTeamsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderIwsTeams);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserIwsTeamsPreferencesChanges(userIwsTeamsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userIwsTeamsPreferences));
   }
 
   loadColumnsIwsTeams(): void {

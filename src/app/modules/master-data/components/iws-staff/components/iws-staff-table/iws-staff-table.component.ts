@@ -14,7 +14,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 export class IwsStaffTableComponent implements OnInit, OnDestroy {
   iwsStaff: any[] = [];
   columnsHeaderFieldIwsStaff: any[] = [];
-  userPreferences: UserPreference = {};
+  userIwsStaffTPreferences: UserPreference = {};
   tableKey: string = 'IwsStaffT'
   dataKeys = ['type', 'abbreviation', 'firstName', 'lastName', 'email'];
 
@@ -78,16 +78,16 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersIwsStaff();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
+    this.userIwsStaffTPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersIwsStaff();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
+      this.userIwsStaffTPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserIwsStaffTPreferencesChanges(userIwsStaffTPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userIwsStaffTPreferences));
   }
 
   loadColHeadersIwsStaff(): void {

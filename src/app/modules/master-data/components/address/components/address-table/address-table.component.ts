@@ -16,7 +16,7 @@ export class AddressTableComponent implements OnInit, OnDestroy {
   salutations: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
-  userPreferences: UserPreference = {};
+  userAddressPreferences: UserPreference = {};
   tableKey: string = 'Address'
   dataKeys = ['salutation'];
 
@@ -44,17 +44,17 @@ export class AddressTableComponent implements OnInit, OnDestroy {
 
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    this.userAddressPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = [...this.cols];
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+      this.userAddressPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserAddressPreferencesChanges(userAddressPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userAddressPreferences));
   }
 
   loadColHeaders(): void {

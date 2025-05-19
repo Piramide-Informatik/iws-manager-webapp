@@ -5,9 +5,9 @@
       [tableValues]="countries"
       [columns]="columnsHeaderFieldCoutries"
       (editItem)="editCountry($event)"
-      [userPreferences]="userPreferences"
+      [userPreferences]="userCountriesPreferences"
       [dataKeys]="dataKeys"
-      (onColumnChanges)="onUserPreferencesChanges($event)"
+      (onColumnChanges)="onUserCountriesPreferencesChanges($event)"
     ></master-data-genaral-table>
   </div>
 </div>

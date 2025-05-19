@@ -17,7 +17,7 @@ export class StatesTableComponent implements OnInit, OnDestroy {
   states = [...GERMAN_STATES];
   cols: any[] = [];
   selectedColumns: any[] = [];
-  userPreferences: UserPreference = {};
+  userStatesPreferences: UserPreference = {};
   tableKey: string = 'States'
   dataKeys = ['state'];
 
@@ -33,15 +33,15 @@ export class StatesTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
+    this.userStatesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
+      this.userStatesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserStatesPreferencesChanges(userStatesPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userStatesPreferences));
   }
 
   updateHeadersAndColumns() {

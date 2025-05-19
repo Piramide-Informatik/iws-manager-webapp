@@ -18,7 +18,7 @@ export class RolTableComponent implements OnInit, OnDestroy {
   roles = [...GERMAN_ROLES];
   cols: any[] = [];
   selectedColumns: any[] = [];
-  userPreferences: UserPreference = {};
+  userRolPreferences: UserPreference = {};
   tableKey: string = 'Rol'
   dataKeys = ['rol'];
 
@@ -27,20 +27,20 @@ export class RolTableComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
 
   constructor(private readonly router: Router,
-              private userPreferenceService: UserPreferenceService, 
+              private readonly userPreferenceService: UserPreferenceService, 
               private readonly translate: TranslateService ) { }
 
   ngOnInit() {
     this.updateHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
+    this.userRolPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
+      this.userRolPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserRolPreferencesChanges(userRolPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userRolPreferences));
   }
 
   updateHeadersAndColumns() {

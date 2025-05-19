@@ -19,7 +19,7 @@ export class TextTableComponent implements OnInit, OnDestroy {
   textColumns: any[] = [];
   textDisplayedColumns: any[] = [];
   isTextChipVisible = false;
-  userPreferences: UserPreference = {};
+  userTextPreferences: UserPreference = {};
   tableKey: string = 'Text'
   dataKeys = ['label', 'text'];
   
@@ -31,15 +31,15 @@ export class TextTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadTextHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.textDisplayedColumns)
+    this.userTextPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.textDisplayedColumns)
     this.langTextSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadTextHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.textDisplayedColumns)
+      this.userTextPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.textDisplayedColumns)
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserTextPreferencesChanges(userTextPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userTextPreferences));
   }
 
   loadTextHeadersAndColumns() {

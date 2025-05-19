@@ -17,7 +17,7 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
 
   billingMethodsValues = [...BILLING_METHODS];
   billingMethodColumns: any[] = [];
-  userPreferences: UserPreference = {};
+  userBillingMethodsPreferences: UserPreference = {};
   tableKey: string = 'BillingMethods'
   dataKeys = ['invoiceType'];
 
@@ -31,15 +31,15 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadBillingMethodsHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.billingMethodColumns);
+    this.userBillingMethodsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.billingMethodColumns);
     this.langBillingMethodsSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadBillingMethodsHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.billingMethodColumns);
+      this.userBillingMethodsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.billingMethodColumns);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserBillingMethodsPreferencesChanges(userBillingMethodsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userBillingMethodsPreferences));
   }
 
   loadBillingMethodsHeadersAndColumns() {

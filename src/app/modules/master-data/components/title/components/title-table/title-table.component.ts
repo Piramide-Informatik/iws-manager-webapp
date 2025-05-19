@@ -19,7 +19,7 @@ export class TitleTableComponent implements OnInit, OnDestroy {
   titleColumns: any[] = [];
   titleDisplayedColumns: any[] = [];
   isChipsVisible = false;
-  userPreferences: UserPreference = {};
+  userTitlePreferences: UserPreference = {};
   tableKey: string = 'Title'
   dataKeys = ['label', 'title'];
 
@@ -33,15 +33,15 @@ export class TitleTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadTitleHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
+    this.userTitlePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
     this.langTitleSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadTitleHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
+      this.userTitlePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserTitlePreferencesChanges(userTitlePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userTitlePreferences));
   }
 
   loadTitleHeadersAndColumns() {

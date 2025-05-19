@@ -17,7 +17,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   absenceTypes: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
-  userPreferences: UserPreference = {};
+  userAbsenceTypePreferences: UserPreference = {};
   tableKey: string = 'AbsenceType'
   dataKeys = ['type', 'abbreviation', 'fractionOfDay', 'isVacation', 'canBeBooked'];
 
@@ -49,17 +49,17 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    this.userAbsenceTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = [...this.cols];
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+      this.userAbsenceTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserAbsenceTypePreferencesChanges(userAbsenceTypePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userAbsenceTypePreferences));
   }
 
   loadColHeaders(): void {

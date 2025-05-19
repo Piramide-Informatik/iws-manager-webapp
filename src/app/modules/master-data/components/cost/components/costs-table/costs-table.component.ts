@@ -14,7 +14,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 export class CostsTableComponent implements OnInit, OnDestroy {
   costsUI: any[] = [];
   columnsHeaderFieldCosts: any[] = [];
-  userPreferences: UserPreference = {};
+  userCostTablePreferences: UserPreference = {};
   tableKey: string = 'CostTable'
   dataKeys = ['name', 'sort'];
   private langSubscription!: Subscription;
@@ -40,16 +40,16 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersCost();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
+    this.userCostTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersCost();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
+      this.userCostTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserCostTablePreferencesChanges(userCostTablePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userCostTablePreferences));
   }
 
   loadColHeadersCost(): void {

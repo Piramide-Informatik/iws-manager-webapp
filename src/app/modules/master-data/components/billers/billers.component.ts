@@ -15,7 +15,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 export class BillersComponent {
   public billers: any[] = [];
   public columsHeaderFieldBillers: any[] = [];
-  userPreferences: UserPreference = {};
+  userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
   dataKeys = ['biller'];
 
@@ -33,17 +33,17 @@ export class BillersComponent {
     this.billers = this.masterDataService.getBillersData();
 
     this.loadColHeadersBillers();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldBillers);
+    this.userBillersPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldBillers);
  
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersBillers();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldBillers);
+      this.userBillersPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldBillers);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserBillersPreferencesChanges(userBillersPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userBillersPreferences));
   }
 
   loadColHeadersBillers(): void {

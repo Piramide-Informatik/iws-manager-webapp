@@ -15,7 +15,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 export class NetworksComponent implements OnInit, OnDestroy {
   public networks: any[] = [];
   public columsHeaderFieldNetworks: any[] = [];
-  userPreferences: UserPreference = {};
+  userNetworksPreferences: UserPreference = {};
   tableKey: string = 'Networks'
   dataKeys = ['network'];
 
@@ -32,16 +32,16 @@ export class NetworksComponent implements OnInit, OnDestroy {
     this.networks = this.masterDataService.getNetworksData();
 
     this.loadColHeadersNetworks();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldNetworks);
+    this.userNetworksPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldNetworks);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersNetworks();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldNetworks);
+      this.userNetworksPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldNetworks);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserNetworksPreferencesChanges(userNetworksPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userNetworksPreferences));
   }
   
   loadColHeadersNetworks(): void {

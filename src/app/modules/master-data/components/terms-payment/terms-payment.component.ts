@@ -15,7 +15,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 export class TermsPaymentComponent {
   public termsPayment: any[] = [];
   public columsHeaderFieldTermsPayment: any[] = [];
-  userPreferences: UserPreference = {};
+  userTermsPaymentPreferences: UserPreference = {};
   tableKey: string = 'TermsPayment'
   dataKeys = ['termsPayment', 'termPayment'];
   private langSubscription!: Subscription;
@@ -31,16 +31,16 @@ export class TermsPaymentComponent {
     this.termsPayment = this.masterDataService.getTermsPaymentData();
 
     this.loadColHeadersTermsPayment();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldTermsPayment);
+    this.userTermsPaymentPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldTermsPayment);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersTermsPayment();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldTermsPayment);
+      this.userTermsPaymentPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldTermsPayment);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserTermsPaymentPreferencesChanges(userTermsPaymentPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userTermsPaymentPreferences));
   }
 
   loadColHeadersTermsPayment(): void {

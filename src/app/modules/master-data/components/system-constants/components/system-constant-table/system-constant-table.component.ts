@@ -18,7 +18,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   systemConstantsValues = [...SYSTEM_CONSTANT];
   systemConstantsColumns: any[] = [];
   isSystemConstantsChipVisible = false;
-  userPreferences: UserPreference = {};
+  userSystemConstantPreferences: UserPreference = {};
   tableKey: string = 'SystemConstant'
   dataKeys = ['constant', 'value'];
 
@@ -32,15 +32,15 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.systemConstantsColumns);
+    this.userSystemConstantPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.systemConstantsColumns);
     this.langConstantsSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.systemConstantsColumns);
+      this.userSystemConstantPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.systemConstantsColumns);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserSystemConstantPreferencesChanges(userSystemConstantPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userSystemConstantPreferences));
   }
 
   loadHeadersAndColumns() {

@@ -15,7 +15,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 export class RealitationProbabilitiesComponent {
   public probabilities: any[] = [];
   public columsHeaderFieldProbabilities: any[] = [];
-  userPreferences: UserPreference = {};
+  userRealitationProbabilitiesPreferences: UserPreference = {};
   tableKey: string = 'RealitationProbabilities'
   dataKeys = ['realizationProbabilities'];
 
@@ -32,16 +32,16 @@ export class RealitationProbabilitiesComponent {
     this.probabilities = this.masterDataService.getRealizationProbabilitiesData();
 
     this.loadColHeadersProbabilities();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
+    this.userRealitationProbabilitiesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersProbabilities();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
+      this.userRealitationProbabilitiesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserRealitationProbabilitiesPreferencesChanges(userRealitationProbabilitiesPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userRealitationProbabilitiesPreferences));
   }
   
   loadColHeadersProbabilities(): void {

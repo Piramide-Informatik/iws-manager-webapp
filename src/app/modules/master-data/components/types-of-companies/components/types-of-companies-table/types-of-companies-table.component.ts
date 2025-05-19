@@ -18,7 +18,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
   typeOfCompaniesValues = [...TYPES_OF_COMPANIES];
   typeOfCompaniesColumns: any[] = [];
   isTypeOfCompaniesChipVisible = false;
-  userPreferences: UserPreference = {};
+  userTypesOfCompaniesPreferences: UserPreference = {};
   tableKey: string = 'TypesOfCompanies'
   dataKeys = ['companyType'];
 
@@ -32,15 +32,15 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadTypeOfCompaniesHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.typeOfCompaniesColumns);
+    this.userTypesOfCompaniesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.typeOfCompaniesColumns);
     this.langTypeOfCompaniesSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadTypeOfCompaniesHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.typeOfCompaniesColumns);
+      this.userTypesOfCompaniesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.typeOfCompaniesColumns);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserTypesOfCompaniesPreferencesChanges(userTypesOfCompaniesPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userTypesOfCompaniesPreferences));
   }
 
   loadTypeOfCompaniesHeadersAndColumns() {

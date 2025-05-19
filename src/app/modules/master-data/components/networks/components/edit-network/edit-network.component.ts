@@ -17,7 +17,7 @@ export class EditNetworkComponent {
   public editNetworkForm!: FormGroup;
   public partners!: any[];
   public columsHeaderFieldPartner: any[] = [];
-  userPreferences: UserPreference = {};
+  userEditNetworkPreferences: UserPreference = {};
   tableKey: string = 'EditNetwork'
   dataKeys = ['customerNumber', 'partner'];
 
@@ -35,16 +35,16 @@ export class EditNetworkComponent {
     });
     
     this.loadColHeadersPartner();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
+    this.userEditNetworkPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
     this.partners = this.masterDataService.getPartnersData();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersPartner();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
+      this.userEditNetworkPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserEditNetworkPreferencesChanges(userEditNetworkPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userEditNetworkPreferences));
   }
 
   loadColHeadersPartner(): void {

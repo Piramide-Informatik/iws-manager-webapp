@@ -15,7 +15,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 export class DunningLevelsComponent implements OnInit, OnDestroy {
   dunningLevels: any[] = [];
   columsHeaderField: any[] = [];
-  userPreferences: UserPreference = {};
+  userDunningPreferences: UserPreference = {};
   tableKey: string = 'Dunning'
   dataKeys = ['dunningLevel', 'text'];
 
@@ -31,17 +31,17 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dunningLevels = this.masterDataService.getDunningLevelsData();
     this.loadColHeaders();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
+    this.userDunningPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
+      this.userDunningPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserDunningPreferencesChanges(userDunningPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userDunningPreferences));
   }
 
   loadColHeaders(): void {

@@ -7,9 +7,9 @@
           [columns]="columsHeaderFieldProjects"
           [hideColumns]="false"
           tableTitle="PROJECT_STATUS.PROJECT_STATUS"
-          [userPreferences]="userPreferences"
+          [userPreferences]="userProjectStatusPreferences"
           [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserPreferencesChanges($event)"
+          (onColumnChanges)="onUserProjectStatusPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-6">

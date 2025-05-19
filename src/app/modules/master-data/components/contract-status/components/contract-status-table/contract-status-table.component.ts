@@ -18,7 +18,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
 
   contractStatusValues = [...CONTRACT_STATUS];
   contractStatusColumns: any[] = [];
-  userPreferences: UserPreference = {};
+  userContractStatusPreferences: UserPreference = {};
   tableKey: string = 'ContractStatus'
   dataKeys = ['contractStatus'];
 
@@ -32,15 +32,15 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadContractStatusHeadersAndColumns();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.contractStatusColumns);
+    this.userContractStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.contractStatusColumns);
     this.langContractStatusSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadContractStatusHeadersAndColumns();
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.contractStatusColumns);
+      this.userContractStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.contractStatusColumns);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserContractStatusPreferencesChanges(userContractStatusPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userContractStatusPreferences));
   }
 
   loadContractStatusHeadersAndColumns() {

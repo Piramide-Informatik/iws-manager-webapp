@@ -16,7 +16,7 @@ export class ProjectStatusComponent {
 
   public projects: any[] = [];
   public columsHeaderFieldProjects: any[] = [];
-  userPreferences: UserPreference = {};
+  userProjectStatusPreferences: UserPreference = {};
   tableKey: string = 'ProjectStatus'
   dataKeys = ['projectStatus'];
 
@@ -33,16 +33,16 @@ export class ProjectStatusComponent {
     this.projects = this.masterDataService.getProjectStatusData();
 
     this.loadColHeadersProjects();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
+    this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersProjects();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
+      this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserProjectStatusPreferencesChanges(userProjectStatusPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userProjectStatusPreferences));
   }
 
   loadColHeadersProjects(): void {

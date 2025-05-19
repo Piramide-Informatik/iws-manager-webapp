@@ -14,7 +14,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 export class CountriesTableComponent implements OnInit, OnDestroy {
   countries: any[] = [];
   columnsHeaderFieldCoutries: any[] = [];
-  userPreferences: UserPreference = {};
+  userCountriesPreferences: UserPreference = {};
   tableKey: string = 'Countries'
   dataKeys = ['name', 'abbreviation', 'isStandard'];
 
@@ -35,16 +35,16 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColumnsCountries();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
+    this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumnsCountries();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
+      this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserCountriesPreferencesChanges(userCountriesPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userCountriesPreferences));
   }
 
   loadColumnsCountries(): void {

@@ -15,7 +15,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 export class HolidaysTableComponent implements OnInit, OnDestroy {
   holidayUI: any[] = [];
   columnsHeaderFieldHoliday: any[] = [];
-  userPreferences: UserPreference = {};
+  userHolidaysPreferences: UserPreference = {};
   tableKey: string = 'Holidays'
   dataKeys = ['sort', 'name'];
   private langSubscription!: Subscription;
@@ -44,16 +44,16 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersHoliday();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldHoliday);
+    this.userHolidaysPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldHoliday);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersHoliday();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldHoliday);
+      this.userHolidaysPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldHoliday);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserHolidaysPreferencesChanges(userHolidaysPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userHolidaysPreferences));
   }
 
   loadColHeadersHoliday(): void {

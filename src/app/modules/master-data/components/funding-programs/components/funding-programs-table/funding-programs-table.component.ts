@@ -14,7 +14,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   fundingProgramsUI: any[] = [];
   columnsHeaderFieldFundingProgram: any[] = [];
-  userPreferences: UserPreference = {};
+  userFundingProgramsPreferences: UserPreference = {};
   tableKey: string = 'FundingPrograms'
   dataKeys = ['program', 'rate'];
   private langSubscription!: Subscription;
@@ -44,16 +44,16 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersFundingProgram();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
+    this.userFundingProgramsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersFundingProgram();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
+      this.userFundingProgramsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserFundingProgramsPreferencesChanges(userFundingProgramsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userFundingProgramsPreferences));
   }
 
   loadColHeadersFundingProgram(): void {

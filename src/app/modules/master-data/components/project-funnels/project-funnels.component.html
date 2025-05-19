@@ -5,10 +5,9 @@
           [tableId]="tableKey"
           [tableValues]="projectFunnels"
           [columns]="columsHeaderFieldProjecFunnels"
-          [hideColumns]="false"
-          [userPreferences]="userPreferences"
+          [userPreferences]="userProjectFunnelsPreferences"
           [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserPreferencesChanges($event)"
+          (onColumnChanges)="onUserProjectFunnelsPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-6">

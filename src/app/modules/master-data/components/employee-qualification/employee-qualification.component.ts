@@ -17,7 +17,7 @@ export class EmployeeQualificationComponent implements OnInit, OnDestroy {
   public employeesQualifications: any[] = [];
   public columsHeaderFieldEmployee: any[] = [];
   private langSubscription!: Subscription;
-  userPreferences: UserPreference = {};
+  userEmployeeQualificationPreferences: UserPreference = {};
   tableKey: string = 'EmployeeQualification'
   dataKeys = ['qualification', 'abbreviation'];
 
@@ -31,17 +31,17 @@ export class EmployeeQualificationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.employeesQualifications = this.masterDataService.getEmployeeQualificationData();
     this.loadColHeaders();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldEmployee);
+    this.userEmployeeQualificationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldEmployee);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldEmployee);
+      this.userEmployeeQualificationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldEmployee);
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserEmployeeQualificationPreferencesChanges(userEmployeeQualificationPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userEmployeeQualificationPreferences));
   }
 
   loadColHeaders(): void {

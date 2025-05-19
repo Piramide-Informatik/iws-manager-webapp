@@ -7,9 +7,9 @@
           tableTitle="networks"
           [columns]="columsHeaderFieldNetworks"
           [hideColumns]="false"
-          [userPreferences]="userPreferences"
+          [userPreferences]="userNetworksPreferences"
           [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserPreferencesChanges($event)"
+          (onColumnChanges)="onUserNetworksPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-6">
