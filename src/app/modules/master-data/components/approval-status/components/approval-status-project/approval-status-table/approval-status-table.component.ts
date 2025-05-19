@@ -17,7 +17,7 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   appovalStatuses = [...approvalStatus];
   cols: any[] = [];
   selectedColumns: any[] = [];
-  userPreferences: UserPreference = {};
+  userApprovalTypePreferences: UserPreference = {};
   tableKey: string = 'ApprovalType'
   dataKeys = ['approvalStatus', 'order', 'projects', 'networks'];
 
@@ -33,14 +33,15 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateColumnHeaders();
-  
+    this.userApprovalTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns); 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateColumnHeaders();
+      this.userApprovalTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns); 
     });
   }
 
-  onUserPreferencesChanges(userPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+  onUserApprovalTypePreferencesChanges(userApprovalTypePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userApprovalTypePreferences));
   }
   
   private updateColumnHeaders(): void {

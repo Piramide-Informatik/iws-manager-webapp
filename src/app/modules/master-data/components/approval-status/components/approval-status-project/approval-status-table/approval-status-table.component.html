@@ -5,9 +5,9 @@
           [tableId]="tableKey"
           [tableValues]="appovalStatuses"
           [columns]="selectedColumns"
-          [userPreferences]="userPreferences"
+          [userPreferences]="userApprovalTypePreferences"
           [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserPreferencesChanges($event)"
+          (onColumnChanges)="onUserApprovalTypePreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
     </div>
