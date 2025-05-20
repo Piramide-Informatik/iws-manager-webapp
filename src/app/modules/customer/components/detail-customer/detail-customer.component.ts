@@ -11,6 +11,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { BranchService } from '../../../../Services/branch.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
 import { CompanyTypeService } from '../../../../Services/company-type.service';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
@@ -31,6 +33,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public customers!: Customer[];
   private langSubscription!: Subscription;
   public countries!: Country[];
+  userDetailCustomerPreferences: UserPreference = {};
+  tableKey: string = 'DetailCustomer'
+  dataKeys = ['name', 'function', 'right'];
+  
 
   private readonly branchService = inject(BranchService);
   private readonly companyTypeService = inject(CompanyTypeService);
@@ -81,6 +87,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private readonly countryService : CountryService,
     private readonly customerService: CustomerService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly translate: TranslateService 
   ) {
@@ -114,8 +121,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     this.countries = this.countryService.getCountries();
     this.updateHeadersAndColumns();
+    this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
+      this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
     this.customers = this.customerService.getCustomers();
@@ -141,6 +151,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     ];
 
     this.selectedColumns = this.cols;
+  }
+
+  onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userCustomerDetailPreferences));
   }
 
   updateHeadersAndColumns() {
@@ -181,7 +195,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   deletePerson(contact: any) {
     this.contactPersonService.deleteContactPerson(
       this.contactPersonService.contactPersons()
-        .find(p => p.id === contact.id)?.uuid ?? ''
+        .find(p => p.id === contact)?.uuid ?? ''
     );
   }
 
