@@ -3,6 +3,8 @@ import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-project-status',
@@ -14,12 +16,16 @@ export class ProjectStatusComponent {
 
   public projects: any[] = [];
   public columsHeaderFieldProjects: any[] = [];
-  
+  userProjectStatusPreferences: UserPreference = {};
+  tableKey: string = 'ProjectStatus'
+  dataKeys = ['projectStatus'];
+
   private langSubscription!: Subscription;
   
   constructor(
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
@@ -27,11 +33,16 @@ export class ProjectStatusComponent {
     this.projects = this.masterDataService.getProjectStatusData();
 
     this.loadColHeadersProjects();
-
+    this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersProjects();
       this.routerUtils.reloadComponent(true);
+      this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
     });
+  }
+
+  onUserProjectStatusPreferencesChanges(userProjectStatusPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userProjectStatusPreferences));
   }
 
   loadColHeadersProjects(): void {

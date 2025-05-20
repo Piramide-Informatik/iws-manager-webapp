@@ -30,6 +30,9 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
 import { PageCustomerComponent } from './components/page-customer/page-customer.component';
 import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
 
+import { UserPreferenceService } from '../../Services/user-preferences.service';
+import { MasterDataModule } from '../master-data/master-data.module';
+
 @NgModule({
   declarations: [
     ContactComponent,
@@ -59,6 +62,10 @@ import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
     ToastModule,
     IconFieldModule,
     InputIconModule,
+    MasterDataModule
+  ],
+  providers: [ 
+    UserPreferenceService 
   ]
 })
 export class CustomerModule {}

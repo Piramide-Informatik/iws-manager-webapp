@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../../../router-utils.service';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-countries-table',
@@ -12,11 +14,15 @@ import { RouterUtilsService } from '../../../../router-utils.service';
 export class CountriesTableComponent implements OnInit, OnDestroy {
   countries: any[] = [];
   columnsHeaderFieldCoutries: any[] = [];
+  userCountriesPreferences: UserPreference = {};
+  tableKey: string = 'Countries'
+  dataKeys = ['name', 'abbreviation', 'isStandard'];
 
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 
@@ -29,11 +35,16 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColumnsCountries();
-
+    this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumnsCountries();
       this.routerUtils.reloadComponent(true);
+      this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     });
+  }
+
+  onUserCountriesPreferencesChanges(userCountriesPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userCountriesPreferences));
   }
 
   loadColumnsCountries(): void {

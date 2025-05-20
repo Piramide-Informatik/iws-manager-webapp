@@ -4,7 +4,7 @@
     [value]="tableValues"
     dataKey="id"
     [rows]="15"
-    [columns]="selectedColumns"
+    [columns]="this.userPreferences[this.tableId]?.displayedColumns"
     [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true"
     [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
@@ -15,35 +15,27 @@
     showGridlines
     scrollHeight="60vh"
     [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
+    [globalFilterFields]="dataKeys"
+    (onFilter)="onTableFilterChange($event)"
   >
-    <ng-template #header>
-      <tr *ngIf="filterByColumns">
-        <th scope="col"></th>
-        <th scope="col" *ngFor="let col of selectedColumns; let i = index">
-          <input
-            pInputText
-            pSize="small"
-            type="text"
-            [ngClass]="{ 'thead-input-id': i == 0, 'thead-input-width': i > 0 }"
-            (input)="applyFilter($event, col.field)"
-          />
-        </th>
-      </tr>
+
+    <ng-template #header let-columns>
       <tr>
-        <th id="list-customers-table-options" class="thead-bg-blue">
-          <p-multiselect 
-            [options]="columns" 
-            [(ngModel)]="selectedColumns" 
-            optionLabel="header"
-            selectedItemsLabel="Hide columns"
-            placeholder="Choose Columns" 
-            [maxSelectedLabels]="0"
-            [appendTo]="'body'"
-          />
+          <th id="list-customers-table-options" class="thead-bg-blue">
+              <p-multiselect 
+                [options]="this.columns" 
+                [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
+                (onChange)="changeSelect($event)"
+                optionLabel="header"
+                selectedItemsLabel="Hide columns"
+                placeholder="Choose Columns" 
+                [maxSelectedLabels]="0"
+                [appendTo]="'body'"
+              />
         </th>
         <th
           scope="col"
-          *ngFor="let col of selectedColumns; let i = index"
+          *ngFor="let col of columns; let i = index"
           [ngStyle]="col.styles"
           [pSortableColumn]="col.field"
           pResizableColumn
@@ -52,9 +44,20 @@
           {{ col.header }} <p-sortIcon [field]="col.field" />
         </th>
       </tr>
+      <tr *ngIf="filterByColumns">
+        <th scope="col"></th>
+        <th scope="col" *ngFor="let col of columns; let i = index">
+            <p-columnFilter
+                type="text"
+                [field]="col.field"
+                placeholder="Search"
+                ariaLabel="Filter Name"
+            ></p-columnFilter>        
+        </th>
+      </tr>
     </ng-template>
 
-    <ng-template #body let-row let-i="rowIndex">
+    <ng-template #body let-row let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
         <td>
           <div class="flex items-center justify-center gap-2">
@@ -72,7 +75,7 @@
             ></button>
           </div>
         </td>
-        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of selectedColumns">
+        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns">
           {{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}
         </td>
       </tr>

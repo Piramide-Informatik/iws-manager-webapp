@@ -3,6 +3,8 @@ import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 import { TitleService } from '../../../../../../Services/title.service';
 
 @Component({
@@ -14,8 +16,8 @@ import { TitleService } from '../../../../../../Services/title.service';
 export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private readonly titleService = inject(TitleService);
-  private readonly router = inject(Router);
-  private readonly translate = inject(TranslateService);
+//  private readonly router = inject(Router);
+//  private readonly translate = inject(TranslateService);
   private subscriptions = new Subscription();
 
   readonly titles = computed(() => {
@@ -27,18 +29,30 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   titleColumns: any[] = [];
   titleDisplayedColumns: any[] = [];
-   isChipsVisible = false;
+  isChipsVisible = false;
+  userTitlePreferences: UserPreference = {};
+  tableKey: string = 'Title'
+  dataKeys = ['label', 'title'];
+
   @ViewChild('dt') dt!: Table;
 
   private langTitleSubscription!: Subscription;
 
-  constructor() { }
+  constructor(private readonly router: Router,
+              private readonly userPreferenceService: UserPreferenceService,   
+              private readonly translate: TranslateService ) { }
 
   ngOnInit() {
     this.loadTitleHeadersAndColumns();
+    this.userTitlePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
     this.langTitleSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadTitleHeadersAndColumns();
+      this.userTitlePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
     });
+  }
+
+  onUserTitlePreferencesChanges(userTitlePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userTitlePreferences));
   }
 
   loadTitleHeadersAndColumns() {

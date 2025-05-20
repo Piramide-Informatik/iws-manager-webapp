@@ -1,8 +1,12 @@
 <div class="container">
   <div class="row">
     <master-data-genaral-table
+      [tableId]="tableKey"
       [tableValues]="IwsTeams"
       [columns]="columnsHeaderIwsTeams"
+      [userPreferences]="userIwsTeamsPreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserIwsTeamsPreferencesChanges($event)"
     ></master-data-genaral-table>
   </div>
 </div>

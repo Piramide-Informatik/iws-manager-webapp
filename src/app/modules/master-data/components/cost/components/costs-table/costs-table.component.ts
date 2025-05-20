@@ -2,6 +2,8 @@ import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-costs-table',
@@ -12,10 +14,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 export class CostsTableComponent implements OnInit, OnDestroy {
   costsUI: any[] = [];
   columnsHeaderFieldCosts: any[] = [];
+  userCostTablePreferences: UserPreference = {};
+  tableKey: string = 'CostTable'
+  dataKeys = ['name', 'sort'];
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 
@@ -34,11 +40,16 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColHeadersCost();
-
+    this.userCostTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersCost();
       this.routerUtils.reloadComponent(true);
+      this.userCostTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
     });
+  }
+
+  onUserCostTablePreferencesChanges(userCostTablePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userCostTablePreferences));
   }
 
   loadColHeadersCost(): void {
