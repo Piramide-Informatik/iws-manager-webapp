@@ -3,12 +3,9 @@
     [rowsPerPageOptions]="[15, 30, 50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
     showGridlines [resizableColumns]="true" columnResizeMode="expand" [scrollable]="true" scrollHeight="60vh"
-    [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}">
-    <ng-template #caption>
-      <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-        selectedItemsLabel="{0} columns selected"
-        [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" placeholder="Choose Columns" />
-    </ng-template>
+    [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
+    stateStorage="local"
+    stateKey="customer-table-state">
     <ng-template #header let-columns>
       <tr>
         <th id="framework-agreement-table-options-field"></th>
@@ -18,7 +15,12 @@
         </th>
       </tr>
       <tr>
-        <th id="framework-agreement-table-options" class="thead-bg-blue"></th>
+        <th id="hide-columns" class="thead-bg-blue">
+          <p-multiselect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+            selectedItemsLabel="Hide columns"
+            placeholder="Choose Columns" 
+            [maxSelectedLabels]="0"/>
+          </th>
         <th id="framework-agreement-table-field" *ngFor="let col of columns; let i = index"
           [pSortableColumn]="col.field" pResizableColumn class="thead">{{
           col.header }} <p-sortIcon [field]="col.field" />
