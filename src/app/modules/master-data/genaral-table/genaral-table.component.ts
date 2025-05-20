@@ -50,7 +50,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     let columnsChange = changes['columns'];
-    if (!columnsChange.firstChange) {
+    if (columnsChange && !columnsChange.firstChange) {
       this.columns = columnsChange.currentValue;
       this.selectedColumns = [...this.columns];
     }

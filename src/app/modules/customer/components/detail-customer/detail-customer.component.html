@@ -140,7 +140,6 @@
 
     <div class="flex flex-row gap-3 align-items-center my-2">
       <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
-      <p-button (keydown.enter)="showDialog()" icon="pi pi-plus" [label]="'BUTTONS.NEW' | translate" id="new-contact-person" (click)="showDialog()"></p-button>
       <p-dialog [header]="'CONTACT.LABELS.TITLE_DIALOG' | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
         <app-contact></app-contact>
         <div class="buttons flex justify-content-center my-2">
@@ -149,82 +148,19 @@
          </div>
       </p-dialog>
     </div>
-    
-    <p-table 
-      [value]="contactPersons()" 
+
+    <master-data-genaral-table
+      [tableId]="tableKey"
+      [tableValues]="contactPersons()"
       [columns]="selectedColumns"
-      [paginator]="true"
-      [rows]="15"
-      showGridlines
-      scrollable="true"
-      scrollHeight="200px"
-      [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
-      [showCurrentPageReport]="true"
-      [rowsPerPageOptions]="[15, 30, 50]"
-      [tableStyle]="{'min-width': 'auto','border-spacing': '1px'}"
-      [resizableColumns]="true"
-      columnResizeMode="expand"
-      styleClass="p-datatable-gridlines"
-    >
-      <ng-template #caption>
-        <p-multiselect 
-          display="chip" 
-          [options]="cols" 
-          [(ngModel)]="selectedColumns" 
-          optionLabel="header" 
-          selectedItemsLabel="{0} columns selected" 
-          [style]="{ 'min-width': '200px', 'font-size': '14px', 'line-height': '16.8px' }" 
-          placeholder="Choose Columns" />
-      </ng-template>
-      <ng-template #header let-columns>
-        <tr>
-          <th id="customer-Details-options" class="thead" pResizableColumn [style]="{'min-width': '100px', 'width':'100px'}"></th>
-
-
-          <th id="detail-customer-col-field" *ngFor="let col of columns; let i = index" 
-            [pSortableColumn]="col.field" 
-            class="thead" 
-            pResizableColumn>
-              {{ col.header }} 
-            <p-sortIcon [field]="col.field"/>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-person let-i="rowIndex" let-columns="columns">
-        <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-
-          <td>
-            <div class="flex gap-3">
-              <button 
-                pButton 
-                icon="pi pi-pencil" 
-                class="p-button-rounded p-button-info button-option" 
-                (click)="showDialog()"
-              ></button>
-              
-              <button 
-                pButton 
-                icon="pi pi-trash" 
-                class="p-button-rounded p-button-danger button-option"
-                (click)="deletePerson(person)"
-              ></button>
-            </div>
-          </td>
-
-          <td *ngFor="let col of columns; let i = index" 
-             [ngClass]="{'align-right': i === columns.length - 1}">
-             {{ person[col.field] }}
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template #emptymessage>
-        <tr>
-          <td colspan="7">
-            <p-message severity="info">No contact persons found.</p-message
-          ></td>
-        </tr>
-      </ng-template>
-    </p-table>  
+      [userPreferences]="userDetailCustomerPreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserCustomerDetailPreferencesChanges($event)"
+      (onCreateRegister)="showDialog()"
+      (onEditRegister)="showDialog()"
+      (onDeleteRegister)="deletePerson($event)"
+    ></master-data-genaral-table>
+    
     <br>
     <div class="form-row flex flex-wrap gap-3 justify-content-center">
       <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
