@@ -44,8 +44,10 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onTableFilterChange(event: any) {
-    this.userPreferences[this.tableId].filter = this.dt2.filters;
-    this.onColumnChanges.emit(this.userPreferences);
+    if (this.dt2) {
+      this.userPreferences[this.tableId].filter = this.dt2.filters;
+      this.onColumnChanges.emit(this.userPreferences);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
