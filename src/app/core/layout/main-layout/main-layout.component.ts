@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Sidebar } from 'primeng/sidebar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { SidebarStateService } from '../sidebar-state.service'
 
 @Component({
   selector: 'app-main-layout',
@@ -12,7 +13,9 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
-  sidebarCollapsed: boolean = false;
+  sidebarState = inject(SidebarStateService);
+  sidebarCollapsed$ = this.sidebarState.sidebarCollapsed$;
+  isStateLoaded = false;
   mainMenuVisible: boolean = false;
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   currentSidebarItems: MenuItem[] = [];
@@ -49,8 +52,12 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly router: Router
-  ) {}
+    private readonly router: Router,
+  ) {
+    this.sidebarState.sidebarCollapsed$.subscribe(() => {
+      this.isStateLoaded = true;
+    });
+  }
 
   ngOnInit(): void {
     this.loadMainMenuItems();
@@ -75,10 +82,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       command: menu.command,
       absoluteRoute: menu.absoluteRoute
     }))
-  }
-
-  toggleSidebar(): void {
-    this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
   toggleMainMenu(): void {
@@ -119,7 +122,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   onMainMenuSelect(menu: string): void {
-    console.log('Menú seleccionado:', menu);
     this.loadSidebarItems(menu);
   }
 }

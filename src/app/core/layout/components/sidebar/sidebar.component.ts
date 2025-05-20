@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, filter, Subscription } from 'rxjs';
 import { MainMenu, MenuItem, MenuSection } from '../../interfaces/menu-master-data-interface';
+import { SidebarStateService } from '../../sidebar-state.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,9 +13,8 @@ import { MainMenu, MenuItem, MenuSection } from '../../interfaces/menu-master-da
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarComponent {
-  @Input() isCollapsed: boolean = false;
+  @Input() isCollapsed!: boolean;
   @Input() menuItems: any[] = [];
-  @Output() toggleCollapse = new EventEmitter<void>();
   public showPopup: boolean = false;
   public masterDataGroups: {
         label: any;
@@ -77,7 +77,8 @@ export class SidebarComponent {
   constructor(
     private readonly translate: TranslateService,
     private readonly router: Router,
-    private readonly cdRef: ChangeDetectorRef
+    private readonly cdRef: ChangeDetectorRef,
+    private readonly sidebarState: SidebarStateService
   ){}
 
   ngOnInit(){
@@ -136,12 +137,16 @@ export class SidebarComponent {
   }
 
   private generateMenuSections(): MenuSection[] {
-  return Object.entries(SidebarComponent.MENU_SECTIONS).map(([label, items]) =>
-    this.createMenuSection(label, items)
-  );
-}
+    return Object.entries(SidebarComponent.MENU_SECTIONS).map(([label, items]) =>
+      this.createMenuSection(label, items)
+    );
+  }
 
   private createMenuSection(label: string, items: MenuItem[], isActive: boolean = false): MenuSection {
     return { label, isActive, items };
+  }
+
+  toggleSidebar(): void {
+    this.sidebarState.toggleSidebarLocalStorage();
   }
 }
