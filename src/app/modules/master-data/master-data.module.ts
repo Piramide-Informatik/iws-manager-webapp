@@ -222,6 +222,9 @@ import { UserPreferenceService } from '../../Services/user-preferences.service';
     PasswordModule,
     PickListModule,
   ],
+  exports: [
+    GenaralTableComponent
+  ],
   providers: [UserPreferenceService]
 })
 export class MasterDataModule {}
