@@ -20,7 +20,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
   displayedColumns: any[] = [];
   @Input() userPreferences: any = [];
 
-  @Output() onEditRegister = new EventEmitter<string>();
+  @Output() onEditRegister = new EventEmitter<any>();
   @Output() onDeleteRegister = new EventEmitter<number>();
   @Output() onCreateRegister = new EventEmitter<string>();
   @Output() onColumnChanges = new EventEmitter<any>();
@@ -67,7 +67,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
     this.selectedColumns = [...this.columns];
   }
 
-  editRegister(register: string){
+  editRegister(register: any){
     this.onEditRegister.emit(register);
   }
 
