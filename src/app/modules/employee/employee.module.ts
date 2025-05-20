@@ -26,6 +26,7 @@ import { EmployeeOverviewComponent } from "./components/employee-overview/employ
 import { EmployeeDetailsComponent } from "./components/employee-details/employee-details.component";
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MasterDataModule } from '../master-data/master-data.module';
 
 @NgModule({
     declarations: [
@@ -53,6 +54,7 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
         TranslateModule,
         TranslatePipe,
         TranslateDirective,
+        MasterDataModule
     ]
 
 })

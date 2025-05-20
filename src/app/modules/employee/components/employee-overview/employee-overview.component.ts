@@ -8,6 +8,8 @@ import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 
 interface Column {
@@ -45,11 +47,15 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   public selectedColumns!: Column[];
   public filterCols!: Column[];
   public selectedFilterColumns!: Column[];
+  userEmployeeOverviewPreferences: UserPreference = {};
+  tableKey: string = 'EmployeeOverview'
+  dataKeys = ['id', 'firstName', 'lastName', 'email', 'generalManagerSince', 'shareholderSince', 'soleProprietorSince', 'coEntrepreneurSince', 'qualificationFz', 'qualificationKmui'];
 
 
   constructor(private readonly employeeService: EmployeeService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly confirmationService: ConfirmationService,
     private readonly route: ActivatedRoute
@@ -66,10 +72,11 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.customer = 'Joe Doe'
 
 
-
+    this.userEmployeeOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.reloadComponent(true);
+      this.userEmployeeOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
 
@@ -105,6 +112,10 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       { field: 'email', header: 'Email' }
     ];
 
+  }
+
+  onUserEmployeeOverviewPreferencesChanges(userEmployeeOverviewPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userEmployeeOverviewPreferences));
   }
 
   ngOnDestroy(): void {
@@ -143,17 +154,17 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteEmployee(employee: Employee) {
+  deleteEmployee(employee: number) {
     this.confirmationService.confirm({
-      message: this.translate.instant(_('DIALOG.DELETE'), { value: employee.id }),
+      message: this.translate.instant(_('DIALOG.DELETE'), { value: employee }),
       header: this.translate.instant(_('DIALOG.CONFIRM_TITLE')),
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
       rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
       accept: () => {
-        this.employeeService.deleteEmployee(employee.id);
+        this.employeeService.deleteEmployee(employee);
         this.employees = this.employees.filter(
-          (val) => val.id !== employee.id
+          (val) => val.id !== employee
         );
         this.messageService.add({
           severity: 'success',
