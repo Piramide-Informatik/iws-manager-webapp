@@ -20,16 +20,7 @@
     stateStorage="local"
     stateKey="receivables-table-state"
   >
-  <ng-template #caption>
-    <p-multiselect 
-      display="chip" 
-      [options]="cols" 
-      [(ngModel)]="selectedColumns" 
-      optionLabel="header" 
-      selectedItemsLabel="{0} columns selected" 
-      [style]="{ 'min-width': '250px', 'font-size': '14px', 'line-height': '16.8px' }" 
-      placeholder="Choose Columns" />
-  </ng-template>
+
   <ng-template #header let-columns>
     <tr>
       <th id="list-demands-table-options">
