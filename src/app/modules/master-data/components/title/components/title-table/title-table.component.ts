@@ -1,11 +1,11 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject, computed, SimpleChanges, OnChanges } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { TITLE } from './title.data';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { TitleService } from '../../../../../../Services/title.service';
 
 @Component({
   selector: 'app-title-table',
@@ -13,9 +13,17 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   templateUrl: './title-table.component.html',
   styleUrl: './title-table.component.scss'
 })
-export class TitleTableComponent implements OnInit, OnDestroy {
+export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
-  titles = [...TITLE];
+  private readonly titleService = inject(TitleService);
+
+  readonly titles = computed(() => {
+    return this.titleService.titles().map(title => ({
+      id: title.id,
+      title: title.name,  
+    }));
+  });
+
   titleColumns: any[] = [];
   titleDisplayedColumns: any[] = [];
   isChipsVisible = false;
@@ -67,6 +75,23 @@ export class TitleTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     if (this.langTitleSubscription) {
       this.langTitleSubscription.unsubscribe();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['titles']) {
+      console.log('Updated data:', this.titles());
+      this.prepareTableData();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.titles().length > 0) {
+      this.titleDisplayedColumns = [
+        { field: 'name', header: 'Title' },
+        { field: 'createdAt', header: 'Created at' },
+        { field: 'updatedAt', header: 'Updated at' }
+      ];
     }
   }
 

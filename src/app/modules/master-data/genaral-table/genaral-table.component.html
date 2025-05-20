@@ -17,11 +17,13 @@
     [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
     [globalFilterFields]="dataKeys"
     (onFilter)="onTableFilterChange($event)"
+    stateStorage="local"
+    [stateKey]="tableId+'-table-state'"
   >
 
     <ng-template #header let-columns>
       <tr>
-          <th id="list-customers-table-options" class="thead-bg-blue">
+          <th id="hide-columns" class="thead-bg-blue">
               <p-multiselect 
                 [options]="this.columns" 
                 [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
