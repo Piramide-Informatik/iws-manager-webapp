@@ -5,6 +5,8 @@ import { ContractorService } from '../../services/contractor.service';
 import {TranslateService, _} from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
@@ -31,9 +33,17 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
+  userContractorOverviewPreferences: UserPreference = {};
+  
+  tableKey: string = 'ContractorOverview'
+  
+  dataKeys = ['contractorLabel', 'contractorName', 'countryLabel', 'street', 'zipCode', 'city', 'taxNro'];
+  
+
   constructor(
     private readonly contractorService: ContractorService, 
-    private readonly translate: TranslateService, 
+    private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService, 
     private readonly router:Router,
     private readonly route: ActivatedRoute
   ) { }
@@ -45,10 +55,11 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     this.selectedColumns = this.cols;
 
     this.customer = 'Joe Doe'
-    
+    this.userContractorOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.reloadComponent(true);
+      this.userContractorOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
@@ -68,6 +79,10 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+  }
+
+  onUserContractorOverviewPreferencesChanges(userContractorOverviewPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userContractorOverviewPreferences));
   }
 
   reloadComponent(self:boolean,urlToNavigateTo ?:string){
