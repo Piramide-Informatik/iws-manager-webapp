@@ -40,3 +40,12 @@ p-button {
   text-overflow: ellipsis;
   max-width: 10rem;
 }
+
+:host ::ng-deep {
+    p-columnfilter {
+       button {
+        background-color: unset !important;
+        border: none !important;
+       }  
+    }
+}
