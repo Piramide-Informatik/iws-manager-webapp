@@ -140,7 +140,6 @@
 
     <div class="flex flex-row gap-3 align-items-center my-2">
       <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
-      <p-button (keydown.enter)="showDialog()" icon="pi pi-plus" [label]="'BUTTONS.NEW' | translate" id="new-contact-person" (click)="showDialog()"></p-button>
       <p-dialog [header]="'CONTACT.LABELS.TITLE_DIALOG' | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
         <app-contact></app-contact>
         <div class="buttons flex justify-content-center my-2">
