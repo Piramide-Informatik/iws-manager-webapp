@@ -7,7 +7,7 @@ import { Table } from 'primeng/table';
   templateUrl: './genaral-table.component.html',
   styleUrl: './genaral-table.component.scss'
 })
-export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
+export class GenaralTableComponent implements OnInit, OnChanges {
   @Input() tableId: string = '';
   @Input() tableTitle: string = 'Table title';
   @Input() tableValues: any[] = [];
@@ -31,12 +31,6 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(
   ){}
 
-  ngAfterViewInit(): void {
-    if (this.dt2) {
-     this.dt2.filters = this.userPreferences[this.tableId].filter;
-     this.dt2._filter();
-    }
-  }
  
   changeSelect(event: any) {
     this.userPreferences[this.tableId].displayedColumns = event.value;
@@ -44,8 +38,10 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onTableFilterChange(event: any) {
-    this.userPreferences[this.tableId].filter = this.dt2.filters;
-    this.onColumnChanges.emit(this.userPreferences);
+    if (this.dt2) {
+      this.userPreferences[this.tableId].filter = this.dt2.filters;
+      this.onColumnChanges.emit(this.userPreferences);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
