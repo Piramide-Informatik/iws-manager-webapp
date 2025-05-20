@@ -19,6 +19,8 @@ export class AddressTableComponent implements OnInit, OnDestroy {
   userAddressPreferences: UserPreference = {};
   tableKey: string = 'Address'
   dataKeys = ['salutation'];
+  visibleModal: boolean = false;
+  salutationToEdit!:string;
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -69,16 +71,23 @@ export class AddressTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  editSalutation(salut: any) {
-    const indexSalutation = this.salutations.findIndex( salutation => salutation.id == salut.id);
-    this.salutations[indexSalutation].salutation = salut.salutation;
+  editSalutation(salut: string) {
+    this.visibleModal = true;
+    this.salutationToEdit = salut;
   }
 
   deleteSalutation(id: number) {
     this.salutations = this.salutations.filter( salutation => salutation.id != id);
   }
 
-  createSalutation() {
-    console.log('Creating new salutation');
+  createSalutation(salut:any) {
+    this.salutations.push({
+      id: this.salutations.length,
+      salutation: salut['salutation']
+    })
+  }
+
+  onVisibleModal(visible: boolean){
+    this.visibleModal = visible;
   }
 }
