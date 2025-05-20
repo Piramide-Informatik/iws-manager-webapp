@@ -28,11 +28,8 @@ export class EditSalutationComponent implements OnInit {
   onSubmit(): void {
     if (this.editSalutationForm.valid) {
       this.onNewSalutation.emit(this.editSalutationForm.value);
-      console.log(this.editSalutationForm.value);
       this.isVisibleModal.emit(false);
-    } else {
-      console.log("Ungültiges Formular");
-    }
+    } 
   }
 
 }
