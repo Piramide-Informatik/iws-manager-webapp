@@ -29,10 +29,10 @@
                 [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
                 (onChange)="changeSelect($event)"
                 optionLabel="header"
-                selectedItemsLabel="Hide columns"
-                placeholder="Choose Columns" 
+                placeholder="" 
                 [maxSelectedLabels]="0"
                 [appendTo]="'body'"
+                dropdownIcon="pi pi-eye"
               />
         </th>
         <th
