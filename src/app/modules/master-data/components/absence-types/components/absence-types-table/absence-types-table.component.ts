@@ -3,6 +3,8 @@ import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 
 @Component({
@@ -15,12 +17,15 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   absenceTypes: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
+  userAbsenceTypePreferences: UserPreference = {};
+  tableKey: string = 'AbsenceType'
+  dataKeys = ['type', 'abbreviation', 'fractionOfDay', 'isVacation', 'canBeBooked'];
 
   @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
 
-  constructor(private readonly translate: TranslateService, private readonly router: Router) { }
+  constructor(private readonly translate: TranslateService, private readonly userPreferenceService: UserPreferenceService, private readonly router: Router) { }
 
   ngOnInit() {
     this.absenceTypes = [
@@ -44,11 +49,17 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
+    this.userAbsenceTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = [...this.cols];
+      this.userAbsenceTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
+  }
+
+  onUserAbsenceTypePreferencesChanges(userAbsenceTypePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userAbsenceTypePreferences));
   }
 
   loadColHeaders(): void {
@@ -85,12 +96,5 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   createAbsenceType() {
     console.log('Creating new absence type');
-  }
-
-  applyFilter(event: any, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
   }
 }

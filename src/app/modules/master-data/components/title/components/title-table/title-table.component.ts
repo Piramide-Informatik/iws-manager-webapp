@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { TITLE } from './title.data';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-title-table',
@@ -17,17 +19,29 @@ export class TitleTableComponent implements OnInit, OnDestroy {
   titleColumns: any[] = [];
   titleDisplayedColumns: any[] = [];
   isChipsVisible = false;
+  userTitlePreferences: UserPreference = {};
+  tableKey: string = 'Title'
+  dataKeys = ['label', 'title'];
+
   @ViewChild('dt') dt!: Table;
 
   private langTitleSubscription!: Subscription;
 
-  constructor(private readonly router: Router, private readonly translate: TranslateService ) { }
+  constructor(private readonly router: Router,
+              private readonly userPreferenceService: UserPreferenceService,   
+              private readonly translate: TranslateService ) { }
 
   ngOnInit() {
     this.loadTitleHeadersAndColumns();
+    this.userTitlePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
     this.langTitleSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadTitleHeadersAndColumns();
+      this.userTitlePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.titleDisplayedColumns);
     });
+  }
+
+  onUserTitlePreferencesChanges(userTitlePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userTitlePreferences));
   }
 
   loadTitleHeadersAndColumns() {

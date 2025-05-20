@@ -1,8 +1,12 @@
 <div class="container">
   <div class="row">
     <master-data-genaral-table
+      [tableId]="tableKey"
       [tableValues]="fundingProgramsUI"
       [columns]="columnsHeaderFieldFundingProgram"
+      [userPreferences]="userFundingProgramsPreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserFundingProgramsPreferencesChanges($event)"
     ></master-data-genaral-table>
   </div>
 </div>

@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../../../router-utils.service';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-iws-teams-table',
@@ -13,9 +15,13 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   IwsTeams: any[] = [];
   columnsHeaderIwsTeams: any[] = [];
   private langSubscription!: Subscription;
+  userIwsTeamsPreferences: UserPreference = {};
+  tableKey: string = 'IwsTeams'
+  dataKeys = ['name'];
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ) {}
 
@@ -34,11 +40,16 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     ];
 
     this.loadColumnsIwsTeams();
-
+    this.userIwsTeamsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderIwsTeams);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumnsIwsTeams();
       this.routerUtils.reloadComponent(true);
+      this.userIwsTeamsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderIwsTeams);
     });
+  }
+
+  onUserIwsTeamsPreferencesChanges(userIwsTeamsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userIwsTeamsPreferences));
   }
 
   loadColumnsIwsTeams(): void {

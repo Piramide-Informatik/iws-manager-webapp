@@ -2,10 +2,14 @@
     <div class="row">
       <div class="col-6">
         <master-data-genaral-table
+          [tableId]="tableKey"
           [tableValues]="networks"
           tableTitle="networks"
           [columns]="columsHeaderFieldNetworks"
           [hideColumns]="false"
+          [userPreferences]="userNetworksPreferences"
+          [dataKeys]="dataKeys"
+          (onColumnChanges)="onUserNetworksPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-6">

@@ -2,10 +2,13 @@
     <div class="row">
       <div class="col-6">
         <master-data-genaral-table
+          [tableId]="tableKey"
           [tableValues]="probabilities"
           tableTitle="realization probabilities"
           [columns]="columsHeaderFieldProbabilities"
-          [hideColumns]="false"
+          [userPreferences]="userRealitationProbabilitiesPreferences"
+          [dataKeys]="dataKeys"
+          (onColumnChanges)="onUserRealitationProbabilitiesPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-6">

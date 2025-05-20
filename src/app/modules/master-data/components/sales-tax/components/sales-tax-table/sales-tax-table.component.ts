@@ -9,6 +9,8 @@ import { SALES_TAXES } from '../../sales.tax.data';
 import { SALES_TAX_RATES } from '../../sales.tax.rate.data';
 import { SalesTaxRate } from '../../../../../../Entities/salesTaxRate';
 import { SalesTax } from '../../../../../../Entities/salesTax';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
   selector: 'app-sales-tax-table',
@@ -21,16 +23,24 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   salesTaxesValues: any[] = [...SALES_TAXES];
   salesTaxesColumns: any[] = [];
   isSalesTaxesChipVisible = false;
+  userSalesTaxTablePreferences: UserPreference = {};
+  tableKey: string = 'SalesTaxTable'
+  dataKeys = ['vatlabel', 'rate'];
+
   @ViewChild('dt') dt!: Table;
 
   private langSalesTaxSubscription!: Subscription;
 
-  constructor(private readonly router: Router, private readonly translate: TranslateService ) { }
+  constructor(private readonly router: Router,
+              private readonly userPreferenceService: UserPreferenceService, 
+              private readonly translate: TranslateService ) { }
 
   ngOnInit() {
     this.loadSalesTaxHeadersAndColumns();
+    this.userSalesTaxTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salesTaxesColumns);
     this.langSalesTaxSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadSalesTaxHeadersAndColumns();
+      this.userSalesTaxTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salesTaxesColumns);
     });
     const salesTaxesRatesData: SalesTaxRate[] = SALES_TAX_RATES;
     const salesTaxesData: SalesTax[] = SALES_TAXES;
@@ -45,6 +55,10 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
                 }, {fromDate: new Date('01-01-1900')}).rate
         }
     })
+  }
+
+  onUserSalesTaxTablePreferencesChanges(userSalesTaxTablePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userSalesTaxTablePreferences));
   }
 
   loadSalesTaxHeadersAndColumns() {

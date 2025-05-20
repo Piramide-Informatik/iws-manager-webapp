@@ -2,8 +2,12 @@
     <div class="row">
       <div class="col-8">
         <master-data-genaral-table
+          [tableId]="tableKey"
           [tableValues]="dunningLevels"
           [columns]="columsHeaderField"
+          [userPreferences]="userDunningPreferences"
+          [dataKeys]="dataKeys"
+          (onColumnChanges)="onUserDunningPreferencesChanges($event)"
         ></master-data-genaral-table>
       </div>
       <div class="col-4">

@@ -1,8 +1,12 @@
 <div class="container">
   <div class="row">
     <master-data-genaral-table
+      [tableId]="tableKey"
       [tableValues]="costsUI"
       [columns]="columnsHeaderFieldCosts"
+      [userPreferences]="userCostTablePreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserCostTablePreferencesChanges($event)"
     ></master-data-genaral-table>
   </div>
 </div>

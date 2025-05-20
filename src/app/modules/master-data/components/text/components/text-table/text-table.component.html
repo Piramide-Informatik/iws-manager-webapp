@@ -1,9 +1,13 @@
 <div class="container">
     <div class="row">
       <master-data-genaral-table
+        [tableId]="tableKey"
         [tableValues]="text"
         [columns]="textDisplayedColumns"
         [hideColumns]="isTextChipVisible"
+        [userPreferences]="userTextPreferences"
+        [dataKeys]="dataKeys"
+        (onColumnChanges)="onUserTextPreferencesChanges($event)"
       ></master-data-genaral-table>
     </div>
 </div>
