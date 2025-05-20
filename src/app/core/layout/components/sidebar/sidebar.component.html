@@ -61,7 +61,7 @@
   <button
     class="collapse-button"
     [ngClass]="{ rotate: isCollapsed }"
-    (click)="toggleCollapse.emit()"
+    (click)="toggleSidebar()"
     [pTooltip]="isCollapsed? ('SIDEBAR.LABEL.EXPAND' | translate) : 'SIDEBAR.LABEL.COLLAPSE' | translate" 
     tooltipPosition="right"
   >

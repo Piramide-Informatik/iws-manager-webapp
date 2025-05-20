@@ -26,10 +26,6 @@
     width: 100%;
     overflow-y: auto; // Solo esta sección podrá hacer scroll
     max-height: 100%; // Se asegura de respetar los límites
-
-    &.sidebar-collapsed {
-      margin-left: 1.5rem;
-    }
   }
 }
 
