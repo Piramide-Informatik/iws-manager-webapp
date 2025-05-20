@@ -1,20 +1,31 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Title } from '../Entities/title';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TitleService {
-
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'assets/data/title.json';
+  private readonly apiUrl = 'http://localhost:8081/api/v1/titles';
 
+  // Configuración CORS global para todas las peticiones
+  private readonly httpOptions = {
+    withCredentials: true, // Necesario para cookies/autorización
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:4200'
+    })
+  };
+
+  // Signals para estado reactivo
   private readonly _titles = signal<Title[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
 
+  // Exponer señales como read-only
   public titles = this._titles.asReadonly();
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
@@ -25,8 +36,7 @@ export class TitleService {
 
   private loadInitialData(): void {
     this._loading.set(true);
-    this.http.get<{ titles: Title[] }>(this.apiUrl).pipe(
-      map(response => response.titles),
+    this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (titles) => {
           this._titles.set(titles);
@@ -34,7 +44,7 @@ export class TitleService {
         },
         error: (err) => {
           this._error.set('Failed to load titles');
-          console.error(err);
+          console.error('Error loading titles:', err);
         }
       }),
       catchError(() => of([])),
@@ -43,44 +53,78 @@ export class TitleService {
   }
 
   // CREATE
-  addTitle(title: Omit<Title, 'uuidTitle'>): void {
-    const newTitle: Title = {
-      ...title,
-      uuidTitle: this.generateUUID()
-    };
-    this._titles.update(titles => [...titles, newTitle]);
+  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt'>): void {
+    this.http.post<Title>(this.apiUrl, title, this.httpOptions).pipe(
+      tap({
+        next: (newTitle) => {
+          this._titles.update(titles => [...titles, newTitle]);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add title');
+          console.error('Error adding title:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // UPDATE
   updateTitle(updatedTitle: Title): void {
-    this._titles.update(titles =>
-      titles.map(t => t.uuidTitle === updatedTitle.uuidTitle ? updatedTitle : t)
-    );
+    const url = `${this.apiUrl}/${updatedTitle.id}`;
+    this.http.put<Title>(url, updatedTitle, this.httpOptions).pipe(
+      tap({
+        next: (res) => {
+          this._titles.update(titles =>
+            titles.map(t => t.id === res.id ? res : t)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to update title');
+          console.error('Error updating title:', err);
+        }
+      })
+    ).subscribe();
   }
-
+  
   // DELETE
-  deleteTitle(uuidTitle: string): void {
-    this._titles.update(titles =>
-      titles.filter(t => t.uuidTitle !== uuidTitle)
-    );
-  }
+  deleteTitle(id: number): void {
+    const url = `${this.apiUrl}/${id}`;
+    this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._titles.update(titles =>
+            titles.filter(t => t.id !== id)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete title');
+          console.error('Error deleting title:', err);
+        }
+      })
+    ).subscribe();
+  }  
 
   // READ
   getAllTitles(): Observable<Title[]> {
-    return this.http.get<{ titles: Title[] }>(this.apiUrl).pipe(
-      map(response => response.titles),
-      catchError(() => of([]))
+    return this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch titles');
+        console.error('Error fetching titles:', err);
+        return of([]);
+      })
     );
   }
-
+  
   getTitleById(id: number): Observable<Title | undefined> {
     return this.getAllTitles().pipe(
-      map(titles => titles.find(t => t.idTitle === id))
+      map(titles => titles.find(t => t.id === id))
     );
-  }
+  }  
 
-  // Helper
-  private generateUUID(): string {
-    return crypto.randomUUID();
+  public refreshTitles(): void {
+    this.loadInitialData();
   }
 }

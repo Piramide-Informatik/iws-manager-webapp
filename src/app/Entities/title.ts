@@ -1,5 +1,6 @@
 export interface Title {
-    uuidTitle: string;  
-    idTitle: number;
-    nameTitle: string;
+    id: number;
+    name: string;
+    createdAt: string;  // ISO 8601 string, LocalDateTime in the backend
+    updatedAt: string;  // ISO 8601 string, LocalDateTime in the backend
 }
