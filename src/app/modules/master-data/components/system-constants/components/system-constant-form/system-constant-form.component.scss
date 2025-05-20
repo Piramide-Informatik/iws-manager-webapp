@@ -1,11 +1,13 @@
 @use 'variables' as *;
 
 .system-constant-form {
+    align-items: center;
+
     label{
-        width: 120px;
+        width: 185px;
     }
 
     input{
-        width: 250px;
+        width: 100%;
     }
 }
