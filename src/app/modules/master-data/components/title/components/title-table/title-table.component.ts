@@ -16,9 +16,6 @@ import { TitleService } from '../../../../../../Services/title.service';
 export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private readonly titleService = inject(TitleService);
-//  private readonly router = inject(Router);
-//  private readonly translate = inject(TranslateService);
-  private subscriptions = new Subscription();
 
   readonly titles = computed(() => {
     return this.titleService.titles().map(title => ({
