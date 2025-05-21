@@ -1,45 +1,35 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'TEXT.LABEL.EDIT_TEXT' | translate">
     <form [formGroup]="editTextForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
-            <div class="text-form mb-2 flex">
+            <div class="text-form mb-2 flex align-items-center">
                 <label for="label">{{ 'TEXT.LABEL.TEXT_LABEL' | translate }}</label>
-                <div>
-                    <input pInputText type="text" id="label" formControlName="label" [ngClass]="{'ng-invalid': editTextForm.get('label')?.invalid && 
-                      editTextForm.get('label')?.dirty && editTextForm.get('label')?.touched}" autocomplete="off" />
-                     <p-message severity="error" variant="simple" size="small" *ngIf="
-                         editTextForm.get('label')?.invalid && 
-                         editTextForm.get('label')?.dirty && 
-                         editTextForm.get('label')!.hasError('required')
-                         ">
-                         {{ 'TEXT.ERROR.TEXT_LABEL_REQUIRED' | translate }}</p-message>
-                </div>
-                
+                <input pInputText type="text" id="label" formControlName="label" [ngClass]="{'ng-invalid': editTextForm.get('label')?.invalid && 
+                  editTextForm.get('label')?.dirty && editTextForm.get('label')?.touched}" autocomplete="off" />
+                <p-message severity="error" variant="simple" size="small" *ngIf="
+                     editTextForm.get('label')?.invalid && 
+                     editTextForm.get('label')?.dirty && 
+                     editTextForm.get('label')!.hasError('required')
+                     ">
+                     {{ 'TEXT.ERROR.TEXT_LABEL_REQUIRED' | translate }}
+                </p-message>
             </div>
             <div class="text-form mb-2 flex">
                 <label for="text">{{ 'TEXT.LABEL.TEXT_VALUE' | translate }}</label>
-                <div>
-                    <textarea pTextarea id="text" formControlName="text" rows="6" cols="30" style="resize: none" class="w-full" 
-                    [ngClass]="{'ng-invalid': editTextForm.get('text')?.invalid && editTextForm.get('text')?.dirty && editTextForm.get('text')?.touched}" ></textarea>
-                    <p-message severity="error" variant="simple" size="small" *ngIf="
-                        editTextForm.get('text')?.invalid && 
-                        editTextForm.get('text')?.dirty &&
-                        editTextForm.get('text')!.hasError('required')
-                        ">
-                        {{ 'TEXT.ERROR.TEXT_VALUE_REQUIRED' | translate }}</p-message> 
-                </div>
+                <textarea pTextarea id="text" formControlName="text" rows="6"  style="resize: none"  
+                [ngClass]="{'ng-invalid': editTextForm.get('text')?.invalid && editTextForm.get('text')?.dirty && editTextForm.get('text')?.touched}" ></textarea>
+                <p-message severity="error" variant="simple" size="small" *ngIf="
+                    editTextForm.get('text')?.invalid && 
+                    editTextForm.get('text')?.dirty &&
+                    editTextForm.get('text')!.hasError('required')
+                    ">
+                    {{ 'TEXT.ERROR.TEXT_VALUE_REQUIRED' | translate }}</p-message> 
             </div>
         </div>
     </form>
-    <div class="buttons">
-        <div class="row">
-            <div class="col-4">
-            </div>
-            <div class="col-8">
-                <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-                    iconPos="left" />
-                <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                    icon="pi pi-times" iconPos="left" />
-            </div>
-        </div>
+    <div class="flex justify-content-center gap-2 mt-4">
+        <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+            iconPos="left" />
+        <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" />
     </div>
 </p-card>

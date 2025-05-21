@@ -53,7 +53,7 @@ export class SidebarComponent {
       { label: 'NETWORKS', path: 'networks' },
     ],
     LOCATION: [
-      { label: 'ADDRESS', path: 'address' },
+      { label: 'ADDRESS', path: 'salutation' },
       { label: 'COUNTRIES', path: 'countries' },
       { label: 'TITLE', path: 'title' },
     ],
