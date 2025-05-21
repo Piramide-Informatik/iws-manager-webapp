@@ -17,7 +17,6 @@ p-button {
 
 .thead-bg-blue {
     background: $primary-color;
-    width: 70px;
 }
 
 .thead-input-id {
@@ -47,5 +46,22 @@ p-button {
         background-color: unset !important;
         border: none !important;
        }  
+    }
+
+    p-columnfilter > div > p-columnfilterformelement {
+        width: 100%;
+    }    
+
+    .p-inputtext {
+        min-width: 130px !important;
+        width: 100% !important;
+    }
+
+    .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
+        width: 100% !important;
+    }
+
+    thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
+        width: max-content !important;
     }
 }
