@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-title-modal',
@@ -7,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrl: './title-modal.component.scss'
 })
 export class TitleModalComponent {
+  createTitleForm!: FormGroup;
+  @Output() isVisibleModal = new EventEmitter<boolean>();
+
+
+  onSubmit(): void{
+    if (this.createTitleForm.valid) {
+      this.isVisibleModal.emit(false);
+    }
+  }
+
 
 }
