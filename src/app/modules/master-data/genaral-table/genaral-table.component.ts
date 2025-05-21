@@ -7,7 +7,7 @@ import { Table } from 'primeng/table';
   templateUrl: './genaral-table.component.html',
   styleUrl: './genaral-table.component.scss'
 })
-export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
+export class GenaralTableComponent implements OnInit, OnChanges {
   @Input() tableId: string = '';
   @Input() tableTitle: string = 'Table title';
   @Input() tableValues: any[] = [];
@@ -20,7 +20,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
   displayedColumns: any[] = [];
   @Input() userPreferences: any = [];
 
-  @Output() onEditRegister = new EventEmitter<string>();
+  @Output() onEditRegister = new EventEmitter<any>();
   @Output() onDeleteRegister = new EventEmitter<number>();
   @Output() onCreateRegister = new EventEmitter<string>();
   @Output() onColumnChanges = new EventEmitter<any>();
@@ -31,12 +31,6 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(
   ){}
 
-  ngAfterViewInit(): void {
-    if (this.dt2) {
-     this.dt2.filters = this.userPreferences[this.tableId].filter;
-     this.dt2._filter();
-    }
-  }
  
   changeSelect(event: any) {
     this.userPreferences[this.tableId].displayedColumns = event.value;
@@ -67,7 +61,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewInit {
     this.selectedColumns = [...this.columns];
   }
 
-  editRegister(register: string){
+  editRegister(register: any){
     this.onEditRegister.emit(register);
   }
 

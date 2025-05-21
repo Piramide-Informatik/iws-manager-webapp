@@ -7,9 +7,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
 import { FormGroup } from '@angular/forms';
-import { TranslatePipe, TranslateDirective } from "@ngx-translate/core";
+import { TranslatePipe, TranslateDirective, TranslateService } from "@ngx-translate/core";
 import { SalutationService } from '../../../../Services/salutation.service';
-import { map } from 'rxjs';
+import { map, Subscription } from 'rxjs';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
@@ -33,6 +35,10 @@ export class EmployeeDetailsComponent implements OnInit {
   statuses!: SelectItem[];
   clonedEmployeeContracts: { [s: string]: EmployeeContract } = {};
   orderForm!: FormGroup;
+  userEmployeeDetailPreferences: UserPreference = {};
+  tableKey: string = 'EmployeeDetails'
+  dataKeys = ['startDate', 'salaryPerMonth', 'hoursPerWeek', 'workShortTime', 'maxHoursPerMonth', 'maxHoursPerDay', 'hourlyRate', 'specialPayment'];
+
 
   private readonly salutationService = inject(SalutationService);
 
@@ -61,9 +67,12 @@ export class EmployeeDetailsComponent implements OnInit {
   @Input() qualificationKMUi!: string;
   searchText: string = '';
   nextId: number = 1;
+  private langSubscription!: Subscription;
 
   constructor(
     private readonly employeeContractService: EmployeeContractService,
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly translate: TranslateService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ) {}
@@ -114,6 +123,14 @@ export class EmployeeDetailsComponent implements OnInit {
     ];
 
     this.selectedColumns = this.cols;
+    this.userEmployeeDetailPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.userEmployeeDetailPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    });
+  }
+
+  onUserEmployeeDetailPreferencesChanges(userEmployeeDetailPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userEmployeeDetailPreferences));
   }
 
   goBack() {

@@ -32,7 +32,7 @@ import { ContractStatusComponent } from './components/contract-status/contract-s
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
   { path: 'absence-types', component: AbsenceTypesComponent },
-  { path: 'address', component: AddressComponent },
+  { path: 'salutation', component: AddressComponent },
   { path: 'user', component: UserComponent },
   { path: 'roles', component: RolesComponent },
   { path: 'approval-status', component: ApprovalStatusProjectComponent },
