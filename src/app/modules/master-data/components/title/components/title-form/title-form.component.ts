@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TitleService } from '../../services/title.service';
 import { Title } from '../../../../../../Entities/title';
+import { TitleService } from '../../../../../../Services/title.service';
 
 @Component({
   selector: 'app-title-form',

@@ -8,7 +8,11 @@
         [userPreferences]="userTitlePreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserTitlePreferencesChanges($event)"
+        (onCreateRegister)="visibleModal=true"
       ></master-data-genaral-table>
+      <p-dialog [header]="'ADDRESS.FORM.TITLE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
+        <app-title-modal></app-title-modal>
+      </p-dialog>
     </div>
   </div>
 </div>
