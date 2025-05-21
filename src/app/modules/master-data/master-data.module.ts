@@ -112,6 +112,7 @@ import { ContractStatusFormComponent } from './components/contract-status/compon
 import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
 import { UserPreferenceService } from '../../Services/user-preferences.service';
 import { TitleModalComponent } from './components/title/components/title-modal/title-modal.component';
+import { TitleUtils } from './components/title/utils/title-utils';
 
 @NgModule({
   declarations: [
@@ -227,6 +228,6 @@ import { TitleModalComponent } from './components/title/components/title-modal/t
   exports: [
     GenaralTableComponent
   ],
-  providers: [UserPreferenceService]
+  providers: [UserPreferenceService, TitleUtils]
 })
 export class MasterDataModule {}
