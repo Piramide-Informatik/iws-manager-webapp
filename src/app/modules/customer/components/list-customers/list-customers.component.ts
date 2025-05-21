@@ -5,6 +5,8 @@ import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
@@ -32,9 +34,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   public countries!: { nameCountry: string }[];
   public selectedCountries: any[] = [];
+  userListCustomerPreferences: UserPreference = {};
+  tableKey: string = 'ListCustomers'
+  dataKeys = ['id', 'companyName', 'nameLine2', 'kind', 'land', 'place', 'contact'];
 
   constructor(private readonly customerService: CustomerService, 
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly route: ActivatedRoute
   ) { }
@@ -49,11 +55,16 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     this.countries.sort((a, b) => a.nameCountry.localeCompare(b.nameCountry));
     
     this.selectedColumns = this.cols;
-
+    this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.reloadComponent(true);
+      this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
+  }
+
+  onUserListCustomerPreferencesChanges(userListCustomerPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userListCustomerPreferences));
   }
 
   loadColHeaders(): void {
