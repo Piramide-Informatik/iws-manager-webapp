@@ -6,5 +6,9 @@
     [userPreferences]="userListCustomerPreferences"
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserListCustomerPreferencesChanges($event)"
+    (onRowClickEvent)="goToCustomerOverview($event)"
+    (onEditRegister)="goToCustomerDetails($event)"
+    (onDeleteRegister)="deleteCustomer($event)"
+    (onCreateRegister)="goToCustomerRegister()"
   ></master-data-genaral-table>
 </div>

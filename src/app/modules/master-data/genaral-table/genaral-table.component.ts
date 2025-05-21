@@ -24,6 +24,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   @Output() onDeleteRegister = new EventEmitter<number>();
   @Output() onCreateRegister = new EventEmitter<string>();
   @Output() onColumnChanges = new EventEmitter<any>();
+  @Output() onRowClickEvent = new EventEmitter<any>();
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -78,5 +79,9 @@ export class GenaralTableComponent implements OnInit, OnChanges {
     if (inputElement) {
       this.dt2.filter(inputElement.value, field, 'contains');
     }
+  }
+
+  onClickRow(row: any) {
+    this.onRowClickEvent.emit(row);
   }
 }
