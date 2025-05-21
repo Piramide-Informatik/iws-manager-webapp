@@ -42,7 +42,6 @@ export class CountryService {
         },
         error: (err) => {
           this._error.set('Failed to load countries');
-          console.error('Error loading countries:', err);
         }
       }),
       catchError(() => of([])),
@@ -146,7 +145,6 @@ export class CountryService {
         },
         error: (err) => {
           this._error.set('Failed to delete country');
-          console.error('Error deleting country:', err);
         }
       })
     ).subscribe();
@@ -164,7 +162,6 @@ export class CountryService {
       error.statusText ??
       'Unknown server error';
 
-    console.error(`CountryService error: ${errorMessage}`);
     return throwError(() => new Error(errorMessage));
   }
 
