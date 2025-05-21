@@ -1,0 +1,14 @@
+<form [formGroup]="createTitleForm">
+    <div class="align-items-center mb-2 mt-4">
+        <div class="create-form mb-6">
+            <label for="name">New Title</label>
+            <input pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+        </div>
+        <div class="row">
+            <div class="col flex justify-content-center gap-2">
+                <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" (onClick)="onSubmit()"/>
+                <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" (onClick)="isVisibleModal.emit(false)"/>
+            </div>
+        </div>
+    </div>
+</form>

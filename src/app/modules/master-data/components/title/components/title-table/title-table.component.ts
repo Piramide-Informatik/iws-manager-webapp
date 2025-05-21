@@ -16,6 +16,7 @@ import { TitleService } from '../../../../../../Services/title.service';
 export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private readonly titleService = inject(TitleService);
+  visibleModal: boolean = false;
 
   readonly titles = computed(() => {
     return this.titleService.titles().map(title => ({
@@ -100,5 +101,9 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     if (inputTitleFilterElement) {
       this.dt.filter(inputTitleFilterElement.value, field, 'contains');
     }
+  }
+
+  onVisibleModal(visible: boolean){
+    this.visibleModal = visible;
   }
 }
