@@ -20,7 +20,7 @@
         class="menu-items"
         [pTooltip]="isCollapsed? ('MENU.MASTER_DATA' | translate) : ''"
         tooltipPosition="right"
-        (click)="menu.toggle($event)"
+        (mouseenter)="menu.toggle($event)"
         (keypress)="menu.toggle($event)"
       >
         <a class="p-menuitem-link">
