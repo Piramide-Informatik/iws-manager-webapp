@@ -2,17 +2,17 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Title } from '../Entities/title';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TitleService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8081/api/v1/titles';
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/titles`;
 
-  // Configuración CORS global para todas las peticiones
   private readonly httpOptions = {
-    withCredentials: true, // Necesario para cookies/autorización
+    withCredentials: true,
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
