@@ -19,10 +19,10 @@
       <tr>
        <th id="hide-columns" class="thead-bg-blue">
           <p-multiselect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-            selectedItemsLabel="Hide columns"
-            placeholder="Choose Columns" 
             [maxSelectedLabels]="0"
-            appendTo="body"/>
+            [appendTo]="'body'"
+            dropdownIcon="pi pi-eye">
+            </p-multiselect>
         </th>
 
         <th id="contractor-table-field" *ngFor="let col of columns; let i = index" 

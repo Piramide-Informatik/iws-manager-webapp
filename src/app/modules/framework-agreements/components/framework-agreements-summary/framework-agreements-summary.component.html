@@ -17,8 +17,8 @@
       <tr>
         <th id="hide-columns" class="thead-bg-blue">
           <p-multiselect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-            selectedItemsLabel="Hide columns"
-            placeholder="Choose Columns" 
+            [appendTo]="'body'"
+            dropdownIcon="pi pi-eye"
             [maxSelectedLabels]="0"/>
           </th>
         <th id="framework-agreement-table-field" *ngFor="let col of columns; let i = index"
