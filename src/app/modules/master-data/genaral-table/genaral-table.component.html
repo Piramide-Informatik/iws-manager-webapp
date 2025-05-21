@@ -93,7 +93,7 @@
             ></button>
           </div>
         </td>
-        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns" (click)="onClickRow(row)">
+        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns" (click)="onClickRow(row)" (keyPress)="onClickRow(row)">
           {{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}
         </td>
       </tr>
