@@ -1,0 +1,15 @@
+.create-form {
+    display: flex;
+    align-items: center;
+    
+    label {
+        width: 150px;
+        font-weight: 500;
+    }
+
+    input {
+       flex: 1;
+       max-width: 300px;
+       margin-left: 1rem;
+    }
+}

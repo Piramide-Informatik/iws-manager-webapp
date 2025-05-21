@@ -1,29 +1,171 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import { Country } from '../Entities/country';
 import { environment } from '../../environments/environment';
-import { Country } from '../Entities/country.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountryService {
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/api/v1/countries`;
 
-  private readonly ROOT_URL = `${environment.BACK_END_HOST_DEV}`;
+  // Signals
+  private readonly _countries = signal<Country[]>([]);
+  private readonly _loading = signal<boolean>(false);
+  private readonly _error = signal<string | null>(null);
 
-  constructor(private readonly http: HttpClient) { }
+  public countries = this._countries.asReadonly();
+  public loading = this._loading.asReadonly();
+  public error = this._error.asReadonly();
 
-  // Get all countries
-  getCountries(): Country[] {
-    return [
-      { uuid:'3f696a78-c73f-475c-80a6-f5a858648af1', name: 'Deutschland', label: 'DE', is_default: 1 },
-      { uuid:'934923mn-c73f-475c-80a6-f5a858648af1', name: 'Switzerland', label: 'CH', is_default: 1 },
-      { uuid:'0mdsfj52-c73f-475c-80a6-f5a858648af1', name: 'Frankreich', label: 'FR', is_default: 1 },
-      { uuid:'b93kfdsf-c73f-475c-80a6-f5a858648af1', name: 'Amerika, USA', label: 'US', is_default: 1 },
-      { uuid:'g34234k4-c73f-475c-80a6-f5a858648af1', name: 'Vereinigtes Königreich', label: 'GB', is_default: 1 },
-      { uuid:'v3423dm7-c73f-475c-80a6-f5a858648af1', name: 'Spanien', label: 'ES', is_default: 1 },
-      { uuid:'lb32473f-475c-80a6-80g5-f5a858648af1', name: 'Niederlande, Holland', label: 'NL', is_default: 1 },
-      { uuid:'cm345736-c73f-475c-80a6-f5a858648af1', name: 'Mexico', label: 'MX', is_default: 1 }
-    ]
+  private readonly httpOptions = {
+    withCredentials: true,
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    })
+  };
+
+  constructor() {
+    this.loadInitialData();
   }
 
+  private loadInitialData(): void {
+    this._loading.set(true);
+    this.http.get<Country[]>(this.apiUrl, this.httpOptions).pipe(
+      tap({
+        next: (countries) => {
+          this._countries.set(countries);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to load countries');
+        }
+      }),
+      catchError(() => of([])),
+      tap(() => this._loading.set(false))
+    ).subscribe();
+  }
+
+  // ==================== CREATE OPERATIONS ====================
+  /**
+   * Creates a new country record
+   * @param country Country data (without id and timestamps)
+   * @returns Observable with the created Country object
+   * @throws Error when validation fails or server error occurs
+   */
+  addCountry(country: Omit<Country, 'id' | 'createdAt' | 'updatedAt'>): void {
+    this.http.post<Country>(this.apiUrl, country, this.httpOptions).pipe(
+      tap({
+        next: (newCountry) => {
+          this._countries.update(countries => [...countries, newCountry]);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add country');
+          console.error('Error adding country:', err);
+        }
+      })
+    ).subscribe();
+  }
+
+  // ==================== READ OPERATIONS ====================
+  /**
+   * Retrieves all countries
+   * @returns Observable with Country array
+   * @throws Error when server request fails
+   */
+  getAllCountries(): Observable<Country[]> {
+    return this.http.get<Country[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch countries');
+        console.error('Error fetching countries:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
+   * Retrieves a single country by ID
+   * @param id Country identifier
+   * @returns Observable with Country object
+   * @throws Error when country not found or server error occurs
+   */
+  getCountryById(id: number): Observable<Country | undefined> {
+    return this.getAllCountries().pipe(
+      map(countries => countries.find(t => t.id === id))
+    );
+  }  
+
+  // ==================== UPDATE OPERATIONS ====================
+  /**
+   * Updates an existing country
+   * @param id Country identifier to update
+   * @param country Partial country data with updates
+   * @returns Observable with updated Country object
+   * @throws Error when country not found or validation fails
+   */
+  updateCountry(updatedCountry: Country): void {
+    const url = `${this.apiUrl}/${updatedCountry.id}`;
+    this.http.put<Country>(url, updatedCountry, this.httpOptions).pipe(
+      tap({
+        next: (res) => {
+          this._countries.update(countries =>
+            countries.map(t => t.id === res.id ? res : t)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to update country');
+          console.error('Error updating country:', err);
+        }
+      })
+    ).subscribe();
+  }
+
+  // ==================== DELETE OPERATIONS ====================
+  /**
+   * Deletes a country record
+   * @param id Country identifier to delete
+   * @returns Empty Observable
+   * @throws Error when country not found or server error occurs
+   */
+  deleteCountry(id: number): void {
+    const url = `${this.apiUrl}/${id}`;
+    this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._countries.update(countries =>
+            countries.filter(t => t.id !== id)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete country');
+        }
+      })
+    ).subscribe();
+  }  
+
+  // ==================== ERROR HANDLING ====================
+  /**
+   * Handles HTTP errors consistently across all requests
+   * @param error HttpErrorResponse object
+   * @returns Error observable with user-friendly message
+   * @private
+   */
+  private handleError(error: HttpErrorResponse) {
+    const errorMessage = error.error?.message ??
+      error.statusText ??
+      'Unknown server error';
+
+    return throwError(() => new Error(errorMessage));
+  }
+
+  public refreshTitles(): void {
+    this.loadInitialData();
+  }
 }

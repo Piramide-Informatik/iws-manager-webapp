@@ -111,6 +111,7 @@ import { ContractStatusComponent } from './components/contract-status/contract-s
 import { ContractStatusFormComponent } from './components/contract-status/components/contract-status-form/contract-status-form.component';
 import { ContractStatusTableComponent } from './components/contract-status/components/contract-status-table/contract-status-table.component';
 import { UserPreferenceService } from '../../Services/user-preferences.service';
+import { TitleModalComponent } from './components/title/components/title-modal/title-modal.component';
 
 @NgModule({
   declarations: [
@@ -191,6 +192,7 @@ import { UserPreferenceService } from '../../Services/user-preferences.service';
     ContractStatusComponent,
     ContractStatusFormComponent,
     ContractStatusTableComponent,
+    TitleModalComponent,
   ],
   imports: [
     ButtonModule,
