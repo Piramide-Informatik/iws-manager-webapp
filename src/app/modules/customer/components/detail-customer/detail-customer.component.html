@@ -22,7 +22,7 @@
           <label for="country">{{ 'CUSTOMERS.FORM.COUNTRY' | translate }}</label>
           <p-select formControlName="selectedCountry" 
             id="country"
-            [options]="countries"
+            [options]="countries()"
             [(ngModel)]="selectedCountry"
             optionLabel="name" 
           >

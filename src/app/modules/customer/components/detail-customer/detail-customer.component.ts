@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../services/customer.service';
-import { Subscription, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Country } from '../../../../Entities/country.model';
+import { Country } from '../../../../Entities/country';
 import { CountryService } from '../../../../Services/country.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BranchService } from '../../../../Services/branch.service';
@@ -32,7 +32,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public selectedColumns!: Column[];
   public customers!: Customer[];
   private langSubscription!: Subscription;
-  public countries!: Country[];
+  private readonly countryService = inject(CountryService);
+  countries = toSignal(this.countryService.getAllCountries(), { initialValue: [] });
   userDetailCustomerPreferences: UserPreference = {};
   tableKey: string = 'DetailCustomer'
   dataKeys = ['name', 'function', 'right'];
@@ -85,7 +86,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private readonly countryService : CountryService,
     private readonly customerService: CustomerService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
@@ -119,7 +119,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.countries = this.countryService.getCountries();
     this.updateHeadersAndColumns();
     this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
@@ -137,7 +136,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         this.formDetailCustomer.get('customerNo')?.setValue(history.state.customerData.id) ;
         this.formDetailCustomer.get('companyText1')?.setValue(history.state.customerData.companyName) ;
         this.formDetailCustomer.get('companyText2')?.setValue(history.state.customerData.nameLine2) ;
-        this.formDetailCustomer.get('selectedCountry')?.setValue(this.countries[1]) ;
+        //this.formDetailCustomer.get('selectedCountry')?.setValue(this.countries()[1]?.id) ;
         this.formDetailCustomer.get('selectedTypeCompany')?.setValue(history.state.customerData.kind) ;
         this.formDetailCustomer.get('city')?.setValue(history.state.customerData.place) ;
         this.formDetailCustomer.get('invoiceEmail')?.setValue(history.state.customerData.contact) ;
