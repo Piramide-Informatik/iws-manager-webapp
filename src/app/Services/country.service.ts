@@ -160,8 +160,8 @@ export class CountryService {
    * @private
    */
   private handleError(error: HttpErrorResponse) {
-    const errorMessage = error.error?.message ||
-      error.statusText ||
+    const errorMessage = error.error?.message ??
+      error.statusText ??
       'Unknown server error';
 
     console.error(`CountryService error: ${errorMessage}`);
