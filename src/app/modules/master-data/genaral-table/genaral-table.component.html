@@ -48,13 +48,28 @@
       <tr *ngIf="filterByColumns">
         <th scope="col"></th>
         <th scope="col" *ngFor="let col of columns; let i = index">
-            <p-columnFilter
-                type="text"
-                [field]="col.field"
-                placeholder="Search"
-                ariaLabel="Filter Name"
-                matchMode="contains"
-            ></p-columnFilter>        
+            @if(col.filter && col.filter.type === 'multiple') {
+              <p-columnFilter [field]="col.field" matchMode="in" [showMenu]="false">
+                  <ng-template #filter let-value let-filter="filterCallback">
+                      <p-multiselect 
+                        [ngModel]="value" 
+                        [options]="col.filter.data"
+                        (onChange)="filter($event.value)" 
+                        placeholder="Search"
+                        [style.min-width.rem]="14"
+                        [panelStyle]="{ minWidth: '16rem' }"
+                        [appendTo]="'body'">
+                      </p-multiselect>
+                  </ng-template>
+              </p-columnFilter>
+            } @else {
+              <p-columnFilter
+                  type="text"
+                  [field]="col.field"
+                  placeholder="Search"
+                  ariaLabel="Filter Name"
+              ></p-columnFilter> 
+            }       
         </th>
       </tr>
     </ng-template>
@@ -77,7 +92,7 @@
             ></button>
           </div>
         </td>
-        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns">
+        <td [ngClass]="col.customClasses ? col.customClasses : ''" *ngFor="let col of columns" (click)="onClickRow(row)" (keyPress)="onClickRow(row)">
           {{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}
         </td>
       </tr>

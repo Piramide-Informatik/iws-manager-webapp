@@ -12,6 +12,7 @@ interface Column {
   field: string,
   header: string,
   minWidth: number,
+  filter?: any
 }
 
 @Component({
@@ -32,7 +33,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  public countries!: { nameCountry: string }[];
+  public countries!: string[];
   public selectedCountries: any[] = [];
   userListCustomerPreferences: UserPreference = {};
   tableKey: string = 'ListCustomers'
@@ -47,13 +48,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.loadColHeaders();
+    
     this.customers = this.customerService.getCustomers();
 
     this.countries = Array.from(new Set(this.customers.map(customer => customer.land)))
-                              .map(country => ({ nameCountry: country }));
-    this.countries.sort((a, b) => a.nameCountry.localeCompare(b.nameCountry));
-    
+                              .map(country => country);
+    this.countries.sort((a, b) => a.localeCompare(b));
+    this.loadColHeaders();
     this.selectedColumns = this.cols;
     this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -69,13 +70,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'id', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')) },
-      { field: 'companyName', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')) },
-      { field: 'nameLine2',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2')) },
-      { field: 'kind',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE')) },
-      { field: 'land',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')) },
-      { field: 'place',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CITY')) },
-      { field: 'contact',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON')) }
+      { field: 'id', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID'))},
+      { field: 'companyName', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME'))},
+      { field: 'nameLine2',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2'))},
+      { field: 'kind',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE'))},
+      { field: 'land',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')), filter: { type: 'multiple', data: this.countries}},
+      { field: 'place',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CITY'))},
+      { field: 'contact',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON'))}
     ];
   }
 
@@ -119,6 +120,14 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       state: { customer: "Joe Doe", customerData: currentCustomer } 
     });
+  }
+
+  goToCustomerOverview(rowData: any) {
+    this.router.navigate(['/customers', rowData.nameLine2]);
+  }
+
+  goToCustomerRegister() {
+    this.router.navigate(['customer-details'], { relativeTo: this.route })
   }
 
 }
