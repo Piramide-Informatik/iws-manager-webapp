@@ -74,7 +74,8 @@
     "GENERATE_PDF_SUBCONTRACT": "Generate PDF",
     "IMPORT_INVOICES": "Import Invoices",
     "GENERATE_PDF_ORDER": "Generate PDF",
-    "IMPORT_EMPLOYEE_CONTRACTS": "Import Employee Contracts"
+    "IMPORT_EMPLOYEE_CONTRACTS": "Import Employee Contracts",
+    "IMPORT": "Import"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmation",
@@ -624,6 +625,14 @@
     },
     "ERROR": {
       "TITLE_LABEL_REQUIRED": "Title is required"
+    },
+    "DELETE": {
+      "CONFIRMATION": "Delete Title",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the title "
+    },
+    "FORM": {
+      "TITLE_FORM": "Create Title",
+      "NEW_TITLE": "New Title"
     }
   },
   "BILLING_METHODS": {

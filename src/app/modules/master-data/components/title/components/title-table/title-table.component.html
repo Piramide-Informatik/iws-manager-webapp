@@ -8,11 +8,22 @@
         [userPreferences]="userTitlePreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserTitlePreferencesChanges($event)"
-        (onCreateRegister)="visibleModal=true"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
       ></master-data-genaral-table>
-      <p-dialog [header]="'ADDRESS.FORM.TITLE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
+
+      <p-dialog 
+        [header]="modalType === 'create' 
+          ? ('TITLE.FORM.TITLE_FORM' | translate) 
+          : ('TITLE.DELETE.CONFIRMATION' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleModal" 
+      >
         <app-title-modal
-        (isVisibleModal)="onVisibleModal($event)"
+          [modalType]="modalType"
+          [titleName]="titleName"
+          [titleToDelete]="selectedTitle"
+          (isVisibleModal)="onModalVisibilityChange($event)"
         ></app-title-modal>
       </p-dialog>
     </div>
