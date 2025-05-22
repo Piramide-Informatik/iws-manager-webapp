@@ -37,6 +37,7 @@ import { OrderComponent } from './components/framework-agreement-details/order/o
 import { IwsProvisionComponent } from './components/framework-agreement-details/iws-provision/iws-provision.component';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MasterDataModule } from '../master-data/master-data.module';
 
 @NgModule({
     declarations: [
@@ -71,7 +72,8 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
         ReactiveFormsModule,
         TranslateModule,
         TranslatePipe,
-        TranslateDirective    
+        TranslateDirective,
+        MasterDataModule    
     ]
 
 })

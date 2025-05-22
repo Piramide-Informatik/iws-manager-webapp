@@ -140,6 +140,13 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  redirectToEmployeeDetails() {
+    this.router.navigate(['employee-details'], { 
+      relativeTo: this.route,
+      state: { customer: "Joe Doe", employee: {} } 
+    });
+  }
+
   searchEmployee(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement?.value) {
