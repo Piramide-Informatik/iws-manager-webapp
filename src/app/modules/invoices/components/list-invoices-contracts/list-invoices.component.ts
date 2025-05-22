@@ -6,11 +6,14 @@ import { Table } from 'primeng/table';
 import {TranslateService, _} from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string;
   header: string;
   customExportHeader?: string;
+  customClasses?: string[]
 }
 
 interface ExportColumn {
@@ -41,6 +44,10 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
   submitted: boolean = true;
   searchTerm: string = '';
   statuses!: any[];
+  userInvoicePreferences: UserPreference = {};
+  tableKey: string = 'Invoice'
+  dataKeys = ['invoiceNumber', 'date', 'description', 'type', 'iwsNumber', 'orderNumber', 'orderName', 'netAmount', 'value', 'totalAmount'];
+
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -51,37 +58,44 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     private readonly invoicesService: InvoicesService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly cd: ChangeDetectorRef,
     private readonly translate: TranslateService, 
     private readonly router:Router
   ) {}
 
   ngOnInit():void {
-    this.loadColHeaders();
+    this.loadInvoiceColHeaders();
     this.selectedColumns = this.cols;
     this.customer = 'Joe Doe';
 
     this.invoices = this.invoicesService.list();
+    this.userInvoicePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
+      this.loadInvoiceColHeaders();
       this.reloadComponent(true);
+      this.userInvoicePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
     this.selectedColumns = this.cols;
   }
 
-  loadColHeaders(): void {
+  onUserInvoicePreferencesChanges(userInvoicePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userInvoicePreferences));
+  }
+
+  loadInvoiceColHeaders(): void {
     this.cols = [
-          { field: 'invoiceNumber', header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))},
-          { field: 'date', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE'))},
+          { field: 'invoiceNumber', customClasses: ['align-right'], header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))},
+          { field: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE'))},
           { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION'))},
           { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE'))},
           { field: 'iwsNumber', header: this.translate.instant(_('INVOICES.TABLE.NETWORK'))},
           { field: 'orderNumber', header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER'))},
           { field: 'orderName', header: this.translate.instant(_('INVOICES.TABLE.ORDER_TITLE'))},
-          { field: 'netAmount',  header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT'))},
-          { field: 'value', header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT'))},
-          { field: 'totalAmount', header: this.translate.instant(_('INVOICES.TABLE.AMOUNT_GROSS'))}
+          { field: 'netAmount', customClasses: ['align-right'],  header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT'))},
+          { field: 'value', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT'))},
+          { field: 'totalAmount', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.AMOUNT_GROSS'))}
         ];
   }
 
@@ -150,15 +164,15 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     this.productDialog = false;
     this.submitted = false;
   }
-  deleteInvoice(invoice: Invoice) {
+  deleteInvoice(invoiceNumber: number) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + invoice.invoiceNumber + '?',
+      message: 'Are you sure you want to delete ' + invoiceNumber + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.invoicesService.deleteInvoice(invoice.invoiceNumber);
+        this.invoicesService.deleteInvoice(invoiceNumber);
         this.invoices = this.invoices.filter(
-          (val) => val.invoiceNumber !== invoice.invoiceNumber
+          (val) => val.id !== invoiceNumber
         );
         this.messageService.add({
           severity: 'success',

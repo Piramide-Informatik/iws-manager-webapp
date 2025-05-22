@@ -74,7 +74,8 @@
     "GENERATE_PDF_SUBCONTRACT": "Generar PDF",
     "IMPORT_INVOICES": "Importar Facturas",
     "GENERATE_PDF_ORDER": "Generar PDF",
-    "IMPORT_EMPLOYEE_CONTRACTS": "Importar Contratos Laborales"
+    "IMPORT_EMPLOYEE_CONTRACTS": "Importar Contratos Laborales",
+    "IMPORT": "Importar"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmación",
