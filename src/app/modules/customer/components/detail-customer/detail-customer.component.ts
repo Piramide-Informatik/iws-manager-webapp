@@ -16,6 +16,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 interface Column {
   field: string,
   header: string
+  customClasses?: string[]
 }
 
 @Component({
@@ -179,6 +180,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       },
       {
         field: 'right',
+        customClasses: ['align-right'],
         header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.LAW'))
       }
     ];

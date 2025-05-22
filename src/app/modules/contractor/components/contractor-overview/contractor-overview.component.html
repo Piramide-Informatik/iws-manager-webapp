@@ -6,5 +6,7 @@
     [userPreferences]="userContractorOverviewPreferences"
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserContractorOverviewPreferencesChanges($event)"
+    (onEditRegister)="goToContractDetails($event)"
+    (onCreateRegister)="createContractDetail()"
   ></master-data-genaral-table>
 </div>

@@ -10,7 +10,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
-  header: string
+  header: string,
+  customClasses?: string[]
 }
 
 @Component({
@@ -49,7 +50,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit():void {
-    this.loadColHeaders();
+    this.loadContractOverviewHeaders();
     this.contractors = this.contractorService.list();
 
     this.selectedColumns = this.cols;
@@ -57,20 +58,20 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     this.customer = 'Joe Doe'
     this.userContractorOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
+      this.loadContractOverviewHeaders();
       this.reloadComponent(true);
       this.userContractorOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
-  loadColHeaders(): void {
+  loadContractOverviewHeaders(): void {
     this.cols = [
           { field: 'contractorLabel', header:  this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))},
           { field: 'contractorName', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME'))},
           { field: 'countryLabel', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL'))},
-          { field: 'street', header: this.translate.instant(_('CONTRACTS.TABLE.STREET'))},
+          { field: 'street', customClasses: ['align-right'], header: this.translate.instant(_('CONTRACTS.TABLE.STREET'))},
           { field: 'zipCode', header: this.translate.instant(_('CONTRACTS.TABLE.ZIP_CODE'))},
-          { field: 'city', header: this.translate.instant(_('CONTRACTS.TABLE.CITY'))},
+          { field: 'city', customClasses: ['align-right'], header: this.translate.instant(_('CONTRACTS.TABLE.CITY'))},
           { field: 'taxNro',  header: this.translate.instant(_('CONTRACTS.TABLE.TAX_NUMBER'))}
         ];
   }
@@ -93,18 +94,16 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
    })
  }
 
-
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
-
   goToContractDetails(currentContract: Contractor) {
     this.router.navigate(['contract-details'], { 
       relativeTo: this.route,
       state: { customer: "Joe Doe", contractData: currentContract } 
+    });
+  }
+
+  createContractDetail() {
+    this.router.navigate(['contract-details'], { 
+      relativeTo: this.route
     });
   }
 
