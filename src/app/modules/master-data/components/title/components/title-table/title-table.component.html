@@ -10,6 +10,7 @@
         (onColumnChanges)="onUserTitlePreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="editTitle($event)"
       ></master-data-genaral-table>
 
       <p-dialog 
