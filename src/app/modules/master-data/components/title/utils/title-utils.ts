@@ -91,4 +91,24 @@ export class TitleUtils {
       subscriber.complete();
     });
   }
+
+  /**
+ * Deletes a title by ID and updates the internal titles signal.
+ * @param id - ID of the title to delete
+ * @returns Observable that completes when the deletion is done
+ */
+  deleteTitle(id: number): Observable<void> {
+    return new Observable(observer => {
+      this.titleService.deleteTitle(id);
+      
+      setTimeout(() => {
+        if (!this.titleService.error()) {
+          observer.next();
+          observer.complete();
+        } else {
+          observer.error(this.titleService.error());
+        }
+      }, 100);
+    });
+  }
 }
