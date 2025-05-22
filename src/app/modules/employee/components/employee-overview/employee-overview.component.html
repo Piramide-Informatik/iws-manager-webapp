@@ -8,6 +8,7 @@
       (onColumnChanges)="onUserEmployeeOverviewPreferencesChanges($event)"
       (onEditRegister)="goToEmployeeDetails($event)"
       (onDeleteRegister)="deleteEmployee($event)"
+      (onCreateRegister)="redirectToEmployeeDetails()"
     ></master-data-genaral-table>
     <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
