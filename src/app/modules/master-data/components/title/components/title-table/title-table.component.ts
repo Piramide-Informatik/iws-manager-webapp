@@ -18,7 +18,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly titleService = inject(TitleService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
-  selectedTitle: { id: number, name: string } | null = null;
+  selectedTitle: number | null = null;
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
@@ -32,6 +32,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     return this.titleService.titles().map(title => ({
       id: title.id,
       title: title.name,  
+      name: title.name
     }));
   });
 

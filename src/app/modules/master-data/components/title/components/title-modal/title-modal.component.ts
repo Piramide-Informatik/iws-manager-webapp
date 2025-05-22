@@ -10,11 +10,14 @@ import { of } from 'rxjs';
   templateUrl: './title-modal.component.html',
   styleUrls: ['./title-modal.component.scss']
 })
+
 export class TitleModalComponent implements OnInit {
   private readonly titleUtils = inject(TitleUtils);
+  isLoading = false;
+  errorMessage: string | null = null;
   
   @Input() modalType: 'create' | 'delete' = 'create';
-  @Input() titleToDelete?: { id: number, name: string } | null = null;
+  @Input() titleToDelete: number | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<number>();
@@ -27,9 +30,6 @@ export class TitleModalComponent implements OnInit {
     ])
   });
 
-  isLoading = false;
-  errorMessage: string | null = null;
-
   ngOnInit(): void {
     this.resetForm();
   }
@@ -39,11 +39,22 @@ export class TitleModalComponent implements OnInit {
   }
 
   onDeleteConfirm(): void {
-    if (this.titleToDelete) {
-      this.confirmDelete.emit(this.titleToDelete.id);
+    this.isLoading = true;
+    if(this.titleToDelete){
+      this.titleUtils.deleteTitle(this.titleToDelete).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.confirmDelete.emit(); 
+          this.closeModal();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.message || 'Failed to delete title';
+          console.error('Delete error:', error);
+        }
+      });
     }
-    this.closeModal();
-  }
+  }  
 
   onSubmit(): void {
     if (this.shouldPreventSubmission()) return;
