@@ -43,6 +43,7 @@
       >
         <app-title-modal
           [modalType]="modalType"
+          [titleName]="titleName"
           [titleToDelete]="selectedTitle"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (createTitle)="onTitleCreated()"

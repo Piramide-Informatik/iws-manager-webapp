@@ -13,14 +13,16 @@ import { of } from 'rxjs';
 
 export class TitleModalComponent implements OnInit {
   private readonly titleUtils = inject(TitleUtils);
-  isLoading = false;
-  errorMessage: string | null = null;
   
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() titleToDelete: number | null = null;
+  @Input() titleName: String | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<number>();
+
+  isLoading = false;
+  errorMessage: string | null = null;
 
   readonly createTitleForm = new FormGroup({
     name: new FormControl('', [
