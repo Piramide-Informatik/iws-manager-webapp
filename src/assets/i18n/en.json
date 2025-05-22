@@ -625,6 +625,14 @@
     },
     "ERROR": {
       "TITLE_LABEL_REQUIRED": "Title is required"
+    },
+    "DELETE": {
+      "CONFIRMATION": "Delete Title",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the title "
+    },
+    "FORM": {
+      "TITLE_FORM": "Create Title",
+      "NEW_TITLE": "New Title"
     }
   },
   "BILLING_METHODS": {

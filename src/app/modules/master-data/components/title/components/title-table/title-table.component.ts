@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { TitleService } from '../../../../../../Services/title.service';
+import { TitleUtils } from '../../utils/title-utils';
 
 @Component({
   selector: 'app-title-table',
@@ -14,14 +15,36 @@ import { TitleService } from '../../../../../../Services/title.service';
   styleUrl: './title-table.component.scss'
 })
 export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
-
+  private readonly titleUtils = new TitleUtils();
   private readonly titleService = inject(TitleService);
   visibleModal: boolean = false;
+  modalType: 'create' | 'delete' = 'create';
+  selectedTitle: number | null = null;
+  titleName: string = '';
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedTitle = event.data;
+  
+      this.titleUtils.getTitleById(this.selectedTitle!).subscribe({
+        next: (title) => {
+          this.titleName = title?.name ?? '';
+        },
+        error: (err) => {
+          console.error('No se pudo obtener el título:', err);
+          this.titleName = '';
+        }
+      });
+    }
+    this.visibleModal = true;
+  }
 
   readonly titles = computed(() => {
     return this.titleService.titles().map(title => ({
       id: title.id,
       title: title.name,  
+      name: title.name
     }));
   });
 
@@ -105,5 +128,12 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   onVisibleModal(visible: boolean){
     this.visibleModal = visible;
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedTitle = null;
+    }
   }
 }
