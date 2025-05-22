@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
@@ -13,8 +13,11 @@ import { of } from 'rxjs';
 export class TitleModalComponent implements OnInit {
   private readonly titleUtils = inject(TitleUtils);
   
+  @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() titleToDelete?: { id: number, name: string } | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
+  @Output() confirmDelete = new EventEmitter<number>();
 
   readonly createTitleForm = new FormGroup({
     name: new FormControl('', [
@@ -29,6 +32,17 @@ export class TitleModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetForm();
+  }
+
+  get isCreateMode(): boolean {
+    return this.modalType === 'create';
+  }
+
+  onDeleteConfirm(): void {
+    if (this.titleToDelete) {
+      this.confirmDelete.emit(this.titleToDelete.id);
+    }
+    this.closeModal();
   }
 
   onSubmit(): void {
@@ -84,6 +98,11 @@ export class TitleModalComponent implements OnInit {
     this.isLoading = false;
     this.isVisibleModal.emit(false);
     this.resetForm();
+  }
+
+  closeModal(): void {
+    this.isVisibleModal.emit(false);
+    this.createTitleForm.reset();
   }
 
   onCancel(): void {

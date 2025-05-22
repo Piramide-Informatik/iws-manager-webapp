@@ -17,6 +17,16 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private readonly titleService = inject(TitleService);
   visibleModal: boolean = false;
+  modalType: 'create' | 'delete' = 'create';
+  selectedTitle: { id: number, name: string } | null = null;
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete') {
+      this.selectedTitle = event.data;
+    }
+    this.visibleModal = true;
+  }
 
   readonly titles = computed(() => {
     return this.titleService.titles().map(title => ({
@@ -105,5 +115,25 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   onVisibleModal(visible: boolean){
     this.visibleModal = visible;
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedTitle = null;
+    }
+  }
+
+
+  onTitleCreated(): void {
+    // Lógica para crear nuevo título
+    console.log('Nuevo título');
+    // this.titleService.createTitle(titleName).subscribe(...);
+  }
+
+  onTitleDeleted(): void {
+    // Lógica para eliminar título
+    console.log('Eliminar título ID:');
+    // this.titleService.deleteTitle(titleId).subscribe(...);
   }
 }
