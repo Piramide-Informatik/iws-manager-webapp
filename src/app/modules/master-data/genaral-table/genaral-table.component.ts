@@ -16,6 +16,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   @Input() hideColumns: boolean = true;
   @Input() filterByColumns: boolean = true;
   @Input() nameNewButton: string = '';
+  @Input() isFileUploadButtonVisible: boolean = false;
   selectedColumns: any[] = [];
   displayedColumns: any[] = [];
   @Input() userPreferences: any = [];
