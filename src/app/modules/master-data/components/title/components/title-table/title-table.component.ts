@@ -136,17 +136,4 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
       this.selectedTitle = null;
     }
   }
-
-
-  onTitleCreated(): void {
-    // Lógica para crear nuevo título
-    console.log('Nuevo título');
-    // this.titleService.createTitle(titleName).subscribe(...);
-  }
-
-  onTitleDeleted(): void {
-    // Lógica para eliminar título
-    console.log('Eliminar título ID:');
-    // this.titleService.deleteTitle(titleId).subscribe(...);
-  }
 }

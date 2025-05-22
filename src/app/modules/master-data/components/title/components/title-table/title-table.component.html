@@ -1,24 +1,3 @@
-<!-- <div class="container">
-  <div class="row">
-    <div class>
-      <master-data-genaral-table
-        [tableId]="tableKey"
-        [tableValues]="titles()"
-        [columns]="titleDisplayedColumns"
-        [userPreferences]="userTitlePreferences"
-        [dataKeys]="dataKeys"
-        (onColumnChanges)="onUserTitlePreferencesChanges($event)"
-        (onCreateRegister)="visibleModal=true"
-      ></master-data-genaral-table>
-      <p-dialog [header]="'ADDRESS.FORM.TITLE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
-        <app-title-modal
-        (isVisibleModal)="onVisibleModal($event)"
-        ></app-title-modal>
-      </p-dialog>
-    </div>
-  </div>
-</div> -->
-
 <div class="container">
   <div class="row">
     <div class>
@@ -45,8 +24,6 @@
           [titleName]="titleName"
           [titleToDelete]="selectedTitle"
           (isVisibleModal)="onModalVisibilityChange($event)"
-          (createTitle)="onTitleCreated()"
-          (confirmDelete)="onTitleDeleted()"
         ></app-title-modal>
       </p-dialog>
     </div>
