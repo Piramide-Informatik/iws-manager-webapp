@@ -28,9 +28,9 @@ export class InvoicesService {
     }
     return Promise.resolve(this.invoices);
   }
-  deleteInvoice(invoiceNumber: string): void {
+  deleteInvoice(invoiceId: number): void {
     this.invoices = this.invoices.filter(
-      (invoice) => invoice.invoiceNumber !== invoiceNumber
+      (invoice) => invoice.id !== invoiceId
     );
   }
 }

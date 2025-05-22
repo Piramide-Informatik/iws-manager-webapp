@@ -10,6 +10,7 @@ export class InvoicesDatastoreService {
   list(): Invoice[] {
     return [
       {
+        id: 1,
         invoiceNumber: 'INV-001',
         date: '04.05.2024',
         description: 'Entwicklung der Plattform',
@@ -22,6 +23,7 @@ export class InvoicesDatastoreService {
         totalAmount: 920,
       },
       {
+        id: 2,
         invoiceNumber: 'INV-002',
         date: '05.05.2024',
         description: 'Beratung',
@@ -34,6 +36,7 @@ export class InvoicesDatastoreService {
         totalAmount: 552,
       },
       {
+        id: 3,
         invoiceNumber: 'INV-003',
         date: '10.05.2024',
         description: 'Software-Lizenz',
@@ -46,6 +49,7 @@ export class InvoicesDatastoreService {
         totalAmount: 1840,
       },
       {
+        id: 4,
         invoiceNumber: 'INV-004',
         date: '10.06.2024',
         description: 'Netzwerkinstallation',
@@ -58,6 +62,7 @@ export class InvoicesDatastoreService {
         totalAmount: 1288,
       },
       {
+        id: 5,
         invoiceNumber: 'INV-005',
         date: '12.07.2024',
         description: 'IT-Schulung',
@@ -70,6 +75,7 @@ export class InvoicesDatastoreService {
         totalAmount: 644,
       },
       {
+        id: 6,
         invoiceNumber: 'INV-006',
         date: '17.08.2024',
         description: 'Cloud-Backup',
@@ -82,6 +88,7 @@ export class InvoicesDatastoreService {
         totalAmount: 772,
       },
       {
+        id: 7,
         invoiceNumber: 'INV-007',
         date: '15.09.2024',
         description: 'Server-Migration',
@@ -94,6 +101,7 @@ export class InvoicesDatastoreService {
         totalAmount: 2760,
       },
       {
+        id: 8,
         invoiceNumber: 'INV-008',
         date: '17.08.2024',
         description: 'Hardware-Wartung',
@@ -106,6 +114,7 @@ export class InvoicesDatastoreService {
         totalAmount: 699,
       },
       {
+        id: 9,
         invoiceNumber: 'INV-009',
         date: '17.10.2024',
         description: 'Benutzerverwaltung',
@@ -118,6 +127,7 @@ export class InvoicesDatastoreService {
         totalAmount: 368,
       },
       {
+        id: 10,
         invoiceNumber: 'INV-010',
         date: '18.08.2024',
         description: 'Mobile App Entwicklung',
@@ -130,6 +140,7 @@ export class InvoicesDatastoreService {
         totalAmount: 3864,
       },
       {
+        id: 11,
         invoiceNumber: 'INV-011',
         date: '20.08.2024',
         description: 'SEO Optimierung',

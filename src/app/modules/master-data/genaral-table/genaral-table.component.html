@@ -111,12 +111,27 @@
 
   <p-toolbar>
     <ng-template #start>
-      <p-button
-        [label]="nameNewButton || 'BUTTONS.NEW' | translate"
-        icon="pi pi-plus"
-        (click)="createRegister('new register')"
-        (keydown.enter)="createRegister('new register')"
-      />
+      <div class="flex gap-2">
+        <p-button
+          [label]="nameNewButton || 'BUTTONS.NEW' | translate"
+          icon="pi pi-plus"
+          (click)="createRegister('new register')"
+          (keydown.enter)="createRegister('new register')"
+        />
+  
+        @if(isFileUploadButtonVisible) {
+          <p-fileUpload
+            mode="basic"
+            accept=".pdf,.xml,.csv"
+            [maxFileSize]="5000000"
+            [chooseLabel]="'BUTTONS.IMPORT' | translate"
+            auto
+            customUpload
+            class="mr-2 inline-block"
+          />
+        }
+      </div>
+      
     </ng-template>
   </p-toolbar>
 </div>
