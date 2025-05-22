@@ -19,6 +19,7 @@ import { ContractorDetailsComponent } from './components/contractor-details/cont
 import { DropdownModule } from 'primeng/dropdown';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MasterDataModule } from '../master-data/master-data.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
     ToolbarModule,
     TranslateModule,
     TranslatePipe,
-    TranslateDirective
+    TranslateDirective,
+    MasterDataModule
 ]
 })
 export class ContractorModule { }
