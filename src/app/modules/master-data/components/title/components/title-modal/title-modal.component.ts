@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
@@ -10,11 +10,19 @@ import { of } from 'rxjs';
   templateUrl: './title-modal.component.html',
   styleUrls: ['./title-modal.component.scss']
 })
+
 export class TitleModalComponent implements OnInit {
   private readonly titleUtils = inject(TitleUtils);
   
+  @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() titleToDelete: number | null = null;
+  @Input() titleName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
+  @Output() confirmDelete = new EventEmitter<number>();
+
+  isLoading = false;
+  errorMessage: string | null = null;
 
   readonly createTitleForm = new FormGroup({
     name: new FormControl('', [
@@ -24,12 +32,31 @@ export class TitleModalComponent implements OnInit {
     ])
   });
 
-  isLoading = false;
-  errorMessage: string | null = null;
-
   ngOnInit(): void {
     this.resetForm();
   }
+
+  get isCreateMode(): boolean {
+    return this.modalType === 'create';
+  }
+
+  onDeleteConfirm(): void {
+    this.isLoading = true;
+    if(this.titleToDelete){
+      this.titleUtils.deleteTitle(this.titleToDelete).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.confirmDelete.emit(); 
+          this.closeModal();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.message ?? 'Failed to delete title';
+          console.error('Delete error:', error);
+        }
+      });
+    }
+  }  
 
   onSubmit(): void {
     if (this.shouldPreventSubmission()) return;
@@ -84,6 +111,11 @@ export class TitleModalComponent implements OnInit {
     this.isLoading = false;
     this.isVisibleModal.emit(false);
     this.resetForm();
+  }
+
+  closeModal(): void {
+    this.isVisibleModal.emit(false);
+    this.createTitleForm.reset();
   }
 
   onCancel(): void {
