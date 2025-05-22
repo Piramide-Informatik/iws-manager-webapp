@@ -12,7 +12,8 @@ interface Column {
   field: string,
   header: string,
   minWidth: number,
-  filter?: any
+  filter?: any,
+  customClasses?: string[]
 }
 
 @Component({
@@ -70,7 +71,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'id', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID'))},
+      { field: 'id', minWidth: 110, customClasses: ['align-right'], header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID'))},
       { field: 'companyName', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME'))},
       { field: 'nameLine2',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2'))},
       { field: 'kind',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE'))},
