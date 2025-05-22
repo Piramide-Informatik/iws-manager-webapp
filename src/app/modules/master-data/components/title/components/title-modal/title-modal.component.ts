@@ -16,7 +16,7 @@ export class TitleModalComponent implements OnInit {
   
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() titleToDelete: number | null = null;
-  @Input() titleName: String | null = null;
+  @Input() titleName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<number>();
@@ -51,7 +51,7 @@ export class TitleModalComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message || 'Failed to delete title';
+          this.errorMessage = error.message ?? 'Failed to delete title';
           console.error('Delete error:', error);
         }
       });
