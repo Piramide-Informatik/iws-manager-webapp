@@ -74,7 +74,8 @@
     "GENERATE_PDF_SUBCONTRACT": "Subcontract-PDF erzeugen",
     "IMPORT_INVOICES": "Rechnungen importieren",
     "GENERATE_PDF_ORDER": "Auftrags-PDF erzeugen",
-    "IMPORT_EMPLOYEE_CONTRACTS": "Arbeitsverträge importieren"
+    "IMPORT_EMPLOYEE_CONTRACTS": "Arbeitsverträge importieren",
+    "IMPORT": "Importieren"
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",
