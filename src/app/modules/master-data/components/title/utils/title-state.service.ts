@@ -8,7 +8,7 @@ export class TitleStateService {
   private editTitleSource = new BehaviorSubject<Title | null>(null);
   currentTitle$ = this.editTitleSource.asObservable();
 
-  setTitleToEdit(title: Title) {
+  setTitleToEdit(title: Title | null): void {
     this.editTitleSource.next(title);
   }
 
