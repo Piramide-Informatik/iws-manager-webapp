@@ -2,7 +2,7 @@
   <div class="row">
     <master-data-genaral-table
       [tableId]="tableKey"
-      [tableValues]="countries"
+      [tableValues]="countries()"
       [columns]="columnsHeaderFieldCoutries"
       (editItem)="editCountry($event)"
       [userPreferences]="userCountriesPreferences"

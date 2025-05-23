@@ -1,9 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { CountryService } from '../../../../../../Services/country.service';
+import { CountryUtils } from '../../utils/country-util';
+
 
 @Component({
   selector: 'app-countries-table',
@@ -12,7 +15,9 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styles: ``,
 })
 export class CountriesTableComponent implements OnInit, OnDestroy {
-  countries: any[] = [];
+  private readonly countryUtils = new CountryUtils();
+  private readonly countryService = inject(CountryService);
+  
   columnsHeaderFieldCoutries: any[] = [];
   userCountriesPreferences: UserPreference = {};
   tableKey: string = 'Countries'
@@ -27,12 +32,6 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.countries = [
-      { id: 1, name: 'Deutschland', abbreviation: 'D', isStandard: true },
-      { id: 2, name: 'Niederlande', abbreviation: 'NL', isStandard: false },
-      { id: 3, name: 'Österreich', abbreviation: 'A', isStandard: false },
-      { id: 4, name: 'Schweiz', abbreviation: 'CH', isStandard: false },
-    ];
 
     this.loadColumnsCountries();
     this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
@@ -42,6 +41,15 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
       this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     });
   }
+
+  readonly countries = computed(() => {
+    return this.countryService.countries().map(country => ({
+      id: country.id,
+      name: country.name,  
+      abbreviation: country.label,
+      isStandard: country.isDefault
+    }));
+  });
 
   onUserCountriesPreferencesChanges(userCountriesPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userCountriesPreferences));
