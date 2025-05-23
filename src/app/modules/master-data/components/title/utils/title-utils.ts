@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
 import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
 import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
@@ -8,8 +8,10 @@ import { toObservable } from '@angular/core/rxjs-interop';
  * Utility class for title-related business logic and operations.
  * Works with TitleService's reactive signals while providing additional functionality.
  */
+@Injectable({ providedIn: 'root' }) 
 export class TitleUtils {
   private readonly titleService = inject(TitleService);
+  private readonly injector = inject(EnvironmentInjector);
 
   /**
    * Gets a title by ID with proper error handling
@@ -126,33 +128,34 @@ export class TitleUtils {
     return new Observable<Title>(observer => {
       this.titleService.updateTitle(title);
   
-      const sub = toObservable(this.titleService.titles).pipe(
-        map(titles => titles.find(t => t.id === title.id)),
-        filter(updated => !!updated),
-        take(1)
-      ).subscribe({
-        next: (updatedTitle) => {
-          if (updatedTitle) {
-            observer.next(updatedTitle);
-            observer.complete();
-          }
-        },
-        error: (err) => observer.error(err)
-      });
+      runInInjectionContext(this.injector, () => {
+        const sub = toObservable(this.titleService.titles).pipe(
+          map(titles => titles.find(t => t.id === title.id)),
+          filter(updated => !!updated),
+          take(1)
+        ).subscribe({
+          next: (updatedTitle) => {
+            if (updatedTitle) {
+              observer.next(updatedTitle);
+              observer.complete();
+            }
+          },
+          error: (err) => observer.error(err)
+        });
   
-      const errorSub = toObservable(this.titleService.error).pipe(
-        filter(error => !!error),
-        take(1)
-      ).subscribe({
-        next: (err) => {
-          observer.error(err);
-        }
-      });
+        const errorSub = toObservable(this.titleService.error).pipe(
+          filter(error => !!error),
+          take(1)
+        ).subscribe({
+          next: (err) => observer.error(err)
+        });
   
-      return () => {
-        sub.unsubscribe();
-        errorSub.unsubscribe();
-      };
+        // Cleanup
+        return () => {
+          sub.unsubscribe();
+          errorSub.unsubscribe();
+        };
+      });
     });
   }
 }

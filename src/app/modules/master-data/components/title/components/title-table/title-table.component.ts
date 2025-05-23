@@ -2,7 +2,6 @@ import { Component, ViewChild, OnInit, OnDestroy, inject, computed, SimpleChange
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { TitleService } from '../../../../../../Services/title.service';

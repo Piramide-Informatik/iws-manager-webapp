@@ -2,17 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Title } from '../../../../../../Entities/title';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { MessageService } from 'primeng/api';
 import { TitleStateService } from '../../utils/title-state.service';
 import { TitleUtils } from '../../utils/title-utils';
 import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-title-form',
   templateUrl: './title-form.component.html',
   styleUrls: ['./title-form.component.scss'],
   standalone: false,
-  providers: [MessageService]
 })
 export class TitleFormComponent implements OnInit, OnDestroy {
   currentTitle: Title | null = null;
@@ -22,11 +21,11 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   private editTitleSource = new BehaviorSubject<Title | null>(null);
 
   constructor(
-    private titleUtils: TitleUtils, 
+    private titleUtils: TitleUtils,
     private titleStateService: TitleStateService,
     private messageService: MessageService,
     private translate: TranslateService
-  ){}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -37,7 +36,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  setTitleToEdit(title: Title | null) { 
+  setTitleToEdit(title: Title | null) {
     this.editTitleSource.next(title);
   }
 
@@ -71,13 +70,13 @@ export class TitleFormComponent implements OnInit, OnDestroy {
       this.markAllAsTouched();
       return;
     }
-  
+
     this.isSaving = true;
     const updatedTitle: Title = {
       ...this.currentTitle,
-      name: this.editTitleForm.value.title 
+      name: this.editTitleForm.value.title
     };
-  
+
     this.subscriptions.add(
       this.titleUtils.updateTitle(updatedTitle).subscribe({
         next: (savedTitle) => this.handleSaveSuccess(savedTitle),
