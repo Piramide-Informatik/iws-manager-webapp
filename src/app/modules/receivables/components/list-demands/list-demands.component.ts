@@ -2,11 +2,14 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
-  header: string
+  header: string,
+  customClasses?: string[]
 }
 
 @Component({
@@ -29,10 +32,19 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  constructor(private readonly translate: TranslateService, private readonly router: Router) { }
+  userReceivablePreferences: UserPreference = {};
+  
+  tableKey: string = 'Receivables'
+  
+  dataKeys = ['idClaim', 'idOrder', 'orderTitle', 'fundingProgram', 'projectSponsor', 'fundingConcentration', 'projectStart', 'projectEnd', 'projectCost', 'abrStart', 'abrEnd', 'forNet', 'ofSt', 'zaGross', 'zaReceived', 'zaOffen', 'iwsPercent']
+
+  constructor(private readonly translate: TranslateService, 
+              private readonly userPreferenceService: UserPreferenceService,
+              private readonly router: Router,
+              private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.loadColHeaders();
+    this.loadReceivableColHeaders();
     this.selectedColumns = this.cols;
 
     this.customer = 'Joe Doe'
@@ -419,14 +431,24 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "iwsPercent": 6.5
       }
     ];
+    this.userReceivablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
+      this.loadReceivableColHeaders();
       this.reloadComponent(true);
+      this.userReceivablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
-  loadColHeaders(): void {
+  onUserReceivablePreferencesChanges(userReceivablePreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userReceivablePreferences));
+  }
+
+  goToCustomerDetails(data: any) {
+    this.router.navigate(['/customers/customer-details'])
+  }
+
+  loadReceivableColHeaders(): void {
     this.cols = [
       { field: 'idClaim', header: this.translate.instant(_('RECEIVABLES.TABLE.CLAIM_NUMBER')) },
       { field: 'idOrder', header: this.translate.instant(_('RECEIVABLES.TABLE.ORDER_NUMBER')) },
