@@ -4,11 +4,14 @@ import { FrameworkAgreementsService } from '../../services/framework-agreements.
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
-  header: string
+  header: string,
+  customClasses?: string[]
 }
 
 @Component({
@@ -24,32 +27,44 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   public frameworkAgreements!: FrameworkAgreements[];
   public customer!: string;
   public selectedColumns!: Column[];
+  userFrameworkAgreementsPreferences: UserPreference = {};
+  tableKey: string = 'FrameworkAgreements'
+  dataKeys = ['id', 'frameworkContract', 'date', 'fundingProgram', 'contractStatus', 'iwsEmployee'];
   
   @ViewChild('dt2') dt2!: Table;
 
-  constructor(private readonly FrameworkAgreementsService: FrameworkAgreementsService, private readonly translate: TranslateService, private readonly router: Router) { }
+  constructor(private readonly FrameworkAgreementsService: FrameworkAgreementsService, 
+              private readonly translate: TranslateService,
+              private readonly userPreferenceService: UserPreferenceService,
+              private readonly router: Router,
+              private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.loadColHeaders();
+    this.loadFrameworkAgreementsColHeaders();
     this.frameworkAgreements = this.FrameworkAgreementsService.list();
     this.customer = 'Joe Doe';
     this.selectedColumns = this.cols;
-
+    this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
+      this.loadFrameworkAgreementsColHeaders();
       this.reloadComponent(true);
+      this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
-  loadColHeaders(): void {
+  loadFrameworkAgreementsColHeaders(): void {
     this.cols = [
-      { field: 'id', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER')) },
+      { field: 'id', customClasses: ['align-right'], header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER')) },
       { field: 'frameworkContract', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_LABEL')) },
-      { field: 'date', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.DATE')) },
+      { field: 'date', customClasses: ['text-center'], header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.DATE')) },
       { field: 'fundingProgram', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.FUNDING_PROGRAM')) },
       { field: 'contractStatus', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_STATUS')) },
       { field: 'iwsEmployee', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.IWS_EMPLOYEE')) }
     ];
+  }
+
+  onUserFrameworkAgreementsPreferencesChanges(userFrameworkAgreementsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userFrameworkAgreementsPreferences));
   }
 
   ngOnDestroy(): void {
@@ -66,14 +81,19 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
     })
   }
 
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
+  goToFrameworkAgreementDetail(frameworkAgreement: any) {
+    this.router.navigate(['framework-agreement-details', frameworkAgreement.id], { 
+      relativeTo: this.route
+    });
   }
 
   deleteFrameworkAgreement(id: number) {
     this.frameworkAgreements = this.frameworkAgreements.filter(agreement => agreement.id !== id);
+  }
+
+  createFrameworkAgreementDetail() {
+    this.router.navigate(['framework-agreement-details'], { 
+      relativeTo: this.route
+    });
   }
 }

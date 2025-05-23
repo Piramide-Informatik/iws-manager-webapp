@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class CountryService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/api/v1/countries`;
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/countries`;
 
   // Signals
   private readonly _countries = signal<Country[]>([]);
@@ -21,7 +21,7 @@ export class CountryService {
   public error = this._error.asReadonly();
 
   private readonly httpOptions = {
-    withCredentials: true,
+  //  withCredentials: true,
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -165,7 +165,7 @@ export class CountryService {
     return throwError(() => new Error(errorMessage));
   }
 
-  public refreshTitles(): void {
+  public refreshCountries(): void {
     this.loadInitialData();
   }
 }

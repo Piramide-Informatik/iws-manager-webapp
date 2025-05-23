@@ -12,11 +12,10 @@ export class TitleService {
   private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/titles`;
 
   private readonly httpOptions = {
-    withCredentials: true,
+    //withCredentials: true,
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:4200'
+      'Accept': 'application/json'
     })
   };
 
