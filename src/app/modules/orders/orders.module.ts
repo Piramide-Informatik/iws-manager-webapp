@@ -32,6 +32,7 @@ import { IwsProvisionComponent } from './components/order-detail/iws-provision/i
 import { OrdersOverviewComponent } from './components/orders-overview/orders-overview.component';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MasterDataModule } from '../master-data/master-data.module';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
     MessageModule,
     TranslateModule,
     TranslatePipe,
-    TranslateDirective
+    TranslateDirective,
+    MasterDataModule
   ],
 })
 export class OrdersModule { }
