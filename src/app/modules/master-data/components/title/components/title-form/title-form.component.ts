@@ -17,14 +17,14 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   currentTitle: Title | null = null;
   editTitleForm!: FormGroup;
   isSaving = false;
-  private subscriptions = new Subscription();
-  private editTitleSource = new BehaviorSubject<Title | null>(null);
+  private readonly subscriptions = new Subscription();
+  private readonly editTitleSource = new BehaviorSubject<Title | null>(null);
 
   constructor(
-    private titleUtils: TitleUtils,
-    private titleStateService: TitleStateService,
-    private messageService: MessageService,
-    private translate: TranslateService
+    private readonly titleUtils: TitleUtils,
+    private readonly titleStateService: TitleStateService,
+    private readonly messageService: MessageService,
+    private readonly translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -66,7 +66,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.editTitleForm.invalid ?? !this.currentTitle ?? this.isSaving) {
+    if (this.editTitleForm.invalid || !this.currentTitle || this.isSaving) {
       this.markAllAsTouched();
       return;
     }

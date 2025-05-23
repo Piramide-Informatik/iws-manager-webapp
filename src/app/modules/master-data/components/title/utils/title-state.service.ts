@@ -5,7 +5,7 @@ import { Title } from '../../../../../Entities/title';
 
 @Injectable({ providedIn: 'root' })
 export class TitleStateService {
-  private editTitleSource = new BehaviorSubject<Title | null>(null);
+  private readonly editTitleSource = new BehaviorSubject<Title | null>(null);
   currentTitle$ = this.editTitleSource.asObservable();
 
   setTitleToEdit(title: Title | null): void {

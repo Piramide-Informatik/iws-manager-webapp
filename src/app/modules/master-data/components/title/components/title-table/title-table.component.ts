@@ -60,7 +60,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   private langTitleSubscription!: Subscription;
 
   constructor(private readonly userPreferenceService: UserPreferenceService,
-    private readonly translate: TranslateService, private titleStateService: TitleStateService) { }
+    private readonly translate: TranslateService, private readonly titleStateService: TitleStateService) { }
 
   ngOnInit() {
     this.loadTitleHeadersAndColumns();
