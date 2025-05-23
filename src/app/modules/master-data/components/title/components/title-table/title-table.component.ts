@@ -2,11 +2,12 @@ import { Component, ViewChild, OnInit, OnDestroy, inject, computed, SimpleChange
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { TitleService } from '../../../../../../Services/title.service';
 import { TitleUtils } from '../../utils/title-utils';
+import { Title } from '../../../../../../Entities/title';
+import { TitleStateService } from '../../utils/title-state.service';
 
 @Component({
   selector: 'app-title-table',
@@ -26,7 +27,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
       this.selectedTitle = event.data;
-  
+
       this.titleUtils.getTitleById(this.selectedTitle!).subscribe({
         next: (title) => {
           this.titleName = title?.name ?? '';
@@ -43,8 +44,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   readonly titles = computed(() => {
     return this.titleService.titles().map(title => ({
       id: title.id,
-      title: title.name,  
-      name: title.name
+      title: title.name,
     }));
   });
 
@@ -59,9 +59,8 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private langTitleSubscription!: Subscription;
 
-  constructor(private readonly router: Router,
-              private readonly userPreferenceService: UserPreferenceService,   
-              private readonly translate: TranslateService ) { }
+  constructor(private readonly userPreferenceService: UserPreferenceService,
+    private readonly translate: TranslateService, private readonly titleStateService: TitleStateService) { }
 
   ngOnInit() {
     this.loadTitleHeadersAndColumns();
@@ -96,7 +95,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     ];
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langTitleSubscription) {
       this.langTitleSubscription.unsubscribe();
     }
@@ -104,7 +103,6 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['titles']) {
-      console.log('Updated data:', this.titles());
       this.prepareTableData();
     }
   }
@@ -112,9 +110,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   private prepareTableData() {
     if (this.titles().length > 0) {
       this.titleDisplayedColumns = [
-        { field: 'name', header: 'Title' },
-        { field: 'createdAt', header: 'Created at' },
-        { field: 'updatedAt', header: 'Updated at' }
+        { field: 'name', header: 'Title' }
       ];
     }
   }
@@ -126,14 +122,34 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onVisibleModal(visible: boolean){
-    this.visibleModal = visible;
-  }
+  editTitle(title: Title) {
+    const titleToEdit: Title = {
+      id: title.id,
+      name: title.name,
+      createdAt: '',
+      updatedAt: ''
+    };
 
-  onModalVisibilityChange(visible: boolean): void {
-    this.visibleModal = visible;
-    if (!visible) {
-      this.selectedTitle = null;
-    }
+    this.titleUtils.getTitleById(titleToEdit.id).subscribe({
+      next: (fullTitle) => {
+        if (fullTitle) {
+          this.titleStateService.setTitleToEdit(fullTitle);
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar título:', err);
+      }
+    });
+}
+
+onVisibleModal(visible: boolean){
+  this.visibleModal = visible;
+}
+
+onModalVisibilityChange(visible: boolean): void {
+  this.visibleModal = visible;
+  if(!visible) {
+    this.selectedTitle = null;
   }
+}
 }
