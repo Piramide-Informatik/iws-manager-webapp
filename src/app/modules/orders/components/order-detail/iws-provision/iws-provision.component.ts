@@ -3,11 +3,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
 import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
+import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../Entities/user-preference';
 
 interface Column {
   field: string;
   header: string;
   customExportHeader?: string;
+  customClasses?: string[];
 }
 
 interface ExportColumn {
@@ -37,10 +40,16 @@ export class IwsProvisionComponent implements OnInit{
     edit: 'bearbeiten'
   };
   optionSelected: string = '';
+  userIwsProvisionPreferences: UserPreference = {};
+  tableKey: string = 'IwsProvision'
+  dataKeys = ['fromOrderValue', 'commission', 'minCommission'];
 
-  constructor( private readonly orderCommissionService: OrderCommissionService ){ }
+  constructor( private readonly orderCommissionService: OrderCommissionService,
+               private readonly userPreferenceService: UserPreferenceService
+   ){ }
 
   ngOnInit(): void {
+    this.loadIwsProvisionColumnHeaders()
     this.iwsEmployeeForm = new FormGroup({
       fixCommission: new FormControl('', [Validators.required]),
       maxCommission: new FormControl('', [Validators.required]),
@@ -54,7 +63,20 @@ export class IwsProvisionComponent implements OnInit{
     })
 
     this.orderCommissions = this.orderCommissionService.getOrderCommission();
+    this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     this.loading = false;
+  }
+
+  onUserIwsProvisionPreferencesChanges(userIwsProvisionPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userIwsProvisionPreferences));
+  }
+
+  loadIwsProvisionColumnHeaders() {
+    this.cols = [
+          { field: 'fromOrderValue', customClasses: ['align-right'], header: 'ab Wert'},
+          { field: 'commission', customClasses: ['align-right'], header: 'Provision'},
+          { field: 'minCommission', customClasses: ['align-right'], header: 'Mindestprovision'},
+        ];
   }
 
   onSubmit(): void {
@@ -76,15 +98,13 @@ export class IwsProvisionComponent implements OnInit{
     }
   }
 
-  showModalIwsCommission(option: string, fromOrderValue?: number){
+  showModalIwsCommission(option: string, data?: any){
     this.optionSelected = option;
     
-    if(fromOrderValue && this.optionSelected == this.optionIwsCommission.edit){
-      let commission = this.orderCommissions.find( orderCommission => orderCommission.fromOrderValue == fromOrderValue);
-
-      this.iwsCommissionForm.get('fromOrderValue')?.setValue(commission?.fromOrderValue);
-      this.iwsCommissionForm.get('provision')?.setValue(commission?.commission);
-      this.iwsCommissionForm.get('minCommission')?.setValue(commission?.minCommission);
+    if(data && this.optionSelected == this.optionIwsCommission.edit){
+      this.iwsCommissionForm.get('fromOrderValue')?.setValue(data?.fromOrderValue);
+      this.iwsCommissionForm.get('provision')?.setValue(data?.commission);
+      this.iwsCommissionForm.get('minCommission')?.setValue(data?.minCommission);
     }
 
     this.visibleModalIWSCommission.set(true);

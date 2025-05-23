@@ -21,6 +21,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MasterDataModule } from '../master-data/master-data.module';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
         ToolbarModule,
         TranslateModule,
         TranslatePipe,
-        TranslateDirective
+        TranslateDirective,
+        MasterDataModule
     ]
 
 })

@@ -25,94 +25,21 @@
       </div>
     </div>
   </form>
-  <p-table
-    #dt
-    [value]="orderCommissions"
-    showGridlines
-    stripedRows
-    [tableStyle]="{ 'min-width': '60%' }"
-    [rows]="4"
+  <master-data-genaral-table
+    [tableId]="tableKey"
+    [tableValues]="orderCommissions"
     [columns]="cols"
-    [paginator]="true"
-    scrollable="true"
-    [rowsPerPageOptions]="[15, 30, 50]"
-    scrollHeight="90vh"
-    [globalFilterFields]="['fromordervalue', 'commission', 'mincommission']"
-    [(selection)]="selectedOrderCommission"
-    [rowHover]="true"
-    dataKey="id"
-    currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
-    [showCurrentPageReport]="true"
-  >
-    <ng-template #header>
-      <tr>
-        <th id="iws-provision-buttons-field" class="thead"></th>
-        <th
-          id="iws-provision-field-fromOrderValue"
-          pSortableColumn="fromOrderValue"
-          class="thead"
-        >
-          ab Wert<p-sortIcon field="fromOrderValue" />
-        </th>
-        <th
-          id="iws-provision-field-commission"
-          pSortableColumn="commission"
-          class="thead"
-        >
-          Provision <p-sortIcon field="commission" />
-        </th>
-        <th
-          id="iws-provision-field-minCommission"
-          pSortableColumn="minCommission"
-          class="thead"
-        >
-          Mindestprovision <p-sortIcon field="minCommission" />
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template #body let-orderCommissions>
-      <tr>
-        <td>
-          <div class="flex items-center justify-center gap-2">
-            <button
-              pButton
-              icon="pi pi-pencil"
-              (click)="
-                showModalIwsCommission(
-                  optionIwsCommission.edit,
-                  orderCommissions.fromOrderValue
-                )
-              "
-              class="p-button-rounded p-button-info button-option"
-            ></button>
-            <button
-              pButton
-              icon="pi pi-trash"
-              (click)="deleteCommission(orderCommissions.fromOrderValue)"
-              class="p-button-rounded p-button-danger button-option"
-            ></button>
-          </div>
-        </td>
-        <td [ngClass]="'align-right'">{{ orderCommissions.fromOrderValue }}</td>
-        <td [ngClass]="'align-right'">{{ orderCommissions.commission }}</td>
-        <td [ngClass]="'align-right'">{{ orderCommissions.minCommission }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
+    [userPreferences]="userIwsProvisionPreferences"
+    [dataKeys]="dataKeys"
+    removeKey="fromOrderValue"
+    (onColumnChanges)="onUserIwsProvisionPreferencesChanges($event)"
+    (onEditRegister)="showModalIwsCommission(optionIwsCommission.edit, $event)"
+    (onDeleteRegister)="deleteCommission($event)"
+    (onCreateRegister)="showModalIwsCommission(optionIwsCommission.new)"
+  ></master-data-genaral-table>
 
   <div class="row">
-    <div class="col-3">
-      <p-button
-        size="small"
-        label="Neu"
-        icon="pi pi-plus"
-        iconPos="left"
-        (click)="showModalIwsCommission(optionIwsCommission.new)"
-        [attr.aria-label]="'Add new project'"
-        (keydown.enter)="showModalIwsCommission(optionIwsCommission.new)"
-      ></p-button>
-    </div>
-    <div class="col-9">
+    <div class="col-12">
       <div class="project_name mb-2">
         <label class="me-2" for="estimated">Geschätzte IWS-Provision:</label>
         <input
