@@ -17,7 +17,7 @@
             <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
                 [disabled]="editTitleForm.invalid || !editTitleForm.dirty || isSaving" />
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (click)="clearForm()" />
+                icon="pi pi-times" iconPos="left" (click)="clearForm()" (keydown.enter)="clearForm()" />
         </div>
     </form>
 </p-card>

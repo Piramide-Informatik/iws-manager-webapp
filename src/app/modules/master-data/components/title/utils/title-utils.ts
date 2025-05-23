@@ -124,38 +124,43 @@ export class TitleUtils {
     if (!title?.id) {
       return throwError(() => new Error('Invalid title data'));
     }
-  
+
     return new Observable<Title>(observer => {
       this.titleService.updateTitle(title);
-  
+
       runInInjectionContext(this.injector, () => {
-        const sub = toObservable(this.titleService.titles).pipe(
-          map(titles => titles.find(t => t.id === title.id)),
-          filter(updated => !!updated),
-          take(1)
-        ).subscribe({
-          next: (updatedTitle) => {
-            if (updatedTitle) {
-              observer.next(updatedTitle);
-              observer.complete();
-            }
-          },
-          error: (err) => observer.error(err)
-        });
-  
-        const errorSub = toObservable(this.titleService.error).pipe(
-          filter(error => !!error),
-          take(1)
-        ).subscribe({
-          next: (err) => observer.error(err)
-        });
-  
+        const sub = this.waitForUpdatedTitle(title.id, observer);
+        const errorSub = this.listenForUpdateErrors(observer);
+
         // Cleanup
         return () => {
           sub.unsubscribe();
           errorSub.unsubscribe();
         };
       });
+    });
+  }
+
+  private waitForUpdatedTitle(id: number, observer: any) {
+    return toObservable(this.titleService.titles).pipe(
+      map(titles => titles.find(t => t.id === id)),
+      filter(updated => !!updated),
+      take(1)
+    ).subscribe({
+      next: (updatedTitle) => {
+        observer.next(updatedTitle);
+        observer.complete();
+      },
+      error: (err) => observer.error(err)
+    });
+  }
+
+  private listenForUpdateErrors(observer: any) {
+    return toObservable(this.titleService.error).pipe(
+      filter(error => !!error),
+      take(1)
+    ).subscribe({
+      next: (err) => observer.error(err)
     });
   }
 }
