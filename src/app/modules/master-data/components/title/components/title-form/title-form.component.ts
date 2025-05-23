@@ -88,8 +88,8 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   private handleSaveSuccess(savedTitle: Title): void {
     this.messageService.add({
       severity: 'success',
-      summary: this.translate.instant('SUCCESS'),
-      detail: this.translate.instant('TITLE.SUCCESS.UPDATED')
+      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
+      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_SUCCESS')
     });
     this.titleStateService.setTitleToEdit(null);
     this.clearForm();
@@ -99,8 +99,8 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     console.error('Error saving title:', error);
     this.messageService.add({
       severity: 'error',
-      summary: this.translate.instant('ERROR'),
-      detail: this.translate.instant('TITLE.ERROR.UPDATE_FAILED')
+      summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
+      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_FAILED')
     });
     this.isSaving = false;
   }

@@ -103,7 +103,6 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['titles']) {
-      console.log('Updated data:', this.titles());
       this.prepareTableData();
     }
   }
@@ -124,7 +123,6 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   editTitle(title: Title) {
-    console.log(title);
     const titleToEdit: Title = {
       id: title.id,
       name: title.name,
