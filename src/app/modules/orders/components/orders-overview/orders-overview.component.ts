@@ -5,7 +5,10 @@ import { OrderService } from '../../services/order.service';
 
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
+
 
 interface Column {
   field: string,
@@ -32,27 +35,41 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
+  userOrdersOverviewPreferences: UserPreference = {};
+
+  tableKey: string = 'OrdersOverview'
+  
+  dataKeys = ['orderNr', 'orderLabel', 'orderType', 'orderDate', 'acronym', 'fundingProgram', 'value', 'contractStatus', 'contractNr', 'contractTitle', 'iwsPercent', 'iwsPercentValue'];
+
+
   constructor(
     private readonly orderService: OrderService,
     private readonly translate: TranslateService,
-    private readonly router: Router
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
   ) { }
 
   ngOnInit():void {
-    this.loadColHeaders();
+    this.loadOrdersOverviewColHeaders();
     this.orders = this.orderService.list();
 
     this.selectedColumns = this.cols;
 
     this.customer = 'Joe Doe'
-
+    this.userOrdersOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
+      this.loadOrdersOverviewColHeaders();
       this.reloadComponent(true);
+      this.userOrdersOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
-  loadColHeaders(): void {
+  onUserOrdersOverviewPreferencesChanges(userOrdersOverviewPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userOrdersOverviewPreferences));
+  }
+
+  loadOrdersOverviewColHeaders(): void {
     this.cols = [
       { field: 'orderNr', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_ID'))},
       { field: 'orderLabel', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_LABEL'))},
@@ -84,11 +101,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   }
 
 
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
+  goToOrderDetails(data: any) {
+    this.router.navigate(['order-details'], { relativeTo: this.route })
   }
 
 }

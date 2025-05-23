@@ -10,6 +10,7 @@ import { Table } from 'primeng/table';
 export class GenaralTableComponent implements OnInit, OnChanges {
   @Input() tableId: string = '';
   @Input() tableTitle: string = 'Table title';
+  @Input() removeKey: string = 'id';
   @Input() tableValues: any[] = [];
   @Input() columns: any[] = [];
   @Input() dataKeys: any[] = [];
