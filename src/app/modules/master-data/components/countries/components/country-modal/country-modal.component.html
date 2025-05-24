@@ -42,6 +42,7 @@
           iconPos="left"
           (click)="onCancel()"
           [disabled]="isLoading"
+          aria-label="Cancel"
         ></p-button>
 
         <p-button
@@ -53,6 +54,7 @@
           iconPos="left"
           [loading]="isLoading"
           [disabled]="createCountryForm.invalid || isLoading"
+          aria-label="Save"
         ></p-button>
       </div>
     </div>
