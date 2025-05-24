@@ -17,6 +17,7 @@ import { CountryUtils } from '../../utils/country-util';
 export class CountriesTableComponent implements OnInit, OnDestroy {
   private readonly countryUtils = new CountryUtils();
   private readonly countryService = inject(CountryService);
+  visibleModal: boolean = false;
   
   columnsHeaderFieldCoutries: any[] = [];
   userCountriesPreferences: UserPreference = {};
@@ -87,5 +88,8 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+  }
+   onVisibleModal(visible: boolean){
+    this.visibleModal = visible;
   }
 }
