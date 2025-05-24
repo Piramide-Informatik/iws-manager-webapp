@@ -637,6 +637,12 @@
     "FORM": {
       "TITLE_FORM": "Create Title",
       "NEW_TITLE": "New Title"
+    },
+    "MESSAGE": {
+      "SUCCESS": "SUCCESS",
+      "ERROR": "ERROR",
+      "UPDATE_SUCCESS": "Successfully updated",
+      "UPDATE_FAILED": "Update failed"
     }
   },
   "BILLING_METHODS": {

@@ -113,7 +113,9 @@ import { ContractStatusTableComponent } from './components/contract-status/compo
 import { UserPreferenceService } from '../../Services/user-preferences.service';
 import { TitleModalComponent } from './components/title/components/title-modal/title-modal.component';
 import { TitleUtils } from './components/title/utils/title-utils';
+import { MessageService } from 'primeng/api';
 import { CountryModalComponent } from './components/countries/components/country-modal/country-modal.component';
+
 @NgModule({
   declarations: [
     UserComponent,
@@ -229,6 +231,6 @@ import { CountryModalComponent } from './components/countries/components/country
   exports: [
     GenaralTableComponent
   ],
-  providers: [UserPreferenceService, TitleUtils]
+  providers: [UserPreferenceService, TitleUtils, MessageService]
 })
 export class MasterDataModule {}

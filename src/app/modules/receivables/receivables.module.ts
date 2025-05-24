@@ -20,6 +20,7 @@ import { TableModule } from 'primeng/table';
 import { ListDemandsComponent } from './components/list-demands/list-demands.component';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MasterDataModule } from '../master-data/master-data.module';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
     ToolbarModule,
     TranslateModule,
     TranslatePipe,
-    TranslateDirective
+    TranslateDirective,
+    MasterDataModule
   ]
 })
 export class ReceivablesModule { }

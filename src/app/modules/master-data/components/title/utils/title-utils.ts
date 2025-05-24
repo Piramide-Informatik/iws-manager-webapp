@@ -1,14 +1,17 @@
-import { inject } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
+import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
 import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 /**
  * Utility class for title-related business logic and operations.
  * Works with TitleService's reactive signals while providing additional functionality.
  */
+@Injectable({ providedIn: 'root' }) 
 export class TitleUtils {
   private readonly titleService = inject(TitleService);
+  private readonly injector = inject(EnvironmentInjector);
 
   /**
    * Gets a title by ID with proper error handling
@@ -100,7 +103,7 @@ export class TitleUtils {
   deleteTitle(id: number): Observable<void> {
     return new Observable(observer => {
       this.titleService.deleteTitle(id);
-      
+
       setTimeout(() => {
         if (!this.titleService.error()) {
           observer.next();
@@ -109,6 +112,55 @@ export class TitleUtils {
           observer.error(this.titleService.error());
         }
       }, 100);
+    });
+  }
+
+  /**
+ * Updates a title by ID and updates the internal titles signal.
+ * @param id - ID of the title to update
+ * @returns Observable that completes when the update is done
+ */
+  updateTitle(title: Title): Observable<Title> {
+    if (!title?.id) {
+      return throwError(() => new Error('Invalid title data'));
+    }
+
+    return new Observable<Title>(observer => {
+      this.titleService.updateTitle(title);
+
+      runInInjectionContext(this.injector, () => {
+        const sub = this.waitForUpdatedTitle(title.id, observer);
+        const errorSub = this.listenForUpdateErrors(observer);
+
+        // Cleanup
+        return () => {
+          sub.unsubscribe();
+          errorSub.unsubscribe();
+        };
+      });
+    });
+  }
+
+  private waitForUpdatedTitle(id: number, observer: any) {
+    return toObservable(this.titleService.titles).pipe(
+      map(titles => titles.find(t => t.id === id)),
+      filter(updated => !!updated),
+      take(1)
+    ).subscribe({
+      next: (updatedTitle) => {
+        observer.next(updatedTitle);
+        observer.complete();
+      },
+      error: (err) => observer.error(err)
+    });
+  }
+
+  private listenForUpdateErrors(observer: any) {
+    return toObservable(this.titleService.error).pipe(
+      filter(error => !!error),
+      take(1)
+    ).subscribe({
+      next: (err) => observer.error(err)
     });
   }
 }

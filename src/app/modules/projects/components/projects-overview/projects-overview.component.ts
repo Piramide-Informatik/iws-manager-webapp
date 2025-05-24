@@ -8,6 +8,8 @@ import { ProjectService } from '../../services/project.service';
 import { TranslateService, _,TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
@@ -29,8 +31,6 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   public selectedColumns!: Column[];
 
-  public filterCols!: Column[];
-
   public selectedFilterColumns!: Column[];
 
   public projects!: Project[];
@@ -41,34 +41,46 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   @ViewChild('dt2') dt2!: Table;
 
+  userProjectPreferences: UserPreference = {};
+  
+  tableKey: string = 'Projects'
+  
+  dataKeys = ['projectLabel', 'projectName', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
+
   constructor(
   
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
     private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
     public router:Router
   ) {
   }
 
   ngOnInit(): void {
-    this.loadColHeaders();
+    this.loadProjectColHeaders();
     this.selectedColumns = this.cols;
-    this.selectedFilterColumns = this.filterCols;
 
     this.customer = 'Joe Doe';
 
     this.projects = this.projectService.list();
 
     this.selectedColumns = this.cols;
-    this.selectedFilterColumns = this.filterCols;
+
+    this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
+      this.loadProjectColHeaders();
       this.reloadComponent(true);
+      this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
-  loadColHeaders(): void {
+  onUserProjectPreferencesChanges(userProjectPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userProjectPreferences));
+  }
+
+  loadProjectColHeaders(): void {
     this.cols = [
           { field: 'projectLabel', header:  this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL'))},
           { field: 'projectName', header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME'))},
@@ -80,15 +92,6 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
           { field: 'authDate',  header: this.translate.instant(_('PROJECTS.TABLE.AUTH_DATE'))},
           { field: 'fundingRate',  header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_RATE'))}
         ];
-
-    //Filter colums
-    this.filterCols = [
-      { field: 'projectLabel', header:  this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL'))},
-      { field: 'projectName', header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME'))},
-      { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM'))},
-      { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER'))},
-      { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL'))}
-    ];
   }
 
   ngOnDestroy(): void {

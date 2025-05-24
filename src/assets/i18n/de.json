@@ -637,6 +637,12 @@
     "FORM": {
       "TITLE_FORM": "Titel Erstellen",
       "NEW_TITLE": "Neuer Titel"
+    },
+    "MESSAGE": {
+      "SUCCESS": "ERFOLG",
+      "ERROR": "FEHLER",
+      "UPDATE_SUCCESS": "Erfolgreich aktualisiert",
+      "UPDATE_FAILED": "Update fehlgeschlagen"
     }
   },
   "BILLING_METHODS": {
