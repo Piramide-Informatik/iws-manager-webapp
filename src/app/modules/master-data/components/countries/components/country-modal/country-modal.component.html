@@ -1,6 +1,6 @@
-
-<form [formGroup]="createCountryForm">
-    <div class="align-items-center mb-2">
+<ng-container *ngIf="isCreateMode; ">
+  <form [formGroup]="createCountryForm" (ngSubmit)="onSubmit()">
+    <div class="align-items-center mb-2 mt-4">
       <div class="country-form mb-2">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
         <input
@@ -13,9 +13,7 @@
       </div>
 
       <div class="country-form mb-2">
-        <label for="abbreviation">{{
-          "COUNTRIES.LABEL.ABBREVIATION" | translate
-        }}</label>
+        <label for="abbreviation">{{ "COUNTRIES.LABEL.ABBREVIATION" | translate }}</label>
         <input
           pInputText
           type="text"
@@ -26,22 +24,37 @@
       </div>
 
       <div class="country-form-check mb-2">
-        <label for="isStandardChecked">{{
-          "COUNTRIES.LABEL.IS_STANDARD" | translate
-        }}</label>
+        <label for="isStandardChecked">{{ "COUNTRIES.LABEL.IS_STANDARD" | translate }}</label>
         <p-toggleswitch formControlName="isStandard" class="flex">
           <ng-template #handle let-checked="checked">
-            <i
-              [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"
-            ></i>
+            <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
           </ng-template>
         </p-toggleswitch>
       </div>
 
-      <div class="flex justify-content-center gap-2 mt-4">
-         <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" (onClick)="onSubmit()"/>
-         <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" (click)="onCancel()"/>
-           
+      <div class="flex justify-content-end gap-2 mt-4">
+        <p-button
+          type="button"
+          class="cancel"
+          size="small"
+          [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times"
+          iconPos="left"
+          (click)="onCancel()"
+          [disabled]="isLoading"
+        />
+
+        <p-button
+          type="submit"
+          class="save"
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          [loading]="isLoading"
+          [disabled]="createCountryForm.invalid || isLoading"
+        />
       </div>
     </div>
   </form>
+</ng-container>

@@ -115,6 +115,7 @@ import { TitleModalComponent } from './components/title/components/title-modal/t
 import { TitleUtils } from './components/title/utils/title-utils';
 import { MessageService } from 'primeng/api';
 import { CountryModalComponent } from './components/countries/components/country-modal/country-modal.component';
+import { CountryUtils } from './components/countries/utils/country-util'
 
 @NgModule({
   declarations: [
@@ -231,6 +232,6 @@ import { CountryModalComponent } from './components/countries/components/country
   exports: [
     GenaralTableComponent
   ],
-  providers: [UserPreferenceService, TitleUtils, MessageService]
+  providers: [UserPreferenceService, TitleUtils, CountryUtils, MessageService]
 })
 export class MasterDataModule {}

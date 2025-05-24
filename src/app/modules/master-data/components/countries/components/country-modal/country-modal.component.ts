@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output, Input, inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// Importa tu utilidad para países, similar a TitleUtils
-// import { CountryUtils } from '../../utils/country-utils';
+import { CountryUtils } from '../../utils/country-util';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -12,7 +11,7 @@ import { of } from 'rxjs';
   styleUrl: './country-modal.component.scss'
 })
 export class CountryModalComponent implements OnInit {
-  // private readonly countryUtils = inject(CountryUtils);
+  private readonly countryUtils = inject(CountryUtils);
 
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() countryToDelete: number | null = null;
@@ -29,7 +28,12 @@ export class CountryModalComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(50)
-    ])
+    ]),
+    abbreviation: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(10)
+    ]),
+    isStandard: new FormControl(false)
   });
 
   ngOnInit(): void {
@@ -40,39 +44,38 @@ export class CountryModalComponent implements OnInit {
     return this.modalType === 'create';
   }
 
-  onDeleteConfirm(): void {
-    this.isLoading = true;
-    if (this.countryToDelete) {
-      // this.countryUtils.deleteCountry(this.countryToDelete).subscribe({
-      //   next: () => {
-      //     this.isLoading = false;
-      //     this.confirmDelete.emit();
-      //     this.closeModal();
-      //   },
-      //   error: (error) => {
-      //     this.isLoading = false;
-      //     this.errorMessage = error.message ?? 'Failed to delete country';
-      //     console.error('Delete error:', error);
-      //   }
-      // });
-    }
-  }
-
   onSubmit(): void {
     if (this.shouldPreventSubmission()) return;
 
     this.prepareForSubmission();
-    const countryName = this.getSanitizedCountryName();
+    const { name, label, isDefault } = this.getCountryFormValues();
 
-    // this.countryUtils.countryExists(countryName).pipe(
-    //   switchMap(exists => this.handleCountryExistence(exists, countryName)),
-    //   catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
-    //   finalize(() => this.isLoading = false)
-    // ).subscribe();
-
-    this.handleClose();
+    this.countryUtils.countryExists(name).pipe(
+      switchMap(exists => this.handleCountryExistence(exists, name, label, isDefault)),
+      catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
+      finalize(() => this.isLoading = false)
+    ).subscribe(result => {
+      if (result !== null) {
+        this.countryCreated.emit();
+        this.handleClose();
+      }
+    });
   }
 
+  private handleCountryExistence(
+    exists: boolean,
+    name: string,
+    label: string,
+    isDefault: boolean
+  ) {
+    if (exists) {
+      this.errorMessage = 'COUNTRY.ERROR.ALREADY_EXISTS';
+      return of(null);
+    }
+    return this.countryUtils.createNewCountry(name, label, isDefault).pipe(
+      catchError(err => this.handleError('COUNTRY.ERROR.CREATION_FAILED', err))
+    );
+  }
   private shouldPreventSubmission(): boolean {
     return this.createCountryForm.invalid || this.isLoading;
   }
@@ -81,20 +84,6 @@ export class CountryModalComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
   }
-
-  private getSanitizedCountryName(): string {
-    return this.createCountryForm.value.name?.trim() ?? '';
-  }
-
-  // private handleCountryExistence(exists: boolean, countryName: string) {
-  //   if (exists) {
-  //     this.errorMessage = 'COUNTRY.ERROR.ALREADY_EXISTS';
-  //     return of(null);
-  //   }
-  //   return this.countryUtils.createNewCountry(countryName).pipe(
-  //     catchError(err => this.handleError('COUNTRY.ERROR.CREATION_FAILED', err))
-  //   );
-  // }
 
   private handleError(messageKey: string, error: any) {
     this.errorMessage = messageKey;
@@ -119,5 +108,12 @@ export class CountryModalComponent implements OnInit {
 
   onCancel(): void {
     this.handleClose();
+  }
+  private getCountryFormValues() {
+    return {
+      name: this.createCountryForm.value.name?.trim() ?? '',
+      label: this.createCountryForm.value.abbreviation?.trim() ?? '',
+      isDefault: !!this.createCountryForm.value.isStandard
+    };
   }
 }
