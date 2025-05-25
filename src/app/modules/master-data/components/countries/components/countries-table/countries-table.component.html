@@ -8,6 +8,10 @@
       [userPreferences]="userCountriesPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserCountriesPreferencesChanges($event)"
-    ></master-data-genaral-table>
+      (onCreateRegister)="visibleModal=true"
+      ></master-data-genaral-table>
+      <p-dialog [header]="'COUNTRIES.MODAL_CREATE.CREATE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
+        <app-country-modal (isVisibleModal)="visibleModal = $event"></app-country-modal>
+      </p-dialog>
   </div>
 </div>

@@ -1,0 +1,61 @@
+<ng-container *ngIf="isCreateMode; ">
+  <form [formGroup]="createCountryForm" (ngSubmit)="onSubmit()">
+    <div class="align-items-center mb-2 mt-4">
+      <div class="country-form mb-2">
+        <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="country-form mb-2">
+        <label for="abbreviation">{{ "COUNTRIES.LABEL.ABBREVIATION" | translate }}</label>
+        <input
+          pInputText
+          type="text"
+          id="abbreviation"
+          formControlName="abbreviation"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="country-form-check mb-2">
+        <label for="isStandardChecked">{{ "COUNTRIES.LABEL.IS_STANDARD" | translate }}</label>
+        <p-toggleswitch formControlName="isStandard" class="flex">
+          <ng-template #handle let-checked="checked">
+            <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+          </ng-template>
+        </p-toggleswitch>
+      </div>
+
+      <div class="flex justify-content-end gap-2 mt-4">
+        <p-button
+          type="button"
+          class="cancel"
+          size="small"
+          [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times"
+          iconPos="left"
+          (click)="onCancel()"
+          (keypress)="onCancel()"
+          [disabled]="isLoading"
+        ></p-button>
+
+        <p-button
+          type="submit"
+          class="save"
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          [loading]="isLoading"
+          [disabled]="createCountryForm.invalid || isLoading"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</ng-container>

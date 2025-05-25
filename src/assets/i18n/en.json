@@ -501,6 +501,10 @@
     },
     "MESSAGE": {
       "NO_COUNTRIES": "No countries found."
+    },
+     "MODAL_CREATE": {
+      "CREATE_FORM": "Create Country",
+      "NEW_COUNTRY": "New Country"
     }
   },
 

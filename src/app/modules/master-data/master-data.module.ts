@@ -114,7 +114,8 @@ import { UserPreferenceService } from '../../Services/user-preferences.service';
 import { TitleModalComponent } from './components/title/components/title-modal/title-modal.component';
 import { TitleUtils } from './components/title/utils/title-utils';
 import { MessageService } from 'primeng/api';
-
+import { CountryModalComponent } from './components/countries/components/country-modal/country-modal.component';
+import { CountryUtils } from './components/countries/utils/country-util'
 
 @NgModule({
   declarations: [
@@ -196,6 +197,7 @@ import { MessageService } from 'primeng/api';
     ContractStatusFormComponent,
     ContractStatusTableComponent,
     TitleModalComponent,
+    CountryModalComponent
   ],
   imports: [
     ButtonModule,
@@ -230,6 +232,6 @@ import { MessageService } from 'primeng/api';
   exports: [
     GenaralTableComponent
   ],
-  providers: [UserPreferenceService, TitleUtils, MessageService]
+  providers: [UserPreferenceService, TitleUtils, CountryUtils, MessageService]
 })
 export class MasterDataModule {}

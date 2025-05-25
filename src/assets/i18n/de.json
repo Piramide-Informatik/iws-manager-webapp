@@ -501,6 +501,10 @@
     },
     "MESSAGE": {
       "NO_COUNTRIES": "Keine Länder vorhanden."
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "Land Erstellen",
+      "NEW_COUNTRY": "Neuer Länder"
     }
   },
 
