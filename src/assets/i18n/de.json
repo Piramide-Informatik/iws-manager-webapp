@@ -505,6 +505,10 @@
     "MODAL_CREATE": {
       "CREATE_FORM": "Land Erstellen",
       "NEW_COUNTRY": "Neuer Länder"
+    },
+    "DELETE": {
+      "CONFIRMATION": "Land Löschen",
+      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Land löschen möchten: "
     }
   },
 
