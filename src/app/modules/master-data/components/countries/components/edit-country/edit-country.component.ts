@@ -17,8 +17,8 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   currentCountry: Country | null = null;
   countryForm!: FormGroup;
   isSaving = false;
-  private subscriptions = new Subscription();
-
+  private readonly subscriptions = new Subscription();
+  
   constructor(
     private readonly countryUtils: CountryUtils,
     private readonly countryStateService: CountryStateService,
