@@ -75,6 +75,7 @@
         icon="pi pi-times"
         iconPos="left"
         (click)="onCancel()"
+        (keypress)="onCancel()"
         [disabled]="isLoading"
       />
 
@@ -86,6 +87,7 @@
         icon="pi pi-trash"
         iconPos="left"
         (click)="onDeleteConfirm()"
+        (keypress)="onDeleteConfirm()"
         severity="danger"
         [loading]="isLoading"
         [disabled]="isLoading"
