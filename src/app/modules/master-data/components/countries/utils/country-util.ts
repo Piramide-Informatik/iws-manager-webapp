@@ -111,10 +111,14 @@ export class CountryUtils {
     });
   }
 
+  /**
+ * Updates a country by ID and updates the internal countries signal.
+ * @param country - Country object with updated data
+ * @returns Observable that completes when the update is done
+ */
   updateCountry(country: Country): Observable<void> {
     return new Observable<void>(observer => {
       this.countryService.updateCountry(country);
-      // Espera breve para que la señal se actualice (igual que en create/delete)
       setTimeout(() => {
         if (!this.countryService.error()) {
           observer.next();
