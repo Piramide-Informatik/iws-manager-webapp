@@ -110,4 +110,19 @@ export class CountryUtils {
       }, 100);
     });
   }
+
+  updateCountry(country: Country): Observable<void> {
+    return new Observable<void>(observer => {
+      this.countryService.updateCountry(country);
+      // Espera breve para que la señal se actualice (igual que en create/delete)
+      setTimeout(() => {
+        if (!this.countryService.error()) {
+          observer.next();
+          observer.complete();
+        } else {
+          observer.error(this.countryService.error());
+        }
+      }, 100);
+    });
+  }
 }

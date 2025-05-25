@@ -4,13 +4,13 @@
       [tableId]="tableKey"
       [tableValues]="countries()"
       [columns]="columnsHeaderFieldCoutries"
-      (editItem)="editCountry($event)"
       [userPreferences]="userCountriesPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserCountriesPreferencesChanges($event)"
       (onCreateRegister)="visibleModal=true"
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
       (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+      (onEditRegister)="editCountry($event)"
       ></master-data-genaral-table>
       <p-dialog 
         [header]="modalType === 'create' 
