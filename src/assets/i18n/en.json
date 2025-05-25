@@ -505,6 +505,10 @@
      "MODAL_CREATE": {
       "CREATE_FORM": "Create Country",
       "NEW_COUNTRY": "New Country"
+    },
+    "DELETE": {
+      "CONFIRMATION": "Delete Country",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the Country "
     }
   },
 

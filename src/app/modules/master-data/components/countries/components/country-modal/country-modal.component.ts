@@ -61,7 +61,23 @@ export class CountryModalComponent implements OnInit {
       }
     });
   }
-
+  onDeleteConfirm(): void {
+    this.isLoading = true;
+    if (this.countryToDelete) {
+      this.countryUtils.deleteCountry(this.countryToDelete).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.confirmDelete.emit();
+          this.closeModal();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.message ?? 'Failed to delete country';
+          console.error('Delete error:', error);
+        }
+      });
+    }
+  }
   private handleCountryExistence(
     exists: boolean,
     name: string,

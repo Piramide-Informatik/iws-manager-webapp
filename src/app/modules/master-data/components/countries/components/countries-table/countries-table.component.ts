@@ -18,7 +18,27 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   private readonly countryUtils = new CountryUtils();
   private readonly countryService = inject(CountryService);
   visibleModal: boolean = false;
-  
+  modalType: 'create' | 'delete' = 'create';
+  selectedCountry: number | null = null;
+  CountryName: string = '';
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedCountry = event.data;
+
+      this.countryUtils.getCountryById(this.selectedCountry!).subscribe({
+        next: (country) => {
+          this.CountryName = country?.name ?? '';
+        },
+        error: (err) => {
+          console.error('No se pudo obtener el título:', err);
+          this.CountryName = '';
+        }
+      });
+    }
+    this.visibleModal = true;
+  }
   columnsHeaderFieldCoutries: any[] = [];
   userCountriesPreferences: UserPreference = {};
   tableKey: string = 'Countries'
@@ -91,5 +111,11 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   }
    onVisibleModal(visible: boolean){
     this.visibleModal = visible;
+  }
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedCountry = null;
+    }
   }
 }

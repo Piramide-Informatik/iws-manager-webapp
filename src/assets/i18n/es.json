@@ -501,6 +501,10 @@
     },
     "MESSAGE": {
       "NO_COUNTRIES": "No se encontraron países."
+    },
+    "DELETE": {
+      "CONFIRMATION": "Eliminar Country",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
     }
   },
 

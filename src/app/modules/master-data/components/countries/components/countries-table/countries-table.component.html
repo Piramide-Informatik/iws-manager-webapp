@@ -9,9 +9,23 @@
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserCountriesPreferencesChanges($event)"
       (onCreateRegister)="visibleModal=true"
+      (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
       ></master-data-genaral-table>
-      <p-dialog [header]="'COUNTRIES.MODAL_CREATE.CREATE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
-        <app-country-modal (isVisibleModal)="visibleModal = $event"></app-country-modal>
+      <p-dialog 
+        [header]="modalType === 'create' 
+          ? ('COUNTRIES.MODAL_CREATE.CREATE_FORM' | translate) 
+          : ('COUNTRIES.DELETE.CONFIRMATION' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleModal" 
+      >
+        <app-country-modal
+        (isVisibleModal)="onVisibleModal($event)"
+          [modalType]="modalType"
+          [countryName]="CountryName"
+          [countryToDelete]="selectedCountry"
+          (isVisibleModal)="onModalVisibilityChange($event)"
+        ></app-country-modal>
       </p-dialog>
   </div>
 </div>
