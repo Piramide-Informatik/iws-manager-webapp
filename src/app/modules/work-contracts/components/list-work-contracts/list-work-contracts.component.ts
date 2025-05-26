@@ -7,11 +7,14 @@ import { Table } from 'primeng/table';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string;
   header: string;
   customExportHeader?: string;
+  customClasses?: string[];
 }
 
 interface ExportColumn {
@@ -40,6 +43,10 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   submitted: boolean = true;
   searchTerm: string = '';
   statuses!: any[];
+  userWorkContractsPreferences: UserPreference = {};
+  tableKey: string = 'WorkContracts'
+  dataKeys = ['employeeId', 'firstName', 'lastName', 'startDate', 'salaryPerMonth', 'weeklyHours', 'worksShortTime', 'specialPayment', 'maxHrspPerMonth', 'maxHrsPerDay', 'hourlyRate'];
+
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -53,6 +60,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly cd: ChangeDetectorRef,
+    private readonly userPreferenceService: UserPreferenceService,
     private readonly translate: TranslateService,
     private readonly router: Router,
     private readonly route: ActivatedRoute
@@ -64,28 +72,33 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.customer = 'Joe Doe';
 
     this.contracts = this.workContractsService.list();
-
+    this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.reloadComponent(true);
+      this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
     this.selectedColumns = this.cols;
   }
 
+  onUserWorkContractsPreferencesChanges(userWorkContractsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userWorkContractsPreferences));
+  }
+
   loadColHeaders(): void {
     this.cols = [
-      { field: 'employeeId', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))},
+      { field: 'employeeId', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))},
       { field: 'firstName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
       { field: 'lastName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
-      { field: 'startDate', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
-      { field: 'salaryPerMonth',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
-      { field: 'weeklyHours',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
-      { field: 'worksShortTime',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
-      { field: 'specialPayment',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
-      { field: 'maxHrspPerMonth', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
-      { field: 'maxHrsPerDay',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
-      { field: 'hourlyRate',  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
+      { field: 'startDate', customClasses: ['text-center'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
+      { field: 'salaryPerMonth', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
+      { field: 'weeklyHours', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
+      { field: 'worksShortTime', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
+      { field: 'specialPayment', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
+      { field: 'maxHrspPerMonth', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
+      { field: 'maxHrsPerDay', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
+      { field: 'hourlyRate', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
     ];
   }
 
@@ -154,17 +167,17 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.submitted = false;
   }
 
-  deleteWorkContract(workContract: WorkContract) {
+  deleteWorkContract(workContractEmployeeId: any) {
      this.confirmationService.confirm({
-      message: this.translate.instant(_('DIALOG.DELETE'), { value: workContract.employeeId }),
+      message: this.translate.instant(_('DIALOG.DELETE'), { value: workContractEmployeeId }),
       header: this.translate.instant(_('DIALOG.CONFIRM_TITLE')),
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
       rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
       accept: () => {
-        this.workContractsService.deleteWorkContract(workContract.employeeId);
+        this.workContractsService.deleteWorkContract(workContractEmployeeId);
         this.contracts = this.contracts.filter(
-          (val) => val.employeeId !== workContract.employeeId
+          (val) => val.employeeId !== workContractEmployeeId
         );
         this.messageService.add({
           severity: 'success',
@@ -176,10 +189,17 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToWorkCOntractDetails(currentWContract: WorkContract) {
+  goToWorkContractDetails(currentWContract: WorkContract) {
     this.router.navigate(['contractDetails'], { 
       relativeTo: this.route,
       state: { customer: "Joe Doe", workContract: currentWContract } 
+    });
+  }
+
+  createWorkContractDetails() {
+    this.router.navigate(['contractDetails'], { 
+      relativeTo: this.route,
+      state: { customer: "Joe Doe", workContract: {} } 
     });
   }
 
