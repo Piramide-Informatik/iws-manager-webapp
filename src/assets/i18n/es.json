@@ -500,10 +500,14 @@
       "PAGE_INFO": "Mostrando {first} - {last} de {totalRecords}"
     },
     "MESSAGE": {
-      "NO_COUNTRIES": "No se encontraron países."
+      "NO_COUNTRIES": "No se encontraron países.",
+      "SUCCESS": "ÉXITO",
+      "ERROR": "ERROR",
+      "UPDATE_SUCCESS": "Actualización exitosa",
+      "UPDATE_FAILED": "Actualización fallida"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Country",
+      "CONFIRMATION": "Eliminar País",
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
     }
   },
