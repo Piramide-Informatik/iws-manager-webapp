@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { CountryService } from '../../../../../../Services/country.service';
 import { CountryUtils } from '../../utils/country-util';
-
+import { Country } from '../../../../../../Entities/country';
+import { CountryStateService } from '../../utils/country-state.service';
 
 @Component({
   selector: 'app-countries-table',
@@ -49,8 +49,8 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
-  ) {}
+    private readonly countryStateService: CountryStateService
+  ) { }
 
   ngOnInit(): void {
 
@@ -58,7 +58,6 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumnsCountries();
-      this.routerUtils.reloadComponent(true);
       this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     });
   }
@@ -66,7 +65,7 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   readonly countries = computed(() => {
     return this.countryService.countries().map(country => ({
       id: country.id,
-      name: country.name,  
+      name: country.name,
       abbreviation: country.label,
       isStandard: country.isDefault
     }));
@@ -96,14 +95,6 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     ];
   }
 
-  editCountry(country: any): void {
-    console.log('Editing country:', country);
-  }
-
-  deleteCountry(id: number): void {
-    console.log('Deleting country ID:', id);
-  }
-
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
@@ -117,5 +108,26 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     if (!visible) {
       this.selectedCountry = null;
     }
+  }
+  editCountry(country: Country) {
+    const countryToEdit: Country = {
+      id: country.id,
+      name: country.name,
+      label: country.label,
+      isDefault: country.isDefault,
+      createdAt: country.createdAt ?? '',
+      updatedAt: country.updatedAt ?? ''
+    };
+
+    this.countryUtils.getCountryById(countryToEdit.id).subscribe({
+      next: (fullCountry) => {
+        if (fullCountry) {
+          this.countryStateService.setCountryToEdit(fullCountry);
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar país:', err);
+      }
+    });
   }
 }
