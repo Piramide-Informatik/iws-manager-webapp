@@ -500,7 +500,11 @@
       "PAGE_INFO": "Showing {first} - {last} of {totalRecords}"
     },
     "MESSAGE": {
-      "NO_COUNTRIES": "No countries found."
+      "NO_COUNTRIES": "No countries found.",
+      "SUCCESS": "SUCCESS",
+      "ERROR": "ERROR",
+      "UPDATE_SUCCESS": "Successfully updated",
+      "UPDATE_FAILED": "Update failed"
     },
      "MODAL_CREATE": {
       "CREATE_FORM": "Create Country",

@@ -1,18 +1,20 @@
-<p-card
-  [style]="{ background: 'var(--light-cyan)' }"
-  [header]="'COUNTRIES.HEADER.EDIT_COUNTRY' | translate"
->
-  <form [formGroup]="countryForm">
+<p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'COUNTRIES.HEADER.EDIT_COUNTRY' | translate">
+  <form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
-      <div class="country-form mb-2">
+      <div class="country-form mb-2 flex align-items-center">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
         <input
           pInputText
           type="text"
           id="name"
           formControlName="name"
+          [ngClass]="{'ng-invalid': countryForm.get('name')?.invalid && countryForm.get('name')?.touched}"
           autocomplete="off"
         />
+        <p-message severity="error" variant="simple" size="small"
+          *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required')">
+          {{ 'COUNTRIES.ERROR.NAME_REQUIRED' | translate }}
+        </p-message>
       </div>
 
       <div class="country-form mb-2">
@@ -24,8 +26,13 @@
           type="text"
           id="abbreviation"
           formControlName="abbreviation"
+          [ngClass]="{'ng-invalid': countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched}"
           autocomplete="off"
         />
+        <p-message severity="error" variant="simple" size="small"
+          *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required')">
+          {{ 'COUNTRIES.ERROR.ABBREVIATION_REQUIRED' | translate }}
+        </p-message>
       </div>
 
       <div class="country-form-check mb-2">
@@ -40,24 +47,27 @@
           </ng-template>
         </p-toggleswitch>
       </div>
-
-      <div class="flex justify-content-center gap-2 mt-4">
-        <p-button
-          size="small"
-          [label]="'BUTTONS.SAVE' | translate"
-          icon="pi pi-check"
-          (click)="saveCountry()"
-          (keydown)="saveCountry()"
-        ></p-button>
-        <p-button
-          class="cancel"
-          size="small"
-          [label]="'BUTTONS.CANCEL' | translate"
-          icon="pi pi-times"
-          severity="secondary"
-          (keydown)="cancelEdit()"
-        ></p-button>
-      </div>
+    </div>
+    <div class="flex justify-content-center gap-2 mt-4">
+      <p-button
+        type="submit"
+        size="small"
+        [label]="'BUTTONS.SAVE' | translate"
+        icon="pi pi-check"
+        iconPos="left"
+        [disabled]="countryForm.invalid || !countryForm.dirty || isSaving"
+      ></p-button>
+      <p-button
+        type="button"
+        class="cancel"
+        size="small"
+        [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times"
+        iconPos="left"
+        (click)="clearForm()"
+        (keydown.enter)="clearForm()"
+      ></p-button>
     </div>
   </form>
 </p-card>
+<p-toast></p-toast>

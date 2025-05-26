@@ -110,4 +110,23 @@ export class CountryUtils {
       }, 100);
     });
   }
+
+  /**
+ * Updates a country by ID and updates the internal countries signal.
+ * @param country - Country object with updated data
+ * @returns Observable that completes when the update is done
+ */
+  updateCountry(country: Country): Observable<void> {
+    return new Observable<void>(observer => {
+      this.countryService.updateCountry(country);
+      setTimeout(() => {
+        if (!this.countryService.error()) {
+          observer.next();
+          observer.complete();
+        } else {
+          observer.error(this.countryService.error());
+        }
+      }, 100);
+    });
+  }
 }

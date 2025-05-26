@@ -1,6 +1,8 @@
 import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
+import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../Entities/user-preference';
 
 interface DepreciationEntry {
   year: number;
@@ -28,6 +30,12 @@ export class DepreciationScheduleComponent implements OnInit {
   };
   optionSelected: string = '';
   selectedYear!: number;
+  depreciationColumns: any[] = [];
+  userDepreciationPreferences: UserPreference = {};
+  tableKey: string = 'DepreciationSchedule'
+  dataKeys = ['year', 'usagePercentage', 'depreciationAmount']
+
+  constructor(private readonly userPreferenceService: UserPreferenceService) { }
 
   ngOnInit(): void {
     this.depreciationEntries = [
@@ -65,6 +73,16 @@ export class DepreciationScheduleComponent implements OnInit {
     });
 
     this.loading = false;
+    this.depreciationColumns = [
+      { field: 'year', customClasses: ['align-right'], header: 'Jahr' },
+      { field: 'usagePercentage', customClasses: ['align-right'], header: 'Nutzungsanteil %' },
+      { field: 'depreciationAmount', customClasses: ['align-right'], header: 'AfA im Jahr' },
+    ];
+    this.userDepreciationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.depreciationColumns);
+  }
+
+  onUserDepreciationPreferencesChanges(userDepreciationPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userDepreciationPreferences));
   }
 
   showModal(option: string, year?: number) {
