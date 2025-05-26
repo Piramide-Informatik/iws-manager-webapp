@@ -1,6 +1,8 @@
 import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
+import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
+import { UserPreference } from '../../../../../Entities/user-preference';
 
 interface ProjectAllocationEntry {
   projectName: string;
@@ -28,6 +30,12 @@ export class ProjectAllocationComponent implements OnInit {
   };
   optionSelected: string = '';
   selectedProjectName!: string;
+  allocationsColumns: any[] = [];
+  userAllocationsPreferences: UserPreference = {};
+  tableKey: string = 'Allocations'
+  dataKeys = ['projectName', 'percentage', 'amount'];
+
+  constructor(private readonly userPreferenceService: UserPreferenceService) { }
 
   ngOnInit(): void {
     this.allocations = [
@@ -64,7 +72,17 @@ export class ProjectAllocationComponent implements OnInit {
       amount: new FormControl('', Validators.required),
     });
 
+    this.allocationsColumns = [
+      { field: 'projectName', header: 'Projekt' },
+      { field: 'percentage', customClasses: ['align-right'], header: 'Anteil %' },
+      { field: 'amount', customClasses: ['align-right'], header: 'Betrag' },
+    ];
+    this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
     this.loading = false;
+  }
+
+  onUserAllocationsPreferencesChanges(userAllocationsPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userAllocationsPreferences));
   }
 
   showModal(option: string, projectName?: string) {
@@ -107,7 +125,7 @@ export class ProjectAllocationComponent implements OnInit {
     this.closeModal();
   }
 
-  deleteAllocation(projectName: string) {
+  deleteAllocation(projectName: any) {
     this.allocations = this.allocations.filter(
       (entry) => entry.projectName !== projectName
     );

@@ -1,74 +1,18 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
   <ng-template #title>Aufteilung auf Jahre</ng-template>
 
-  <p-table
-    #dt
-    [value]="depreciationEntries"
-    showGridlines
-    stripedRows
-    [tableStyle]="{ 'min-width': '100%' }"
-    [rows]="15"
-    [paginator]="true"
-    scrollable="true"
-    scrollHeight="90vh"
-    [rowsPerPageOptions]="[15, 30, 50]"
-    [globalFilterFields]="['year', 'usagePercentage', 'depreciationAmount']"
-    [(selection)]="selectedYear"
-    [rowHover]="true"
-    dataKey="year"
-    currentPageReportTemplate="Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt"
-    [showCurrentPageReport]="true"
-  >
-    <ng-template #header>
-      <tr>
-        <th id="col-fiel" class="thead"></th>
-        <th id="col-fiel" pSortableColumn="year" class="thead">
-          Jahr <p-sortIcon field="year" />
-        </th>
-        <th id="col-fiel" pSortableColumn="usagePercentage" class="thead">
-          Nutzungsanteil % <p-sortIcon field="usagePercentage" />
-        </th>
-        <th id="col-fiel" pSortableColumn="depreciationAmount" class="thead">
-          AfA im Jahr <p-sortIcon field="depreciationAmount" />
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template #body let-entry>
-      <tr>
-        <td>
-          <div class="flex items-center justify-center gap-2">
-            <button
-              pButton
-              icon="pi pi-pencil"
-              (click)="showModal(option.edit, entry.year)"
-              class="p-button-rounded p-button-info button-option"
-            ></button>
-            <button
-              pButton
-              icon="pi pi-trash"
-              (click)="deleteDepreciation(entry.year)"
-              class="p-button-rounded p-button-danger button-option"
-            ></button>
-          </div>
-        </td>
-        <td [ngClass]="'align-right'">{{ entry.year }}</td>
-        <td [ngClass]="'align-right'">{{ entry.usagePercentage }}%</td>
-        <td [ngClass]="'align-right'">{{ entry.depreciationAmount | currency : "EUR" }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-
-  <div class="mt-2">
-    <p-button
-      size="small"
-      [label]="'BUTTONS.NEW' | translate"
-      icon="pi pi-plus"
-      iconPos="left"
-      (click)="showModal(option.new)"
-      [attr.aria-label]="'Add new project'"
-      (keydown.enter)="showModal(option.new)"
-    ></p-button>
-  </div>
+  <master-data-genaral-table
+    [tableId]="tableKey"
+    [tableValues]="depreciationEntries"
+    [columns]="depreciationColumns"
+    [userPreferences]="userDepreciationPreferences"
+    [dataKeys]="dataKeys"
+    removeKey="year"
+    (onColumnChanges)="onUserDepreciationPreferencesChanges($event)"
+    (onCreateRegister)="showModal(option.new)"
+    (onEditRegister)="showModal(option.edit, $event.year)"
+    (onDeleteRegister)="deleteDepreciation($event)"
+  ></master-data-genaral-table>
 </p-card>
 
 <div class="card">
