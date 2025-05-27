@@ -7,12 +7,12 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 
 @Component({
-  selector: 'master-data-address-table',
+  selector: 'master-data-salutation-table',
   standalone: false,
-  templateUrl: './address-table.component.html',
-  styleUrl: './address-table.component.scss'
+  templateUrl: './salutation-table.component.html',
+  styleUrl: './salutation-table.component.scss'
 })
-export class AddressTableComponent implements OnInit, OnDestroy {
+export class SalutationTableComponent implements OnInit, OnDestroy {
   salutations: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
