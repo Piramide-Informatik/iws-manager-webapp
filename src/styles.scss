@@ -263,18 +263,37 @@ p-password {
   color: #ffffff !important; 
 }
 
+/* Form modals create and delete */
 .p-dialog-header {
   background: $primary-color !important;
   text-align: center;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
+  padding: 0.3rem 1rem !important; 
   min-height: unset !important;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
 }
 
-
 .p-dialog-title {
-  color: #fff !important; // Blanco
+  color: #fff !important;
   width: 100%;
   display: block;
   text-align: center;
+}
+
+.p-dialog-close-button .p-icon,
+.p-dialog-close-button svg {
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+.p-dialog-close-button:hover,
+.p-dialog-close-button:focus {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.p-dialog {
+  border: none !important;
+  box-shadow: none !important; 
+  border-radius: 11px !important; 
 }
