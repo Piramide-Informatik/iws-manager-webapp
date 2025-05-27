@@ -1,6 +1,6 @@
 <ng-container *ngIf="isCreateMode;  else deleteTemplate">
   <form [formGroup]="createCountryForm" (ngSubmit)="onSubmit()">
-    <div class="align-items-center flex mb-2 mt-4">
+    <div class="align-items-center display mb-2 mt-4">
       <div class="country-form mb-3 flex align-items-center">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
         <input
@@ -60,7 +60,7 @@
   </form>
 </ng-container>
 <ng-template #deleteTemplate>
-  <div class="confirmation-content">
+  <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4">
       {{ 'COUNTRIES.DELETE.CONFIRM_QUESTION' | translate }}
       <strong class="stronglock mt-1">"{{ countryName }}"</strong>?

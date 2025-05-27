@@ -262,3 +262,19 @@ p-password {
 .p-picklist .p-button svg {
   color: #ffffff !important; 
 }
+
+.p-dialog-header {
+  background: $primary-color !important;
+  text-align: center;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  min-height: unset !important;
+}
+
+
+.p-dialog-title {
+  color: #fff !important; // Blanco
+  width: 100%;
+  display: block;
+  text-align: center;
+}
