@@ -116,8 +116,8 @@ th {
 }
 
 .p-datatable-thead > tr > th.p-datatable-column-sorted {
-  background: $accent-color;
-  color: $primary-dark;
+  background: $primary-color !important;
+  color: #fff !important;
 }
 
 .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider{

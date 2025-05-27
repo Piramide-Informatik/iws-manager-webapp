@@ -23,7 +23,7 @@
 
     <ng-template #header let-columns>
       <tr>
-          <th id="hide-columns" class="thead-bg-blue">
+          <th id="hide-columns" class="thead-bg-blue" style="width: 5% !important;">
               <p-multiselect 
                 [options]="this.columns" 
                 [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
@@ -42,7 +42,9 @@
           pResizableColumn
           class="thead"
         >
+        <div class="flex justify-content-between">
           {{ col.header }} <p-sortIcon [field]="col.field" />
+        </div>
         </th>
       </tr>
       <tr *ngIf="filterByColumns">
