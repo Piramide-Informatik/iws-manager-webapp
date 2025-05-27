@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-title-modal',
