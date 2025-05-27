@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row">
+      <master-data-genaral-table
+        [tableId]="tableKey"  
+        [tableValues]="salutations()"
+        [columns]="salutationDisplayedColumns"
+        [userPreferences]="userSalutationPreferences"
+        [dataKeys]="dataKeys"
+        (onColumnChanges)="onUserSalutationPreferencesChanges($event)"        
+      ></master-data-genaral-table>
+      <p-dialog [header]="'ADDRESS.FORM.TITLE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
+        <master-data-edit-salutation>
+        </master-data-edit-salutation>
+      </p-dialog>
+    </div>
+  </div>
