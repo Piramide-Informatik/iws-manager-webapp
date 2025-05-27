@@ -5,7 +5,7 @@ import { RolesComponent } from './components/roles/roles.component';
 import { StatesComponent } from './components/states/states.component';
 import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
 import { UserComponent } from './components/user/user.component';
-import { AddressComponent } from './components/address/address.component';
+import { SalutationComponent } from './components/salutation/salutation.component';
 import { HolidaysComponent } from './components/holidays/holidays.component';
 import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
@@ -32,7 +32,7 @@ import { ContractStatusComponent } from './components/contract-status/contract-s
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
   { path: 'absence-types', component: AbsenceTypesComponent },
-  { path: 'salutation', component: AddressComponent },
+  { path: 'salutation', component: SalutationComponent },
   { path: 'user', component: UserComponent },
   { path: 'roles', component: RolesComponent },
   { path: 'approval-status', component: ApprovalStatusProjectComponent },

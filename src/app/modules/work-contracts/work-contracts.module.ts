@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Modulos
 import { WorkContractsRoutingModule } from './work-contracts-routing.module';
+import { MasterDataModule } from '../master-data/master-data.module';
 
 //Prime NG
 import { ButtonModule } from 'primeng/button';
@@ -63,6 +64,7 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
     SelectModule,
     TranslateModule,
     TranslatePipe,
+    MasterDataModule,
     TranslateDirective
   ],
 })

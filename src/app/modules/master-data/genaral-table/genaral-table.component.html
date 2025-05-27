@@ -124,7 +124,7 @@
         @if(isFileUploadButtonVisible) {
           <p-fileUpload
             mode="basic"
-            accept=".pdf,.xml,.csv"
+            [accept]="acceptFilesFormats"
             [maxFileSize]="5000000"
             [chooseLabel]="'BUTTONS.IMPORT' | translate"
             auto
