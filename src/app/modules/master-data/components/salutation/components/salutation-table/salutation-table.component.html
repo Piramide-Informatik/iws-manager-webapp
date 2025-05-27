@@ -2,20 +2,14 @@
     <div class="row">
       <master-data-genaral-table
         [tableId]="tableKey"  
-        [tableValues]="salutations"
-        [columns]="selectedColumns"
-        [userPreferences]="userAddressPreferences"
+        [tableValues]="salutations()"
+        [columns]="salutationDisplayedColumns"
+        [userPreferences]="userSalutationPreferences"
         [dataKeys]="dataKeys"
-        (onColumnChanges)="onUserAddressPreferencesChanges($event)"
-        (onCreateRegister)="visibleModal=true"
-        (onDeleteRegister)="deleteSalutation($event)"
-        (onEditRegister)="editSalutation($event)"
+        (onColumnChanges)="onUserSalutationPreferencesChanges($event)"        
       ></master-data-genaral-table>
       <p-dialog [header]="'ADDRESS.FORM.TITLE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
-        <master-data-edit-salutation 
-          (isVisibleModal)="onVisibleModal($event)"
-          (onNewSalutation)="createSalutation($event)"
-          [editSalut]="salutationToEdit">
+        <master-data-edit-salutation>
         </master-data-edit-salutation>
       </p-dialog>
     </div>

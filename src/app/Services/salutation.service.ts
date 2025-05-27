@@ -19,12 +19,11 @@ export class SalutationService {
     })
   };
 
-  // Signals para estado reactivo
+  // Signals 
   private readonly _salutations = signal<Salutation[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
 
-  // Exponer señales como read-only
   public salutations = this._salutations.asReadonly();
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
