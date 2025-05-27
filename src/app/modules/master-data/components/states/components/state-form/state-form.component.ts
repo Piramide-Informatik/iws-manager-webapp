@@ -15,6 +15,7 @@ export class StateFormComponent implements OnInit{
       absenceType: new FormControl('', [Validators.required]),
       absenceTypeLabel: new FormControl('', [Validators.required]),
       shareOfDay: new FormControl('', [Validators.required]),
+      stateName: new FormControl('', [Validators.required])
     });
   }
 
