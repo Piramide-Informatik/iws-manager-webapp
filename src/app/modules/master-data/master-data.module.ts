@@ -42,9 +42,9 @@ import { StatesTableComponent } from './components/states/components/states-tabl
 import { ApprovalStatusProjectComponent } from './components/approval-status/components/approval-status-project/approval-status-project.component';
 import { ApprovalStatusTableComponent } from './components/approval-status/components/approval-status-project/approval-status-table/approval-status-table.component';
 import { EditApprovalStatusComponent } from './components/approval-status/components/approval-status-project/edit-approval-status/edit-approval-status.component';
-import { AddressComponent } from './components/address/address.component';
-import { AddressTableComponent } from './components/address/components/address-table/address-table.component';
-import { EditSalutationComponent } from './components/address/components/edit-salutation/edit-salutation.component';
+import { SalutationComponent } from './components/salutation/salutation.component';
+import { SalutationTableComponent } from './components/salutation/components/salutation-table/salutation-table.component';
+import { EditSalutationComponent } from './components/salutation/components/edit-salutation/edit-salutation.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { RolTableComponent } from './components/roles/components/rol-table/rol-table.component';
 import { RolFormComponent } from './components/roles/components/rol-form/rol-form.component';
@@ -131,8 +131,8 @@ import { CountryUtils } from './components/countries/utils/country-util'
     EditApprovalStatusComponent,
     UserTableComponent,
     EditUserFormComponent,
-    AddressComponent,
-    AddressTableComponent,
+    SalutationComponent,
+    SalutationTableComponent,
     EditSalutationComponent,
     RolesComponent,
     RolTableComponent,

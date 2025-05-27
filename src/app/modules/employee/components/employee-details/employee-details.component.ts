@@ -45,8 +45,8 @@ export class EmployeeDetailsComponent implements OnInit {
   public salutations = toSignal(
     this.salutationService.getAllSalutations().pipe(
       map(salutations => salutations.map(salutation => ({
-        name: salutation.salutation,
-        code: salutation.uuid
+        name: salutation.name,
+        code: salutation.id
       })))
     ),
     { initialValue: [] }

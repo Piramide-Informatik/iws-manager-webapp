@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddressTableComponent } from './address-table.component';
+import { SalutationComponent } from './salutation.component';
 
-describe('AddressTableComponent', () => {
-  let component: AddressTableComponent;
-  let fixture: ComponentFixture<AddressTableComponent>;
+describe('SalutationComponent', () => {
+  let component: SalutationComponent;
+  let fixture: ComponentFixture<SalutationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddressTableComponent]
+      declarations: [SalutationComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddressTableComponent);
+    fixture = TestBed.createComponent(SalutationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
