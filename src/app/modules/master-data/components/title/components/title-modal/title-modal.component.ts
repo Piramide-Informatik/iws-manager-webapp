@@ -125,7 +125,7 @@ export class TitleModalComponent implements OnInit {
   public focusInputIfNeeded() {
     if (this.isCreateMode && this.titleInput) {
       setTimeout(() => {
-        if (this.titleInput && this.titleInput.nativeElement) {
+        if (this.titleInput?.nativeElement) {
           this.titleInput.nativeElement.focus(); 
         }
       }, 150); 
