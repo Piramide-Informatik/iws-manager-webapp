@@ -1,11 +1,12 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject, computed  } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { GERMAN_STATES } from './states.data';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { StateUtils } from '../../utils/state-utils';
+import { StateService } from '../../../../../../Services/state.service';
 
 @Component({
   selector: 'app-states-table',
@@ -14,7 +15,8 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styleUrl: './states-table.component.scss'
 })
 export class StatesTableComponent implements OnInit, OnDestroy {
-  states = [...GERMAN_STATES];
+  private readonly stateUtils = new StateUtils();
+  private readonly stateService = inject(StateService)
   cols: any[] = [];
   selectedColumns: any[] = [];
   userStatesPreferences: UserPreference = {};
@@ -24,6 +26,13 @@ export class StatesTableComponent implements OnInit, OnDestroy {
   @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
+
+  readonly states = computed(() => {
+    return this.stateService.states().map(state => ({
+      id: state.id,
+      state: state.name,
+    }));
+  });
 
   constructor(
     private readonly translate: TranslateService,
