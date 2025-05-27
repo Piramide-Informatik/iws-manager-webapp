@@ -639,8 +639,8 @@
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
     },
     "FORM": {
-      "TITLE_FORM": "Crear Título",
-      "NEW_TITLE": "Nuevo Título"
+      "TITLE_FORM": "Nuevo Título",
+      "NEW_TITLE": "Título"
     },
     "MESSAGE": {
       "SUCCESS": "ÉXITO",

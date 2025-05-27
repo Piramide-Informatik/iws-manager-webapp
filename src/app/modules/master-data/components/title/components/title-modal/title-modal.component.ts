@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-title-modal',
@@ -13,7 +14,7 @@ import { of } from 'rxjs';
 
 export class TitleModalComponent implements OnInit {
   private readonly titleUtils = inject(TitleUtils);
-  
+  @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() titleToDelete: number | null = null;
   @Input() titleName: string | null = null;
@@ -120,5 +121,15 @@ export class TitleModalComponent implements OnInit {
 
   onCancel(): void {
     this.handleClose();
+  }
+
+  public focusInputIfNeeded() {
+    if (this.isCreateMode && this.titleInput) {
+      setTimeout(() => {
+        if (this.titleInput && this.titleInput.nativeElement) {
+          this.titleInput.nativeElement.focus(); 
+        }
+      }, 150); 
+    }
   }
 }

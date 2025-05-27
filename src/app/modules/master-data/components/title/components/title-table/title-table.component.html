@@ -19,12 +19,14 @@
           : ('TITLE.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
         [(visible)]="visibleModal" 
+        (onShow)="onDialogShow()"
       >
         <app-title-modal
           [modalType]="modalType"
           [titleName]="titleName"
           [titleToDelete]="selectedTitle"
           (isVisibleModal)="onModalVisibilityChange($event)"
+          #titleModal
         ></app-title-modal>
       </p-dialog>
     </div>
