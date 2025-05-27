@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createSalutationForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form mb-6  display align-items-center">
+            <div class="create-form mb-6 flex align-items-center">
                 <label for="salutationName" class="block">
                     {{ 'SALUTATION.FORM.NEW_SALUTATION' | translate }}
                 </label>
