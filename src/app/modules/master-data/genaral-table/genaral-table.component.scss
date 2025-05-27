@@ -62,6 +62,7 @@ p-button {
     }
 
     thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
-        width: max-content !important;
+        width: 75px !important;
+        max-width: 75px !important;
     }
 }
