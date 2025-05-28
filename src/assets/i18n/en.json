@@ -288,6 +288,16 @@
     "DELETE": {
       "CONFIRM_QUESTION": "Are you sure you want to delete the Salutation ",
       "CONFIRMATION": "Delete Salutation"
+    },
+    "LABEL": {
+      "EDIT_TITLE":"Edit Salutation",
+      "TITLE_LABEL": "Salutation"
+    },
+    "MESSAGE": {
+      "SUCCESS": "SUCCESS",
+      "UPDATE_SUCCESS":"Successfully updated",
+      "ERROR": "ERROR",
+      "UPDATE_FAILED": "Update failed"
     }
   },
   "STATES": {
