@@ -648,8 +648,8 @@
       "CONFIRM_QUESTION": "Are you sure you want to delete the title "
     },
     "FORM": {
-      "TITLE_FORM": "Create Title",
-      "NEW_TITLE": "New Title"
+      "TITLE_FORM": "New Title",
+      "NEW_TITLE": "Title"
     },
     "MESSAGE": {
       "SUCCESS": "SUCCESS",

@@ -644,12 +644,12 @@
       "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
     },
     "DELETE": {
-      "CONFIRMATION": "Titel Löschen",
+      "CONFIRMATION": "Titel löschen",
       "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Titel löschen möchten: "
     },
     "FORM": {
-      "TITLE_FORM": "Titel Erstellen",
-      "NEW_TITLE": "Neuer Titel"
+      "TITLE_FORM": "Neuer Titel",
+      "NEW_TITLE": "Titel"
     },
     "MESSAGE": {
       "SUCCESS": "ERFOLG",
