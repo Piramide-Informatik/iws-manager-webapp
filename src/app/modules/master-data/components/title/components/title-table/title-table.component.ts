@@ -8,6 +8,7 @@ import { TitleService } from '../../../../../../Services/title.service';
 import { TitleUtils } from '../../utils/title-utils';
 import { Title } from '../../../../../../Entities/title';
 import { TitleStateService } from '../../utils/title-state.service';
+import { TitleModalComponent } from '../title-modal/title-modal.component';
 
 @Component({
   selector: 'app-title-table',
@@ -22,7 +23,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   modalType: 'create' | 'delete' = 'create';
   selectedTitle: number | null = null;
   titleName: string = '';
-
+  @ViewChild('titleModal') titleModalComponent!: TitleModalComponent;
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
@@ -140,16 +141,21 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
         console.error('Error al cargar título:', err);
       }
     });
-}
-
-onVisibleModal(visible: boolean){
-  this.visibleModal = visible;
-}
-
-onModalVisibilityChange(visible: boolean): void {
-  this.visibleModal = visible;
-  if(!visible) {
-    this.selectedTitle = null;
   }
-}
+
+  onVisibleModal(visible: boolean) {
+    this.visibleModal = visible;
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedTitle = null;
+    }
+  }
+  onDialogShow() {
+    if (this.modalType === 'create' && this.titleModalComponent) {
+      this.titleModalComponent.focusInputIfNeeded();
+    }
+  }
 }
