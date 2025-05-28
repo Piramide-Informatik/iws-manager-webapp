@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode;  else deleteTemplate">
   <form [formGroup]="createCountryForm" (ngSubmit)="onSubmit()">
-    <div class="align-items-center mb-2 mt-4">
-      <div class="country-form mb-2">
+    <div class="align-items-center flex mb-2 mt-4">
+      <div class="country-form mb-3 flex align-items-center">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
         <input
           pInputText
@@ -12,7 +12,7 @@
         />
       </div>
 
-      <div class="country-form mb-2">
+      <div class="country-form mb-3 flex align-items-center">
         <label for="abbreviation">{{ "COUNTRIES.LABEL.ABBREVIATION" | translate }}</label>
         <input
           pInputText
@@ -23,7 +23,7 @@
         />
       </div>
 
-      <div class="country-form-check mb-2">
+      <div class="country-form-check mb-3 flex align-items-center">
         <label for="isStandardChecked">{{ "COUNTRIES.LABEL.IS_STANDARD" | translate }}</label>
         <p-toggleswitch formControlName="isStandard" class="flex">
           <ng-template #handle let-checked="checked">
@@ -32,7 +32,18 @@
         </p-toggleswitch>
       </div>
 
-      <div class="flex justify-content-end gap-2 mt-4">
+      <div class="flex justify-content-center gap-2 mt-4">
+        <p-button
+          type="submit"
+          class="save"
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          [loading]="isLoading"
+          [disabled]="createCountryForm.invalid || isLoading"
+        ></p-button>  
+
         <p-button
           type="button"
           class="cancel"
@@ -43,17 +54,6 @@
           (click)="onCancel()"
           (keypress)="onCancel()"
           [disabled]="isLoading"
-        ></p-button>
-
-        <p-button
-          type="submit"
-          class="save"
-          size="small"
-          [label]="'BUTTONS.SAVE' | translate"
-          icon="pi pi-check"
-          iconPos="left"
-          [loading]="isLoading"
-          [disabled]="createCountryForm.invalid || isLoading"
         ></p-button>
       </div>
     </div>
@@ -67,19 +67,7 @@
     </p>
 
     <div class="flex justify-content-end gap-2">
-      <p-button
-        type="button"
-        class="cancel"
-        size="small"
-        [label]="'BUTTONS.CANCEL' | translate"
-        icon="pi pi-times"
-        iconPos="left"
-        (click)="onCancel()"
-        (keypress)="onCancel()"
-        [disabled]="isLoading"
-      />
-
-      <p-button
+       <p-button
         type="button"
         class="delete"
         size="small"
@@ -90,6 +78,18 @@
         (keypress)="onDeleteConfirm()"
         severity="danger"
         [loading]="isLoading"
+        [disabled]="isLoading"
+      />
+      
+      <p-button
+        type="button"
+        class="cancel"
+        size="small"
+        [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times"
+        iconPos="left"
+        (click)="onCancel()"
+        (keypress)="onCancel()"
         [disabled]="isLoading"
       />
     </div>
