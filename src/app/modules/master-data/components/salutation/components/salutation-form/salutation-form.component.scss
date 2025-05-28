@@ -1,0 +1,11 @@
+@use 'variables' as *;
+
+.salutation-form {
+    label {
+        width: 120px;
+    }
+
+    input {
+        width: 250px;
+    }
+}
