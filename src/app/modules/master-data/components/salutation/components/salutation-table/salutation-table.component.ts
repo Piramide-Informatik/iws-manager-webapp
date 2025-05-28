@@ -86,7 +86,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
 
   loadSalutationHeaders(): void {
     this.salutationColumns = [
-      { field: 'salutation', minWidth: 110, header: this.translate.instant(_('ADDRESS.TABLE.SALUTATION')) }
+      { field: 'salutation', minWidth: 110, header: this.translate.instant(_('SALUTATION.TABLE.SALUTATION')) }
     ];
   }
 
