@@ -1,5 +1,6 @@
 export interface State {
-    uuidState: string;
-    idState: number;
-    nameState: string;
+    id: number;
+    name: string;
+    createdAt: string;  
+    updatedAt: string;  
 }

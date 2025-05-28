@@ -42,6 +42,24 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
     }));
   });
 
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedSalutation = event.data;
+
+      this.salutationUtils.getSalutationById(this.selectedSalutation!).subscribe({
+        next: (salutation) => {
+          this.salutationName = salutation?.name ?? '';
+        },
+        error: (err) => {
+          console.error('Cannot get Salutation:', err);
+          this.salutationName = '';
+        }
+      });
+    }
+    this.visibleModal = true;
+  }
+
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
@@ -68,7 +86,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
 
   loadSalutationHeaders(): void {
     this.salutationColumns = [
-      { field: 'salutation', minWidth: 110, header: this.translate.instant(_('ADDRESS.TABLE.SALUTATION')) }
+      { field: 'salutation', minWidth: 110, header: this.translate.instant(_('SALUTATION.TABLE.SALUTATION')) }
     ];
   }
 
