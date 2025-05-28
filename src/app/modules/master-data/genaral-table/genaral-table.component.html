@@ -65,12 +65,21 @@
                   </ng-template>
               </p-columnFilter>
             } @else {
-              <p-columnFilter
+              <p-columnFilter 
                   type="text"
                   [field]="col.field"
                   placeholder="Search"
-                  ariaLabel="Filter Name"
-              ></p-columnFilter> 
+                  matchMode="contains"
+                  ariaLabel="Filter Name">
+                  <ng-template #filter let-value let-filter="filterCallback">
+                      <input type="text"
+                          pInputText
+                          [ngModel]="value"
+                          (ngModelChange)="filter($event)"
+                          class="p-inputtext"
+                          placeholder="search">
+                  </ng-template>
+              </p-columnFilter>
             }       
         </th>
       </tr>
