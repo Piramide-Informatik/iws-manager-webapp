@@ -117,6 +117,7 @@ import { MessageService } from 'primeng/api';
 import { CountryModalComponent } from './components/countries/components/country-modal/country-modal.component';
 import { CountryUtils } from './components/countries/utils/country-util';
 import { SalutationModalComponent } from './components/salutation/components/salutation-modal/salutation-modal.component'
+import { SalutationFormComponent } from './components/salutation/components/salutation-form/salutation-form.component';
 
 @NgModule({
   declarations: [
@@ -134,6 +135,7 @@ import { SalutationModalComponent } from './components/salutation/components/sal
     EditUserFormComponent,
     SalutationComponent,
     SalutationTableComponent,
+    SalutationFormComponent,
     EditSalutationComponent,
     RolesComponent,
     RolTableComponent,

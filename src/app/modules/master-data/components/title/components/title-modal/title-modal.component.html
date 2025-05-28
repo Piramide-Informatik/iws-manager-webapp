@@ -1,8 +1,8 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createTitleForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form mb-6">
-                <label for="titleName" class="block mb-2">
+            <div class="create-form flex align-items-center mb-6">
+                <label for="titleName" class="block">
                     {{ 'TITLE.FORM.NEW_TITLE' | translate }}
                 </label>
                 <input #titleInput pInputText type="text" id="titleName" formControlName="name" autocomplete="off"
@@ -15,7 +15,7 @@
                 </small>
             </div>
 
-            <div class="flex justify-content-end gap-2 mt-4">
+            <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
                     icon="pi pi-check" iconPos="left" [loading]="isLoading"
                     [disabled]="createTitleForm.invalid || isLoading" />
