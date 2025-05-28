@@ -276,13 +276,18 @@
       "CAN_BE_BOOKED": "Can be Booked"
     }
   },
-  "ADDRESS": {
+  "SALUTATION": {
     "TABLE": {
       "SALUTATION": "Salutation"
     },
     "FORM": {
-      "TITLE_FORM": "Edit Salutation",
+      "NEW_SALUTATION": "Salutation",
+      "TITLE_FORM": "New Salutation",
       "LABEL_SALUTATION": "Salutation"
+    },
+    "DELETE": {
+      "CONFIRM_QUESTION": "Are you sure you want to delete the Salutation ",
+      "CONFIRMATION": "Delete Salutation"
     }
   },
   "STATES": {

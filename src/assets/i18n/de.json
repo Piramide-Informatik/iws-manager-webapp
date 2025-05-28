@@ -276,13 +276,18 @@
       "CAN_BE_BOOKED": "Kann gebucht werden"
     }
   },
-  "ADDRESS": {
+  "SALUTATION": {
     "TABLE": {
       "SALUTATION": "Anreden"
     },
     "FORM": {
-      "TITLE_FORM": "Anrede bearbeiten",
+      "NEW_SALUTATION": "Anrede",
+      "TITLE_FORM": "Neue Anrede",
       "LABEL_SALUTATION": "Anrede"
+    },
+    "DELETE": {
+      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Anrede löschen möchten: ",
+      "CONFIRMATION": "Anrede Löschen"
     }
   },
   "STATES": {

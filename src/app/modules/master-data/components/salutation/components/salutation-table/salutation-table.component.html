@@ -6,11 +6,24 @@
         [columns]="salutationDisplayedColumns"
         [userPreferences]="userSalutationPreferences"
         [dataKeys]="dataKeys"
-        (onColumnChanges)="onUserSalutationPreferencesChanges($event)"        
+        (onColumnChanges)="onUserSalutationPreferencesChanges($event)" 
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"    
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"   
       ></master-data-genaral-table>
-      <p-dialog [header]="'ADDRESS.FORM.TITLE_FORM' | translate" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '25rem' }">
-        <master-data-edit-salutation>
-        </master-data-edit-salutation>
+      <p-dialog 
+        [header]="modalType === 'create' 
+          ? ('SALUTATION.FORM.TITLE_FORM' | translate) 
+          : ('SALUTATION.DELETE.CONFIRMATION' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleModal" 
+      >
+        <app-salutation-modal
+          [modalType]="modalType"
+          [salutationName]="salutationName"
+          [salutationToDelete]="selectedSalutation"
+          (isVisibleModal)="onModalVisibilityChange($event)"
+        >
+        </app-salutation-modal>
       </p-dialog>
     </div>
   </div>

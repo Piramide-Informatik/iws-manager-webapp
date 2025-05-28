@@ -276,13 +276,18 @@
       "CAN_BE_BOOKED": "Se Puede Reservar"
     }
   },
-  "ADDRESS": {
+  "SALUTATION": {
     "TABLE": {
       "SALUTATION": "Saludo"
     },
     "FORM": {
-      "TITLE_FORM": "Editar Saludo",
+      "NEW_SALUTATION": "Saludo",
+      "TITLE_FORM": "Nuevo Saludo",
       "LABEL_SALUTATION": "Saludo"
+    },
+    "DELETE": {
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
+      "CONFIRMATION": "Eliminar Saludo"
     }
   },
   "STATES": {

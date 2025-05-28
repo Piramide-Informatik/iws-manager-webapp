@@ -115,7 +115,8 @@ import { TitleModalComponent } from './components/title/components/title-modal/t
 import { TitleUtils } from './components/title/utils/title-utils';
 import { MessageService } from 'primeng/api';
 import { CountryModalComponent } from './components/countries/components/country-modal/country-modal.component';
-import { CountryUtils } from './components/countries/utils/country-util'
+import { CountryUtils } from './components/countries/utils/country-util';
+import { SalutationModalComponent } from './components/salutation/components/salutation-modal/salutation-modal.component'
 
 @NgModule({
   declarations: [
@@ -197,7 +198,8 @@ import { CountryUtils } from './components/countries/utils/country-util'
     ContractStatusFormComponent,
     ContractStatusTableComponent,
     TitleModalComponent,
-    CountryModalComponent
+    CountryModalComponent,
+    SalutationModalComponent
   ],
   imports: [
     ButtonModule,
