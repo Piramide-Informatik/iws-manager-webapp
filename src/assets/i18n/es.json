@@ -288,6 +288,16 @@
     "DELETE": {
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
       "CONFIRMATION": "Eliminar Saludo"
+    },
+    "LABEL": {
+      "EDIT_TITLE":"Editar Saludo",
+      "TITLE_LABEL": "Saludo"
+    },
+    "MESSAGE": {
+      "SUCCESS": "ÉXITO",
+      "UPDATE_SUCCESS":"Actualización exitosa",
+      "ERROR": "ERROR",
+      "UPDATE_FAILED":"Actualización fallida"
     }
   },
   "STATES": {

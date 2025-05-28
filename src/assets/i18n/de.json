@@ -288,6 +288,16 @@
     "DELETE": {
       "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Anrede löschen möchten: ",
       "CONFIRMATION": "Anrede Löschen"
+    },
+    "LABEL": {
+      "EDIT_TITLE":"Anrede bearbeiten",
+      "TITLE_LABEL": "Anrede"
+    },
+    "MESSAGE": {
+      "SUCCESS": "ERFOLG",
+      "ERROR": "FEHLER",
+      "UPDATE_SUCCESS":"Erfolgreich aktualisiert",
+      "UPDATE_FAILED":"Update fehlgeschlagen"
     }
   },
   "STATES": {
