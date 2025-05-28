@@ -8,6 +8,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { SalutationUtils } from '../../utils/salutation.utils';
 import { SalutationService } from '../../../../../../Services/salutation.service';
 import { Salutation } from '../../../../../../Entities/salutation';
+import { SalutationStateService } from '../../utils/salutation-state.service';
 
 @Component({
   selector: 'master-data-salutation-table',
@@ -63,7 +64,8 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly salutationStateService: SalutationStateService
   ) {}
 
   ngOnInit(): void {
@@ -128,7 +130,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
     this.salutationUtils.getSalutationById(salutationToEdit.id).subscribe({
       next: (fullSalutation) => {
         if (fullSalutation) {
-          //this.salutationStateService.setSalutationToEdit(fullSalutation);
+          this.salutationStateService.setSalutationToEdit(fullSalutation);
         }
       },
       error: (err) => {
