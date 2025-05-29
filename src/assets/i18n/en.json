@@ -303,6 +303,9 @@
       "UPDATE_SUCCESS":"Successfully updated",
       "ERROR": "ERROR",
       "UPDATE_FAILED": "Update failed"
+    },
+    "ERROR": {
+      "SALUTATION_REQUIRED": "Salutation required"
     }
   },
   "STATES": {
@@ -533,6 +536,10 @@
     "DELETE": {
       "CONFIRMATION": "Delete Country",
       "CONFIRM_QUESTION": "Are you sure you want to delete the Country "
+    },
+    "ERROR": {
+      "COUNTRY_NAME_REQUIRED": "Country name required",
+      "ABBREVIATION_REQUIRED": "Abbreviation required"
     }
   },
 

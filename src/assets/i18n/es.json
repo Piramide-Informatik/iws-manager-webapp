@@ -303,6 +303,9 @@
       "UPDATE_SUCCESS":"Actualización exitosa",
       "ERROR": "ERROR",
       "UPDATE_FAILED":"Actualización fallida"
+    },
+    "ERROR": {
+      "SALUTATION_REQUIRED": "Saludo requerido"
     }
   },
   "STATES": {
@@ -529,6 +532,10 @@
     "DELETE": {
       "CONFIRMATION": "Eliminar País",
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+    },
+    "ERROR": {
+      "COUNTRY_NAME_REQUIRED": "Nombre de país requerido",
+      "ABBREVIATION_REQUIRED": "Abreviatura requerida"
     }
   },
 
