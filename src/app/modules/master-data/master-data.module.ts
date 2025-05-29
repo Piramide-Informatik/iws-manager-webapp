@@ -44,7 +44,6 @@ import { ApprovalStatusTableComponent } from './components/approval-status/compo
 import { EditApprovalStatusComponent } from './components/approval-status/components/approval-status-project/edit-approval-status/edit-approval-status.component';
 import { SalutationComponent } from './components/salutation/salutation.component';
 import { SalutationTableComponent } from './components/salutation/components/salutation-table/salutation-table.component';
-import { EditSalutationComponent } from './components/salutation/components/edit-salutation/edit-salutation.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { RolTableComponent } from './components/roles/components/rol-table/rol-table.component';
 import { RolFormComponent } from './components/roles/components/rol-form/rol-form.component';
@@ -136,7 +135,6 @@ import { SalutationFormComponent } from './components/salutation/components/salu
     SalutationComponent,
     SalutationTableComponent,
     SalutationFormComponent,
-    EditSalutationComponent,
     RolesComponent,
     RolTableComponent,
     RolFormComponent,
