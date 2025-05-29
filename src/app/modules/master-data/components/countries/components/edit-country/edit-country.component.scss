@@ -1,18 +1,24 @@
 .country-form {
-  label {
-    width: 111px;
-  }
-
-  input {
-    width: 13em;
-  }
-}
-
-.country-form-check {
   display: flex;
   align-items: center;
+  margin-bottom: 1.5rem;
 
-  label {
-    width: 150px;
+  input {
+    width: 100%;
+  }
+
+  .input-message {
+    width: 100%;
+    position: relative;
+
+    input {
+      width: 100%;
+    }
+
+    p-message {
+      position: absolute;
+      left: 0px;
+      bottom: -18px;
+    }
   }
 }

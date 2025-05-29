@@ -1,16 +1,17 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'SALUTATION.LABEL.EDIT_TITLE' | translate">
     <form [formGroup]="editSalutationForm" (ngSubmit)="onSubmit()">
-        <div class="align-items-center mb-2">
-            <div class="salutation-form mb-2 flex align-items-center">
-                <label for="salutation">{{ 'SALUTATION.LABEL.TITLE_LABEL' | translate }}</label>
-                <input pInputText type="text" id="salutation" formControlName="salutation" [ngClass]="{'ng-invalid': editSalutationForm.get('salutation')?.invalid && 
+        <div class="salutation-form pb-2 flex align-items-center">
+            <label for="salutation">{{ 'SALUTATION.LABEL.TITLE_LABEL' | translate }}</label>
+            <div class="input-message">
+                <input pInputText type="text" id="salutation" formControlName="salutation" [ngClass]="{'ng-invalid ng-dirty': editSalutationForm.get('salutation')?.invalid && 
                     editSalutationForm.get('salutation')?.touched}" autocomplete="off" />
                 <p-message severity="error" variant="simple" size="small" *ngIf="
                      editSalutationForm.get('salutation')?.invalid && 
                      editSalutationForm.get('salutation')?.touched && 
                      editSalutationForm.get('salutation')!.hasError('required')
                      ">
-                    {{ 'SALUTATION.ERROR.TITLE_LABEL_REQUIRED' | translate }}</p-message>
+                    {{ 'SALUTATION.ERROR.SALUTATION_REQUIRED' | translate }}
+                </p-message>
             </div>
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
