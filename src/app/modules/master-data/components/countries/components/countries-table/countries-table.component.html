@@ -17,10 +17,12 @@
           ? ('COUNTRIES.MODAL_CREATE.CREATE_FORM' | translate) 
           : ('COUNTRIES.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
-        [(visible)]="visibleModal" 
+        [(visible)]="visibleModal"
+        (onShow)="onDialogShow()" 
       >
         <app-country-modal
-        (isVisibleModal)="onVisibleModal($event)"
+          #countryModal
+          (isVisibleModal)="onVisibleModal($event)"
           [modalType]="modalType"
           [countryName]="CountryName"
           [countryToDelete]="selectedCountry"
