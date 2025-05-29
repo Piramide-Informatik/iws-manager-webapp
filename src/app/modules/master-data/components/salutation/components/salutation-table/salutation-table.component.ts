@@ -9,6 +9,7 @@ import { SalutationUtils } from '../../utils/salutation.utils';
 import { SalutationService } from '../../../../../../Services/salutation.service';
 import { Salutation } from '../../../../../../Entities/salutation';
 import { SalutationStateService } from '../../utils/salutation-state.service';
+import { SalutationModalComponent } from '../salutation-modal/salutation-modal.component';
 
 @Component({
   selector: 'master-data-salutation-table',
@@ -24,6 +25,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'delete' = 'create';
   selectedSalutation: number | null = null;
   salutationName: string = '';
+  @ViewChild('salutationModal') salutationModalComponent!: SalutationModalComponent;
 
   salutationColumns: any[] = [];
   salutationDisplayedColumns: any[] = [];
@@ -147,6 +149,12 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
     this.visibleModal = visible;
     if(!visible) {
       this.selectedSalutation = null;
+    }
+  }
+
+  onDialogShow() {
+    if (this.modalType === 'create' && this.salutationModalComponent) {
+      this.salutationModalComponent.focusInputIfNeeded();
     }
   }
 }
