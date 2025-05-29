@@ -59,7 +59,12 @@
     "TERMS_OF_PAYMENT": "Condiciones de Pago"
   },
   "COMMON": {
-    "CUSTOMER_NAME": "Cliente"
+    "CUSTOMER_NAME": "Cliente",
+    "YES": "Si",
+    "NO": "No",
+    "SEARCH": "Buscar",
+    "SELECT_ONE": "Seleccione uno",
+    "ANY": "Seleccione alguno"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas",

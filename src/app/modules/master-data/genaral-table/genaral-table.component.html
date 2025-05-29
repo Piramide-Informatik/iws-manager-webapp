@@ -57,18 +57,32 @@
                         [ngModel]="value" 
                         [options]="col.filter.data"
                         (onChange)="filter($event.value)" 
-                        placeholder="Search"
+                        [placeholder]="'COMMON.ANY' | translate"
                         [style.min-width.rem]="14"
                         [panelStyle]="{ minWidth: '16rem' }"
                         [appendTo]="'body'">
                       </p-multiselect>
                   </ng-template>
               </p-columnFilter>
+            } @else if (col.filter && col.filter.type === 'boolean') {
+              <p-columnFilter [field]="col.field" matchMode="equals" [showMenu]="false">
+                  <ng-template #filter let-value let-filter="filterCallback">
+                      <p-select 
+                        [ngModel]="value" 
+                        [options]="booleanHeaders" 
+                        optionLabel="header" 
+                        optionValue="value" 
+                        (onChange)="filter($event.value)" 
+                        [placeholder]="'COMMON.SELECT_ONE' | translate"
+                        styleClass="w-full" 
+                        [appendTo]="'body'">
+                      </p-select>
+                  </ng-template>
+              </p-columnFilter>
             } @else {
               <p-columnFilter 
                   type="text"
                   [field]="col.field"
-                  placeholder="Search"
                   matchMode="contains"
                   ariaLabel="Filter Name">
                   <ng-template #filter let-value let-filter="filterCallback">
@@ -77,7 +91,7 @@
                           [ngModel]="value"
                           (ngModelChange)="filter($event)"
                           class="p-inputtext"
-                          placeholder="search">
+                          [placeholder]="'COMMON.SEARCH' | translate">
                   </ng-template>
               </p-columnFilter>
             }       
@@ -112,7 +126,16 @@
           [style.cursor]="i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer' ? 'pointer' : null"
           [title]="i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer' ? 'Editar' : null"
         >
-          {{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}
+          @if(col.filter && col.filter.type === 'boolean') {
+            @if(row[col.field] == true) {
+              <i class="pi text-green-500 pi-check"></i>
+            } @else {
+              <i class="pi text-red-500 pi-times"></i>
+            }
+
+          } @else {
+            {{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}
+          }
         </td>
       </tr>
     </ng-template>

@@ -59,7 +59,12 @@
     "TERMS_OF_PAYMENT": "Zahlungsbedingungen"
   },
   "COMMON": {
-    "CUSTOMER_NAME": "Kunde"
+    "CUSTOMER_NAME": "Kunde",
+    "YES": "Ja",
+    "NO": "Nein",
+    "SEARCH": "Suchen",
+    "SELECT_ONE": "Wählen Sie eine",
+    "ANY": "Beliebig"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
@@ -522,11 +527,11 @@
       "UPDATE_FAILED": "Update fehlgeschlagen"
     },
     "MODAL_CREATE": {
-      "CREATE_FORM": "Land Erstellen",
+      "CREATE_FORM": "Neues Land",
       "NEW_COUNTRY": "Neuer Länder"
     },
     "DELETE": {
-      "CONFIRMATION": "Land Löschen",
+      "CONFIRMATION": "Land löschen",
       "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Land löschen möchten: "
     }
   },
