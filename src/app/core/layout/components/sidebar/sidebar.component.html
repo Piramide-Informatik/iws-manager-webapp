@@ -18,9 +18,6 @@
       <div
         id="item-master-data"
         class="menu-items"
-        [pTooltip]="isCollapsed? ('MENU.MASTER_DATA' | translate) : ''"
-        tooltipPosition="right"
-        tooltipStyleClass="p-tooltip-masterdata"
         (mouseenter)="menu.show($event)"
         (click)="menu.toggle($event)"
         (keypress)="menu.toggle($event)"
