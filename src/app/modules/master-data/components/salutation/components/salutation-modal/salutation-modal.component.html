@@ -5,7 +5,7 @@
                 <label for="salutationName" class="block">
                     {{ 'SALUTATION.FORM.NEW_SALUTATION' | translate }}
                 </label>
-                <input pInputText type="text" id="salutationName" formControlName="name" autocomplete="off"
+                <input #salutationInput pInputText type="text" id="salutationName" formControlName="name" autocomplete="off"
                     [attr.aria-invalid]="createSalutationForm.get('name')?.invalid"
                     [attr.aria-describedby]="createSalutationForm.get('name')?.invalid ? 'salutationError' : null"
                     class="w-full" />

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalutationUtils } from '../../utils/salutation.utils';
 import { catchError, finalize, of, switchMap } from 'rxjs';
@@ -11,6 +11,7 @@ import { catchError, finalize, of, switchMap } from 'rxjs';
 })
 export class SalutationModalComponent implements OnInit {
   private readonly salutationUtils = inject(SalutationUtils);
+  @ViewChild('salutationInput') salutationInput!: ElementRef<HTMLInputElement>;
 
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() salutationToDelete: number | null = null;
@@ -118,5 +119,15 @@ export class SalutationModalComponent implements OnInit {
 
   onCancel(): void {
     this.handleClose();
+  }
+
+  public focusInputIfNeeded() {
+    if (this.isCreateMode && this.salutationInput) {
+      setTimeout(() => {
+        if (this.salutationInput?.nativeElement) {
+          this.salutationInput.nativeElement.focus(); 
+        }
+      }, 150); 
+    }
   }
 }
