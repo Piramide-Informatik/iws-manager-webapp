@@ -80,17 +80,17 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         header: this.translate.instant(_('COUNTRIES.TABLE.NAME')),
-        styles: { width: 'auto' },
+        title: 'Editar'
       },
       {
         field: 'abbreviation',
         header: this.translate.instant(_('COUNTRIES.TABLE.ABBREVIATION')),
-        styles: { width: '120px' },
+        title: 'Editar'
       },
       {
         field: 'isStandard',
         header: this.translate.instant(_('COUNTRIES.TABLE.IS_STANDARD')),
-        styles: { width: '140px' },
+        title: 'Editar'
       },
     ];
   }

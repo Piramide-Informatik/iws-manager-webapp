@@ -21,6 +21,8 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   @Input() acceptFilesFormats: string = '.pdf,.xml,.csv'
   selectedColumns: any[] = [];
   displayedColumns: any[] = [];
+  defaultColumnsClass: any[] = ['clickable-title']
+  defaultColumnStyle = {'cursor': 'pointer'}
   @Input() userPreferences: any = [];
 
   @Output() onEditRegister = new EventEmitter<any>();
