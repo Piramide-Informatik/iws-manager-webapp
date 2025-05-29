@@ -5,7 +5,16 @@
         width: 120px;
     }
 
-    input {
-        width: 250px;
+    .input-message {
+        position: relative;
+        input {
+            width: 250px;
+        }
+
+        p-message {
+            position: absolute;
+            left: 0;
+            bottom: -18px;
+        }
     }
 }
