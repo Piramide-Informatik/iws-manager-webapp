@@ -1,49 +1,47 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'COUNTRIES.HEADER.EDIT_COUNTRY' | translate">
   <form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
-      <div class="country-form mb-2 flex align-items-center">
+      <div class="country-form">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
-        <input
-          pInputText
-          type="text"
-          id="name"
-          formControlName="name"
-          [ngClass]="{'ng-invalid': countryForm.get('name')?.invalid && countryForm.get('name')?.touched}"
-          autocomplete="off"
-        />
-        <p-message severity="error" variant="simple" size="small"
-          *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required')">
-          {{ 'COUNTRIES.ERROR.NAME_REQUIRED' | translate }}
-        </p-message>
+        <div class="input-message">
+          <input
+            pInputText
+            type="text"
+            id="name"
+            formControlName="name"
+            [ngClass]="{'ng-invalid ng-dirty': countryForm.get('name')?.invalid && countryForm.get('name')?.touched}"
+            autocomplete="off"
+          />
+          <p-message severity="error" variant="simple" size="small"
+            *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required')">
+            {{ 'COUNTRIES.ERROR.COUNTRY_NAME_REQUIRED' | translate }}
+          </p-message>
+        </div>
       </div>
 
-      <div class="country-form mb-2">
-        <label for="abbreviation">{{
-          "COUNTRIES.LABEL.ABBREVIATION" | translate
-        }}</label>
-        <input
-          pInputText
-          type="text"
-          id="abbreviation"
-          formControlName="abbreviation"
-          [ngClass]="{'ng-invalid': countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched}"
-          autocomplete="off"
-        />
-        <p-message severity="error" variant="simple" size="small"
-          *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required')">
-          {{ 'COUNTRIES.ERROR.ABBREVIATION_REQUIRED' | translate }}
-        </p-message>
+      <div class="country-form">
+        <label for="abbreviation">{{ "COUNTRIES.LABEL.ABBREVIATION" | translate }}</label>
+        <div class="input-message">
+          <input
+            pInputText
+            type="text"
+            id="abbreviation"
+            formControlName="abbreviation"
+            [ngClass]="{'ng-invalid ng-dirty': countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched}"
+            autocomplete="off"
+          />
+          <p-message severity="error" variant="simple" size="small"
+            *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required')">
+            {{ 'COUNTRIES.ERROR.ABBREVIATION_REQUIRED' | translate }}
+          </p-message>
+        </div>
       </div>
 
-      <div class="country-form-check mb-2">
-        <label for="isStandardChecked">{{
-          "COUNTRIES.LABEL.IS_STANDARD" | translate
-        }}</label>
+      <div class="country-form">
+        <label for="isStandardChecked">{{ "COUNTRIES.LABEL.IS_STANDARD" | translate }}</label>
         <p-toggleswitch formControlName="isStandard" class="flex">
           <ng-template #handle let-checked="checked">
-            <i
-              [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"
-            ></i>
+            <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
           </ng-template>
         </p-toggleswitch>
       </div>
