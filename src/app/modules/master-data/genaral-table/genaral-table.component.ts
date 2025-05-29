@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { _, TranslateService } from '@ngx-translate/core';
 import { Table } from 'primeng/table';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'master-data-genaral-table',
@@ -21,6 +23,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   @Input() acceptFilesFormats: string = '.pdf,.xml,.csv'
   selectedColumns: any[] = [];
   displayedColumns: any[] = [];
+  booleanHeaders: any[] = [];
   @Input() userPreferences: any = [];
 
   @Output() onEditRegister = new EventEmitter<any>();
@@ -29,12 +32,27 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   @Output() onColumnChanges = new EventEmitter<any>();
   @Output() onRowClickEvent = new EventEmitter<any>();
 
+  private langSubscription!: Subscription;
+
   @ViewChild('dt2') dt2!: Table;
 
 
   constructor(
+    private readonly translate: TranslateService,
   ){}
 
+  generateBooleanHeaders() : any[] {
+    return [
+      {
+        value: true,
+        header: this.translate.instant(_('COMMON.YES')) 
+      },
+      {
+        value: false,
+        header: this.translate.instant(_('COMMON.NO'))
+      }
+    ];
+  }
  
   changeSelect(event: any) {
     this.userPreferences[this.tableId].displayedColumns = event.value;
@@ -63,6 +81,10 @@ export class GenaralTableComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.selectedColumns = [...this.columns];
+    this.booleanHeaders = this.generateBooleanHeaders();
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.booleanHeaders = this.generateBooleanHeaders();
+    });
   }
 
   editRegister(register: any){

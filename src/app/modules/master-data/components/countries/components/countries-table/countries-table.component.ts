@@ -89,6 +89,9 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
       },
       {
         field: 'isStandard',
+        filter: {
+          type: 'boolean'
+        },
         header: this.translate.instant(_('COUNTRIES.TABLE.IS_STANDARD')),
         styles: { width: '140px' },
       },
