@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { CompanyType } from '../Entities/companyType';
 
@@ -10,6 +10,12 @@ export class CompanyTypeService {
 
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'assets/data/companyType.json';
+  private readonly httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    })
+  };
 
   private readonly _companyTypes = signal<CompanyType[]>([]);
   private readonly _loading = signal<boolean>(false);
@@ -43,25 +49,32 @@ export class CompanyTypeService {
   }
 
   // CREATE
-  addCompanyType(companyType: Omit<CompanyType, 'uuid'>): void {
-    const newCompanyType: CompanyType = {
-      ...companyType,
-      uuid: this.generateUUID()
-    };
-    this._companyTypes.update(types => [...types, newCompanyType]);
+  addCompanyType(companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt'>): void {
+    this.http.post<CompanyType>(this.apiUrl, companyType, this.httpOptions).pipe(
+      tap({
+        next: (newCompanyType) => {
+          this._companyTypes.update(companyTypes => [...companyTypes, newCompanyType]);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add CompanyType');
+          console.error('Error adding CompanyType:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // UPDATE
   updateCompanyType(updatedCompanyType: CompanyType): void {
     this._companyTypes.update(types =>
-      types.map(t => t.uuid === updatedCompanyType.uuid ? updatedCompanyType : t)
+      types.map(t => t.id === updatedCompanyType.id ? updatedCompanyType : t)
     );
   }
 
   // DELETE
-  deleteCompanyType(uuid: string): void {
+  deleteCompanyType(uuid: number): void {
     this._companyTypes.update(types =>
-      types.filter(t => t.uuid !== uuid)
+      types.filter(t => t.id !== uuid)
     );
   }
 
@@ -77,10 +90,5 @@ export class CompanyTypeService {
     return this.getAllCompanyTypes().pipe(
       map(types => types.find(t => t.id === id))
     );
-  }
-
-  // Helper
-  private generateUUID(): string {
-    return crypto.randomUUID();
   }
 }
