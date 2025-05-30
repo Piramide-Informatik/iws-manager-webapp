@@ -46,7 +46,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public companyTypes = toSignal(
     this.companyTypeService.getAllCompanyTypes().pipe(
       map(companyTypes => companyTypes.map(compayType => ({
-        name: compayType.typeName,
+        name: compayType.name,
         code: compayType.id.toString()
       })))
     ),
