@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CountryUtils } from '../../utils/country-util';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
@@ -19,7 +19,8 @@ export class CountryModalComponent implements OnInit {
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() countryCreated = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<number>();
-
+  @ViewChild('countryNameInput') countryNameInput!: ElementRef<HTMLInputElement>;
+  
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -125,11 +126,20 @@ export class CountryModalComponent implements OnInit {
   onCancel(): void {
     this.handleClose();
   }
+  
   private getCountryFormValues() {
     return {
       name: this.createCountryForm.value.name?.trim() ?? '',
       label: this.createCountryForm.value.abbreviation?.trim() ?? '',
       isDefault: !!this.createCountryForm.value.isStandard
     };
+  }
+
+  public focusInputIfNeeded() {
+    if (this.isCreateMode && this.countryNameInput) {
+      setTimeout(() => {
+        this.countryNameInput?.nativeElement?.focus();
+      }, 150);
+    }
   }
 }
