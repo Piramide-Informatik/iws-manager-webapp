@@ -1,17 +1,18 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'TITLE.LABEL.EDIT_TITLE' | translate">
     <form [formGroup]="editTitleForm" (ngSubmit)="onSubmit()">
-        <div class="align-items-center mb-2">
-            <div class="title-form mb-2 flex align-items-center">
-                <label for="title">{{ 'TITLE.LABEL.TITLE_LABEL' | translate }}</label>
-                <input pInputText type="text" id="title" formControlName="title" [ngClass]="{'ng-invalid': editTitleForm.get('title')?.invalid && 
-                    editTitleForm.get('title')?.touched}" autocomplete="off" />
+        <div class="title-form flex align-items-center pb-4">
+            <label for="title">{{ 'TITLE.LABEL.TITLE_LABEL' | translate }}</label>
+            <div class="input-message">
+                <input pInputText type="text" id="title" formControlName="title" [ngClass]="{'ng-invalid ng-dirty': editTitleForm.get('title')?.invalid && 
+                editTitleForm.get('title')?.touched}" autocomplete="off" />
                 <p-message severity="error" variant="simple" size="small" *ngIf="
                      editTitleForm.get('title')?.invalid && 
                      editTitleForm.get('title')?.touched && 
                      editTitleForm.get('title')!.hasError('required')
                      ">
-                    {{ 'TITLE.ERROR.TITLE_LABEL_REQUIRED' | translate }}</p-message>
-            </div>
+                    {{ 'TITLE.ERROR.TITLE_LABEL_REQUIRED' | translate }}
+                </p-message>
+            </div>    
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
