@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
@@ -7,6 +7,7 @@ import { CountryService } from '../../../../../../Services/country.service';
 import { CountryUtils } from '../../utils/country-util';
 import { Country } from '../../../../../../Entities/country';
 import { CountryStateService } from '../../utils/country-state.service';
+import { CountryModalComponent } from '../country-modal/country-modal.component';
 
 @Component({
   selector: 'app-countries-table',
@@ -21,6 +22,7 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'delete' = 'create';
   selectedCountry: number | null = null;
   CountryName: string = '';
+  @ViewChild('countryModal') countryModalComponent!: CountryModalComponent;
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
@@ -132,5 +134,11 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
         console.error('Error al cargar país:', err);
       }
     });
+  }
+
+  onDialogShow() {
+    if (this.modalType === 'create' && this.countryModalComponent) {
+      this.countryModalComponent.focusInputIfNeeded();
+    }
   }
 }
