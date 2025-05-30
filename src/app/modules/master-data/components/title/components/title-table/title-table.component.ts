@@ -56,7 +56,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   tableKey: string = 'Title'
   dataKeys = ['label', 'title'];
 
-  @ViewChild('dt') dt!: Table;
+  @ViewChild('dt2') dt2!: Table;
 
   private langTitleSubscription!: Subscription;
 
@@ -119,7 +119,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   applyTitleFilter(event: any, field: string) {
     const inputTitleFilterElement = event.target as HTMLInputElement;
     if (inputTitleFilterElement) {
-      this.dt.filter(inputTitleFilterElement.value, field, 'contains');
+      this.dt2.filter(inputTitleFilterElement.value, field, 'contains');
     }
   }
 

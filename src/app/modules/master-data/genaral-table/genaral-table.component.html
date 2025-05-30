@@ -1,5 +1,5 @@
 <div class="card">
-  <p-table
+  <p-table id="iwstable"
     #dt2
     [value]="tableValues"
     dataKey="id"
@@ -14,7 +14,7 @@
     [scrollable]="true"
     showGridlines
     scrollHeight="60vh"
-    [tableStyle]="{ 'min-width': '5%', 'border-spacing': '1px' }"
+    [tableStyle]="{ 'width': '100%', 'border-spacing': '1px' }"
     [globalFilterFields]="dataKeys"
     (onFilter)="onTableFilterChange($event)"
     stateStorage="local"
