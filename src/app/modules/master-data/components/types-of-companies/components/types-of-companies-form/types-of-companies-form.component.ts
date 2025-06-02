@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class TypesOfCompaniesFormComponent implements OnInit {
 
   companyType: CompanyType| null = null;
-  companyTypeForm!: FormGroup;
+  companyTypeEditForm!: FormGroup;
   isSaving = false;
   constructor( private readonly companyTypeServiceUtils: CompanyTypeUtils,
                private readonly typeOfCompanyStateService: TypeOfCompaniesStateService,
@@ -25,31 +25,31 @@ export class TypesOfCompaniesFormComponent implements OnInit {
    ){ }
 
   ngOnInit(): void {
-    this.companyTypeForm = new FormGroup({
+    this.companyTypeEditForm = new FormGroup({
       name: new FormControl('', [Validators.required, emptyValidator()])
     });
     this.typeOfCompanyStateService.currentTypeOfCompany$.subscribe((companyType) => {
       if (companyType !== null) {
         this.companyType = companyType;
-        this.companyTypeForm.patchValue(companyType);
-        this.companyTypeForm.updateValueAndValidity();
+        this.companyTypeEditForm.patchValue(companyType);
+        this.companyTypeEditForm.updateValueAndValidity();
       }
     })
   }
 
   clearForm(): void {
-    this.companyTypeForm.reset();
+    this.companyTypeEditForm.reset();
     this.companyType = null;
     this.isSaving = false;
   }
 
-  onCompanyTypeFormSubmit(): void {
-    if (this.companyTypeForm.invalid || !this.companyType || this.isSaving) {
+  onCompanyTypeEditFormSubmit(): void {
+    if (this.companyTypeEditForm.invalid || !this.companyType || this.isSaving) {
       this.markAllFieldsAsTouched();
       return;
     }
     this.isSaving = true;
-    const companyType = Object.assign(this.companyType, this.companyTypeForm.value);
+    const companyType = Object.assign(this.companyType, this.companyTypeEditForm.value);
     this.companyTypeServiceUtils.updateCompanyType(companyType).subscribe({
       next: (savedCompanyType) => this.handleSaveSuccess(savedCompanyType),
       error: (err) => this.handleSaveError(err)
@@ -77,7 +77,7 @@ export class TypesOfCompaniesFormComponent implements OnInit {
   }
 
   private markAllFieldsAsTouched(): void {
-    Object.values(this.companyTypeForm.controls).forEach(controlForm => {
+    Object.values(this.companyTypeEditForm.controls).forEach(controlForm => {
       controlForm.markAsTouched();
       controlForm.markAsDirty();
     });
