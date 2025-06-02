@@ -22,12 +22,14 @@ export class MasterDataService {
           { 
             field: 'projects', 
             minWidth: 110, 
-            header: this.translate.instant('APPROVAL_STATUS.TABLE.PROJECTS') 
+            header: this.translate.instant('APPROVAL_STATUS.TABLE.PROJECTS'), 
+            filter: { type: 'boolean' }
           },
           { 
             field: 'networks', 
             minWidth: 110, 
-            header: this.translate.instant('APPROVAL_STATUS.TABLE.NETWORKS') 
+            header: this.translate.instant('APPROVAL_STATUS.TABLE.NETWORKS') ,
+            filter: { type: 'boolean' }, 
           }
         ];
       }
