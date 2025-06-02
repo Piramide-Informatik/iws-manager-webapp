@@ -6,7 +6,6 @@ import { of } from 'rxjs';
 import { emptyValidator } from '../../utils/empty.validator';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import { CompanyType } from '../../../../../../Entities/companyType';
 
 @Component({
   selector: 'app-type-of-companies-modal',
