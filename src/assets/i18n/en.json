@@ -665,7 +665,8 @@
       "SUCCESS": "SUCCESS",
       "ERROR": "ERROR",
       "UPDATE_SUCCESS": "Successfully updated",
-      "UPDATE_FAILED": "Update failed"
+      "UPDATE_FAILED": "Update failed",
+      "CREATE_SUCCESS": "Successfully created"
     }
   },
   "TITLE": {

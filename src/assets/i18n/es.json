@@ -661,7 +661,8 @@
       "SUCCESS": "ÉXITO",
       "ERROR": "ERROR",
       "UPDATE_SUCCESS": "Actualización exitosa",
-      "UPDATE_FAILED": "Actualización fallida"
+      "UPDATE_FAILED": "Actualización fallida",
+      "CREATE_SUCCESS": "Creación exitosa"
     }
   },
   "TITLE": {

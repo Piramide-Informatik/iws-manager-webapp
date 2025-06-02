@@ -4,6 +4,9 @@ import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { emptyValidator } from '../../utils/empty.validator';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { CompanyType } from '../../../../../../Entities/companyType';
 
 @Component({
   selector: 'app-type-of-companies-modal',
@@ -31,6 +34,10 @@ export class TypeOfCompaniesModalComponent implements OnInit {
       emptyValidator()
     ])
   });
+
+  constructor(private readonly messageService: MessageService,
+              private readonly translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.companyTypeForm.reset();
@@ -62,13 +69,19 @@ export class TypeOfCompaniesModalComponent implements OnInit {
     if (this.shouldPreventSubmission()) return;
 
     this.prepareForSubmission();
-    const companyName = this.companyTypeForm.value.name || '';
+    const companyName = this.companyTypeForm.value.name ?? '';
 
     this.companyTypeUtils.companyTypeExists(companyName).pipe(
       switchMap(exists => this.handleCompanyTypeExistence(exists, companyName)),
       catchError(err => this.handleError('TITLE.ERROR.CHECKING_DUPLICATE', err)),
       finalize(() => this.isLoading = false)
-    ).subscribe();
+    ).subscribe({
+      next: (data) => {
+        if (data !== null) {
+          this.onCreateCompanyTypeSuccessfully()
+        }
+      }
+    });
 
     this.handleClose();
   }
@@ -85,18 +98,31 @@ export class TypeOfCompaniesModalComponent implements OnInit {
   private handleCompanyTypeExistence(exists: boolean, companyName: string) {
     if (exists) {
       this.errorMessage = 'TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_ALREADY_EXIST';
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translateService.instant('TYPE_OF_COMPANIES.MESSAGE.ERROR'),
+        detail: this.translateService.instant(this.errorMessage)
+      });
       return of(null);
     }
 
     return this.companyTypeUtils.createNewCompanyType(companyName).pipe(
-      catchError(err => this.handleError('TITLE.ERROR.CREATION_FAILED', err))
-    );
+      catchError(err => this.handleError('TYPE_OF_COMPANIES.ERROR.CREATION_FAILED', err))
+    )
   }
 
   private handleError(messageKey: string, error: any) {
     this.errorMessage = messageKey;
     console.error('Error:', error);
     return of(null);
+  }
+
+  private onCreateCompanyTypeSuccessfully() {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translateService.instant('TYPE_OF_COMPANIES.MESSAGE.SUCCESS'),
+      detail: this.translateService.instant('TYPE_OF_COMPANIES.MESSAGE.CREATE_SUCCESS')
+    });
   }
 
   handleClose(): void {
