@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { CompanyType } from '../Entities/companyType';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { CompanyType } from '../Entities/companyType';
 export class CompanyTypeService {
 
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'assets/data/companyType.json';
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/company-types`;
   private readonly httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -31,8 +32,7 @@ export class CompanyTypeService {
 
   private loadInitialData(): void {
     this._loading.set(true);
-    this.http.get<{ companyTypes: CompanyType[] }>(this.apiUrl).pipe(
-      map(response => response.companyTypes),
+    this.http.get<CompanyType[]>(this.apiUrl).pipe(
       tap({
         next: (types) => {
           this._companyTypes.set(types);
@@ -66,23 +66,51 @@ export class CompanyTypeService {
 
   // UPDATE
   updateCompanyType(updatedCompanyType: CompanyType): void {
-    this._companyTypes.update(types =>
-      types.map(t => t.id === updatedCompanyType.id ? updatedCompanyType : t)
-    );
+    const url = `${this.apiUrl}/${updatedCompanyType.id}`;
+    this.http.put<CompanyType>(url, updatedCompanyType, this.httpOptions).pipe(
+      tap({
+        next: (res) => {
+          this._companyTypes.update(companyTypes =>
+            companyTypes.map(ct => ct.id === res.id ? res : ct)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to update company type');
+          console.error('Error updating company type:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // DELETE
-  deleteCompanyType(uuid: number): void {
-    this._companyTypes.update(types =>
-      types.filter(t => t.id !== uuid)
-    );
+  deleteCompanyType(id: number): void {
+    const url = `${this.apiUrl}/${id}`;
+    this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._companyTypes.update(companyTypes =>
+            companyTypes.filter(ct => ct.id !== id)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete company type');
+          console.error('Error deleting company type:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // READ
   getAllCompanyTypes(): Observable<CompanyType[]> {
-    return this.http.get<{ companyTypes: CompanyType[] }>(this.apiUrl).pipe(
-      map(response => response.companyTypes),
-      catchError(() => of([]))
+    return this.http.get<CompanyType[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch company types');
+        console.error('Error fetching company types:', err);
+        return of([]);
+      })
     );
   }
 

@@ -636,6 +636,9 @@
       "COMPANY_TYPE": "Tipo de Empresa",
       "NO_RESULTS_FOUND": "No se encontraron resultados"
     },
+    "FORM": {
+      "NEW_COMPANY_TYPE": "Nuevo Tipo de Empresa"
+    },
     "BUTTON": {
       "NEW": "Nuevo",
       "SAVE": "Guardar",
@@ -643,10 +646,22 @@
     },
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Editar Tipo de Empresa",
-      "COMPANY_TYPE": "Tipo de Empresa"
+      "COMPANY_TYPE": "Tipo de Empresa",
+      "DELETE_TITLE": "Eliminar Tipo de Empresa",
+      "REMOVE_COMPANY_TYPE_QUESTION": "¿Está seguro que desea eliminar"
     },
     "ERROR": {
-      "COMPANY_TYPE_REQUIRED": "Tipo de Empresa es requerido"
+      "COMPANY_TYPE_REQUIRED": "Tipo de Empresa es requerido",
+      "COMPANY_TYPE_EMPTY": "El nombre del Tipo de Empresa tiene que tener al menos un caracter",
+      "COMPANY_TYPE_ALREADY_EXIST": "Tipo de Empresa ya existe",
+      "CREATION_FAILED": "Hubo un error durante la creacion del tipo de empresa.",
+      "CHECKING_DUPLICATE": "Verificando duplicado"
+    },
+    "MESSAGE": {
+      "SUCCESS": "ÉXITO",
+      "ERROR": "ERROR",
+      "UPDATE_SUCCESS": "Actualización exitosa",
+      "UPDATE_FAILED": "Actualización fallida"
     }
   },
   "TITLE": {
