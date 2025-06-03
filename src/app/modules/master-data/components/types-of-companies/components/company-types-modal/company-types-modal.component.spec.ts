@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypeOfCompaniesModalComponent } from './type-of-companies-modal.component';
+import { TypeOfCompaniesModalComponent } from './company-types-modal.component';
 
 describe('TypeOfCompaniesModalComponent', () => {
   let component: TypeOfCompaniesModalComponent;

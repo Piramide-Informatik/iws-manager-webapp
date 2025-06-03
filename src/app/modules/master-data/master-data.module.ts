@@ -117,7 +117,7 @@ import { CountryModalComponent } from './components/countries/components/country
 import { CountryUtils } from './components/countries/utils/country-util';
 import { SalutationModalComponent } from './components/salutation/components/salutation-modal/salutation-modal.component'
 import { SalutationFormComponent } from './components/salutation/components/salutation-form/salutation-form.component';
-import { TypeOfCompaniesModalComponent } from './components/types-of-companies/components/type-of-companies-modal/type-of-companies-modal.component';
+import { TypeOfCompaniesModalComponent } from './components/types-of-companies/components/company-types-modal/company-types-modal.component';
 
 @NgModule({
   declarations: [

@@ -20,13 +20,13 @@
         [(visible)]="visibleCompanyTypeModal" 
         (onShow)="onDialogShow()"
       >
-        <app-type-of-companies-modal
+        <app-company-types-modal
           [modalType]="compnayTypeModalType"
           [companyTypeName]="companyTypeName"
           [companyTypeToDelete]="selectedCompanyType"
           (isVisibleModal)="onModalVisibilityChange($event)"
           #companyTypeModal
-        ></app-type-of-companies-modal>
+        ></app-company-types-modal>
       </p-dialog>
     </div>
   </div>

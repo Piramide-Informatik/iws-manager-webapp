@@ -8,10 +8,10 @@ import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-type-of-companies-modal',
+  selector: 'app-company-types-modal',
   standalone: false,
-  templateUrl: './type-of-companies-modal.component.html',
-  styleUrl: './type-of-companies-modal.component.scss'
+  templateUrl: './company-types-modal.component.html',
+  styleUrl: './company-types-modal.component.scss'
 })
 
 export class TypeOfCompaniesModalComponent implements OnInit {

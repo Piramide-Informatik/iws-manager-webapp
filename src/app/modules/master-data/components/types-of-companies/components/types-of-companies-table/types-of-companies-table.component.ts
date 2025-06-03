@@ -7,7 +7,7 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { CompanyTypeService } from '../../../../../../Services/company-type.service';
-import { TypeOfCompaniesModalComponent } from '../type-of-companies-modal/type-of-companies-modal.component';
+import { TypeOfCompaniesModalComponent } from '../company-types-modal/company-types-modal.component';
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.state.service';
 
