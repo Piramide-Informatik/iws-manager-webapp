@@ -640,6 +640,9 @@
       "COMPANY_TYPE": "Company Type",
       "NO_RESULTS_FOUND": "No results found."
     },
+    "FORM": {
+      "NEW_COMPANY_TYPE": "New Company type"
+    },
     "BUTTON": {
       "NEW": "New",
       "SAVE": "Save",
@@ -647,10 +650,23 @@
     },
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Edit Company Type",
-      "COMPANY_TYPE": "Company Type"
+      "COMPANY_TYPE": "Company Type",
+      "DELETE_TITLE": "Delete Company Type",
+      "REMOVE_COMPANY_TYPE_QUESTION": "Are you sure you want to delete the company type"
     },
     "ERROR": {
-      "COMPANY_TYPE_REQUIRED": "Company Type is required"
+      "COMPANY_TYPE_REQUIRED": "Company Type is required",
+      "COMPANY_TYPE_EMPTY": "Company Type should have at least one character",
+      "COMPANY_TYPE_ALREADY_EXIST": "Company type already exist",
+      "CREATION_FAILED": "There was an error during company type creation.",
+      "CHECKING_DUPLICATE": "Checking duplicate"
+    },
+    "MESSAGE": {
+      "SUCCESS": "SUCCESS",
+      "ERROR": "ERROR",
+      "UPDATE_SUCCESS": "Successfully updated",
+      "UPDATE_FAILED": "Update failed",
+      "CREATE_SUCCESS": "Successfully created"
     }
   },
   "TITLE": {

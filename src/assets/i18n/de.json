@@ -640,6 +640,9 @@
       "COMPANY_TYPE": "Unternehmensart",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
     },
+    "FORM": {
+      "NEW_COMPANY_TYPE": "Neu Unternehmensart"
+    },
     "BUTTON": {
       "NEW": "Neu",
       "SAVE": "Speichern",
@@ -647,10 +650,23 @@
     },
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Unternehmensart bearbeiten",
-      "COMPANY_TYPE": "Unternehmensart"
+      "COMPANY_TYPE": "Unternehmensart",
+      "DELETE_TITLE": "Unternehmenstyp löschen",
+      "REMOVE_COMPANY_TYPE_QUESTION": "Möchten Sie den Unternehmenstyp wirklich löschen"
     },
     "ERROR": {
-      "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich"
+      "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich",
+      "COMPANY_TYPE_EMPTY": "Der Firmentyp sollte mindestens ein Zeichen haben",
+      "COMPANY_TYPE_ALREADY_EXIST": "Der Unternehmenstyp ist bereits vorhanden",
+      "CREATION_FAILED": "Beim Erstellen des Firmentyps ist ein Fehler aufgetreten.",
+      "CHECKING_DUPLICATE": "Duplikat prüfen"
+    },
+    "MESSAGE": {
+      "SUCCESS": "ERFOLG",
+      "ERROR": "FEHLER",
+      "UPDATE_SUCCESS": "Erfolgreich aktualisiert",
+      "UPDATE_FAILED": "Update fehlgeschlagen",
+      "CREATE_SUCCESS": "Erfolgreich erstellt"
     }
   },
   "TITLE": {
