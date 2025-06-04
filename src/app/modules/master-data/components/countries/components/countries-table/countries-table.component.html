@@ -11,7 +11,6 @@
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
       (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
       (onEditRegister)="editCountry($event)"
-      (onRowClickEvent)="editCountry($event)"
       ></master-data-genaral-table>
       <p-dialog 
         [header]="modalType === 'create' 
