@@ -128,7 +128,6 @@
           (keydown.enter)="(i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer') ? editRegister(row) : onClickRow(row)"
           [class.clickable-title]="i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer'"
           [style.cursor]="i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer' ? 'pointer' : null"
-          [title]="i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer' ? 'Editar' : null"
         >
           @if(col.filter && col.filter.type === 'boolean') {
             @if(row[col.field] == true) {
