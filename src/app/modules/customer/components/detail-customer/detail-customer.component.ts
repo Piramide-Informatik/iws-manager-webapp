@@ -35,7 +35,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   private readonly countryService = inject(CountryService);
   countries = toSignal(this.countryService.getAllCountries(), { initialValue: [] });
   userDetailCustomerPreferences: UserPreference = {};
-  tableKey: string = 'DetailCustomer'
+  tableKey: string = 'ContactPerson'
   dataKeys = ['name', 'function', 'right'];
   
 

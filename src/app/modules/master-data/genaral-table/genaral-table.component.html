@@ -124,10 +124,10 @@
         <td
           *ngFor="let col of columns; let i = index"
           [ngClass]="col.customClasses ? col.customClasses : ''"
-          (click)="(i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer') ? editRegister(row) : onClickRow(row)"
-          (keydown.enter)="(i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer') ? editRegister(row) : onClickRow(row)"
-          [class.clickable-title]="i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer'"
-          [style.cursor]="i === 0 && tableId !== 'ListCustomers' && tableId !== 'DetailCustomer' ? 'pointer' : null"
+          (click)="(i === 0 && tableId !== 'ListCustomers') ? editRegister(row) : onClickRow(row)"
+          (keydown.enter)="(i === 0 && tableId !== 'ListCustomers') ? editRegister(row) : onClickRow(row)"
+          [class.clickable-title]="(i === 0 && tableId !== 'ListCustomers') || (i === 1 && tableId === 'ListCustomers')"
+          [style.cursor]="(i === 0 && tableId !== 'ListCustomers') || (i === 1 && tableId === 'ListCustomers') ? 'pointer' : 'default'"
         >
           @if(col.filter && col.filter.type === 'boolean') {
             @if(row[col.field] == true) {
