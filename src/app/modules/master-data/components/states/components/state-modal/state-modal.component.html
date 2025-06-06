@@ -1,0 +1,53 @@
+<ng-container *ngIf="isStateCreateMode; else deleteStateTemplate">
+    <form [formGroup]="stateForm" (ngSubmit)="onCreateStateFormSubmit()">
+        <div class="align-items-center mb-2 mt-4">
+            <div class="create-state-form flex align-items-center mb-6">
+                <label for="name">{{ 'STATES.LABEL.STATE' | translate }}</label>
+                <div>
+                    <input #stateInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': stateForm.get('name')?.invalid && 
+                      stateForm.get('name')?.dirty && stateForm.get('name')?.touched}" autocomplete="off" />
+                     <p-message severity="error" variant="simple" size="small" *ngIf="
+                         stateForm.get('name')?.invalid && 
+                         stateForm.get('name')?.dirty && 
+                         stateForm.get('name')!.hasError('required')
+                         ">
+                         {{ 'STATES.ERROR.STATE_REQUIRED' | translate }}</p-message>
+                    <p-message severity="error" variant="simple" size="small" *ngIf="
+                         stateForm.get('name')?.invalid && 
+                         stateForm.get('name')?.dirty && 
+                         stateForm.get('name')!.hasError('emptyValue')
+                         ">
+                         {{ 'STATES.ERROR.STATE_EMPTY' | translate }}</p-message>     
+                </div>
+            </div>
+
+            <div class="flex justify-content-center gap-2 mt-4">
+                <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+                    icon="pi pi-check" iconPos="left" [loading]="isStateLoading"
+                    [disabled]="stateForm.invalid || isStateLoading" />
+
+                <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" (onClick)="closeStateModal()" [disabled]="isStateLoading" />
+            </div>
+        </div>
+    </form>
+</ng-container>
+
+<ng-template #deleteStateTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'STATES.LABEL.REMOVE_STATE_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ stateName }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" (onClick)="onStateDeleteConfirm()" severity="danger" [loading]="isStateLoading"
+                [disabled]="isStateLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeStateModal()" [disabled]="isStateLoading" />
+
+        </div>
+    </div>
+</ng-template>
