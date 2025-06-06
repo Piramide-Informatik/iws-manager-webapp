@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './state-modal.component.html',
   styleUrl: './state-modal.component.scss'
 })
-export class StateModalComponent {
+export class StateModalComponent implements OnInit {
   private readonly stateUtils = inject(StateUtils);
   @ViewChild('stateInput') stateInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';

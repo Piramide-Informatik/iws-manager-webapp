@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, computed, SimpleChanges, inject } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, computed, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
