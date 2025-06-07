@@ -82,6 +82,13 @@
     "IMPORT_EMPLOYEE_CONTRACTS": "Arbeitsverträge importieren",
     "IMPORT": "Importieren"
   },
+  "MESSAGE": {
+    "SUCCESS": "ERFOLG",
+    "ERROR": "FEHLER",
+    "UPDATE_SUCCESS": "Erfolgreich aktualisiert",
+    "UPDATE_FAILED": "Update fehlgeschlagen",
+    "CREATE_SUCCESS": "Erfolgreich erstellt"
+  },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",
     "DELETE": "Möchten Sie wirklich löschen {{value}} ?",
@@ -314,7 +321,22 @@
     },
     "LABEL": {
       "STATE": "Bundesland",
-      "EDIT_STATE": "Bundesland bearbeiten"
+      "EDIT_STATE": "Bundesland bearbeiten",
+      "REMOVE_STATE_QUESTION": "Möchten Sie das Bundesland wirklich löschen",
+      "NEW_STATE": "Bundesstaat erstellen",
+      "DELETE_STATE": "Bundesland löschen"
+    },
+    "ERROR": {
+      "STATE_REQUIRED": "Bundesland ist erforderlich",
+      "STATE_EMPTY": "Bundesland sollte mindestens ein Zeichen haben",
+      "UPDATE_FAILED": "Bei der Aktualisierung des Bundeslandes ist ein Fehler aufgetreten.",
+      "CHECKING_DUPLICATE": "Duplikat prüfen",
+      "STATE_ALREADY_EXIST": "Bundesland existiert bereits",
+      "CREATION_FAILED": "Beim Anlegen des Bundeslandes ist ein Fehler aufgetreten."
+    },
+    "MESSAGE": {
+      "UPDATE_SUCCESS": "Das Bundesland wurde erfolgreich aktualisiert",
+      "CREATE_SUCCESS": "Der Bundesstaat wurde erfolgreich gegründet"
     }
   },
   "APPROVAL_STATUS": {

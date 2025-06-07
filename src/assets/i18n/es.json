@@ -82,6 +82,13 @@
     "IMPORT_EMPLOYEE_CONTRACTS": "Importar Contratos Laborales",
     "IMPORT": "Importar"
   },
+  "MESSAGE": {
+    "SUCCESS": "ÉXITO",
+    "ERROR": "ERROR",
+    "UPDATE_SUCCESS": "Actualización exitosa",
+    "UPDATE_FAILED": "Actualización fallida",
+    "CREATE_SUCCESS": "Creación exitosa"
+  },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmación",
     "DELETE": "¿Estás seguro de que quieres eliminar {{value}}?",
@@ -314,7 +321,22 @@
     },
     "LABEL": {
       "STATE": "Estado Federal",
-      "EDIT_STATE": "Editar Estado"
+      "EDIT_STATE": "Editar Estado",
+      "REMOVE_STATE_QUESTION": "¿Está seguro que desea eliminar el Estado Federal",
+      "NEW_STATE": "Crear Estado Federal",
+      "DELETE_STATE": "Eliminar Estado Federal"
+    },
+    "ERROR": {
+      "STATE_REQUIRED": "Estado Federal requerido",
+      "STATE_EMPTY": "Estado Federal debe de tener al menos un caracter.",
+      "UPDATE_FAILED": "Hubo un error durante la actualización del Estado Federal.",
+      "CHECKING_DUPLICATE": "Verificar duplicado",
+      "STATE_ALREADY_EXIST": "ya existe el Estado Federal",
+      "CREATION_FAILED": "Hubo un error durante la creacion del Estado Federal."
+    },
+    "MESSAGE": {
+      "UPDATE_SUCCESS": "Estado Federal actualizado exitosamente",
+      "CREATE_SUCCESS": "Estado Federal creado exitosamente"
     }
   },
   "APPROVAL_STATUS": {
