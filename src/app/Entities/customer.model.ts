@@ -1,9 +1,11 @@
+type IdRef = { id: number } | null;
+
 export interface Customer {
     id: number;
-    branch: any | null;
+    branch: IdRef;
     city: string | null;
-    companytype: any | null;
-    country: any | null;
+    companytype: IdRef;
+    country: IdRef;
     customerno: number | null;
     customername1: string | null;
     customername2: string | null;
@@ -17,7 +19,7 @@ export interface Customer {
     maxhoursyear: string | null;
     note: string | null;
     phone: string | null;
-    state: any | null;
+    state: IdRef;
     street: string | null;
     taxno: string | null;
     taxoffice: string | null;
