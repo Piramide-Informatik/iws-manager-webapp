@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Customer } from '../../../../Entities/customer';
-import { CustomerService } from '../../services/customer.service';
+import { Customer } from '../../../../Entities/customer.model';
+
+import { CustomerUtils } from '../../utils/customer-utils';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
@@ -24,8 +25,9 @@ interface Column {
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
 
+  private customerUtils = new CustomerUtils();
+  private customersSubscription!: Subscription;
   public cols!: Column[];
-
   public customers!: Customer[];
 
   @ViewChild('dt2') dt2!: Table;
@@ -40,24 +42,26 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   tableKey: string = 'ListCustomers'
   dataKeys = ['id', 'companyName', 'nameLine2', 'kind', 'land', 'place', 'contact'];
 
-  constructor(private readonly customerService: CustomerService, 
+  constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly route: ActivatedRoute
   ) { }
 
+ 
   ngOnInit(): void {
+    this.customersSubscription = this.customerUtils.getCustomersSortedByName().subscribe(customers => {
+    this.customers = this.mapCustomersForTable(customers);
 
-    
-    this.customers = this.customerService.getCustomers();
-
-    this.countries = Array.from(new Set(this.customers.map(customer => customer.land)))
-                              .map(country => country);
-    this.countries.sort((a, b) => a.localeCompare(b));
+    this.countries = Array.from(new Set(customers.map(customer => customer.country?.name ?? '')))
+      .filter(c => c)
+      .sort((a, b) => a.localeCompare(b));
     this.loadColHeaders();
     this.selectedColumns = this.cols;
     this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+  });
+
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.reloadComponent(true);
@@ -65,6 +69,26 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
+    if (this.customersSubscription) {
+      this.customersSubscription.unsubscribe();
+    }
+  }
+
+  private mapCustomersForTable(customers: Customer[]): any[] {
+  return customers.map(c => ({
+    id: c.customerno ?? c.id,
+    companyName: c.customername1 ?? '',
+    nameLine2: c.customername2 ?? '',
+    kind: c.companytype?.name ?? '',
+    land: c.country?.name ?? '',
+    place: c.city ?? '',
+    contact: c.email1 ?? c.phone ?? ''
+  }));
+}
   onUserListCustomerPreferencesChanges(userListCustomerPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userListCustomerPreferences));
   }
@@ -79,12 +103,6 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       { field: 'place',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CITY'))},
       { field: 'contact',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON'))}
     ];
-  }
-
-  ngOnDestroy(): void {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
   }
 
 
