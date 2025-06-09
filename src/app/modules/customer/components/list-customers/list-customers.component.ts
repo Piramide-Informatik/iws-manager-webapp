@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, computed, inject } from '@angular/core';
 import { Customer } from '../../../../Entities/customer.model';
 
 import { CustomerUtils } from '../../utils/customer-utils';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { ContactPersonService } from '../../../../Services/contact-person.service';
 
 interface Column {
   field: string,
@@ -24,7 +25,10 @@ interface Column {
   styleUrl: './list-customers.component.scss'
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
-
+  private readonly contactPersonService = inject(ContactPersonService);
+  public readonly contactPersons = computed(() => {
+    return this.contactPersonService.contactPersons()
+  });
   private customerUtils = new CustomerUtils();
   private customersSubscription!: Subscription;
   public cols!: Column[];
@@ -49,18 +53,18 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute
   ) { }
 
- 
+
   ngOnInit(): void {
     this.customersSubscription = this.customerUtils.getCustomersSortedByName().subscribe(customers => {
-    this.customers = this.mapCustomersForTable(customers);
+      this.customers = this.mapCustomersForTable(customers);
 
-    this.countries = Array.from(new Set(customers.map(customer => customer.country?.name ?? '')))
-      .filter(c => c)
-      .sort((a, b) => a.localeCompare(b));
-    this.loadColHeaders();
-    this.selectedColumns = this.cols;
-    this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-  });
+      this.countries = Array.from(new Set(customers.map(customer => customer.country?.name ?? '')))
+        .filter(c => c)
+        .sort((a, b) => a.localeCompare(b));
+      this.loadColHeaders();
+      this.selectedColumns = this.cols;
+      this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    });
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
@@ -79,29 +83,34 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   private mapCustomersForTable(customers: Customer[]): any[] {
-  return customers.map(c => ({
-    id: c.customerno ?? c.id,
-    companyName: c.customername1 ?? '',
-    nameLine2: c.customername2 ?? '',
-    kind: c.companytype?.name ?? '',
-    land: c.country?.name ?? '',
-    place: c.city ?? '',
-    contact: c.email1 ?? c.phone ?? ''
-  }));
-}
+    return customers.map(c => {
+      const contactPerson = this.contactPersons().find(cp => cp.customer?.id === c.id);
+      return {
+        id: c.customerno ?? c.id,
+        companyName: c.customername1 ?? '',
+        nameLine2: c.customername2 ?? '',
+        kind: c.companytype?.name ?? '',
+        land: c.country?.name ?? '',
+        place: c.city ?? '',
+        contact: contactPerson
+          ? `${contactPerson.firstName ?? ''} ${contactPerson.lastName ?? ''}`.trim()
+          : ''
+      };
+    });
+  }
   onUserListCustomerPreferencesChanges(userListCustomerPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userListCustomerPreferences));
   }
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'id', minWidth: 110, customClasses: ['align-right'], header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID'))},
-      { field: 'companyName', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME'))},
-      { field: 'nameLine2',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2'))},
-      { field: 'kind',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE'))},
-      { field: 'land',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')), filter: { type: 'multiple', data: this.countries}},
-      { field: 'place',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CITY'))},
-      { field: 'contact',minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON'))}
+      { field: 'id', minWidth: 110, customClasses: ['align-right'], header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')) },
+      { field: 'companyName', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')) },
+      { field: 'nameLine2', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2')) },
+      { field: 'kind', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE')) },
+      { field: 'land', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')), filter: { type: 'multiple', data: this.countries } },
+      { field: 'place', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CITY')) },
+      { field: 'contact', minWidth: 110, header: this.translate.instant(_('CUSTOMERS.TABLE.CONTACT_PERSON')) }
     ];
   }
 
@@ -114,13 +123,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   filterByCountry() {
-  if (this.selectedCountries && this.selectedCountries.length > 0) {
-    const countriesNames: string[] = this.selectedCountries.map(country => country.nameCountry);
-    this.dt2.filter(countriesNames, 'land', 'in');
-  } else {
-    this.dt2.filter(null, 'land', 'in');
+    if (this.selectedCountries && this.selectedCountries.length > 0) {
+      const countriesNames: string[] = this.selectedCountries.map(country => country.nameCountry);
+      this.dt2.filter(countriesNames, 'land', 'in');
+    } else {
+      this.dt2.filter(null, 'land', 'in');
+    }
   }
-}
 
   deleteCustomer(id: number) {
     this.customers = this.customers.filter(customer => customer.id !== id);
@@ -135,9 +144,9 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerDetails(currentCustomer: Customer) {
-    this.router.navigate(['customer-details'], { 
+    this.router.navigate(['customer-details'], {
       relativeTo: this.route,
-      state: { customer: "Joe Doe", customerData: currentCustomer } 
+      state: { customer: "Joe Doe", customerData: currentCustomer }
     });
   }
 
