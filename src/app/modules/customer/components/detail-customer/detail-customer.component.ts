@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
@@ -71,21 +71,17 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public formDetailCustomer!: FormGroup;
 
-  public contactPersons = toSignal(
-    this.contactPersonService.getAllContactPersons().pipe(
-      map(persons => persons.map(person => ({
-        id: person.id,
-        name: `${person.firstName} ${person.lastName}`,
-        function: person.function,
-        right: person.forInvoincing ?? 0 
-      })))
-    ),
-    { initialValue: [] }
-  );
+  public readonly contactPersons = computed(()=> {
+    return this.contactPersonService.contactPersons().map(contact => ({
+      name: `${contact.firstName} ${contact.lastName}`,
+      function: contact.function ?? '',
+      right: contact.forInvoincing
+    }))
+  });
 
   constructor(
-    private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute,
+    private readonly fb: FormBuilder,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly customerService: CustomerService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
@@ -132,7 +128,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.selectedCountry = (history.state.customerData.land);
     this.activatedRoute.params
       .subscribe(params => {
-        const customerId = params['id'];
         this.formDetailCustomer.get('customerNo')?.setValue(history.state.customerData.id) ;
         this.formDetailCustomer.get('companyText1')?.setValue(history.state.customerData.companyName) ;
         this.formDetailCustomer.get('companyText2')?.setValue(history.state.customerData.nameLine2) ;
@@ -193,10 +188,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   deletePerson(contact: any) {
-    this.contactPersonService.deleteContactPerson(
-      this.contactPersonService.contactPersons()
-        .find(p => p.id === contact)?.uuid ?? ''
-    );
+    this.contactPersonService.deleteContactPerson(contact.id);
   }
 
   showDialog() {
