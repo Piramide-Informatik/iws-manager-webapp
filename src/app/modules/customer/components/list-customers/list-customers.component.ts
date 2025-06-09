@@ -29,7 +29,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   public readonly contactPersons = computed(() => {
     return this.contactPersonService.contactPersons()
   });
-  private customerUtils = new CustomerUtils();
+  private readonly customerUtils = new CustomerUtils();
   private customersSubscription!: Subscription;
   public cols!: Column[];
   public customers!: Customer[];
