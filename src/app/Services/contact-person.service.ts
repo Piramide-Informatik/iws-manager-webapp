@@ -12,6 +12,13 @@ export class ContactPersonService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/contacts`;
 
+  private readonly httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    })
+  };
+
   private readonly _contactPersons = signal<ContactPerson[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
@@ -20,22 +27,13 @@ export class ContactPersonService {
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
 
-  private readonly httpOptions = {
-  //  withCredentials: true,
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    })
-  };
-
   constructor() {
     this.loadInitialData();
   }
 
   private loadInitialData(): void {
     this._loading.set(true);
-    this.http.get<{ contactPersons: ContactPerson[] }>(this.apiUrl).pipe(
-      map(response => response.contactPersons),
+    this.http.get<ContactPerson[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (persons) => {
           this._contactPersons.set(persons);
@@ -52,26 +50,57 @@ export class ContactPersonService {
   }
 
   // CREATE
-  addContactPerson(person: Omit<ContactPerson, 'uuid'>): void {
-    const newPerson: ContactPerson = {
-      ...person,
-      uuid: this.generateUUID()
-    };
-    this._contactPersons.update(persons => [...persons, newPerson]);
+  addContactPerson(person: Omit<ContactPerson, 'id'>): void {
+    this.http.post<ContactPerson>(this.apiUrl, person, this.httpOptions).pipe(
+      tap({
+        next: (newContactPerson) => {
+          this._contactPersons.update(contacts => [...contacts, newContactPerson]);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add title');
+          console.error('Error adding title:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // UPDATE
   updateContactPerson(updatedPerson: ContactPerson): void {
-    this._contactPersons.update(persons =>
-      persons.map(p => p.uuid === updatedPerson.uuid ? updatedPerson : p)
-    );
+    const url = `${this.apiUrl}/${updatedPerson.id}`;
+    this.http.put<ContactPerson>(url, updatedPerson, this.httpOptions).pipe(
+      tap({
+        next: (res) => {
+          this._contactPersons.update(persons =>
+            persons.map(p => p.id === res.id ? res : p)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to update contact person');
+          console.error('Error updating contact person:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // DELETE
-  deleteContactPerson(uuid: string): void {
-    this._contactPersons.update(persons =>
-      persons.filter(p => p.uuid !== uuid)
-    );
+  deleteContactPerson(id: number): void {
+    const url = `${this.apiUrl}/${id}`;
+    this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._contactPersons.update(contacts =>
+            contacts.filter(c => c.id !== id)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete contact person');
+          console.error('Error deleting contact person:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // ==================== READ OPERATIONS ====================
@@ -84,8 +113,8 @@ export class ContactPersonService {
     return this.http.get<ContactPerson[]>(this.apiUrl, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
-        this._error.set('Failed to fetch contacts');
-        console.error('Error fetching contacts:', err);
+        this._error.set('Failed to fetch contacts persons');
+        console.error('Error fetching contacts persons:', err);
         return of([]);
       })
     );
@@ -97,8 +126,7 @@ export class ContactPersonService {
     );
   }
 
-  // Helper
-  private generateUUID(): string {
-    return crypto.randomUUID();
+  public refreshContactPersons(): void {
+    this.loadInitialData();
   }
 }

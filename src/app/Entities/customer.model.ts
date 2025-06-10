@@ -1,14 +1,14 @@
-import { CompanyType } from "./companyType";
 import { Country } from "./country";
-
-type IdRef = { id: number } | null;
+import { Branch } from "./branch";
+import { CompanyType } from "./companyType";
+import { State } from "./state";
 
 export interface Customer {
     id: number;
-    branch: IdRef;
+    branch: Branch | null;
     city: string | null;
-    companytype: CompanyType;
-    country: Country;
+    companytype: CompanyType | null;
+    country: Country | null;
     customerno: number | null;
     customername1: string | null;
     customername2: string | null;
@@ -22,7 +22,7 @@ export interface Customer {
     maxhoursyear: string | null;
     note: string | null;
     phone: string | null;
-    state: IdRef;
+    state: State | null;
     street: string | null;
     taxno: string | null;
     taxoffice: string | null;

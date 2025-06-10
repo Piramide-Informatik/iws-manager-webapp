@@ -86,7 +86,6 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = this.cols;
-      //this.reloadComponent(true);
       this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
