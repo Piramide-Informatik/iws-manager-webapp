@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { Salutation } from '../../../../Entities/salutation';
@@ -8,6 +8,7 @@ import { Title } from '../../../employee/models/title';
 import { TitleService } from '../../../../Services/title.service';
 import { catchError, finalize, of, switchMap } from 'rxjs';
 import { ContactUtils } from '../../utils/contact-utils';
+import { ContactPersonService } from '../../../../Services/contact-person.service';
 
 @Component({
   selector: 'app-contact',
@@ -17,10 +18,13 @@ import { ContactUtils } from '../../utils/contact-utils';
 })
 export class ContactComponent implements OnInit {
   private readonly contactUtils = inject(ContactUtils);
+  private readonly contactService = inject(ContactPersonService);
   currentContactPerson: ContactPerson | null = null;
+  @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
   contactForm!: FormGroup;
   isSaving = false;
   @Output() onVisibility = new EventEmitter<boolean>();
+  @Input() contactToDelete!: ContactPerson | undefined;
 
   public selectedSalutation!: Salutation | undefined;
   private readonly salutationService = inject(SalutationService);
@@ -41,12 +45,12 @@ export class ContactComponent implements OnInit {
 
   initForm(): void {
     this.contactForm = new FormGroup({
-      lastName: new FormControl('', [Validators.required]),
-      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('Jackson', [Validators.required]),
+      firstName: new FormControl('Charles', [Validators.required]),
       salutation: new FormControl(this.selectedSalutation, [Validators.required]),
       title: new FormControl(this.selectedTitle, [Validators.required]),
-      function: new FormControl('', [Validators.required]),
-      emailAddress: new FormControl('', [Validators.required]),
+      function: new FormControl('Administrator', [Validators.required]),
+      emailAddress: new FormControl('example@gmail.com', [Validators.required]),
       isInvoiceRecipient: new FormControl(false),
     });
   }
@@ -57,20 +61,25 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.shouldPreventSubmission()) return;
-
-    this.prepareForSubmission();
-    const { firstName  } = this.getContactFormValues();
-    const newContact = this.getContactFormValues();
-    this.contactUtils.contactPersonExists(firstName).pipe(
-      switchMap(exists => this.handleCountryExistence(exists, newContact)),
-      catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.isLoading = false)
-    ).subscribe(result => {
-      if (result !== null) {
-        this.handleClose();
-      }
-    });
+    if(this.modalType === 'create'){
+      if (this.shouldPreventSubmission()) return;
+  
+      this.prepareForSubmission();
+      const { firstName, lastName  } = this.getContactFormValues();
+      const newContact = this.getContactFormValues();
+      this.contactUtils.contactPersonExists(firstName+' '+lastName).pipe(
+        switchMap(exists => this.handleCountryExistence(exists, newContact)),
+        catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
+        finalize(() => this.isLoading = false)
+      ).subscribe(result => {
+        if (result !== null) {
+          this.handleClose();
+        }
+      });
+    }else if(this.modalType === 'delete'){
+      this.deleteConfirm();
+      this.handleClose();
+    }
   }
   private handleCountryExistence(
     exists: boolean,
@@ -112,6 +121,12 @@ export class ContactComponent implements OnInit {
     this.isLoading = false;
     this.onVisibility.emit(false);
     this.contactForm.reset();
+  }
+
+  deleteConfirm(){
+    if(this.contactToDelete){
+      this.contactService.deleteContactPerson(this.contactToDelete.id);
+    }
   }
 }
 

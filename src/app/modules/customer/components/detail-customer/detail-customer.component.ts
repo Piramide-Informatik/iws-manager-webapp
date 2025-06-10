@@ -12,6 +12,7 @@ import { ContactPersonService } from '../../../../Services/contact-person.servic
 import { CompanyTypeService } from '../../../../Services/company-type.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { ContactPerson } from '../../../../Entities/contactPerson';
 
 interface Column {
   field: string,
@@ -37,7 +38,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   userDetailCustomerPreferences: UserPreference = {};
   tableKey: string = 'ContactPerson'
   dataKeys = ['name', 'function', 'right'];
-  
+  public modalType: 'create' | 'delete' | 'edit' = 'create';
+  public contactPersonToDelete!: ContactPerson | undefined;
 
   private readonly branchService = inject(BranchService);
   private readonly companyTypeService = inject(CompanyTypeService);
@@ -73,6 +75,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public readonly contactPersons = computed(()=> {
     return this.contactPersonService.contactPersons().map(contact => ({
+      id: contact.id,
       name: `${contact.firstName} ${contact.lastName}`,
       function: contact.function ?? '',
       right: contact.forInvoincing
@@ -187,11 +190,19 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     }
   }
 
-  deletePerson(contact: any) {
-    this.contactPersonService.deleteContactPerson(contact.id);
+  deletePerson(contactId: number) {
+    this.modalType = 'delete';
+    this.visible = true;
+    this.contactPersonToDelete = this.contactPersonService.contactPersons().find(contact => contact.id === contactId);
   }
 
-  showDialog() {
+  editPerson(person: ContactPerson) {
+    this.modalType = 'edit';
+    this.visible = true;
+  }
+
+  createPerson(){
+    this.modalType = 'create';
     this.visible = true;
   }
 

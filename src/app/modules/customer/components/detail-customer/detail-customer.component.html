@@ -140,8 +140,11 @@
 
     <div class="flex flex-row gap-3 align-items-center my-2">
       <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
-      <p-dialog [header]="'CONTACT.LABELS.TITLE_DIALOG' | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
-        <app-contact (onVisibility)="closeVisibility($event)"></app-contact>
+      <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
+        <app-contact (onVisibility)="closeVisibility($event)" 
+        [modalType]="modalType" 
+        [contactToDelete]="contactPersonToDelete"
+        ></app-contact>
       </p-dialog>
     </div>
 
@@ -152,8 +155,8 @@
       [userPreferences]="userDetailCustomerPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserCustomerDetailPreferencesChanges($event)"
-      (onCreateRegister)="showDialog()"
-      (onEditRegister)="showDialog()"
+      (onCreateRegister)="createPerson()"
+      (onEditRegister)="editPerson($event)"
       (onDeleteRegister)="deletePerson($event)"
     ></master-data-genaral-table>
     
