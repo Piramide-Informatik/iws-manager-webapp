@@ -1,11 +1,14 @@
+import { CompanyType } from "./companyType";
+import { Country } from "./country";
+
 type IdRef = { id: number } | null;
 
 export interface Customer {
     id: number;
     branch: IdRef;
     city: string | null;
-    companytype: IdRef;
-    country: IdRef;
+    companytype: CompanyType;
+    country: Country;
     customerno: number | null;
     customername1: string | null;
     customername2: string | null;

@@ -1,7 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { ContactPerson } from '../Entities/contactPerson';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { ContactPerson } from '../Entities/contactPerson';
 export class ContactPersonService {
 
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'assets/data/contactPerson.json';
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/contacts`;
 
   private readonly _contactPersons = signal<ContactPerson[]>([]);
   private readonly _loading = signal<boolean>(false);
@@ -18,6 +19,14 @@ export class ContactPersonService {
   public contactPersons = this._contactPersons.asReadonly();
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
+
+  private readonly httpOptions = {
+  //  withCredentials: true,
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    })
+  };
 
   constructor() {
     this.loadInitialData();
@@ -65,11 +74,20 @@ export class ContactPersonService {
     );
   }
 
-  // READ
+  // ==================== READ OPERATIONS ====================
+  /**
+   * Retrieves all contacts
+   * @returns Observable with Contacts array
+   * @throws Error when server request fails
+   */
   getAllContactPersons(): Observable<ContactPerson[]> {
-    return this.http.get<{ contactPersons: ContactPerson[] }>(this.apiUrl).pipe(
-      map(response => response.contactPersons),
-      catchError(() => of([]))
+    return this.http.get<ContactPerson[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch contacts');
+        console.error('Error fetching contacts:', err);
+        return of([]);
+      })
     );
   }
 

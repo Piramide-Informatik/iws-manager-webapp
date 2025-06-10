@@ -1,11 +1,13 @@
+import { Customer } from "./customer.model";
+
 export interface ContactPerson {
     uuid: string;
     id: number;
     firstName: string;
     lastName: string;
-    forInvoincing?: number;
+    forInvoicing?: number;
     function?: string;     
     salutationId: number;
     titleId: number;
-    customerId?: number;   
+    customer?: Customer;   
 }

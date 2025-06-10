@@ -1,12 +1,15 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Customer } from '../../../../Entities/customer';
-import { CustomerService } from '../../services/customer.service';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Customer } from '../../../../Entities/customer.model';
+import { CustomerService } from '../../../../Services/customer.service';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { CountryService } from '../../../../Services/country.service';
+import { ContactPersonService } from '../../../../Services/contact-person.service';
+import { ContactPerson } from '../../../../Entities/contactPerson';
 
 interface Column {
   field: string,
@@ -24,6 +27,10 @@ interface Column {
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
 
+  private readonly customerService = inject(CustomerService);
+  private readonly countryService = inject(CountryService);
+  private readonly contactPersonService = inject(ContactPersonService);
+  
   public cols!: Column[];
 
   public customers!: Customer[];
@@ -36,31 +43,50 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   public countries!: string[];
   public selectedCountries: any[] = [];
+  customerData: any[] = [];
+  contacts: any = {};
   userListCustomerPreferences: UserPreference = {};
   tableKey: string = 'ListCustomers'
   dataKeys = ['id', 'companyName', 'nameLine2', 'kind', 'land', 'place', 'contact'];
 
-  constructor(private readonly customerService: CustomerService, 
-    private readonly translate: TranslateService,
+  constructor(private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-
-    
-    this.customers = this.customerService.getCustomers();
-
-    this.countries = Array.from(new Set(this.customers.map(customer => customer.land)))
-                              .map(country => country);
-    this.countries.sort((a, b) => a.localeCompare(b));
-    this.loadColHeaders();
-    this.selectedColumns = this.cols;
-    this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    forkJoin([
+      this.countryService.getAllCountries(),
+      this.contactPersonService.getAllContactPersons()
+    ]).subscribe(([
+      countries,
+      contacts
+    ]) => {
+      this.countries = countries.map( country => country.name);
+      this.loadColHeaders();
+      this.selectedColumns = this.cols;
+      this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+      this.contacts = contacts.reduce((acc: any, curr: ContactPerson) => {
+        if (curr.customer) {
+          acc[curr.customer.id] = `${curr.firstName} ${curr.lastName}`
+        }
+        return acc;
+      }, {})
+      this.customerData = this.customerService.customers().map( customer => ({
+        id: customer.id,
+        companyName: customer.customername1,
+        nameLine2: customer.customername2,
+        kind: customer.companytype?.name,
+        land: customer.country?.name,
+        place: customer.city,
+        contact: this.contacts[customer.id] ?? ''
+      }));
+    })
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
-      this.reloadComponent(true);
+      this.selectedColumns = this.cols;
+      //this.reloadComponent(true);
       this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
@@ -117,9 +143,9 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerDetails(currentCustomer: Customer) {
-    this.router.navigate(['customer-details'], { 
+    this.router.navigate(['customer-details', currentCustomer.id], { 
       relativeTo: this.route,
-      state: { customer: "Joe Doe", customerData: currentCustomer } 
+      state: { customer: currentCustomer.id, customerData: currentCustomer } 
     });
   }
 
