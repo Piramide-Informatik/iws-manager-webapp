@@ -36,7 +36,7 @@ export class ContactUtils {
    * @param lastName - Last name for the new contact person
    * @returns Observable that completes when salutation is created
    */
-  createNewContactPerson(contact: ContactPerson): Observable<void> {
+  createNewContactPerson(contact: Omit<ContactPerson, 'id'>): Observable<void> {
     if (!contact.firstName?.trim() || !contact.lastName?.trim()) {
       return throwError(() => new Error('first name or last name cannot be empty'));
     }

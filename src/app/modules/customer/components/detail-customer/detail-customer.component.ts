@@ -195,4 +195,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.visible = true;
   }
 
+  closeVisibility(visibility: boolean): void {
+    this.visible = visibility;
+  }
 }

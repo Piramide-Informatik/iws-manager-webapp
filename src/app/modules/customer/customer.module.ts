@@ -1,8 +1,7 @@
 // Angular
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //Modulos
 import { CustomerRoutingModule } from './customer-routing.module';
@@ -21,6 +20,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 //Components
 import { ContactComponent } from './components/contact/contact.component';
@@ -62,7 +62,8 @@ import { MasterDataModule } from '../master-data/master-data.module';
     ToastModule,
     IconFieldModule,
     InputIconModule,
-    MasterDataModule
+    MasterDataModule,
+    ToggleSwitchModule
   ],
   providers: [ 
     UserPreferenceService 
