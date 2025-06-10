@@ -1,11 +1,14 @@
+import { Title } from "@angular/platform-browser";
+import { Salutation } from "./salutation";
+import { Customer } from "./customer";
+
 export interface ContactPerson {
-    uuid: string;
     id: number;
     firstName: string;
     lastName: string;
     forInvoincing?: number;
     function?: string;     
-    salutationId: number;
-    titleId: number;
-    customerId?: number;   
+    salutation: Salutation;
+    title: Title;
+    customer?: Customer;  
 }
