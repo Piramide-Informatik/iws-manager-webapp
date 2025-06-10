@@ -24,7 +24,8 @@
             id="country"
             [options]="countries()"
             [(ngModel)]="selectedCountry"
-            optionLabel="name" 
+            optionLabel="name"
+            optionValue="id"
           >
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
@@ -59,8 +60,10 @@
           <label for="">{{ 'CUSTOMERS.FORM.COMPANY_TYPE' | translate }}</label>
           <p-select formControlName="selectedTypeCompany" 
           id="typeCompany"
-          [options]="companyTypes()" 
-          optionLabel="name" 
+          [options]="companyTypes()"
+          [(ngModel)]="selectedTypeCompany"
+          optionLabel="name"
+          optionValue="id"
           />
         </div>
 
@@ -79,6 +82,7 @@
           id="state"
           [options]="states" 
           optionLabel="name"
+          optionValue="id"
           />
         </div>
 
