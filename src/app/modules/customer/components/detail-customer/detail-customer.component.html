@@ -80,7 +80,7 @@
           <label for="state">{{ 'CUSTOMERS.FORM.FEDERAL_STATE' | translate }}</label>
           <p-select formControlName="selectedState" 
           id="state"
-          [options]="states" 
+          [options]="states()" 
           optionLabel="name"
           optionValue="id"
           />
