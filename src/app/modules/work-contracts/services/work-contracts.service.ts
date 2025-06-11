@@ -7,7 +7,7 @@ import { WorkContractsDataService } from './work-contracts-datastore.service';
 })
 export class WorkContractsService {
   constructor(private datastore: WorkContractsDataService) {}
-  private workContracts = [];
+  private readonly workContracts = [];
 
   list() {
     return this.datastore.list();
@@ -16,9 +16,6 @@ export class WorkContractsService {
 
   addProduct(workContract: WorkContract) {
     return Promise.resolve(this.workContracts);
-  }
-
-  deleteWorkContract(employeeId: number): void {
   }
 
   updateProduct(updatedWorkContract: WorkContract) {
