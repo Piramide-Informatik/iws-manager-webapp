@@ -1,6 +1,8 @@
+import { Customer } from "./customer.model";
 import { Title } from "@angular/platform-browser";
 import { Salutation } from "./salutation";
 import { Customer } from "./customer.model";
+
 
 export interface ContactPerson {
     id: number;

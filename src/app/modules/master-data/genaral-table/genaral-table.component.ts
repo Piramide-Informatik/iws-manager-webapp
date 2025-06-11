@@ -73,6 +73,11 @@ export class GenaralTableComponent implements OnInit, OnChanges {
       this.selectedColumns = [...this.columns];
     }
 
+    let valueChange = changes['tableValues'];
+    if (valueChange && !valueChange.firstChange) {
+      this.tableValues = valueChange.currentValue;
+    }
+
     let columnsPreferenceChange = changes['userPreferences'];
     if (columnsPreferenceChange && !columnsPreferenceChange.firstChange) {
       this.userPreferences = columnsPreferenceChange.currentValue;
@@ -80,7 +85,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.selectedColumns = [...this.columns];
+    this.selectedColumns = this.columns ? [...this.columns] : [];
     this.booleanHeaders = this.generateBooleanHeaders();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.booleanHeaders = this.generateBooleanHeaders();

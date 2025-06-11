@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ContactPersonService {
+
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/contacts`;
 
@@ -102,7 +103,12 @@ export class ContactPersonService {
     ).subscribe();
   }
 
-  // READ
+  // ==================== READ OPERATIONS ====================
+  /**
+   * Retrieves all contacts
+   * @returns Observable with Contacts array
+   * @throws Error when server request fails
+   */
   getAllContactPersons(): Observable<ContactPerson[]> {
     return this.http.get<ContactPerson[]>(this.apiUrl, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
