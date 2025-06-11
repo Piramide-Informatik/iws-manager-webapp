@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
-import { CustomerService } from '../../services/customer.service';
+import { CustomerService } from '../../../../Services/customer.service';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { CountryService } from '../../../../Services/country.service';
@@ -14,6 +14,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { ContactStateService } from '../../utils/contact-state.service';
+import { CustomerUtils } from '../../utils/customer-utils';
 
 interface Column {
   field: string,
@@ -31,11 +32,14 @@ interface Column {
 })
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
+  private readonly customerUtils = new CustomerUtils();
   public selectedCountry!: string;
+  public selectedTypeCompany!: string;
   public cols!: Column[];
   public selectedColumns!: Column[];
   public customers!: Customer[];
   private langSubscription!: Subscription;
+  customerId!: number;
   private readonly countryService = inject(CountryService);
   countries = toSignal(this.countryService.getAllCountries(), { initialValue: [] });
   userDetailCustomerPreferences: UserPreference = {};
@@ -52,7 +56,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.companyTypeService.getAllCompanyTypes().pipe(
       map(companyTypes => companyTypes.map(compayType => ({
         name: compayType.name,
-        code: compayType.id.toString()
+        id: compayType.id
       })))
     ),
     { initialValue: [] }
@@ -130,18 +134,32 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
-    this.customers = this.customerService.getCustomers();
 
-    this.selectedCountry = (history.state.customerData.land);
     this.activatedRoute.params
       .subscribe(params => {
-        this.formDetailCustomer.get('customerNo')?.setValue(history.state.customerData.id) ;
-        this.formDetailCustomer.get('companyText1')?.setValue(history.state.customerData.companyName) ;
-        this.formDetailCustomer.get('companyText2')?.setValue(history.state.customerData.nameLine2) ;
-        this.formDetailCustomer.get('selectedCountry')?.setValue(this.countries()?.at(1));
-        this.formDetailCustomer.get('selectedTypeCompany')?.setValue(history.state.customerData.kind) ;
-        this.formDetailCustomer.get('city')?.setValue(history.state.customerData.place) ;
-        this.formDetailCustomer.get('invoiceEmail')?.setValue(history.state.customerData.contact) ;
+        this.customerId = params['id']; 
+        this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
+          const formData = {
+            id: customer?.id,
+            companyText1: customer?.customername1,
+            companyText2: customer?.customername2,
+            selectedCountry: customer?.country?.id,
+            street: customer?.street,
+            postalCode: customer?.zipcode,
+            city: customer?.city,
+            selectedTypeCompany: customer?.companytype?.id,
+            selectedState: customer?.state?.id,
+            homepage: customer?.homepage,
+            phone: customer?.phone,
+            weekWorkingHours: customer?.hoursperweek,
+            taxNumber: customer?.taxno,
+            maxHoursMonth: customer?.maxhoursmonth,
+            maxHoursYear: customer?.maxhoursyear,
+            textAreaComment: customer?.note,
+          }
+          this.formDetailCustomer.patchValue(formData);
+          this.formDetailCustomer.updateValueAndValidity();
+        })
       })
   }
 
