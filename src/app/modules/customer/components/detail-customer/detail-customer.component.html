@@ -142,8 +142,8 @@
       <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
       <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
         <app-contact (onVisibility)="closeVisibility($event)" 
-        [modalType]="modalType" 
-        [contactToDelete]="contactPersonToDelete"
+          [modalType]="modalType" 
+          [currentContact]="currentContactPerson"
         ></app-contact>
       </p-dialog>
     </div>
@@ -171,4 +171,4 @@
   </div>
   </div>
 </div>
-
+<p-toast></p-toast>

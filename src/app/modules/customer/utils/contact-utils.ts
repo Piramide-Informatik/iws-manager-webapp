@@ -45,8 +45,8 @@ export class ContactUtils {
       this.contactPersonService.addContactPerson({
         firstName: contact.firstName.trim(),
         lastName: contact.lastName.trim(),
-        forInvoincing: contact.forInvoincing,
-        function: contact.function,
+        forInvoicing: contact.forInvoicing,
+        function: contact.function?.trim(),
         salutation: contact.salutation,
         title: contact.title,
         customer: contact.customer

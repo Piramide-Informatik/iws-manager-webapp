@@ -81,7 +81,7 @@
                 </div>
             </div>
     
-            <div class="buttons flex justify-content-center gap-2 my-2">
+            <div class="buttons flex justify-content-center gap-2 mt-4">
               <p-button 
                 [label]="'BUTTONS.SAVE' | translate" 
                 id="new-contact-person" 
@@ -94,48 +94,46 @@
                 type="button"
                 class="cancel"
                 size="small"
-                (keydown.enter)="closeModalForm()" 
                 [label]="'BUTTONS.CANCEL' | translate" 
                 icon="pi pi-times"  
-                (click)="closeModalForm()" 
+                (keydown.enter)="handleClose()" 
+                (click)="handleClose()" 
                 />
              </div>
         </form>
     </div>
-}@else {
+}@else if(modalType === 'delete') {
     <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'CONTACT.LABELS.CONFIRM_QUESTION_DELETE' | translate }}
-      <strong class="stronglock mt-1">"{{ `${contactToDelete?.firstName} ${contactToDelete?.lastName}` }}"</strong>?
-    </p>
+        <p class="mb-4">
+            {{ 'CONTACT.LABELS.CONFIRM_QUESTION_DELETE' | translate }}
+            <strong class="stronglock mt-1">"{{ `${currentContact?.firstName} ${currentContact?.lastName}` }}"</strong>?
+        </p>
 
-    <div class="flex justify-content-center gap-2">
-       <p-button
-        type="button"
-        class="delete"
-        size="small"
-        [label]="'BUTTONS.DELETE' | translate"
-        icon="pi pi-trash"
-        iconPos="left"
-        (click)="deleteConfirm()"
-        (keypress)="deleteConfirm()"
-        severity="danger"
-        [loading]="isLoading"
-        [disabled]="isLoading"
-      />
-      
-      <p-button
-        type="button"
-        class="cancel"
-        size="small"
-        [label]="'BUTTONS.CANCEL' | translate"
-        icon="pi pi-times"
-        iconPos="left"
-        (click)="closeModalForm()"
-        (keypress)="closeModalForm()"
-        [disabled]="isLoading"
-      />
-    </div>
+        <div class="flex justify-content-center gap-2">
+            <p-button
+                type="button"
+                class="delete"
+                size="small"
+                [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash"
+                iconPos="left"
+                (click)="deleteConfirm()"
+                (keypress)="deleteConfirm()"
+                [loading]="isLoading"
+                [disabled]="isLoading"
+            />
+            <p-button
+                type="button"
+                class="cancel"
+                size="small"
+                [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times"
+                iconPos="left"
+                (click)="handleClose()"
+                (keypress)="handleClose()"
+                [disabled]="isLoading"
+            />
+        </div>
   </div>
 }
 

@@ -13,11 +13,14 @@ import { CompanyTypeService } from '../../../../Services/company-type.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ContactPerson } from '../../../../Entities/contactPerson';
+import { ContactStateService } from '../../utils/contact-state.service';
 
 interface Column {
   field: string,
   header: string
   customClasses?: string[]
+  styles?: { },
+  filter?: { type: 'boolean' | 'multiple' }
 }
 
 @Component({
@@ -39,7 +42,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   tableKey: string = 'ContactPerson'
   dataKeys = ['name', 'function', 'right'];
   public modalType: 'create' | 'delete' | 'edit' = 'create';
-  public contactPersonToDelete!: ContactPerson | undefined;
+  public currentContactPerson!: ContactPerson | null; // Para editarlo o eliminarlo 
 
   private readonly branchService = inject(BranchService);
   private readonly companyTypeService = inject(CompanyTypeService);
@@ -78,7 +81,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       id: contact.id,
       name: `${contact.firstName} ${contact.lastName}`,
       function: contact.function ?? '',
-      right: contact.forInvoincing
+      right: contact.forInvoicing
     }))
   });
 
@@ -88,7 +91,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly customerService: CustomerService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly translate: TranslateService 
+    private readonly translate: TranslateService,
+    private readonly contactStateService: ContactStateService 
   ) {
 
     this.formDetailCustomer = this.fb.group({
@@ -139,15 +143,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         this.formDetailCustomer.get('city')?.setValue(history.state.customerData.place) ;
         this.formDetailCustomer.get('invoiceEmail')?.setValue(history.state.customerData.contact) ;
       })
-
-    //Init colums
-    this.cols = [
-      { field: 'name', header: 'Name' },
-      { field: 'function', header: 'Funktion' },
-      { field: 'right', header: 'Rech' },
-    ];
-
-    this.selectedColumns = this.cols;
   }
 
   onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
@@ -160,17 +155,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   loadColumnHeaders(): void {
-
-    this.cols = [
-      { field: 'name', header: 'Name' },
-      { field: 'function', header: 'Funktion' },
-      { field: 'right', header: 'Rech' },
-    ];
-
     this.cols = [
       {
         field: 'name',
-        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.NAME'))
+        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.NAME')),
+        styles: { width: 'fit-content' },
       },
       {
         field: 'function',
@@ -178,8 +167,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       },
       {
         field: 'right',
-        customClasses: ['align-right'],
-        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.LAW'))
+        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.LAW')),
+        filter: {
+          type: 'boolean'
+        },
+        styles: { width: 'auto' },
       }
     ];
   }
@@ -193,12 +185,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   deletePerson(contactId: number) {
     this.modalType = 'delete';
     this.visible = true;
-    this.contactPersonToDelete = this.contactPersonService.contactPersons().find(contact => contact.id === contactId);
+    this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === contactId) ?? null;
   }
 
   editPerson(person: ContactPerson) {
     this.modalType = 'edit';
     this.visible = true;
+    this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === person.id) ?? null;
+    this.contactStateService.setCountryToEdit(this.currentContactPerson);
   }
 
   createPerson(){
