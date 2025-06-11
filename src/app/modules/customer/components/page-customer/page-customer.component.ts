@@ -42,7 +42,6 @@ export class PageCustomerComponent implements OnInit {
     this.currentSidebarItems = this.sidebarItemsConfig.map((item) => ({
       label: item.labelKey,
        routerLink: ['/customers', this.customer, item.route],
-      //routerLink: [item.route],
     }));
   }
 }
