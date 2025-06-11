@@ -142,12 +142,6 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerDetails(currentCustomer: Customer) {
-    // this.router.navigate(['customer-details', currentCustomer.id], { 
-    //   relativeTo: this.route,
-    //   state: { customer: currentCustomer.id, customerData: currentCustomer } 
-    // });
-    console.log('Navegando con customerData:', currentCustomer);
-
     this.router.navigate([currentCustomer.id, 'customer-details'], {
       relativeTo: this.route,
       state: { customer: currentCustomer.id, customerData: currentCustomer }
