@@ -67,7 +67,11 @@ p-button {
     }
 }
 
-.clickable-title:hover {
+td.clickable-title:hover {
   text-decoration: underline;
   color: #1976d2;
+}
+
+td{
+    user-select: none;
 }

@@ -3,12 +3,31 @@
     <div class>
       <master-data-genaral-table
         [tableId]="tableKey"
-        [tableValues]="typeOfCompaniesValues"
+        [tableValues]="typeOfCompaniesValues()"
         [columns]="typeOfCompaniesColumns"
         [userPreferences]="userTypesOfCompaniesPreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserTypesOfCompaniesPreferencesChanges($event)"
+        (onCreateRegister)="handleCompanyTypeTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleCompanyTypeTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="editCompanyType($event)"
       ></master-data-genaral-table>
+      <p-dialog 
+        [header]="compnayTypeModalType === 'create' 
+          ? ('TYPE_OF_COMPANIES.FORM.NEW_COMPANY_TYPE' | translate) 
+          : ('TYPE_OF_COMPANIES.LABEL.DELETE_TITLE' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleCompanyTypeModal" 
+        (onShow)="onDialogShow()"
+      >
+        <app-company-types-modal
+          [modalType]="compnayTypeModalType"
+          [companyTypeName]="companyTypeName"
+          [companyTypeToDelete]="selectedCompanyType"
+          (isVisibleModal)="onModalVisibilityChange($event)"
+          #companyTypeModal
+        ></app-company-types-modal>
+      </p-dialog>
     </div>
   </div>
 </div>

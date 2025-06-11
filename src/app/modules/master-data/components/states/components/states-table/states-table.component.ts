@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, inject, computed  } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, computed, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -7,6 +7,9 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { StateUtils } from '../../utils/state-utils';
 import { StateService } from '../../../../../../Services/state.service';
+import { StateModalComponent } from '../state-modal/state-modal.component';
+import { State } from '../../../../../../Entities/state';
+import { StatesStateService } from '../../utils/states.state.service.service';
 
 @Component({
   selector: 'app-states-table',
@@ -22,22 +25,27 @@ export class StatesTableComponent implements OnInit, OnDestroy {
   userStatesPreferences: UserPreference = {};
   tableKey: string = 'States'
   dataKeys = ['state'];
-
+  visibleStateModal: boolean = false;
+  stateModalType: 'create' | 'delete' = 'create';
+  selectedState: number | null = null;
+  stateName: string = '';
+  readonly states = computed(() => {
+    return this.stateService.states().map(state => ({
+      id: state.id,
+      name: state.name,
+    }));
+  });
+  @ViewChild('stateModal') stateModalComponent!: StateModalComponent;
+    
   @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
 
-  readonly states = computed(() => {
-    return this.stateService.states().map(state => ({
-      id: state.id,
-      state: state.name,
-    }));
-  });
-
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly statesState: StatesStateService
   ) {}
 
   ngOnInit() {
@@ -61,11 +69,66 @@ export class StatesTableComponent implements OnInit, OnDestroy {
   loadColHeaders(): void {
     this.cols = [
       {
-        field: 'state',
+        field: 'name',
         minWidth: 110,
         header: this.translate.instant(_('STATES.TABLE.STATE'))
       }
     ];
+  }
+
+  handleStateTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.stateModalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedState = event.data;
+
+      this.stateUtils.getStateById(this.selectedState!).subscribe({
+        next: (state) => {
+          this.stateName = state?.name ?? '';
+        },
+        error: (err) => {
+          console.error('No se pudo obtener el estado:', err);
+          this.stateName = '';
+        }
+      });
+    }
+    this.visibleStateModal = true;
+  }
+
+  editState(state: State) {
+    const stateToEdit: State = {
+      id: state.id,
+      name: state.name,
+      createdAt: '',
+      updatedAt: ''
+    };
+
+    this.stateUtils.getStateById(stateToEdit.id).subscribe({
+      next: (fullState) => {
+        if (fullState) {
+          this.statesState.setStateToEdit(fullState);
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar el estado:', err);
+      }
+    });
+  }
+
+  onVisibleModal(visible: boolean) {
+    this.visibleStateModal = visible;
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleStateModal = visible;
+    if (!visible) {
+      this.selectedState = null;
+    }
+  }
+
+  onDialogShow() {
+    if (this.stateModalType === 'create' && this.stateModalComponent) {
+      this.stateModalComponent.focusStateInputIfNeeded();
+    }
   }
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {

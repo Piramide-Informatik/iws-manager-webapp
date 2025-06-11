@@ -3,8 +3,9 @@
   align-items: center;
   margin-bottom: 1.5rem;
 
-  input {
-    width: 100%;
+  label {
+    flex-shrink: 0;
+    width: 100px;
   }
 
   .input-message {

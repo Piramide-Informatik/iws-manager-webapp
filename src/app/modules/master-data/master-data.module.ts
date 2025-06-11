@@ -117,6 +117,8 @@ import { CountryModalComponent } from './components/countries/components/country
 import { CountryUtils } from './components/countries/utils/country-util';
 import { SalutationModalComponent } from './components/salutation/components/salutation-modal/salutation-modal.component'
 import { SalutationFormComponent } from './components/salutation/components/salutation-form/salutation-form.component';
+import { TypeOfCompaniesModalComponent } from './components/types-of-companies/components/company-types-modal/company-types-modal.component';
+import { StateModalComponent } from './components/states/components/state-modal/state-modal.component';
 
 @NgModule({
   declarations: [
@@ -199,7 +201,9 @@ import { SalutationFormComponent } from './components/salutation/components/salu
     ContractStatusTableComponent,
     TitleModalComponent,
     CountryModalComponent,
-    SalutationModalComponent
+    SalutationModalComponent,
+    TypeOfCompaniesModalComponent,
+    StateModalComponent
   ],
   imports: [
     ButtonModule,

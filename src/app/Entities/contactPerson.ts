@@ -1,11 +1,14 @@
+import { Customer } from "./customer.model";
+import { Title } from "@angular/platform-browser";
+import { Salutation } from "./salutation";
+
 export interface ContactPerson {
-    uuid: string;
     id: number;
     firstName: string;
     lastName: string;
-    forInvoincing?: number;
+    forInvoicing?: number;
     function?: string;     
-    salutationId: number;
-    titleId: number;
-    customerId?: number;   
+    salutation: Salutation;
+    title: Title;
+    customer?: Customer;  
 }
