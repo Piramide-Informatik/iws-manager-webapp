@@ -19,6 +19,7 @@ export class PageCustomerComponent implements OnInit {
   selectedCustomer: number = 0;
 
   private readonly sidebarItemsConfig: { labelKey: string; route: string;}[] = [
+    { labelKey: 'SIDEBAR.DETAILS', route: 'customer-details'},
     { labelKey: 'SIDEBAR.EMPLOYEES', route: 'employees' },
     { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: 'work-contracts' },
     { labelKey: 'SIDEBAR.PROJECTS', route: 'projects' },
@@ -59,7 +60,7 @@ export class PageCustomerComponent implements OnInit {
   loadSidebarItems(): void {
     this.currentSidebarItems = this.sidebarItemsConfig.map((item) => ({
       label: item.labelKey,
-      routerLink: [item.route],
+       routerLink: ['/customers', this.customer, item.route],
     }));
   }
 }
