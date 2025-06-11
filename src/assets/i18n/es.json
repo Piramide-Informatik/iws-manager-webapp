@@ -148,7 +148,10 @@
       "EMAIL_ADDRESS": "Correo Electrónico"
     },
     "LABELS": {
-      "TITLE_DIALOG": "Editar Persona de Contacto",
+      "TITLE_DIALOG_CREATE": "Nueva Persona de Contacto",
+      "TITLE_DIALOG_EDIT": "Editar Persona de Contacto",
+      "TITLE_DIALOG_DELETE": "Eliminar Persona de Contacto",
+      "CONFIRM_QUESTION_DELETE": "¿Está seguro que desea eliminar ",
       "INVOICE": "Destinatario de Facturas",
       "IS_INVOICE_RECIPIENT": "¿Es el destinatario de la factura?"
     }

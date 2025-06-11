@@ -12,6 +12,8 @@ import { ContactPersonService } from '../../../../Services/contact-person.servic
 import { CompanyTypeService } from '../../../../Services/company-type.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { ContactPerson } from '../../../../Entities/contactPerson';
+import { ContactStateService } from '../../utils/contact-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
 import { StateUtils } from '../../../master-data/components/states/utils/state-utils';
 
@@ -19,6 +21,8 @@ interface Column {
   field: string,
   header: string
   customClasses?: string[]
+  styles?: { },
+  filter?: { type: 'boolean' | 'multiple' }
 }
 
 @Component({
@@ -42,7 +46,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   userDetailCustomerPreferences: UserPreference = {};
   tableKey: string = 'ContactPerson'
   dataKeys = ['name', 'function', 'right'];
-  
+  public modalType: 'create' | 'delete' | 'edit' = 'create';
+  public currentContactPerson!: ContactPerson | null; // Para editarlo o eliminarlo 
 
   private readonly branchService = inject(BranchService);
   private readonly companyTypeService = inject(CompanyTypeService);
@@ -82,6 +87,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public readonly contactPersons = computed(()=> {
     return this.contactPersonService.contactPersons().map(contact => ({
+      id: contact.id,
       name: `${contact.firstName} ${contact.lastName}`,
       function: contact.function ?? '',
       right: contact.forInvoicing
@@ -94,7 +100,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly customerService: CustomerService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly translate: TranslateService 
+    private readonly translate: TranslateService,
+    private readonly contactStateService: ContactStateService 
   ) {
 
     this.formDetailCustomer = this.fb.group({
@@ -159,15 +166,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
           this.formDetailCustomer.updateValueAndValidity();
         })
       })
-
-    //Init colums
-    this.cols = [
-      { field: 'name', header: 'Name' },
-      { field: 'function', header: 'Funktion' },
-      { field: 'right', header: 'Rech' },
-    ];
-
-    this.selectedColumns = this.cols;
   }
 
   onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
@@ -180,17 +178,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   loadColumnHeaders(): void {
-
-    this.cols = [
-      { field: 'name', header: 'Name' },
-      { field: 'function', header: 'Funktion' },
-      { field: 'right', header: 'Rech' },
-    ];
-
     this.cols = [
       {
         field: 'name',
-        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.NAME'))
+        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.NAME')),
+        styles: { width: 'fit-content' },
       },
       {
         field: 'function',
@@ -198,8 +190,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       },
       {
         field: 'right',
-        customClasses: ['align-right'],
-        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.LAW'))
+        header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.LAW')),
+        filter: {
+          type: 'boolean'
+        },
+        styles: { width: 'auto' },
       }
     ];
   }
@@ -210,12 +205,25 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     }
   }
 
-  deletePerson(contact: any) {
-    this.contactPersonService.deleteContactPerson(contact.id);
+  deletePerson(contactId: number) {
+    this.modalType = 'delete';
+    this.visible = true;
+    this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === contactId) ?? null;
   }
 
-  showDialog() {
+  editPerson(person: ContactPerson) {
+    this.modalType = 'edit';
+    this.visible = true;
+    this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === person.id) ?? null;
+    this.contactStateService.setCountryToEdit(this.currentContactPerson);
+  }
+
+  createPerson(){
+    this.modalType = 'create';
     this.visible = true;
   }
 
+  closeVisibility(visibility: boolean): void {
+    this.visible = visibility;
+  }
 }
