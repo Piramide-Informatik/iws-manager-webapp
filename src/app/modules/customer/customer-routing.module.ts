@@ -19,7 +19,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'employees'
+        redirectTo: 'customer-details'
       },
       {
         path: 'customer-details',
