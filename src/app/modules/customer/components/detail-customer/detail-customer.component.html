@@ -80,7 +80,7 @@
           <label for="state">{{ 'CUSTOMERS.FORM.FEDERAL_STATE' | translate }}</label>
           <p-select formControlName="selectedState" 
           id="state"
-          [options]="states" 
+          [options]="states()" 
           optionLabel="name"
           optionValue="id"
           />
@@ -108,7 +108,7 @@
 
         <div class="field">
           <label for="weekWorkingHours">{{ 'CUSTOMERS.FORM.ENTREPRENEURIAL_WEEKLY_WORKING_HOURS' | translate }}</label>
-          <input type="text" id="weekWorkingHours" pInputText formControlName="weekWorkingHours"/>
+          <p-inputNumber class="p-inputnumber-input" id="weekWorkingHours" formControlName="weekWorkingHours" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5" locale="de-DE"/>
         </div>
 
         <div class="field">
@@ -118,17 +118,17 @@
 
         <div class="field">
           <label for="headcount">{{ 'CUSTOMERS.FORM.FINANCE' | translate }}</label>
-          <input type="number" id="headcount" pInputText formControlName="headcount"/>
+          <input type="text" id="headcount" pInputText formControlName="headcount"/>
         </div>
 
         <div class="field">
           <label for="maxHoursMonth">{{ 'CUSTOMERS.FORM.MAX_HOURS_MONTH' | translate }}</label>
-          <input type="number" id="maxHoursMonth" pInputText formControlName="maxHoursMonth"/>
+          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursMonth" formControlName="maxHoursMonth" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5" locale="de-DE"/>
         </div>
 
         <div class="field">
           <label for="maxHoursYear">{{ 'CUSTOMERS.FORM.MAX_HOURS_YEAR' | translate }}</label>
-          <input type="number" id="maxHoursYear" pInputText formControlName="maxHoursYear"/>
+          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursYear" formControlName="maxHoursYear" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5" locale="de-DE"/>
         </div>
 
         <p-floatlabel variant="on">

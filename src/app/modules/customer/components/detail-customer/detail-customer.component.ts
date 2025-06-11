@@ -15,6 +15,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { ContactStateService } from '../../utils/contact-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
+import { StateUtils } from '../../../master-data/components/states/utils/state-utils';
 
 interface Column {
   field: string,
@@ -51,6 +52,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   private readonly branchService = inject(BranchService);
   private readonly companyTypeService = inject(CompanyTypeService);
   private readonly contactPersonService = inject(ContactPersonService);
+  private readonly stateUtils = inject(StateUtils);
 
   public companyTypes = toSignal(
     this.companyTypeService.getAllCompanyTypes().pipe(
@@ -72,11 +74,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
-  public states: any[] = [
-    { name: 'Bavaria', code: 'BY' },
-    { name: 'Saxony', code: 'SN' },
-    { name: 'Saarland', code: 'SL' }
-  ]
+  public states = toSignal(
+    this.stateUtils.getStatesSortedByName().pipe(
+      map(states => states.map(state => ({
+        id: state.id,
+        name: state.name
+      })))
+    )
+  );
 
   public formDetailCustomer!: FormGroup;
 

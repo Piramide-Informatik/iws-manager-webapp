@@ -5,7 +5,7 @@ export interface WorkContract {
   startDate: string;
   salaryPerMonth: number;
   weeklyHours: number;
-  worksShortTime: number;
+  worksShortTime: string;
   specialPayment: number;
   maxHrspPerMonth: number;
   maxHrsPerDay: number;
