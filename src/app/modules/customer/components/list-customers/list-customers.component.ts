@@ -155,7 +155,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerOverview(rowData: any) {
-    this.router.navigate(['/customers', rowData.nameLine2]);
+    this.router.navigate(['/customers', rowData.id]);
   }
 
   goToCustomerRegister() {
