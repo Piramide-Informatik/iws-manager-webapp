@@ -68,7 +68,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0012",
         net: 7500.00,
         gross: 8925.00,
-        share: 0.35
+        share: "0,35"
       },
       {
         orderTitle: "Office Furniture",
@@ -78,7 +78,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0025",
         net: 18500.00,
         gross: 22015.00,
-        share: 0.45
+        share: "0,45"
       },
       {
         orderTitle: "Marketing Campaign",
@@ -88,7 +88,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0038",
         net: 32000.00,
         gross: 38080.00,
-        share: 0.20
+        share: "0,20"
       },
       {
         orderTitle: "Cloud Services",
@@ -98,7 +98,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0045",
         net: 4200.00,
         gross: 4998.00,
-        share: 1.00
+        share: "1,30"
       },
       {
         orderTitle: "Security System",
@@ -108,7 +108,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0052",
         net: 12500.00,
         gross: 14875.00,
-        share: 0.30
+        share: "0,30"
       },
       {
         orderTitle: "Graphic Design",
@@ -118,7 +118,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0063",
         net: 6800.00,
         gross: 8092.00,
-        share: 0.25
+        share: "0,25"
       },
       {
         orderTitle: "Legal Services",
@@ -128,7 +128,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0078",
         net: 9500.00,
         gross: 11305.00,
-        share: 0.15
+        share: "0,15"
       },
       {
         orderTitle: "Cleaning Services",
@@ -138,7 +138,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0089",
         net: 3200.00,
         gross: 3808.00,
-        share: 0.10
+        share: "0,10"
       },
       {
         orderTitle: "Software License",
@@ -148,7 +148,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0091",
         net: 15000.00,
         gross: 17850.00,
-        share: 0.60
+        share: "0,60"
       },
       {
         orderTitle: "Event Planning",
@@ -158,7 +158,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0104",
         net: 28500.00,
         gross: 33915.00,
-        share: 0.40
+        share: "0,40"
       },
       {
         orderTitle: "Printing Services",
@@ -168,7 +168,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0115",
         net: 4200.00,
         gross: 4998.00,
-        share: 0.18
+        share: "0,18"
       },
       {
         orderTitle: "Consulting Services",
@@ -178,7 +178,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2023-0127",
         net: 22500.00,
         gross: 26775.00,
-        share: 0.35
+        share: "0,35"
       },
       {
         orderTitle: "IT Equipment",
@@ -188,7 +188,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0009",
         net: 18700.00,
         gross: 22253.00,
-        share: 0.50
+        share: "0,50"
       },
       {
         orderTitle: "Translation Services",
@@ -198,7 +198,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0022",
         net: 6800.00,
         gross: 8092.00,
-        share: 0.22
+        share: "0,22"
       },
       {
         orderTitle: "Catering Services",
@@ -208,7 +208,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0034",
         net: 9500.00,
         gross: 11305.00,
-        share: 0.28
+        share: "0,28"
       },
       {
         orderTitle: "Video Production",
@@ -218,7 +218,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0047",
         net: 15200.00,
         gross: 18088.00,
-        share: 0.33
+        share: "0,33"
       },
       {
         orderTitle: "HR Software",
@@ -228,7 +228,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0058",
         net: 32000.00,
         gross: 38080.00,
-        share: 0.75
+        share: "0,75"
       },
       {
         orderTitle: "Travel Expenses",
@@ -238,7 +238,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0069",
         net: 12500.00,
         gross: 14875.00,
-        share: 0.42
+        share: "0,42"
       },
       {
         orderTitle: "Market Research",
@@ -248,7 +248,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0072",
         net: 28500.00,
         gross: 33915.00,
-        share: 0.30
+        share: "0,30"
       },
       {
         orderTitle: "Insurance Premium",
@@ -258,7 +258,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         invoiceNumber: "INV-2024-0085",
         net: 18700.00,
         gross: 22253.00,
-        share: 1.00
+        share: "1.20"
       }
     ];
   }

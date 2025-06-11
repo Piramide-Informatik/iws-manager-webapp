@@ -21,6 +21,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 //Components
 import { ContactComponent } from './components/contact/contact.component';
@@ -62,7 +63,8 @@ import { MasterDataModule } from '../master-data/master-data.module';
     ToastModule,
     IconFieldModule,
     InputIconModule,
-    MasterDataModule
+    MasterDataModule,
+    InputNumberModule
   ],
   providers: [ 
     UserPreferenceService 

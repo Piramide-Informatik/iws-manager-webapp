@@ -175,7 +175,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
       acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
       rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
       accept: () => {
-        this.workContractsService.deleteWorkContract(workContractEmployeeId);
         this.contracts = this.contracts.filter(
           (val) => val.employeeId !== workContractEmployeeId
         );
