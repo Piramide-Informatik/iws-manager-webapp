@@ -90,7 +90,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
           { field: 'startDate', header: this.translate.instant(_('PROJECTS.TABLE.START_DATE'))},
           { field: 'endDate',  header: this.translate.instant(_('PROJECTS.TABLE.END_DATE'))},
           { field: 'authDate',  header: this.translate.instant(_('PROJECTS.TABLE.AUTH_DATE'))},
-          { field: 'fundingRate',  header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_RATE'))}
+          { field: 'fundingRate', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_RATE'))}
         ];
   }
 

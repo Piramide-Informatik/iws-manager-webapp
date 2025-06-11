@@ -1,17 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService, MenuItem } from 'primeng/api';
+import { CustomerService } from '../../../../Services/customer.service';
+import { SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-page-customer',
   standalone: false,
   providers: [ConfirmationService, MessageService],
   templateUrl: './page-customer.component.html',
-  styles: ''
+  styleUrl: './page-customer.component.scss'
 })
 export class PageCustomerComponent implements OnInit {
   public customer!: string;
   public currentSidebarItems: MenuItem[] = [];
+  private readonly customerService = inject(CustomerService);
+  customers: any[] = [];
+  selectedCustomer: number = 0;
 
   private readonly sidebarItemsConfig: { labelKey: string; route: string;}[] = [
     { labelKey: 'SIDEBAR.DETAILS', route: 'customer-details'},
@@ -27,15 +32,29 @@ export class PageCustomerComponent implements OnInit {
   ];
 
   constructor(
+    private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ){}
 
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( params => {
-      this.customer = params['id']
+      this.customerService.getAllCustomers().subscribe(customers => {
+         this.customers = customers.map((customerItem: any) => ({
+           id: customerItem.id,
+           companyName: customerItem.customername1,
+         }))
+         this.customer = params['id']
+         this.selectedCustomer = this.customers.find(customerItem => customerItem.companyName === this.customer).id;
+      })
     })
     this.loadSidebarItems();
+  }
+
+  onSelectedItem(event: SelectChangeEvent) {
+    this.router.navigate(['customers/customer-details', event.value], { 
+      state: { customer: event.value, customerData: {}} 
+    });
   }
 
   loadSidebarItems(): void {
