@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService, MenuItem } from 'primeng/api';
 import { CustomerService } from '../../../../Services/customer.service';
+import { SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-page-customer',
@@ -30,6 +31,7 @@ export class PageCustomerComponent implements OnInit {
   ];
 
   constructor(
+    private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ){}
 
@@ -39,13 +41,19 @@ export class PageCustomerComponent implements OnInit {
       this.customerService.getAllCustomers().subscribe(customers => {
          this.customers = customers.map((customerItem: any) => ({
            id: customerItem.id,
-           companyName: customerItem.customername2,
+           companyName: customerItem.customername1,
          }))
          this.customer = params['id']
          this.selectedCustomer = this.customers.find(customerItem => customerItem.companyName === this.customer).id;
       })
     })
     this.loadSidebarItems();
+  }
+
+  onSelectedItem(event: SelectChangeEvent) {
+    this.router.navigate(['customers/customer-details', event.value], { 
+      state: { customer: event.value, customerData: {}} 
+    });
   }
 
   loadSidebarItems(): void {

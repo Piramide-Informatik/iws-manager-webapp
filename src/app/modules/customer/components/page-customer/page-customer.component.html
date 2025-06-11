@@ -2,7 +2,18 @@
     <p-toast />
     <div class="flex px-4 py-3 align-items-center">
         <label class="search-label" for="SearchCustomer">{{ 'COMMON.CUSTOMER_NAME' | translate }}</label>
-        <p-select [options]="customers" class="search-box" [(ngModel)]="selectedCustomer" optionLabel="companyName" optionValue="id" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Customer" [appendTo]="'body'">
+        <p-select 
+          [options]="customers" 
+          class="search-box" 
+          [(ngModel)]="selectedCustomer" 
+          optionLabel="companyName" 
+          optionValue="id" 
+          [filter]="true" 
+          filterBy="name" 
+          [showClear]="true" 
+          placeholder="Select a Customer" 
+          [appendTo]="'body'"
+          (onChange)="onSelectedItem($event)">
             <ng-template #selectedItem let-selectedOption>
                 <div class="flex items-center gap-2">
                     <div>{{ selectedOption.companyName }}</div>
