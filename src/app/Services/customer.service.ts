@@ -81,6 +81,12 @@ export class CustomerService {
         );
     }
 
+    getCustomerByName(companyName: string): Observable<Customer | undefined> {
+        return this.getAllCustomers().pipe(
+            map(customers => customers.find(c => c.customername1 === companyName))
+        );
+    }
+
     // UPDATE
     updateCustomer(updatedCustomer: Customer): void {
         const url = `${this.apiUrl}/${updatedCustomer.id}`;
