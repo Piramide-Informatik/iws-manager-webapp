@@ -1,49 +1,139 @@
-<div class="modal-content-contact">
-    <form [formGroup]="contactForm">
-        <div class="form-row spacer">
-            <label for="nachname">{{ 'CONTACT.FORM.LAST_NAME' | translate }}</label>
-            <input type="text" id="nachname" formControlName="nachname" pInputText>
-        </div>
-
-        <div class="form-row spacer">
-            <label for="vorname">{{ 'CONTACT.FORM.FIRST_NAME' | translate }}</label>
-            <input type="vorname" id="firstname" formControlName="vorname" pInputText>
-        </div>
-
-        <div class="form-row spacer">
-            <label for="anrede">{{ 'CONTACT.FORM.SALUTATION' | translate }}</label>
-            <select id="anrede" formControlName="anrede">
-                <option value="herr">Herr</option>
-                <option value="frau">Frau</option>
-            </select>
-        </div>
-
-        <div class="form-row spacer">
-            <label for="titel">{{ 'CONTACT.FORM.TITLE' | translate }}</label>
-            <select id="titel" formControlName="titel">
-                <option value="dr">Dr.</option>
-                <option value="dr">Prof.</option>
-                <option value="msc">Prof. Dr.</option>
-            </select>
-        </div>
-
-        <div class="form-row spacer">
-            <label for="funktion">{{ 'CONTACT.FORM.FUNCTION' | translate }}</label>
-            <input type="text" id="funktion" formControlName="funktion" pInputText>
-        </div>
-
-        <div class="form-row spacer">
-            <label for="mailadresse">{{ 'CONTACT.FORM.EMAIL_ADDRESS' | translate }}</label>
-            <input type="mailadresse" id="mailadresse" formControlName="mailadresse" pInputText>
-        </div>
-
-        <div class="form-row1">
-            <label for="rechnungsempfänger" class="rechnungsempfaenger-label">{{ 'CONTACT.LABELS.INVOICE' | translate }}</label>
-            <div class="checkbox-container"> 
-                <input type="checkbox" id="rechnungsempfänger" formControlName="rechnungsempfänger">
-                <span>{{ 'CONTACT.LABELS.IS_INVOICE_RECIPIENT' | translate }}</span> 
+@if(modalType==='create' || modalType==='edit'){
+    <div class="modal-content-contact">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <div class="form-row spacer">
+                <label for="lastName">{{ 'CONTACT.FORM.LAST_NAME' | translate }}</label>
+                <input 
+                    type="text" 
+                    id="lastName" 
+                    formControlName="lastName" 
+                    pInputText
+                    [ngClass]="{'ng-invalid ng-dirty': contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched}"
+                    autocomplete="off"
+                >
             </div>
+    
+            <div class="form-row spacer">
+                <label for="firstName">{{ 'CONTACT.FORM.FIRST_NAME' | translate }}</label>
+                <input 
+                    type="firstName" 
+                    id="firstname" 
+                    formControlName="firstName" 
+                    pInputText
+                    [ngClass]="{'ng-invalid ng-dirty': contactForm.get('firstName')?.invalid && contactForm.get('firstName')?.touched}"
+                    autocomplete="off"
+                >
+            </div>
+    
+            <div class="form-row spacer">
+                <label for="salutation">{{ 'CONTACT.FORM.SALUTATION' | translate }}</label>
+                <p-select formControlName="salutation" 
+                    id="salutation"
+                    [options]="contacts()"
+                    [(ngModel)]="selectedSalutation"
+                    optionLabel="name" 
+                />
+            </div>
+    
+            <div class="form-row spacer">
+                <label for="title">{{ 'CONTACT.FORM.TITLE' | translate }}</label>
+                <p-select formControlName="title" 
+                    id="title"
+                    [options]="titles()"
+                    [(ngModel)]="selectedTitle"
+                    optionLabel="name" 
+                />
+            </div>
+    
+            <div class="form-row spacer">
+                <label for="function">{{ 'CONTACT.FORM.FUNCTION' | translate }}</label>
+                <input 
+                    type="text" 
+                    id="function" 
+                    formControlName="function" 
+                    pInputText
+                    [ngClass]="{'ng-invalid ng-dirty': contactForm.get('function')?.invalid && contactForm.get('function')?.touched}"
+                    autocomplete="off"
+                >
+            </div>
+    
+            <div class="form-row spacer">
+                <label for="emailAddress">{{ 'CONTACT.FORM.EMAIL_ADDRESS' | translate }}</label>
+                <input 
+                    type="email" 
+                    id="emailAddress" 
+                    formControlName="emailAddress" 
+                    pInputText
+                    [ngClass]="{'ng-invalid ng-dirty': contactForm.get('emailAddress')?.invalid && contactForm.get('emailAddress')?.touched}"
+                    autocomplete="off"
+                >
+            </div>
+    
+            <div class="form-row-invoice">
+                <label for="isInvoiceRecipient" class="invoice-label">{{ 'CONTACT.LABELS.INVOICE' | translate }}</label>
+                <div class="checkbox-container">
+                    <p-toggleswitch formControlName="isInvoiceRecipient" class="flex">
+                        <ng-template #handle let-checked="checked">
+                            <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+                        </ng-template>
+                    </p-toggleswitch>
+                    <span>{{ 'CONTACT.LABELS.IS_INVOICE_RECIPIENT' | translate }}</span> 
+                </div>
+            </div>
+    
+            <div class="buttons flex justify-content-center gap-2 mt-4">
+              <p-button 
+                [label]="'BUTTONS.SAVE' | translate" 
+                id="new-contact-person" 
+                icon="pi pi-check"  
+                type="submit"
+                size="small"
+                [disabled]="contactForm.invalid || !contactForm.dirty"
+              ></p-button>
+              <p-button 
+                type="button"
+                class="cancel"
+                size="small"
+                [label]="'BUTTONS.CANCEL' | translate" 
+                icon="pi pi-times"  
+                (keydown.enter)="handleClose()" 
+                (click)="handleClose()" 
+                />
+             </div>
+        </form>
+    </div>
+}@else if(modalType === 'delete') {
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'CONTACT.LABELS.CONFIRM_QUESTION_DELETE' | translate }}
+            <strong class="stronglock mt-1">"{{ `${currentContact?.firstName} ${currentContact?.lastName}` }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button
+                type="button"
+                class="delete"
+                size="small"
+                [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash"
+                iconPos="left"
+                (click)="deleteConfirm()"
+                (keypress)="deleteConfirm()"
+                [loading]="isLoading"
+                [disabled]="isLoading"
+            />
+            <p-button
+                type="button"
+                class="cancel"
+                size="small"
+                [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times"
+                iconPos="left"
+                (click)="handleClose()"
+                (keypress)="handleClose()"
+                [disabled]="isLoading"
+            />
         </div>
-    </form>
-</div>
+  </div>
+}
 

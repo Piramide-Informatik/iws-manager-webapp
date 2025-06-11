@@ -148,7 +148,10 @@
       "EMAIL_ADDRESS": "Email Address"
     },
     "LABELS": {
-      "TITLE_DIALOG": "Edit Contact Person",
+      "TITLE_DIALOG_CREATE": "New Contact Person",
+      "TITLE_DIALOG_EDIT": "Edit Contact Person",
+      "TITLE_DIALOG_DELETE": "Delete Contact Person",
+      "CONFIRM_QUESTION_DELETE": "Are you sure you want to delete the Contact Person ",
       "INVOICE": "Invoice Recipient",
       "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
     }

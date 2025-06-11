@@ -67,7 +67,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1350000,
         "zaReceived": 810000,
         "zaOffen": 540000,
-        "iwsPercent": 5.0
+        "iwsPercent": "5,0"
       },
       {
         "idClaim": "CLM-1002",
@@ -86,7 +86,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 2520000,
         "zaReceived": 1512000,
         "zaOffen": 1008000,
-        "iwsPercent": 7.5
+        "iwsPercent": "7,5"
       },
       {
         "idClaim": "CLM-1003",
@@ -105,7 +105,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 765000,
         "zaReceived": 765000,
         "zaOffen": 0,
-        "iwsPercent": 4.0
+        "iwsPercent": "4,0"
       },
       {
         "idClaim": "CLM-1004",
@@ -124,7 +124,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 2880000,
         "zaReceived": 1728000,
         "zaOffen": 1152000,
-        "iwsPercent": 6.0
+        "iwsPercent": "6,0"
       },
       {
         "idClaim": "CLM-1005",
@@ -143,7 +143,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1080000,
         "zaReceived": 0,
         "zaOffen": 1080000,
-        "iwsPercent": 5.5
+        "iwsPercent": "5,5"
       },
       {
         "idClaim": "CLM-1006",
@@ -162,7 +162,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 675000,
         "zaReceived": 675000,
         "zaOffen": 0,
-        "iwsPercent": 3.5
+        "iwsPercent": "3,5"
       },
       {
         "idClaim": "CLM-1007",
@@ -181,7 +181,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1665000,
         "zaReceived": 999000,
         "zaOffen": 666000,
-        "iwsPercent": 6.5
+        "iwsPercent": "6,5"
       },
       {
         "idClaim": "CLM-1008",
@@ -200,7 +200,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 828000,
         "zaReceived": 496800,
         "zaOffen": 331200,
-        "iwsPercent": 4.5
+        "iwsPercent": "4,5"
       },
       {
         "idClaim": "CLM-1009",
@@ -219,7 +219,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1890000,
         "zaReceived": 1134000,
         "zaOffen": 756000,
-        "iwsPercent": 7.0
+        "iwsPercent": "7,0"
       },
       {
         "idClaim": "CLM-1010",
@@ -238,7 +238,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1215000,
         "zaReceived": 1215000,
         "zaOffen": 0,
-        "iwsPercent": 5.0
+        "iwsPercent": "5,0"
       },
       {
         "idClaim": "CLM-1011",
@@ -257,7 +257,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 2475000,
         "zaReceived": 0,
         "zaOffen": 2475000,
-        "iwsPercent": 8.0
+        "iwsPercent": "8,0"
       },
       {
         "idClaim": "CLM-1012",
@@ -276,7 +276,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 882000,
         "zaReceived": 529200,
         "zaOffen": 352800,
-        "iwsPercent": 4.0
+        "iwsPercent": "4,0"
       },
       {
         "idClaim": "CLM-1013",
@@ -295,7 +295,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1485000,
         "zaReceived": 891000,
         "zaOffen": 594000,
-        "iwsPercent": 5.5
+        "iwsPercent": "5,5"
       },
       {
         "idClaim": "CLM-1014",
@@ -314,7 +314,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 3780000,
         "zaReceived": 2268000,
         "zaOffen": 1512000,
-        "iwsPercent": 7.0
+        "iwsPercent": "7,0"
       },
       {
         "idClaim": "CLM-1015",
@@ -333,7 +333,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 612000,
         "zaReceived": 612000,
         "zaOffen": 0,
-        "iwsPercent": 3.0
+        "iwsPercent": "3,0"
       },
       {
         "idClaim": "CLM-1016",
@@ -352,7 +352,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 2925000,
         "zaReceived": 1755000,
         "zaOffen": 1170000,
-        "iwsPercent": 8.5
+        "iwsPercent": "8,5"
       },
       {
         "idClaim": "CLM-1017",
@@ -371,7 +371,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1035000,
         "zaReceived": 621000,
         "zaOffen": 414000,
-        "iwsPercent": 6.0
+        "iwsPercent": "6,0"
       },
       {
         "idClaim": "CLM-1018",
@@ -390,7 +390,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 787500,
         "zaReceived": 0,
         "zaOffen": 787500,
-        "iwsPercent": 4.5
+        "iwsPercent": "4,5"
       },
       {
         "idClaim": "CLM-1019",
@@ -409,7 +409,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 1125000,
         "zaReceived": 1125000,
         "zaOffen": 0,
-        "iwsPercent": 5.0
+        "iwsPercent": "5,0"
       },
       {
         "idClaim": "CLM-1020",
@@ -428,7 +428,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         "zaGross": 855000,
         "zaReceived": 513000,
         "zaOffen": 342000,
-        "iwsPercent": 6.5
+        "iwsPercent": "6,5"
       }
     ];
     this.userReceivablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
