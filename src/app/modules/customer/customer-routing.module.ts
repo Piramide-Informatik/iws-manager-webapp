@@ -21,6 +21,10 @@ const routes: Routes = [
         pathMatch: 'full',
         redirectTo: 'employees'
       },
+      {
+        path: 'customer-details',
+        component: DetailCustomerComponent
+      },
       { 
         path: 'employees', 
         loadChildren: () =>
