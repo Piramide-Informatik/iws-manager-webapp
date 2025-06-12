@@ -60,11 +60,6 @@ p-button {
     .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
         width: 100% !important;
     }
-
-    thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
-        width:10% !important;
-        max-width: 10% !important;
-    }
 }
 
 td.clickable-title:hover {
