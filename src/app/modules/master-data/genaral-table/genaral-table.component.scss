@@ -1,35 +1,35 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 p-button {
-    color: $primary-light;
+  color: $primary-light;
 }
 
 .thead {
-    background: $primary-color;
-    color: #fff;
-    min-width: 1.25rem; 
+  background: $primary-color;
+  color: #fff;
+  min-width: 1.25rem;
 
-    &:hover {
-        background: $accent-color;
-        color: $primary-dark;
-    }
+  &:hover {
+    background: $accent-color;
+    color: $primary-dark;
+  }
 }
 
 .thead-bg-blue {
-    background: $primary-color;
+  background: $primary-color;
 }
 
 .thead-input-id {
-    min-width: 4.4rem; 
-    width: 100%;
+  min-width: 4.4rem;
+  width: 100%;
 }
 
 .thead-input-width {
-    width: 100%;
+  width: 100%;
 }
 
 .align-right {
-    text-align: right;
+  text-align: right;
 }
 
 .nowrap-row {
@@ -41,30 +41,32 @@ p-button {
 }
 
 :host ::ng-deep {
-    p-columnfilter {
-       button {
-        background-color: unset !important;
-        border: none !important;
-       }  
+  p-columnfilter {
+    button {
+      background-color: unset !important;
+      border: none !important;
     }
+  }
 
-    p-columnfilter > div > p-columnfilterformelement {
-        width: 100%;
-    }    
+  p-columnfilter > div > p-columnfilterformelement {
+    width: 100%;
+  }
 
-    .p-inputtext {
-        min-width: 130px !important;
-        width: 100% !important;
-    }
+  .p-inputtext {
+    min-width: 130px !important;
+    width: 100% !important;
+  }
 
     .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
         width: 100% !important;
     }
 
+
     thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
         width:75px !important;
         max-width: 75px !important;
     }
+
 }
 
 td.clickable-title:hover {
@@ -72,6 +74,10 @@ td.clickable-title:hover {
   color: #1976d2;
 }
 
-td{
-    user-select: none;
+td {
+  user-select: none;
+}
+
+::ng-deep .p-datatable-table-container {
+  padding-bottom: 10px;
 }

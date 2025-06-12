@@ -83,4 +83,10 @@ export class BranchService {
   private generateUUID(): string {
     return crypto.randomUUID();
   }
+
+  getBranchSortedByName(): Observable<Branch[]> {
+    return this.getAllBranches().pipe(
+      map(branches => [...branches].sort((a, b) => a.name.localeCompare(b.name))),
+    );
+  }
 }
