@@ -57,17 +57,10 @@ p-button {
     width: 100% !important;
   }
 
-  .p-datatable-resizable-table
-    > .p-datatable-thead
-    > tr
-    > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
-    width: 100% !important;
-  }
+    .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
+        width: 100% !important;
+    }
 
-  thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
-    width: 75px !important;
-    max-width: 75px !important;
-  }
 }
 
 td.clickable-title:hover {

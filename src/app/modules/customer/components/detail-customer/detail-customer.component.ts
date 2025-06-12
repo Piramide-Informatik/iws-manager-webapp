@@ -220,7 +220,9 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   createPerson(){
     this.modalType = 'create';
+    this.currentContactPerson = null;
     this.visible = true;
+    this.contactStateService.setCountryToEdit(null);
   }
 
   closeVisibility(visibility: boolean): void {
