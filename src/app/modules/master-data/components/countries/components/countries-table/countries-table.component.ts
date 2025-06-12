@@ -82,7 +82,7 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         header: this.translate.instant(_('COUNTRIES.TABLE.NAME')),
-        styles: { width: 'auto' },
+        styles: { width: '120px' },
       },
       {
         field: 'abbreviation',
