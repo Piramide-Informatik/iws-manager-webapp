@@ -75,7 +75,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.branchService.getBranchSortedByName().pipe(
       map(branches => branches.map(branch => ({
         name: branch.name,
-        code: branch.id.toString()
+        code: branch.id
       })))
     ),
     { initialValue: [] }
@@ -152,7 +152,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         this.customerId = params['id']; 
         this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
           const formData = {
-            id: customer?.id,
+            customerNo: customer?.customerno,
             companyText1: customer?.customername1,
             companyText2: customer?.customername2,
             selectedCountry: customer?.country?.id,
@@ -168,6 +168,9 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
             maxHoursMonth: customer?.maxhoursmonth,
             maxHoursYear: customer?.maxhoursyear,
             textAreaComment: customer?.note,
+            invoiceEmail: customer?.email1,
+            headcount: customer?.taxoffice,
+            selectedSector: customer?.branch?.id
           }
           this.formDetailCustomer.patchValue(formData);
           this.formDetailCustomer.updateValueAndValidity();
