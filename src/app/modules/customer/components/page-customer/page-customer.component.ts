@@ -38,17 +38,17 @@ export class PageCustomerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( params => {
-      this.customerService.getAllCustomers().subscribe(customers => {
-         this.customers = customers.map((customerItem: any) => ({
-           id: customerItem.id,
-           companyName: customerItem.customername1,
-         }))
-         this.customer = params['id']
-         this.selectedCustomer = this.customers.find(customerItem => customerItem.companyName === this.customer).id;
-      })
+    this.customerService.getAllCustomers().subscribe(customers => {
+       this.customers = customers.map((customerItem: any) => ({
+         id: customerItem.id,
+         companyName: customerItem.customername1,
+       }))
+       this.customer =  ''+this.router.url.split('/').pop()
+       
+       this.selectedCustomer = this.customers.find(customerItem => customerItem.id === Number(this.customer)).id;
+      
+       this.loadSidebarItems();
     })
-    this.loadSidebarItems();
   }
 
   onSelectedItem(event: SelectChangeEvent) {
@@ -60,7 +60,7 @@ export class PageCustomerComponent implements OnInit {
   loadSidebarItems(): void {
     this.currentSidebarItems = this.sidebarItemsConfig.map((item) => ({
       label: item.labelKey,
-       routerLink: ['/customers', this.customer, item.route],
+       routerLink: ['/customers', item.route, this.selectedCustomer],
     }));
   }
 }
