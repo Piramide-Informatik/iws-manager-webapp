@@ -38,21 +38,23 @@ export class PageCustomerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.customerService.getAllCustomers().subscribe(customers => {
-       this.customers = customers.map((customerItem: any) => ({
-         id: customerItem.id,
-         companyName: customerItem.customername1,
-       }))
-       this.customer =  ''+this.router.url.split('/').pop()
-       
-       this.selectedCustomer = this.customers.find(customerItem => customerItem.id === Number(this.customer)).id;
-      
-       this.loadSidebarItems();
+    this.activatedRoute.params.subscribe( params => {
+      if (params['id']) {
+        this.customerService.getAllCustomers().subscribe(customers => {
+           this.customers = customers.map((customerItem: any) => ({
+             id: customerItem.id,
+             companyName: customerItem.customername1,
+           }))
+           this.customer = params['id']
+           this.selectedCustomer = this.customers.find(customerItem => customerItem.id === Number(this.customer)).id;
+           this.loadSidebarItems();
+        })
+      }
     })
   }
 
   onSelectedItem(event: SelectChangeEvent) {
-    this.router.navigate(['customers/customer-details', event.value], { 
+    this.router.navigate(['customers', event.value, 'customer-details'], {
       state: { customer: event.value, customerData: {}} 
     });
   }

@@ -142,30 +142,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params
       .subscribe(params => {
-        this.customerId = params['id']; 
-        this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
-          const formData = {
-            id: customer?.id,
-            companyText1: customer?.customername1,
-            companyText2: customer?.customername2,
-            selectedCountry: customer?.country?.id,
-            street: customer?.street,
-            postalCode: customer?.zipcode,
-            city: customer?.city,
-            selectedTypeCompany: customer?.companytype?.id,
-            selectedState: customer?.state?.id,
-            homepage: customer?.homepage,
-            phone: customer?.phone,
-            weekWorkingHours: customer?.hoursperweek,
-            taxNumber: customer?.taxno,
-            maxHoursMonth: customer?.maxhoursmonth,
-            maxHoursYear: customer?.maxhoursyear,
-            textAreaComment: customer?.note,
-          }
-          this.formDetailCustomer.patchValue(formData);
-          this.formDetailCustomer.updateValueAndValidity();
-        })
+        this.fillForm(params['id'])
       })
+    this.activatedRoute.parent?.params.subscribe(params => {
+      this.fillForm(params['id'])
+    })
   }
 
   onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
@@ -224,6 +205,34 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   closeVisibility(visibility: boolean): void {
-    this.visible = visibility;
+    this.visible = visibility; 
+  }
+
+  fillForm(customerId: any) {
+    if (customerId) {
+      this.customerId = customerId; 
+      this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
+        const formData = {
+        customerNo: customer?.id,
+        companyText1: customer?.customername1,
+        companyText2: customer?.customername2,
+        selectedCountry: customer?.country?.id,
+        street: customer?.street,
+        postalCode: customer?.zipcode,
+        city: customer?.city,
+        selectedTypeCompany: customer?.companytype?.id,
+        selectedState: customer?.state?.id,
+        homepage: customer?.homepage,
+        phone: customer?.phone,
+        weekWorkingHours: customer?.hoursperweek,
+        taxNumber: customer?.taxno,
+        maxHoursMonth: customer?.maxhoursmonth,
+        maxHoursYear: customer?.maxhoursyear,
+        textAreaComment: customer?.note,
+      }
+      this.formDetailCustomer.patchValue(formData);
+      this.formDetailCustomer.updateValueAndValidity();
+      })
+    }
   }
 }
