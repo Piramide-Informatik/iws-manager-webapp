@@ -5,17 +5,17 @@ import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../../../Services/customer.service';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { CountryService } from '../../../../Services/country.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BranchService } from '../../../../Services/branch.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
-import { CompanyTypeService } from '../../../../Services/company-type.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { ContactStateService } from '../../utils/contact-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
 import { StateUtils } from '../../../master-data/components/states/utils/state-utils';
+import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
+import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
 
 interface Column {
   field: string,
@@ -41,8 +41,15 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public customers!: Customer[];
   private langSubscription!: Subscription;
   customerId!: number;
-  private readonly countryService = inject(CountryService);
-  countries = toSignal(this.countryService.getAllCountries(), { initialValue: [] });
+  private readonly countryUtils = inject(CountryUtils);
+  countries = toSignal(
+    this.countryUtils.getCountriesSortedByName().pipe(
+      map(countries => countries.map(country =>({
+        id: country.id,
+        name: country.name
+      })))
+    )
+  );
   userDetailCustomerPreferences: UserPreference = {};
   tableKey: string = 'ContactPerson'
   dataKeys = ['name', 'function', 'right'];
@@ -50,12 +57,12 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public currentContactPerson!: ContactPerson | null; // Para editarlo o eliminarlo 
 
   private readonly branchService = inject(BranchService);
-  private readonly companyTypeService = inject(CompanyTypeService);
+  private readonly companyTypeUtils = inject(CompanyTypeUtils);
   private readonly contactPersonService = inject(ContactPersonService);
   private readonly stateUtils = inject(StateUtils);
 
   public companyTypes = toSignal(
-    this.companyTypeService.getAllCompanyTypes().pipe(
+    this.companyTypeUtils.getCompanyTypeSortedByName().pipe(
       map(companyTypes => companyTypes.map(compayType => ({
         name: compayType.name,
         id: compayType.id
@@ -65,7 +72,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   );
 
   public sectors = toSignal(
-    this.branchService.getAllBranches().pipe(
+    this.branchService.getBranchSortedByName().pipe(
       map(branches => branches.map(branch => ({
         name: branch.name,
         code: branch.id.toString()
