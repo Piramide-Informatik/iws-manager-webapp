@@ -67,6 +67,20 @@ export class CompanyTypeUtils {
   }
 
   /**
+   * Gets all types of companies sorted alphabetically by first name
+   * @returns Observable emitting sorted array of types of companies
+   */
+  getCompanyTypeSortedByName(): Observable<CompanyType[]> {
+    return this.companyTypeService.getAllCompanyTypes().pipe(
+      map(companyTypes => [...companyTypes].sort((a, b) => a.name.localeCompare(b.name))),
+      catchError(err => {
+        console.error('Error sorting company types:', err);
+        return throwError(() => new Error('Failed to sort company types'));
+      })
+    );
+  }
+
+  /**
  * Deletes a company type by ID and updates the internal titles signal.
  * @param id - ID of the company type to delete
  * @returns Observable that completes when the deletion is done
