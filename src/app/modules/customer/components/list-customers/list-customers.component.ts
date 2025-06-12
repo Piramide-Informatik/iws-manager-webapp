@@ -52,7 +52,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   constructor(private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+
   ) { }
 
   ngOnInit(): void {
@@ -141,15 +142,15 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     })
   }
 
-  goToCustomerDetails(currentCustomer: Customer) {
-    this.router.navigate([currentCustomer.id, 'customer-details'], {
+  goToCustomerDetails(currentCustomer: Customer) {    
+    this.router.navigate(['customer-details',currentCustomer.id], {
       relativeTo: this.route,
       state: { customer: currentCustomer.id, customerData: currentCustomer }
     });
   }
 
   goToCustomerOverview(rowData: any) {
-    this.router.navigate(['/customers', rowData.id]);
+    this.router.navigate(['/customers/customer-details', rowData.id]);
   }
 
   goToCustomerRegister() {
