@@ -85,6 +85,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    localStorage.removeItem('Countries-table-state');
     this.selectedColumns = this.columns ? [...this.columns] : [];
     this.booleanHeaders = this.generateBooleanHeaders();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
