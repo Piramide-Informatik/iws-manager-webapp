@@ -300,3 +300,9 @@ p-password {
   box-shadow: none !important; 
   border-radius: 11px !important; 
 }
+
+thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue{
+  width: 75px !important;
+  max-width: 75px !important;
+  min-width: 75px !important;
+}
