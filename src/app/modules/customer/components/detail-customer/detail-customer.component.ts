@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../../../Services/customer.service';
@@ -125,7 +125,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       homepage: [''],
       phone: [''],
       invoiceEmail: [''],
-      weekWorkingHours: [''],
+      weekWorkingHours: ['', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
       taxNumber: [''],
       headcount: [''],
       maxHoursMonth: [''],
