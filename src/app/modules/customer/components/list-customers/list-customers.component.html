@@ -6,7 +6,7 @@
     [userPreferences]="userListCustomerPreferences"
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserListCustomerPreferencesChanges($event)"
-    (onRowClickEvent)="goToCustomerOverview($event)"
+    (onRowClickEvent)="goToCustomerOverview($event, $event.originalEvent)"
     (onEditRegister)="goToCustomerDetails($event)"
     (onDeleteRegister)="deleteCustomer($event)"
     (onCreateRegister)="goToCustomerRegister()"
