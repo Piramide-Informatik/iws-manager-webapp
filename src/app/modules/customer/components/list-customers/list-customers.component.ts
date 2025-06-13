@@ -150,10 +150,9 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerOverview(rowData: any, event?: MouseEvent) {
-    //this.router.navigate(['/customers/customer-details', rowData.id]);
     const url = this.router.createUrlTree(['/customers/customer-details', rowData.id]).toString();
 
-     window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   goToCustomerRegister() {
