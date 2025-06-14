@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService, MenuItem } from 'primeng/api';
-import { CustomerService } from '../../../../Services/customer.service';
 import { SelectChangeEvent } from 'primeng/select';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomerUtils } from '../../utils/customer-utils';
@@ -17,7 +16,6 @@ import { map } from 'rxjs';
 export class PageCustomerComponent implements OnInit {
   public customer!: string;
   public currentSidebarItems: MenuItem[] = [];
-  private readonly customerService = inject(CustomerService);
   private readonly customerUtils = inject(CustomerUtils);
   public customers = toSignal(
     this.customerUtils.getCustomersSortedByName().pipe(
@@ -43,8 +41,7 @@ export class PageCustomerComponent implements OnInit {
   ];
 
   constructor(
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly router: Router
   ){}
 
 
@@ -66,4 +63,8 @@ export class PageCustomerComponent implements OnInit {
        routerLink: ['/customers', item.route, this.selectedCustomer()],
     }));
   }
+
+  onCustomerChange(){
+    this.loadSidebarItems();
+  } 
 }
