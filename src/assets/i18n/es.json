@@ -64,8 +64,10 @@
     "YES": "Si",
     "NO": "No",
     "SEARCH": "Buscar",
+    "SELECT_CUSTOMER": "Seleccione un Cliente",
     "SELECT_ONE": "Seleccione uno",
-    "ANY": "Seleccione alguno"
+    "ANY": "Seleccione alguno",
+    "NO_DATA_AVAILABLE": "No hay datos disponibles"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas",

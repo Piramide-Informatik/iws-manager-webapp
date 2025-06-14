@@ -64,12 +64,14 @@
     "YES": "Ja",
     "NO": "Nein",
     "SEARCH": "Suchen",
+    "SELECT_CUSTOMER": "Wählen Sie einen Kunden aus",
     "SELECT_ONE": "Wählen Sie eine",
-    "ANY": "Beliebig"
+    "ANY": "Beliebig",
+    "NO_DATA_AVAILABLE": "Keine Daten verfügbar"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
-    "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
+    "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden"
   },
   "BUTTONS": {
     "NEW": "Neu",

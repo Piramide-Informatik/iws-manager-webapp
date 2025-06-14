@@ -3,16 +3,18 @@
     <div class="flex px-4 py-3 align-items-center">
         <label class="search-label" for="SearchCustomer">{{ 'COMMON.CUSTOMER_NAME' | translate }}</label>
         <p-select 
-          [options]="customers" 
-          class="search-box" 
+          [options]="customers()" 
+          class="search-box w-auto"
           [(ngModel)]="selectedCustomer" 
           optionLabel="companyName" 
           optionValue="id" 
           [filter]="true" 
-          filterBy="name" 
+          filterBy="companyName" 
           [showClear]="true" 
-          placeholder="Select a Customer" 
+          [placeholder]="'COMMON.SELECT_CUSTOMER' | translate" 
           [appendTo]="'body'"
+          [emptyMessage]="'COMMON.NO_DATA_AVAILABLE' | translate"
+          [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           (onChange)="onSelectedItem($event)">
             <ng-template #selectedItem let-selectedOption>
                 <div class="flex items-center gap-2">
