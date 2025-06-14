@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { ContactPerson } from '../Entities/contactPerson';
 import { environment } from '../../environments/environment';
 
@@ -121,12 +121,24 @@ export class ContactPersonService {
   }
 
   getContactPersonById(id: number): Observable<ContactPerson | undefined> {
-    return this.getAllContactPersons().pipe(
-      map(persons => persons.find(p => p.id === id))
-    );
+    // return this.getAllContactPersons().pipe(
+    //   map(persons => persons.find(p => p.id === id))
+    // );
+
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<ContactPerson>(url, this.httpOptions).pipe(
+      catchError(err => {
+        this._error.set('Failed to fetch customer');
+        console.error('Error fetching customer:', err);
+        return throwError(() => err);
+      }));
   }
 
   public refreshContactPersons(): void {
     this.loadInitialData();
+  }
+
+  updateContacts(contacts: ContactPerson[]): void {
+    this._contactPersons.set(contacts);
   }
 }

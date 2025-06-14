@@ -1,14 +1,18 @@
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer.model';
+import { ContactUtils } from './contact-utils';
+import { ContactPerson } from '../../../Entities/contactPerson';
 
 /**
  * Utility class for customer-related business logic and operations.
  * Works with CustomerService's reactive signals while providing additional functionality.
  */
+@Injectable({ providedIn: 'root' })
 export class CustomerUtils {
     private readonly customerService = inject(CustomerService);
+    private readonly contactUtils = inject(ContactUtils);
 
     /**
      * Gets a customer by ID with proper error handling
@@ -129,5 +133,23 @@ export class CustomerUtils {
                 }
             }, 100);
         });
+    }
+
+    /**
+ * Gets all contact persons for a specific customer with proper error handling
+ * @param customerId - ID of the customer
+ * @returns Observable emitting array of contact persons filtered by customer ID
+ */
+    getAllContacts(customerId: number): Observable<ContactPerson[]> {
+        if (!customerId || customerId <= 0) {
+            return throwError(() => new Error('Invalid customer ID'));
+        }
+
+        return this.contactUtils.getContactsByCustomerId(customerId).pipe(
+            catchError(err => {
+                console.error('Error loading customer contacts:', err);
+                return throwError(() => new Error('Failed to load customer contacts'));
+            })
+        );
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
@@ -21,7 +21,7 @@ interface Column {
   field: string,
   header: string
   customClasses?: string[]
-  styles?: { },
+  styles?: {},
   filter?: { type: 'boolean' | 'multiple' }
 }
 
@@ -33,18 +33,21 @@ interface Column {
 })
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
-  private readonly customerUtils = new CustomerUtils();
+  //  private readonly customerUtils = new CustomerUtils();
+  private readonly customerUtils = inject(CustomerUtils);
   public selectedCountry!: string;
   public selectedTypeCompany!: string;
   public cols!: Column[];
   public selectedColumns!: Column[];
   public customers!: Customer[];
+  public filteredContacts = signal<ContactPerson[]>([]);
+
   private langSubscription!: Subscription;
   customerId!: number;
   private readonly countryUtils = inject(CountryUtils);
   countries = toSignal(
     this.countryUtils.getCountriesSortedByName().pipe(
-      map(countries => countries.map(country =>({
+      map(countries => countries.map(country => ({
         id: country.id,
         name: country.name
       })))
@@ -54,7 +57,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   tableKey: string = 'ContactPerson'
   dataKeys = ['name', 'function', 'right'];
   public modalType: 'create' | 'delete' | 'edit' = 'create';
-  public currentContactPerson!: ContactPerson | null; // Para editarlo o eliminarlo 
+  public currentContactPerson!: ContactPerson | null;
 
   private readonly branchService = inject(BranchService);
   private readonly companyTypeUtils = inject(CompanyTypeUtils);
@@ -92,13 +95,22 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public formDetailCustomer!: FormGroup;
 
-  public readonly contactPersons = computed(()=> {
+  // public readonly contactPersons = computed(() => {
+  //   return this.contactPersonService.contactPersons().map(contact => ({
+  //     id: contact.id,
+  //     name: `${contact.firstName} ${contact.lastName}`,
+  //     function: contact.function ?? '',
+  //     right: contact.forInvoicing
+  //   }))
+  // });
+
+  public readonly contactPersons = computed(() => {
     return this.contactPersonService.contactPersons().map(contact => ({
       id: contact.id,
       name: `${contact.firstName} ${contact.lastName}`,
       function: contact.function ?? '',
       right: contact.forInvoicing
-    }))
+    }));
   });
 
   constructor(
@@ -108,7 +120,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly translate: TranslateService,
-    private readonly contactStateService: ContactStateService 
+    private readonly contactStateService: ContactStateService
   ) {
 
     this.formDetailCustomer = this.fb.group({
@@ -136,8 +148,49 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   visible: boolean = false;
 
-  ngOnInit(): void {
+  // ngOnInit(): void {
 
+  //   this.updateHeadersAndColumns();
+  //   this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+
+  //   this.langSubscription = this.translate.onLangChange.subscribe(() => {
+  //     this.updateHeadersAndColumns();
+  //     this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+  //   });
+  //   this.formDetailCustomer.get('customerNo')?.disable();
+
+  //   this.activatedRoute.params
+  //     .subscribe(params => {
+  //       this.customerId = params['id']; 
+  //       this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
+  //         const formData = {
+  //           customerNo: customer?.customerno,
+  //           companyText1: customer?.customername1,
+  //           companyText2: customer?.customername2,
+  //           selectedCountry: customer?.country?.id,
+  //           street: customer?.street,
+  //           postalCode: customer?.zipcode,
+  //           city: customer?.city,
+  //           selectedTypeCompany: customer?.companytype?.id,
+  //           selectedState: customer?.state?.id,
+  //           homepage: customer?.homepage,
+  //           phone: customer?.phone,
+  //           weekWorkingHours: customer?.hoursperweek,
+  //           taxNumber: customer?.taxno,
+  //           maxHoursMonth: customer?.maxhoursmonth,
+  //           maxHoursYear: customer?.maxhoursyear,
+  //           textAreaComment: customer?.note,
+  //           invoiceEmail: customer?.email1,
+  //           headcount: customer?.taxoffice,
+  //           selectedSector: customer?.branch?.id
+  //         }
+  //         this.formDetailCustomer.patchValue(formData);
+  //         this.formDetailCustomer.updateValueAndValidity();
+  //       })
+  //     })
+  // }
+
+  ngOnInit(): void {
     this.updateHeadersAndColumns();
     this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
@@ -149,7 +202,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params
       .subscribe(params => {
-        this.customerId = params['id']; 
+        this.customerId = params['id'];
+
         this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
           const formData = {
             customerNo: customer?.customerno,
@@ -174,9 +228,35 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
           }
           this.formDetailCustomer.patchValue(formData);
           this.formDetailCustomer.updateValueAndValidity();
-        })
-      })
+        });
+
+        // Cargar contactos del cliente
+        this.loadCustomerContacts(this.customerId);
+      });
   }
+
+  private loadCustomerContacts(customerId: number): void {
+    console.log('[1] Loading contacts for customer:', customerId);
+
+    // Limpia los contactos anteriores mientras carga
+    this.filteredContacts.set([]);
+
+    this.customerUtils.getAllContacts(customerId).subscribe({
+      next: contacts => {
+        console.log('[2] Filtered contacts received:', contacts);
+        this.filteredContacts.set(contacts);
+
+        // DEBUG: Verifica qué está recibiendo realmente la tabla
+        setTimeout(() => {
+          console.log('[DEBUG] Current table values:',
+            this.contactPersons());
+        }, 100);
+      },
+      error: err => console.error('Error loading contacts:', err)
+    });
+  }
+
+
 
   onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userCustomerDetailPreferences));
@@ -209,7 +289,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
@@ -228,14 +308,22 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.contactStateService.setCountryToEdit(this.currentContactPerson);
   }
 
-  createPerson(){
+  createPerson() {
     this.modalType = 'create';
     this.currentContactPerson = null;
     this.visible = true;
     this.contactStateService.setCountryToEdit(null);
   }
 
+  // closeVisibility(visibility: boolean): void {
+  //   this.visible = visibility;
+  // }
+
   closeVisibility(visibility: boolean): void {
     this.visible = visibility;
+    // Refrescar contactos cuando se cierra el modal
+    if (!visibility && this.customerId) {
+      this.loadCustomerContacts(this.customerId);
+    }
   }
 }

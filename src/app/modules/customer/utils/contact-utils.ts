@@ -8,7 +8,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
  * Utility class for contact person-related business logic and operations.
  * Works with ContactPersonService's reactive signals while providing additional functionality.
  */
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 export class ContactUtils {
   private readonly contactPersonService = inject(ContactPersonService);
   private readonly injector = inject(EnvironmentInjector);
@@ -168,5 +168,22 @@ export class ContactUtils {
     ).subscribe({
       next: (err) => observer.error(err)
     });
+  }
+
+  /**
+ * Gets all contact persons for a specific customer using signals
+ * @param customerId - ID of the customer
+ * @returns Observable emitting array of contact persons filtered by customer ID
+ */
+  getContactsByCustomerId(customerId: number): Observable<ContactPerson[]> {
+    return toObservable(this.contactPersonService.contactPersons).pipe(
+      map(contacts => contacts.filter(
+        contact => contact.customer?.id === customerId
+      )),
+      catchError(err => {
+        console.error('Error loading contacts for customer:', err);
+        return throwError(() => new Error('Failed to load contacts for customer'));
+      })
+    );
   }
 }
