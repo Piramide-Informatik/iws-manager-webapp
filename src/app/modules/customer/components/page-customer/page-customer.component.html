@@ -6,6 +6,7 @@
           [options]="customers()" 
           class="search-box w-auto"
           [(ngModel)]="selectedCustomer" 
+          (ngModelChange)="onCustomerChange()" 
           optionLabel="companyName" 
           optionValue="id" 
           [filter]="true" 
