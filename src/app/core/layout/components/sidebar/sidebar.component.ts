@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { debounceTime, filter, Subscription } from 'rxjs';
+import { debounceTime, filter, Subscription, timer } from 'rxjs';
 import { MainMenu, MenuItem, MenuSection } from '../../interfaces/menu-master-data-interface';
 import { SidebarStateService } from '../../sidebar-state.service';
+import { TieredMenu } from 'primeng/tieredmenu';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,6 +26,7 @@ export class SidebarComponent {
         }[];
     }[] = [];
   private langSubscription!: Subscription;
+  @ViewChild('menu') tieredmenu !: TieredMenu;
   private static readonly MENU_SECTIONS: Record<string, { label: string, path: string }[]> = {
     PEOPLE: [
       { label: 'USER', path: 'user' },
@@ -148,5 +150,21 @@ export class SidebarComponent {
 
   toggleSidebar(): void {
     this.sidebarState.toggleSidebarLocalStorage();
+  }
+
+  openMenu(event: any) {
+     this.tieredmenu.toggle(event);
+     this.waitTime(5000);
+  }
+
+  showMenu(event: any) {
+    this.tieredmenu.show(event);
+    this.waitTime(5000);
+  }
+
+  waitTime(timeout: number) {
+    timer(timeout).subscribe(() => {
+      this.tieredmenu.hide();
+    });
   }
 }

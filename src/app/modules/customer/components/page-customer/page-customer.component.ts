@@ -52,6 +52,7 @@ export class PageCustomerComponent implements OnInit {
   }
 
   onSelectedItem(event: SelectChangeEvent) {
+    this.loadSidebarItems();
     this.router.navigate(['customers/customer-details', event.value], { 
       state: { customer: event.value, customerData: {}} 
     });
