@@ -4,12 +4,13 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 0.5rem;
-  align-items: left;
+  align-items: center;
   width: 100%;
   
   label {
     margin-bottom: 0;
-    width: 40%;
+    width: 120px;
+    flex-shrink: 0;
   }
 
   .p-select {
@@ -24,13 +25,14 @@
   .postal-city {
     width: 100%;
     display: flex;
-    gap: 3px;
+    gap: 5px;
     
     .postal {
       width: 33.333%;
+      
     }
     .city {
-      width: 66.666%;
+      width: 100%;
     }
   }
 
