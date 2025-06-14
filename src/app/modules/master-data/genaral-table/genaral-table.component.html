@@ -1,5 +1,6 @@
 <div class="card">
-  <p-table id="iwstable"
+  <p-table
+    id="iwstable"
     #dt2
     [value]="tableValues"
     dataKey="id"
@@ -14,25 +15,24 @@
     [scrollable]="true"
     showGridlines
     scrollHeight="60vh"
-    [tableStyle]="{ 'width': '100%', 'border-spacing': '1px' }"
+    [tableStyle]="{ width: '100%', 'border-spacing': '1px' }"
     [globalFilterFields]="dataKeys"
     (onFilter)="onTableFilterChange($event)"
     stateStorage="local"
-    [stateKey]="tableId+'-table-state'"
+    [stateKey]="tableId + '-table-state'"
   >
-
     <ng-template #header let-columns>
       <tr>
-          <th id="hide-columns" class="thead-bg-blue" >
-              <p-multiselect 
-                [options]="this.columns" 
-                [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
-                (onChange)="changeSelect($event)"
-                optionLabel="header"
-                [maxSelectedLabels]="0"
-                [appendTo]="'body'"
-                dropdownIcon="pi pi-eye"
-              />
+        <th id="hide-columns" class="thead-bg-blue">
+          <p-multiselect
+            [options]="this.columns"
+            [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
+            (onChange)="changeSelect($event)"
+            optionLabel="header"
+            [maxSelectedLabels]="0"
+            [appendTo]="'body'"
+            dropdownIcon="pi pi-eye"
+          />
         </th>
         <th
           id="data-column"
@@ -43,69 +43,81 @@
           pResizableColumn
           class="thead"
         >
-        <div class="flex justify-content-between">
-          {{ col.header }} <p-sortIcon [field]="col.field" />
-        </div>
+          <div class="flex justify-content-between">
+            {{ col.header }} <p-sortIcon [field]="col.field" />
+          </div>
         </th>
       </tr>
       <tr *ngIf="filterByColumns">
         <th scope="col"></th>
         <th scope="col" *ngFor="let col of columns; let i = index">
-            @if(col.filter && col.filter.type === 'multiple') {
-              <p-columnFilter [field]="col.field" matchMode="in" [showMenu]="false">
-                  <ng-template #filter let-value let-filter="filterCallback">
-                      <p-multiselect 
-                        [ngModel]="value" 
-                        [options]="col.filter.data"
-                        (onChange)="filter($event.value)" 
-                        [placeholder]="'COMMON.ANY' | translate"
-                        [style.min-width.rem]="14"
-                        [panelStyle]="{ minWidth: '16rem' }"
-                        [appendTo]="'body'">
-                      </p-multiselect>
-                  </ng-template>
-              </p-columnFilter>
-            } @else if (col.filter && col.filter.type === 'boolean') {
-              <p-columnFilter [field]="col.field" matchMode="equals" [showMenu]="false">
-                  <ng-template #filter let-value let-filter="filterCallback">
-                      <p-select 
-                        [ngModel]="value" 
-                        [options]="booleanHeaders" 
-                        optionLabel="header" 
-                        optionValue="value" 
-                        (onChange)="filter($event.value)" 
-                        [placeholder]="'COMMON.SELECT_ONE' | translate"
-                        styleClass="w-full" 
-                        [appendTo]="'body'">
-                      </p-select>
-                  </ng-template>
-              </p-columnFilter>
-            } @else {
-              <p-columnFilter 
-                  type="text"
-                  [field]="col.field"
-                  matchMode="contains"
-                  ariaLabel="Filter Name">
-                  <ng-template #filter let-value let-filter="filterCallback">
-                      <input type="text"
-                          pInputText
-                          [ngModel]="value"
-                          (ngModelChange)="filter($event)"
-                          class="p-inputtext"
-                          [placeholder]="'COMMON.SEARCH' | translate">
-                  </ng-template>
-              </p-columnFilter>
-            }       
+          @if(col.filter && col.filter.type === 'multiple') {
+          <p-columnFilter [field]="col.field" matchMode="in" [showMenu]="false">
+            <ng-template #filter let-value let-filter="filterCallback">
+              <p-multiselect
+                [ngModel]="value"
+                [options]="col.filter.data"
+                (onChange)="filter($event.value)"
+                [placeholder]="'COMMON.ANY' | translate"
+                [style.min-width.rem]="14"
+                [panelStyle]="{ minWidth: '16rem' }"
+                [appendTo]="'body'"
+              >
+              </p-multiselect>
+            </ng-template>
+          </p-columnFilter>
+          } @else if (col.filter && col.filter.type === 'boolean') {
+          <p-columnFilter
+            [field]="col.field"
+            matchMode="equals"
+            [showMenu]="false"
+          >
+            <ng-template #filter let-value let-filter="filterCallback">
+              <p-select
+                [ngModel]="value"
+                [options]="booleanHeaders"
+                optionLabel="header"
+                optionValue="value"
+                (onChange)="filter($event.value)"
+                [placeholder]="'COMMON.SELECT_ONE' | translate"
+                styleClass="w-full"
+                [appendTo]="'body'"
+              >
+              </p-select>
+            </ng-template>
+          </p-columnFilter>
+          } @else {
+          <p-columnFilter
+            type="text"
+            [field]="col.field"
+            matchMode="contains"
+            ariaLabel="Filter Name"
+          >
+            <ng-template #filter let-value let-filter="filterCallback">
+              <input
+                type="text"
+                pInputText
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                class="p-inputtext"
+                [placeholder]="'COMMON.SEARCH' | translate"
+              />
+            </ng-template>
+          </p-columnFilter>
+          }
         </th>
       </tr>
     </ng-template>
 
     <ng-template #body let-row let-i="rowIndex" let-columns="columns">
-      <tr [ngClass]="{
-        'odd-row': i % 2 !== 0,
-        'even-row': i % 2 === 0,
-        'clickable-title': tableId !== 'ListCustomers' && tableId !== 'DetailCustomer'
-      }">
+      <tr
+        [ngClass]="{
+          'odd-row': i % 2 !== 0,
+          'even-row': i % 2 === 0,
+          'clickable-title':
+            tableId !== 'ListCustomers' && tableId !== 'DetailCustomer'
+        }"
+      >
         <td>
           <div class="flex justify-content-center gap-2">
             <button
@@ -125,20 +137,38 @@
         <td
           *ngFor="let col of columns; let i = index"
           [ngClass]="col.customClasses ? col.customClasses : ''"
-          (click)="(i === 0 && tableId !== 'ListCustomers') ? editRegister(row) : onClickRow(row)"
-          (keydown.enter)="(i === 0 && tableId !== 'ListCustomers') ? editRegister(row) : onClickRow(row)"
-          [class.clickable-title]="(i === 0 && tableId !== 'ListCustomers') || (i === 1 && tableId === 'ListCustomers')"
-          [style.cursor]="(i === 0 && tableId !== 'ListCustomers') || (i === 1 && tableId === 'ListCustomers') ? 'pointer' : 'default'"
+          (click)="
+            i === 0 && tableId !== 'ListCustomers'
+              ? editRegister(row)
+              : onClickRow(row)
+          "
+          (keydown.enter)="
+            i === 0 && tableId !== 'ListCustomers'
+              ? editRegister(row)
+              : onClickRow(row)
+          "
+          [class.clickable-title]="
+            (i === 0 && tableId !== 'ListCustomers') ||
+            (i === 1 && tableId === 'ListCustomers')
+          "
+          [style.cursor]="
+            (i === 0 && tableId !== 'ListCustomers') ||
+            (i === 1 && tableId === 'ListCustomers')
+              ? 'pointer'
+              : 'default'
+          "
         >
-          @if(col.filter && col.filter.type === 'boolean') {
-            @if(row[col.field] == true) {
-              <i class="pi text-green-500 pi-check"></i>
-            } @else {
-              <i class="pi text-red-500 pi-times"></i>
-            }
-
+          @if(col.filter && col.filter.type === 'boolean') { @if(row[col.field]
+          == true) {
+          <i class="pi text-green-500 pi-check"></i>
           } @else {
-            {{ col.type === 'date' ? (row[col.field] | date : col.format ) : row[col.field] }}
+          <i class="pi text-red-500 pi-times"></i>
+          } } @else {
+          {{
+            col.type === "date"
+              ? (row[col.field] | date : col.format)
+              : row[col.field]
+          }}
           }
         </td>
       </tr>
@@ -147,9 +177,9 @@
     <ng-template #emptymessage>
       <tr>
         <td colspan="7">
-          <p-message severity="info"
-            >{{ 'TABLES.NO_RESULTS_FOUND' | translate }}</p-message
-          >
+          <p-message severity="info">{{
+            "TABLES.NO_RESULTS_FOUND" | translate
+          }}</p-message>
         </td>
       </tr>
     </ng-template>
@@ -164,20 +194,19 @@
           (click)="createRegister('new register')"
           (keydown.enter)="createRegister('new register')"
         />
-  
+
         @if(isFileUploadButtonVisible) {
-          <p-fileUpload
-            mode="basic"
-            [accept]="acceptFilesFormats"
-            [maxFileSize]="5000000"
-            [chooseLabel]="'BUTTONS.IMPORT' | translate"
-            auto
-            customUpload
-            class="mr-2 inline-block"
-          />
+        <p-fileUpload
+          mode="basic"
+          [accept]="acceptFilesFormats"
+          [maxFileSize]="5000000"
+          [chooseLabel]="'BUTTONS.IMPORT' | translate"
+          auto
+          customUpload
+          class="mr-2 inline-block"
+        />
         }
       </div>
-      
     </ng-template>
   </p-toolbar>
 </div>
