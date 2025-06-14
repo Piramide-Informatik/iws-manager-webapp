@@ -5,5 +5,13 @@
 }
 
 .search-box {
-  width: 200px !important;
+  min-width: 200px !important;
+}
+
+:host ::ng-deep .p-select-label {
+  margin-right: 10px !important;
+}
+
+:host ::ng-deep .p-select-dropdown {
+  justify-content: end;
 }

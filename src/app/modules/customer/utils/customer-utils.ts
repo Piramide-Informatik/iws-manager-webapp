@@ -1,8 +1,9 @@
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer.model';
 
+@Injectable({ providedIn: 'root' }) 
 /**
  * Utility class for customer-related business logic and operations.
  * Works with CustomerService's reactive signals while providing additional functionality.

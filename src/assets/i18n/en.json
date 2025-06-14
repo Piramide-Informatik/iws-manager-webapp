@@ -64,12 +64,14 @@
     "YES": "Yes",
     "NO": "No",
     "SEARCH": "Search",
+    "SELECT_CUSTOMER": "Select a Customer",
     "SELECT_ONE": "Choose One",
-    "ANY": "Any"
+    "ANY": "Any",
+    "NO_DATA_AVAILABLE": "No data available"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries",
-    "NO_RESULTS_FOUND": "No results found."
+    "NO_RESULTS_FOUND": "No results found"
   },
   "BUTTONS": {
     "NEW": "New",

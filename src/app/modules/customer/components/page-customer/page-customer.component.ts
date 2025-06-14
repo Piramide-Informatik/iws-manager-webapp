@@ -1,8 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService, MenuItem } from 'primeng/api';
 import { CustomerService } from '../../../../Services/customer.service';
 import { SelectChangeEvent } from 'primeng/select';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CustomerUtils } from '../../utils/customer-utils';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-page-customer',
@@ -15,8 +18,16 @@ export class PageCustomerComponent implements OnInit {
   public customer!: string;
   public currentSidebarItems: MenuItem[] = [];
   private readonly customerService = inject(CustomerService);
-  customers: any[] = [];
-  selectedCustomer: number = 0;
+  private readonly customerUtils = inject(CustomerUtils);
+  public customers = toSignal(
+    this.customerUtils.getCustomersSortedByName().pipe(
+      map(customers => customers.map(customer =>({
+        id: customer.id,
+        companyName: customer.customername1
+      })))
+    )
+  );
+  selectedCustomer = signal(0);
 
   private readonly sidebarItemsConfig: { labelKey: string; route: string;}[] = [
     { labelKey: 'SIDEBAR.DETAILS', route: 'customer-details'},
@@ -38,17 +49,9 @@ export class PageCustomerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.customerService.getAllCustomers().subscribe(customers => {
-       this.customers = customers.map((customerItem: any) => ({
-         id: customerItem.id,
-         companyName: customerItem.customername1,
-       }))
-       this.customer =  ''+this.router.url.split('/').pop()
-       
-       this.selectedCustomer = this.customers.find(customerItem => customerItem.id === Number(this.customer)).id;
-      
-       this.loadSidebarItems();
-    })
+    this.customer =  ''+this.router.url.split('/').pop()
+    this.selectedCustomer.set(Number(this.customer))
+    this.loadSidebarItems();
   }
 
   onSelectedItem(event: SelectChangeEvent) {
@@ -60,7 +63,7 @@ export class PageCustomerComponent implements OnInit {
   loadSidebarItems(): void {
     this.currentSidebarItems = this.sidebarItemsConfig.map((item) => ({
       label: item.labelKey,
-       routerLink: ['/customers', item.route, this.selectedCustomer],
+       routerLink: ['/customers', item.route, this.selectedCustomer()],
     }));
   }
 }

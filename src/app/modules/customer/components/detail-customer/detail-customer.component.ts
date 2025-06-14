@@ -112,7 +112,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   ) {
 
     this.formDetailCustomer = this.fb.group({
-      customerNo: [123],
+      customerNo: [],
       companyText1: [''],
       companyText2: [''],
       selectedCountry: [''],
