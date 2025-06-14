@@ -142,15 +142,17 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     })
   }
 
-  goToCustomerDetails(currentCustomer: Customer) {    
-    this.router.navigate(['customer-details',currentCustomer.id], {
+  goToCustomerDetails(currentCustomer: Customer) {
+    this.router.navigate(['customer-details', currentCustomer.id], {
       relativeTo: this.route,
       state: { customer: currentCustomer.id, customerData: currentCustomer }
     });
   }
 
-  goToCustomerOverview(rowData: any) {
-    this.router.navigate(['/customers/customer-details', rowData.id]);
+  goToCustomerOverview(rowData: any, event?: MouseEvent) {
+    const url = this.router.createUrlTree(['/customers/customer-details', rowData.id]).toString();
+
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   goToCustomerRegister() {

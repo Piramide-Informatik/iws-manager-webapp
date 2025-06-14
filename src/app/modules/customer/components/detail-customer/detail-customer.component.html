@@ -109,7 +109,7 @@
 
         <div class="field">
           <label for="weekWorkingHours">{{ 'CUSTOMERS.FORM.ENTREPRENEURIAL_WEEKLY_WORKING_HOURS' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" id="weekWorkingHours" formControlName="weekWorkingHours" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5" locale="de-DE"/>
+          <p-inputNumber class="p-inputnumber-input" id="weekWorkingHours" formControlName="weekWorkingHours" mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <div class="field">
@@ -124,12 +124,12 @@
 
         <div class="field">
           <label for="maxHoursMonth">{{ 'CUSTOMERS.FORM.MAX_HOURS_MONTH' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursMonth" formControlName="maxHoursMonth" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5" locale="de-DE"/>
+          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursMonth" formControlName="maxHoursMonth" mode="decimal"[max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <div class="field">
           <label for="maxHoursYear">{{ 'CUSTOMERS.FORM.MAX_HOURS_YEAR' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursYear" formControlName="maxHoursYear" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5" locale="de-DE"/>
+          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursYear" formControlName="maxHoursYear" mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <p-floatlabel variant="on">
