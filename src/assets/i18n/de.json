@@ -90,7 +90,8 @@
     "ERROR": "FEHLER",
     "UPDATE_SUCCESS": "Erfolgreich aktualisiert",
     "UPDATE_FAILED": "Update fehlgeschlagen",
-    "CREATE_SUCCESS": "Erfolgreich erstellt"
+    "CREATE_SUCCESS": "Erfolgreich erstellt",
+    "SELECT_AT_LEAST_ONE": "Es muss mindestens eine Spalte ausgewählt sein."
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",
