@@ -140,6 +140,12 @@
       }
     }
   }
+  .pseudo-hover {
+    background-color: #30465d;
+    transform: scale(1.02) scaleX(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding-left: 0.95rem;
+  }
 
   .collapse-button {
     position: absolute;

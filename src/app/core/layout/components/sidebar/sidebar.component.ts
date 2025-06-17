@@ -149,4 +149,12 @@ export class SidebarComponent {
   toggleSidebar(): void {
     this.sidebarState.toggleSidebarLocalStorage();
   }
+
+  onMenuHide() {
+    this.showPopup = false;
+  }
+
+  onMenuShow(){
+    this.showPopup = true;
+  }
 }
