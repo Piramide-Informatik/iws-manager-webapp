@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
+import { MultiSelect } from 'primeng/multiselect';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 
@@ -25,6 +27,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   displayedColumns: any[] = [];
   booleanHeaders: any[] = [];
   @Input() userPreferences: any = [];
+  colOrders: any = {};
 
   @Output() onEditRegister = new EventEmitter<any>();
   @Output() onDeleteRegister = new EventEmitter<number>();
@@ -35,10 +38,12 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   private langSubscription!: Subscription;
 
   @ViewChild('dt2') dt2!: Table;
+  @ViewChild('hiddenColumns') selectHiddenColumns!: MultiSelect;
 
 
   constructor(
     private readonly translate: TranslateService,
+    private readonly messageService: MessageService
   ){}
 
   generateBooleanHeaders() : any[] {
@@ -55,8 +60,23 @@ export class GenaralTableComponent implements OnInit, OnChanges {
   }
  
   changeSelect(event: any) {
-    this.userPreferences[this.tableId].displayedColumns = event.value;
-    this.onColumnChanges.emit(this.userPreferences);
+    if (event.value.length === 0) {
+        this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('MESSAGE.SELECT_AT_LEAST_ONE')
+      });
+      if (event.itemValue) {
+        this.selectHiddenColumns.updateModel([event.itemValue])
+      } else {
+        this.selectHiddenColumns.updateModel([this.columns[0]])
+        this.userPreferences[this.tableId].displayedColumns = [this.columns[0]];
+      }
+    } else {
+      this.userPreferences[this.tableId].displayedColumns = event.value;
+      this.processColumnsOrders();
+      this.onColumnChanges.emit(this.userPreferences);
+    }
   }
 
   onTableFilterChange(event: any) {
@@ -71,6 +91,10 @@ export class GenaralTableComponent implements OnInit, OnChanges {
     if (columnsChange && !columnsChange.firstChange) {
       this.columns = columnsChange.currentValue;
       this.selectedColumns = [...this.columns];
+      this.calculateOrderColumns();
+      if (this.userPreferences[this.tableId] && this.userPreferences[this.tableId].displayedColumns) {
+        this.processColumnsOrders();
+      }
     }
 
     let valueChange = changes['tableValues'];
@@ -91,6 +115,10 @@ export class GenaralTableComponent implements OnInit, OnChanges {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.booleanHeaders = this.generateBooleanHeaders();
     });
+    this.calculateOrderColumns();
+    if (this.userPreferences[this.tableId] && this.userPreferences[this.tableId].displayedColumns) {
+      this.processColumnsOrders();
+    }
   }
 
   editRegister(register: any){
@@ -114,5 +142,19 @@ export class GenaralTableComponent implements OnInit, OnChanges {
 
   onClickRow(row: any) {
     this.onRowClickEvent.emit(row);
+  }
+
+  calculateOrderColumns() {
+    if (this.columns) {
+       this.colOrders = this.columns.reduce((acc: any, curr: any, index: number) => {
+       acc[curr.field] = index;
+       return acc;
+      }, {})
+    }
+  }
+
+  processColumnsOrders() {
+    const aux = this.userPreferences[this.tableId].displayedColumns;
+    this.userPreferences[this.tableId].displayedColumns = aux.map((column: any) => Object.assign(column, {pos: this.colOrders[column.field]})).sort((a: any, b: any) => a.pos > b.pos);
   }
 }

@@ -90,7 +90,8 @@
     "ERROR": "ERROR",
     "UPDATE_SUCCESS": "Actualización exitosa",
     "UPDATE_FAILED": "Actualización fallida",
-    "CREATE_SUCCESS": "Creación exitosa"
+    "CREATE_SUCCESS": "Creación exitosa",
+    "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada."
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmación",
