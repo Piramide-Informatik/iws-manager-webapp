@@ -92,7 +92,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
       this.columns = columnsChange.currentValue;
       this.selectedColumns = [...this.columns];
       this.calculateOrderColumns();
-      if (this.userPreferences[this.tableId] && this.userPreferences[this.tableId].displayedColumns) {
+      if (this.userPreferences[this.tableId]?.displayedColumns) {
         this.processColumnsOrders();
       }
     }
@@ -116,7 +116,7 @@ export class GenaralTableComponent implements OnInit, OnChanges {
       this.booleanHeaders = this.generateBooleanHeaders();
     });
     this.calculateOrderColumns();
-    if (this.userPreferences[this.tableId] && this.userPreferences[this.tableId].displayedColumns) {
+    if (this.userPreferences[this.tableId]?.displayedColumns) {
       this.processColumnsOrders();
     }
   }
