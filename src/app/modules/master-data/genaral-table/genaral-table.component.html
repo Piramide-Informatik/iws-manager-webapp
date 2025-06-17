@@ -25,6 +25,7 @@
       <tr>
         <th id="hide-columns" class="thead-bg-blue">
           <p-multiselect
+            #hiddenColumns
             [options]="this.columns"
             [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
             (onChange)="changeSelect($event)"
