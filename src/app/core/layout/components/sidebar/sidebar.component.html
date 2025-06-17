@@ -21,6 +21,7 @@
         (mouseenter)="menu.show($event)"
         (click)="menu.toggle($event)"
         (keypress)="menu.toggle($event)"
+        [class.pseudo-hover]="showPopup"
       >
         <a class="p-menuitem-link">
           <i class="pi pi-cog"></i>
@@ -28,7 +29,7 @@
           <i class="pi pi-angle-right arrow-icon"></i>
         </a>
       </div>
-      <p-tieredmenu #menu [model]="masterDataGroups" [popup]="true">
+      <p-tieredmenu #menu [model]="masterDataGroups" [popup]="true" (onHide)="onMenuHide()" (onShow)="onMenuShow()">
         <ng-template #item let-item let-hasSubmenu="hasSubmenu">
           <ng-container *ngIf="item.routerLink; else withoutRoute">
             <a [routerLink]="item.routerLink" 
