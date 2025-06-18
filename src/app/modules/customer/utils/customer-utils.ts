@@ -39,12 +39,11 @@ export class CustomerUtils {
             return throwError(() => new Error('Customer name cannot be empty'));
         }
 
-        return this.customerService.addCustomer(customer).pipe(
-            map(() => undefined), // Transformamos la respuesta para que sea un Observable<void>
-            catchError((error) => {
-                return throwError(() => new Error(`Failed to create customer: ${error.message}`));
-            })
-        );
+        return new Observable<void>(subscriber => {
+            this.customerService.addCustomer(customer);
+            subscriber.next();
+            subscriber.complete();
+        });
     }
 
     /**

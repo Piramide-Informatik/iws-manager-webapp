@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Customer } from '../../../../Entities/customer.model';
+import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../../../Services/customer.service';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -114,7 +114,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly contactStateService: ContactStateService,
     private customerUtils: CustomerUtils,
-    private readonly messageService: MessageService 
+    private readonly messageService: MessageService
   ) {
     this.formDetailCustomer = this.fb.group({
       customerNo: [],
@@ -265,66 +265,72 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
   createCustomer() {
     if (this.formDetailCustomer.invalid) {
-        console.error('Form is invalid');
-        return;
+      console.error('Form is invalid');
+      return;
     }
 
-    const formValues = this.formDetailCustomer.value;
-
-    const newCustomer: Omit<Customer, 'id'> = {
-        city: formValues.city,
-        companytype: formValues.selectedTypeCompany
-            ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }
-            : null,
-        branch: formValues.selectedSector
-            ? { id: formValues.selectedSector, name: '', version: 0 }
-            : null,
-        country: formValues.selectedCountry
-            ? { id: formValues.selectedCountry, version: 0, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
-            : null,
-        customerno: formValues.customerNo,
-        customername1: formValues.companyText1,
-        customername2: formValues.companyText2,
-        email1: formValues.invoiceEmail,
-        email2: null,
-        email3: null,
-        email4: null,
-        homepage: formValues.homepage,
-        hoursperweek: formValues.weekWorkingHours?.toString(),
-        maxhoursmonth: formValues.maxHoursMonth?.toString(),
-        maxhoursyear: formValues.maxHoursYear?.toString(),
-        note: formValues.textAreaComment,
-        phone: formValues.phone,
-         state: formValues.selectedState
-            ? { id: formValues.selectedState, name: '', createdAt: '', updatedAt: '', version: 0 }
-            : null,
-        street: formValues.street,
-        taxno: formValues.taxNumber,
-        taxoffice: formValues.headcount,
-        zipcode: formValues.postalCode
-    };
+    const newCustomer = this.buildCustomerFromForm();
 
     this.customerUtils.createNewCustomer(newCustomer).subscribe({
-        next: () => {
-            this.messageService.add({
-                severity: 'success',
-                summary: this.translate.instant('CUSTOMERS.MESSAGE.SUCCESS'),
-                detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_SUCCESS')
-            });
-            this.clearForm(); // Limpia el formulario después de crear el cliente
-        },
-        error: (err) => {
-            console.error('Error creating customer:', err);
-            this.messageService.add({
-                severity: 'error',
-                summary: this.translate.instant('CUSTOMERS.MESSAGE.ERROR'),
-                detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_FAILED')
-            });
-        }
+      next: () => this.handleSuccess(),
+      error: (err) => this.handleError(err)
     });
-}
+  }
 
+  private buildCustomerFromForm(): Omit<Customer, 'id'> {
+    const formValues = this.formDetailCustomer.value;
+
+    return {
+      city: formValues.city,
+      companytype: formValues.selectedTypeCompany
+        ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }
+        : null,
+      branch: formValues.selectedSector
+        ? { id: formValues.selectedSector, name: '', version: 0 }
+        : null,
+      country: formValues.selectedCountry
+        ? { id: formValues.selectedCountry, version: 0, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
+        : null,
+      customerno: formValues.customerNo,
+      customername1: formValues.companyText1,
+      customername2: formValues.companyText2,
+      email1: formValues.invoiceEmail,
+      homepage: formValues.homepage,
+      hoursperweek: formValues.weekWorkingHours?.toString(),
+      maxhoursmonth: formValues.maxHoursMonth?.toString(),
+      maxhoursyear: formValues.maxHoursYear?.toString(),
+      note: formValues.textAreaComment,
+      phone: formValues.phone,
+      state: formValues.selectedState
+        ? { id: formValues.selectedState, name: '', createdAt: '', updatedAt: '', version: 0 }
+        : null,
+      street: formValues.street,
+      taxno: formValues.taxNumber,
+      taxoffice: formValues.headcount,
+      zipcode: formValues.postalCode,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  private handleSuccess(): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant('CUSTOMERS.MESSAGE.SUCCESS'),
+      detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_SUCCESS')
+    });
+    this.clearForm();
+  }
+
+  private handleError(err: any): void {
+    console.error('Error creating customer:', err);
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translate.instant('CUSTOMERS.MESSAGE.ERROR'),
+      detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_FAILED')
+    });
+  }
   clearForm(): void {
-    this.formDetailCustomer.reset(); // Limpia el formulario
+    this.formDetailCustomer.reset();
   }
 }
