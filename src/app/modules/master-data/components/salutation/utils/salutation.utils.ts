@@ -43,7 +43,7 @@ export class SalutationUtils {
 
     return new Observable<void>(subscriber => {
       this.salutationService.addSalutation({
-        name: nameSalutation.trim()
+        name: nameSalutation.trim(),
       });
 
       // Complete the observable after operation
