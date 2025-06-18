@@ -76,8 +76,13 @@ export class CustomerService {
     }
 
     getCustomerById(id: number): Observable<Customer | undefined> {
-        return this.getAllCustomers().pipe(
-            map(customers => customers.find(c => c.id === id))
+        return this.http.get<Customer>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch customer by id');
+                console.error(err);
+                return of(undefined as unknown as Customer);
+            })
         );
     }
 
