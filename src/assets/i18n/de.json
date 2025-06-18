@@ -133,7 +133,9 @@
       "COMMENT": "Kommentar"
     },
     "LABELS": {
-      "CONTACT_PERSON": "Ansprechpartner"
+      "CONTACT_PERSON": "Ansprechpartner",
+      "DELETE_CUSTOMER": "Kunde löschen",
+      "REMOVE_CUSTOMER_QUESTION": "Möchten Sie den Kunde wirklich löschen "
     },
     "CONTACT_TABLE": {
       "NAME": "Name",
