@@ -48,20 +48,21 @@ export class CustomerService {
     }
 
     // CREATE
-    addCustomer(customer: Omit<Customer, 'id'>): void {
-        this.http.post<Customer>(this.apiUrl, customer, this.httpOptions).pipe(
-            tap({
-                next: (newCustomer) => {
-                    this._customers.update(customers => [...customers, newCustomer]);
-                    this._error.set(null);
-                },
-                error: (err) => {
-                    this._error.set('Failed to add customer');
-                    console.error('Error adding customer:', err);
-                }
-            })
-        ).subscribe();
-    }
+addCustomer(customer: Omit<Customer, 'id'>): Observable<Customer> {
+    return this.http.post<Customer>(this.apiUrl, customer, this.httpOptions).pipe(
+        tap({
+            next: (newCustomer) => {
+                this._customers.update(customers => [...customers, newCustomer]);
+                this._error.set(null);
+            },
+            error: (err) => {
+                this._error.set('Failed to add customer');
+                console.error('Error adding customer:', err);
+            }
+        }),
+        catchError(this.handleError)
+    );
+}
 
     // READ
     getAllCustomers(): Observable<Customer[]> {

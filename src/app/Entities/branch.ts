@@ -1,4 +1,5 @@
 export interface Branch{
     id: number;
-    name: string; 
+    name: string;
+    version?: number;
 }

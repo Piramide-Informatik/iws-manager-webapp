@@ -139,6 +139,12 @@
       "NAME": "Name",
       "FUNCTION": "Funktion",
       "LAW": "Rechnungsempfänger"
+    },
+    "MESSAGE": {
+      "SUCCESS": "ERFOLG",
+      "CREATE_SUCCESS": "Kunde erfolgreich erstellt.",
+      "ERROR": "Fehler",
+      "CREATE_FAILED": "Kunde konnte nicht erstellt werden."
     }
   },
   "CONTACT": {

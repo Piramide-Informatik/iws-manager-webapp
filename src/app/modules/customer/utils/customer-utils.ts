@@ -3,7 +3,7 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer.model';
 
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 /**
  * Utility class for customer-related business logic and operations.
  * Works with CustomerService's reactive signals while providing additional functionality.
@@ -29,21 +29,22 @@ export class CustomerUtils {
     }
 
     /**
-     * Creates a new customer with validation
-     * @param customer - Customer object to create (without id)
-     * @returns Observable that completes when customer is created
-     */
+ * Creates a new customer with validation
+ * @param customer - Customer object to create (without id)
+ * @returns Observable that completes when customer is created
+ */
     createNewCustomer(customer: Omit<Customer, 'id'>): Observable<void> {
-        // Puedes agregar validaciones aquí según tus reglas de negocio
+        // Validación básica
         if (!customer.customername1?.trim()) {
             return throwError(() => new Error('Customer name cannot be empty'));
         }
 
-        return new Observable<void>(subscriber => {
-            this.customerService.addCustomer(customer);
-            subscriber.next();
-            subscriber.complete();
-        });
+        return this.customerService.addCustomer(customer).pipe(
+            map(() => undefined), // Transformamos la respuesta para que sea un Observable<void>
+            catchError((error) => {
+                return throwError(() => new Error(`Failed to create customer: ${error.message}`));
+            })
+        );
     }
 
     /**

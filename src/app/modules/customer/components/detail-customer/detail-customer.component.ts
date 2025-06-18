@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Customer } from '../../../../Entities/customer';
+import { Customer } from '../../../../Entities/customer.model';
 import { CustomerService } from '../../../../Services/customer.service';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -16,12 +16,12 @@ import { StateUtils } from '../../../master-data/components/states/utils/state-u
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
 import { BranchUtils } from '../../utils/branch-utils';
-
+import { MessageService } from 'primeng/api';
 interface Column {
   field: string,
   header: string
   customClasses?: string[]
-  styles?: { },
+  styles?: {},
   filter?: { type: 'boolean' | 'multiple' }
 }
 
@@ -33,7 +33,7 @@ interface Column {
 })
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
-  private readonly customerUtils = new CustomerUtils();
+
   public selectedCountry!: string;
   public selectedTypeCompany!: string;
   public cols!: Column[];
@@ -45,7 +45,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   private readonly countryUtils = inject(CountryUtils);
   countries = toSignal(
     this.countryUtils.getCountriesSortedByName().pipe(
-      map(countries => countries.map(country =>({
+      map(countries => countries.map(country => ({
         id: country.id,
         name: country.name
       })))
@@ -71,7 +71,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
-   public sectors = toSignal(
+  public sectors = toSignal(
     this.branchUtils.getBranchesSortedByName().pipe(
       map(branches => branches.map(branch => ({
         name: branch.name,
@@ -92,7 +92,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public formDetailCustomer!: FormGroup;
 
-  public readonly contactPersons = computed(()=> {
+  public readonly contactPersons = computed(() => {
     return this.contactPersonService.contactPersons().map(contact => ({
       id: contact.id,
       name: `${contact.firstName} ${contact.lastName}`,
@@ -108,9 +108,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly translate: TranslateService,
-    private readonly contactStateService: ContactStateService 
+    private readonly contactStateService: ContactStateService,
+    private customerUtils: CustomerUtils,
+    private readonly messageService: MessageService 
   ) {
-
     this.formDetailCustomer = this.fb.group({
       customerNo: [],
       companyText1: [''],
@@ -149,7 +150,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params
       .subscribe(params => {
-        this.customerId = params['id']; 
+        this.customerId = params['id'];
         this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
           const formData = {
             customerNo: customer?.customerno,
@@ -209,7 +210,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
@@ -228,7 +229,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.contactStateService.setCountryToEdit(this.currentContactPerson);
   }
 
-  createPerson(){
+  createPerson() {
     this.modalType = 'create';
     this.currentContactPerson = null;
     this.visible = true;
@@ -237,5 +238,69 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   closeVisibility(visibility: boolean): void {
     this.visible = visibility;
+  }
+  createCustomer() {
+    if (this.formDetailCustomer.invalid) {
+        console.error('Form is invalid');
+        return;
+    }
+
+    const formValues = this.formDetailCustomer.value;
+
+    const newCustomer: Omit<Customer, 'id'> = {
+        city: formValues.city,
+        companytype: formValues.selectedTypeCompany
+            ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }
+            : null,
+        branch: formValues.selectedSector
+            ? { id: formValues.selectedSector, name: '', version: 0 }
+            : null,
+        country: formValues.selectedCountry
+            ? { id: formValues.selectedCountry, version: 0, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
+            : null,
+        customerno: formValues.customerNo,
+        customername1: formValues.companyText1,
+        customername2: formValues.companyText2,
+        email1: formValues.invoiceEmail,
+        email2: null,
+        email3: null,
+        email4: null,
+        homepage: formValues.homepage,
+        hoursperweek: formValues.weekWorkingHours?.toString(),
+        maxhoursmonth: formValues.maxHoursMonth?.toString(),
+        maxhoursyear: formValues.maxHoursYear?.toString(),
+        note: formValues.textAreaComment,
+        phone: formValues.phone,
+         state: formValues.selectedState
+            ? { id: formValues.selectedState, name: '', createdAt: '', updatedAt: '', version: 0 }
+            : null,
+        street: formValues.street,
+        taxno: formValues.taxNumber,
+        taxoffice: formValues.headcount,
+        zipcode: formValues.postalCode
+    };
+
+    this.customerUtils.createNewCustomer(newCustomer).subscribe({
+        next: () => {
+            this.messageService.add({
+                severity: 'success',
+                summary: this.translate.instant('CUSTOMERS.MESSAGE.SUCCESS'),
+                detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_SUCCESS')
+            });
+            this.clearForm(); // Limpia el formulario después de crear el cliente
+        },
+        error: (err) => {
+            console.error('Error creating customer:', err);
+            this.messageService.add({
+                severity: 'error',
+                summary: this.translate.instant('CUSTOMERS.MESSAGE.ERROR'),
+                detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_FAILED')
+            });
+        }
+    });
+}
+
+  clearForm(): void {
+    this.formDetailCustomer.reset(); // Limpia el formulario
   }
 }
