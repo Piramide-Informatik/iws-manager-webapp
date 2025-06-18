@@ -33,8 +33,7 @@ export class CustomerUtils {
      * @param customer - Customer object to create (without id)
      * @returns Observable that completes when customer is created
      */
-    createNewCustomer(customer: Omit<Customer, 'id'>): Observable<void> {
-        // Puedes agregar validaciones aquí según tus reglas de negocio
+    createNewCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<void> {
         if (!customer.customername1?.trim()) {
             return throwError(() => new Error('Customer name cannot be empty'));
         }

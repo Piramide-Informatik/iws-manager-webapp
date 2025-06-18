@@ -48,7 +48,7 @@ export class CustomerService {
     }
 
     // CREATE
-    addCustomer(customer: Omit<Customer, 'id'>): void {
+    addCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
         this.http.post<Customer>(this.apiUrl, customer, this.httpOptions).pipe(
             tap({
                 next: (newCustomer) => {
