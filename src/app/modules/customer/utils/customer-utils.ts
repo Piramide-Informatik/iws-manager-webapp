@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
-import { Customer } from '../../../Entities/customer.model';
+import { Customer } from '../../../Entities/customer';
 
 @Injectable({ providedIn: 'root' }) 
 /**

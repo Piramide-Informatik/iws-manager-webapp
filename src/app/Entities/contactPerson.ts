@@ -1,4 +1,4 @@
-import { Customer } from "./customer.model";
+import { Customer } from "./customer";
 import { Salutation } from "./salutation";
 import { Title } from "./title";
 
