@@ -4,15 +4,6 @@ import { Title } from "./title";
 
 
 export interface ContactPerson {
-    // id: number;
-    // firstName: string;
-    // lastName: string;
-    // forInvoicing: number;
-    // function?: string;     
-    // salutation: Salutation;
-    // title: Title;
-    // customer?: Customer;  
-
     id: number;
     createdAt?: string; // ISO: "2025-06-17T06:21:35.281056"
     updatedAt?: string;
