@@ -5,29 +5,34 @@ import { State } from "./state";
 
 export interface Customer {
     id: number;
-    branch: Branch | null;
-    city: string | null;
-    companytype: CompanyType | null;
-    country: Country | null;
-    customerno: number | null;
-    customername1: string | null;
-    customername2: string | null;
-    email1: string | null;
-    email2: string | null;
-    email3: string | null;
-    email4: string | null;
-    homepage: string | null;
-    hoursperweek: string | null;
-    maxhoursmonth: string | null;
-    maxhoursyear: string | null;
-    note: string | null;
-    phone: string | null;
-    state: State | null;
-    street: string | null;
-    taxno: string | null;
-    taxoffice: string | null;
-    zipcode: string | null;
-    createdAt?: string;
-    updatedAt?: string;
-    version?: number;
+    createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
+    updatedAt: string;
+
+    branch?: Branch;
+    city?: string;
+    companytype?: CompanyType;
+    country: Country;
+    customerno?: number;
+
+    customername1?: string;
+    customername2?: string;
+
+    email1?: string;
+    email2?: string;
+    email3?: string;
+    email4?: string;
+
+    homepage?: string;
+    hoursperweek?: number;
+    maxhoursmonth?: number;
+    maxhoursyear?: number;
+
+    note?: string;
+    phone?: string;
+
+    state?: State;
+    street?: string;
+    taxno?: string;
+    taxoffice?: string;
+    zipcode?: string;
 }
