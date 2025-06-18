@@ -205,7 +205,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         this.loadingContacts.set(false);
       },
       error: (err) => {
-        this.errorContacts.set(err.message || 'Failed to load contacts');
+        this.errorContacts.set(err.message ?? 'Failed to load contacts');
         this.loadingContacts.set(false);
       }
     });
