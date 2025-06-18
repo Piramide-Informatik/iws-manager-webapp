@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { Customer } from '../Entities/customer';
 import { environment } from '../../environments/environment';
+import { ContactPerson } from '../Entities/contactPerson';
 
 @Injectable({
     providedIn: 'root'
@@ -15,9 +16,18 @@ export class CustomerService {
     private readonly _loading = signal<boolean>(false);
     private readonly _error = signal<string | null>(null);
 
+    private readonly _contacts = signal<ContactPerson[]>([]);
+    private readonly _contactsLoading = signal<boolean>(false);
+    private readonly _contactsError = signal<string | null>(null);
+
     public customers = this._customers.asReadonly();
     public loading = this._loading.asReadonly();
     public error = this._error.asReadonly();
+
+    
+    public contacts = this._contacts.asReadonly();
+    public contactsLoading = this._contactsLoading.asReadonly();
+    public contactsError = this._contactsError.asReadonly();
 
     private readonly httpOptions = {
         headers: new HttpHeaders({
@@ -133,5 +143,38 @@ export class CustomerService {
 
     public refreshCustomers(): void {
         this.loadInitialData();
+    }
+
+    // GET CONTACTS BY CUSTOMER ID
+    getCustomerContacts(customerId: number): Observable<ContactPerson[]> {
+        this._contactsLoading.set(true);
+        const url = `${this.apiUrl}/${customerId}/contacts`;
+        
+        return this.http.get<ContactPerson[]>(url, this.httpOptions).pipe(
+            tap({
+                next: (contacts) => {
+                    this._contacts.set(contacts);
+                    this._contactsError.set(null);
+                },
+                error: (err) => {
+                    this._contactsError.set('Failed to load contacts');
+                    console.error('Error loading contacts:', err);
+                }
+            }),
+            catchError(err => {
+                this._contactsError.set('Failed to fetch contacts');
+                console.error('Error fetching contacts:', err);
+                return of([]);
+            }),
+            tap(() => this._contactsLoading.set(false))
+        );
+    }
+
+    /**
+     * Cleans the state of the contacts
+     */
+    clearContacts(): void {
+        this._contacts.set([]);
+        this._contactsError.set(null);
     }
 }
