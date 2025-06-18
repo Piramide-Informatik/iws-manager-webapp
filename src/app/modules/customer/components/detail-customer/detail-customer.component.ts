@@ -6,7 +6,6 @@ import { CustomerService } from '../../../../Services/customer.service';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { BranchService } from '../../../../Services/branch.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
@@ -16,6 +15,7 @@ import { CustomerUtils } from '../../utils/customer-utils';
 import { StateUtils } from '../../../master-data/components/states/utils/state-utils';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
+import { BranchUtils } from '../../utils/branch-utils';
 
 interface Column {
   field: string,
@@ -41,6 +41,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public customers!: Customer[];
   private langSubscription!: Subscription;
   customerId!: number;
+  private readonly branchUtils = inject(BranchUtils);
   private readonly countryUtils = inject(CountryUtils);
   countries = toSignal(
     this.countryUtils.getCountriesSortedByName().pipe(
@@ -56,7 +57,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public modalType: 'create' | 'delete' | 'edit' = 'create';
   public currentContactPerson!: ContactPerson | null; // Para editarlo o eliminarlo 
 
-  private readonly branchService = inject(BranchService);
   private readonly companyTypeUtils = inject(CompanyTypeUtils);
   private readonly contactPersonService = inject(ContactPersonService);
   private readonly stateUtils = inject(StateUtils);
@@ -71,8 +71,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
-  public sectors = toSignal(
-    this.branchService.getBranchSortedByName().pipe(
+   public sectors = toSignal(
+    this.branchUtils.getBranchesSortedByName().pipe(
       map(branches => branches.map(branch => ({
         name: branch.name,
         code: branch.id

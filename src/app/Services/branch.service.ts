@@ -1,20 +1,29 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Branch } from '../Entities/branch';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BranchService {
-
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'assets/data/branch.json';
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/branches`;
 
+  private readonly httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    })
+  };
+
+  // Signals for reactive state
   private readonly _branches = signal<Branch[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
 
+  // Expose signals as read-only
   public branches = this._branches.asReadonly();
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
@@ -25,8 +34,7 @@ export class BranchService {
 
   private loadInitialData(): void {
     this._loading.set(true);
-    this.http.get<{ branches: Branch[] }>(this.apiUrl).pipe(
-      map(response => response.branches),
+    this.http.get<Branch[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (branches) => {
           this._branches.set(branches);
@@ -34,7 +42,7 @@ export class BranchService {
         },
         error: (err) => {
           this._error.set('Failed to load branches');
-          console.error(err);
+          console.error('Error loading branches:', err);
         }
       }),
       catchError(() => of([])),
@@ -43,33 +51,68 @@ export class BranchService {
   }
 
   // CREATE
-  addBranch(branch: Omit<Branch, 'uuid'>): void {
-    const newBranch: Branch = {
-      ...branch,
-      uuid: this.generateUUID()
-    };
-    this._branches.update(branches => [...branches, newBranch]);
+  addBranch(branch: Omit<Branch, 'id'>): void {
+    this.http.post<Branch>(this.apiUrl, branch, this.httpOptions).pipe(
+      tap({
+        next: (newBranch) => {
+          this._branches.update(branches => [...branches, newBranch]);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add branch');
+          console.error('Error adding branch:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // UPDATE
   updateBranch(updatedBranch: Branch): void {
-    this._branches.update(branches =>
-      branches.map(b => b.uuid === updatedBranch.uuid ? updatedBranch : b)
-    );
+    const url = `${this.apiUrl}/${updatedBranch.id}`;
+    this.http.put<Branch>(url, updatedBranch, this.httpOptions).pipe(
+      tap({
+        next: (res) => {
+          this._branches.update(branches =>
+            branches.map(b => b.id === res.id ? res : b)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to update branch');
+          console.error('Error updating branch:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // DELETE
-  deleteBranch(uuid: string): void {
-    this._branches.update(branches =>
-      branches.filter(b => b.uuid !== uuid)
-    );
+  deleteBranch(id: number): void {
+    const url = `${this.apiUrl}/${id}`;
+    this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._branches.update(branches =>
+            branches.filter(b => b.id !== id)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete branch');
+          console.error('Error deleting branch:', err);
+        }
+      })
+    ).subscribe();
   }
 
   // READ
   getAllBranches(): Observable<Branch[]> {
-    return this.http.get<{ branches: Branch[] }>(this.apiUrl).pipe(
-      map(response => response.branches),
-      catchError(() => of([]))
+    return this.http.get<Branch[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch branches');
+        console.error('Error fetching branches:', err);
+        return of([]);
+      })
     );
   }
 
@@ -79,14 +122,8 @@ export class BranchService {
     );
   }
 
-  // Helper
-  private generateUUID(): string {
-    return crypto.randomUUID();
+  public refreshBranches(): void {
+    this.loadInitialData();
   }
-
-  getBranchSortedByName(): Observable<Branch[]> {
-    return this.getAllBranches().pipe(
-      map(branches => [...branches].sort((a, b) => a.name.localeCompare(b.name))),
-    );
-  }
+  
 }
