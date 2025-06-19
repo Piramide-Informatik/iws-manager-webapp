@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject, computed } from '@angular/core';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../../../Services/customer.service';
 import { Table } from 'primeng/table';
@@ -31,6 +31,9 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   private readonly customerService = inject(CustomerService);
   private readonly countryService = inject(CountryService);
   private readonly contactPersonService = inject(ContactPersonService);
+  readonly customerListData = computed(() => {
+    return this.customerService.customers()
+  });
 
   public cols!: Column[];
 
@@ -95,7 +98,16 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         }
         return acc;
       }, {});
-      this.loadCustomers();
+      this.customerData = this.customerService.customers().map((customer) => ({
+        id: customer.id,
+        companyName: customer.customername1,
+        nameLine2: customer.customername2,
+        kind: customer.companytype?.name,
+        land: customer.country?.name,
+        place: customer.city,
+        contact: this.contacts[customer.id] ?? '',
+      }));
+      this.customerService.updateCustomerData(this.customerData);
     });
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
@@ -237,7 +249,6 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         next: () => {
           this.isLoading = false;
           this.visibleCustomerModal = false;
-          this.loadCustomers();
         },
         error: (error) => {
           this.isLoading = false;
@@ -246,17 +257,5 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  loadCustomers() {
-    this.customerData = this.customerService.customers().map((customer) => ({
-      id: customer.id,
-      companyName: customer.customername1,
-      nameLine2: customer.customername2,
-      kind: customer.companytype?.name,
-      land: customer.country?.name,
-      place: customer.city,
-      contact: this.contacts[customer.id] ?? '',
-    }));
   }
 }
