@@ -3,4 +3,5 @@ export interface State {
     name: string;
     createdAt: string;  
     updatedAt: string;  
+    version?: number;
 }

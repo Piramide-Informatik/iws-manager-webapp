@@ -141,6 +141,12 @@
       "NAME": "Name",
       "FUNCTION": "Function",
       "LAW": "Law"
+    },
+    "MESSAGE": {
+      "SUCCESS": "Success",
+      "CREATE_SUCCESS": "Customer created successfully.",
+      "ERROR": "Error",
+      "CREATE_FAILED": "Failed to create customer."
     }
   },
   "CONTACT": {
