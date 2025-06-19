@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
-import { Customer } from '../../../../Entities/customer.model';
+import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../../../Services/customer.service';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from '@ngx-translate/core';

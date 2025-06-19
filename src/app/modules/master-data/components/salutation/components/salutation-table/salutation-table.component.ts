@@ -126,7 +126,8 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
       id: salutation.id,
       name: salutation.name,
       createdAt: '',
-      updatedAt: ''
+      updatedAt: '',
+      version: 0
     };
 
     this.salutationUtils.getSalutationById(salutationToEdit.id).subscribe({

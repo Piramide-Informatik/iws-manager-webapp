@@ -26,7 +26,7 @@ interface ExportColumn {
 @Component({
   selector: 'app-employee-overview',
   standalone: false,
-  providers: [MessageService, ConfirmationService, Customer, Employee],
+  providers: [MessageService, ConfirmationService, Employee],
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })

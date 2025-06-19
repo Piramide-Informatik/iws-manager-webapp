@@ -51,7 +51,7 @@ export class SalutationService {
   }
 
   // CREATE
-  addSalutation(salutation: Omit<Salutation, 'id' | 'createdAt' | 'updatedAt'>): void {
+  addSalutation(salutation: Omit<Salutation, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
     this.http.post<Salutation>(this.apiUrl, salutation, this.httpOptions).pipe(
       tap({
         next: (newSalutation) => {
