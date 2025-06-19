@@ -8,7 +8,7 @@ import { Title } from '../../../employee/models/title';
 import { TitleService } from '../../../../Services/title.service';
 import { catchError, finalize, of, Subscription, switchMap } from 'rxjs';
 import { ContactUtils } from '../../utils/contact-utils';
-import { Customer } from '../../../../Entities/customer.model';
+import { Customer } from '../../../../Entities/customer';
 import { ContactStateService } from '../../utils/contact-state.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -169,7 +169,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       salutation: this.contactForm.value.salutation,
       title: this.contactForm.value.title,
       function: this.contactForm.value.function?.trim() ?? '',
-      // emailAddress: this.contactForm.value.emailAddress?.trim() ?? '',
       forInvoicing: this.contactForm.value.isInvoiceRecipient,
       // customer: this.currentCustomer
     };

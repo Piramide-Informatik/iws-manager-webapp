@@ -128,7 +128,8 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
       id: title.id,
       name: title.name,
       createdAt: '',
-      updatedAt: ''
+      updatedAt: '',
+      version: 0
     };
 
     this.titleUtils.getTitleById(titleToEdit.id).subscribe({

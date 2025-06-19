@@ -1,4 +1,4 @@
-import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
+import { EnvironmentInjector, Injectable, inject, runInInjectionContext, signal } from '@angular/core';
 import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { ContactPersonService } from '../../../Services/contact-person.service';
@@ -8,10 +8,17 @@ import { toObservable } from '@angular/core/rxjs-interop';
  * Utility class for contact person-related business logic and operations.
  * Works with ContactPersonService's reactive signals while providing additional functionality.
  */
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 export class ContactUtils {
   private readonly contactPersonService = inject(ContactPersonService);
   private readonly injector = inject(EnvironmentInjector);
+
+  private readonly contactCreated = signal<ContactPerson | null>(null);
+  private readonly contactCreationError = signal<string | null>(null);
+
+  public readonly contactCreated$ = this.contactCreated.asReadonly();
+  public readonly contactCreationError$ = this.contactCreationError.asReadonly();
+
 
   /**
    * Gets a contact person by ID with proper error handling
@@ -43,13 +50,13 @@ export class ContactUtils {
 
     return new Observable<void>(subscriber => {
       this.contactPersonService.addContactPerson({
-        firstName: contact.firstName.trim(),
-        lastName: contact.lastName.trim(),
+        firstName: contact.firstName?.trim(),
+        lastName: contact.lastName?.trim(),
         forInvoicing: contact.forInvoicing,
         function: contact.function?.trim(),
         salutation: contact.salutation,
         title: contact.title,
-        customer: contact.customer
+        customer: contact.customer,
       });
 
       // Complete the observable after operation
@@ -66,7 +73,7 @@ export class ContactUtils {
   contactPersonExists(name: string): Observable<boolean> {
     return this.contactPersonService.getAllContactPersons().pipe(
       map(contacts => contacts.some(
-        c => c.firstName.toLowerCase() === name.toLowerCase()
+        c => c.firstName?.toLowerCase() === name.toLowerCase()
       )),
       catchError(err => {
         console.error('Error checking contact person existence:', err);
@@ -81,7 +88,7 @@ export class ContactUtils {
    */
   getContactPersonSortedByFirstName(): Observable<ContactPerson[]> {
     return this.contactPersonService.getAllContactPersons().pipe(
-      map(contacts => [...contacts].sort((a, b) => a.firstName.localeCompare(b.firstName))),
+      map(contacts => [...contacts].sort((a, b) => a.firstName!.localeCompare(b.firstName!))),
       catchError(err => {
         console.error('Error sorting contacts persons:', err);
         return throwError(() => new Error('Failed to sort contacts persons'));

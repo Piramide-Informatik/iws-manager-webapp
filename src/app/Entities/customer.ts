@@ -1,9 +1,38 @@
-export class Customer {
-  id!: number;
-  companyName!: string;
-  nameLine2!: string;
-  kind!: string;
-  land!: string;
-  place!: string;
-  contact!: string;
+import { Branch } from './branch';
+import { CompanyType } from './companyType';
+import { Country } from './country';
+import { State } from './state';
+
+export interface Customer {
+  id: number;
+  createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
+  updatedAt: string;
+
+  branch?: Branch;
+  city?: string;
+  companytype?: CompanyType;
+  country: Country;
+  customerno?: number;
+
+  customername1?: string;
+  customername2?: string;
+
+  email1?: string;
+  email2?: string;
+  email3?: string;
+  email4?: string;
+
+  homepage?: string;
+  hoursperweek?: number;
+  maxhoursmonth?: number;
+  maxhoursyear?: number;
+
+  note?: string;
+  phone?: string;
+
+  state?: State;
+  street?: string;
+  taxno?: string;
+  taxoffice?: string;
+  zipcode?: string;
 }

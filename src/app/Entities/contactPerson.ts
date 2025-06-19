@@ -1,15 +1,20 @@
-import { Customer } from "./customer.model";
-import { Title } from "@angular/platform-browser";
+import { Customer } from "./customer";
 import { Salutation } from "./salutation";
+import { Title } from "./title";
 
 
 export interface ContactPerson {
     id: number;
-    firstName: string;
-    lastName: string;
-    forInvoicing: number;
-    function?: string;     
-    salutation: Salutation;
-    title: Title;
-    customer?: Customer;  
+    createdAt?: string; // ISO: "2025-06-17T06:21:35.281056"
+    updatedAt?: string;
+    version?: number;
+
+    customer?: Customer;
+    firstName?: string;
+    forInvoicing?: number;
+    function?: string;
+    lastName?: string;
+
+    salutation?: Salutation;
+    title?: Title;
 }

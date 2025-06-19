@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
-import { Customer } from '../../../Entities/customer.model';
+import { Customer } from '../../../Entities/customer';
+import { ContactPerson } from '../../../Entities/contactPerson';
 
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 /**
  * Utility class for customer-related business logic and operations.
  * Works with CustomerService's reactive signals while providing additional functionality.
@@ -33,8 +34,7 @@ export class CustomerUtils {
      * @param customer - Customer object to create (without id)
      * @returns Observable that completes when customer is created
      */
-    createNewCustomer(customer: Omit<Customer, 'id'>): Observable<void> {
-        // Puedes agregar validaciones aquí según tus reglas de negocio
+    createNewCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<void> {
         if (!customer.customername1?.trim()) {
             return throwError(() => new Error('Customer name cannot be empty'));
         }
@@ -129,6 +129,31 @@ export class CustomerUtils {
                     observer.error(this.customerService.error());
                 }
             }, 100);
+        });
+    }
+
+    /**
+ * Gets all contacts for a specific customer by ID
+ * @param customerId - ID of the customer to retrieve contacts for
+ * @returns Observable emitting array of ContactPerson or empty array if none found
+ */
+    getContactsByCustomerId(customerId: number): Observable<ContactPerson[]> {
+        if (!customerId || customerId <= 0) {
+            return throwError(() => new Error('Invalid customer ID'));
+        }
+
+        return new Observable<ContactPerson[]>(subscriber => {
+            const subscription = this.customerService.getCustomerContacts(customerId).subscribe({
+                next: (contacts) => {
+                    subscriber.next(contacts);
+                    subscriber.complete();
+                },
+                error: (err) => {
+                    subscriber.error(new Error('Failed to load contacts'));
+                }
+            });
+
+            return () => subscription.unsubscribe();
         });
     }
 }

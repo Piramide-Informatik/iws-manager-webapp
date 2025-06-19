@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { ContactPerson } from '../Entities/contactPerson';
 import { environment } from '../../environments/environment';
 
@@ -50,7 +50,7 @@ export class ContactPersonService {
   }
 
   // CREATE
-  addContactPerson(person: Omit<ContactPerson, 'id'>): void {
+  addContactPerson(person: Omit<ContactPerson, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
     this.http.post<ContactPerson>(this.apiUrl, person, this.httpOptions).pipe(
       tap({
         next: (newContactPerson) => {
@@ -58,8 +58,8 @@ export class ContactPersonService {
           this._error.set(null);
         },
         error: (err) => {
-          this._error.set('Failed to add title');
-          console.error('Error adding title:', err);
+          this._error.set('Failed to add contact person');
+          console.error('Error adding contact person:', err);
         }
       })
     ).subscribe();
@@ -121,8 +121,13 @@ export class ContactPersonService {
   }
 
   getContactPersonById(id: number): Observable<ContactPerson | undefined> {
-    return this.getAllContactPersons().pipe(
-      map(persons => persons.find(p => p.id === id))
+    return this.http.get<ContactPerson>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch contact person by id');
+        console.error(err);
+        return of(undefined as unknown as ContactPerson);
+      })
     );
   }
 
