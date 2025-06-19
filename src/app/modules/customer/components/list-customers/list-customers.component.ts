@@ -28,7 +28,6 @@ interface Column {
   styleUrl: './list-customers.component.scss',
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
-  private readonly customerUtils = new CustomerUtils();
   private readonly customerService = inject(CustomerService);
   private readonly customerStateService = inject(CustomerStateService);
   private readonly customerUtils = inject(CustomerUtils)

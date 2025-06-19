@@ -36,7 +36,6 @@ interface Column {
 })
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
-  private readonly customerUtils = new CustomerUtils();
   private readonly customerStateService = inject(CustomerStateService);
   public currentCustomerToEdit: Customer | null = null;
   private readonly subscriptions = new Subscription();
@@ -193,6 +192,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.loadCustomerContacts(this.customerId);
 
       console.log(this.contactPersons);
+      console.log('custumer id', this.customerId);
+      
     });
   }
 
@@ -263,7 +264,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private loadCustomerFormData(customer: Customer): void {    
     this.formDetailCustomer.patchValue({
-      customerNo: customer.customerno,
+      customerNo: customer.id,
       companyText1: customer.customername1,
       companyText2: customer.customername2,
       selectedCountry: customer.country?.id,
@@ -475,8 +476,5 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       summary: this.translate.instant('CUSTOMERS.MESSAGE.ERROR'),
       detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_FAILED')
     });
-  }
-  clearForm(): void {
-    this.formDetailCustomer.reset();
   }
 }
