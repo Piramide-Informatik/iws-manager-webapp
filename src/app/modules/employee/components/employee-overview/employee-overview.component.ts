@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Customer } from '../../../../Entities/customer';
 import { Employee } from '../../../../Entities/Employee';
 import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,14 +25,13 @@ interface ExportColumn {
 @Component({
   selector: 'app-employee-overview',
   standalone: false,
-  providers: [MessageService, ConfirmationService, Customer, Employee],
+  providers: [MessageService, ConfirmationService, Employee],
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })
 export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   public customer!: string;
   public customerLabel!: string;
-  customers: Customer[] = [];
   employees: Employee[] = [];
   selectedCustomers!: WorkContract[] | null;
   selectedCustomer!: WorkContract[] | null;

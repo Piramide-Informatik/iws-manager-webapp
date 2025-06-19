@@ -1,7 +1,8 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
+import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
-import { Customer } from '../../../Entities/customer.model';
+import { Customer } from '../../../Entities/customer';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' }) 
 /**
@@ -10,6 +11,7 @@ import { Customer } from '../../../Entities/customer.model';
  */
 export class CustomerUtils {
     private readonly customerService = inject(CustomerService);
+    private readonly injector = inject(EnvironmentInjector);
 
     /**
      * Gets a customer by ID with proper error handling
@@ -118,17 +120,47 @@ export class CustomerUtils {
      * @param customer - Customer object with updated data
      * @returns Observable that completes when the update is done
      */
-    updateCustomer(customer: Customer): Observable<void> {
-        return new Observable<void>(observer => {
+    updateCustomer(customer: Customer): Observable<Customer> {
+        if (!customer.id) {
+            return throwError(() => new Error('Invalid customer data'));
+        }
+    
+        return new Observable<Customer>(observer => {
             this.customerService.updateCustomer(customer);
-            setTimeout(() => {
-                if (!this.customerService.error()) {
-                    observer.next();
-                    observer.complete();
-                } else {
-                    observer.error(this.customerService.error());
-                }
-            }, 100);
+    
+            runInInjectionContext(this.injector, () => {
+                const sub = this.waitForUpdatedCustomer(customer.id, observer);
+                const errorSub = this.listenForUpdateErrors(observer);
+    
+                // Cleanup
+                return () => {
+                    sub.unsubscribe();
+                    errorSub.unsubscribe();
+                };
+            });
         });
     }
+
+    private waitForUpdatedCustomer(id: number, observer: any) {
+        return toObservable(this.customerService.customers).pipe(
+            map(customers => customers.find(c => c.id === id)),
+            filter(updated => !!updated),
+            take(1)
+        ).subscribe({
+            next: (updatedState) => {
+                observer.next(updatedState);
+                observer.complete();
+            },
+            error: (err) => observer.error(err)
+        });
+    }
+
+  private listenForUpdateErrors(observer: any) {
+    return toObservable(this.customerService.error).pipe(
+      filter(error => !!error),
+      take(1)
+    ).subscribe({
+      next: (err) => observer.error(err)
+    });
+  }
 }

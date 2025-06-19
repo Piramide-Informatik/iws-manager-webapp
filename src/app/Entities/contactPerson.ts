@@ -1,4 +1,4 @@
-import { Customer } from "./customer.model";
+import { Customer } from "./customer";
 import { Title } from "@angular/platform-browser";
 import { Salutation } from "./salutation";
 

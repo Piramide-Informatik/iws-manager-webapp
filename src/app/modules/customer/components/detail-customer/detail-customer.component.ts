@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../../../Services/customer.service';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -16,6 +15,9 @@ import { StateUtils } from '../../../master-data/components/states/utils/state-u
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
 import { BranchUtils } from '../../utils/branch-utils';
+import { CustomerStateService } from '../../utils/customer-state.service';
+import { Customer } from '../../../../Entities/customer';
+import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string,
@@ -29,16 +31,20 @@ interface Column {
   selector: 'app-detail-customer',
   standalone: false,
   templateUrl: './detail-customer.component.html',
-  styleUrl: './detail-customer.component.scss'
+  styleUrl: './detail-customer.component.scss',
+  providers: [MessageService]
 })
 export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private readonly customerUtils = new CustomerUtils();
+  private readonly customerStateService = inject(CustomerStateService);
+  public currentCustomerToEdit: Customer | null = null;
+  private readonly subscriptions = new Subscription();
+  public isSaving = false;
   public selectedCountry!: string;
   public selectedTypeCompany!: string;
   public cols!: Column[];
   public selectedColumns!: Column[];
-  public customers!: Customer[];
   private langSubscription!: Subscription;
   customerId!: number;
   private readonly branchUtils = inject(BranchUtils);
@@ -108,7 +114,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly translate: TranslateService,
-    private readonly contactStateService: ContactStateService 
+    private readonly contactStateService: ContactStateService,
+    private readonly messageService: MessageService
   ) {
 
     this.formDetailCustomer = this.fb.group({
@@ -146,36 +153,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
-
-    this.activatedRoute.params
-      .subscribe(params => {
-        this.customerId = params['id']; 
-        this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
-          const formData = {
-            customerNo: customer?.customerno,
-            companyText1: customer?.customername1,
-            companyText2: customer?.customername2,
-            selectedCountry: customer?.country?.id,
-            street: customer?.street,
-            postalCode: customer?.zipcode,
-            city: customer?.city,
-            selectedTypeCompany: customer?.companytype?.id,
-            selectedState: customer?.state?.id,
-            homepage: customer?.homepage,
-            phone: customer?.phone,
-            weekWorkingHours: customer?.hoursperweek,
-            taxNumber: customer?.taxno,
-            maxHoursMonth: customer?.maxhoursmonth,
-            maxHoursYear: customer?.maxhoursyear,
-            textAreaComment: customer?.note,
-            invoiceEmail: customer?.email1,
-            headcount: customer?.taxoffice,
-            selectedSector: customer?.branch?.id
-          }
-          this.formDetailCustomer.patchValue(formData);
-          this.formDetailCustomer.updateValueAndValidity();
-        })
-      })
+  
+    this.setupCustomerSubscription(); 
   }
 
   onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
@@ -213,8 +192,99 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+    this.subscriptions.unsubscribe();
   }
 
+  private setupCustomerSubscription(): void {
+    this.subscriptions.add(
+      this.customerStateService.currentCustomer$.subscribe(customer => {
+        this.currentCustomerToEdit = customer;
+        console.log('customer', customer);
+        
+        customer ? this.loadCustomerFormData(customer) : this.clearForm();
+      })
+    );
+  }
+
+  private loadCustomerFormData(customer: Customer): void {
+    this.formDetailCustomer.patchValue({
+      customerNo: customer.customerno,
+      companyText1: customer.customername1,
+      companyText2: customer.customername2,
+      selectedCountry: customer.country?.id,
+      street: customer.street,
+      postalCode: customer.zipcode,
+      city: customer.city,
+      selectedTypeCompany: customer.companytype?.id,
+      selectedState: customer.state?.id,
+      homepage: customer.homepage,
+      phone: customer.phone,
+      weekWorkingHours: customer.hoursperweek,
+      taxNumber: customer.taxno,
+      maxHoursMonth: customer.maxhoursmonth,
+      maxHoursYear: customer.maxhoursyear,
+      textAreaComment: customer.note,
+      invoiceEmail: customer.email1,
+      headcount: customer.taxoffice,
+      selectedSector: customer.branch?.id
+    });
+    this.formDetailCustomer.updateValueAndValidity();
+  }
+
+  clearForm(): void {
+    this.formDetailCustomer.reset();
+    this.currentCustomerToEdit = null;
+    this.isSaving = false;
+  }
+
+  onSubmit() {
+    if (this.formDetailCustomer.invalid || !this.currentCustomerToEdit || this.isSaving) {
+      this.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true;
+    const updatedCustomer: Customer = {
+      ...this.currentCustomerToEdit,
+      customername1: this.formDetailCustomer.value.customername1
+    };
+
+    this.subscriptions.add(
+      this.customerUtils.updateCustomer(updatedCustomer).subscribe({
+        next: (savedCustomer) => this.handleSaveSuccess(savedCustomer),
+        error: (err) => this.handleSaveError(err)
+      })
+    );
+  }
+
+  private handleSaveSuccess(savedCustomer: Customer): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
+      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_SUCCESS')
+    });
+    this.customerStateService.setCustomerToEdit(null);
+    this.clearForm();
+  }
+  
+  private handleSaveError(error: any): void {
+    console.error('Error saving customer:', error);
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
+      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_FAILED')
+    });
+    this.isSaving = false;
+  }
+  
+  private markAllAsTouched(): void {
+    Object.values(this.formDetailCustomer.controls).forEach(control => {
+      control.markAsTouched();
+      control.markAsDirty();
+    });
+  }
+
+  // Operations with Contact Person
   deletePerson(contactId: number) {
     this.modalType = 'delete';
     this.visible = true;

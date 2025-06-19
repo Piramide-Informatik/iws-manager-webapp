@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
-import { Customer } from '../../../../Entities/customer.model';
+import { Customer } from '../../../../Entities/customer';
 import { CustomerService } from '../../../../Services/customer.service';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -10,6 +10,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { CountryService } from '../../../../Services/country.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
 import { ContactPerson } from '../../../../Entities/contactPerson';
+import { CustomerStateService } from '../../utils/customer-state.service';
+import { CustomerUtils } from '../../utils/customer-utils';
 
 interface Column {
   field: string;
@@ -27,6 +29,8 @@ interface Column {
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
   private readonly customerService = inject(CustomerService);
+  private readonly customerStateService = inject(CustomerStateService);
+  private readonly customerUtils = inject(CustomerUtils)
   private readonly countryService = inject(CountryService);
   private readonly contactPersonService = inject(ContactPersonService);
 
@@ -195,6 +199,17 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerDetails(currentCustomer: Customer) {
+    this.customerUtils.getCustomerById(currentCustomer.id).subscribe({
+      next: (fullCustomer) => {
+        if(fullCustomer){
+          this.customerStateService.setCustomerToEdit(fullCustomer);
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar el customer para editar:', err);
+      }
+    });
+    
     this.router.navigate(['customer-details', currentCustomer.id], {
       relativeTo: this.route,
       state: { customer: currentCustomer.id, customerData: currentCustomer },
