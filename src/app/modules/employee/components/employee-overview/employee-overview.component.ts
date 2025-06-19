@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Customer } from '../../../../Entities/customer';
 import { Employee } from '../../../../Entities/Employee';
 import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,7 +32,6 @@ interface ExportColumn {
 export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   public customer!: string;
   public customerLabel!: string;
-  customers: Customer[] = [];
   employees: Employee[] = [];
   selectedCustomers!: WorkContract[] | null;
   selectedCustomer!: WorkContract[] | null;
