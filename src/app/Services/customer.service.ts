@@ -177,4 +177,8 @@ export class CustomerService {
         this._contacts.set([]);
         this._contactsError.set(null);
     }
+
+    updateCustomerData(customers: Customer[]) {
+        this._customers.set(customers)
+    }
 }
