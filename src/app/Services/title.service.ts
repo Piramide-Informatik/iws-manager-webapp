@@ -52,7 +52,7 @@ export class TitleService {
   }
 
   // CREATE
-  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt'>): void {
+  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
     this.http.post<Title>(this.apiUrl, title, this.httpOptions).pipe(
       tap({
         next: (newTitle) => {

@@ -169,7 +169,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       salutation: this.contactForm.value.salutation,
       title: this.contactForm.value.title,
       function: this.contactForm.value.function?.trim() ?? '',
-      // emailAddress: this.contactForm.value.emailAddress?.trim() ?? '',
       forInvoicing: this.contactForm.value.isInvoiceRecipient,
       // customer: this.currentCustomer
     };

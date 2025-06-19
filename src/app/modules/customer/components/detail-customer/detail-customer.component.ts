@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../../../Services/customer.service';
@@ -23,7 +23,7 @@ interface Column {
   field: string,
   header: string
   customClasses?: string[]
-  styles?: { },
+  styles?: {},
   filter?: { type: 'boolean' | 'multiple' }
 }
 
@@ -51,7 +51,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   private readonly countryUtils = inject(CountryUtils);
   countries = toSignal(
     this.countryUtils.getCountriesSortedByName().pipe(
-      map(countries => countries.map(country =>({
+      map(countries => countries.map(country => ({
         id: country.id,
         name: country.name
       })))
@@ -66,6 +66,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   private readonly companyTypeUtils = inject(CompanyTypeUtils);
   private readonly contactPersonService = inject(ContactPersonService);
   private readonly stateUtils = inject(StateUtils);
+
+  public contactPersons = signal<ContactPerson[]>([]);
+  public loadingContacts = signal<boolean>(false);
+  public errorContacts = signal<string | null>(null);
 
   public companyTypes = toSignal(
     this.companyTypeUtils.getCompanyTypeSortedByName().pipe(
@@ -98,13 +102,13 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public formDetailCustomer!: FormGroup;
 
-  public readonly contactPersons = computed(()=> {
-    return this.contactPersonService.contactPersons().map(contact => ({
+  public readonly tableData = computed(() => {
+    return this.contactPersons().map(contact => ({
       id: contact.id,
       name: `${contact.firstName} ${contact.lastName}`,
       function: contact.function ?? '',
       right: contact.forInvoicing
-    }))
+    }));
   });
 
   constructor(
@@ -119,7 +123,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   ) {
 
     this.formDetailCustomer = this.fb.group({
-      customerNo: [],
+      customerNo: [''],
       companyText1: [''],
       companyText2: [''],
       selectedCountry: [''],
@@ -155,6 +159,56 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.formDetailCustomer.get('customerNo')?.disable();
   
     this.setupCustomerSubscription(); 
+
+    this.activatedRoute.params.subscribe(params => {
+      this.customerId = params['id'];
+
+      this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
+        const formData = {
+          customerNo: customer?.id,
+          companyText1: customer?.customername1,
+          companyText2: customer?.customername2,
+          selectedCountry: customer?.country?.id,
+          street: customer?.street,
+          postalCode: customer?.zipcode,
+          city: customer?.city,
+          selectedTypeCompany: customer?.companytype?.id,
+          selectedState: customer?.state?.id,
+          homepage: customer?.homepage,
+          phone: customer?.phone,
+          weekWorkingHours: customer?.hoursperweek,
+          taxNumber: customer?.taxno,
+          maxHoursMonth: customer?.maxhoursmonth,
+          maxHoursYear: customer?.maxhoursyear,
+          textAreaComment: customer?.note,
+          invoiceEmail: customer?.email1,
+          headcount: customer?.taxoffice,
+          selectedSector: customer?.branch?.id
+        }
+        this.formDetailCustomer.patchValue(formData);
+        this.formDetailCustomer.updateValueAndValidity();
+      });
+
+      this.loadCustomerContacts(this.customerId);
+
+      console.log(this.contactPersons);
+    });
+  }
+
+  private loadCustomerContacts(customerId: number): void {
+    this.loadingContacts.set(true);
+    this.errorContacts.set(null);
+
+    this.customerUtils.getContactsByCustomerId(customerId).subscribe({
+      next: (contacts) => {
+        this.contactPersons.set(contacts);
+        this.loadingContacts.set(false);
+      },
+      error: (err) => {
+        this.errorContacts.set(err.message ?? 'Failed to load contacts');
+        this.loadingContacts.set(false);
+      }
+    });
   }
 
   onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
@@ -188,7 +242,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
@@ -317,7 +371,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.contactStateService.setCountryToEdit(this.currentContactPerson);
   }
 
-  createPerson(){
+  createPerson() {
     this.modalType = 'create';
     this.currentContactPerson = null;
     this.visible = true;
