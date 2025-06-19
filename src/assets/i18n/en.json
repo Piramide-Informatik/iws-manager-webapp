@@ -133,12 +133,20 @@
       "COMMENT": "Comment"
     },
     "LABELS": {
-      "CONTACT_PERSON": "Contact Person"
+      "CONTACT_PERSON": "Contact Person",
+      "DELETE_CUSTOMER": "Delete Customer",
+      "REMOVE_CUSTOMER_QUESTION": "Are you sure you want to delete the Customer "
     },
     "CONTACT_TABLE": {
       "NAME": "Name",
       "FUNCTION": "Function",
       "LAW": "Law"
+    },
+    "MESSAGE": {
+      "SUCCESS": "Success",
+      "CREATE_SUCCESS": "Customer created successfully.",
+      "ERROR": "Error",
+      "CREATE_FAILED": "Failed to create customer."
     }
   },
   "CONTACT": {

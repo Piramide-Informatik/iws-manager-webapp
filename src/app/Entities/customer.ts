@@ -8,10 +8,10 @@ export interface Customer {
   createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
   updatedAt: string;
 
-  branch?: Branch;
+  branch: Branch | null; 
   city?: string;
-  companytype?: CompanyType;
-  country: Country;
+  companytype: CompanyType | null; 
+  country: Country | null; 
   customerno?: number;
 
   customername1?: string;
@@ -30,7 +30,7 @@ export interface Customer {
   note?: string;
   phone?: string;
 
-  state?: State;
+  state: State | null; 
   street?: string;
   taxno?: string;
   taxoffice?: string;
