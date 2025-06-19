@@ -206,7 +206,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     );
   }
 
-  private loadCustomerFormData(customer: Customer): void {
+  private loadCustomerFormData(customer: Customer): void {    
     this.formDetailCustomer.patchValue({
       customerNo: customer.customerno,
       companyText1: customer.customername1,
@@ -246,9 +246,28 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.isSaving = true;
     const updatedCustomer: Customer = {
       ...this.currentCustomerToEdit,
-      customername1: this.formDetailCustomer.value.customername1
+      customerno: this.formDetailCustomer.value.customerNo,
+      customername1: this.formDetailCustomer.value.companyText1,
+      customername2: this.formDetailCustomer.value.companyText2,
+      country: this.currentCustomerToEdit.country,
+      street: this.formDetailCustomer.value.street,
+      zipcode: this.formDetailCustomer.value.postalCode,
+      city: this.formDetailCustomer.value.city,
+      companytype: this.currentCustomerToEdit.companytype,
+      state: this.currentCustomerToEdit.state,
+      homepage: this.formDetailCustomer.value.homepage,
+      phone: this.formDetailCustomer.value.phone,
+      hoursperweek: this.formDetailCustomer.value.weekWorkingHours,
+      taxno: this.formDetailCustomer.value.taxNumber,
+      maxhoursmonth: this.formDetailCustomer.value.maxHoursMonth,
+      maxhoursyear: this.formDetailCustomer.value.maxHoursYear,
+      note: this.formDetailCustomer.value.textAreaComment,
+      email1: this.formDetailCustomer.value.invoiceEmail,
+      taxoffice: this.formDetailCustomer.value.headcount,
+      branch: this.currentCustomerToEdit.branch
     };
-
+    console.log('customer updated', updatedCustomer);
+    
     this.subscriptions.add(
       this.customerUtils.updateCustomer(updatedCustomer).subscribe({
         next: (savedCustomer) => this.handleSaveSuccess(savedCustomer),
