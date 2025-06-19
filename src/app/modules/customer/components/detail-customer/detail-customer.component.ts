@@ -187,6 +187,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         }
         this.formDetailCustomer.patchValue(formData);
         this.formDetailCustomer.updateValueAndValidity();
+        this.customerStateService.setCustomerToEdit(customer?? null);
       });
 
       this.loadCustomerContacts(this.customerId);
@@ -303,12 +304,32 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       customerno: this.formDetailCustomer.value.customerNo,
       customername1: this.formDetailCustomer.value.companyText1,
       customername2: this.formDetailCustomer.value.companyText2,
-      country: this.currentCustomerToEdit.country,
+      country: {
+        id: this.formDetailCustomer.value.selectedCountry,
+        createdAt: '',
+        updatedAt: '',
+        isDefault: false,
+        label: '',
+        name: '',
+        version: 0
+      },
       street: this.formDetailCustomer.value.street,
       zipcode: this.formDetailCustomer.value.postalCode,
       city: this.formDetailCustomer.value.city,
-      companytype: this.currentCustomerToEdit.companytype,
-      state: this.currentCustomerToEdit.state,
+      companytype: {
+        id: this.formDetailCustomer.value.selectedTypeCompany,
+        name: '',
+        createdAt: '',
+        updatedAt: '',
+        version: 0
+      },
+      state: {
+        id: this.formDetailCustomer.value.selectedState,
+        name: '',
+        createdAt: '',
+        updatedAt: '',
+        version: 0
+      },
       homepage: this.formDetailCustomer.value.homepage,
       phone: this.formDetailCustomer.value.phone,
       hoursperweek: this.formDetailCustomer.value.weekWorkingHours,
@@ -318,7 +339,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       note: this.formDetailCustomer.value.textAreaComment,
       email1: this.formDetailCustomer.value.invoiceEmail,
       taxoffice: this.formDetailCustomer.value.headcount,
-      branch: this.currentCustomerToEdit.branch
+      branch: {
+        id: this.formDetailCustomer.value.selectedSector,
+        name: '',
+        version: 0
+      }
     };
     console.log('customer updated', updatedCustomer);
     
@@ -328,6 +353,9 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         error: (err) => this.handleSaveError(err)
       })
     );
+    setTimeout(()=> {
+      this.router.navigate(['/customers']);
+    },1000);
   }
 
   private handleSaveSuccess(savedCustomer: Customer): void {
