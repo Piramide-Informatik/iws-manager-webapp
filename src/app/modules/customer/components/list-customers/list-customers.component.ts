@@ -10,6 +10,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { CountryService } from '../../../../Services/country.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
 import { ContactPerson } from '../../../../Entities/contactPerson';
+import { CustomerUtils } from '../../utils/customer-utils';
 
 interface Column {
   field: string;
@@ -26,6 +27,7 @@ interface Column {
   styleUrl: './list-customers.component.scss',
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
+  private readonly customerUtils = new CustomerUtils();
   private readonly customerService = inject(CustomerService);
   private readonly countryService = inject(CountryService);
   private readonly contactPersonService = inject(ContactPersonService);
@@ -58,6 +60,12 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     'place',
     'contact',
   ];
+  customerType: 'create' | 'delete' = 'create';
+  selectedCustomer: number | null = null;
+  customerName: string = '';
+  visibleCustomerModal: boolean = false;
+  isLoading = false;
+  errorMessage: string = '';
 
   constructor(
     private readonly translate: TranslateService,
@@ -87,15 +95,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         }
         return acc;
       }, {});
-      this.customerData = this.customerService.customers().map((customer) => ({
-        id: customer.id,
-        companyName: customer.customername1,
-        nameLine2: customer.customername2,
-        kind: customer.companytype?.name,
-        land: customer.country?.name,
-        place: customer.city,
-        contact: this.contacts[customer.id] ?? '',
-      }));
+      this.loadCustomers();
     });
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
@@ -113,6 +113,23 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       'userPreferences',
       JSON.stringify(userListCustomerPreferences)
     );
+  }
+
+  handleCustomerTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.customerType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedCustomer = event.data;
+
+      this.customerUtils.getCustomerById(this.selectedCustomer!).subscribe({
+        next: (customer) => {
+          this.customerName = customer?.customername1 ?? '';
+        },
+        error: (err) => {
+          this.customerName = '';
+        }
+      });
+    }
+    this.visibleCustomerModal = true;
   }
 
   loadColHeaders(): void {
@@ -211,5 +228,35 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   goToCustomerRegister() {
     this.router.navigate(['customer-details'], { relativeTo: this.route });
+  }
+
+  onCustomerDeleteConfirm() {
+    this.isLoading = true;
+    if(this.selectedCustomer){
+      this.customerUtils.deleteCustomer(this.selectedCustomer).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.visibleCustomerModal = false;
+          this.loadCustomers();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.message ?? 'Failed to delete title';
+          console.error('Delete error:', error);
+        }
+      });
+    }
+  }
+
+  loadCustomers() {
+    this.customerData = this.customerService.customers().map((customer) => ({
+      id: customer.id,
+      companyName: customer.customername1,
+      nameLine2: customer.customername2,
+      kind: customer.companytype?.name,
+      land: customer.country?.name,
+      place: customer.city,
+      contact: this.contacts[customer.id] ?? '',
+    }));
   }
 }

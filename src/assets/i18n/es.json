@@ -133,7 +133,9 @@
       "COMMENT": "Comentario"
     },
     "LABELS": {
-      "CONTACT_PERSON": "Persona de Contacto"
+      "CONTACT_PERSON": "Persona de Contacto",
+      "DELETE_CUSTOMER": "Eliminar Cliente",
+      "REMOVE_CUSTOMER_QUESTION": "¿Está seguro que desea eliminar "
     },
     "CONTACT_TABLE": {
       "NAME": "Nombre",
