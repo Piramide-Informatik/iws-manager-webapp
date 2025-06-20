@@ -1,15 +1,19 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject, computed } from '@angular/core';
-import { Customer } from '../../../../Entities/customer';
-import { CustomerService } from '../../../../Services/customer.service';
-import { Table } from 'primeng/table';
-import { TranslateService, _ } from '@ngx-translate/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { Table } from 'primeng/table';
+import { TranslateService, _ } from '@ngx-translate/core';
+
+// Entities
+import { Customer } from '../../../../Entities/customer';
+import { ContactPerson } from '../../../../Entities/contactPerson';
 import { UserPreference } from '../../../../Entities/user-preference';
+
+// Services
+import { CustomerService } from '../../../../Services/customer.service';
 import { CountryService } from '../../../../Services/country.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
-import { ContactPerson } from '../../../../Entities/contactPerson';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
 
@@ -77,7 +81,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     forkJoin([
@@ -221,14 +225,14 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {});
+      this.router.navigate([`/${url}`]).then(() => { });
     });
   }
 
   goToCustomerDetails(currentCustomer: Customer) {
     this.customerUtils.getCustomerById(currentCustomer.id).subscribe({
       next: (fullCustomer) => {
-        if(fullCustomer){
+        if (fullCustomer) {
           this.customerStateService.setCustomerToEdit(fullCustomer);
         }
       },
@@ -236,7 +240,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         console.error('Error al cargar el customer para editar:', err);
       }
     });
-    
+
     this.router.navigate(['customer-details', currentCustomer.id], {
       relativeTo: this.route,
       state: { customer: currentCustomer.id, customerData: currentCustomer },
@@ -257,7 +261,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   onCustomerDeleteConfirm() {
     this.isLoading = true;
-    if(this.selectedCustomer){
+    if (this.selectedCustomer) {
       this.customerUtils.deleteCustomer(this.selectedCustomer).subscribe({
         next: () => {
           this.isLoading = false;
