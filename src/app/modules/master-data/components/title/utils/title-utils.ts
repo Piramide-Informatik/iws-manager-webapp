@@ -1,5 +1,5 @@
 import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { Observable, catchError, filter, map, take, throwError, switchMap } from 'rxjs';
 import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -125,20 +125,23 @@ export class TitleUtils {
       return throwError(() => new Error('Invalid title data'));
     }
 
-    return new Observable<Title>(observer => {
-      this.titleService.updateTitle(title);
-
-      runInInjectionContext(this.injector, () => {
-        const sub = this.waitForUpdatedTitle(title.id, observer);
-        const errorSub = this.listenForUpdateErrors(observer);
-
-        // Cleanup
-        return () => {
-          sub.unsubscribe();
-          errorSub.unsubscribe();
-        };
-      });
-    });
+    return this.titleService.getTitleById(title.id).pipe(
+      take(1),
+      map((currentTitle) => {
+        if (!currentTitle) {
+          throw new Error('Title not found');
+        }
+        if (currentTitle.version !== title.version) {
+          throw new Error('Version conflict: Title has been updated by another user');
+        }
+        return title;
+      }),
+      switchMap((validatedTitle: Title) => this.titleService.updateTitle(validatedTitle)), 
+      catchError((err) => {
+        console.error('Error updating title:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
   private waitForUpdatedTitle(id: number, observer: any) {

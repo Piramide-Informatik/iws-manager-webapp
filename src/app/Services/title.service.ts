@@ -68,9 +68,9 @@ export class TitleService {
   }
 
   // UPDATE
-  updateTitle(updatedTitle: Title): void {
+  updateTitle(updatedTitle: Title): Observable<Title> {
     const url = `${this.apiUrl}/${updatedTitle.id}`;
-    this.http.put<Title>(url, updatedTitle, this.httpOptions).pipe(
+    return this.http.put<Title>(url, updatedTitle, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._titles.update(titles =>
@@ -83,7 +83,7 @@ export class TitleService {
           console.error('Error updating title:', err);
         }
       })
-    ).subscribe();
+    );
   }
   
   // DELETE
