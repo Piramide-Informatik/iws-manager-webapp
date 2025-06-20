@@ -12,6 +12,7 @@ import { ContactPersonService } from '../../../../Services/contact-person.servic
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
+import { Title } from '@angular/platform-browser';
 
 interface Column {
   field: string;
@@ -76,10 +77,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
+    private titleService: Title,
     private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.updateTitle();
+
     forkJoin([
       this.countryService.getAllCountries(),
       this.contactPersonService.getAllContactPersons(),
@@ -112,6 +116,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       this.customerService.updateCustomerData(this.customerData);
     });
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.updateTitle();
       this.loadColHeaders();
       this.selectedColumns = this.cols;
       this.userListCustomerPreferences =
@@ -120,6 +125,12 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
           this.selectedColumns
         );
     });
+  }
+
+  private updateTitle(): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGETITLE.CUSTOMER_OVERVIEW')
+    );
   }
 
   onUserListCustomerPreferencesChanges(userListCustomerPreferences: any) {
