@@ -1,4 +1,13 @@
 {
+  "PAGETITLE": {
+    "CUSTOMER_OVERVIEW": "Kundenübersicht",
+    "CUSTOMER": "kunde - ",
+    "COUNTRIES": "Länder",
+    "TITLES": "Titel",
+    "SALUTATION": "Anrede",
+    "STATES": "Bundesländer",
+    "TYPE_OF_COMPANIES": "Unternehmensarten"
+  },
   "MENU": {
     "DASHBOARD": "Dashboard",
     "CUSTOMERS": "Kunden",
