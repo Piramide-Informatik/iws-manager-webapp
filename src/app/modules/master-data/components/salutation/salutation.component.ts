@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class SalutationComponent {
   private langSubscription!: Subscription;
 
-  constructor(private readonly translate: TranslateService, private titleService: Title) { }
+  constructor(private readonly translate: TranslateService, private readonly titleService: Title) { }
   ngOnInit(): void {
     this.updateTitle();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {

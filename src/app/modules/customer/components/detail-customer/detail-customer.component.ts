@@ -121,7 +121,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly contactStateService: ContactStateService,
     private readonly customerUtils: CustomerUtils,
     private readonly messageService: MessageService,
-    private titleService: Title
+    private readonly titleService: Title
   ) {
     this.formDetailCustomer = this.fb.group({
       customerNo: [''],

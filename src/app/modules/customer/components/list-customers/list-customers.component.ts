@@ -77,7 +77,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private titleService: Title,
+    private readonly titleService: Title,
     private readonly route: ActivatedRoute
   ) {}
 
