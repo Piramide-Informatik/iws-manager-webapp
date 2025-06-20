@@ -10,8 +10,8 @@ import { Subscription } from 'rxjs';
   styleUrl: './countries.component.scss'
 })
 export class CountriesComponent implements OnInit, OnDestroy {
-    private langSubscription!: Subscription;
-  
+  private langSubscription!: Subscription;
+
   constructor(private readonly translate: TranslateService, private titleService: Title) { }
   ngOnInit(): void {
     this.updateTitle();
