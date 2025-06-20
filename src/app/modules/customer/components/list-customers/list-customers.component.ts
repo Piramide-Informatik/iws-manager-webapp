@@ -32,32 +32,38 @@ interface Column {
   styleUrl: './list-customers.component.scss',
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
+  // Dependencies injection
   private readonly customerService = inject(CustomerService);
   private readonly customerStateService = inject(CustomerStateService);
-  private readonly customerUtils = inject(CustomerUtils)
+  private readonly customerUtils = inject(CustomerUtils);
   private readonly countryService = inject(CountryService);
   private readonly contactPersonService = inject(ContactPersonService);
-  readonly customerListData = computed(() => {
-    return this.customerService.customers()
-  });
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  public cols!: Column[];
-
-  public customers!: Customer[];
-
+  // Table reference
   @ViewChild('dt2') dt2!: Table;
 
+  // Signals & states
+  readonly customerListData = computed(() => this.customerService.customers());
   private langSubscription!: Subscription;
 
+  // Data table
+  customerData: any[] = [];
+  contacts: Record<number, string> = {};
+
+  // Cols configuration
+  public cols!: Column[];
   public selectedColumns!: Column[];
 
+  public customers!: Customer[];
   public countries!: string[];
   public selectedCountries: any[] = [];
 
   public companyTypes: string[] = [];
 
-  customerData: any[] = [];
-  contacts: any = {};
   userListCustomerPreferences: UserPreference = {};
   tableKey: string = 'ListCustomers';
   dataKeys = [
@@ -76,12 +82,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string = '';
 
-  constructor(
-    private readonly translate: TranslateService,
-    private readonly userPreferenceService: UserPreferenceService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
     forkJoin([
