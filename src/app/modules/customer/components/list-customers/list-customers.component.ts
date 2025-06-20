@@ -16,6 +16,7 @@ import { ContactPersonService } from '../../../../Services/contact-person.servic
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 interface Column {
   field: string;
@@ -42,6 +43,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly pageTitleService = inject(PageTitleService);
 
   // Table reference
   @ViewChild('dt2') dt2!: Table;
@@ -79,6 +81,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.CUSTOMER_OVERVIEW');
+
     this.loadInitialData();
     this.setupLanguageChangeListener();
   }

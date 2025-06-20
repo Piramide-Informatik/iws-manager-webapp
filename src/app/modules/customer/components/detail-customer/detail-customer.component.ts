@@ -18,6 +18,7 @@ import { BranchUtils } from '../../utils/branch-utils';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { Customer } from '../../../../Entities/customer';
 import { MessageService } from 'primeng/api';
+import { Title } from '@angular/platform-browser';
 
 interface Column {
   field: string,
@@ -119,7 +120,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly contactStateService: ContactStateService,
     private readonly customerUtils: CustomerUtils,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly titleService: Title
   ) {
     this.formDetailCustomer = this.fb.group({
       customerNo: [''],
@@ -147,7 +149,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   visible: boolean = false;
 
   ngOnInit(): void {
-
     this.updateHeadersAndColumns();
     this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
@@ -156,8 +157,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
-  
-    this.setupCustomerSubscription(); 
+
+    this.setupCustomerSubscription();
 
     this.activatedRoute.params.subscribe(params => {
       this.customerId = params['id'];
@@ -184,17 +185,24 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
           headcount: customer?.taxoffice,
           selectedSector: customer?.branch?.id
         }
+        this.updateTitle(customer!.customername1!);
+        this.langSubscription = this.translate.onLangChange.subscribe(() => {
+          this.updateTitle(customer!.customername1!);
+        });
         this.formDetailCustomer.patchValue(formData);
         this.formDetailCustomer.updateValueAndValidity();
-        this.customerStateService.setCustomerToEdit(customer?? null);
+        this.customerStateService.setCustomerToEdit(customer ?? null);
       });
 
       this.loadCustomerContacts(this.customerId);
-
-      console.log(this.contactPersons);
-      console.log('custumer id', this.customerId);
-      
+      console.log("Customer name: " + this.currentCustomerToEdit?.customername1);
     });
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(
+      this.translate.instant('PAGETITLE.CUSTOMER') + name
+    );
   }
 
   private loadCustomerContacts(customerId: number): void {
@@ -256,13 +264,13 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.customerStateService.currentCustomer$.subscribe(customer => {
         this.currentCustomerToEdit = customer;
         console.log('customer', customer);
-        
+
         customer ? this.loadCustomerFormData(customer) : this.clearForm();
       })
     );
   }
 
-  private loadCustomerFormData(customer: Customer): void {    
+  private loadCustomerFormData(customer: Customer): void {
     this.formDetailCustomer.patchValue({
       customerNo: customer.id,
       companyText1: customer.customername1,
@@ -347,16 +355,16 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       }
     };
     console.log('customer updated', updatedCustomer);
-    
+
     this.subscriptions.add(
       this.customerUtils.updateCustomer(updatedCustomer).subscribe({
         next: (savedCustomer) => this.handleSaveSuccess(savedCustomer),
         error: (err) => this.handleSaveError(err)
       })
     );
-    setTimeout(()=> {
+    setTimeout(() => {
       this.router.navigate(['/customers']);
-    },1000);
+    }, 1000);
   }
 
   private handleSaveSuccess(savedCustomer: Customer): void {
@@ -368,7 +376,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.customerStateService.setCustomerToEdit(null);
     this.clearForm();
   }
-  
+
   private handleSaveError(error: any): void {
     console.error('Error saving customer:', error);
     this.messageService.add({
@@ -378,7 +386,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     });
     this.isSaving = false;
   }
-  
+
   private markAllAsTouched(): void {
     Object.values(this.formDetailCustomer.controls).forEach(control => {
       control.markAsTouched();
