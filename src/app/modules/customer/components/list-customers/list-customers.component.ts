@@ -58,29 +58,23 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   public cols!: Column[];
   public selectedColumns!: Column[];
 
-  public customers!: Customer[];
-  public countries!: string[];
-  public selectedCountries: any[] = [];
-
-  public companyTypes: string[] = [];
-
+  // User Preferences
   userListCustomerPreferences: UserPreference = {};
   tableKey: string = 'ListCustomers';
-  dataKeys = [
-    'id',
-    'companyName',
-    'nameLine2',
-    'kind',
-    'land',
-    'place',
-    'contact',
-  ];
+  dataKeys = ['id', 'companyName', 'nameLine2', 'kind', 'land', 'place', 'contact'];
+
+  // Component States
+  public countries!: string[];
+  public selectedCountries: any[] = [];
+  public companyTypes: string[] = [];
   customerType: 'create' | 'delete' = 'create';
   selectedCustomer: number | null = null;
   customerName: string = '';
   visibleCustomerModal: boolean = false;
   isLoading = false;
   errorMessage: string = '';
+
+  public customers!: Customer[];
 
   constructor() { }
 
