@@ -79,45 +79,69 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
+    this.loadInitialData();
+    this.setupLanguageChangeListener();
+  }
+
+  private loadInitialData(): void {
     forkJoin([
       this.countryService.getAllCountries(),
       this.contactPersonService.getAllContactPersons(),
-    ]).subscribe(([countries, contacts]) => {
-      this.countries = countries.map((country) => country.name);
-      this.companyTypes = ['KMU', 'FuE', 'Unternehmen', 'PT'];
-
-      this.loadColHeaders();
-      this.selectedColumns = this.cols;
-      this.userListCustomerPreferences =
-        this.userPreferenceService.getUserPreferences(
-          this.tableKey,
-          this.selectedColumns
-        );
-      this.contacts = contacts.reduce((acc: any, curr: ContactPerson) => {
-        if (curr.customer) {
-          acc[curr.customer.id] = `${curr.firstName} ${curr.lastName}`;
-        }
-        return acc;
-      }, {});
-      this.customerData = this.customerService.customers().map((customer) => ({
-        id: customer.id,
-        companyName: customer.customername1,
-        nameLine2: customer.customername2,
-        kind: customer.companytype?.name,
-        land: customer.country?.name,
-        place: customer.city,
-        contact: this.contacts[customer.id] ?? '',
-      }));
-      this.customerService.updateCustomerData(this.customerData);
+    ]).subscribe({
+      next: ([countries, contacts]) => this.handleInitialDataSuccess(countries, contacts),
+      error: (error) => console.error('Error loading initial data:', error)
     });
+  }
+
+  private handleInitialDataSuccess(countries: any[], contacts: ContactPerson[]): void {
+    this.countries = countries.map(country => country.name);
+    this.companyTypes = ['KMU', 'FuE', 'Unternehmen', 'PT'];
+
+    this.initializeContactsMap(contacts);
+    this.initializeTableData();
+    this.initializeTableConfiguration();
+  }
+
+  private initializeContactsMap(contacts: ContactPerson[]): void {
+    this.contacts = contacts.reduce((acc: Record<number, string>, contact) => {
+      if (contact.customer) {
+        acc[contact.customer.id] = `${contact.firstName} ${contact.lastName}`;
+      }
+      return acc;
+    }, {});
+  }
+
+  private initializeTableData(): void {
+    this.customerData = this.customerService.customers().map(customer => ({
+      id: customer.id,
+      companyName: customer.customername1,
+      nameLine2: customer.customername2,
+      kind: customer.companytype?.name,
+      land: customer.country?.name,
+      place: customer.city,
+      contact: this.contacts[customer.id] ?? '',
+    }));
+
+    this.customerService.updateCustomerData(this.customerData);
+  }
+
+  private initializeTableConfiguration(): void {
+    this.loadColHeaders();
+    this.selectedColumns = this.cols;
+    this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(
+      this.tableKey,
+      this.selectedColumns
+    );
+  }
+
+  private setupLanguageChangeListener(): void {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = this.cols;
-      this.userListCustomerPreferences =
-        this.userPreferenceService.getUserPreferences(
-          this.tableKey,
-          this.selectedColumns
-        );
+      this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(
+        this.tableKey,
+        this.selectedColumns
+      );
     });
   }
 
@@ -247,7 +271,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       .createUrlTree(['/customers/customer-details', rowData.id])
       .toString();
 
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url);
   }
 
   goToCustomerRegister() {
