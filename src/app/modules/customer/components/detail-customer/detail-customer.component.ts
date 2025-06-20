@@ -186,6 +186,9 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
           selectedSector: customer?.branch?.id
         }
         this.updateTitle(customer!.customername1!);
+        this.langSubscription = this.translate.onLangChange.subscribe(() => {
+          this.updateTitle(customer!.customername1!);
+        });
         this.formDetailCustomer.patchValue(formData);
         this.formDetailCustomer.updateValueAndValidity();
         this.customerStateService.setCustomerToEdit(customer ?? null);
