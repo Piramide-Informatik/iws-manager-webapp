@@ -1,7 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-title',
@@ -9,26 +7,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './title.component.html',
   styleUrl: './title.component.scss'
 })
-export class TitleComponent implements OnInit, OnDestroy {
-  private langSubscription!: Subscription;
+export class TitleComponent implements OnInit {
+  constructor(private readonly pageTitleService: PageTitleService) { }
 
-  constructor(private readonly translate: TranslateService, private readonly titleService: Title) { }
   ngOnInit(): void {
-    this.updateTitle();
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.updateTitle();
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
-  }
-
-  private updateTitle(): void {
-    this.titleService.setTitle(
-      this.translate.instant('PAGETITLE.TITLES')
-    );
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.TITLES');
   }
 }
