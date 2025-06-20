@@ -1,4 +1,13 @@
 {
+  "PAGETITLE": {
+    "CUSTOMER_OVERVIEW": "Lista de Clientes",
+    "CUSTOMER": "Cliente - ",
+    "COUNTRIES": "Países",
+    "TITLES": "Título",
+    "SALUTATION": "Saludo",
+    "STATES": "Estados",
+    "TYPE_OF_COMPANIES": "Tipos de Empresas"
+  },
   "MENU": {
     "DASHBOARD": "Panel",
     "CUSTOMERS": "Clientes",
