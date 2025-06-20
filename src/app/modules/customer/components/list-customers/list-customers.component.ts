@@ -12,6 +12,7 @@ import { ContactPersonService } from '../../../../Services/contact-person.servic
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 interface Column {
   field: string;
@@ -76,10 +77,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
+    private readonly pageTitleService: PageTitleService,
     private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.CUSTOMER_OVERVIEW');
+
     forkJoin([
       this.countryService.getAllCountries(),
       this.contactPersonService.getAllContactPersons(),
