@@ -7,14 +7,14 @@ import { Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PageTitleService implements OnDestroy{
+export class PageTitleService implements OnDestroy {
 
   private langSubscription: Subscription | null = null;
 
   constructor(
-    private translate: TranslateService,
-    private titleService: Title
-  ) {}
+    private readonly translate: TranslateService,
+    private readonly titleService: Title
+  ) { }
 
   public setTranslatedTitle(translationKey: string): void {
     const setTitle = () => {

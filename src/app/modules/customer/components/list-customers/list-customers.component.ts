@@ -12,7 +12,6 @@ import { ContactPersonService } from '../../../../Services/contact-person.servic
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
-import { Title } from '@angular/platform-browser';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 interface Column {
