@@ -1,36 +1,30 @@
-<div class="card">
-  <master-data-genaral-table
-    [tableId]="tableKey"
-    [tableValues]="customerListData()"
-    [columns]="selectedColumns"
-    [userPreferences]="userListCustomerPreferences"
-    [dataKeys]="dataKeys"
+<div *ngIf="isLoading" class="spinner-wrapper">
+  <p-progressSpinner class="custom-spinner"></p-progressSpinner>
+</div>
+
+<div class="card" *ngIf="!isLoading">
+  <master-data-genaral-table [tableId]="tableKey" [tableValues]="customerData" [columns]="selectedColumns"
+    [userPreferences]="userListCustomerPreferences" [dataKeys]="dataKeys"
     (onColumnChanges)="onUserListCustomerPreferencesChanges($event)"
     (onRowClickEvent)="goToCustomerOverview($event, $event.originalEvent)"
     (onEditRegister)="goToCustomerDetails($event)"
     (onDeleteRegister)="handleCustomerTableEvents({ type: 'delete', data: $event })"
-    (onCreateRegister)="goToCustomerRegister()"
-  ></master-data-genaral-table>
-  <p-dialog 
-        [header]="('CUSTOMERS.LABELS.DELETE_CUSTOMER' | translate)" 
-        [modal]="true" 
-        [(visible)]="visibleCustomerModal" 
-      >
-        <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-            {{ 'CUSTOMERS.LABELS.REMOVE_CUSTOMER_QUESTION' | translate }}
-            <strong class="stronglock mt-1">"{{ customerName }}"</strong>?
-        </p>
+    (onCreateRegister)="goToCustomerRegister()"></master-data-genaral-table>
 
-        <div class="flex justify-content-center gap-2">
-            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" (onClick)="onCustomerDeleteConfirm()" severity="danger" [loading]="isLoading"
-                [disabled]="isLoading" />
+  <p-dialog [header]="'CUSTOMERS.LABELS.DELETE_CUSTOMER' | translate" [modal]="true" [(visible)]="visibleCustomerModal">
+    <div class="confirmation-content mb-2 mt-4">
+      <p class="mb-4">
+        {{ 'CUSTOMERS.LABELS.REMOVE_CUSTOMER_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ customerName }}"</strong>?
+      </p>
 
-            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (onClick)="this.visibleCustomerModal = false;" [disabled]="isLoading" />
-
-        </div>
+      <div class="flex justify-content-center gap-2">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" (onClick)="onCustomerDeleteConfirm()" severity="danger" [loading]="isLoadingCustomer"
+          [disabled]="isLoadingCustomer" />
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+          iconPos="left" (onClick)="this.visibleCustomerModal = false;" [disabled]="isLoadingCustomer" />
+      </div>
     </div>
-      </p-dialog>
+  </p-dialog>
 </div>

@@ -49,7 +49,6 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   @ViewChild('dt2') dt2!: Table;
 
   // Signals & states
-  readonly customerListData = computed(() => this.customerService.customers());
   private langSubscription!: Subscription;
 
   // Data table
@@ -69,6 +68,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   public countries!: string[];
   public selectedCountries: any[] = [];
   public companyTypes: string[] = [];
+  public isLoadingCustomer = false;
   customerType: 'create' | 'delete' = 'create';
   selectedCustomer: number | null = null;
   customerName: string = '';
@@ -88,18 +88,32 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   private loadInitialData(): void {
+    this.isLoading = true;
+
     forkJoin([
       this.countryService.getAllCountries(),
       this.contactPersonService.getAllContactPersons(),
+      this.customerUtils.getAllCustomers()
     ]).subscribe({
-      next: ([countries, contacts]) => this.handleInitialDataSuccess(countries, contacts),
-      error: (error) => console.error('Error loading initial data:', error)
+      next: ([countries, contacts, customers]) => {
+        this.handleInitialDataSuccess(countries, contacts, customers);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading initial data:', error);
+        this.isLoading = false;
+      }
     });
   }
 
-  private handleInitialDataSuccess(countries: any[], contacts: ContactPerson[]): void {
+  private handleInitialDataSuccess(
+    countries: any[],
+    contacts: ContactPerson[],
+    customers: Customer[]
+  ): void {
     this.countries = countries.map(country => country.name);
     this.companyTypes = ['KMU', 'FuE', 'Unternehmen', 'PT'];
+    this.customers = customers;
 
     this.initializeContactsMap(contacts);
     this.initializeTableData();
@@ -116,7 +130,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   private initializeTableData(): void {
-    this.customerData = this.customerService.customers().map(customer => ({
+    this.customerData = this.customers.map(customer => ({
       id: customer.id,
       companyName: customer.customername1,
       nameLine2: customer.customername2,
@@ -126,7 +140,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       contact: this.contacts[customer.id] ?? '',
     }));
 
-    this.customerService.updateCustomerData(this.customerData);
+    this.customerService.updateCustomerData(this.customers);
   }
 
   private initializeTableConfiguration(): void {
@@ -283,19 +297,23 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   onCustomerDeleteConfirm() {
-    this.isLoading = true;
+    this.isLoadingCustomer = true;
+
     if (this.selectedCustomer) {
       this.customerUtils.deleteCustomer(this.selectedCustomer).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingCustomer = false;
           this.visibleCustomerModal = false;
+          this.customerData = this.customerData.filter(c => c.id !== this.selectedCustomer);
+          this.customers = this.customers.filter(c => c.id !== this.selectedCustomer);
         },
         error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete title';
+          this.isLoadingCustomer = false;
+          this.errorMessage = error.message ?? 'Failed to delete customer';
           console.error('Delete error:', error);
         }
       });
     }
   }
+
 }
