@@ -415,6 +415,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.contactStateService.setCountryToEdit(null);
   }
 
+  updateContactList(customerId: number){
+    this.loadCustomerContacts(customerId);
+  }
+
   closeVisibility(visibility: boolean): void {
     this.visible = visibility;
   }
