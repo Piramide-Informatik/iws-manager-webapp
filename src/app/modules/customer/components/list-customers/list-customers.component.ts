@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Table } from 'primeng/table';
