@@ -12,6 +12,7 @@ import { Customer } from '../../../../Entities/customer';
 import { ContactStateService } from '../../utils/contact-state.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { CustomerStateService } from '../../utils/customer-state.service';
 
 @Component({
   selector: 'app-contact',
@@ -21,10 +22,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   private readonly contactUtils = inject(ContactUtils);
-  @Input() currentCustomer!: Customer;
+  private currentCustomer!: Customer;
+  private readonly customerStateService = inject(CustomerStateService);
   @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
   @Input() currentContact!: ContactPerson | null; // Para editarlo o eliminarlo
   @Output() onVisibility = new EventEmitter<boolean>();
+  @Output() onOperationContact = new EventEmitter<number>();
   contactForm!: FormGroup;
   isSaving = false;
   private readonly subscriptions = new Subscription();
@@ -48,6 +51,14 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.initForm();
+
+    this.subscriptions.add(
+      this.customerStateService.currentCustomer$.subscribe(customer => {
+        if(customer){
+          this.currentCustomer = customer;
+        }
+      }) 
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -85,6 +96,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
         finalize(() => this.isLoading = false)
       ).subscribe(result => {
         if (result !== null) {
+          this.onOperationContact.emit(this.currentCustomer.id);
           this.handleClose();
         }
       });
@@ -123,12 +135,13 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       detail: this.translate.instant('COUNTRIES.MESSAGE.UPDATE_SUCCESS')
     });
     this.contactStateService.setCountryToEdit(null);
+    this.onOperationContact.emit(this.currentCustomer.id);
     this.clearForm();
     this.handleClose();
   }
 
   private handleSaveError(error: any): void {
-    console.error('Error saving country:', error);
+    console.error('Error saving contact:', error);
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('COUNTRIES.MESSAGE.ERROR'),
@@ -170,7 +183,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       title: this.contactForm.value.title,
       function: this.contactForm.value.function?.trim() ?? '',
       forInvoicing: this.contactForm.value.isInvoiceRecipient,
-      // customer: this.currentCustomer
+      customer: this.currentCustomer
     };
   }
 
@@ -186,6 +199,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       this.contactUtils.deleteContactPerson(this.currentContact.id).subscribe({
         next: () =>{
           this.isLoading = false;
+          this.onOperationContact.emit(this.currentCustomer.id);
           this.handleClose();
         },
         error: (error) => {

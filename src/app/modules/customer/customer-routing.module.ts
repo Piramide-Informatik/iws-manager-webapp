@@ -7,9 +7,9 @@ import { PageCustomerComponent } from './components/page-customer/page-customer.
 
 const routes: Routes = [
   { path: '', component: ListCustomersComponent },
-  { path: 'customer-details', component: DetailCustomerComponent },
-  { 
-    path: '', 
+  { path: 'customer-create', component: DetailCustomerComponent },
+  {
+    path: '',
     component: PageCustomerComponent,
     children: [
       {
@@ -21,8 +21,8 @@ const routes: Routes = [
         path: 'customer-details/:id',
         component: DetailCustomerComponent
       },
-      { 
-        path: 'employees/:id', 
+      {
+        path: 'employees/:id',
         loadChildren: () =>
           import('../../modules/employee/employee.module').then(
             (e) => e.EmployeeModule

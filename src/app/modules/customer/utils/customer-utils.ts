@@ -15,6 +15,16 @@ export class CustomerUtils {
     private readonly injector = inject(EnvironmentInjector);
 
     /**
+     * Gets all customers without any transformation
+     * @returns Observable emitting the raw list of customers
+     */
+    getAllCustomers(): Observable<Customer[]> {
+        return this.customerService.getAllCustomers().pipe(
+            catchError(() => throwError(() => new Error('Failed to load customers')))
+        );
+    }
+
+    /**
      * Gets a customer by ID with proper error handling
      * @param id - ID of the customer to retrieve
      * @returns Observable emitting the customer or undefined if not found
@@ -124,14 +134,14 @@ export class CustomerUtils {
         if (!customer.id) {
             return throwError(() => new Error('Invalid customer data'));
         }
-    
+
         return new Observable<Customer>(observer => {
             this.customerService.updateCustomer(customer);
-    
+
             runInInjectionContext(this.injector, () => {
                 const sub = this.waitForUpdatedCustomer(customer.id, observer);
                 const errorSub = this.listenForUpdateErrors(observer);
-    
+
                 // Cleanup
                 return () => {
                     sub.unsubscribe();
@@ -155,14 +165,14 @@ export class CustomerUtils {
         });
     }
 
-  private listenForUpdateErrors(observer: any) {
-    return toObservable(this.customerService.error).pipe(
-      filter(error => !!error),
-      take(1)
-    ).subscribe({
-      next: (err) => observer.error(err)
-    });
-  }
+    private listenForUpdateErrors(observer: any) {
+        return toObservable(this.customerService.error).pipe(
+            filter(error => !!error),
+            take(1)
+        ).subscribe({
+            next: (err) => observer.error(err)
+        });
+    }
     /**
  * Gets all contacts for a specific customer by ID
  * @param customerId - ID of the customer to retrieve contacts for

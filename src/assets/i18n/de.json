@@ -1,6 +1,15 @@
 {
+  "PAGETITLE": {
+    "CUSTOMER_OVERVIEW": "Kundenübersicht",
+    "CUSTOMER": "kunde - ",
+    "COUNTRIES": "Länder",
+    "TITLES": "Titel",
+    "SALUTATION": "Anrede",
+    "STATES": "Bundesländer",
+    "TYPE_OF_COMPANIES": "Unternehmensarten"
+  },
   "MENU": {
-    "DASHBOARD": "Dash-Board",
+    "DASHBOARD": "Dashboard",
     "CUSTOMERS": "Kunden",
     "PROJECTS": "Projekte",
     "INVOICING": "Rechnungsstellung",

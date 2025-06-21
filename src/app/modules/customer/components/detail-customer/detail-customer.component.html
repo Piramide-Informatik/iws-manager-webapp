@@ -149,6 +149,7 @@
         <app-contact (onVisibility)="closeVisibility($event)" 
           [modalType]="modalType" 
           [currentContact]="currentContactPerson"
+          (onOperationContact)="updateContactList($event)"
         ></app-contact>
       </p-dialog>
     </div>
