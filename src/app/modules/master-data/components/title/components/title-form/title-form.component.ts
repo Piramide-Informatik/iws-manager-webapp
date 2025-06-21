@@ -80,9 +80,22 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.titleUtils.updateTitle(updatedTitle).subscribe({
         next: (savedTitle) => this.handleSaveSuccess(savedTitle),
-        error: (err) => this.handleSaveError(err)
+        error: (err) => this.handleError(err)
       })
     );
+  }
+
+  private handleError(err: any): void {
+    if (err.message === 'Version conflict: Title has been updated by another user') {
+      this.messageService.add({
+        severity: 'warn',
+        summary: this.translate.instant('TITLE.MESSAGE.CONFLICT'),
+        detail: this.translate.instant('TITLE.MESSAGE.REFRESH_REQUIRED')
+      });
+    } else {
+      this.handleSaveError(err);
+    }
+    this.isSaving = false;
   }
 
   private handleSaveSuccess(savedTitle: Title): void {

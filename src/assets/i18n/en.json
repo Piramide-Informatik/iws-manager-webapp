@@ -739,7 +739,9 @@
       "SUCCESS": "SUCCESS",
       "ERROR": "ERROR",
       "UPDATE_SUCCESS": "Successfully updated",
-      "UPDATE_FAILED": "Update failed"
+      "UPDATE_FAILED": "Update failed",
+      "CONFLICT": "Version Conflict",
+      "REFRESH_REQUIRED": "The title has been updated by another user. Please refresh to get the latest version."
     }
   },
   "BILLING_METHODS": {
