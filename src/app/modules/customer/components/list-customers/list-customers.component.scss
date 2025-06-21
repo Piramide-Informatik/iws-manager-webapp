@@ -1,6 +1,6 @@
 @use 'variables' as *;
 
-p-button{
+p-button {
     color: $primary-light;
 }
 
@@ -8,11 +8,11 @@ p-button{
 .thead {
     background: $primary-color;
     color: #fff;
-    min-width: 1.25rem;//=100px
-  
+    min-width: 1.25rem; //=100px
+
     &:hover {
-      background: $accent-color;
-      color: $primary-dark;
+        background: $accent-color;
+        color: $primary-dark;
     }
 }
 
@@ -21,13 +21,26 @@ p-button{
 }
 
 .thead-input-id {
-    min-width: 4.4rem;//=70px
+    min-width: 4.4rem; //=70px
     width: 100%;
 }
 
 .thead-input-width {
     width: 100%;
 }
+
 .align-right {
     text-align: right;
-  }
+}
+
+.spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.custom-spinner {
+    width: 50px;
+    height: 50px;
+}

@@ -1,15 +1,19 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject, computed } from '@angular/core';
-import { Customer } from '../../../../Entities/customer';
-import { CustomerService } from '../../../../Services/customer.service';
-import { Table } from 'primeng/table';
-import { TranslateService, _ } from '@ngx-translate/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { Table } from 'primeng/table';
+import { TranslateService, _ } from '@ngx-translate/core';
+
+// Entities
+import { Customer } from '../../../../Entities/customer';
+import { ContactPerson } from '../../../../Entities/contactPerson';
 import { UserPreference } from '../../../../Entities/user-preference';
+
+// Services
+import { CustomerService } from '../../../../Services/customer.service';
 import { CountryService } from '../../../../Services/country.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
-import { ContactPerson } from '../../../../Entities/contactPerson';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
@@ -29,43 +33,42 @@ interface Column {
   styleUrl: './list-customers.component.scss',
 })
 export class ListCustomersComponent implements OnInit, OnDestroy {
+  // Dependencies injection
   private readonly customerService = inject(CustomerService);
   private readonly customerStateService = inject(CustomerStateService);
-  private readonly customerUtils = inject(CustomerUtils)
+  private readonly customerUtils = inject(CustomerUtils);
   private readonly countryService = inject(CountryService);
   private readonly contactPersonService = inject(ContactPersonService);
-  readonly customerListData = computed(() => {
-    return this.customerService.customers()
-  });
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly pageTitleService = inject(PageTitleService);
 
-  public cols!: Column[];
-
-  public customers!: Customer[];
-
+  // Table reference
   @ViewChild('dt2') dt2!: Table;
 
+  // Signals & states
   private langSubscription!: Subscription;
 
+  // Data table
+  customerData: any[] = [];
+  contacts: Record<number, string> = {};
+
+  // Cols configuration
+  public cols!: Column[];
   public selectedColumns!: Column[];
 
-  public countries!: string[];
-  public selectedCountries: any[] = [];
-
-  public companyTypes: string[] = [];
-
-  customerData: any[] = [];
-  contacts: any = {};
+  // User Preferences
   userListCustomerPreferences: UserPreference = {};
   tableKey: string = 'ListCustomers';
-  dataKeys = [
-    'id',
-    'companyName',
-    'nameLine2',
-    'kind',
-    'land',
-    'place',
-    'contact',
-  ];
+  dataKeys = ['id', 'companyName', 'nameLine2', 'kind', 'land', 'place', 'contact'];
+
+  // Component States
+  public countries!: string[];
+  public selectedCountries: any[] = [];
+  public companyTypes: string[] = [];
+  public isLoadingCustomer = false;
   customerType: 'create' | 'delete' = 'create';
   selectedCustomer: number | null = null;
   customerName: string = '';
@@ -73,56 +76,90 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string = '';
 
-  constructor(
-    private readonly translate: TranslateService,
-    private readonly userPreferenceService: UserPreferenceService,
-    private readonly router: Router,
-    private readonly pageTitleService: PageTitleService,
-    private readonly route: ActivatedRoute
-  ) {}
+  public customers!: Customer[];
+
+  constructor() { }
 
   ngOnInit(): void {
     this.pageTitleService.setTranslatedTitle('PAGETITLE.CUSTOMER_OVERVIEW');
 
+    this.loadInitialData();
+    this.setupLanguageChangeListener();
+  }
+
+  private loadInitialData(): void {
+    this.isLoading = true;
+
     forkJoin([
       this.countryService.getAllCountries(),
       this.contactPersonService.getAllContactPersons(),
-    ]).subscribe(([countries, contacts]) => {
-      this.countries = countries.map((country) => country.name);
-      this.companyTypes = ['KMU', 'FuE', 'Unternehmen', 'PT'];
-
-      this.loadColHeaders();
-      this.selectedColumns = this.cols;
-      this.userListCustomerPreferences =
-        this.userPreferenceService.getUserPreferences(
-          this.tableKey,
-          this.selectedColumns
-        );
-      this.contacts = contacts.reduce((acc: any, curr: ContactPerson) => {
-        if (curr.customer) {
-          acc[curr.customer.id] = `${curr.firstName} ${curr.lastName}`;
-        }
-        return acc;
-      }, {});
-      this.customerData = this.customerService.customers().map((customer) => ({
-        id: customer.id,
-        companyName: customer.customername1,
-        nameLine2: customer.customername2,
-        kind: customer.companytype?.name,
-        land: customer.country?.name,
-        place: customer.city,
-        contact: this.contacts[customer.id] ?? '',
-      }));
-      this.customerService.updateCustomerData(this.customerData);
+      this.customerUtils.getAllCustomers()
+    ]).subscribe({
+      next: ([countries, contacts, customers]) => {
+        this.handleInitialDataSuccess(countries, contacts, customers);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading initial data:', error);
+        this.isLoading = false;
+      }
     });
+  }
+
+  private handleInitialDataSuccess(
+    countries: any[],
+    contacts: ContactPerson[],
+    customers: Customer[]
+  ): void {
+    this.countries = countries.map(country => country.name);
+    this.companyTypes = ['KMU', 'FuE', 'Unternehmen', 'PT'];
+    this.customers = customers;
+
+    this.initializeContactsMap(contacts);
+    this.initializeTableData();
+    this.initializeTableConfiguration();
+  }
+
+  private initializeContactsMap(contacts: ContactPerson[]): void {
+    this.contacts = contacts.reduce((acc: Record<number, string>, contact) => {
+      if (contact.customer) {
+        acc[contact.customer.id] = `${contact.firstName} ${contact.lastName}`;
+      }
+      return acc;
+    }, {});
+  }
+
+  private initializeTableData(): void {
+    this.customerData = this.customers.map(customer => ({
+      id: customer.id,
+      companyName: customer.customername1,
+      nameLine2: customer.customername2,
+      kind: customer.companytype?.name,
+      land: customer.country?.name,
+      place: customer.city,
+      contact: this.contacts[customer.id] ?? '',
+    }));
+
+    this.customerService.updateCustomerData(this.customers);
+  }
+
+  private initializeTableConfiguration(): void {
+    this.loadColHeaders();
+    this.selectedColumns = this.cols;
+    this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(
+      this.tableKey,
+      this.selectedColumns
+    );
+  }
+
+  private setupLanguageChangeListener(): void {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = this.cols;
-      this.userListCustomerPreferences =
-        this.userPreferenceService.getUserPreferences(
-          this.tableKey,
-          this.selectedColumns
-        );
+      this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(
+        this.tableKey,
+        this.selectedColumns
+      );
     });
   }
 
@@ -225,14 +262,14 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {});
+      this.router.navigate([`/${url}`]).then(() => { });
     });
   }
 
   goToCustomerDetails(currentCustomer: Customer) {
     this.customerUtils.getCustomerById(currentCustomer.id).subscribe({
       next: (fullCustomer) => {
-        if(fullCustomer){
+        if (fullCustomer) {
           this.customerStateService.setCustomerToEdit(fullCustomer);
         }
       },
@@ -240,7 +277,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         console.error('Error al cargar el customer para editar:', err);
       }
     });
-    
+
     this.router.navigate(['customer-details', currentCustomer.id], {
       relativeTo: this.route,
       state: { customer: currentCustomer.id, customerData: currentCustomer },
@@ -252,27 +289,31 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       .createUrlTree(['/customers/customer-details', rowData.id])
       .toString();
 
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url);
   }
 
   goToCustomerRegister() {
-    this.router.navigate(['customer-details'], { relativeTo: this.route });
+    this.router.navigate(['customer-create'], { relativeTo: this.route });
   }
 
   onCustomerDeleteConfirm() {
-    this.isLoading = true;
-    if(this.selectedCustomer){
+    this.isLoadingCustomer = true;
+
+    if (this.selectedCustomer) {
       this.customerUtils.deleteCustomer(this.selectedCustomer).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingCustomer = false;
           this.visibleCustomerModal = false;
+          this.customerData = this.customerData.filter(c => c.id !== this.selectedCustomer);
+          this.customers = this.customers.filter(c => c.id !== this.selectedCustomer);
         },
         error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete title';
+          this.isLoadingCustomer = false;
+          this.errorMessage = error.message ?? 'Failed to delete customer';
           console.error('Delete error:', error);
         }
       });
     }
   }
+
 }
