@@ -22,6 +22,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 //Components
 import { ContactComponent } from './components/contact/contact.component';
@@ -65,7 +66,8 @@ import { MasterDataModule } from '../master-data/master-data.module';
     InputIconModule,
     MasterDataModule,
     ToggleSwitchModule,
-    InputNumberModule
+    InputNumberModule,
+    ProgressSpinnerModule
   ],
   providers: [ 
     UserPreferenceService 
