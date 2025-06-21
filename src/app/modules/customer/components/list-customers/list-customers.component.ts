@@ -293,7 +293,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerRegister() {
-    this.router.navigate(['customer-details'], { relativeTo: this.route });
+    this.router.navigate(['customer-create'], { relativeTo: this.route });
   }
 
   onCustomerDeleteConfirm() {
