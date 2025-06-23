@@ -63,10 +63,10 @@ p-button {
 
 
     thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
-        width:75px !important;
-        max-width: 75px !important;
+        width: 6% !important;
+        min-width: 6% !important;
+        max-width: 6% !important;       
     }
-
 }
 
 td.clickable-title:hover {
