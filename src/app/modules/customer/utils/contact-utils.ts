@@ -57,6 +57,7 @@ export class ContactUtils {
         salutation: contact.salutation,
         title: contact.title,
         customer: contact.customer,
+        email: contact.email?.trim()
       });
 
       // Complete the observable after operation
