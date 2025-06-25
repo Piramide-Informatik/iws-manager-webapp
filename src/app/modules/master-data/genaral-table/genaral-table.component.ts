@@ -166,7 +166,4 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
     }
   }
 
-  get toggleableColumns() {
-    return this.columns.filter(col => !col.isFixedWidth);
-  }
 }
