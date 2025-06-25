@@ -21,26 +21,31 @@ import { CustomerStateService } from '../../utils/customer-state.service';
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent implements OnInit, OnDestroy, OnChanges {
+  // Dependencies injection
   private readonly contactUtils = inject(ContactUtils);
-  private currentCustomer!: Customer;
   private readonly customerStateService = inject(CustomerStateService);
+  private readonly contactStateService = inject(ContactStateService);
+  private readonly salutationService = inject(SalutationService);
+  private readonly titleService = inject(TitleService);
+  
+  // Iputs & Outputs
   @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
-  @Input() currentContact!: ContactPerson | null; // Para editarlo o eliminarlo
+  @Input() currentContact!: ContactPerson | null;
   @Output() onVisibility = new EventEmitter<boolean>();
   @Output() onOperationContact = new EventEmitter<number>();
-  contactForm!: FormGroup;
-  isSaving = false;
+  
+  // Signals & states
   private readonly subscriptions = new Subscription();
-  private readonly contactStateService = inject(ContactStateService);
-
+  private currentCustomer!: Customer;
+  public contacts = toSignal(this.salutationService.getAllSalutations(), { initialValue: [] });
+  public titles = toSignal(this.titleService.getAllTitles(), { initialValue: [] });
+  
+  // Form configuration
+  public contactForm!: FormGroup;
   public selectedSalutation!: Salutation | undefined;
-  private readonly salutationService = inject(SalutationService);
-  contacts = toSignal(this.salutationService.getAllSalutations(), { initialValue: [] });
-
   public selectedTitle!: Title | undefined;
-  private readonly titleService = inject(TitleService);
-  titles = toSignal(this.titleService.getAllTitles(), { initialValue: [] })
-
+  
+  isSaving = false;
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -74,12 +79,12 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   initForm(): void {
     this.contactForm = new FormGroup({
       lastName: new FormControl('', [Validators.required]),
-      firstName: new FormControl('', [Validators.required]),
+      firstName: new FormControl(''),
       salutation: new FormControl(this.selectedSalutation),
       title: new FormControl(this.selectedTitle),
-      function: new FormControl('', [Validators.required]),
-      emailAddress: new FormControl('', [Validators.required]),
-      isInvoiceRecipient: new FormControl(0),
+      function: new FormControl(''),
+      emailAddress: new FormControl(''),
+      isInvoiceRecipient: new FormControl(false),
     });
   }
 
@@ -116,7 +121,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
         salutation: this.contactForm.value.salutation,
         title: this.contactForm.value.title,
         function: this.contactForm.value.function,
-        forInvoicing: this.contactForm.value.isInvoiceRecipient
+        forInvoicing: this.contactForm.value.isInvoiceRecipient? 1 : 0
       };
 
       this.subscriptions.add(
@@ -134,7 +139,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       summary: this.translate.instant('COUNTRIES.MESSAGE.SUCCESS'),
       detail: this.translate.instant('COUNTRIES.MESSAGE.UPDATE_SUCCESS')
     });
-    this.contactStateService.setCountryToEdit(null);
+    this.contactStateService.setContactToEdit(null);
     this.onOperationContact.emit(this.currentCustomer.id);
     this.clearForm();
     this.handleClose();
@@ -182,7 +187,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       salutation: this.contactForm.value.salutation,
       title: this.contactForm.value.title,
       function: this.contactForm.value.function?.trim() ?? '',
-      forInvoicing: this.contactForm.value.isInvoiceRecipient,
+      forInvoicing: this.contactForm.value.isInvoiceRecipient? 1 : 0,
       customer: this.currentCustomer
     };
   }
@@ -228,7 +233,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       title: contact.title,
       function: contact.function,
       emailAddress: '',
-      isInvoiceRecipient: contact.forInvoicing
+      isInvoiceRecipient: !!contact.forInvoicing
     });
   }
 
