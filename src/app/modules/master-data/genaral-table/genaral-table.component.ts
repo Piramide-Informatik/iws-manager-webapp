@@ -143,6 +143,11 @@ export class GenaralTableComponent implements OnInit, OnChanges{
     this.onRowClickEvent.emit(row);
   }
 
+  handleMultiSelectFilter(selectedValues: any[], field: string, filterCallback: Function) {
+    // Este método ya no es necesario, se mantiene por compatibilidad
+    filterCallback(selectedValues);
+  }
+
   calculateOrderColumns() {
     if (this.columns) {
        this.colOrders = this.columns.reduce((acc: any, curr: any, index: number) => {
