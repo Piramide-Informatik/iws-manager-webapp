@@ -107,18 +107,20 @@ export class CustomerUtils {
      * @returns Observable that completes when the deletion is done
      */
     deleteCustomer(id: number): Observable<void> {
-        return new Observable(observer => {
-            this.customerService.deleteCustomer(id);
+        // return new Observable(observer => {
+        //     this.customerService.deleteCustomer(id);
 
-            setTimeout(() => {
-                if (!this.customerService.error()) {
-                    observer.next();
-                    observer.complete();
-                } else {
-                    observer.error(this.customerService.error());
-                }
-            }, 100);
-        });
+        //     setTimeout(() => {
+        //         if (!this.customerService.error()) {
+        //             observer.next();
+        //             observer.complete();
+        //         } else {
+        //             observer.error(this.customerService.error());
+        //         }
+        //     }, 100);
+        // });
+
+        return this.customerService.deleteCustomer(id);
     }
 
     /**
@@ -134,28 +136,6 @@ export class CustomerUtils {
         return this.customerService.updateCustomer(customer);
     }
 
-    private waitForUpdatedCustomer(id: number, observer: any) {
-        return toObservable(this.customerService.customers).pipe(
-            map(customers => customers.find(c => c.id === id)),
-            filter(updated => !!updated),
-            take(1)
-        ).subscribe({
-            next: (updatedState) => {
-                observer.next(updatedState);
-                observer.complete();
-            },
-            error: (err) => observer.error(err)
-        });
-    }
-
-    private listenForUpdateErrors(observer: any) {
-        return toObservable(this.customerService.error).pipe(
-            filter(error => !!error),
-            take(1)
-        ).subscribe({
-            next: (err) => observer.error(err)
-        });
-    }
     /**
  * Gets all contacts for a specific customer by ID
  * @param customerId - ID of the customer to retrieve contacts for

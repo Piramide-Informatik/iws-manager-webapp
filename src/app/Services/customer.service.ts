@@ -116,9 +116,9 @@ export class CustomerService {
     }
 
     // DELETE
-    deleteCustomer(id: number): void {
+    deleteCustomer(id: number): Observable<void> {
         const url = `${this.apiUrl}/${id}`;
-        this.http.delete<void>(url, this.httpOptions).pipe(
+        return this.http.delete<void>(url, this.httpOptions).pipe(
             tap({
                 next: () => {
                     this._customers.update(customers =>
@@ -130,7 +130,7 @@ export class CustomerService {
                     this._error.set('Failed to delete customer');
                 }
             })
-        ).subscribe();
+        )
     }
 
     // ERROR HANDLING
