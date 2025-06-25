@@ -8,6 +8,13 @@
     "STATES": "Bundesländer",
     "TYPE_OF_COMPANIES": "Unternehmensarten"
   },
+  "ERROR": {
+    "OCC": {
+      "TITLE": "Parallelitätsfehler",
+      "TEXT": "Entschuldigung, es scheint, dass jemand anderes diesen Datensatz bearbeitet hat, während Sie ihn geändert haben. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut, um mit den neuesten Daten zu arbeiten.",
+      "BUTTON": "Aktualisieren"
+    }
+  },
   "MENU": {
     "DASHBOARD": "Dashboard",
     "CUSTOMERS": "Kunden",
@@ -37,7 +44,6 @@
     "FRAMEWORK_AGREEMENTS": "Rahmenverträge",
     "CONTRACTORS": "Auftragnehmer",
     "SUBCONTRACTS": "Unteraufträge",
-
     "ABSENCE_TYPES": "Abwesenheitsarten",
     "ADDRESS": "Anreden",
     "ORDER_TYPES": "Auftragsarten",
@@ -326,14 +332,14 @@
       "CONFIRMATION": "Anrede Löschen"
     },
     "LABEL": {
-      "EDIT_TITLE":"Anrede bearbeiten",
+      "EDIT_TITLE": "Anrede bearbeiten",
       "TITLE_LABEL": "Anrede"
     },
     "MESSAGE": {
       "SUCCESS": "ERFOLG",
       "ERROR": "FEHLER",
-      "UPDATE_SUCCESS":"Erfolgreich aktualisiert",
-      "UPDATE_FAILED":"Update fehlgeschlagen"
+      "UPDATE_SUCCESS": "Erfolgreich aktualisiert",
+      "UPDATE_FAILED": "Update fehlgeschlagen"
     },
     "ERROR": {
       "SALUTATION_REQUIRED": "Anrede erforderlich"
@@ -394,7 +400,6 @@
       "AVAILABLE_ROLES": "Verfügbare Rollen"
     }
   },
-
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "Benutzerrolle"
@@ -591,7 +596,6 @@
       "SELECT_NONE": "Ohne"
     }
   },
-
   "COSTS": {
     "HEADER": {
       "EDIT_COST": "Kostenart bearbeiten"
@@ -606,7 +610,6 @@
       "NO_DATA": "Keine Kostenarten gefunden"
     }
   },
-
   "PAGINATION": {
     "REPORT": "Es werden {{first}} bis {{last}} von {{totalRecords}} Einträgen angezeigt"
   },
@@ -744,7 +747,7 @@
       "UPDATE_SUCCESS": "Erfolgreich aktualisiert",
       "UPDATE_FAILED": "Update fehlgeschlagen",
       "CONFLICT": "Versionskonflikt",
-      "REFRESH_REQUIRED" : "Bitte aktualisieren Sie die Seite, um die neuesten Daten zu sehen"
+      "REFRESH_REQUIRED": "Bitte aktualisieren Sie die Seite, um die neuesten Daten zu sehen"
     }
   },
   "BILLING_METHODS": {

@@ -89,30 +89,6 @@ export class CountryService {
   }
 
   /**
-   * Retrieves all countries sorted alphabetically by name
-   * @returns Observable with Country array sorted by name
-   * @throws Error when server request fails
-   */
-  getAllCountriesSortedByName(): Observable<Country[]> {
-    return this.getAllCountries().pipe(
-      map((countries: Country[]) => {
-        if (!Array.isArray(countries)) {
-          return [];
-        }
-        // Filtra los países con nombre válido y ordena alfabéticamente
-        return countries
-          .filter(country => !!country.name && country.name.trim() !== '')
-          .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''));
-      }),
-      catchError(err => {
-        this._error.set('Failed to sort countries');
-        console.error('Error sorting countries:', err);
-        return throwError(() => new Error('Failed to sort countries'));
-      })
-    );
-  }
-
-  /**
    * Retrieves a single country by ID
    * @param id Country identifier
    * @returns Observable with Country object

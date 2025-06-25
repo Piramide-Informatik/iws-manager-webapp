@@ -8,6 +8,13 @@
     "STATES": "States",
     "TYPE_OF_COMPANIES": "Company Types"
   },
+  "ERROR": {
+    "OCC": {
+      "TITLE": "Concurrency Error",
+      "TEXT": "We're sorry, it seems someone else has made changes to this record while you were editing it. Please refresh the page and try again to ensure you're working with the latest information.",
+      "BUTTON": "Refresh"
+    }
+  },
   "MENU": {
     "DASHBOARD": "Dashboard",
     "CUSTOMERS": "Customers",
@@ -37,7 +44,6 @@
     "FRAMEWORK_AGREEMENTS": "Framework Agreements",
     "CONTRACTORS": "Contractors",
     "SUBCONTRACTS": "Subcontracts",
-
     "ABSENCE_TYPES": "Absence Types",
     "ADDRESS": "Salutation",
     "ORDER_TYPES": "Order Types",
@@ -326,12 +332,12 @@
       "CONFIRMATION": "Delete Salutation"
     },
     "LABEL": {
-      "EDIT_TITLE":"Edit Salutation",
+      "EDIT_TITLE": "Edit Salutation",
       "TITLE_LABEL": "Salutation"
     },
     "MESSAGE": {
       "SUCCESS": "SUCCESS",
-      "UPDATE_SUCCESS":"Successfully updated",
+      "UPDATE_SUCCESS": "Successfully updated",
       "ERROR": "ERROR",
       "UPDATE_FAILED": "Update failed"
     },
@@ -394,7 +400,6 @@
       "AVAILABLE_ROLES": "Available Roles"
     }
   },
-
   "ROLES": {
     "TABLE_ROLES": {
       "USER_ROL": "User Roles"
@@ -575,7 +580,7 @@
       "UPDATE_SUCCESS": "Successfully updated",
       "UPDATE_FAILED": "Update failed"
     },
-     "MODAL_CREATE": {
+    "MODAL_CREATE": {
       "CREATE_FORM": "Create Country",
       "NEW_COUNTRY": "New Country"
     },
@@ -591,7 +596,6 @@
       "SELECT_NONE": "None"
     }
   },
-
   "COSTS": {
     "HEADER": {
       "EDIT_COST": "Edit Cost Type"
@@ -606,7 +610,6 @@
       "NO_DATA": "No cost types found"
     }
   },
-
   "PAGINATION": {
     "REPORT": "Showing {{first}} to {{last}} of {{totalRecords}} entries"
   },

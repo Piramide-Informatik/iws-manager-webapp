@@ -14,6 +14,7 @@ export interface ContactPerson {
     forInvoicing?: number;
     function?: string;
     lastName?: string;
+    email?: string;
 
     salutation?: Salutation;
     title?: Title;

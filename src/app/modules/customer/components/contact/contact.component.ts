@@ -39,6 +39,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   private currentCustomer!: Customer;
   public contacts = toSignal(this.salutationService.getAllSalutations(), { initialValue: [] });
   public titles = toSignal(this.titleService.getAllTitles(), { initialValue: [] });
+  public showOCCErrorModal = false;
 
   // Form configuration
   public contactForm!: FormGroup;
@@ -138,12 +139,14 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       salutation: this.contactForm.value.salutation,
       title: this.contactForm.value.title,
       function: this.contactForm.value.function,
-      forInvoicing: this.contactForm.value.isInvoiceRecipient ? 1 : 0
+      forInvoicing: this.contactForm.value.isInvoiceRecipient ? 1 : 0,
+      email: this.contactForm.value.emailAddress,
     };
 
     console.log("reload contacts for update")
+    console.log(updatedContact);
 
-    this.contactUtils.updateContactPerson(updatedContact).pipe(
+    const updateSub = this.contactUtils.updateContactPerson(updatedContact).pipe(
       switchMap(() => this.contactUtils.refreshContactsPersons()),
       finalize(() => this.isSaving = false)
     ).subscribe({
@@ -154,6 +157,8 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       },
       error: (err) => this.handleSaveError(err)
     });
+
+    this.subscriptions.add(updateSub);
   }
 
   private showSuccessMessage(messageKey: string): void {
@@ -166,6 +171,12 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   private handleSaveError(error: any): void {
     console.error('Error saving contact:', error);
+
+    if (error instanceof Error && error.message?.includes('version mismatch')) {
+      this.showOCCErrorModal = true;
+      return;
+    }
+    
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('COUNTRIES.MESSAGE.ERROR'),
@@ -207,6 +218,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       title: this.contactForm.value.title,
       function: this.contactForm.value.function?.trim() ?? '',
       forInvoicing: this.contactForm.value.isInvoiceRecipient ? 1 : 0,
+      email: this.contactForm.value.emailAddress?.trim() ?? '',
       customer: this.currentCustomer
     };
   }
@@ -251,7 +263,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       salutation: contact.salutation,
       title: contact.title,
       function: contact.function,
-      emailAddress: '',
+      emailAddress: contact.email,
       isInvoiceRecipient: !!contact.forInvoicing
     });
   }

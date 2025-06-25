@@ -60,7 +60,7 @@
             <div class="form-row spacer">
                 <label for="emailAddress">{{ 'CONTACT.FORM.EMAIL_ADDRESS' | translate }}</label>
                 <input 
-                    type="email" 
+                    type="text" 
                     id="emailAddress" 
                     formControlName="emailAddress" 
                     pInputText
@@ -137,3 +137,7 @@
   </div>
 }
 
+<app-occ-error-modal
+  *ngIf="showOCCErrorModal"
+  (onClose)="showOCCErrorModal = false">
+</app-occ-error-modal>
