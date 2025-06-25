@@ -262,10 +262,6 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteCustomer(id: number) {
-    this.customers = this.customers.filter((customer) => customer.id !== id);
-  }
-
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
