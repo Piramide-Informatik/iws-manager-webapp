@@ -117,7 +117,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     customers: Customer[],
     companyTypes: CompanyType[]
   ): void {
-    const noneLabel = "none";
+    const noneLabel = this.translate.instant(('COUNTRIES.OPTIONS.SELECT_NONE'));
     
     // Crear arrays con objetos que tienen label y value
     this.countries = [

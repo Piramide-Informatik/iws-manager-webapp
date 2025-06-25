@@ -586,6 +586,9 @@
     "ERROR": {
       "COUNTRY_NAME_REQUIRED": "Land erforderlich",
       "ABBREVIATION_REQUIRED": "Kürzel erforderlich"
+    },
+    "OPTIONS": {
+      "SELECT_NONE": "Ohne"
     }
   },
 
