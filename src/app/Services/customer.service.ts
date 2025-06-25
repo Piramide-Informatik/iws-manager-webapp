@@ -40,9 +40,9 @@ export class CustomerService {
         this.loadInitialData();
     }
 
-    private loadInitialData(): void {
+    public loadInitialData(): Observable<Customer[]> {
         this._loading.set(true);
-        this.http.get<Customer[]>(this.apiUrl, this.httpOptions).pipe(
+        return this.http.get<Customer[]>(this.apiUrl, this.httpOptions).pipe(
             tap({
                 next: (customers) => {
                     this._customers.set(customers);
@@ -54,12 +54,12 @@ export class CustomerService {
             }),
             catchError(() => of([])),
             tap(() => this._loading.set(false))
-        ).subscribe();
+        );
     }
 
     // CREATE
-    addCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
-        this.http.post<Customer>(this.apiUrl, customer, this.httpOptions).pipe(
+    addCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable <Customer> {
+        return this.http.post<Customer>(this.apiUrl, customer, this.httpOptions).pipe(
             tap({
                 next: (newCustomer) => {
                     this._customers.update(customers => [...customers, newCustomer]);
@@ -70,7 +70,7 @@ export class CustomerService {
                     console.error('Error adding customer:', err);
                 }
             })
-        ).subscribe();
+        );
     }
 
     // READ
@@ -97,9 +97,9 @@ export class CustomerService {
     }
 
     // UPDATE
-    updateCustomer(updatedCustomer: Customer): void {
+    updateCustomer(updatedCustomer: Customer): Observable<Customer> {
         const url = `${this.apiUrl}/${updatedCustomer.id}`;
-        this.http.put<Customer>(url, updatedCustomer, this.httpOptions).pipe(
+        return this.http.put<Customer>(url, updatedCustomer, this.httpOptions).pipe(
             tap({
                 next: (res) => {
                     this._customers.update(customers =>
@@ -112,13 +112,13 @@ export class CustomerService {
                     console.error('Error updating customer:', err);
                 }
             })
-        ).subscribe();
+        )
     }
 
     // DELETE
-    deleteCustomer(id: number): void {
+    deleteCustomer(id: number): Observable<void> {
         const url = `${this.apiUrl}/${id}`;
-        this.http.delete<void>(url, this.httpOptions).pipe(
+        return this.http.delete<void>(url, this.httpOptions).pipe(
             tap({
                 next: () => {
                     this._customers.update(customers =>
@@ -130,7 +130,7 @@ export class CustomerService {
                     this._error.set('Failed to delete customer');
                 }
             })
-        ).subscribe();
+        )
     }
 
     // ERROR HANDLING
@@ -139,10 +139,6 @@ export class CustomerService {
             error.statusText ??
             'Unknown server error';
         return throwError(() => new Error(errorMessage));
-    }
-
-    public refreshCustomers(): void {
-        this.loadInitialData();
     }
 
     // GET CONTACTS BY CUSTOMER ID
