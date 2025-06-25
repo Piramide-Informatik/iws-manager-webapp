@@ -1,8 +1,7 @@
-import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { EnvironmentInjector, inject, Injectable } from '@angular/core';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { ContactPerson } from '../../../Entities/contactPerson';
 
 @Injectable({ providedIn: 'root' })
