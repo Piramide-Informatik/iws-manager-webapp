@@ -143,7 +143,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
     console.log("reload contacts for update")
 
-    this.contactUtils.updateContactPerson(updatedContact).pipe(
+    const updateSub = this.contactUtils.updateContactPerson(updatedContact).pipe(
       switchMap(() => this.contactUtils.refreshContactsPersons()),
       finalize(() => this.isSaving = false)
     ).subscribe({
@@ -154,6 +154,8 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       },
       error: (err) => this.handleSaveError(err)
     });
+
+    this.subscriptions.add(updateSub);
   }
 
   private showSuccessMessage(messageKey: string): void {

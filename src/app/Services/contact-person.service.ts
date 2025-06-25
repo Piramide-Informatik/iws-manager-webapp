@@ -66,9 +66,9 @@ export class ContactPersonService {
   }
 
   // UPDATE
-  updateContactPerson(updatedPerson: ContactPerson): void {
+  updateContactPerson(updatedPerson: ContactPerson): Observable<ContactPerson>{
     const url = `${this.apiUrl}/${updatedPerson.id}`;
-    this.http.put<ContactPerson>(url, updatedPerson, this.httpOptions).pipe(
+    return this.http.put<ContactPerson>(url, updatedPerson, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._contactPersons.update(persons =>
@@ -79,9 +79,10 @@ export class ContactPersonService {
         error: (err) => {
           this._error.set('Failed to update contact person');
           console.error('Error updating contact person:', err);
+          return of(updatedPerson);
         }
       })
-    ).subscribe();
+    );
   }
 
   // DELETE
