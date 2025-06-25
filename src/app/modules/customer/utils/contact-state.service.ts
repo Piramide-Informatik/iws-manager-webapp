@@ -9,11 +9,11 @@ export class ContactStateService {
   private readonly editContactSource = new BehaviorSubject<ContactPerson | null>(null);
     currentContact$ = this.editContactSource.asObservable();
   
-  setCountryToEdit(contact: ContactPerson | null): void {
+  setContactToEdit(contact: ContactPerson | null): void {
     this.editContactSource.next(contact);
   }
 
-  clearCountry() {
+  clearContact() {
     this.editContactSource.next(null);
   }
 }
