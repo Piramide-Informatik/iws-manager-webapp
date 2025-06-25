@@ -97,9 +97,9 @@ export class CustomerService {
     }
 
     // UPDATE
-    updateCustomer(updatedCustomer: Customer): void {
+    updateCustomer(updatedCustomer: Customer): Observable<Customer> {
         const url = `${this.apiUrl}/${updatedCustomer.id}`;
-        this.http.put<Customer>(url, updatedCustomer, this.httpOptions).pipe(
+        return this.http.put<Customer>(url, updatedCustomer, this.httpOptions).pipe(
             tap({
                 next: (res) => {
                     this._customers.update(customers =>
@@ -112,7 +112,7 @@ export class CustomerService {
                     console.error('Error updating customer:', err);
                 }
             })
-        ).subscribe();
+        )
     }
 
     // DELETE

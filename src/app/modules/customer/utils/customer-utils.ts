@@ -131,20 +131,7 @@ export class CustomerUtils {
             return throwError(() => new Error('Invalid customer data'));
         }
 
-        return new Observable<Customer>(observer => {
-            this.customerService.updateCustomer(customer);
-
-            runInInjectionContext(this.injector, () => {
-                const sub = this.waitForUpdatedCustomer(customer.id, observer);
-                const errorSub = this.listenForUpdateErrors(observer);
-
-                // Cleanup
-                return () => {
-                    sub.unsubscribe();
-                    errorSub.unsubscribe();
-                };
-            });
-        });
+        return this.customerService.updateCustomer(customer);
     }
 
     private waitForUpdatedCustomer(id: number, observer: any) {
