@@ -1,5 +1,5 @@
-import { EnvironmentInjector, Injectable, inject, runInInjectionContext, signal } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { EnvironmentInjector, Injectable, inject, signal } from '@angular/core';
+import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { ContactPersonService } from '../../../Services/contact-person.service';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -57,6 +57,7 @@ export class ContactUtils {
         salutation: contact.salutation,
         title: contact.title,
         customer: contact.customer,
+        email: contact.email?.trim()
       });
 
       // Complete the observable after operation
@@ -133,25 +134,46 @@ export class ContactUtils {
  * @param id - ID of the contact person to update
  * @returns Observable that completes when the update is done
  */
+  // updateContactPerson(contact: ContactPerson): Observable<ContactPerson> {
+  //   if (!contact?.id) {
+  //     return throwError(() => new Error('Invalid contact person data'));
+  //   }
+
+  //   return new Observable<ContactPerson>(observer => {
+  //     this.contactPersonService.updateContactPerson(contact);
+
+  //     runInInjectionContext(this.injector, () => {
+  //       const sub = this.waitForUpdatedSalutation(contact.id, observer);
+  //       const errorSub = this.listenForUpdateErrors(observer);
+
+  //       // Cleanup
+  //       return () => {
+  //         sub.unsubscribe();
+  //         errorSub.unsubscribe();
+  //       };
+  //     });
+  //   });
+  // }
+
   updateContactPerson(contact: ContactPerson): Observable<ContactPerson> {
     if (!contact?.id) {
       return throwError(() => new Error('Invalid contact person data'));
     }
 
-    return new Observable<ContactPerson>(observer => {
-      this.contactPersonService.updateContactPerson(contact);
+    return this.contactPersonService.getContactPersonById(contact.id).pipe(
+      take(1),
+      switchMap((currentContact) => {
+        if (!currentContact) {
+          return throwError(() => new Error('Contact person not found'));
+        }
 
-      runInInjectionContext(this.injector, () => {
-        const sub = this.waitForUpdatedSalutation(contact.id, observer);
-        const errorSub = this.listenForUpdateErrors(observer);
+        if (currentContact.version !== contact.version) {
+          return throwError(() => new Error('Conflict detected: contact person version mismatch'));
+        }
 
-        // Cleanup
-        return () => {
-          sub.unsubscribe();
-          errorSub.unsubscribe();
-        };
-      });
-    });
+        return this.contactPersonService.updateContactPerson(contact);
+      })
+    );
   }
 
   private waitForUpdatedSalutation(id: number, observer: any) {
