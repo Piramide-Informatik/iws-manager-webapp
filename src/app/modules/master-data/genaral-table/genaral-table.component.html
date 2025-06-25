@@ -84,6 +84,7 @@
               ? 'pointer'
               : 'default'
           ">
+          <!-- Add link by an <a> tag -->
           <ng-container *ngIf="col.routerLink; else plainText">
             <a [routerLink]="col.routerLink(row)" (click)="$event.stopPropagation()"
               style="color: inherit; text-decoration: none;" tabindex="-1">
