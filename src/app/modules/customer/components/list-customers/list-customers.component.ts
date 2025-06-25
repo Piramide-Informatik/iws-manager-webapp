@@ -151,8 +151,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       id: customer.id,
       companyName: customer.customername1,
       nameLine2: customer.customername2,
-      kind: customer.companytype?.name || '',
-      land: customer.country?.name || '',
+      kind: customer.companytype?.name ?? '',
+      land: customer.country?.name ?? '',
       place: customer.city,
       contact: this.contacts[customer.id] ?? '',
     }));
