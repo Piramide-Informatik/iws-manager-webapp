@@ -144,7 +144,6 @@ export class GenaralTableComponent implements OnInit, OnChanges{
   }
 
   handleMultiSelectFilter(selectedValues: any[], field: string, filterCallback: Function) {
-    // Este método ya no es necesario, se mantiene por compatibilidad
     filterCallback(selectedValues);
   }
 
