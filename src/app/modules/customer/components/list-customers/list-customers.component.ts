@@ -96,11 +96,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     forkJoin([
-<<<<<<< HEAD
-      this.countryService.getAllCountriesSortedByName(),
-=======
       this.countryUtils.getCountriesSortedByName(),
->>>>>>> main
       this.contactPersonService.getAllContactPersons(),
       this.customerUtils.getAllCustomers(),
       this.companyTypeUtils.getCompanyTypeSortedByName() 
