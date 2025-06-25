@@ -1,4 +1,4 @@
-import { EnvironmentInjector, Injectable, inject, runInInjectionContext, signal } from '@angular/core';
+import { EnvironmentInjector, Injectable, inject, signal } from '@angular/core';
 import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { ContactPersonService } from '../../../Services/contact-person.service';
