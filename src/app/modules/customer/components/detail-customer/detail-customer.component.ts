@@ -415,7 +415,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.contactStateService.setCountryToEdit(null);
   }
 
-  updateContactList(customerId: number){
+  updateContactList(customerId: number) {
     this.loadCustomerContacts(customerId);
   }
 
@@ -430,10 +430,12 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     const newCustomer = this.buildCustomerFromForm();
 
-    this.customerUtils.createNewCustomer(newCustomer).subscribe({
-      next: () => this.handleSuccess(),
-      error: (err) => this.handleError(err)
-    });
+    this.subscriptions.add(
+      this.customerUtils.createNewCustomer(newCustomer).subscribe({
+        next: () => this.handleSuccess(),
+        error: (err) => this.handleError(err)
+      })
+    )
   }
 
   private buildCustomerFromForm(): Omit<Customer, 'id'> {

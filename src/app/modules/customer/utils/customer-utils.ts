@@ -46,16 +46,12 @@ export class CustomerUtils {
      * @param customer - Customer object to create (without id)
      * @returns Observable that completes when customer is created
      */
-    createNewCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<void> {
+    createNewCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Customer> {
         if (!customer.customername1?.trim()) {
             return throwError(() => new Error('Customer name cannot be empty'));
         }
 
-        return new Observable<void>(subscriber => {
-            this.customerService.addCustomer(customer);
-            subscriber.next();
-            subscriber.complete();
-        });
+        return this.customerService.addCustomer(customer);
     }
 
     /**
@@ -99,7 +95,7 @@ export class CustomerUtils {
      */
     refreshCustomers(): Observable<void> {
         return new Observable<void>(subscriber => {
-            this.customerService.refreshCustomers();
+            this.customerService.loadInitialData();
             subscriber.next();
             subscriber.complete();
         });
