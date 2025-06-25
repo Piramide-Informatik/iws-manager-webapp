@@ -27,24 +27,24 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   private readonly contactStateService = inject(ContactStateService);
   private readonly salutationService = inject(SalutationService);
   private readonly titleService = inject(TitleService);
-  
+
   // Iputs & Outputs
   @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
   @Input() currentContact!: ContactPerson | null;
   @Output() onVisibility = new EventEmitter<boolean>();
   @Output() onOperationContact = new EventEmitter<number>();
-  
+
   // Signals & states
   private readonly subscriptions = new Subscription();
   private currentCustomer!: Customer;
   public contacts = toSignal(this.salutationService.getAllSalutations(), { initialValue: [] });
   public titles = toSignal(this.titleService.getAllTitles(), { initialValue: [] });
-  
+
   // Form configuration
   public contactForm!: FormGroup;
   public selectedSalutation!: Salutation | undefined;
   public selectedTitle!: Title | undefined;
-  
+
   isSaving = false;
   isLoading = false;
   errorMessage: string | null = null;
@@ -52,23 +52,23 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private readonly messageService: MessageService,
     private readonly translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
 
     this.subscriptions.add(
       this.customerStateService.currentCustomer$.subscribe(customer => {
-        if(customer){
+        if (customer) {
           this.currentCustomer = customer;
         }
-      }) 
+      })
     );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['modalType'] && this.modalType === 'edit'){
-      if(this.currentContact) this.setupContactPersonSubscription()
+    if (changes['modalType'] && this.modalType === 'edit') {
+      if (this.currentContact) this.setupContactPersonSubscription()
     }
   }
 
@@ -89,60 +89,79 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onSubmit(): void {
-    if(this.modalType === 'create'){
-      if (this.shouldPreventSubmission()) return;
-  
-      this.prepareForSubmission();
-      const { firstName, lastName  } = this.getContactFormValues();
-      const newContact = this.getContactFormValues();
-      this.contactUtils.contactPersonExists(firstName+' '+lastName).pipe(
-        switchMap(exists => this.handleContactExistence(exists, newContact)),
-        catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
-        finalize(() => this.isLoading = false)
-      ).subscribe(result => {
-        if (result !== null) {
-          this.onOperationContact.emit(this.currentCustomer.id);
-          this.handleClose();
-        }
-      });
-    }else if(this.modalType === 'delete'){
+    if (this.modalType === 'create') {
+      this.handleCreateContact();
+    } else if (this.modalType === 'delete') {
       this.deleteConfirm();
-    }else if(this.modalType === 'edit'){
-      if(this.contactForm.invalid || !this.currentContact || this.isSaving){
-        this.markAllAsTouched();
-        return;
-      }
-
-      this.isSaving = true;
-      const updatedContact: ContactPerson = {
-        ...this.currentContact,
-        lastName: this.contactForm.value.lastName,
-        firstName: this.contactForm.value.firstName,
-        salutation: this.contactForm.value.salutation,
-        title: this.contactForm.value.title,
-        function: this.contactForm.value.function,
-        forInvoicing: this.contactForm.value.isInvoiceRecipient? 1 : 0
-      };
-
-      this.subscriptions.add(
-        this.contactUtils.updateContactPerson(updatedContact).subscribe({
-          next: () => this.handleSaveSuccess(),
-          error: (err) => this.handleSaveError(err)
-        })
-      );
+    } else if (this.modalType === 'edit') {
+      this.handleEditContact();
     }
   }
 
-  private handleSaveSuccess(): void {
+  private handleCreateContact(): void {
+    if (this.shouldPreventSubmission()) return;
+
+    this.prepareForSubmission();
+    const { firstName, lastName } = this.getContactFormValues();
+    const newContact = this.getContactFormValues();
+
+    this.contactUtils.contactPersonExists(firstName + ' ' + lastName).pipe(
+      switchMap(exists => this.handleContactExistence(exists, newContact)),
+      switchMap(() => this.contactUtils.refreshContactsPersons()),
+      catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
+      finalize(() => this.isLoading = false)
+    ).subscribe({
+      next: (result) => {
+        if (result !== null) {
+          this.showSuccessMessage('CONTACT.MESSAGE.CREATE_SUCCESS');
+          this.onOperationContact.emit(this.currentCustomer.id);
+          this.handleClose();
+        }
+      },
+      error: (err) => {
+        this.handleError('COUNTRY.ERROR.CREATION_FAILED', err);
+      }
+    });
+  }
+
+  private handleEditContact(): void {
+    if (this.contactForm.invalid || !this.currentContact || this.isSaving) {
+      this.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true;
+    const updatedContact: ContactPerson = {
+      ...this.currentContact,
+      lastName: this.contactForm.value.lastName,
+      firstName: this.contactForm.value.firstName,
+      salutation: this.contactForm.value.salutation,
+      title: this.contactForm.value.title,
+      function: this.contactForm.value.function,
+      forInvoicing: this.contactForm.value.isInvoiceRecipient ? 1 : 0
+    };
+
+    console.log("reload contacts for update")
+
+    this.contactUtils.updateContactPerson(updatedContact).pipe(
+      switchMap(() => this.contactUtils.refreshContactsPersons()),
+      finalize(() => this.isSaving = false)
+    ).subscribe({
+      next: () => {
+        this.showSuccessMessage('CONTACT.MESSAGE.UPDATE_SUCCESS');
+        this.onOperationContact.emit(this.currentCustomer.id);
+        this.handleClose();
+      },
+      error: (err) => this.handleSaveError(err)
+    });
+  }
+
+  private showSuccessMessage(messageKey: string): void {
     this.messageService.add({
       severity: 'success',
-      summary: this.translate.instant('COUNTRIES.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('COUNTRIES.MESSAGE.UPDATE_SUCCESS')
+      summary: this.translate.instant('CONTACT.MESSAGE.SUCCESS'),
+      detail: this.translate.instant(messageKey)
     });
-    this.contactStateService.setContactToEdit(null);
-    this.onOperationContact.emit(this.currentCustomer.id);
-    this.clearForm();
-    this.handleClose();
   }
 
   private handleSaveError(error: any): void {
@@ -187,7 +206,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       salutation: this.contactForm.value.salutation,
       title: this.contactForm.value.title,
       function: this.contactForm.value.function?.trim() ?? '',
-      forInvoicing: this.contactForm.value.isInvoiceRecipient? 1 : 0,
+      forInvoicing: this.contactForm.value.isInvoiceRecipient ? 1 : 0,
       customer: this.currentCustomer
     };
   }
@@ -198,11 +217,11 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     this.contactForm.reset();
   }
 
-  deleteConfirm(){
+  deleteConfirm() {
     this.isLoading = true;
-    if(this.currentContact){
+    if (this.currentContact) {
       this.contactUtils.deleteContactPerson(this.currentContact.id).subscribe({
-        next: () =>{
+        next: () => {
           this.isLoading = false;
           this.onOperationContact.emit(this.currentCustomer.id);
           this.handleClose();
@@ -225,7 +244,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  private loadContactPersonDataForm(contact: ContactPerson): void { 
+  private loadContactPersonDataForm(contact: ContactPerson): void {
     this.contactForm.patchValue({
       lastName: contact.lastName,
       firstName: contact.firstName,
