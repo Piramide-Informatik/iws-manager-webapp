@@ -26,6 +26,7 @@ interface Column {
   minWidth: number;
   filter?: any;
   customClasses?: string[];
+  routerLink?: (row: any) => string;
 }
 
 @Component({
@@ -204,6 +205,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         field: 'companyName',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')),
+        routerLink: (row: any) => `/customers/customer-details/${row.id}`
       },
       {
         field: 'nameLine2',
@@ -290,11 +292,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerOverview(rowData: any, event?: MouseEvent) {
-    const url = this.router
-      .createUrlTree(['/customers/customer-details', rowData.id])
-      .toString();
-
-    window.open(url);
+    this.router.navigate(['/customers/customer-details', rowData.id]);
   }
 
   goToCustomerRegister() {
