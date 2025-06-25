@@ -195,7 +195,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       });
 
       this.loadCustomerContacts(this.customerId);
-      console.log("Customer name: " + this.currentCustomerToEdit?.customername1);
     });
   }
 
@@ -263,8 +262,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.customerStateService.currentCustomer$.subscribe(customer => {
         this.currentCustomerToEdit = customer;
-        console.log('customer', customer);
-
         customer ? this.loadCustomerFormData(customer) : this.clearForm();
       })
     );
@@ -354,7 +351,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         version: 0
       }
     };
-    console.log('customer updated', updatedCustomer);
 
     this.subscriptions.add(
       this.customerUtils.updateCustomer(updatedCustomer).subscribe({
