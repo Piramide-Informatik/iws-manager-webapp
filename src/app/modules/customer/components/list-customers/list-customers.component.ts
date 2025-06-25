@@ -8,17 +8,18 @@ import { TranslateService, _ } from '@ngx-translate/core';
 import { Customer } from '../../../../Entities/customer';
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { Country } from '../../../../Entities/country';
+import { CompanyType } from '../../../../Entities/companyType';
 
 // Services
 import { CustomerService } from '../../../../Services/customer.service';
-import { CountryService } from '../../../../Services/country.service';
 import { ContactPersonService } from '../../../../Services/contact-person.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
 import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
-import { CompanyType } from '../../../../Entities/companyType';
+import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 
 interface Column {
   field: string;
@@ -40,7 +41,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   private readonly customerService = inject(CustomerService);
   private readonly customerStateService = inject(CustomerStateService);
   private readonly customerUtils = inject(CustomerUtils);
-  private readonly countryService = inject(CountryService);
+  private readonly countryUtils = inject(CountryUtils);
   private readonly contactPersonService = inject(ContactPersonService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
@@ -95,7 +96,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     forkJoin([
-      this.countryService.getAllCountries(),
+      this.countryUtils.getCountriesSortedByName(),
       this.contactPersonService.getAllContactPersons(),
       this.customerUtils.getAllCustomers(),
       this.companyTypeUtils.getCompanyTypeSortedByName()
@@ -112,7 +113,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   private handleInitialDataSuccess(
-    countries: any[],
+    countries: Country[],
     contacts: ContactPerson[],
     customers: Customer[],
     companyTypes: CompanyType[]
