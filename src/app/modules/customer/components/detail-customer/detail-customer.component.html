@@ -167,7 +167,7 @@
     ></master-data-genaral-table>
     
     <br>
-    <div class="form-row flex flex-wrap gap-3 justify-content-center">
+    <div class="form-row flex flex-wrap gap-3 justify-content-center py-3">
       @if(customerId){
         <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
             iconPos="left" (onClick)="onSubmit()" />
@@ -177,8 +177,8 @@
       }
       <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
           iconPos="left" [style]="{ background: '#ef4444' }" />
-      <p-button class="Cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-          iconPos="left" [style]="{ background: '#000' }" routerLink="/customers"/>
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+          iconPos="left" routerLink="/customers"/>
   </div>
   </div>
 </div>

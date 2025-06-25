@@ -17,6 +17,8 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CustomerUtils } from '../../utils/customer-utils';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
+import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
+import { CompanyType } from '../../../../Entities/companyType';
 
 interface Column {
   field: string;
@@ -24,6 +26,7 @@ interface Column {
   minWidth: number;
   filter?: any;
   customClasses?: string[];
+  routerLink?: (row: any) => string;
 }
 
 @Component({
@@ -44,6 +47,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly pageTitleService = inject(PageTitleService);
+  private readonly companyTypeUtils = inject(CompanyTypeUtils);
 
   // Table reference
   @ViewChild('dt2') dt2!: Table;
@@ -93,10 +97,11 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     forkJoin([
       this.countryService.getAllCountries(),
       this.contactPersonService.getAllContactPersons(),
-      this.customerUtils.getAllCustomers()
+      this.customerUtils.getAllCustomers(),
+      this.companyTypeUtils.getCompanyTypeSortedByName()
     ]).subscribe({
-      next: ([countries, contacts, customers]) => {
-        this.handleInitialDataSuccess(countries, contacts, customers);
+      next: ([countries, contacts, customers, companyTypes]) => {
+        this.handleInitialDataSuccess(countries, contacts, customers, companyTypes);
         this.isLoading = false;
       },
       error: (error) => {
@@ -109,11 +114,12 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   private handleInitialDataSuccess(
     countries: any[],
     contacts: ContactPerson[],
-    customers: Customer[]
+    customers: Customer[],
+    companyTypes: CompanyType[]
   ): void {
     this.countries = countries.map(country => country.name);
-    this.companyTypes = ['KMU', 'FuE', 'Unternehmen', 'PT'];
     this.customers = customers;
+    this.companyTypes = companyTypes.map(companyType => companyType.name);
 
     this.initializeContactsMap(contacts);
     this.initializeTableData();
@@ -199,6 +205,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         field: 'companyName',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')),
+        routerLink: (row: any) => `/customers/customer-details/${row.id}`
       },
       {
         field: 'nameLine2',
@@ -255,10 +262,6 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteCustomer(id: number) {
-    this.customers = this.customers.filter((customer) => customer.id !== id);
-  }
-
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -285,11 +288,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerOverview(rowData: any, event?: MouseEvent) {
-    const url = this.router
-      .createUrlTree(['/customers/customer-details', rowData.id])
-      .toString();
-
-    window.open(url);
+    this.router.navigate(['/customers/customer-details', rowData.id]);
   }
 
   goToCustomerRegister() {

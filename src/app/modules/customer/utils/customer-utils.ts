@@ -1,8 +1,7 @@
-import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { EnvironmentInjector, inject, Injectable } from '@angular/core';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { ContactPerson } from '../../../Entities/contactPerson';
 
 @Injectable({ providedIn: 'root' })
@@ -46,16 +45,12 @@ export class CustomerUtils {
      * @param customer - Customer object to create (without id)
      * @returns Observable that completes when customer is created
      */
-    createNewCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<void> {
+    createNewCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Customer> {
         if (!customer.customername1?.trim()) {
             return throwError(() => new Error('Customer name cannot be empty'));
         }
 
-        return new Observable<void>(subscriber => {
-            this.customerService.addCustomer(customer);
-            subscriber.next();
-            subscriber.complete();
-        });
+        return this.customerService.addCustomer(customer);
     }
 
     /**
@@ -99,7 +94,7 @@ export class CustomerUtils {
      */
     refreshCustomers(): Observable<void> {
         return new Observable<void>(subscriber => {
-            this.customerService.refreshCustomers();
+            this.customerService.loadInitialData();
             subscriber.next();
             subscriber.complete();
         });
@@ -111,18 +106,20 @@ export class CustomerUtils {
      * @returns Observable that completes when the deletion is done
      */
     deleteCustomer(id: number): Observable<void> {
-        return new Observable(observer => {
-            this.customerService.deleteCustomer(id);
+        // return new Observable(observer => {
+        //     this.customerService.deleteCustomer(id);
 
-            setTimeout(() => {
-                if (!this.customerService.error()) {
-                    observer.next();
-                    observer.complete();
-                } else {
-                    observer.error(this.customerService.error());
-                }
-            }, 100);
-        });
+        //     setTimeout(() => {
+        //         if (!this.customerService.error()) {
+        //             observer.next();
+        //             observer.complete();
+        //         } else {
+        //             observer.error(this.customerService.error());
+        //         }
+        //     }, 100);
+        // });
+
+        return this.customerService.deleteCustomer(id);
     }
 
     /**
@@ -135,44 +132,9 @@ export class CustomerUtils {
             return throwError(() => new Error('Invalid customer data'));
         }
 
-        return new Observable<Customer>(observer => {
-            this.customerService.updateCustomer(customer);
-
-            runInInjectionContext(this.injector, () => {
-                const sub = this.waitForUpdatedCustomer(customer.id, observer);
-                const errorSub = this.listenForUpdateErrors(observer);
-
-                // Cleanup
-                return () => {
-                    sub.unsubscribe();
-                    errorSub.unsubscribe();
-                };
-            });
-        });
+        return this.customerService.updateCustomer(customer);
     }
 
-    private waitForUpdatedCustomer(id: number, observer: any) {
-        return toObservable(this.customerService.customers).pipe(
-            map(customers => customers.find(c => c.id === id)),
-            filter(updated => !!updated),
-            take(1)
-        ).subscribe({
-            next: (updatedState) => {
-                observer.next(updatedState);
-                observer.complete();
-            },
-            error: (err) => observer.error(err)
-        });
-    }
-
-    private listenForUpdateErrors(observer: any) {
-        return toObservable(this.customerService.error).pipe(
-            filter(error => !!error),
-            take(1)
-        ).subscribe({
-            next: (err) => observer.error(err)
-        });
-    }
     /**
  * Gets all contacts for a specific customer by ID
  * @param customerId - ID of the customer to retrieve contacts for
