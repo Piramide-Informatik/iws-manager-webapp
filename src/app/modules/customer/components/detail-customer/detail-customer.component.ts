@@ -400,14 +400,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.modalType = 'edit';
     this.visible = true;
     this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === person.id) ?? null;
-    this.contactStateService.setCountryToEdit(this.currentContactPerson);
+    this.contactStateService.setContactToEdit(this.currentContactPerson);
   }
 
   createPerson() {
     this.modalType = 'create';
     this.currentContactPerson = null;
     this.visible = true;
-    this.contactStateService.setCountryToEdit(null);
+    this.contactStateService.setContactToEdit(null);
   }
 
   updateContactList(customerId: number) {
