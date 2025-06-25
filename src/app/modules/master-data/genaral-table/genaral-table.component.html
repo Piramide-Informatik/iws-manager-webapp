@@ -1,47 +1,19 @@
 <div class="card">
-  <p-table
-    id="iwstable"
-    #dt2
-    [value]="tableValues"
-    dataKey="id"
-    [rows]="15"
-    [columns]="this.userPreferences[this.tableId]?.displayedColumns"
-    [rowsPerPageOptions]="[15, 30, 50]"
-    [paginator]="true"
-    [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
-    [showCurrentPageReport]="true"
-    [resizableColumns]="true"
-    columnResizeMode="expand"
-    showGridlines
-    [tableStyle]="{ width: '100%', 'border-spacing': '1px' }"
-    [globalFilterFields]="dataKeys"
-    (onFilter)="onTableFilterChange($event)"
-    stateStorage="local"
-    [stateKey]="tableId + '-table-state'"
-  >
+  <p-table id="iwstable" #dt2 [value]="tableValues" dataKey="id" [rows]="15"
+    [columns]="this.userPreferences[this.tableId]?.displayedColumns" [rowsPerPageOptions]="[15, 30, 50]"
+    [paginator]="true" [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
+    [showCurrentPageReport]="true" [resizableColumns]="true" columnResizeMode="expand" showGridlines
+    [tableStyle]="{ width: '100%', 'border-spacing': '1px' }" [globalFilterFields]="dataKeys"
+    (onFilter)="onTableFilterChange($event)" stateStorage="local" [stateKey]="tableId + '-table-state'">
     <ng-template #header let-columns>
       <tr>
         <th id="hide-columns" class="thead-bg-blue">
-          <p-multiselect
-            #hiddenColumns
-            [options]="this.columns"
-            [ngModel]="this.userPreferences[this.tableId]?.displayedColumns"
-            (onChange)="changeSelect($event)"
-            optionLabel="header"
-            [maxSelectedLabels]="0"
-            [appendTo]="'body'"
-            dropdownIcon="pi pi-eye"
-          />
+          <p-multiselect #hiddenColumns [options]="this.columns"
+            [ngModel]="this.userPreferences[this.tableId]?.displayedColumns" (onChange)="changeSelect($event)"
+            optionLabel="header" [maxSelectedLabels]="0" [appendTo]="'body'" dropdownIcon="pi pi-eye" />
         </th>
-        <th
-          id="data-column"
-          scope="col"
-          *ngFor="let col of columns; let i = index"
-          [ngStyle]="col.styles"
-          [pSortableColumn]="col.field"
-          pResizableColumn
-          class="thead"
-        >
+        <th id="data-column" scope="col" *ngFor="let col of columns; let i = index" [ngStyle]="col.styles"
+          [pSortableColumn]="col.field" pResizableColumn class="thead">
           <div class="flex justify-content-between">
             {{ col.header }} <p-sortIcon [field]="col.field" />
           </div>
@@ -53,54 +25,26 @@
           @if(col.filter && col.filter.type === 'multiple') {
           <p-columnFilter [field]="col.field" matchMode="in" [showMenu]="false">
             <ng-template #filter let-value let-filter="filterCallback">
-              <p-multiselect
-                [ngModel]="value"
-                [options]="col.filter.data"
-                (onChange)="filter($event.value)"
-                [placeholder]="'COMMON.ANY' | translate"
-                [style.min-width.rem]="14"
-                [panelStyle]="{ minWidth: '16rem' }"
-                [appendTo]="'body'"
-              >
+              <p-multiselect [ngModel]="value" [options]="col.filter.data" (onChange)="filter($event.value)"
+                [placeholder]="'COMMON.ANY' | translate" [style.min-width.rem]="14" [panelStyle]="{ minWidth: '16rem' }"
+                [appendTo]="'body'">
               </p-multiselect>
             </ng-template>
           </p-columnFilter>
           } @else if (col.filter && col.filter.type === 'boolean') {
-          <p-columnFilter
-            [field]="col.field"
-            matchMode="equals"
-            [showMenu]="false"
-          >
+          <p-columnFilter [field]="col.field" matchMode="equals" [showMenu]="false">
             <ng-template #filter let-value let-filter="filterCallback">
-              <p-select
-                [ngModel]="value"
-                [options]="booleanHeaders"
-                optionLabel="header"
-                optionValue="value"
-                (onChange)="filter($event.value)"
-                [placeholder]="'COMMON.SELECT_ONE' | translate"
-                styleClass="w-full"
-                [appendTo]="'body'"
-              >
+              <p-select [ngModel]="value" [options]="booleanHeaders" optionLabel="header" optionValue="value"
+                (onChange)="filter($event.value)" [placeholder]="'COMMON.SELECT_ONE' | translate" styleClass="w-full"
+                [appendTo]="'body'">
               </p-select>
             </ng-template>
           </p-columnFilter>
           } @else {
-          <p-columnFilter
-            type="text"
-            [field]="col.field"
-            matchMode="contains"
-            ariaLabel="Filter Name"
-          >
+          <p-columnFilter type="text" [field]="col.field" matchMode="contains" ariaLabel="Filter Name">
             <ng-template #filter let-value let-filter="filterCallback">
-              <input
-                type="text"
-                pInputText
-                [ngModel]="value"
-                (ngModelChange)="filter($event)"
-                class="p-inputtext"
-                [placeholder]="'COMMON.SEARCH' | translate"
-              />
+              <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" class="p-inputtext"
+                [placeholder]="'COMMON.SEARCH' | translate" />
             </ng-template>
           </p-columnFilter>
           }
@@ -109,68 +53,58 @@
     </ng-template>
 
     <ng-template #body let-row let-i="rowIndex" let-columns="columns">
-      <tr
-        [ngClass]="{
+      <tr [ngClass]="{
           'odd-row': i % 2 !== 0,
           'even-row': i % 2 === 0,
           'clickable-title':
             tableId !== 'ListCustomers' && tableId !== 'DetailCustomer'
-        }"
-      >
+        }">
         <td>
           <div class="flex justify-content-center gap-2">
-            <button
-              pButton
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-info button-option"
-              (click)="editRegister(row)"
-            ></button>
-            <button
-              pButton
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger button-option"
-              (click)="deleteRegister(row[removeKey])"
-            ></button>
+            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
+              (click)="editRegister(row)"></button>
+            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
+              (click)="deleteRegister(row[removeKey])"></button>
           </div>
         </td>
-        <td
-          *ngFor="let col of columns; let i = index"
-          [ngClass]="col.customClasses ? col.customClasses : ''"
-          (click)="
+        <td *ngFor="let col of columns; let i = index" [ngClass]="col.customClasses ? col.customClasses : ''" (click)="
             i === 0 && tableId !== 'ListCustomers'
               ? editRegister(row)
               : onClickRow(row)
-          "
-          (keydown.enter)="
+          " (keydown.enter)="
             i === 0 && tableId !== 'ListCustomers'
               ? editRegister(row)
               : onClickRow(row)
-          "
-          [class.clickable-title]="
+          " [class.clickable-title]="
             (i === 0 && tableId !== 'ListCustomers') ||
             (i === 1 && tableId === 'ListCustomers')
-          "
-          [style.cursor]="
+          " [style.cursor]="
             (i === 0 && tableId !== 'ListCustomers') ||
             (i === 1 && tableId === 'ListCustomers')
               ? 'pointer'
               : 'default'
-          "
-        >
-          @if(col.filter && col.filter.type === 'boolean') { @if(row[col.field]
-          == true) {
-          <i class="pi text-green-500 pi-check"></i>
-          } @else {
-          <i class="pi text-red-500 pi-times"></i>
-          } } @else {
-          {{
-            col.type === "date"
+          ">
+          <!-- Add link by an <a> tag -->
+          <ng-container *ngIf="col.routerLink; else plainText">
+            <a [routerLink]="col.routerLink(row)" (click)="$event.stopPropagation()"
+              style="color: inherit; text-decoration: none;" tabindex="-1">
+              {{ row[col.field] }}
+            </a>
+          </ng-container>
+          <ng-template #plainText>
+            <ng-container *ngIf="col.filter && col.filter.type === 'boolean'; else normalText">
+              <i class="pi" [ngClass]="
+          row[col.field] ? 'text-green-500 pi-check' : 'text-red-500 pi-times'
+        "></i>
+            </ng-container>
+            <ng-template #normalText>
+              {{
+              col.type === 'date'
               ? (row[col.field] | date : col.format)
               : row[col.field]
-          }}
-          }
-        </td>
-      </tr>
+              }}
+            </ng-template>
+          </ng-template>
     </ng-template>
 
     <ng-template #emptymessage>
@@ -178,7 +112,7 @@
         <td colspan="7">
           <p-message severity="info">{{
             "TABLES.NO_RESULTS_FOUND" | translate
-          }}</p-message>
+            }}</p-message>
         </td>
       </tr>
     </ng-template>
@@ -187,23 +121,12 @@
   <p-toolbar>
     <ng-template #start>
       <div class="flex gap-2">
-        <p-button
-          [label]="nameNewButton || 'BUTTONS.NEW' | translate"
-          icon="pi pi-plus"
-          (click)="createRegister('new register')"
-          (keydown.enter)="createRegister('new register')"
-        />
+        <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus"
+          (click)="createRegister('new register')" (keydown.enter)="createRegister('new register')" />
 
         @if(isFileUploadButtonVisible) {
-        <p-fileUpload
-          mode="basic"
-          [accept]="acceptFilesFormats"
-          [maxFileSize]="5000000"
-          [chooseLabel]="'BUTTONS.IMPORT' | translate"
-          auto
-          customUpload
-          class="mr-2 inline-block"
-        />
+        <p-fileUpload mode="basic" [accept]="acceptFilesFormats" [maxFileSize]="5000000"
+          [chooseLabel]="'BUTTONS.IMPORT' | translate" auto customUpload class="mr-2 inline-block" />
         }
       </div>
     </ng-template>
