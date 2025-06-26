@@ -180,6 +180,9 @@
       "CONFIRM_QUESTION_DELETE": "Are you sure you want to delete the Contact Person ",
       "INVOICE": "Invoice Recipient",
       "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
+    },
+    "MESSAGE": {
+      "UPDATE_SUCCESS": "Contact Person was updated successfully"
     }
   },
   "EMPLOYEES": {
