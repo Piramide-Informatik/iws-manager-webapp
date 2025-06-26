@@ -26,6 +26,7 @@
           <p-columnFilter [field]="col.field" matchMode="in" [showMenu]="false">
             <ng-template #filter let-value let-filter="filterCallback">
               <p-multiselect [ngModel]="value" [options]="col.filter.data" (onChange)="filter($event.value)"
+                optionLabel="label" optionValue="value"
                 [placeholder]="'COMMON.ANY' | translate" [style.min-width.rem]="14" [panelStyle]="{ minWidth: '16rem' }"
                 [appendTo]="'body'">
               </p-multiselect>
@@ -105,6 +106,8 @@
               }}
             </ng-template>
           </ng-template>
+        </td>
+        </tr>
     </ng-template>
 
     <ng-template #emptymessage>

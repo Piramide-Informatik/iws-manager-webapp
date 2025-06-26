@@ -70,9 +70,9 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   dataKeys = ['id', 'companyName', 'nameLine2', 'kind', 'land', 'place', 'contact'];
 
   // Component States
-  public countries!: string[];
+  public countries!: any[];
   public selectedCountries: any[] = [];
-  public companyTypes: string[] = [];
+  public companyTypes: any[] = [];
   public isLoadingCustomer = false;
   customerType: 'create' | 'delete' = 'create';
   selectedCustomer: number | null = null;
@@ -99,7 +99,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       this.countryUtils.getCountriesSortedByName(),
       this.contactPersonService.getAllContactPersons(),
       this.customerUtils.getAllCustomers(),
-      this.companyTypeUtils.getCompanyTypeSortedByName()
+      this.companyTypeUtils.getCompanyTypeSortedByName() 
     ]).subscribe({
       next: ([countries, contacts, customers, companyTypes]) => {
         this.handleInitialDataSuccess(countries, contacts, customers, companyTypes);
@@ -118,10 +118,20 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     customers: Customer[],
     companyTypes: CompanyType[]
   ): void {
-    this.countries = countries.map(country => country.name);
+    const noneLabel = this.translate.instant(('COUNTRIES.OPTIONS.SELECT_NONE'));
+    
+    // Crear arrays con objetos que tienen label y value
+    this.countries = [
+      { label: noneLabel, value: '' },
+      ...countries.map(country => ({ label: country.name, value: country.name }))
+    ];
+    
+    this.companyTypes = [
+      { label: noneLabel, value: '' },
+      ...companyTypes.map(companyType => ({ label: companyType.name, value: companyType.name }))
+    ];
+    
     this.customers = customers;
-    this.companyTypes = companyTypes.map(companyType => companyType.name);
-
     this.initializeContactsMap(contacts);
     this.initializeTableData();
     this.initializeTableConfiguration();
@@ -141,8 +151,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       id: customer.id,
       companyName: customer.customername1,
       nameLine2: customer.customername2,
-      kind: customer.companytype?.name,
-      land: customer.country?.name,
+      kind: customer.companytype?.name ?? '',
+      land: customer.country?.name ?? '',
       place: customer.city,
       contact: this.contacts[customer.id] ?? '',
     }));
