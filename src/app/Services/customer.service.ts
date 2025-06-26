@@ -24,7 +24,7 @@ export class CustomerService {
     public loading = this._loading.asReadonly();
     public error = this._error.asReadonly();
 
-    
+
     public contacts = this._contacts.asReadonly();
     public contactsLoading = this._contactsLoading.asReadonly();
     public contactsError = this._contactsError.asReadonly();
@@ -58,7 +58,7 @@ export class CustomerService {
     }
 
     // CREATE
-    addCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable <Customer> {
+    addCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Customer> {
         return this.http.post<Customer>(this.apiUrl, customer, this.httpOptions).pipe(
             tap({
                 next: (newCustomer) => {
@@ -68,6 +68,7 @@ export class CustomerService {
                 error: (err) => {
                     this._error.set('Failed to add customer');
                     console.error('Error adding customer:', err);
+                    return of(customer);
                 }
             })
         );
@@ -145,7 +146,7 @@ export class CustomerService {
     getCustomerContacts(customerId: number): Observable<ContactPerson[]> {
         this._contactsLoading.set(true);
         const url = `${this.apiUrl}/${customerId}/contacts`;
-        
+
         return this.http.get<ContactPerson[]>(url, this.httpOptions).pipe(
             tap({
                 next: (contacts) => {
