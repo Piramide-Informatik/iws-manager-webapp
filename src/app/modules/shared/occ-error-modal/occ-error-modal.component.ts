@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class OccErrorModalComponent {
   @Output() close = new EventEmitter<void>();
 
-   constructor(private translate: TranslateService) {}
+   constructor(private readonly translate: TranslateService) {}
 
    onClose() {
     console.log("close")

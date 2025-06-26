@@ -174,7 +174,6 @@ export class ContactUtils {
         return this.contactPersonService.updateContactPerson(contact);
       })
     );
-    //return this.contactPersonService.updateContactPerson(contact);
   }
 
   private waitForUpdatedSalutation(id: number, observer: any) {
