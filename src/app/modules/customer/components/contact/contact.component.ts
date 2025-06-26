@@ -39,6 +39,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   private currentCustomer!: Customer;
   public contacts = toSignal(this.salutationService.getAllSalutations(), { initialValue: [] });
   public titles = toSignal(this.titleService.getAllTitles(), { initialValue: [] });
+  public showOCCErrorModal = false;
 
   // Form configuration
   public contactForm!: FormGroup;
@@ -170,6 +171,12 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   private handleSaveError(error: any): void {
     console.error('Error saving contact:', error);
+
+    if (error instanceof Error && error.message?.includes('version mismatch')) {
+      this.showOCCErrorModal = true;
+      return;
+    }
+    
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('COUNTRIES.MESSAGE.ERROR'),

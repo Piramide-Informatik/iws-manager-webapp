@@ -1,5 +1,5 @@
 import { EnvironmentInjector, Injectable, inject, signal } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { ContactPersonService } from '../../../Services/contact-person.service';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -160,7 +160,21 @@ export class ContactUtils {
       return throwError(() => new Error('Invalid contact person data'));
     }
 
-    return this.contactPersonService.updateContactPerson(contact);
+    return this.contactPersonService.getContactPersonById(contact.id).pipe(
+      take(1),
+      switchMap((currentContact) => {
+        if (!currentContact) {
+          return throwError(() => new Error('Contact person not found'));
+        }
+
+        if (currentContact.version !== contact.version) {
+          return throwError(() => new Error('Conflict detected: contact person version mismatch'));
+        }
+
+        return this.contactPersonService.updateContactPerson(contact);
+      })
+    );
+    //return this.contactPersonService.updateContactPerson(contact);
   }
 
   private waitForUpdatedSalutation(id: number, observer: any) {

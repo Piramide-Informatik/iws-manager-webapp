@@ -137,3 +137,7 @@
   </div>
 }
 
+<app-occ-error-modal
+  *ngIf="showOCCErrorModal"
+  (onClose)="showOCCErrorModal = false">
+</app-occ-error-modal>
