@@ -180,6 +180,9 @@
       "CONFIRM_QUESTION_DELETE": "Sind Sie sicher, dass Sie den Ansprechpartner löschen möchten: ",
       "INVOICE": "Rechnungsempfänger",
       "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
+    },
+    "MESSAGE": {
+      "UPDATE_SUCCESS":"Der Kontakt wurde erfolgreich aktualisiert"
     }
   },
   "EMPLOYEES": {
