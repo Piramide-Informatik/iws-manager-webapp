@@ -70,6 +70,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public contactPersons = signal<ContactPerson[]>([]);
   public loadingContacts = signal<boolean>(false);
   public errorContacts = signal<string | null>(null);
+  public showOCCErrorModalCustomer = false;
 
   public companyTypes = toSignal(
     this.companyTypeUtils.getCompanyTypeSortedByName().pipe(
@@ -298,89 +299,153 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.isSaving = false;
   }
 
-  onSubmit() {
-    if (this.formDetailCustomer.invalid || !this.currentCustomerToEdit || this.isSaving) {
+  onSubmit(): void {
+    if (this.shouldPreventSubmission()) {
       this.markAllAsTouched();
       return;
     }
 
-    this.isSaving = true;
-    const updatedCustomer: Customer = {
-      ...this.currentCustomerToEdit,
-      customerno: this.formDetailCustomer.value.customerNo,
-      customername1: this.formDetailCustomer.value.companyText1,
-      customername2: this.formDetailCustomer.value.companyText2,
-      country: this.formDetailCustomer.value.selectedCountry?{
-        id: this.formDetailCustomer.value.selectedCountry,
-        createdAt: '',
-        updatedAt: '',
-        isDefault: false,
-        label: '',
-        name: '',
-        version: 0 } : null,
-      street: this.formDetailCustomer.value.street,
-      zipcode: this.formDetailCustomer.value.postalCode,
-      city: this.formDetailCustomer.value.city,
-      companytype: this.formDetailCustomer.value.selectedTypeCompany ? {
-        id: this.formDetailCustomer.value.selectedTypeCompany,
-        name: '',
-        createdAt: '',
-        updatedAt: '',
-        version: 0
-      }: null,
-      state: this.formDetailCustomer.value.selectedState ?{
-        id: this.formDetailCustomer.value.selectedState,
-        name: '',
-        createdAt: '',
-        updatedAt: '',
-        version: 0
-      }: null,
-      homepage: this.formDetailCustomer.value.homepage,
-      phone: this.formDetailCustomer.value.phone,
-      hoursperweek: this.formDetailCustomer.value.weekWorkingHours,
-      taxno: this.formDetailCustomer.value.taxNumber,
-      maxhoursmonth: this.formDetailCustomer.value.maxHoursMonth,
-      maxhoursyear: this.formDetailCustomer.value.maxHoursYear,
-      note: this.formDetailCustomer.value.textAreaComment,
-      email1: this.formDetailCustomer.value.invoiceEmail,
-      taxoffice: this.formDetailCustomer.value.headcount,
-      branch: this.formDetailCustomer.value.selectedSector ?{
-        id: this.formDetailCustomer.value.selectedSector,
-        name: '',
-        version: 0
-      }: null
-    };
+    this.prepareForSubmission();
+    const updatedCustomer = this.buildUpdatedCustomer();
 
-    this.subscriptions.add(
-      this.customerUtils.updateCustomer(updatedCustomer).subscribe({
+    this.updateCustomer(updatedCustomer);
+  }
+
+  private buildUpdatedCustomer(): Customer {
+    const formValue = this.formDetailCustomer.value;
+
+    return {
+      ...this.currentCustomerToEdit!,
+      customerno: formValue.customerNo,
+      customername1: formValue.companyText1,
+      customername2: formValue.companyText2,
+      country: this.buildCountryEntity(formValue.selectedCountry),
+      street: formValue.street,
+      zipcode: formValue.postalCode,
+      city: formValue.city,
+      companytype: this.buildCompanyTypeEntity(formValue.selectedTypeCompany),
+      state: this.buildStateEntity(formValue.selectedState),
+      homepage: formValue.homepage,
+      phone: formValue.phone,
+      hoursperweek: formValue.weekWorkingHours,
+      taxno: formValue.taxNumber,
+      maxhoursmonth: formValue.maxHoursMonth,
+      maxhoursyear: formValue.maxHoursYear,
+      note: formValue.textAreaComment,
+      email1: formValue.invoiceEmail,
+      taxoffice: formValue.headcount,
+      branch: this.buildBranchEntity(formValue.selectedSector)
+    };
+  }
+
+  private buildCountryEntity(countryId?: number): Customer['country'] {
+    if (!countryId) return null;
+
+    return {
+      id: countryId,
+      name: '',
+      label: '',
+      isDefault: false,
+      createdAt: '',
+      updatedAt: '',
+      version: 0
+    };
+  }
+
+  private buildCompanyTypeEntity(companyTypeId?: number): Customer['companytype'] {
+    if (!companyTypeId) return null;
+
+    return {
+      id: companyTypeId,
+      name: '',
+      createdAt: '',
+      updatedAt: '',
+      version: 0
+    };
+  }
+
+  private buildStateEntity(stateId?: number): Customer['state'] {
+    if (!stateId) return null;
+
+    return {
+      id: stateId,
+      name: '',
+      createdAt: '',
+      updatedAt: '',
+      version: 0
+    };
+  }
+
+  private buildBranchEntity(branchId?: number): Customer['branch'] {
+    if (!branchId) return null;
+
+    return {
+      id: branchId,
+      name: '',
+      version: 0
+    };
+  }
+
+  private updateCustomer(customer: Customer): void {
+    const updateSub = this.customerUtils.updateCustomer(customer)
+      .subscribe({
         next: (savedCustomer) => this.handleSaveSuccess(savedCustomer),
         error: (err) => this.handleSaveError(err)
-      })
-    );
+      });
+
+    this.subscriptions.add(updateSub);
   }
 
   private handleSaveSuccess(savedCustomer: Customer): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_SUCCESS')
-    });
-    this.customerStateService.setCustomerToEdit(null);
-    this.clearForm();
-    this.isSaving = false;
-
-    this.router.navigate(['/customers']);
+    this.showSuccessMessage('TITLE.MESSAGE.UPDATE_SUCCESS');
+    this.resetFormAndNavigation();
   }
 
   private handleSaveError(error: any): void {
     console.error('Error saving customer:', error);
+    if (error instanceof Error && error.message?.includes('version mismatch')) {
+      this.showOCCErrorModalCustomer = true;
+      return;
+    }
+
+    this.showErrorMessage('TITLE.MESSAGE.UPDATE_FAILED');
+    this.isSaving = false;
+  }
+
+  private showSuccessMessage(messageKey: string): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
+      detail: this.translate.instant(messageKey)
+    });
+  }
+
+  private showErrorMessage(messageKey: string): void {
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
-      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_FAILED')
+      detail: this.translate.instant(messageKey)
     });
-    this.isSaving = false;
   }
+
+  private resetFormAndNavigation(): void {
+    this.customerStateService.setCustomerToEdit(null);
+    this.clearForm();
+    this.isSaving = false;
+    this.router.navigate(['/customers']);
+  }
+
+  private shouldPreventSubmission(): boolean {
+    return this.formDetailCustomer.invalid ||
+      !this.currentCustomerToEdit ||
+      this.isSaving;
+  }
+
+  private prepareForSubmission(): void {
+    this.isSaving = true;
+  }
+
+
 
   private markAllAsTouched(): void {
     Object.values(this.formDetailCustomer.controls).forEach(control => {
@@ -437,6 +502,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     const formValues = this.formDetailCustomer.value;
 
     return {
+      version: 0,
       city: formValues.city,
       companytype: formValues.selectedTypeCompany
         ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }

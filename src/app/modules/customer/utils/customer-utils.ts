@@ -1,5 +1,5 @@
 import { EnvironmentInjector, inject, Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
 import { ContactPerson } from '../../../Entities/contactPerson';
@@ -106,19 +106,6 @@ export class CustomerUtils {
      * @returns Observable that completes when the deletion is done
      */
     deleteCustomer(id: number): Observable<void> {
-        // return new Observable(observer => {
-        //     this.customerService.deleteCustomer(id);
-
-        //     setTimeout(() => {
-        //         if (!this.customerService.error()) {
-        //             observer.next();
-        //             observer.complete();
-        //         } else {
-        //             observer.error(this.customerService.error());
-        //         }
-        //     }, 100);
-        // });
-
         return this.customerService.deleteCustomer(id);
     }
 
@@ -132,7 +119,20 @@ export class CustomerUtils {
             return throwError(() => new Error('Invalid customer data'));
         }
 
-        return this.customerService.updateCustomer(customer);
+        return this.customerService.getCustomerById(customer.id).pipe(
+            take(1),
+            switchMap((currentCustomer) => {
+                if (!currentCustomer) {
+                    return throwError(() => new Error('Contact person not found'));
+                }
+
+                if (currentCustomer.version !== customer.version) {
+                    return throwError(() => new Error('Conflict detected: customer person version mismatch'));
+                }
+
+                return this.customerService.updateCustomer(customer);
+            })
+        );
     }
 
     /**

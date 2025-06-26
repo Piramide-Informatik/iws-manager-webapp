@@ -182,4 +182,9 @@
   </div>
   </div>
 </div>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalCustomer"
+  (onClose)="showOCCErrorModalCustomer = false">
+</app-occ-error-modal>
 <p-toast></p-toast>
