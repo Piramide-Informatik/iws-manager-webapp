@@ -182,7 +182,9 @@
       "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
     },
     "MESSAGE": {
-      "UPDATE_SUCCESS":"Der Kontakt wurde erfolgreich aktualisiert"
+      "UPDATE_SUCCESS":"Der Kontakt wurde erfolgreich aktualisiert",
+      "CREATE_SUCCESS":"Der Kontakt wurde erfolgreich erstellt",
+      "SUCCESS":"ERFOLG"
     }
   },
   "EMPLOYEES": {
