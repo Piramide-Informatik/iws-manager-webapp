@@ -34,6 +34,7 @@ import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
 
 import { UserPreferenceService } from '../../Services/user-preferences.service';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { OccErrorModalComponent } from '../shared/occ-error-modal/occ-error-modal.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MasterDataModule } from '../master-data/master-data.module';
     DetailCustomerComponent,
     PageCustomerComponent,
     SubMenuComponent,
+    OccErrorModalComponent
   ],
   imports: [
     ButtonModule,
