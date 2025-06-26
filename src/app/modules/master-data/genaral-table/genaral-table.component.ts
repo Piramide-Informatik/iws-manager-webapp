@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './genaral-table.component.html',
   styleUrl: './genaral-table.component.scss'
 })
-export class GenaralTableComponent implements OnInit, OnChanges{
+export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() tableId: string = '';
   @Input() tableTitle: string = 'Table title';
   @Input() removeKey: string = 'id';
@@ -45,6 +45,10 @@ export class GenaralTableComponent implements OnInit, OnChanges{
     private readonly translate: TranslateService,
     private readonly messageService: MessageService
   ){}
+
+  ngAfterViewChecked(): void {
+    this.loadStorageData();
+  }
 
   generateBooleanHeaders() : any[] {
     return [
@@ -155,6 +159,11 @@ export class GenaralTableComponent implements OnInit, OnChanges{
   processColumnsOrders() {
     const aux = this.userPreferences[this.tableId].displayedColumns;
     this.userPreferences[this.tableId].displayedColumns = aux.map((column: any) => Object.assign(column, {pos: this.colOrders[column.field]})).sort((a: any, b: any) => a.pos > b.pos);
+  }
+  loadStorageData() {
+    if (!localStorage.getItem(this.dt2.stateKey ?? '')) {
+       this.dt2._filter(); 
+    }
   }
 
 }
