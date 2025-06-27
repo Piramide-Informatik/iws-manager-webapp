@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, filter, Subscription } from 'rxjs';
 import { MainMenu, MenuItem, MenuSection } from '../../interfaces/menu-master-data-interface';
 import { SidebarStateService } from '../../sidebar-state.service';
+import { TieredMenu } from 'primeng/tieredmenu';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,6 +17,8 @@ export class SidebarComponent {
   @Input() isCollapsed!: boolean;
   @Input() menuItems: any[] = [];
   public showPopup: boolean = false;
+  @ViewChild('menu') menu!: TieredMenu;
+  hideTimer: any;
   public masterDataGroups: {
         label: any;
         isActive: boolean;
@@ -150,11 +153,34 @@ export class SidebarComponent {
     this.sidebarState.toggleSidebarLocalStorage();
   }
 
+  // Methods for keep style hover masterdata
   onMenuHide() {
     this.showPopup = false;
   }
 
   onMenuShow(){
     this.showPopup = true;
+  }
+
+  // Methods for hide popup with leave cursor 
+  showMenu(event: Event) {
+    this.menu.show(event);
+    this.cancelHide();
+  }
+
+  startHideTimer() {
+    this.hideTimer = setTimeout(() => {
+      this.menu.hide();
+    }, 300);
+  }
+
+  cancelHide() {
+    if (this.hideTimer) {
+      clearTimeout(this.hideTimer);
+    }
+  }
+
+  hideMenu() {
+    this.menu.hide();
   }
 }
