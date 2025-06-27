@@ -150,7 +150,8 @@
     "LABELS": {
       "CONTACT_PERSON": "Persona de Contacto",
       "DELETE_CUSTOMER": "Eliminar Cliente",
-      "REMOVE_CUSTOMER_QUESTION": "¿Está seguro que desea eliminar "
+      "REMOVE_CUSTOMER_QUESTION": "¿Está seguro que desea eliminar ",
+      "REMOVE_CONTACT_LIST": "y su lista de contactos"
     },
     "CONTACT_TABLE": {
       "NAME": "Nombre",
