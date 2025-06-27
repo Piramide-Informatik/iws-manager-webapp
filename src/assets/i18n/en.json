@@ -150,7 +150,8 @@
     "LABELS": {
       "CONTACT_PERSON": "Contact Person",
       "DELETE_CUSTOMER": "Delete Customer",
-      "REMOVE_CUSTOMER_QUESTION": "Are you sure you want to delete the Customer "
+      "REMOVE_CUSTOMER_QUESTION": "Are you sure you want to delete the Customer ",
+      "REMOVE_CONTACT_LIST": "and his contact list"
     },
     "CONTACT_TABLE": {
       "NAME": "Name",
