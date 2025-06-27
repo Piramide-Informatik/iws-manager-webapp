@@ -28,7 +28,7 @@ jobs:
           npm install
           
       - name: Build Angular project
-        run: ng build --configuration=production
+        run: ng build
         
       - name: Deploy to Firebase Preview Channel
         uses: FirebaseExtended/action-hosting-deploy@v0

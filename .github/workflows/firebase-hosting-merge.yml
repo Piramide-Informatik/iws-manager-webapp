@@ -32,7 +32,7 @@ jobs:
       - name: Build Angular project
         run: |
           export NODE_OPTIONS=--openssl-legacy-provider
-          ng build --configuration=production --verbose
+          ng build
           
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
