@@ -1,5 +1,3 @@
-# .github/workflows/firebase-hosting-merge.yml
-
 name: Deploy to Firebase Hosting on merge
 
 on:
@@ -12,21 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Descarga el código del repositorio
       - uses: actions/checkout@v4
-
-      # Configura Node.js (ajusta la versión si tu proyecto usa una diferente)
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      # Instala Angular CLI globalmente
       - run: npm install -g @angular/cli
-
-      # Instala dependencias y ejecuta el build
       - run: npm ci && ng build
-
-      # Despliega a Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
