@@ -174,7 +174,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       }
 
       // Si hay ID, cargar el customer existente
-      this.customerService.getCustomerById(Number(this.customerId)).subscribe({
+      this.customerUtils.getCustomerById(Number(this.customerId)).subscribe({
         next: (customer) => {
           if (customer) {
             const formData = {
