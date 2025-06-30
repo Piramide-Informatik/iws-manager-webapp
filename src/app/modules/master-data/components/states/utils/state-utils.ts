@@ -1,5 +1,5 @@
 import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { StateService } from '../../../../../Services/state.service';
 import { State } from '../../../../../Entities/state';
@@ -125,42 +125,19 @@ export class StateUtils {
       return throwError(() => new Error('Invalid state data'));
     }
 
-    return new Observable<State>(observer => {
-      this.stateService.updateState(state);
+    return this.stateService.getStateById(state.id).pipe(
+      take(1),
+      switchMap((currentState) => {
+        if(!currentState) {
+          return throwError(() => new Error('State not found'));
+        }
 
-      runInInjectionContext(this.injector, () => {
-        const sub = this.waitForUpdatedState(state.id, observer);
-        const errorSub = this.listenForUpdateErrors(observer);
+        if (currentState.version !== state.version) {
+          return throwError(() => new Error('Conflict detected: state version mismatch'));
+        }
 
-        // Cleanup
-        return () => {
-          sub.unsubscribe();
-          errorSub.unsubscribe();
-        };
-      });
-    });
-  }
-
-  private waitForUpdatedState(id: number, observer: any) {
-    return toObservable(this.stateService.states).pipe(
-      map(states => states.find(s => s.id === id)),
-      filter(updated => !!updated),
-      take(1)
-    ).subscribe({
-      next: (updatedState) => {
-        observer.next(updatedState);
-        observer.complete();
-      },
-      error: (err) => observer.error(err)
-    });
-  }
-
-  private listenForUpdateErrors(observer: any) {
-    return toObservable(this.stateService.error).pipe(
-      filter(error => !!error),
-      take(1)
-    ).subscribe({
-      next: (err) => observer.error(err)
-    });
+        return this.stateService.updateState(state);
+      })
+    );
   }
 }

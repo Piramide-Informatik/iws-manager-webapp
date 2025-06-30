@@ -108,9 +108,9 @@ export class StateService {
    * @returns Observable with updated State object
    * @throws Error when state not found or validation fails
    */
-  updateState(updatedState: State): void {
+  updateState(updatedState: State): Observable<State> {
     const url = `${this.apiUrl}/${updatedState.id}`;
-    this.http.put<State>(url, updatedState, this.httpOptions).pipe(
+    return this.http.put<State>(url, updatedState, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._states.update(states =>
@@ -123,7 +123,7 @@ export class StateService {
           console.error('Error updating state:', err);
         }
       })
-    ).subscribe();
+    );
   }
 
   // ==================== DELETE OPERATIONS ====================
