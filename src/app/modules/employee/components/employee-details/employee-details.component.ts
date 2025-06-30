@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
 import { FormGroup } from '@angular/forms';
-import { TranslatePipe, TranslateDirective, TranslateService } from "@ngx-translate/core";
+import { TranslatePipe, TranslateDirective, TranslateService, _ } from "@ngx-translate/core";
 import { SalutationService } from '../../../../Services/salutation.service';
 import { map, Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
@@ -111,20 +111,13 @@ export class EmployeeDetailsComponent implements OnInit {
       { id: 3, name: 'Medium', description: 'title' }
     ];
 
-    this.cols = [
-      { field: 'startDate', header: 'Datum' },
-      { field: 'salaryPerMonth', header: 'Gehalt' },
-      { field: 'hoursPerWeek', header: 'WoStd' },
-      { field: 'workShortTime', header: 'Kurz' },
-      { field: 'maxHoursPerMonth', header: 'Max. Std Mon' },
-      { field: 'maxHoursPerDay', header: 'Max. Std Tag' },
-      { field: 'hourlyRate', header: 'Std.Satz' },
-      { field: 'specialPayment', header: 'JaZoSa' }
-    ];
+    this.loadEmployeeContractColumns();
 
     this.selectedColumns = this.cols;
     this.userEmployeeDetailPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadEmployeeContractColumns();
+      this.selectedColumns = this.cols;
       this.userEmployeeDetailPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
@@ -135,5 +128,18 @@ export class EmployeeDetailsComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+  }
+
+  loadEmployeeContractColumns() {
+    this.cols = [
+      { field: 'startDate', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.START_DATE')) },
+      { field: 'salaryPerMonth', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SALARY_PER_MONTH')) },
+      { field: 'hoursPerWeek', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WEEKLY_HOURS')) },
+      { field: 'workShortTime', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WORK_SHORT_TIME')) },
+      { field: 'maxHoursPerMonth', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.MAX_HOURS_PER_MONTH')) },
+      { field: 'maxHoursPerDay', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.MAX_HOURS_PER_DAY')) },
+      { field: 'hourlyRate', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.HOURLY_RATE')) },
+      { field: 'specialPayment', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SPECIAL_PAYMENT')) }
+    ];
   }
 }
