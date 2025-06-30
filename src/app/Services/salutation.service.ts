@@ -3,6 +3,7 @@ import { Salutation } from '../Entities/salutation';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Country } from '../Entities/country';
 
 @Injectable({
   providedIn: 'root'
@@ -67,9 +68,9 @@ export class SalutationService {
   }
 
   // UPDATE
-  updateSalutation(updatedSalutation: Salutation): void {
+  updateSalutation(updatedSalutation: Salutation): Observable<Salutation> {
     const url = `${this.apiUrl}/${updatedSalutation.id}`;
-    this.http.put<Salutation>(url, updatedSalutation, this.httpOptions).pipe(
+    return this.http.put<Salutation>(url, updatedSalutation, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._salutations.update(salutations =>
@@ -82,7 +83,7 @@ export class SalutationService {
           console.error('Error updating salutation:', err);
         }
       })
-    ).subscribe();
+    );
   }
   
   // DELETE

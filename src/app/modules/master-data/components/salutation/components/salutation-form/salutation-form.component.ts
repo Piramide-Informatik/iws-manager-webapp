@@ -17,6 +17,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
   currentSalutation: Salutation | null = null;
   editSalutationForm!: FormGroup;
   isSaving = false;
+  public showOCCErrorModalSalutation = false;
   private readonly subscriptions = new Subscription();
   private readonly editSalutationSource = new BehaviorSubject<Salutation | null>(null);
 
@@ -97,6 +98,10 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
 
   private handleSaveError(error: any): void {
     console.error('Error saving salutation:', error);
+    if (error instanceof Error && error.message?.includes('version mismatch')) {
+      this.showOCCErrorModalSalutation = true;
+      return;
+    }
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('SALUTATION.MESSAGE.ERROR'),
