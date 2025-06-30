@@ -171,6 +171,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   private setupLanguageChangeListener(): void {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.updateFiltersLabels();
       this.loadColHeaders();
       this.selectedColumns = this.cols;
       this.userListCustomerPreferences = this.userPreferenceService.getUserPreferences(
@@ -178,6 +179,19 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         this.selectedColumns
       );
     });
+  }
+
+  private updateFiltersLabels(): void {
+    const noneLabel = this.translate.instant('COUNTRIES.OPTIONS.SELECT_NONE');
+    this.countries = this.updateFilterOptions(this.countries, noneLabel);
+    this.companyTypes = this.updateFilterOptions(this.companyTypes, noneLabel);
+  }
+
+  private updateFilterOptions(options: any[], newNoneLabel: string): any[] {
+    return [
+      { label: newNoneLabel, value: '' },
+      ...options.slice(1)
+    ];
   }
 
   onUserListCustomerPreferencesChanges(userListCustomerPreferences: any) {
@@ -303,6 +317,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   goToCustomerRegister() {
+    this.customerStateService.clearCustomer();
     this.router.navigate(['customer-create'], { relativeTo: this.route });
   }
 

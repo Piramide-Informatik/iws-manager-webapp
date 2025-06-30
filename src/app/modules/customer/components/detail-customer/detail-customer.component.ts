@@ -164,38 +164,56 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       this.customerId = params['id'];
 
-      this.customerService.getCustomerById(Number(this.customerId)).subscribe(customer => {
-        const formData = {
-          customerNo: customer?.id,
-          companyText1: customer?.customername1,
-          companyText2: customer?.customername2,
-          selectedCountry: customer?.country?.id,
-          street: customer?.street,
-          postalCode: customer?.zipcode,
-          city: customer?.city,
-          selectedTypeCompany: customer?.companytype?.id,
-          selectedState: customer?.state?.id,
-          homepage: customer?.homepage,
-          phone: customer?.phone,
-          weekWorkingHours: customer?.hoursperweek,
-          taxNumber: customer?.taxno,
-          maxHoursMonth: customer?.maxhoursmonth,
-          maxHoursYear: customer?.maxhoursyear,
-          textAreaComment: customer?.note,
-          invoiceEmail: customer?.email1,
-          headcount: customer?.taxoffice,
-          selectedSector: customer?.branch?.id
-        }
-        this.updateTitle(customer!.customername1!);
-        this.langSubscription = this.translate.onLangChange.subscribe(() => {
-          this.updateTitle(customer!.customername1!);
-        });
-        this.formDetailCustomer.patchValue(formData);
-        this.formDetailCustomer.updateValueAndValidity();
-        this.customerStateService.setCustomerToEdit(customer ?? null);
-      });
+      // Si no hay ID, estamos en modo create
+      if (!this.customerId) {
+        this.customerStateService.clearCustomer();
+        this.clearForm();
+        this.updateTitle(this.translate.instant('PAGETITLE.NEW_CUSTOMER'));
+        this.contactPersons.set([]);
+        return;
+      }
 
-      this.loadCustomerContacts(this.customerId);
+      // Si hay ID, cargar el customer existente
+      this.customerUtils.getCustomerById(Number(this.customerId)).subscribe({
+        next: (customer) => {
+          if (customer) {
+            const formData = {
+              customerNo: customer?.id,
+              companyText1: customer?.customername1,
+              companyText2: customer?.customername2,
+              selectedCountry: customer?.country?.id,
+              street: customer?.street,
+              postalCode: customer?.zipcode,
+              city: customer?.city,
+              selectedTypeCompany: customer?.companytype?.id,
+              selectedState: customer?.state?.id,
+              homepage: customer?.homepage,
+              phone: customer?.phone,
+              weekWorkingHours: customer?.hoursperweek,
+              taxNumber: customer?.taxno,
+              maxHoursMonth: customer?.maxhoursmonth,
+              maxHoursYear: customer?.maxhoursyear,
+              textAreaComment: customer?.note,
+              invoiceEmail: customer?.email1,
+              headcount: customer?.taxoffice,
+              selectedSector: customer?.branch?.id
+            }
+            this.updateTitle(customer.customername1!);
+            this.langSubscription = this.translate.onLangChange.subscribe(() => {
+              this.updateTitle(customer.customername1!);
+            });
+            this.formDetailCustomer.patchValue(formData);
+            this.formDetailCustomer.updateValueAndValidity();
+            this.customerStateService.setCustomerToEdit(customer);
+            this.loadCustomerContacts(this.customerId);
+          }
+        },
+        error: (error) => {
+          console.error('Error loading customer:', error);
+          this.customerStateService.clearCustomer();
+          this.clearForm();
+        }
+      });
     });
   }
 
@@ -263,7 +281,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.customerStateService.currentCustomer$.subscribe(customer => {
         this.currentCustomerToEdit = customer;
-        customer ? this.loadCustomerFormData(customer) : this.clearForm();
+        if (this.customerId && customer) {
+          this.loadCustomerFormData(customer);
+        } else if (!this.customerId && !customer) {
+          this.clearForm();
+        }
       })
     );
   }
