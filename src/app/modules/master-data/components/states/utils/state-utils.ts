@@ -1,6 +1,5 @@
-import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
-import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { EnvironmentInjector, Injectable, inject } from '@angular/core';
+import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
 import { StateService } from '../../../../../Services/state.service';
 import { State } from '../../../../../Entities/state';
 
