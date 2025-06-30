@@ -36,4 +36,10 @@
         </div>
     </form>
 </p-card>
+
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalCompanyType"
+  (onClose)="showOCCErrorModalCompanyType = false">
+</app-occ-error-modal>
 <p-toast></p-toast>
