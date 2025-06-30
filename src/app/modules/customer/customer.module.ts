@@ -34,7 +34,8 @@ import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
 
 import { UserPreferenceService } from '../../Services/user-preferences.service';
 import { MasterDataModule } from '../master-data/master-data.module';
-import { OccErrorModalComponent } from '../shared/occ-error-modal/occ-error-modal.component';
+import { SharedModule } from '../shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +44,6 @@ import { OccErrorModalComponent } from '../shared/occ-error-modal/occ-error-moda
     DetailCustomerComponent,
     PageCustomerComponent,
     SubMenuComponent,
-    OccErrorModalComponent
   ],
   imports: [
     ButtonModule,
@@ -69,7 +69,8 @@ import { OccErrorModalComponent } from '../shared/occ-error-modal/occ-error-moda
     MasterDataModule,
     ToggleSwitchModule,
     InputNumberModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    SharedModule
   ],
   providers: [ 
     UserPreferenceService 

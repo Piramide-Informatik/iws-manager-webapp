@@ -119,6 +119,7 @@ import { SalutationModalComponent } from './components/salutation/components/sal
 import { SalutationFormComponent } from './components/salutation/components/salutation-form/salutation-form.component';
 import { TypeOfCompaniesModalComponent } from './components/types-of-companies/components/company-types-modal/company-types-modal.component';
 import { StateModalComponent } from './components/states/components/state-modal/state-modal.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -234,6 +235,7 @@ import { StateModalComponent } from './components/states/components/state-modal/
     TextareaModule,
     PasswordModule,
     PickListModule,
+    SharedModule
   ],
   exports: [
     GenaralTableComponent

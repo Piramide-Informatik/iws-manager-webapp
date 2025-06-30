@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
 import { CountryService } from '../../../../../Services/country.service';
 import { Country } from '../../../../../Entities/country';
 
@@ -116,17 +116,24 @@ export class CountryUtils {
  * @param country - Country object with updated data
  * @returns Observable that completes when the update is done
  */
-  updateCountry(country: Country): Observable<void> {
-    return new Observable<void>(observer => {
-      this.countryService.updateCountry(country);
-      setTimeout(() => {
-        if (!this.countryService.error()) {
-          observer.next();
-          observer.complete();
-        } else {
-          observer.error(this.countryService.error());
+  updateCountry(country: Country): Observable<Country> {
+    if(!country.id) {
+      return throwError(() => new Error('Invalid country data'));
+    }
+
+    return this.countryService.getCountryById(country.id).pipe(
+      take(1),
+      switchMap((currentCountry) => {
+        if(!currentCountry) {
+          return throwError(() => new Error('Country not found'));
         }
-      }, 100);
-    });
+
+        if (currentCountry.version !== country.version) {
+          return throwError(() => new Error('Conflict detected: country version mismatch'));
+        }
+
+        return this.countryService.updateCountry(country);
+      })
+    );
   }
 }

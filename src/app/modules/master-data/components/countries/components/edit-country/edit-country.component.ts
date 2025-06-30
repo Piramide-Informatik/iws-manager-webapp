@@ -18,6 +18,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   countryForm!: FormGroup;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  public showOCCErrorModalCountry = false;
   
   constructor(
     private readonly countryUtils: CountryUtils,
@@ -100,6 +101,10 @@ export class EditCountryComponent implements OnInit, OnDestroy {
 
   private handleSaveError(error: any): void {
     console.error('Error saving country:', error);
+    if (error instanceof Error && error.message?.includes('version mismatch')) {
+      this.showOCCErrorModalCountry = true;
+      return;
+    }
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('COUNTRIES.MESSAGE.ERROR'),
