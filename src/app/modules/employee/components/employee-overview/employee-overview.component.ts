@@ -89,16 +89,16 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
 
     this.cols = [
-      { field: 'id', header: this.translate.instant(_('EMPLOYEES.TABLE.EMPLOYEE_ID')) },
-      { field: 'firstName', header: this.translate.instant(_('EMPLOYEES.TABLE.FIRST_NAME')) },
-      { field: 'lastName', header: this.translate.instant(_('EMPLOYEES.TABLE.LAST_NAME')) },
-      { field: 'email', header: this.translate.instant(_('EMPLOYEES.TABLE.EMAIL')) },
-      { field: 'generalManagerSince', header: this.translate.instant(_('EMPLOYEES.TABLE.GM_SINCE_DATE')) },
-      { field: 'shareholderSince', header: this.translate.instant(_('EMPLOYEES.TABLE.SH_SINCE_DATE')) },
-      { field: 'soleProprietorSince', header: this.translate.instant(_('EMPLOYEES.TABLE.SP_SINCE_DATE')) },
-      { field: 'coEntrepreneurSince', header: this.translate.instant(_('EMPLOYEES.TABLE.CE_SINCE_DATE')) },
-      { field: 'qualificationFz', header: this.translate.instant(_('EMPLOYEES.TABLE.QUALI_FZ')) },
-      { field: 'qualificationKmui', header: this.translate.instant(_('EMPLOYEES.TABLE.QUALI_MKUI')) },
+      { field: 'id', header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) },
+      { field: 'firstName', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
+      { field: 'lastName', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
+      { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
+      { field: 'generalManagerSince', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
+      { field: 'shareholderSince', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
+      { field: 'soleProprietorSince', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
+      { field: 'coEntrepreneurSince', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
+      { field: 'qualificationFz', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
+      { field: 'qualificationKmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
     ];
 

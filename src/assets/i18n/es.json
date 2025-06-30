@@ -103,9 +103,12 @@
   "MESSAGE": {
     "SUCCESS": "ÉXITO",
     "ERROR": "ERROR",
-    "UPDATE_SUCCESS": "Actualización exitosa",
-    "UPDATE_FAILED": "Actualización fallida",
-    "CREATE_SUCCESS": "Creación exitosa",
+    "UPDATE_SUCCESS": "Registro editado exitosamente.",
+    "CREATE_SUCCESS": "Registro creado exitosamente.",
+    "DELETE_SUCCESS": "Registro eliminado exitosamente.",
+    "UPDATE_FAILED": "No se pudo actualizar el registro.",
+    "CREATE_FAILED": "No se pudo crear el registro.",
+    "DELETE_FAILED": "No se pudo eliminar el registro.",
     "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada."
   },
   "DIALOG": {
@@ -159,6 +162,46 @@
       "LAW": "Ley"
     }
   },
+  "EMPLOYEE": {
+    "FORM": {
+      "CUSTOMER": "Cliente",
+      "EMPLOYEE_ID": "ID Empleado",
+      "SALUTATION": "Saludo",
+      "TITLE": "Titulo",
+      "LAST_NAME": "Apellidos",
+      "FIRST_NAME": "Nombre",
+      "EMAIL": "Correo Electrónico",
+      "GENERAL_MANAGER_SINCE": "Gerente general desde",
+      "SHAREHOLDER_SINCE": "Partner since",
+      "SOLE_PROPRIETOR_SINCE": "Propieratio unico desde",
+      "CO_ENTREPRENEUR_SINCE": "Co-emprendedor desde",
+      "QUALIFICATION_FZ": "Calificación FZ",
+      "QUALIFICATION_KMU_I": "Calificación KMU-i",
+      "EMPLOYMENT_CONTRACTS": "Contratos de Trabajo"
+    },
+    "TABLE": {
+      "EMPLOYEE_ID": "ID Empleado",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellidos",
+      "EMAIL": "Correo",
+      "GM_SINCE_DATE": "GF",
+      "SH_SINCE_DATE": "Ges.",
+      "SP_DATE": "EU",
+      "CE_SINCE_DATE": "MU",
+      "QUALI_FZ": "Quali FZ",
+      "QUALI_MKUI": "Quali KMU-i"
+    },
+    "EMPLOYEE_CONTRACTS_TABLE": {
+      "START_DATE": "Fecha Incio",
+      "SALARY_PER_MONTH": "Salario Mensual",
+      "WEEKLY_HOURS": "Horas Semanales",
+      "WORK_SHORT_TIME": "Porcentaje de Reducción",
+      "MAX_HOURS_PER_MONTH": "Max. Horas/Mes",
+      "MAX_HOURS_PER_DAY": "Max. Horas/Día",
+      "HOURLY_RATE": "Tafira por Hora",
+      "SPECIAL_PAYMENT": "Pago Especial"
+    }
+  },
   "CONTACT": {
     "FORM": {
       "LAST_NAME": "Apellidos",
@@ -178,20 +221,6 @@
     },
     "MESSAGE": {
       "UPDATE_SUCCESS":"Contacto actualizado exitosamente"
-    }
-  },
-  "EMPLOYEES": {
-    "TABLE": {
-      "EMPLOYEE_ID": "ID Empleado",
-      "FIRST_NAME": "Nombre",
-      "LAST_NAME": "Apellidos",
-      "EMAIL": "Correo",
-      "GM_SINCE_DATE": "GF",
-      "SH_SINCE_DATE": "Ges.",
-      "SP_DATE": "EU",
-      "CE_SINCE_DATE": "MU",
-      "QUALI_FZ": "Quali FZ",
-      "QUALI_MKUI": "Quali KMU-i"
     }
   },
   "EMPLOYEE-CONTRACTS": {
