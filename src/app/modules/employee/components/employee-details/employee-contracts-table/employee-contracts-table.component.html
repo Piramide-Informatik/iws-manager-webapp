@@ -1,0 +1,8 @@
+<master-data-genaral-table 
+    [tableId]="tableKey" 
+    [tableValues]="employeeContracts" 
+    [columns]="selectedColumns"
+    [userPreferences]="userEmployeeDetailPreferences" 
+    [dataKeys]="dataKeys"
+    (onColumnChanges)="onUserEmployeeDetailPreferencesChanges($event)">
+</master-data-genaral-table>
