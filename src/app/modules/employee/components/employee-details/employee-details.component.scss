@@ -1,21 +1,3 @@
-@use 'variables' as *;
-
-.form-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 12px;
-}
-
-.form-column {
-  flex: 1;
-}
-
-label {
-  margin-bottom: 0;
-  min-width: 140px;
-  width: 33%;
-}
-
 input,
 p-select {
   width: 20vw;
@@ -26,29 +8,3 @@ p-select {
   width: 32.396%;
 }
 
-::ng-deep .p-datepicker table,
-::ng-deep .p-datepicker .p-monthpicker,
-::ng-deep .p-datepicker .p-yearpicker,
-::ng-deep .p-datepicker .p-datepicker-group {
-  td, th {
-    padding: 0 !important;
-    text-align: center;
-  }
-
-}
-
-::ng-deep .p-datepicker{
-  button.p-ripple.p-button.p-component{
-    background-color: initial !important;
-    border: none;
-    color: $primary-color;
-
-    &:hover{
-      background-color: $accent-color !important;
-    }
-  }
-
-  .p-datepicker-day-selected{
-    background: $primary-color !important;
-  }
-}
