@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Employee } from '../../../../Entities/Employee';
+import { Employee } from '../../../../Entities/employee';
 import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService, _ } from "@ngx-translate/core";
