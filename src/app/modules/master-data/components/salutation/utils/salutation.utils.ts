@@ -1,5 +1,5 @@
-import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { EnvironmentInjector, Injectable, inject } from '@angular/core';
+import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
 import { Salutation } from '../../../../../Entities/salutation';
 import { SalutationService } from '../../../../../Services/salutation.service';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -125,20 +125,20 @@ export class SalutationUtils {
       return throwError(() => new Error('Invalid salutation data'));
     }
 
-    return new Observable<Salutation>(observer => {
-      this.salutationService.updateSalutation(salutation);
+    return this.salutationService.getSalutationById(salutation.id).pipe(
+      take(1),
+      switchMap((currentSalutation) => {
+        if (!currentSalutation) {
+          return throwError(() => new Error('Salutation not found'));
+        }
 
-      runInInjectionContext(this.injector, () => {
-        const sub = this.waitForUpdatedSalutation(salutation.id, observer);
-        const errorSub = this.listenForUpdateErrors(observer);
+        if (currentSalutation.version !== salutation.version) {
+          return throwError(() => new Error('Conflict detected: salutation version mismatch'));
+        }
 
-        // Cleanup
-        return () => {
-          sub.unsubscribe();
-          errorSub.unsubscribe();
-        };
-      });
-    });
+        return this.salutationService.updateSalutation(salutation);
+      })
+    );
   }
 
   private waitForUpdatedSalutation(id: number, observer: any) {
