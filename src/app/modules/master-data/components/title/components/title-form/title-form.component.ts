@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
   standalone: false,
 })
 export class TitleFormComponent implements OnInit, OnDestroy {
+  public showOCCErrorModaTitle = false;
   currentTitle: Title | null = null;
   editTitleForm!: FormGroup;
   isSaving = false;
@@ -87,11 +88,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
 
   private handleError(err: any): void {
     if (err.message === 'Version conflict: Title has been updated by another user') {
-      this.messageService.add({
-        severity: 'warn',
-        summary: this.translate.instant('TITLE.MESSAGE.CONFLICT'),
-        detail: this.translate.instant('TITLE.MESSAGE.REFRESH_REQUIRED')
-      });
+      this.showOCCErrorModaTitle = true;
     } else {
       this.handleSaveError(err);
     }
