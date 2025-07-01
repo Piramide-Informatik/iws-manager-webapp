@@ -149,4 +149,36 @@ export class EmployeeUtils {
       })
     );
   }
+
+  /**
+   * Updates the internal employee data in the service
+   * @param employees - Array of employees to update
+   */
+  updateEmployeeData(employees: Employee[]): void {
+    this.employeeService.updateEmployeeData(employees);
+  }
+
+  /**
+   * Gets the reactive employees signal from the service
+   * @returns ReadonlySignal of employees array
+   */
+  getEmployeesSignal() {
+    return this.employeeService.employees;
+  }
+
+  /**
+   * Gets the loading state signal from the service
+   * @returns ReadonlySignal of loading boolean
+   */
+  getLoadingSignal() {
+    return this.employeeService.loading;
+  }
+
+  /**
+   * Gets the error state signal from the service  
+   * @returns ReadonlySignal of error string or null
+   */
+  getErrorSignal() {
+    return this.employeeService.error;
+  }
 }

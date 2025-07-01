@@ -163,6 +163,10 @@
     }
   },
   "EMPLOYEE": {
+    "LABELS": {
+      "DELETE_EMPLOYEE": "Eliminar Empleado",
+      "REMOVE_EMPLOYEE_QUESTION": "¿Está seguro que desea eliminar el Empleado "
+    },
     "FORM": {
       "CUSTOMER": "Cliente",
       "EMPLOYEE_ID": "ID Empleado",

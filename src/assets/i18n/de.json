@@ -169,6 +169,10 @@
     }
   },
   "EMPLOYEE": {
+    "LABELS": {
+      "DELETE_EMPLOYEE": "Mitarbeiter löschen",
+      "REMOVE_EMPLOYEE_QUESTION": "Möchten Sie den Mitarbeiter wirklich löschen "
+    },
     "FORM": {
       "CUSTOMER": "Kunde",
       "EMPLOYEE_ID": "Personal-Nr.",
