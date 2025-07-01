@@ -595,9 +595,6 @@
     "ERROR": {
       "COUNTRY_NAME_REQUIRED": "Country name required",
       "ABBREVIATION_REQUIRED": "Abbreviation required"
-    },
-    "OPTIONS": {
-      "SELECT_NONE": "None"
     }
   },
   "COSTS": {
@@ -778,6 +775,11 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
+    }
+  },
+  "FILTER": {
+    "OPTIONS": {
+      "SELECT_NONE": "None"
     }
   }
 }

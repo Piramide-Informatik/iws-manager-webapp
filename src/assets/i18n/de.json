@@ -597,9 +597,6 @@
     "ERROR": {
       "COUNTRY_NAME_REQUIRED": "Land erforderlich",
       "ABBREVIATION_REQUIRED": "Kürzel erforderlich"
-    },
-    "OPTIONS": {
-      "SELECT_NONE": "Ohne"
     }
   },
   "COSTS": {
@@ -781,5 +778,10 @@
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
     }
-  }
+  },
+  "FILTER": {
+    "OPTIONS": {
+      "SELECT_NONE": "Ohne"
+    }
+  }  
 }
