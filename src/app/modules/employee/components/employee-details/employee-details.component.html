@@ -5,13 +5,6 @@
     </div>
     <app-employee-form></app-employee-form>
     <div class="mb-2">
-        <master-data-genaral-table
-          [tableId]="tableKey"
-          [tableValues]="employeeContracts"
-          [columns]="selectedColumns"
-          [userPreferences]="userEmployeeDetailPreferences"
-          [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserEmployeeDetailPreferencesChanges($event)"
-        ></master-data-genaral-table>
+        <app-employee-contracts-table></app-employee-contracts-table>
     </div>
 </div>
