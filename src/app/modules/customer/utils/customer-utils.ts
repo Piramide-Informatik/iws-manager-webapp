@@ -1,8 +1,9 @@
 import { EnvironmentInjector, inject, Injectable } from '@angular/core';
-import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, forkJoin, map, switchMap, take, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
 import { ContactPerson } from '../../../Entities/contactPerson';
+import { ContactUtils } from './contact-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -11,6 +12,7 @@ import { ContactPerson } from '../../../Entities/contactPerson';
  */
 export class CustomerUtils {
     private readonly customerService = inject(CustomerService);
+    private readonly contactUtils = inject(ContactUtils);
     private readonly injector = inject(EnvironmentInjector);
 
     /**
@@ -106,7 +108,25 @@ export class CustomerUtils {
      * @returns Observable that completes when the deletion is done
      */
     deleteCustomer(id: number): Observable<void> {
-        return this.customerService.deleteCustomer(id);
+        return this.getContactsByCustomerId(id).pipe(
+            take(1),
+            switchMap((contacts: ContactPerson[]) => {
+                if (contacts.length === 0) {
+                    // No hay contactos, solo elimina el customer
+                    return this.customerService.deleteCustomer(id);
+                }
+                // Si hay contactos, primero elimina los contactos
+                return (
+                    forkJoin(
+                        contacts.map(contact => this.contactUtils.deleteContactPerson(contact.id))
+                    ).pipe(
+                        switchMap(() => this.customerService.deleteCustomer(id))
+                    )
+                );
+            }),
+            map(() => void 0),
+            catchError(err => throwError(() => new Error('Error deleting customer and contacts')))
+        );
     }
 
     /**
@@ -136,10 +156,10 @@ export class CustomerUtils {
     }
 
     /**
- * Gets all contacts for a specific customer by ID
- * @param customerId - ID of the customer to retrieve contacts for
- * @returns Observable emitting array of ContactPerson or empty array if none found
- */
+     * Gets all contacts for a specific customer by ID
+     * @param customerId - ID of the customer to retrieve contacts for
+     * @returns Observable emitting array of ContactPerson or empty array if none found
+     */
     getContactsByCustomerId(customerId: number): Observable<ContactPerson[]> {
         if (!customerId || customerId <= 0) {
             return throwError(() => new Error('Invalid customer ID'));
