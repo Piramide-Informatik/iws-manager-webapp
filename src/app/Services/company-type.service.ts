@@ -65,9 +65,9 @@ export class CompanyTypeService {
   }
 
   // UPDATE
-  updateCompanyType(updatedCompanyType: CompanyType): void {
+  updateCompanyType(updatedCompanyType: CompanyType): Observable<CompanyType> {
     const url = `${this.apiUrl}/${updatedCompanyType.id}`;
-    this.http.put<CompanyType>(url, updatedCompanyType, this.httpOptions).pipe(
+    return this.http.put<CompanyType>(url, updatedCompanyType, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._companyTypes.update(companyTypes =>
@@ -80,7 +80,7 @@ export class CompanyTypeService {
           console.error('Error updating company type:', err);
         }
       })
-    ).subscribe();
+    );
   }
 
   // DELETE

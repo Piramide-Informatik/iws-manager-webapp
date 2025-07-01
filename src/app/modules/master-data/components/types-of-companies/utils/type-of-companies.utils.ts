@@ -1,5 +1,5 @@
-import { EnvironmentInjector, Injectable, inject, runInInjectionContext } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import { EnvironmentInjector, Injectable, inject } from '@angular/core';
+import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
 import { CompanyType } from '../../../../../Entities/companyType';
 import { CompanyTypeService } from '../../../../../Services/company-type.service';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -8,7 +8,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
  * Utility class for company-type-related business logic and operations.
  * Works with companyTypeService's reactive signals while providing additional functionality.
  */
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 export class CompanyTypeUtils {
   private readonly companyTypeService = inject(CompanyTypeService);
   private readonly injector = inject(EnvironmentInjector);
@@ -18,18 +18,18 @@ export class CompanyTypeUtils {
      * @param id - ID of the company type to retrieve
      * @returns Observable emitting the company type or undefined if not found
      */
-    getCompanyTypeById(id: number): Observable<CompanyType | undefined> {
-      if (!id || id <= 0) {
-        return throwError(() => new Error('Invalid company type ID'));
-      }
-  
-      return this.companyTypeService.getCompanyTypeById(id).pipe(
-        catchError(err => {
-          console.error('Error fetching company type:', err);
-          return throwError(() => new Error('Failed to load company type'));
-        })
-      );
+  getCompanyTypeById(id: number): Observable<CompanyType | undefined> {
+    if (!id || id <= 0) {
+      return throwError(() => new Error('Invalid company type ID'));
     }
+
+    return this.companyTypeService.getCompanyTypeById(id).pipe(
+      catchError(err => {
+        console.error('Error fetching company type:', err);
+        return throwError(() => new Error('Failed to load company type'));
+      })
+    );
+  }
 
   /**
    * Creates a new company type with validation
@@ -109,21 +109,21 @@ export class CompanyTypeUtils {
     if (!companyType?.id) {
       return throwError(() => new Error('Invalid company type data'));
     }
-    companyType.name = companyType.name.trim();
-    return new Observable<CompanyType>(observer => {
-      this.companyTypeService.updateCompanyType(companyType);
 
-      runInInjectionContext(this.injector, () => {
-        const sub = this.waitForUpdatedCompanyType(companyType.id, observer);
-        const errorSub = this.listenForUpdateErrors(observer);
+    return this.companyTypeService.getCompanyTypeById(companyType.id).pipe(
+      take(1),
+      switchMap((currentCompanyType) => {
+        if (!currentCompanyType) {
+          return throwError(() => new Error('Company type not found'));
+        }
 
-        // Cleanup
-        return () => {
-          sub.unsubscribe();
-          errorSub.unsubscribe();
-        };
-      });
-    });
+        if (currentCompanyType.version !== companyType.version) {
+          return throwError(() => new Error('Conflict detected: company type version mismatch'));
+        }
+
+        return this.companyTypeService.updateCompanyType(companyType);
+      })
+    );
   }
 
   private waitForUpdatedCompanyType(id: number, observer: any) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.state.service';
 import { CompanyType } from '../../../../../../Entities/companyType';
@@ -6,6 +6,7 @@ import { emptyValidator } from '../../utils/empty.validator';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-types-of-companies-form',
@@ -13,28 +14,38 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './types-of-companies-form.component.html',
   styleUrl: './types-of-companies-form.component.scss'
 })
-export class TypesOfCompaniesFormComponent implements OnInit {
+export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
 
-  companyType: CompanyType| null = null;
+  companyType: CompanyType | null = null;
   companyTypeEditForm!: FormGroup;
   isSaving = false;
-  constructor( private readonly companyTypeServiceUtils: CompanyTypeUtils,
-               private readonly typeOfCompanyStateService: TypeOfCompaniesStateService,
-               private readonly messageService: MessageService,
-               private readonly translate: TranslateService
-   ){ }
+  public showOCCErrorModalCompanyType = false;
+  private readonly subscriptions = new Subscription();
+
+  constructor(private readonly companyTypeServiceUtils: CompanyTypeUtils,
+    private readonly typeOfCompanyStateService: TypeOfCompaniesStateService,
+    private readonly messageService: MessageService,
+    private readonly translate: TranslateService
+  ) { }
 
   ngOnInit(): void {
     this.companyTypeEditForm = new FormGroup({
       name: new FormControl('', [Validators.required, emptyValidator()])
     });
-    this.typeOfCompanyStateService.currentTypeOfCompany$.subscribe((companyType) => {
-      if (companyType !== null) {
-        this.companyType = companyType;
-        this.companyTypeEditForm.patchValue(companyType);
-        this.companyTypeEditForm.updateValueAndValidity();
-      }
-    })
+
+    this.subscriptions.add(
+      this.typeOfCompanyStateService.currentTypeOfCompany$.subscribe((companyType) => {
+        if (companyType !== null) {
+          this.companyType = companyType;
+          this.companyTypeEditForm.patchValue(companyType);
+          this.companyTypeEditForm.updateValueAndValidity();
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   clearForm(): void {
@@ -50,10 +61,13 @@ export class TypesOfCompaniesFormComponent implements OnInit {
     }
     this.isSaving = true;
     const companyType = Object.assign(this.companyType, this.companyTypeEditForm.value);
-    this.companyTypeServiceUtils.updateCompanyType(companyType).subscribe({
-      next: (savedCompanyType) => this.handleSaveSuccess(savedCompanyType),
-      error: (err) => this.handleSaveError(err)
-    })
+
+    this.subscriptions.add(
+      this.companyTypeServiceUtils.updateCompanyType(companyType).subscribe({
+        next: (savedCompanyType) => this.handleSaveSuccess(savedCompanyType),
+        error: (err) => this.handleSaveError(err)
+      })
+    );
   }
 
   private handleSaveSuccess(savedCompanyType: CompanyType): void {
@@ -68,6 +82,10 @@ export class TypesOfCompaniesFormComponent implements OnInit {
 
   private handleSaveError(error: any): void {
     console.error('Error saving companyType:', error);
+    if (error instanceof Error && error.message?.includes('version mismatch')) {
+      this.showOCCErrorModalCompanyType = true;
+      return;
+    }
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.ERROR'),
