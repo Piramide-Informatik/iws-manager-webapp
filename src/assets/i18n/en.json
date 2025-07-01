@@ -103,9 +103,12 @@
   "MESSAGE": {
     "SUCCESS": "SUCCESS",
     "ERROR": "ERROR",
-    "UPDATE_SUCCESS": "Successfully updated",
-    "UPDATE_FAILED": "Update failed",
-    "CREATE_SUCCESS": "Successfully created",
+    "UPDATE_SUCCESS": "Record edited successfully.",
+    "CREATE_SUCCESS": "Record created successfully.",
+    "DELETE_SUCCESS": "Record deleted successfully.",
+    "UPDATE_FAILED": "The record could not be updated.",
+    "CREATE_FAILED": "The record could not be created.",
+    "DELETE_FAILED": "The record could not be deleted.",
     "SELECT_AT_LEAST_ONE": "There must be at least one column selected."
   },
   "DIALOG": {
@@ -165,6 +168,46 @@
       "CREATE_FAILED": "Failed to create customer."
     }
   },
+  "EMPLOYEE": {
+    "FORM": {
+      "CUSTOMER": "Customer",
+      "EMPLOYEE_ID": "Employee Number",
+      "SALUTATION": "Salutation",
+      "TITLE": "Title",
+      "LAST_NAME": "Last Name",
+      "FIRST_NAME": "First Name",
+      "EMAIL": "Email",
+      "GENERAL_MANAGER_SINCE": "GM Since",
+      "SHAREHOLDER_SINCE": "Shareholder since",
+      "SOLE_PROPRIETOR_SINCE": "Sole proprietor since",
+      "CO_ENTREPRENEUR_SINCE": "Co-entrepreneur since",
+      "QUALIFICATION_FZ": "Qualification FZ",
+      "QUALIFICATION_KMU_I": "Qualification KMU-i",
+      "EMPLOYMENT_CONTRACTS": "Employment Contracts"
+    },
+    "TABLE": {
+      "EMPLOYEE_ID": "Employee Number",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "GM_SINCE_DATE": "GF",
+      "SH_SINCE_DATE": "Ges.",
+      "SP_DATE": "EU",
+      "CE_SINCE_DATE": "MU",
+      "QUALI_FZ": "Quali FZ",
+      "QUALI_MKUI": "Quali KMU-i"
+    },
+    "EMPLOYEE_CONTRACTS_TABLE": {
+      "START_DATE": "Start Date",
+      "SALARY_PER_MONTH": "Salary per Month",
+      "WEEKLY_HOURS": "Weekly Hours",
+      "WORK_SHORT_TIME": "Percentage Decrease",
+      "MAX_HOURS_PER_MONTH": "Max. Hours/Month",
+      "MAX_HOURS_PER_DAY": "Max. Hours/Day",
+      "HOURLY_RATE": "Hourly Rate",
+      "SPECIAL_PAYMENT": "Special Payment"
+    }
+  },
   "CONTACT": {
     "FORM": {
       "LAST_NAME": "Last Name",
@@ -184,20 +227,6 @@
     },
     "MESSAGE": {
       "UPDATE_SUCCESS": "Contact Person was updated successfully"
-    }
-  },
-  "EMPLOYEES": {
-    "TABLE": {
-      "EMPLOYEE_ID": "Employee Number",
-      "FIRST_NAME": "First Name",
-      "LAST_NAME": "Last Name",
-      "EMAIL": "Email",
-      "GM_SINCE_DATE": "GF",
-      "SH_SINCE_DATE": "Ges.",
-      "SP_DATE": "EU",
-      "CE_SINCE_DATE": "MU",
-      "QUALI_FZ": "Quali FZ",
-      "QUALI_MKUI": "Quali KMU-i"
     }
   },
   "EMPLOYEE-CONTRACTS": {

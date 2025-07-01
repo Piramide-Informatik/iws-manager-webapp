@@ -10,84 +10,45 @@
   flex: 1;
 }
 
-:host ::ng-deep.p-datatable-table tr:nth-child(even) {
-  background-color: #7a81887e;
-}
-
-//Change row height
-.p-treetable .p-datatable-wrapper .p-datatable-tbody {
-  height: 5vh;
-}
-
-.text-table {
-  text-align: start;
-}
-
-.number-table {
-  text-align: right;
-}
-
-.field {
-  margin: 15px 0;
-  border-radius: 10px;
-
-  label {
-    margin-bottom: 0;
-    font-weight: 500;
-  }
-
-}
-
 label {
   margin-bottom: 0;
-  font-weight: 500;
-}
-
-//Styles table head
-.thead {
-  background: $primary-color;
-  color: #fff;
-  min-width: 6.25rem;//=100px
-
-  &:hover {
-    background: $accent-color;
-    color: $primary-dark
-  }
-}
-
-.order_input input{
-  width: 20vw;
-}
-
-p-floatlabel{
-  margin-left: 5px;
-
-  #customerId{
-      width: 6vw;
-  }
-
-  #customerName{
-      width: 13.1vw;
-  }
-}
-
-.order_input{
-  width: 100% !important;
-
-  label {
-      width: 33%;
-  }
+  min-width: 140px;
+  width: 33%;
 }
 
 input,
-p-select,
-p-datepicker {
+p-select {
   width: 20vw;
 }
+
+.label-customer {
+  min-width: 140px;
+  width: 32.396%;
+}
+
 ::ng-deep .p-datepicker table,
 ::ng-deep .p-datepicker .p-monthpicker,
 ::ng-deep .p-datepicker .p-yearpicker,
 ::ng-deep .p-datepicker .p-datepicker-group {
-  width: 100%;
-  table-layout: fixed;
+  td, th {
+    padding: 0 !important;
+    text-align: center;
+  }
+
+}
+
+::ng-deep .p-datepicker{
+  button.p-ripple.p-button.p-component{
+    background-color: initial !important;
+    border: none;
+    color: $primary-color;
+
+    &:hover{
+      background-color: $accent-color !important;
+    }
+  }
+
+  .p-datepicker-day-selected{
+    background: $primary-color !important;
+  }
 }

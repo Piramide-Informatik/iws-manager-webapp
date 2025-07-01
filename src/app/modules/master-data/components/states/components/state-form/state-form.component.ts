@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class StateFormComponent implements OnInit{
 
+  public showOCCErrorModaState = false;
   state: State| null = null;
   editStateForm!: FormGroup;
   isSaving = false;
@@ -69,6 +70,10 @@ export class StateFormComponent implements OnInit{
 
   private handleSaveStateError(error: any): void {
     console.error('Error saving state:', error);
+    if (error instanceof Error && error.message?.includes('version mismatch')) {
+      this.showOCCErrorModaState = true;
+      return;
+    }
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('MESSAGE.ERROR'),

@@ -29,4 +29,8 @@
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaState"
+  (onClose)="showOCCErrorModaState = false">
+</app-occ-error-modal>
 <p-toast></p-toast>

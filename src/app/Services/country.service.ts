@@ -46,7 +46,7 @@ export class CountryService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    );
   }
 
   // ==================== CREATE OPERATIONS ====================
@@ -68,7 +68,7 @@ export class CountryService {
           console.error('Error adding country:', err);
         }
       })
-    ).subscribe();
+    );
   }
 
   // ==================== READ OPERATIONS ====================
@@ -108,9 +108,9 @@ export class CountryService {
    * @returns Observable with updated Country object
    * @throws Error when country not found or validation fails
    */
-  updateCountry(updatedCountry: Country): void {
+  updateCountry(updatedCountry: Country): Observable<Country> {
     const url = `${this.apiUrl}/${updatedCountry.id}`;
-    this.http.put<Country>(url, updatedCountry, this.httpOptions).pipe(
+    return this.http.put<Country>(url, updatedCountry, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._countries.update(countries =>
@@ -123,7 +123,7 @@ export class CountryService {
           console.error('Error updating country:', err);
         }
       })
-    ).subscribe();
+    );
   }
 
   // ==================== DELETE OPERATIONS ====================
@@ -147,7 +147,7 @@ export class CountryService {
           this._error.set('Failed to delete country');
         }
       })
-    ).subscribe();
+    );
   }  
 
   // ==================== ERROR HANDLING ====================
