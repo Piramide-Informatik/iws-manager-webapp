@@ -67,9 +67,9 @@ export class SalutationService {
   }
 
   // UPDATE
-  updateSalutation(updatedSalutation: Salutation): void {
+  updateSalutation(updatedSalutation: Salutation): Observable<Salutation> {
     const url = `${this.apiUrl}/${updatedSalutation.id}`;
-    this.http.put<Salutation>(url, updatedSalutation, this.httpOptions).pipe(
+    return this.http.put<Salutation>(url, updatedSalutation, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._salutations.update(salutations =>
@@ -82,7 +82,7 @@ export class SalutationService {
           console.error('Error updating salutation:', err);
         }
       })
-    ).subscribe();
+    );
   }
   
   // DELETE
