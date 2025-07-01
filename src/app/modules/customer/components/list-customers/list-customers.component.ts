@@ -118,7 +118,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     customers: Customer[],
     companyTypes: CompanyType[]
   ): void {
-    const noneLabel = this.translate.instant(('COUNTRIES.OPTIONS.SELECT_NONE'));
+    const noneLabel = this.translate.instant(('FILTER.OPTIONS.SELECT_NONE'));
     
     // Crear arrays con objetos que tienen label y value
     this.countries = [
@@ -182,7 +182,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   private updateFiltersLabels(): void {
-    const noneLabel = this.translate.instant('COUNTRIES.OPTIONS.SELECT_NONE');
+    const noneLabel = this.translate.instant('FILTER.OPTIONS.SELECT_NONE');
     this.countries = this.updateFilterOptions(this.countries, noneLabel);
     this.companyTypes = this.updateFilterOptions(this.companyTypes, noneLabel);
   }
