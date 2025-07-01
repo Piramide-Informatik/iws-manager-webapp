@@ -44,7 +44,7 @@ export class EmployeeUtils {
   * @returns Observable that completes when employee is created
   */
   createNewEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Employee> {
-    if (!employee.firstName?.trim()) {
+    if (!employee.firstname?.trim()) {
       return throwError(() => new Error('Employee first name cannot be empty'));
     }
 
@@ -59,10 +59,10 @@ export class EmployeeUtils {
   employeeExists(employeeId: number | string): Observable<boolean> {
     return this.employeeService.getAllEmployees().pipe(
       map(employees => employees.some(
-          e => e.id !== null && e.id?.toString().toLowerCase() === employeeId.toString().toLowerCase()
+        e => e.id !== null && e.id?.toString().toLowerCase() === employeeId.toString().toLowerCase()
       )),
       catchError(() => {
-          return throwError(() => new Error('Failed to check employee existence'));
+        return throwError(() => new Error('Failed to check employee existence'));
       })
     );
   }
@@ -79,8 +79,8 @@ export class EmployeeUtils {
         }
         // Filtra los empleados con nombre válido y ordena alfabéticamente
         return employees
-        .filter(employee => !!employee.firstName && employee.firstName.trim() !== '')
-        .sort((a, b) => (a.firstName ?? '').localeCompare(b.firstName ?? ''));
+          .filter(employee => !!employee.firstname && employee.firstname.trim() !== '')
+          .sort((a, b) => (a.firstname ?? '').localeCompare(b.firstname ?? ''));
       }),
       catchError(() => throwError(() => new Error('Failed to sort employees')))
     );
@@ -129,6 +129,23 @@ export class EmployeeUtils {
         }
 
         return this.employeeService.updateEmployee(employee);
+      })
+    );
+  }
+  
+  /**
+ * Gets employees by customer ID with proper error handling
+ * @param customerId - ID of the customer to retrieve employees for
+ * @returns Observable emitting the list of employees for the customer
+ */
+  getEmployeesByCustomerId(customerId: number): Observable<Employee[]> {
+    if (!customerId || customerId <= 0) {
+      return throwError(() => new Error('Invalid customer ID'));
+    }
+
+    return this.employeeService.getEmployeesByCustomerId(customerId).pipe(
+      catchError(() => {
+        return throwError(() => new Error('Failed to load employees by customer ID'));
       })
     );
   }

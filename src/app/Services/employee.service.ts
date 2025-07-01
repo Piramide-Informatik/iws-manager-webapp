@@ -15,9 +15,9 @@ export class EmployeeService {
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
 
-  public employees = this._employees.asReadonly();
-  public loading = this._loading.asReadonly();
-  public error = this._error.asReadonly();
+  public readonly employees = this._employees.asReadonly();
+  public readonly loading = this._loading.asReadonly();
+  public readonly error = this._error.asReadonly();
 
   private readonly httpOptions = {
     headers: new HttpHeaders({
@@ -26,7 +26,7 @@ export class EmployeeService {
     })
   };
 
-  constructor(){
+  constructor() {
     this.loadInitialData();
   }
 
@@ -44,7 +44,29 @@ export class EmployeeService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    );
+    ).subscribe();
+  }
+
+  /**
+   * Method for compatibility with existing components
+   * @deprecated Use getAllEmployees() instead
+   */
+  getEmployees(): Employee[] {
+    return this._employees();
+  }
+
+  /**
+   * Get current employees from signal
+   */
+  getCurrentEmployees(): Employee[] {
+    return this._employees();
+  }
+
+  /**
+   * Get current loading state
+   */
+  getCurrentLoading(): boolean {
+    return this._loading();
   }
 
   // ==================== CREATE OPERATIONS ====================
@@ -130,6 +152,23 @@ export class EmployeeService {
     )
   }
 
+  /**
+ * Retrieves employees by customer ID
+ * @param customerId Customer identifier to get employees for
+ * @returns Observable with Employee array
+ * @throws Error when server request fails
+ */
+  getEmployeesByCustomerId(customerId: number): Observable<Employee[]> {
+    const url = `${this.apiUrl}/customer/${customerId}`;
+    return this.http.get<Employee[]>(url, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch employees by customer ID');
+        console.error('Error fetching employees by customer:', err);
+        return of([]);
+      })
+    );
+  }
   // ==================== DELETE OPERATIONS ====================
   /**
    * Deletes a employee record

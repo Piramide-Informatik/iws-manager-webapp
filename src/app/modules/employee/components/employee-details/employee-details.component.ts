@@ -2,7 +2,6 @@ import { Component, OnInit, Input, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MessageService, SelectItem } from 'primeng/api';
 import { EmployeeContract } from '../../models/employee-contract';
-import { EmployeeContractService } from '../../services/employee-contract.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '../../models/title';
 import { QualificationFZ } from '../../models/qualification-fz';
@@ -21,7 +20,7 @@ interface Column {
 @Component({
   selector: 'app-employee-details',
   standalone: false,
-  providers: [MessageService, EmployeeContractService, TranslatePipe, TranslateDirective],
+  providers: [MessageService, TranslatePipe, TranslateDirective],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss'
 })
@@ -70,7 +69,6 @@ export class EmployeeDetailsComponent implements OnInit {
   private langSubscription!: Subscription;
 
   constructor(
-    private readonly employeeContractService: EmployeeContractService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly translate: TranslateService,
     private readonly router: Router,
@@ -93,10 +91,7 @@ export class EmployeeDetailsComponent implements OnInit {
     this.qualificationFzId = history.state.employee.qualificationFz;
     this.qualificationKMUi = history.state.employee.qualificationKmui;
 
-    this.employeeContractService.getEmployeeContractsData().then((data) => {
-      this.employeeContracts = data;
-    });
-
+   
 
     this.titles = [
       { id: 0, name: '', description: '' },

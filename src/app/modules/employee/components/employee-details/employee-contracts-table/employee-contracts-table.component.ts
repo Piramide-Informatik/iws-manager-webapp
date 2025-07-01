@@ -4,7 +4,7 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { _, TranslateService } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { Subscription } from 'rxjs';
-import { EmployeeContractService } from '../../../services/employee-contract.service';
+//import { EmployeeContractService } from '../../../services/employee-contract.service';
 
 interface Column {
   field: string,
@@ -25,16 +25,16 @@ export class EmployeeContractsTableComponent {
   public cols!: Column[];
   private readonly translate = inject(TranslateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
-  private readonly employeeContractService = inject(EmployeeContractService);
+// private readonly employeeContractService = inject(EmployeeContractService);
 
   private langSubscription!: Subscription;
 
   public selectedColumns!: Column[];
 
   ngOnInit(): void {
-    this.employeeContractService.getEmployeeContractsData().then((data) => {
+   /* this.employeeContractService.getEmployeeContractsData().then((data) => {
       this.employeeContracts = data;
-    });
+    });*/
 
     this.loadEmployeeContractColumns();
     this.selectedColumns = this.cols;
