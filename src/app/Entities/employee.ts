@@ -1,5 +1,6 @@
 export class Employee {
     id!: number;
+    version?: number;
     firstName!: string;
     lastName!: string;
     email!: string;

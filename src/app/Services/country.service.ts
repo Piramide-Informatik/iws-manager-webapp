@@ -46,7 +46,7 @@ export class CountryService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    );
   }
 
   // ==================== CREATE OPERATIONS ====================
@@ -68,7 +68,7 @@ export class CountryService {
           console.error('Error adding country:', err);
         }
       })
-    ).subscribe();
+    );
   }
 
   // ==================== READ OPERATIONS ====================
@@ -147,7 +147,7 @@ export class CountryService {
           this._error.set('Failed to delete country');
         }
       })
-    ).subscribe();
+    );
   }  
 
   // ==================== ERROR HANDLING ====================
