@@ -793,5 +793,10 @@
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido"
     }
+  },
+  "FILTER": {
+    "OPTIONS": {
+      "SELECT_NONE": "Ninguno"
+    }
   }
 }

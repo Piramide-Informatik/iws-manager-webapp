@@ -27,11 +27,15 @@ import { EmployeeDetailsComponent } from "./components/employee-details/employee
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { EmployeeFormComponent } from './components/employee-details/employee-form/employee-form.component';
+import { EmployeeContractsTableComponent } from './components/employee-details/employee-contracts-table/employee-contracts-table.component';
 
 @NgModule({
     declarations: [
         EmployeeOverviewComponent,
-        EmployeeDetailsComponent
+        EmployeeDetailsComponent,
+        EmployeeFormComponent,
+        EmployeeContractsTableComponent
     ],
     imports: [
         ButtonModule,
