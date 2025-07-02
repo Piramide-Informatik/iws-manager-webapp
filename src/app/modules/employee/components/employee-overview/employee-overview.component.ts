@@ -179,8 +179,8 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       
       if (localEmployee) {
 
-        const firstName = localEmployee.firstName || (localEmployee as any).firstname || '';
-        const lastName = localEmployee.lastName || (localEmployee as any).lastname || '';
+        const firstName = localEmployee.firstName ?? (localEmployee as any).firstname ?? '';
+        const lastName = localEmployee.lastName ?? (localEmployee as any).lastname ?? '';
         
         this.employeeName = `${firstName} ${lastName}`.trim();
         this.visibleEmployeeModal = true;
@@ -188,8 +188,8 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         this.employeeUtils.getEmployeeById(this.selectedEmployee!).subscribe({
           next: (employee) => {
             
-            const firstName = employee?.firstName || (employee as any)?.firstname || '';
-            const lastName = employee?.lastName || (employee as any)?.lastname || '';
+            const firstName = employee?.firstName ?? (employee as any)?.firstname ?? '';
+            const lastName = employee?.lastName ?? (employee as any)?.lastname ?? '';
             
             this.employeeName = `${firstName} ${lastName}`.trim();
             this.visibleEmployeeModal = true;
