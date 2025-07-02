@@ -49,7 +49,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   public selectedFilterColumns!: Column[];
   userEmployeeOverviewPreferences: UserPreference = {};
   tableKey: string = 'EmployeeOverview'
-  dataKeys = ['id', 'firstName', 'lastName', 'email', 'generalManagerSince', 'shareholderSince', 'soleProprietorSince', 'coEntrepreneurSince', 'qualificationFz', 'qualificationKmui'];
+  dataKeys = ['id', 'firstname', 'lastname', 'email', 'generalmanagersince', 'shareholdersince', 'soleproprietorsince', 'coentrepreneursince', 'qualificationFZ', 'qualificationkmui'];
 
 
   constructor(private readonly employeeService: EmployeeService,
@@ -94,15 +94,15 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
     this.cols = [
       { field: 'id', header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) },
-      { field: 'firstName', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
-      { field: 'lastName', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
+      { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
+      { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
       { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
-      { field: 'generalManagerSince', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
-      { field: 'shareholderSince', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
-      { field: 'soleProprietorSince', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
-      { field: 'coEntrepreneurSince', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
-      { field: 'qualificationFz', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
-      { field: 'qualificationKmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
+      { field: 'generalmanagersince', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
+      { field: 'shareholdersince', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
+      { field: 'soleproprietorsince', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
+      { field: 'coentrepreneursince', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
+      { field: 'qualificationFZ', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
+      { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
     ];
 
