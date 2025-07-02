@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -9,6 +9,7 @@ import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { EmployeeUtils } from '../../utils/employee.utils';
 
 
 interface Column {
@@ -30,6 +31,7 @@ interface ExportColumn {
   styleUrl: './employee-overview.component.scss'
 })
 export class EmployeeOverviewComponent implements OnInit, OnDestroy {
+  private readonly employeeUtils = inject(EmployeeUtils);
   public customer!: string;
   public customerLabel!: string;
   employees: Employee[] = [];
@@ -64,7 +66,6 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
 
-    this.employees = this.employeeService.getEmployees();
     this.loading = false;
 
     this.customer = 'Joe Doe'
@@ -77,8 +78,11 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       this.userEmployeeOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
-
-
+    this.route.params.subscribe(params => {
+       this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
+        this.employees = employees;
+       })
+    })
 
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
