@@ -15,6 +15,7 @@ interface Column {
   field: string;
   header: string;
   customExportHeader?: string;
+  routerLink?: (row: any) => string;
 }
 
 interface ExportColumn {
@@ -89,7 +90,11 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
 
     this.cols = [
-      { field: 'id', header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) },
+      { 
+        field: 'id',
+        routerLink: (row: any) => `./employee-details/${row.id}`,
+        header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) 
+      },
       { field: 'firstName', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
       { field: 'lastName', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
       { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
@@ -132,7 +137,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
 
   goToEmployeeDetails(currentEmployee: Employee) {
-    this.router.navigate(['employee-details'], { 
+    this.router.navigate(['employee-details', currentEmployee.id], { 
       relativeTo: this.route,
       state: { customer: "Joe Doe", employee: currentEmployee } 
     });

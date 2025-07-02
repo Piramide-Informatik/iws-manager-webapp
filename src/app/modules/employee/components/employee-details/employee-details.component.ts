@@ -79,20 +79,6 @@ export class EmployeeDetailsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.customerName = history.state.customer;
-    this.employeeNumber = history.state.employee.id;
-    this.salutationId = history.state.employee.salutation;
-    this.titleId = history.state.employee.title;
-    this.employeeFirstName = history.state.employee.firstName;
-    this.employeeLastName = history.state.employee.lastName;
-    this.employeeEmail = history.state.employee.email;
-    this.generalManagerSinceDate = history.state.employee.generalManagerSince;
-    this.shareholderSinceDate = history.state.employee.shareholderSince;
-    this.solePropietorSinceDate = history.state.employee.soleProprietorSince;
-    this.coentrepreneurSinceDate = history.state.employee.coEntrepreneurSince;
-    this.qualificationFzId = history.state.employee.qualificationFz;
-    this.qualificationKMUi = history.state.employee.qualificationKmui;
-
     this.employeeContractService.getEmployeeContractsData().then((data) => {
       this.employeeContracts = data;
     });
@@ -120,6 +106,10 @@ export class EmployeeDetailsComponent implements OnInit {
       this.selectedColumns = this.cols;
       this.userEmployeeDetailPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
+
+    this.activatedRoute.params.subscribe(params => {
+      this.employeeNumber = params['employeeId'];
+    })
   }
 
   onUserEmployeeDetailPreferencesChanges(userEmployeeDetailPreferences: any) {

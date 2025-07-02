@@ -63,7 +63,8 @@ export class ContractorDetailsComponent implements OnInit {
 
     this.activatedRoute.params
     .subscribe(params => {
-      this.formDetailContract.get('customer')?.setValue(history.state.customer) ;
+      this.contractorLabel.set(params['contractId']);
+      this.formDetailContract.get('contractorLabel')?.setValue(this.contractorLabel);
       
     })
 

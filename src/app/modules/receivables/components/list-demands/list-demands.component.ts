@@ -9,7 +9,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 interface Column {
   field: string,
   header: string,
-  customClasses?: string[]
+  customClasses?: string[],
+  routerLink?: (row: any) => string
 }
 
 @Component({
@@ -444,13 +445,17 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
     localStorage.setItem('userPreferences', JSON.stringify(userReceivablePreferences));
   }
 
-  goToCustomerDetails(data: any) {
-    this.router.navigate(['/customers/customer-details'])
+  goToReceivableDetails(data: any) {
+    this.router.navigate(['receivable-edit', data.idClaim], { relativeTo: this.route })
   }
 
   loadReceivableColHeaders(): void {
     this.cols = [
-      { field: 'idClaim', header: this.translate.instant(_('RECEIVABLES.TABLE.CLAIM_NUMBER')) },
+      { 
+        field: 'idClaim', 
+        routerLink: (row: any) => `./receivable-edit/${row.idClaim}`,
+        header: this.translate.instant(_('RECEIVABLES.TABLE.CLAIM_NUMBER')) 
+      },
       { field: 'idOrder', header: this.translate.instant(_('RECEIVABLES.TABLE.ORDER_NUMBER')) },
       { field: 'orderTitle', header: this.translate.instant(_('RECEIVABLES.TABLE.ORDER_TITLE')) },
       { field: 'fundingProgram', header: this.translate.instant(_('RECEIVABLES.TABLE.FUNDING_PROGRAM')) },

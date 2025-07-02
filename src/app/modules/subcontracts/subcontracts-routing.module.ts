@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: '', component: ListSubcontractsComponent },
   { path: 'list-subcontracts', component: ListSubcontractsComponent },
   { path: 'subcontracts-details', component: SubcontractsDetailsComponent },
+  { path: 'subcontracts-details/:subContractId', component: SubcontractsDetailsComponent }
 ];
 
 @NgModule({
