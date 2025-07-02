@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, finalize, map, of, tap, throwError } from 'rxjs';
 import { Country } from '../Entities/country';
 import { environment } from '../../environments/environment';
 
@@ -28,24 +28,17 @@ export class CountryService {
     })
   };
 
-  constructor() {
-    this.loadInitialData();
-  }
+  constructor() {}
 
-  private loadInitialData(): void {
+  public loadInitialData(): Observable<Country[]> {
     this._loading.set(true);
-    this.http.get<Country[]>(this.apiUrl, this.httpOptions).pipe(
-      tap({
-        next: (countries) => {
-          this._countries.set(countries);
-          this._error.set(null);
-        },
-        error: (err) => {
-          this._error.set('Failed to load countries');
-        }
+    return this.http.get<Country[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(countries => {
+        this._countries.set(countries);
+        this._error.set(null);
       }),
       catchError(() => of([])),
-      tap(() => this._loading.set(false))
+      finalize(() => this._loading.set(false))
     );
   }
 
@@ -68,7 +61,7 @@ export class CountryService {
           console.error('Error adding country:', err);
         }
       })
-    );
+    ).subscribe();
   }
 
   // ==================== READ OPERATIONS ====================
@@ -147,7 +140,7 @@ export class CountryService {
           this._error.set('Failed to delete country');
         }
       })
-    );
+    ).subscribe();
   }  
 
   // ==================== ERROR HANDLING ====================

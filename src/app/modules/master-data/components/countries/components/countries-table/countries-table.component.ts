@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject, computed, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
@@ -18,6 +18,7 @@ import { CountryModalComponent } from '../country-modal/country-modal.component'
 export class CountriesTableComponent implements OnInit, OnDestroy {
   private readonly countryUtils = new CountryUtils();
   private readonly countryService = inject(CountryService);
+  private readonly destroy$ = new Subject<void>();
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedCountry: number | null = null;
@@ -62,6 +63,9 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
       this.loadColumnsCountries();
       this.userCountriesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCoutries);
     });
+    this.countryService.loadInitialData().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
   readonly countries = computed(() => {
@@ -104,6 +108,8 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
    onVisibleModal(visible: boolean){
     this.visibleModal = visible;
