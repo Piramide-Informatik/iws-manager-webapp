@@ -104,6 +104,23 @@ export class EmployeeService {
     );
   }
 
+  /**
+   * Retrieves all employees given a customer
+   * @param customerId Customer to get his employees
+   * @returns Observable with Employee array
+   * @throws Error when server request fails
+   */
+  getAllEmployeesByCustomerId(customerId: number): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`${this.apiUrl}/customer/${customerId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch employees');
+        console.error('Error fetching employees:', err);
+        return of([]);
+      })
+    );
+  }
+
   // ==================== UPDATE OPERATIONS ====================
   /**
    * Updates an existing employee
