@@ -1,6 +1,7 @@
 import { Salutation } from "./salutation";
 import { Customer } from "./customer";
 import { Title } from "./title";
+import { QualificationFZ } from "./qualificationfz";
 
 export interface Employee {
     id: number;
@@ -26,6 +27,6 @@ export interface Employee {
     soleproprietorsince?: string;
     coentrepreneursince?: string;
 
-    qualificationFZ?: string | null;
+    qualificationFZ?: QualificationFZ | null;
     qualificationkmui?: string;
 }
