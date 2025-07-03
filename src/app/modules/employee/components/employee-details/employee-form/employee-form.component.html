@@ -93,7 +93,7 @@
     <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="goBack()" />
 </div>
-
+<p-toast></p-toast>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaEmployee"
   (onClose)="showOCCErrorModaEmployee = false">
