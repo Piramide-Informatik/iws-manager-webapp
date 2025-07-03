@@ -3,7 +3,6 @@ import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Employee } from '../../../../Entities/employee';
-import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
@@ -25,7 +24,7 @@ interface ExportColumn {
 @Component({
   selector: 'app-employee-overview',
   standalone: false,
-  providers: [MessageService, ConfirmationService, Employee],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })
@@ -50,7 +49,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   dataKeys = ['id', 'firstName', 'lastName', 'email', 'generalManagerSince', 'shareholderSince', 'soleProprietorSince', 'coEntrepreneurSince', 'qualificationFz', 'qualificationKmui'];
 
 
-  constructor(private readonly employeeService: EmployeeService,
+  constructor(
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
@@ -64,7 +63,6 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
 
-    this.employees = this.employeeService.getEmployees();
     this.loading = false;
 
     this.customer = 'Joe Doe'
@@ -167,7 +165,6 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
       rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
       accept: () => {
-        this.employeeService.deleteEmployee(employee);
         this.employees = this.employees.filter(
           (val) => val.id !== employee
         );

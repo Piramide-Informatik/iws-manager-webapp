@@ -1,79 +1,96 @@
-<div class="form-row flex flex-wrap justify-content-center">
-
+<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+  <div class="form-row flex flex-wrap justify-content-center">
     <div class="form-column pl-6">
-
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
-            <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeNumber" />
-        </div>
-
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.SALUTATION' | translate }}</label>
-            <p-select [options]="salutations()" [editable]="true" [showClear]="true" optionLabel="name" />
-        </div>
-
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.TITLE' | translate }}</label>
-            <p-select [options]="titles" [(ngModel)]="titleId" [editable]="true" [showClear]="true"
-                optionLabel="name" />
-        </div>
-
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.FIRST_NAME' | translate }}</label>
-            <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeFirstName" />
-        </div>
-
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.LAST_NAME' | translate }}</label>
-            <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeLastName" />
-        </div>
-
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
-            <input class="col-md-6" type="text" pInputText [(ngModel)]="employeeEmail" />
-        </div>
+      <div class="field">
+        <label for="employeeNumber">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
+        <input class="col-md-6" type="text" pInputText formControlName="employeeNumber" id="employeeNumber"/>
+      </div>
+  
+      <div class="field">
+        <label for="salutation">{{ 'EMPLOYEE.FORM.SALUTATION' | translate }}</label>
+        <p-select [options]="salutations()" 
+          optionLabel="name" 
+          formControlName="salutation" 
+          inputId="salutation" 
+          [showClear]="true"
+        />
+      </div>
+  
+      <div class="field">
+        <label for="title">{{ 'EMPLOYEE.FORM.TITLE' | translate }}</label>
+        <p-select 
+          [options]="titles()" 
+          optionLabel="name" 
+          formControlName="title" 
+          inputId="title"
+          [showClear]="true"
+        />
+      </div>
+  
+      <div class="field">
+        <label for="employeeFirstName">{{ 'EMPLOYEE.FORM.FIRST_NAME' | translate }}</label>
+        <input class="col-md-6" type="text" pInputText formControlName="employeeFirstName" id="employeeFirstName"/>
+      </div>
+  
+      <div class="field">
+        <label for="employeeLastName">{{ 'EMPLOYEE.FORM.LAST_NAME' | translate }}</label>
+        <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName"/>
+      </div>
+  
+      <div class="field">
+        <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
+        <input class="col-md-6" type="text" pInputText formControlName="employeeEmail" id="employeeEmail"/>
+      </div>
     </div>
-
+  
     <div class="form-column flex flex-column pl-6">
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.GENERAL_MANAGER_SINCE' | translate }}</label>
-            <p-datepicker [(ngModel)]="generalManagerSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
-                inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" showClear />
-        </div>
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.SHAREHOLDER_SINCE' | translate }}</label>
-            <p-datepicker [(ngModel)]="shareholderSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
-                inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" showClear />
-        </div>
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.SOLE_PROPRIETOR_SINCE' | translate }}</label>
-            <p-datepicker [(ngModel)]="solePropietorSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
-                inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" showClear />
-        </div>
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.CO_ENTREPRENEUR_SINCE' | translate }}</label>
-            <p-datepicker [(ngModel)]="coentrepreneurSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
-                inputId="buttondisplay" [showOnFocus]="false" dateFormat="dd.mm.yy" showClear />
-        </div>
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.QUALIFICATION_FZ' | translate }}</label>
-            <p-select [options]="qualificationsFZ" [(ngModel)]="qualificationFzId" [editable]="true" [showClear]="true"
-                optionLabel="name" dateFormat="dd.mm.yy" />
-        </div>
-        <div class="field">
-            <label for="customerName">{{ 'EMPLOYEE.FORM.QUALIFICATION_KMU_I' | translate }}</label>
-            <input class="col-md-6" type="text" pInputText [(ngModel)]="qualificationKMUi" />
-        </div>
+      <div class="field">
+        <label for="generalManagerSinceDate">{{ 'EMPLOYEE.FORM.GENERAL_MANAGER_SINCE' | translate }}</label>
+        <p-datepicker formControlName="generalManagerSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
+          inputId="generalManagerSinceDate" dateFormat="dd.mm.yy" [showClear]="true"
+        />
+      </div>
+  
+      <div class="field">
+        <label for="shareholderSinceDate">{{ 'EMPLOYEE.FORM.SHAREHOLDER_SINCE' | translate }}</label>
+        <p-datepicker formControlName="shareholderSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
+          inputId="shareholderSinceDate" dateFormat="dd.mm.yy" [showClear]="true" 
+        />
+      </div>
+  
+      <div class="field">
+        <label for="solePropietorSinceDate">{{ 'EMPLOYEE.FORM.SOLE_PROPRIETOR_SINCE' | translate }}</label>
+        <p-datepicker formControlName="solePropietorSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
+          inputId="solePropietorSinceDate" dateFormat="dd.mm.yy" [showClear]="true" 
+        />
+      </div>
+  
+      <div class="field">
+        <label for="coentrepreneurSinceDate">{{ 'EMPLOYEE.FORM.CO_ENTREPRENEUR_SINCE' | translate }}</label>
+        <p-datepicker formControlName="coentrepreneurSinceDate" [style]="{'width':'20vw'}" [showIcon]="true"
+          inputId="coentrepreneurSinceDate" dateFormat="dd.mm.yy" [showClear]="true"
+        />
+      </div>
+  
+      <div class="field">
+        <label for="qualificationFzId">{{ 'EMPLOYEE.FORM.QUALIFICATION_FZ' | translate }}</label>
+        <p-select [options]="qualificationsFZ" formControlName="qualificationFzId" [showClear]="true"
+          optionLabel="name" dateFormat="dd.mm.yy" inputId="qualificationFzId"
+        />
+      </div>
+  
+      <div class="field">
+        <label for="qualificationKMUi">{{ 'EMPLOYEE.FORM.QUALIFICATION_KMU_I' | translate }}</label>
+        <input class="col-md-6" type="text" pInputText formControlName="qualificationKMUi" id="qualificationKMUi"/>
+      </div>
     </div>
-</div>
-
-<div class="form-row flex flex-wrap gap-3 justify-content-center">
-    <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-    <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
-        [style]="{ background: '#ef4444' }" />
-    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
-        (onClick)="goBack()" />
-</div>
-<div class="my-2">
-    <span class="font-semibold">{{ 'EMPLOYEE.FORM.EMPLOYMENT_CONTRACTS' | translate }}</span>
-</div>
+  </div>
+  
+  <div class="form-row flex flex-wrap gap-3 justify-content-center">
+      <p-button type="submit" class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+      <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
+          [style]="{ background: '#ef4444' }" />
+      <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+          (onClick)="goBack()" />
+  </div>
+</form>
