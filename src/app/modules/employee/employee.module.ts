@@ -30,6 +30,8 @@ import { MasterDataModule } from '../master-data/master-data.module';
 import { EmployeeFormComponent } from './components/employee-details/employee-form/employee-form.component';
 import { EmployeeContractsTableComponent } from './components/employee-details/employee-contracts-table/employee-contracts-table.component';
 
+import { SharedModule } from '../shared/shared.module';
+
 @NgModule({
     declarations: [
         EmployeeOverviewComponent,
@@ -58,7 +60,8 @@ import { EmployeeContractsTableComponent } from './components/employee-details/e
         TranslateModule,
         TranslatePipe,
         TranslateDirective,
-        MasterDataModule
+        MasterDataModule,
+        SharedModule
     ]
 
 })
