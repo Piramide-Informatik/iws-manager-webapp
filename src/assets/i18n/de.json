@@ -197,6 +197,10 @@
       "QUALI_FZ": "Quali FZ",
       "QUALI_MKUI": "Quali KMU-i"
     },
+    "LABELS": {
+      "DELETE_EMPLOYEE": "Mitarbeiter löschen",
+      "REMOVE_EMPLOYEE_QUESTION": "Möchten Sie den Mitarbeiter wirklich löschen "
+    },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Datum",
       "SALARY_PER_MONTH": "Gehalt",
