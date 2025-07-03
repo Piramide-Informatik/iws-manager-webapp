@@ -77,3 +77,8 @@
 <div class="my-2">
     <span class="font-semibold">{{ 'EMPLOYEE.FORM.EMPLOYMENT_CONTRACTS' | translate }}</span>
 </div>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaEmployee"
+  (onClose)="showOCCErrorModaEmployee = false">
+</app-occ-error-modal>
