@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -8,6 +8,7 @@ import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { EmployeeUtils } from '../../utils/employee.utils';
 
 
 interface Column {
@@ -29,6 +30,7 @@ interface ExportColumn {
   styleUrl: './employee-overview.component.scss'
 })
 export class EmployeeOverviewComponent implements OnInit, OnDestroy {
+  private readonly employeeUtils = inject(EmployeeUtils);
   public customer!: string;
   public customerLabel!: string;
   employees: Employee[] = [];
@@ -46,7 +48,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   public selectedFilterColumns!: Column[];
   userEmployeeOverviewPreferences: UserPreference = {};
   tableKey: string = 'EmployeeOverview'
-  dataKeys = ['id', 'firstName', 'lastName', 'email', 'generalManagerSince', 'shareholderSince', 'soleProprietorSince', 'coEntrepreneurSince', 'qualificationFz', 'qualificationKmui'];
+  dataKeys = ['id', 'firstname', 'lastname', 'email', 'generalmanagersince', 'shareholdersince', 'soleproprietorsince', 'coentrepreneursince', 'qualificationFZ', 'qualificationkmui'];
 
 
   constructor(
@@ -75,8 +77,11 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       this.userEmployeeOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
-
-
+    this.route.params.subscribe(params => {
+       this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
+        this.employees = employees;
+       })
+    })
 
     this.selectedColumns = this.cols;
     this.selectedFilterColumns = this.filterCols;
@@ -88,15 +93,15 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
     this.cols = [
       { field: 'id', header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) },
-      { field: 'firstName', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
-      { field: 'lastName', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
+      { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
+      { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
       { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
-      { field: 'generalManagerSince', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
-      { field: 'shareholderSince', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
-      { field: 'soleProprietorSince', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
-      { field: 'coEntrepreneurSince', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
-      { field: 'qualificationFz', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
-      { field: 'qualificationKmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
+      { field: 'generalmanagersince', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
+      { field: 'shareholdersince', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
+      { field: 'soleproprietorsince', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
+      { field: 'coentrepreneursince', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
+      { field: 'qualificationFZ', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
+      { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
     ];
 
