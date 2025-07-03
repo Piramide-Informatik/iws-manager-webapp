@@ -49,7 +49,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.initForm();
@@ -126,14 +126,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private buildEmployeeFromForm(): Omit<Employee, 'id'> {
+  private buildEmployeeData(customerSource: any): Omit<Employee, 'id' | 'createdAt' | 'updatedAt'| 'version'> {
     const formValues = this.employeeForm.value;
 
     return {
-      version: 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      customer: this.buildCustomerFromSource(history.state.customer),
+      customer: this.buildCustomerFromSource(customerSource),
       employeeno: formValues.employeeNumber,
       salutation: this.mapIdToEntity(formValues.salutation),
       title: this.mapIdToEntity(formValues.title),
@@ -151,26 +148,20 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     };
   }
 
-  private buildUpdatedEmployee(): Employee {
-    const formValues = this.employeeForm.value;
+  private buildEmployeeFromForm(): Omit<Employee, 'id'> {
+    const employee = this.buildEmployeeData(history.state.customer);
+    return {
+      ...employee,
+      version: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+  }
 
+  private buildUpdatedEmployee(): Employee {
     return {
       ...this.currentEmployee!,
-      customer: this.buildCustomerFromSource(this.currentEmployee?.customer),
-      employeeno: formValues.employeeNumber,
-      salutation: this.mapIdToEntity(formValues.salutation),
-      title: this.mapIdToEntity(formValues.title),
-      firstname: formValues.employeeFirstName,
-      lastname: formValues.employeeLastName,
-      email: formValues.employeeEmail,
-      label: '',
-      phone: '',
-      generalmanagersince: this.formatOptionalDate(formValues.generalManagerSinceDate),
-      shareholdersince: this.formatOptionalDate(formValues.shareholderSinceDate),
-      soleproprietorsince: this.formatOptionalDate(formValues.solePropietorSinceDate),
-      coentrepreneursince: this.formatOptionalDate(formValues.coentrepreneurSinceDate),
-      qualificationFZ: null,
-      qualificationkmui: formValues.qualificationKMUi,
+      ...this.buildEmployeeData(this.currentEmployee?.customer)
     };
   }
 
