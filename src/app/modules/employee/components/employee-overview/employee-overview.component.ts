@@ -9,6 +9,8 @@ import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { EmployeeUtils } from '../../utils/employee.utils';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { Customer } from '../../../../Entities/customer';
 
 
 interface Column {
@@ -32,7 +34,8 @@ interface ExportColumn {
 })
 export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
-  public customer!: string;
+  private readonly customerUtils = inject(CustomerUtils);
+  public customer!: Customer | undefined;
   public customerLabel!: string;
   employees: Employee[] = [];
   selectedCustomers!: WorkContract[] | null;
@@ -75,9 +78,6 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
     this.loading = false;
 
-    this.customer = 'Joe Doe'
-
-
     this.userEmployeeOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
@@ -86,9 +86,13 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     });
 
     this.route.params.subscribe(params => {
-       this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
+      this.customerUtils.getCustomerById(params['id']).subscribe(customer => {
+        this.customer = customer; 
+      });
+
+      this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
         this.employees = employees;
-       })
+      })
     })
 
     this.selectedColumns = this.cols;
@@ -149,14 +153,14 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   goToEmployeeDetails(currentEmployee: Employee) {
     this.router.navigate(['employee-details', currentEmployee.id], { 
       relativeTo: this.route,
-      state: { customer: "Joe Doe", employee: currentEmployee } 
+      state: { customer: this.customer, employee: currentEmployee } 
     });
   }
 
   redirectToEmployeeDetails() {
     this.router.navigate(['employee-details'], { 
       relativeTo: this.route,
-      state: { customer: "Joe Doe", employee: {} } 
+      state: { customer: this.customer, employee: {} } 
     });
   }
 

@@ -10,6 +10,7 @@
         <label for="salutation">{{ 'EMPLOYEE.FORM.SALUTATION' | translate }}</label>
         <p-select [options]="salutations()" 
           optionLabel="name" 
+          optionValue="id"
           formControlName="salutation" 
           inputId="salutation" 
           [showClear]="true"
@@ -21,6 +22,7 @@
         <p-select 
           [options]="titles()" 
           optionLabel="name" 
+          optionValue="id"
           formControlName="title" 
           inputId="title"
           [showClear]="true"
@@ -93,7 +95,7 @@
     <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="goBack()" />
 </div>
-
+<p-toast></p-toast>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaEmployee"
   (onClose)="showOCCErrorModaEmployee = false">
