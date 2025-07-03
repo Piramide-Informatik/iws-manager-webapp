@@ -6,7 +6,8 @@ import { OrdersOverviewComponent } from "./components/orders-overview/orders-ove
 const routes: Routes = [
     {path: '', component: OrdersOverviewComponent},
     {path: 'orders-overview', component: OrdersOverviewComponent},
-    {path: 'order-details', component: OrderDetailsComponent}
+    {path: 'order-details', component: OrderDetailsComponent},
+    {path: 'order-details/:orderId', component: OrderDetailsComponent}
 ]
 
 @NgModule({

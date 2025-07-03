@@ -230,7 +230,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         field: 'companyName',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')),
-        routerLink: (row: any) => `/customers/customer-details/${row.id}`
+        routerLink: (row: any) => `./customer-details/${row.id}`
       },
       {
         field: 'nameLine2',

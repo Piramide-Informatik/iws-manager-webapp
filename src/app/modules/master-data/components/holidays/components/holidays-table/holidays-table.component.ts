@@ -66,6 +66,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         styles: { width: 'auto' },
+        useSameAsEdit: true,
         header: this.translate.instant(_('HOLIDAYS.TABLE.NAME')),
       },
     ];

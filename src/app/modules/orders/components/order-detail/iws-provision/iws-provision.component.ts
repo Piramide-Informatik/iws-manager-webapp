@@ -11,6 +11,7 @@ interface Column {
   header: string;
   customExportHeader?: string;
   customClasses?: string[];
+  useSameAsEdit?: boolean;
 }
 
 interface ExportColumn {
@@ -73,7 +74,7 @@ export class IwsProvisionComponent implements OnInit{
 
   loadIwsProvisionColumnHeaders() {
     this.cols = [
-          { field: 'fromOrderValue', customClasses: ['align-right'], header: 'ab Wert'},
+          { field: 'fromOrderValue', customClasses: ['align-right'], useSameAsEdit: true, header: 'ab Wert'},
           { field: 'commission', customClasses: ['align-right'], header: 'Provision'},
           { field: 'minCommission', customClasses: ['align-right'], header: 'Mindestprovision'},
         ];

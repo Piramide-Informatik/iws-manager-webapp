@@ -13,7 +13,8 @@ interface Column {
   field: string;
   header: string;
   customExportHeader?: string;
-  customClasses?: string[]
+  customClasses?: string[];
+  routerLink?: (row: any) => string
 }
 
 interface ExportColumn {
@@ -86,7 +87,12 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
 
   loadInvoiceColHeaders(): void {
     this.cols = [
-          { field: 'invoiceNumber', customClasses: ['align-right'], header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))},
+          { 
+            field: 'invoiceNumber', 
+            customClasses: ['align-right'], 
+            routerLink: (row: any) => `./invoice-details/${row.invoiceNumber}`,
+            header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))
+          },
           { field: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE'))},
           { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION'))},
           { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE'))},
