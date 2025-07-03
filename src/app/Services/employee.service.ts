@@ -54,7 +54,7 @@ export class EmployeeService {
    * @returns Observable with the created Employee object
    * @throws Error when validation fails or server error occurs
    */
-  addEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>): Observable<Employee> {
+  addEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Employee> {
     return this.http.post<Employee>(this.apiUrl, employee, this.httpOptions).pipe(
       tap({
         next: (newEmployee) => {

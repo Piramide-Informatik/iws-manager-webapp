@@ -86,6 +86,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     const newEmployee = this.buildEmployeeFromForm();
 
+    console.log('Creating new employee:', newEmployee);
+    
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: () => this.handleSuccess(),
@@ -100,7 +102,16 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       version: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      customer: null,
+      customer: {
+        id: 1689,
+        version: 0,
+        createdAt: '',
+        updatedAt: '',
+        branch: null,
+        companytype: null,
+        country: null,
+        state: null
+      },
       employeeno: formValues.employeeNumber,
       salutation: formValues.salutation 
         ? { id: formValues.salutation, name: '', createdAt: '', updatedAt: '', version: 0 }
@@ -113,10 +124,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       email: formValues.employeeEmail,
       label: '',
       phone: '',
-      generalmanagersince: formValues.generalManagerSinceDate,
-      shareholdersince: formValues.shareholderSinceDate,
-      soleproprietorsince: formValues.solePropietorSinceDate,
-      coentrepreneursince: formValues.coentrepreneurSinceDate,
+      generalmanagersince: formValues.generalManagerSinceDate ? this.formatDate(formValues.generalManagerSinceDate) : undefined,
+      shareholdersince: formValues.shareholderSinceDate ? this.formatDate(formValues.shareholderSinceDate) : undefined,
+      soleproprietorsince: formValues.solePropietorSinceDate ? this.formatDate(formValues.solePropietorSinceDate) : undefined,
+      coentrepreneursince: formValues.coentrepreneurSinceDate ? this.formatDate(formValues.coentrepreneurSinceDate) : undefined,
       qualificationFZ: null,
       qualificationkmui: formValues.qualificationKMUi,
     };
@@ -129,6 +140,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_SUCCESS')
     });
     this.clearForm();
+  }
+
+  private formatDate(date: Date){
+    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
   }
 
   private handleError(err: any): void {

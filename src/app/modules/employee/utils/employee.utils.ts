@@ -54,11 +54,7 @@ export class EmployeeUtils {
   * @param employee - Employee object to create (without id)
   * @returns Observable that completes when employee is created
   */
-  createNewEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>): Observable<Employee> {
-    if (!employee.firstname?.trim()) {
-      return throwError(() => new Error('Employee first name cannot be empty'));
-    }
-
+  createNewEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Employee> {
     return this.employeeService.addEmployee(employee);
   }
 
