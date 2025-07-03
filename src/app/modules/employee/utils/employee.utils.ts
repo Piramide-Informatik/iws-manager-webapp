@@ -55,10 +55,6 @@ export class EmployeeUtils {
   * @returns Observable that completes when employee is created
   */
   createNewEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Employee> {
-    if (!employee.firstName?.trim()) {
-      return throwError(() => new Error('Employee first name cannot be empty'));
-    }
-
     return this.employeeService.addEmployee(employee);
   }
 
@@ -90,8 +86,8 @@ export class EmployeeUtils {
         }
         // Filtra los empleados con nombre válido y ordena alfabéticamente
         return employees
-        .filter(employee => !!employee.firstName && employee.firstName.trim() !== '')
-        .sort((a, b) => (a.firstName ?? '').localeCompare(b.firstName ?? ''));
+        .filter(employee => !!employee.firstname && employee.firstname.trim() !== '')
+        .sort((a, b) => (a.firstname ?? '').localeCompare(b.firstname ?? ''));
       }),
       catchError(() => throwError(() => new Error('Failed to sort employees')))
     );

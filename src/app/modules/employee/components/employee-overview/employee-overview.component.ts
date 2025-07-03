@@ -3,7 +3,6 @@ import { WorkContract } from '../../../../Entities/work-contracts';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Employee } from '../../../../Entities/employee';
-import { EmployeeService } from '../../services/employee.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
@@ -27,7 +26,7 @@ interface ExportColumn {
 @Component({
   selector: 'app-employee-overview',
   standalone: false,
-  providers: [MessageService, ConfirmationService, Employee],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })
@@ -60,7 +59,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string = '';
 
-  constructor(private readonly employeeService: EmployeeService,
+  constructor(
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
@@ -184,8 +183,8 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       
       if (localEmployee) {
 
-        const firstName = localEmployee.firstName ?? (localEmployee as any).firstname ?? '';
-        const lastName = localEmployee.lastName ?? (localEmployee as any).lastname ?? '';
+        const firstName = localEmployee.firstname ?? (localEmployee as any).firstname ?? '';
+        const lastName = localEmployee.lastname ?? (localEmployee as any).lastname ?? '';
         
         this.employeeName = `${firstName} ${lastName}`.trim();
         this.visibleEmployeeModal = true;
@@ -193,8 +192,8 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         this.employeeUtils.getEmployeeById(this.selectedEmployee!).subscribe({
           next: (employee) => {
             
-            const firstName = employee?.firstName ?? (employee as any)?.firstname ?? '';
-            const lastName = employee?.lastName ?? (employee as any)?.lastname ?? '';
+            const firstName = employee?.firstname ?? (employee as any)?.firstname ?? '';
+            const lastName = employee?.lastname ?? (employee as any)?.lastname ?? '';
             
             this.employeeName = `${firstName} ${lastName}`.trim();
             this.visibleEmployeeModal = true;
