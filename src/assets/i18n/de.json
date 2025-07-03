@@ -154,7 +154,7 @@
       "CONTACT_PERSON": "Ansprechpartner",
       "DELETE_CUSTOMER": "Kunde löschen",
       "REMOVE_CUSTOMER_QUESTION": "Möchten Sie den Kunde ",
-      "REMOVE_CONTACT_LIST": "und seine Kontaktliste wirklich löschen"
+      "REMOVE_CONTACT_LIST": "und seine Ansprechpartner wirklich löschen"
     },
     "CONTACT_TABLE": {
       "NAME": "Name",
