@@ -21,8 +21,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly salutationUtils = inject(SalutationUtils);
   private readonly titleUtils = inject(TitleUtils);
-
-  public showOCCErrorModaEmployee = false;
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly activatedRoute = inject(ActivatedRoute);
@@ -31,28 +29,22 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
 
   public employeeForm!: FormGroup;
-  formType: 'create' | 'update' = 'create';
+  public formType: 'create' | 'update' = 'create';
   public currentEmployee: Employee | undefined;
   public id = 0;
-
-  qualificationsFZ: QualificationFZ[] | undefined;
+  public showOCCErrorModaEmployee = false;
+  public qualificationsFZ: QualificationFZ[] | undefined;
 
   public salutations = toSignal(
     this.salutationUtils.getSalutationsSortedByName().pipe(
-      map(salutations => salutations.map(salutation => ({
-        name: salutation.name,
-        id: salutation.id
-      })))
+      map(s => s.map(({ name, id }) => ({ name, id })))
     ),
     { initialValue: [] }
   );
 
   public titles = toSignal(
     this.titleUtils.getTitlesSortedByName().pipe(
-      map(titles => titles.map(title => ({
-        name: title.name,
-        id: title.id
-      })))
+      map(t => t.map(({ name, id }) => ({ name, id })))
     ),
     { initialValue: [] }
   );
@@ -89,9 +81,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
                 });
               }
             },
-            error: (err) => {
-              console.error('Error loading employee:', err);
-            }
+            error: (err) => console.error('Error loading employee:', err)
           })
         );
       }
@@ -119,22 +109,117 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.employeeForm.invalid) {
       console.error('Form is invalid');
       return;
     }
 
+    const employee = this.formType === 'create'
+      ? this.buildEmployeeFromForm()
+      : this.buildUpdatedEmployee();
+
     if (this.formType === 'create') {
-      const newEmployee = this.buildEmployeeFromForm();
-      this.createEmployee(newEmployee);
-    } else if (this.formType === 'update') {
-      const updatedEmployee = this.buildUpdatedEmployee();
-      this.updateEmployee(updatedEmployee);
+      this.createEmployee(employee);
+    } else {
+      this.updateEmployee(employee as Employee);
     }
   }
 
-  private createEmployee(newEmployee: Omit<Employee, 'id'>) {
+  private buildEmployeeFromForm(): Omit<Employee, 'id'> {
+    const formValues = this.employeeForm.value;
+
+    return {
+      version: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      customer: this.buildCustomerFromSource(history.state.customer),
+      employeeno: formValues.employeeNumber,
+      salutation: this.mapIdToEntity(formValues.salutation),
+      title: this.mapIdToEntity(formValues.title),
+      firstname: formValues.employeeFirstName,
+      lastname: formValues.employeeLastName,
+      email: formValues.employeeEmail,
+      label: '',
+      phone: '',
+      generalmanagersince: this.formatOptionalDate(formValues.generalManagerSinceDate),
+      shareholdersince: this.formatOptionalDate(formValues.shareholderSinceDate),
+      soleproprietorsince: this.formatOptionalDate(formValues.solePropietorSinceDate),
+      coentrepreneursince: this.formatOptionalDate(formValues.coentrepreneurSinceDate),
+      qualificationFZ: null,
+      qualificationkmui: formValues.qualificationKMUi,
+    };
+  }
+
+  private buildUpdatedEmployee(): Employee {
+    const formValues = this.employeeForm.value;
+
+    return {
+      ...this.currentEmployee!,
+      customer: this.buildCustomerFromSource(this.currentEmployee?.customer),
+      employeeno: formValues.employeeNumber,
+      salutation: this.mapIdToEntity(formValues.salutation),
+      title: this.mapIdToEntity(formValues.title),
+      firstname: formValues.employeeFirstName,
+      lastname: formValues.employeeLastName,
+      email: formValues.employeeEmail,
+      label: '',
+      phone: '',
+      generalmanagersince: this.formatOptionalDate(formValues.generalManagerSinceDate),
+      shareholdersince: this.formatOptionalDate(formValues.shareholderSinceDate),
+      soleproprietorsince: this.formatOptionalDate(formValues.solePropietorSinceDate),
+      coentrepreneursince: this.formatOptionalDate(formValues.coentrepreneurSinceDate),
+      qualificationFZ: null,
+      qualificationkmui: formValues.qualificationKMUi,
+    };
+  }
+
+  private buildCustomerFromSource(source: any): any {
+    return {
+      id: source?.id ?? 0,
+      version: 0,
+      createdAt: '',
+      updatedAt: '',
+      branch: {
+        id: source?.branch?.id ?? 0,
+        name: '',
+        version: 0
+      },
+      companytype: {
+        id: source?.companytype?.id ?? 0,
+        createdAt: '',
+        updatedAt: '',
+        name: '',
+        version: 0
+      },
+      country: {
+        id: source?.country?.id ?? 0,
+        name: '',
+        label: '',
+        isDefault: source?.country?.isDefault ?? false,
+        createdAt: '',
+        updatedAt: '',
+        version: 0
+      },
+      state: {
+        id: source?.state?.id ?? 0,
+        name: '',
+        createdAt: '',
+        updatedAt: '',
+        version: 0
+      }
+    };
+  }
+
+  private mapIdToEntity(id: number | null): any {
+    return id ? { id, name: '', createdAt: '', updatedAt: '', version: 0 } : null;
+  }
+
+  private formatOptionalDate(date: Date | null): string | undefined {
+    return date ? date.toISOString().split('T')[0] : undefined;
+  }
+
+  private createEmployee(newEmployee: Omit<Employee, 'id'>): void {
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: (createdEmployee) => {
@@ -146,55 +231,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  private buildEmployeeFromForm(): Omit<Employee, 'id'> {
-    const formValues = this.employeeForm.value;
-    return {
-      version: 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      customer: history.state.customer,
-      employeeno: formValues.employeeNumber,
-      salutation: formValues.salutation ? { id: formValues.salutation, name: '', createdAt: '', updatedAt: '', version: 0 } : null,
-      title: formValues.title ? { id: formValues.title, name: '', createdAt: '', updatedAt: '', version: 0 } : null,
-      firstname: formValues.employeeFirstName,
-      lastname: formValues.employeeLastName,
-      email: formValues.employeeEmail,
-      label: '',
-      phone: '',
-      generalmanagersince: formValues.generalManagerSinceDate ? this.formatDate(formValues.generalManagerSinceDate) : undefined,
-      shareholdersince: formValues.shareholderSinceDate ? this.formatDate(formValues.shareholderSinceDate) : undefined,
-      soleproprietorsince: formValues.solePropietorSinceDate ? this.formatDate(formValues.solePropietorSinceDate) : undefined,
-      coentrepreneursince: formValues.coentrepreneurSinceDate ? this.formatDate(formValues.coentrepreneurSinceDate) : undefined,
-      qualificationFZ: null,
-      qualificationkmui: formValues.qualificationKMUi,
-    };
-  }
-
-  private buildUpdatedEmployee(): Employee {
-    if (!this.currentEmployee) {
-      throw new Error('No current employee loaded');
-    }
-
-    const formValues = this.employeeForm.value;
-
-    return {
-      ...this.currentEmployee,
-      employeeno: formValues.employeeNumber,
-      salutation: formValues.salutation ? { id: formValues.salutation, name: '', createdAt: '', updatedAt: '', version: 0 } : null,
-      title: formValues.title ? { id: formValues.title, name: '', createdAt: '', updatedAt: '', version: 0 } : null,
-      firstname: formValues.employeeFirstName,
-      lastname: formValues.employeeLastName,
-      email: formValues.employeeEmail,
-      label: '',
-      phone: '',
-      generalmanagersince: formValues.generalManagerSinceDate ? this.formatDate(formValues.generalManagerSinceDate) : undefined,
-      shareholdersince: formValues.shareholderSinceDate ? this.formatDate(formValues.shareholderSinceDate) : undefined,
-      soleproprietorsince: formValues.solePropietorSinceDate ? this.formatDate(formValues.solePropietorSinceDate) : undefined,
-      coentrepreneursince: formValues.coentrepreneurSinceDate ? this.formatDate(formValues.coentrepreneurSinceDate) : undefined,
-      qualificationFZ: null,
-      qualificationkmui: formValues.qualificationKMUi,
-      customer: this.currentEmployee.customer
-    };
+  private updateEmployee(updatedEmployee: Employee): void {
+    this.subscriptions.add(
+      this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
+        next: (savedEmployee) => this.handleUpdateEmployeeSuccess(savedEmployee),
+        error: (err) => this.handleUpdateEmployeeError(err)
+      })
+    );
   }
 
   private handleSuccess(): void {
@@ -205,12 +248,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private formatDate(date: Date) {
-    return date.toISOString().split('T')[0];
-  }
-
   private handleError(err: any): void {
-    console.error('Error creating customer:', err);
+    console.error('Error creating employee:', err);
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('CUSTOMERS.MESSAGE.ERROR'),
@@ -218,30 +257,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  goBack() {
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-  }
-
-  clearForm(): void {
-    this.employeeForm.reset();
-  }
-
-  updateEmployee(updatedEmployee: Employee): void {
-    const updateEmployee = this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
-      next: (savedEmployee) => this.handleUpdateEmployeeSuccess(savedEmployee),
-      error: (err) => this.handleUpdateEmployeeError(err)
-    });
-    this.subscriptions.add(updateEmployee);
+  private handleUpdateEmployeeSuccess(savedEmployee: Employee): void {
+    this.showSuccessMessage('TITLE.MESSAGE.UPDATE_SUCCESS');
   }
 
   private handleUpdateEmployeeError(err: any): void {
     if (err.message === 'Conflict detected: employee person version mismatch') {
       this.showOCCErrorModaEmployee = true;
     }
-  }
-
-  private handleUpdateEmployeeSuccess(savedEmployee: Employee): void {
-    this.showSuccessMessage('TITLE.MESSAGE.UPDATE_SUCCESS');
   }
 
   private showSuccessMessage(messageKey: string): void {
@@ -255,5 +278,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private resetFormAndNavigation(id: number): void {
     this.clearForm();
     this.router.navigate(['.', id], { relativeTo: this.activatedRoute });
+  }
+
+  goBack(): void {
+    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+  }
+
+  clearForm(): void {
+    this.employeeForm.reset();
   }
 }
