@@ -10,7 +10,6 @@ import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import { SalutationService } from '../../../../../Services/salutation.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -24,7 +23,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
 
   public showOCCErrorModaEmployee = false;
-  private readonly salutationService = inject(SalutationService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly activatedRoute = inject(ActivatedRoute);
@@ -43,7 +41,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.salutationUtils.getSalutationsSortedByName().pipe(
       map(salutations => salutations.map(salutation => ({
         name: salutation.name,
-        code: salutation.id
+        id: salutation.id
       })))
     ),
     { initialValue: [] }
@@ -53,7 +51,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.titleUtils.getTitlesSortedByName().pipe(
       map(titles => titles.map(title => ({
         name: title.name,
-        code: title.id
+        id: title.id
       })))
     ),
     { initialValue: [] }
@@ -255,7 +253,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         ? { id: formValues.salutation, name: '', createdAt: '', updatedAt: '', version: 0 }
         : null,
       title: formValues.title
-        ? { id: formValues.title.code, name: '', createdAt: '', updatedAt: '', version: 0 }
+        ? { id: formValues.title, name: '', createdAt: '', updatedAt: '', version: 0 }
         : null,
       firstname: formValues.employeeFirstName,
       lastname: formValues.employeeLastName,
