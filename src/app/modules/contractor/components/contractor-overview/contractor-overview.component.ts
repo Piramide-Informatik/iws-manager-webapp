@@ -11,7 +11,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 interface Column {
   field: string,
   header: string,
-  customClasses?: string[]
+  customClasses?: string[],
+  routerLink?: (row: any) => string
 }
 
 @Component({
@@ -66,7 +67,11 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   loadContractOverviewHeaders(): void {
     this.cols = [
-          { field: 'contractorLabel', header:  this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))},
+          { 
+            field: 'contractorLabel', 
+            routerLink: (row: any) => `./contract-details/${row.contractorLabel}`,
+            header:  this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))
+          },
           { field: 'contractorName', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME'))},
           { field: 'countryLabel', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL'))},
           { field: 'street', customClasses: ['align-right'], header: this.translate.instant(_('CONTRACTS.TABLE.STREET'))},
@@ -95,7 +100,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
  }
 
   goToContractDetails(currentContract: Contractor) {
-    this.router.navigate(['contract-details'], { 
+    this.router.navigate(['contract-details', currentContract.contractorLabel], { 
       relativeTo: this.route,
       state: { customer: "Joe Doe", contractData: currentContract } 
     });

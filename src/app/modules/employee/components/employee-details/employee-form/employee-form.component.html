@@ -84,13 +84,17 @@
         <input class="col-md-6" type="text" pInputText formControlName="qualificationKMUi" id="qualificationKMUi"/>
       </div>
     </div>
-  </div>
-  
-  <div class="form-row flex flex-wrap gap-3 justify-content-center">
-      <p-button type="submit" class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-      <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
-          [style]="{ background: '#ef4444' }" />
-      <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
-          (onClick)="goBack()" />
-  </div>
-</form>
+</div>
+
+<div class="form-row flex flex-wrap gap-3 justify-content-center">
+    <p-button type="submit" class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+    <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
+        [style]="{ background: '#ef4444' }" />
+    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+        (onClick)="goBack()" />
+</div>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaEmployee"
+  (onClose)="showOCCErrorModaEmployee = false">
+</app-occ-error-modal>

@@ -25,7 +25,8 @@ interface Column {
   header: string
   customClasses?: string[]
   styles?: {},
-  filter?: { type: 'boolean' | 'multiple' }
+  filter?: { type: 'boolean' | 'multiple' },
+  useSameAsEdit?: boolean
 }
 
 @Component({
@@ -254,6 +255,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         field: 'name',
         header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.NAME')),
         styles: { width: 'fit-content' },
+        useSameAsEdit: true
       },
       {
         field: 'function',

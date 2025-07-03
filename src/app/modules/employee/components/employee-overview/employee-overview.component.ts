@@ -15,6 +15,7 @@ interface Column {
   field: string;
   header: string;
   customExportHeader?: string;
+  routerLink?: (row: any) => string;
 }
 
 interface ExportColumn {
@@ -50,6 +51,13 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   tableKey: string = 'EmployeeOverview'
   dataKeys = ['id', 'firstname', 'lastname', 'email', 'generalmanagersince', 'shareholdersince', 'soleproprietorsince', 'coentrepreneursince', 'qualificationFZ', 'qualificationkmui'];
 
+  // properties for delete modal
+  employeeType: 'create' | 'delete' = 'create';
+  selectedEmployee: number | null = null;
+  employeeName: string = '';
+  visibleEmployeeModal: boolean = false;
+  isLoading = false;
+  errorMessage: string = '';
 
   constructor(
     private readonly messageService: MessageService,
@@ -92,7 +100,11 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
 
     this.cols = [
-      { field: 'id', header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) },
+      { 
+        field: 'id',
+        routerLink: (row: any) => `./employee-details/${row.id}`,
+        header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) 
+      },
       { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
       { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
       { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
@@ -135,7 +147,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
 
   goToEmployeeDetails(currentEmployee: Employee) {
-    this.router.navigate(['employee-details'], { 
+    this.router.navigate(['employee-details', currentEmployee.id], { 
       relativeTo: this.route,
       state: { customer: "Joe Doe", employee: currentEmployee } 
     });
@@ -162,24 +174,64 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteEmployee(employee: number) {
-    this.confirmationService.confirm({
-      message: this.translate.instant(_('DIALOG.DELETE'), { value: employee }),
-      header: this.translate.instant(_('DIALOG.CONFIRM_TITLE')),
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
-      rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
-      accept: () => {
-        this.employees = this.employees.filter(
-          (val) => val.id !== employee
-        );
-        this.messageService.add({
-          severity: 'success',
-          summary: this.translate.instant(_('DIALOG.SUCCESSFUL_MESSAGE')),
-          detail: this.translate.instant(_('DIALOG.EMPLOYEE_SUCCESS_DELETED_MESSAGE')),
-          life: 3000
+  handleEmployeeTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.employeeType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedEmployee = event.data;
+      
+      const localEmployee = this.employees.find(emp => emp.id === this.selectedEmployee);
+      
+      if (localEmployee) {
+
+        const firstName = localEmployee.firstname ?? (localEmployee as any).firstname ?? '';
+        const lastName = localEmployee.lastname ?? (localEmployee as any).lastname ?? '';
+        
+        this.employeeName = `${firstName} ${lastName}`.trim();
+        this.visibleEmployeeModal = true;
+      } else {
+        this.employeeUtils.getEmployeeById(this.selectedEmployee!).subscribe({
+          next: (employee) => {
+            
+            const firstName = employee?.firstname ?? (employee as any)?.firstname ?? '';
+            const lastName = employee?.lastname ?? (employee as any)?.lastname ?? '';
+            
+            this.employeeName = `${firstName} ${lastName}`.trim();
+            this.visibleEmployeeModal = true;
+          },
+          error: (err) => {
+            console.error('Error fetching employee:', err);
+            this.employeeName = '';
+            this.visibleEmployeeModal = true;
+          }
         });
-      },
-    });
+        return;
+      }
+    }
+    
+    if (event.type !== 'delete') {
+      this.visibleEmployeeModal = true;
+    }
+  }
+
+  onEmployeeDeleteConfirm() {
+    this.isLoading = true;
+    if(this.selectedEmployee){
+      this.employeeUtils.deleteEmployee(this.selectedEmployee).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.visibleEmployeeModal = false;
+          this.route.params.subscribe(params => {
+            this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
+             this.employees = employees;
+            })
+         })
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.message ?? 'Failed to delete employee';
+          console.error('Delete error:', error);
+        }
+      });
+    }
   }
 }

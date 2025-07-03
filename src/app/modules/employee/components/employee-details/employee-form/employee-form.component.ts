@@ -10,6 +10,7 @@ import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { SalutationService } from '../../../../../Services/salutation.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -21,6 +22,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly salutationUtils = inject(SalutationUtils);
   private readonly titleUtils = inject(TitleUtils);
+
+  public showOCCErrorModaEmployee = false;
+  private readonly salutationService = inject(SalutationService);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly messageService = inject(MessageService);
@@ -85,8 +89,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
 
     const newEmployee = this.buildEmployeeFromForm();
-
-    console.log('Creating new employee:', newEmployee);
     
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
@@ -161,5 +163,39 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   clearForm(): void {
     this.employeeForm.reset();
+  }
+
+  updateEmployee(): void {
+    const formData: Employee = {
+      id: 0,
+      version: 1,
+      firstname: 'testFirstName',
+      lastname: 'testLastName',
+      email: 'test@mail.com',
+      salutation: null,
+      title: null,
+      generalmanagersince: 'testGm',
+      shareholdersince: 'testShare',
+      soleproprietorsince: 'testSole',
+      coentrepreneursince: 'testCoen',
+      qualificationFZ: null,
+      qualificationkmui: 'testQualificationKmui',
+      createdAt: '',
+      updatedAt: ''
+    };
+    this.employeeUtils.updateEmployee(formData).subscribe({
+      next: (savedEmployee) => this.handleUpdateEmployeeSuccess(savedEmployee),
+      error: (err) => this.handleUpdateEmployeeError(err)
+    })
+  }
+
+  private handleUpdateEmployeeError(err: any): void {
+    if (err.message === 'Conflict detected: employee person version mismatch') {
+      this.showOCCErrorModaEmployee = true;
+    }
+  }
+
+  private handleUpdateEmployeeSuccess(savedEmployee: Employee): void {
+    // Add logic when the employee is upated
   }
 }

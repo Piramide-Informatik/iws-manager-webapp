@@ -15,6 +15,7 @@ interface Column {
   header: string;
   customExportHeader?: string;
   customClasses?: string[];
+  routerLink?: (row: any) => string;
 }
 
 interface ExportColumn {
@@ -88,7 +89,12 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'employeeId', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))},
+      { 
+        field: 'employeeId', 
+        customClasses: ['align-right'],
+        routerLink: (row: any) => `./contractDetails/${row.employeeId}`, 
+        header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))
+      },
       { field: 'firstName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
       { field: 'lastName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
       { field: 'startDate', customClasses: ['text-center'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
@@ -189,7 +195,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   }
 
   goToWorkContractDetails(currentWContract: WorkContract) {
-    this.router.navigate(['contractDetails'], { 
+    this.router.navigate(['contractDetails', currentWContract.employeeId], { 
       relativeTo: this.route,
       state: { customer: "Joe Doe", workContract: currentWContract } 
     });
