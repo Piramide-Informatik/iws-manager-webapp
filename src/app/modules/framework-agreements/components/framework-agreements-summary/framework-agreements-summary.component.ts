@@ -11,7 +11,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 interface Column {
   field: string,
   header: string,
-  customClasses?: string[]
+  customClasses?: string[],
+  routerLink?: (row: any) => string
 }
 
 @Component({
@@ -54,7 +55,11 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
   loadFrameworkAgreementsColHeaders(): void {
     this.cols = [
-      { field: 'id', customClasses: ['align-right'], header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER')) },
+      { 
+        field: 'id', 
+        customClasses: ['align-right'], 
+        routerLink: (row: any) => `./framework-agreement-details/${row.id}`,
+        header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER')) },
       { field: 'frameworkContract', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_LABEL')) },
       { field: 'date', customClasses: ['text-center'], header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.DATE')) },
       { field: 'fundingProgram', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.FUNDING_PROGRAM')) },

@@ -13,7 +13,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
-  header: string
+  header: string,
+  routerLink?: (row: any) => string,
 }
 
 @Component({
@@ -83,7 +84,10 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   loadProjectColHeaders(): void {
     this.cols = [
           { field: 'projectLabel', header:  this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL'))},
-          { field: 'projectName', header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME'))},
+          { 
+            field: 'projectName',
+            routerLink: (row: any) => `./projects-detail/${row.projectName}`, 
+            header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME'))},
           { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM'))},
           { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER'))},
           { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL'))},

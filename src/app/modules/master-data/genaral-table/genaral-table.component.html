@@ -56,9 +56,7 @@
     <ng-template #body let-row let-i="rowIndex" let-columns="columns">
       <tr [ngClass]="{
           'odd-row': i % 2 !== 0,
-          'even-row': i % 2 === 0,
-          'clickable-title':
-            tableId !== 'ListCustomers' && tableId !== 'DetailCustomer'
+          'even-row': i % 2 === 0
         }">
         <td>
           <div class="flex justify-content-center gap-2">
@@ -68,44 +66,38 @@
               (click)="deleteRegister(row[removeKey])"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns; let i = index" [ngClass]="col.customClasses ? col.customClasses : ''" (click)="
-            i === 0 && tableId !== 'ListCustomers'
-              ? editRegister(row)
-              : onClickRow(row)
-          " (keydown.enter)="
-            i === 0 && tableId !== 'ListCustomers'
-              ? editRegister(row)
-              : onClickRow(row)
-          " [class.clickable-title]="
-            (i === 0 && tableId !== 'ListCustomers') ||
-            (i === 1 && tableId === 'ListCustomers')
-          " [style.cursor]="
-            (i === 0 && tableId !== 'ListCustomers') ||
-            (i === 1 && tableId === 'ListCustomers')
-              ? 'pointer'
-              : 'default'
-          ">
+        <td *ngFor="let col of columns; let i = index" [ngClass]="col.customClasses ? col.customClasses : ''">
           <!-- Add link by an <a> tag -->
-          <ng-container *ngIf="col.routerLink; else plainText">
-            <a [routerLink]="col.routerLink(row)" (click)="$event.stopPropagation()"
-              style="color: inherit; text-decoration: none;" tabindex="-1">
-              {{ row[col.field] }}
-            </a>
-          </ng-container>
-          <ng-template #plainText>
-            <ng-container *ngIf="col.filter && col.filter.type === 'boolean'; else normalText">
-              <i class="pi" [ngClass]="
-          row[col.field] ? 'text-green-500 pi-check' : 'text-red-500 pi-times'
-        "></i>
-            </ng-container>
-            <ng-template #normalText>
-              {{
-              col.type === 'date'
-              ? (row[col.field] | date : col.format)
-              : row[col.field]
-              }}
-            </ng-template>
-          </ng-template>
+          @if(col.routerLink) {
+             <a [routerLink]="col.routerLink(row)" class="clickable-title" (click)="$event.stopPropagation()"
+               style="color: inherit; text-decoration: none;" tabindex="-1">
+               {{ row[col.field] }}
+             </a>
+          } @else if(col.useSameAsEdit) {
+             <p class="clickable-title without-margin" (click)="editRegister(row)" (keydown.enter)="editRegister(row)" >{{row[col.field]}}</p>
+          } @else {
+             <ng-container *ngIf="col.routerLink; else plainText">
+               <a [routerLink]="col.routerLink(row)" (click)="$event.stopPropagation()"
+                 style="color: inherit; text-decoration: none;" tabindex="-1">
+                 {{ row[col.field] }}
+               </a>
+             </ng-container>
+             <ng-template #plainText>
+               <ng-container *ngIf="col.filter && col.filter.type === 'boolean'; else normalText">
+                 <i class="pi" [ngClass]="
+                   row[col.field] ? 'text-green-500 pi-check' : 'text-red-500 pi-times'
+                 "></i>
+               </ng-container>
+               <ng-template #normalText>
+                 {{
+                 col.type === 'date'
+                 ? (row[col.field] | date : col.format)
+                 : row[col.field]
+                 }}
+               </ng-template>
+             </ng-template>
+          }
+          
         </td>
         </tr>
     </ng-template>

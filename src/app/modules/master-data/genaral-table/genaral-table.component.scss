@@ -68,9 +68,15 @@ p-button {
     }
 }
 
-td.clickable-title:hover {
-  text-decoration: underline;
-  color: #1976d2;
+.clickable-title:hover {
+  text-decoration: underline !important;
+  color: #1976d2 !important;
+  cursor: pointer;
+}
+
+.without-margin {
+  display: inline-block !important;
+  margin: 0px !important;
 }
 
 td {

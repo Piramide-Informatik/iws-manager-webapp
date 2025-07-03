@@ -12,7 +12,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 
 interface Column {
   field: string,
-  header: string
+  header: string,
+  routerLink?: (row: any) => string
 }
 
 @Component({
@@ -71,7 +72,11 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   loadOrdersOverviewColHeaders(): void {
     this.cols = [
-      { field: 'orderNr', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_ID'))},
+      { 
+        field: 'orderNr', 
+        routerLink: (row: any) => `./order-details/${row.orderNr}`,
+        header:  this.translate.instant(_('ORDERS.TABLE.ORDER_ID'))
+      },
       { field: 'orderLabel', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_LABEL'))},
       { field: 'orderType', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_TYPE'))},
       { field: 'orderDate',header:  this.translate.instant(_('ORDERS.TABLE.ORDER_DATE'))},
@@ -100,6 +105,9 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
+  goToEditOrderDetails(data: any) {
+    this.router.navigate(['order-details', data.orderNr], { relativeTo: this.route })
+  }
 
   goToOrderDetails(data: any) {
     this.router.navigate(['order-details'], { relativeTo: this.route })

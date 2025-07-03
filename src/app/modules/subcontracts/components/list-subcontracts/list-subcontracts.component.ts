@@ -9,7 +9,8 @@ import { UserPreference } from '../../../../Entities/user-preference';
 interface Column {
   field: string,
   header: string,
-  customClasses?: string[]
+  customClasses?: string[],
+  routerLink?: (row: any) => string
 }
 
 @Component({
@@ -269,7 +270,11 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-          { field: 'orderTitle', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))},
+          { 
+            field: 'orderTitle', 
+            routerLink: (row: any) => `./subcontracts-details/${row.orderTitle}`,
+            header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))
+          },
           { field: 'contractor', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR'))},
           { field: 'project', customClasses: ['text-center'], header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT'))},
           { field: 'date', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE'))},
@@ -300,5 +305,9 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   goToSubContractDetails() {
     this.router.navigate(['subcontracts-details'], { relativeTo: this.route })
+  }
+
+  goToEditSubContractDetails(subcontract: any) {
+    this.router.navigate(['subcontracts-details', subcontract.orderTitle], { relativeTo: this.route })
   }
 }
