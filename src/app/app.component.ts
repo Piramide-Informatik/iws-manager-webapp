@@ -5,6 +5,7 @@ import {
   TranslatePipe,
   TranslateDirective,
 } from '@ngx-translate/core';
+import { UserPreferenceService } from './Services/user-preferences.service';
 
 @Component({
   selector: 'app-root',
@@ -18,19 +19,22 @@ export class AppComponent {
 
   public selectedLanguage!: string;
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private userPreferenceService: UserPreferenceService) {
     // Configura inglés como idioma por defecto e inicial
     this.translate.addLangs(['de', 'es', 'en']);
     this.translate.setDefaultLang('de');
-    this.translate.use('de');
+    //this.translate.use('de');
   }
 
   changeLanguage(lang: string) {
     this.translate.use(lang);
     this.selectedLanguage = lang;
+    this.userPreferenceService.setLanguage(lang);
   }
 
   ngOnInit(): void {
-    this.selectedLanguage = 'de';
+    const currentLanguage = this.userPreferenceService.getLanguage() ?? 'de';
+    this.selectedLanguage = currentLanguage;
+    this.translate.use(currentLanguage);
   }
 }
