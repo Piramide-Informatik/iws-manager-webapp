@@ -4,5 +4,5 @@ export interface UserPreferenceItem {
 }
 
 export interface UserPreference {
-    [key: string]: UserPreferenceItem
+    [key: string]: any
 }

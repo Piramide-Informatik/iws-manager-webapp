@@ -23,4 +23,19 @@ export class UserPreferenceService {
     localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
     return userPreferences;
   }
+
+  setLanguage(language: any) {
+    const userPreferenceData = localStorage.getItem('userPreferences');
+    const userPreferences: UserPreference = userPreferenceData ? JSON.parse(userPreferenceData) : {};
+    userPreferences['language'] = language;
+    localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+    return userPreferences;
+  }
+
+  getLanguage() {
+    const userPreferenceData = localStorage.getItem('userPreferences');
+    const userPreferences: UserPreference = userPreferenceData ? JSON.parse(userPreferenceData) : {};
+    return userPreferences['language']
+  }
+
 }
