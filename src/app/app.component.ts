@@ -19,11 +19,9 @@ export class AppComponent {
 
   public selectedLanguage!: string;
 
-  constructor(private translate: TranslateService, private userPreferenceService: UserPreferenceService) {
+  constructor(private readonly translate: TranslateService, private readonly userPreferenceService: UserPreferenceService) {
     // Configura inglés como idioma por defecto e inicial
     this.translate.addLangs(['de', 'es', 'en']);
-    this.translate.setDefaultLang('de');
-    //this.translate.use('de');
   }
 
   changeLanguage(lang: string) {
