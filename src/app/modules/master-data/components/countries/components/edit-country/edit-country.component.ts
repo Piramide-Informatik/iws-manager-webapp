@@ -30,6 +30,12 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.setupCountrySubscription();
+    // Check if we need to load a country after page refresh
+    const savedCountryId = localStorage.getItem('selectedCountryId');
+    if (savedCountryId) {
+      this.loadCountryAfterRefresh(savedCountryId);
+      localStorage.removeItem('selectedCountryId');
+    }
   }
 
   ngOnDestroy(): void {
@@ -103,6 +109,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
     console.error('Error saving country:', error);
     if (error instanceof Error && error.message?.includes('version mismatch')) {
       this.showOCCErrorModalCountry = true;
+      this.isSaving = false;
       return;
     }
     this.messageService.add({
@@ -111,6 +118,30 @@ export class EditCountryComponent implements OnInit, OnDestroy {
       detail: this.translate.instant('COUNTRIES.MESSAGE.UPDATE_FAILED')
     });
     this.isSaving = false;
+  }
+
+  private loadCountryAfterRefresh(countryId: string): void {
+    this.isSaving = true;
+    this.subscriptions.add(
+      this.countryUtils.getCountryById(Number(countryId)).subscribe({
+        next: (country) => {
+          if (country) {
+            this.countryStateService.setCountryToEdit(country);
+          }
+          this.isSaving = false;
+        },
+        error: () => {
+          this.isSaving = false;
+        }
+      })
+    );
+  }
+
+  onRefresh(): void {
+    if (this.currentCountry?.id) {
+      localStorage.setItem('selectedCountryId', this.currentCountry.id.toString());
+      window.location.reload();
+    }
   }
 
   private markAllAsTouched(): void {

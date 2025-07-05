@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class OccErrorModalComponent {
   @Output() close = new EventEmitter<void>();
+  @Output() refresh = new EventEmitter<void>();
 
    constructor(private readonly translate: TranslateService) {}
 
@@ -18,6 +19,6 @@ export class OccErrorModalComponent {
   }
 
   refreshPage(): void {
-    window.location.reload(); 
+    this.refresh.emit();
   }
 }
