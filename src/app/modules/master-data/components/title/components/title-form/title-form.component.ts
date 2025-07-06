@@ -31,6 +31,12 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.setupTitleSubscription();
+    // Check if we need to load a title after page refresh
+    const savedTitleId = localStorage.getItem('selectedTitleId');
+    if (savedTitleId) {
+      this.loadTitleAfterRefresh(savedTitleId);
+      localStorage.removeItem('selectedTitleId');
+    }
   }
 
   ngOnDestroy(): void {
@@ -60,6 +66,23 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     this.editTitleForm.patchValue({ title: title.name });
   }
 
+  private loadTitleAfterRefresh(titleId: string): void {
+    this.isSaving = true;
+    this.subscriptions.add(
+      this.titleUtils.getTitleById(Number(titleId)).subscribe({
+        next: (title) => {
+          if (title) {
+            this.titleStateService.setTitleToEdit(title);
+          }
+          this.isSaving = false;
+        },
+        error: () => {
+          this.isSaving = false;
+        }
+      })
+    );
+  }
+
   clearForm(): void {
     this.editTitleForm.reset();
     this.currentTitle = null;
@@ -84,6 +107,13 @@ export class TitleFormComponent implements OnInit, OnDestroy {
         error: (err) => this.handleError(err)
       })
     );
+  }
+
+  onRefresh(): void {
+    if (this.currentTitle?.id) {
+      localStorage.setItem('selectedTitleId', this.currentTitle.id.toString());
+      window.location.reload();
+    }
   }
 
   private handleError(err: any): void {
