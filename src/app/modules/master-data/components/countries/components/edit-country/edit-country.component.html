@@ -71,6 +71,7 @@
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalCountry"
+  [useEmitter]="true"
   (close)="showOCCErrorModalCountry = false"
   (refresh)="onRefresh()">
 </app-occ-error-modal>
