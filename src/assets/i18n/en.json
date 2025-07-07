@@ -231,7 +231,8 @@
     },
     "MESSAGE": {
       "UPDATE_SUCCESS": "Contact Person was updated successfully",
-      "CREATE_SUCCESS": "Contact Person was created successfully"
+      "CREATE_SUCCESS": "Contact Person was created successfully",
+      "SUCCESS":"SUCCESS"
 
     }
   },

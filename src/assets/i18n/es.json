@@ -225,7 +225,8 @@
     },
     "MESSAGE": {
       "UPDATE_SUCCESS":"Contacto actualizado exitosamente",
-      "CREATE_SUCCESS":"Contacto creado exitosamente"
+      "CREATE_SUCCESS":"Contacto creado exitosamente",
+      "SUCCESS":"ÉXITO"
     }
   },
   "EMPLOYEE-CONTRACTS": {

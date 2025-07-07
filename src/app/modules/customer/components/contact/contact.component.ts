@@ -6,7 +6,7 @@ import { SalutationService } from '../../../../Services/salutation.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Title } from '../../../employee/models/title';
 import { TitleService } from '../../../../Services/title.service';
-import { catchError, finalize, of, Subscription, switchMap } from 'rxjs';
+import { catchError, finalize, map, of, Subscription, switchMap } from 'rxjs';
 import { ContactUtils } from '../../utils/contact-utils';
 import { Customer } from '../../../../Entities/customer';
 import { ContactStateService } from '../../utils/contact-state.service';
@@ -108,8 +108,11 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
     const createSub = this.contactUtils.contactPersonExists(firstName + ' ' + lastName).pipe(
       switchMap(exists => this.handleContactExistence(exists, newContact)),
-      switchMap(() => this.contactUtils.refreshContactsPersons()),
-      catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
+      switchMap((result) => {
+        if (result === null) return of(null); 
+        return this.contactUtils.refreshContactsPersons().pipe(map(() => result));
+      }),
+      catchError(err => this.handleError('CONTACT.ERROR.CHECKING_DUPLICATE', err)),
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: (result) => {
