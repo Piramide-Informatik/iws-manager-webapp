@@ -31,6 +31,12 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.setupSalutationSubscription();
+    // Check if we need to load a salutation after page refresh
+    const savedSalutationId = localStorage.getItem('selectedSalutationId');
+    if (savedSalutationId) {
+      this.loadSalutationAfterRefresh(savedSalutationId);
+      localStorage.removeItem('selectedSalutationId');
+    }
   }
 
   ngOnDestroy(): void {
@@ -58,6 +64,23 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
 
   private loadSalutationData(salutation: Salutation): void {
     this.editSalutationForm.patchValue({ salutation: salutation.name });
+  }
+
+  private loadSalutationAfterRefresh(salutationId: string): void {
+    this.isSaving = true;
+    this.subscriptions.add(
+      this.salutationUtils.getSalutationById(Number(salutationId)).subscribe({
+        next: (salutation) => {
+          if (salutation) {
+            this.salutationStateService.setSalutationToEdit(salutation);
+          }
+          this.isSaving = false;
+        },
+        error: () => {
+          this.isSaving = false;
+        }
+      })
+    );
   }
 
   clearForm(): void {
@@ -115,5 +138,12 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
       control.markAsTouched();
       control.markAsDirty();
     });
+  }
+
+  onRefresh(): void {
+    if (this.currentSalutation?.id) {
+      localStorage.setItem('selectedSalutationId', this.currentSalutation.id.toString());
+      window.location.reload();
+    }
   }
 }

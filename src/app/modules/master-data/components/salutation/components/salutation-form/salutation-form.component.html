@@ -25,6 +25,8 @@
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalSalutation"
-  (onClose)="showOCCErrorModalSalutation = false">
+  [useEmitter]="true"
+  (close)="showOCCErrorModalSalutation = false"
+  (refresh)="onRefresh()">
 </app-occ-error-modal>
 <p-toast></p-toast>
