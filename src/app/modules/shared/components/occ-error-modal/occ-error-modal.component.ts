@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -9,8 +9,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class OccErrorModalComponent {
   @Output() close = new EventEmitter<void>();
+  @Output() refresh = new EventEmitter<void>();
+  @Input() useEmitter = false;
 
-   constructor(private readonly translate: TranslateService) {}
+  constructor(private readonly translate: TranslateService) {}
 
    onClose() {
     console.log("close")
@@ -18,6 +20,10 @@ export class OccErrorModalComponent {
   }
 
   refreshPage(): void {
-    window.location.reload(); 
+    if (this.useEmitter) {
+      this.refresh.emit();
+    } else {
+      window.location.reload();
+    }
   }
 }
