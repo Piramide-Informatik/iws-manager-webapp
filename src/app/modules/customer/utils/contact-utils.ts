@@ -48,14 +48,14 @@ export class ContactUtils {
     }
 
     return this.contactPersonService.addContactPerson({
-      firstName: contact.firstName?.trim() || '',
+      firstName: contact.firstName?.trim() ?? '',
       lastName: contact.lastName.trim(),
-      forInvoicing: contact.forInvoicing || 0,
-      function: contact.function?.trim() || '',
+      forInvoicing: contact.forInvoicing ?? 0,
+      function: contact.function?.trim() ?? '',
       salutation: contact.salutation,
       title: contact.title,
       customer: contact.customer,
-      email: contact.email?.trim() || ''
+      email: contact.email?.trim() ?? ''
     }).pipe(
       map(() => void 0), // Convert ContactPerson to void
       catchError(err => {
@@ -74,7 +74,7 @@ export class ContactUtils {
     return this.contactPersonService.getAllContactPersons().pipe(
       map(contacts => contacts.some(
         c => {
-          const fullName = `${c.firstName || ''} ${c.lastName || ''}`.trim();
+          const fullName = `${c.firstName ?? ''} ${c.lastName ?? ''}`.trim();
           return fullName.toLowerCase() === name.toLowerCase();
         }
       )),
