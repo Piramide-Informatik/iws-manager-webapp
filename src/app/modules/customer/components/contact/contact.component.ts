@@ -68,8 +68,8 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['modalType'] && this.modalType === 'edit') {
-      if (this.currentContact) this.setupContactPersonSubscription()
+    if (changes['modalType'] && (this.modalType === 'edit' || this.modalType === 'delete')) {
+      this.setupContactPersonSubscription();
     }
   }
 
@@ -106,7 +106,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     const { firstName, lastName } = this.getContactFormValues();
     const newContact = this.getContactFormValues();
 
-    this.contactUtils.contactPersonExists(firstName + ' ' + lastName).pipe(
+    const createSub = this.contactUtils.contactPersonExists(firstName + ' ' + lastName).pipe(
       switchMap(exists => this.handleContactExistence(exists, newContact)),
       switchMap(() => this.contactUtils.refreshContactsPersons()),
       catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
@@ -123,10 +123,12 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
         this.handleError('COUNTRY.ERROR.CREATION_FAILED', err);
       }
     });
+
+    this.subscriptions.add(createSub);
   }
 
   private handleEditContact(): void {
-    if (this.contactForm.invalid || !this.currentContact || this.isSaving) {
+    if (this.shouldPreventSubmission() || !this.currentContact) {
       this.markAllAsTouched();
       return;
     }
@@ -171,6 +173,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   private handleSaveError(error: any): void {
     console.error('Error saving contact:', error);
+    this.isSaving = false; // Asegurar que se resetee
 
     if (error instanceof Error && error.message?.includes('version mismatch')) {
       this.showOCCErrorModal = true;
@@ -182,7 +185,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       summary: this.translate.instant('COUNTRIES.MESSAGE.ERROR'),
       detail: this.translate.instant('COUNTRIES.MESSAGE.UPDATE_FAILED')
     });
-    this.isSaving = false;
   }
 
   private handleContactExistence(exists: boolean, newContact: Omit<ContactPerson, 'id'>) {
@@ -196,7 +198,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private shouldPreventSubmission(): boolean {
-    return this.contactForm.invalid ?? this.isLoading;
+    return this.contactForm.invalid || this.isLoading || this.isSaving;
   }
 
   private prepareForSubmission(): void {
@@ -225,23 +227,29 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   handleClose(): void {
     this.isLoading = false;
+    this.isSaving = false;
+    this.errorMessage = null;
     this.onVisibility.emit(false);
     this.contactForm.reset();
+    this.contactForm.markAsUntouched();
+    this.contactForm.markAsPristine();
   }
 
   deleteConfirm() {
     this.isLoading = true;
     if (this.currentContact) {
-      this.contactUtils.deleteContactPerson(this.currentContact.id).subscribe({
+      this.contactUtils.deleteContactPerson(this.currentContact.id).pipe(
+        switchMap(() => this.contactUtils.refreshContactsPersons()),
+        finalize(() => this.isLoading = false)
+      ).subscribe({
         next: () => {
-          this.isLoading = false;
           this.onOperationContact.emit(this.currentCustomer.id);
           this.handleClose();
         },
         error: (error) => {
-          this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete contact person';
           console.error('Delete error:', error);
+
         }
       });
     }
@@ -251,7 +259,11 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptions.add(
       this.contactStateService.currentContact$.subscribe(contact => {
         this.currentContact = contact;
-        contact ? this.loadContactPersonDataForm(contact) : this.clearForm();
+        if (contact && this.modalType === 'edit') {
+          this.loadContactPersonDataForm(contact);
+        } else if (!contact) {
+          this.clearForm();
+        }
       })
     );
   }

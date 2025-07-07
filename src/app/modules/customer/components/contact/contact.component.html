@@ -88,7 +88,8 @@
                 icon="pi pi-check"  
                 type="submit"
                 size="small"
-                [disabled]="contactForm.invalid || !contactForm.dirty"
+                [disabled]="contactForm.invalid || !contactForm.dirty || isLoading || isSaving"
+                [loading]="isLoading || isSaving"
               ></p-button>
               <p-button 
                 type="button"

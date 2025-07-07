@@ -60,9 +60,15 @@ export class ContactUtils {
         email: contact.email?.trim()
       });
 
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
+      // Wait a bit for the HTTP operation to complete
+      setTimeout(() => {
+        if (!this.contactPersonService.error()) {
+          subscriber.next();
+          subscriber.complete();
+        } else {
+          subscriber.error(this.contactPersonService.error());
+        }
+      }, 500);
     });
   }
 
@@ -74,7 +80,10 @@ export class ContactUtils {
   contactPersonExists(name: string): Observable<boolean> {
     return this.contactPersonService.getAllContactPersons().pipe(
       map(contacts => contacts.some(
-        c => c.firstName?.toLowerCase() === name.toLowerCase()
+        c => {
+          const fullName = `${c.firstName || ''} ${c.lastName || ''}`.trim();
+          return fullName.toLowerCase() === name.toLowerCase();
+        }
       )),
       catchError(err => {
         console.error('Error checking contact person existence:', err);
@@ -104,8 +113,11 @@ export class ContactUtils {
   refreshContactsPersons(): Observable<void> {
     return new Observable<void>(subscriber => {
       this.contactPersonService.refreshContactPersons();
-      subscriber.next();
-      subscriber.complete();
+      // Wait a bit for the refresh to complete
+      setTimeout(() => {
+        subscriber.next();
+        subscriber.complete();
+      }, 500);
     });
   }
 
@@ -125,7 +137,7 @@ export class ContactUtils {
         } else {
           observer.error(this.contactPersonService.error());
         }
-      }, 100);
+      }, 1000);
     });
   }
 
@@ -134,27 +146,6 @@ export class ContactUtils {
  * @param id - ID of the contact person to update
  * @returns Observable that completes when the update is done
  */
-  // updateContactPerson(contact: ContactPerson): Observable<ContactPerson> {
-  //   if (!contact?.id) {
-  //     return throwError(() => new Error('Invalid contact person data'));
-  //   }
-
-  //   return new Observable<ContactPerson>(observer => {
-  //     this.contactPersonService.updateContactPerson(contact);
-
-  //     runInInjectionContext(this.injector, () => {
-  //       const sub = this.waitForUpdatedSalutation(contact.id, observer);
-  //       const errorSub = this.listenForUpdateErrors(observer);
-
-  //       // Cleanup
-  //       return () => {
-  //         sub.unsubscribe();
-  //         errorSub.unsubscribe();
-  //       };
-  //     });
-  //   });
-  // }
-
   updateContactPerson(contact: ContactPerson): Observable<ContactPerson> {
     if (!contact?.id) {
       return throwError(() => new Error('Invalid contact person data'));
