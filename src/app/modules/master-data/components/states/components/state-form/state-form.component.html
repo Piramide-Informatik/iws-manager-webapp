@@ -31,6 +31,8 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaState"
-  (onClose)="showOCCErrorModaState = false">
+  [useEmitter]="true"
+  (close)="showOCCErrorModaState = false"
+  (refresh)="onRefresh()">
 </app-occ-error-modal>
 <p-toast></p-toast>

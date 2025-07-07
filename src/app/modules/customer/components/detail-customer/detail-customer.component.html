@@ -142,30 +142,29 @@
     </div>
   </form>
   <div class="contact-person flex flex-column">
-
-    <div class="flex flex-row gap-3 align-items-center my-2">
-      <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
-      <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
-        <app-contact (onVisibility)="closeVisibility($event)" 
-          [modalType]="modalType" 
-          [currentContact]="currentContactPerson"
-          (onOperationContact)="updateContactList($event)"
-        ></app-contact>
-      </p-dialog>
-    </div>
-
-    <master-data-genaral-table
-      [tableId]="tableKey"
-      [tableValues]="tableData()"
-      [columns]="selectedColumns"
-      [userPreferences]="userDetailCustomerPreferences"
-      [dataKeys]="dataKeys"
-      (onColumnChanges)="onUserCustomerDetailPreferencesChanges($event)"
-      (onCreateRegister)="createPerson()"
-      (onEditRegister)="editPerson($event)"
-      (onDeleteRegister)="deletePerson($event)"
-    ></master-data-genaral-table>
-    
+    @if(customerId){ 
+      <div class="flex flex-row gap-3 align-items-center my-2">
+        <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
+        <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
+          <app-contact (onVisibility)="closeVisibility($event)" 
+            [modalType]="modalType" 
+            [currentContact]="currentContactPerson"
+            (onOperationContact)="updateContactList($event)"
+          ></app-contact>
+        </p-dialog>
+      </div>
+      <master-data-genaral-table
+        [tableId]="tableKey"
+        [tableValues]="tableData()"
+        [columns]="selectedColumns"
+        [userPreferences]="userDetailCustomerPreferences"
+        [dataKeys]="dataKeys"
+        (onColumnChanges)="onUserCustomerDetailPreferencesChanges($event)"
+        (onCreateRegister)="createPerson()"
+        (onEditRegister)="editPerson($event)"
+        (onDeleteRegister)="deletePerson($event)"
+      ></master-data-genaral-table>
+    }
     <br>
     <div class="form-row flex flex-wrap gap-3 justify-content-center py-3">
       @if(customerId){
