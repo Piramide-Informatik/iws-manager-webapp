@@ -33,6 +33,13 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
       name: new FormControl('', [Validators.required, emptyValidator()])
     });
 
+    // Check if we need to load a company type after page refresh
+    const savedCompanyTypeId = localStorage.getItem('selectedCompanyTypeId');
+    if (savedCompanyTypeId) {
+      this.loadCompanyTypeAfterRefresh(savedCompanyTypeId);
+      localStorage.removeItem('selectedCompanyTypeId');
+    }
+
     this.subscriptions.add(
       this.typeOfCompanyStateService.currentTypeOfCompany$.subscribe((companyType) => {
         if (companyType !== null) {
@@ -99,5 +106,29 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
       controlForm.markAsTouched();
       controlForm.markAsDirty();
     });
+  }
+
+  private loadCompanyTypeAfterRefresh(companyTypeId: string): void {
+    this.isSaving = true;
+    this.subscriptions.add(
+      this.companyTypeServiceUtils.getCompanyTypeById(Number(companyTypeId)).subscribe({
+        next: (companyType) => {
+          if (companyType) {
+            this.typeOfCompanyStateService.setTypeOfCompanyTypeToEdit(companyType);
+          }
+          this.isSaving = false;
+        },
+        error: () => {
+          this.isSaving = false;
+        }
+      })
+    );
+  }
+
+  onRefresh(): void {
+    if (this.companyType?.id) {
+      localStorage.setItem('selectedCompanyTypeId', this.companyType.id.toString());
+      window.location.reload();
+    }
   }
 }
