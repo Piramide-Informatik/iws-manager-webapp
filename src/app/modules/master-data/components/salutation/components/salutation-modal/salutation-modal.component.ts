@@ -44,28 +44,38 @@ export class SalutationModalComponent implements OnInit {
     if(this.salutationToDelete){
       this.salutationUtils.deleteSalutation(this.salutationToDelete).subscribe({
         next: () => {
-          this.isLoading = false;
-          this.confirmDelete.emit({
+          this.handleDeletion({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
             detail: 'MESSAGE.DELETE_SUCCESS'
-          }); 
-          this.closeModal();
+          });
         },
         error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete salutation';
-          this.confirmDelete.emit({
+          const errorMessage = this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED';
+          this.handleDeletion({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
+            detail: errorMessage,
+            error
           });
-          console.error('Delete error:', error);
-          this.closeModal();
         }
       });
     }
   } 
+
+  private handleDeletion({ severity, summary, detail, error }: { severity: string; summary: string; detail: string; error?: any }): void {
+    this.isLoading = false;
+    if(error) {
+      this.errorMessage = error.message ?? 'Failed to delete salutation';
+      console.error('Delete error:', error);
+    }
+    this.confirmDelete.emit({
+      severity,
+      summary,
+      detail
+    }); 
+    this.closeModal();
+  }
 
   onSubmit(): void {
     if (this.shouldPreventSubmission()) return;

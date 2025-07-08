@@ -9,6 +9,7 @@ import { TitleUtils } from '../../utils/title-utils';
 import { Title } from '../../../../../../Entities/title';
 import { TitleStateService } from '../../utils/title-state.service';
 import { TitleModalComponent } from '../title-modal/title-modal.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-title-table',
@@ -19,6 +20,7 @@ import { TitleModalComponent } from '../title-modal/title-modal.component';
 export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly titleUtils = new TitleUtils();
   private readonly titleService = inject(TitleService);
+  private readonly messageService =  inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedTitle: number | null = null;
@@ -158,5 +160,13 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     if (this.modalType === 'create' && this.titleModalComponent) {
       this.titleModalComponent.focusInputIfNeeded();
     }
+  }
+
+  onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
   }
 }
