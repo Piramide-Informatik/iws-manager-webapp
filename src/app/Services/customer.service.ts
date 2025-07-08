@@ -11,6 +11,7 @@ import { ContactPerson } from '../Entities/contactPerson';
 export class CustomerService {
     private readonly http = inject(HttpClient);
     private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/customers`;
+    private readonly apiUrlbyContacts = `${environment.BACK_END_HOST_DEV}/contacts`;
     // Signals
     private readonly _customers = signal<Customer[]>([]);
     private readonly _loading = signal<boolean>(false);
@@ -177,5 +178,31 @@ export class CustomerService {
 
     updateCustomerData(customers: Customer[]) {
         this._customers.set(customers)
+    }
+
+    /**
+     * Fetches all contacts from the server and updates the internal contacts signal.
+     * @returns Observable emitting array of ContactPerson or empty array if none found
+     */
+    getAllContacts(): Observable<ContactPerson[]> {
+        this._contactsLoading.set(true);
+        return this.http.get<ContactPerson[]>(`${this.apiUrlbyContacts}`, this.httpOptions).pipe(
+            tap({
+                next: (contacts) => {
+                    this._contacts.set(contacts);
+                    this._contactsError.set(null);
+                },
+                error: (err) => {
+                    this._contactsError.set('Failed to load contacts');
+                    console.error('Error loading contacts:', err);
+                }
+            }),
+            catchError(err => {
+                this._contactsError.set('Failed to fetch contacts');
+                console.error('Error fetching contacts:', err);
+                return of([]);
+            }),
+            tap(() => this._contactsLoading.set(false))
+        );
     }
 }
