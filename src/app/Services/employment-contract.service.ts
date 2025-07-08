@@ -44,7 +44,7 @@ export class EmploymentContractService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    );
+    ).subscribe();
   }
 
   // ==================== CREATE OPERATIONS ====================
