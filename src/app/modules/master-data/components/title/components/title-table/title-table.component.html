@@ -26,9 +26,11 @@
           [titleName]="titleName"
           [titleToDelete]="selectedTitle"
           (isVisibleModal)="onModalVisibilityChange($event)"
+          (confirmDelete)="onDeleteConfirm($event)"
           #titleModal
         ></app-title-modal>
       </p-dialog>
     </div>
   </div>
 </div>
+<p-toast/>

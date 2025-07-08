@@ -1,8 +1,10 @@
-import { EnvironmentInjector, Injectable, inject } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError, switchMap } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, filter, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
 import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { CustomerUtils } from '../../../../customer/utils/customer-utils';
+import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
 
 /**
  * Utility class for title-related business logic and operations.
@@ -11,7 +13,8 @@ import { toObservable } from '@angular/core/rxjs-interop';
 @Injectable({ providedIn: 'root' }) 
 export class TitleUtils {
   private readonly titleService = inject(TitleService);
-  private readonly injector = inject(EnvironmentInjector);
+  private readonly customerUtils = inject(CustomerUtils);
+  private readonly employeeUtils = inject(EmployeeUtils);
 
   /**
    * Gets a title by ID with proper error handling
@@ -101,18 +104,37 @@ export class TitleUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteTitle(id: number): Observable<void> {
-    return new Observable(observer => {
-      this.titleService.deleteTitle(id);
-
-      setTimeout(() => {
-        if (!this.titleService.error()) {
-          observer.next();
-          observer.complete();
-        } else {
-          observer.error(this.titleService.error());
+    return this.checkTitleUsage(id).pipe(
+      switchMap(isUsed => {
+        if (isUsed) {
+          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
         }
-      }, 100);
-    });
+        return this.titleService.deleteTitle(id);
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Checks if a title is used by any customer contacts or employees.
+   * @param idTitle - ID of the title to check
+   * @returns Observable emitting boolean indicating usage
+   */
+  private checkTitleUsage(idTitle: number): Observable<boolean> {
+    return forkJoin([
+      this.customerUtils.getAllContacts().pipe(
+        map(contacts => contacts.some(contact => contact.salutation?.id === idTitle)),
+        catchError(() => of(false))
+      ),
+      this.employeeUtils.getAllEmployees().pipe(
+        map(employees => employees.some(employee => employee.salutation?.id === idTitle)),
+        catchError(() => of(false))
+      )
+    ]).pipe(
+      map(([usedInCustomers, usedInEmployees]) => usedInCustomers || usedInEmployees)
+    );
   }
 
   /**
