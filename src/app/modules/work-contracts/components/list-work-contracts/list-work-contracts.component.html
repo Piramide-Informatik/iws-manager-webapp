@@ -7,11 +7,26 @@
     [dataKeys]="dataKeys"
     removeKey="employeeId"
     (onColumnChanges)="onUserWorkContractsPreferencesChanges($event)"
-    (onEditRegister)="goToWorkContractDetails($event)"
-    (onDeleteRegister)="deleteWorkContract($event)"
-    (onCreateRegister)="createWorkContractDetails()"
+    (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
+    (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+    (onCreateRegister)="handleTableEvents({ type: 'create' })"
     [isFileUploadButtonVisible]="true"
     acceptFilesFormats="image/*"
   ></master-data-genaral-table>
-  <p-confirmDialog [style]="{ width: '450px' }" />
+  <p-dialog 
+    [header]="modalType === 'edit' 
+      ? ('EMPLOYEE-CONTRACTS.LABEL.EDIT_EMPLOYEE_CONTRACT' | translate) 
+      : modalType === 'create' 
+       ? ('EMPLOYEE-CONTRACTS.LABEL.CREATE_EMPLOYEE_CONTRACT' | translate) 
+       : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleModal"
+  >
+    <app-contract-details
+      [modalType]="modalType"
+      [customer]="customer"
+      [workContract]="currentContract"
+      (isVisibleModal)="onModalVisibilityChange($event)"
+    ></app-contract-details>
+  </p-dialog>
 </div>

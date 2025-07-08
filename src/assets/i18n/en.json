@@ -231,7 +231,10 @@
       "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
     },
     "MESSAGE": {
-      "UPDATE_SUCCESS": "Contact Person was updated successfully"
+      "UPDATE_SUCCESS": "Contact Person was updated successfully",
+      "CREATE_SUCCESS": "Contact Person was created successfully",
+      "SUCCESS":"SUCCESS"
+
     }
   },
   "EMPLOYEE-CONTRACTS": {

@@ -38,6 +38,8 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   public customer!: string;
   productDialog: boolean = false;
+  modalType: 'create' | 'delete' | 'edit' = 'create';
+  visibleModal: boolean = false;
   currentContract!: WorkContract;
   public contracts: WorkContract[] = [];
   selectedProducts: WorkContract[] | null | undefined;
@@ -201,6 +203,11 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     });
   }
 
+  handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
+    this.modalType = event.type;
+    this.visibleModal = true;
+  }
+
   createWorkContractDetails() {
     this.router.navigate(['contractDetails'], { 
       relativeTo: this.route,
@@ -233,6 +240,10 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
       return 'warning';
     }
     return 'info';
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
   }
 
   saveProduct() {

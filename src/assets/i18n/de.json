@@ -249,6 +249,26 @@
       "MAX_HOURS_PER_MONTH": "Max Std Tag",
       "MAX_HOURS_PER_DAY": "Std.Satz",
       "HOURLY_RATE": "JaSoZa"
+    },
+    "FORM": {
+      "CUSTOMER": "kunde",
+      "EMPLOYEE_ID": "Personal-Nr.",
+      "FIRST_NAME": "Vorname",
+      "LAST_NAME": "Nachname",
+      "START_DATE": "Datum",
+      "SALARY_PER_MONTH": "Gehalt",
+      "WEEKLY_HOURS": "Wochenstunden",
+      "WORK_SHORT_TIME": "Kurz",
+      "SPECIAL_PAYMENT": "Jahresonderzahlung",
+      "MAX_HOURS_PER_MONTH": "Max Stunden / Monat",
+      "MAX_HOURS_PER_DAY": "Max Stunden / Tag",
+      "HOURLY_RATE": "Stundensatz"
+    },
+    "LABEL": {
+      "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Möchten Sie den Arbeitsvertrag wirklich löschen",
+      "CREATE_EMPLOYEE_CONTRACT": "Arbeitsvertrag erstellen",
+      "EDIT_EMPLOYEE_CONTRACT": "Arbeitsvertrag bearbeiten",
+      "DELETE_EMPLOYEE_CONTRACT": "Arbeitsvertrag löschen"
     }
   },
   "PROJECTS": {
