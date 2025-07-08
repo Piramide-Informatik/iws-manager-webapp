@@ -21,7 +21,7 @@ export class StateModalComponent implements OnInit {
   @Input() stateName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() stateCreated = new EventEmitter<void>();
-  @Output() confirmStateDelete = new EventEmitter<number>();
+  @Output() confirmStateDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
   isStateLoading = false;
   errorStateMessage: string | null = null;
 
@@ -50,13 +50,23 @@ export class StateModalComponent implements OnInit {
       this.stateUtils.deleteState(this.stateToDelete).subscribe({
         next: () => {
           this.isStateLoading = false;
-          this.confirmStateDelete.emit(); 
+          this.confirmStateDelete.emit({
+            severity: 'success',
+            summary: 'MESSAGE.SUCCESS',
+            detail: 'MESSAGE.DELETE_SUCCESS'
+          }); 
           this.closeStateModal();
         },
         error: (error) => {
           this.isStateLoading = false;
           this.errorStateMessage = error.message ?? 'Failed to delete state';
           console.error('Delete error:', error);
+          this.confirmStateDelete.emit({
+            severity: 'error',
+            summary: 'MESSAGE.ERROR',
+            detail: this.errorStateMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
+          });
+          this.closeStateModal();
         }
       });
     }
