@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject, Inject } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MessageService, SelectItem } from 'primeng/api';
 import { EmployeeContract } from '../../models/employee-contract';
