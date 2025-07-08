@@ -483,6 +483,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.modalType = 'delete';
     this.visible = true;
     this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === contactId) ?? null;
+    this.contactStateService.setContactToEdit(this.currentContactPerson);
   }
 
   editPerson(person: ContactPerson) {
