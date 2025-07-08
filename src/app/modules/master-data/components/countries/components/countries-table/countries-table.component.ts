@@ -8,6 +8,7 @@ import { CountryUtils } from '../../utils/country-util';
 import { Country } from '../../../../../../Entities/country';
 import { CountryStateService } from '../../utils/country-state.service';
 import { CountryModalComponent } from '../country-modal/country-modal.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-countries-table',
@@ -19,6 +20,7 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   private readonly countryUtils = new CountryUtils();
   private readonly countryService = inject(CountryService);
   private readonly destroy$ = new Subject<void>();
+  private readonly messageService = inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedCountry: number | null = null;
@@ -146,5 +148,13 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     if (this.modalType === 'create' && this.countryModalComponent) {
       this.countryModalComponent.focusInputIfNeeded();
     }
+  }
+
+  onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
   }
 }
