@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { EmployeeContract } from '../../../models/employee-contract';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { _, TranslateService } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { Subscription } from 'rxjs';
 import { EmployeeContractService } from '../../../services/employee-contract.service';
+import { WorkContract } from '../../../../../Entities/work-contracts';
 
 interface Column {
   field: string,
@@ -19,6 +20,10 @@ interface Column {
 export class EmployeeContractsTableComponent {
 
   tableKey: string = 'EmployeeDetails'
+  modalType: 'create' | 'delete' | 'edit' = 'create';
+  visibleModal: boolean = false;
+  @Input() customer: any;
+  selectedEmployeeContract!: WorkContract | undefined;
   employeeContracts!: EmployeeContract[];
   userEmployeeDetailPreferences: UserPreference = {};
   dataKeys = ['startDate', 'salaryPerMonth', 'hoursPerWeek', 'workShortTime', 'maxHoursPerMonth', 'maxHoursPerDay', 'hourlyRate', 'specialPayment'];
@@ -60,5 +65,18 @@ export class EmployeeContractsTableComponent {
   }
   onUserEmployeeDetailPreferencesChanges(userEmployeeDetailPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userEmployeeDetailPreferences));
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
+    this.modalType = event.type;
+    this.selectedEmployeeContract = event.data;
+    this.visibleModal = true;
+    if (event.type === 'create') {
+      this.selectedEmployeeContract = undefined;
+    }
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
   }
 }

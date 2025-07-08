@@ -1,87 +1,73 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
    <form [formGroup]="ContractDetailsForm">
-    <div class="contract_form_wrapper">
+    <div class="create-employee-contract-form align-items-center mb-2 mt-4">
+      <div class="form-container flex align-items-center mb-6">
         <div class="contract_input kunde mb-2">
-            <label for="SearchCustomer">{{ 'EMPLOYEE-CONTRACTS.FORM.CUSTOMER' | translate }}</label>
-            <div class="icon-field-wrapper">
-              <p-iconfield>
-                <input pInputText type="text" placeholder="" formControlName="customer" />
-              </p-iconfield>
-            </div>
-          </div>          
-  
-      <div class="contract_input mb-2">
-        <label for="personalnr">{{ 'EMPLOYEE-CONTRACTS.FORM.EMPLOYEE_ID' | translate }}</label>
-        <p-select formControlName="personalnr" [editable]="true" [showClear]="true"
-          optionLabel="name" autocomplete="off" />
+          <label for="SearchCustomer">{{ 'EMPLOYEE-CONTRACTS.FORM.CUSTOMER' | translate }}</label>
+          <input pInputText class="kunden-input" type="text" placeholder="" formControlName="customer" />
+        </div>          
+        <div class="contract_input mb-2">
+          <label for="personalnr">{{ 'EMPLOYEE-CONTRACTS.FORM.EMPLOYEE_ID' | translate }}</label>
+          <p-select formControlName="personalnr" [editable]="true" [showClear]="true"
+            optionLabel="name" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="vorname">{{ 'EMPLOYEE-CONTRACTS.FORM.FIRST_NAME' | translate }}</label>
+          <input pInputText type="text" id="vorname" formControlName="vorname" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="nachname">{{ 'EMPLOYEE-CONTRACTS.FORM.LAST_NAME' | translate }}</label>
+          <input pInputText type="text" id="nachname" formControlName="nachname" autocomplete="off" />
+        </div>
+        <div class="contract_input contract_name mb-2">
+          <label for="datum">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
+          <p-datepicker id="datum"
+                        formControlName="datum"
+                        [showIcon]="true"
+                        iconDisplay="input"
+                        dateFormat="dd.mm.yy">
+          </p-datepicker>
+        </div>
+        <div class="contract_input mb-2">
+          <label for="gehalt">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
+          <input pInputText type="number" id="gehalt" formControlName="gehalt" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="wochenstunden">{{ 'EMPLOYEE-CONTRACTS.FORM.WEEKLY_HOURS' | translate }}</label>
+          <input pInputText type="number" id="wochenstunden" formControlName="wochenstunden" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="kurz">{{ 'EMPLOYEE-CONTRACTS.FORM.WORK_SHORT_TIME' | translate }}</label>
+          <input pInputText type="text" id="kurz" formControlName="kurz" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="jahresauszahlung">{{ 'EMPLOYEE-CONTRACTS.FORM.SPECIAL_PAYMENT' | translate }}</label>
+          <input pInputText type="number" id="jahresauszahlung" formControlName="jahresauszahlung" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="maxstudenmonat">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
+          <input pInputText type="number" id="maxstudenmonat" formControlName="maxstudenmonat" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="maxstudentag">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
+          <input pInputText type="number" id="maxstudentag" formControlName="maxstudentag" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="stundensatz">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
+          <input pInputText type="number" id="stundensatz" formControlName="stundensatz" autocomplete="off" />
+        </div>
       </div>
-  
-      <div class="contract_input mb-2">
-        <label for="vorname">{{ 'EMPLOYEE-CONTRACTS.FORM.FIRST_NAME' | translate }}</label>
-        <input pInputText type="text" id="vorname" formControlName="vorname" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="nachname">{{ 'EMPLOYEE-CONTRACTS.FORM.LAST_NAME' | translate }}</label>
-        <input pInputText type="text" id="nachname" formControlName="nachname" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input contract_name mb-2">
-        <label for="datum">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
-        <p-datepicker id="datum"
-                      formControlName="datum"
-                      [showIcon]="true"
-                      iconDisplay="input"
-                      dateFormat="dd.mm.yy">
-        </p-datepicker>
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="gehalt">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
-        <input pInputText type="number" id="gehalt" formControlName="gehalt" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="wochenstunden">{{ 'EMPLOYEE-CONTRACTS.FORM.WEEKLY_HOURS' | translate }}</label>
-        <input pInputText type="number" id="wochenstunden" formControlName="wochenstunden" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="kurz">{{ 'EMPLOYEE-CONTRACTS.FORM.WORK_SHORT_TIME' | translate }}</label>
-        <input pInputText type="text" id="kurz" formControlName="kurz" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="jahresauszahlung">{{ 'EMPLOYEE-CONTRACTS.FORM.SPECIAL_PAYMENT' | translate }}</label>
-        <input pInputText type="number" id="jahresauszahlung" formControlName="jahresauszahlung" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="maxstudenmonat">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
-        <input pInputText type="number" id="maxstudenmonat" formControlName="maxstudenmonat" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="maxstudentag">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
-        <input pInputText type="number" id="maxstudentag" formControlName="maxstudentag" autocomplete="off" />
-      </div>
-  
-      <div class="contract_input mb-2">
-        <label for="stundensatz">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
-        <input pInputText type="number" id="stundensatz" formControlName="stundensatz" autocomplete="off" />
-      </div>
-  
-      <div class="flex justify-content-center gap-2 mt-4">
-        @if(workContract) {
-          <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
-          <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
-            [style]="{ background: '#ef4444' }" />
-        } @else {
-          <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
-        }
-        <p-button class="Cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" [style]="{ background: '#000' }" (onClick)="goBackListContracts()"/>      
-      </div>
+    </div>
+    <div class="buttons-container flex justify-content-center gap-2 mt-4">
+      @if(workContract) {
+        <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
+          [style]="{ background: '#ef4444' }" />
+      } @else {
+        <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+      }
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+      iconPos="left" (onClick)="goBackListContracts()"/>      
     </div>
   </form>
 </ng-container>

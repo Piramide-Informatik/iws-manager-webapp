@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, Inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MessageService, SelectItem } from 'primeng/api';
 import { EmployeeContract } from '../../models/employee-contract';
@@ -12,6 +12,7 @@ import { SalutationService } from '../../../../Services/salutation.service';
 import { map, Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
 
 interface Column {
   field: string,
@@ -29,6 +30,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   public cols!: Column[];
   public selectedColumns!: Column[];
+  customerUtils = inject(CustomerUtils)
   titles: Title[] | undefined;
   qualificationsFZ: QualificationFZ[] | undefined;
   employeeContracts!: EmployeeContract[];
