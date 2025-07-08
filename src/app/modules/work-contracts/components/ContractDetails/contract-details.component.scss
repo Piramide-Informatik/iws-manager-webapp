@@ -1,48 +1,48 @@
 .contract_form_wrapper {
-    margin-left: 60px;
-  }
-  
-  .contract_input {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    font-weight: normal;
-  
-    label {
-      width: 150px;
-      font-weight: normal;
-    }
-  
-    input,
-    p-select,
-    p-datepicker {
-      width: 20vw;
-    }
-  }
-  .kunde {
-    margin-bottom: 2rem !important;
-  }
-  .flex.px-4.py-3.align-items-center {
-    margin-bottom: 1rem;
-  
-    label {
-      width: 150px;
-      font-weight: normal;
-    }
-  
-    input {
-      width: 20vw;
-    }
+  margin-left: 60px;
+}
 
-    .icon-field-wrapper {
-        width: 20vw;
-      
-        input {
-          width: 100%;
-        }
-      }
+.contract_input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
+
+  label {
+    width: 150px;
+    font-weight: normal;
   }
+
+  input,
+  p-select,
+  p-datepicker {
+    width: 20vw;
+  }
+}
+.kunde {
+  margin-bottom: 2rem !important;
+  margin-top: 2rem !important;
+}
+.flex.px-4.py-3.align-items-center {
+  margin-bottom: 1rem;
+
+  label {
+    width: 150px;
+    font-weight: normal;
+  }
+
+  input {
+    width: 20vw;
+  }
+  .icon-field-wrapper {
+      width: 20vw;
+    
+      input {
+        width: 100%;
+      }
+    }
+}
 
 .contract_input p-calendar,
 .contract_input p-calendar .p-inputtext {

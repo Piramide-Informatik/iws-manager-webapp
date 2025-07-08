@@ -12,9 +12,13 @@
           : ('SALUTATION.DELETE.CONFIRMATION' | translate)" [modal]="true" [(visible)]="visibleModal"
         (onShow)="onDialogShow()">
         <app-salutation-modal [modalType]="modalType" [salutationName]="salutationName"
-          [salutationToDelete]="selectedSalutation" (isVisibleModal)="onModalVisibilityChange($event)" #salutationModal>
+          [salutationToDelete]="selectedSalutation" 
+          (isVisibleModal)="onModalVisibilityChange($event)" 
+          (confirmDelete)="onDeleteConfirm($event)"
+          #salutationModal>
         </app-salutation-modal>
       </p-dialog>
     </div>
   </div>
 </div>
+<p-toast/>

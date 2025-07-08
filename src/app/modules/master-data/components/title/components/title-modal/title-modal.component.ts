@@ -19,7 +19,7 @@ export class TitleModalComponent implements OnInit {
   @Input() titleName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<number>();
+  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -46,13 +46,23 @@ export class TitleModalComponent implements OnInit {
       this.titleUtils.deleteTitle(this.titleToDelete).subscribe({
         next: () => {
           this.isLoading = false;
-          this.confirmDelete.emit(); 
+          this.confirmDelete.emit({
+            severity: 'success',
+            summary: 'MESSAGE.SUCCESS',
+            detail: 'MESSAGE.DELETE_SUCCESS'
+          }); 
           this.closeModal();
         },
         error: (error) => {
           this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete title';
+          this.confirmDelete.emit({
+            severity: 'error',
+            summary: 'MESSAGE.ERROR',
+            detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
+          });
           console.error('Delete error:', error);
+          this.closeModal();
         }
       });
     }

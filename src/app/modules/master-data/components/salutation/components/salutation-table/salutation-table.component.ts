@@ -10,6 +10,7 @@ import { SalutationService } from '../../../../../../Services/salutation.service
 import { Salutation } from '../../../../../../Entities/salutation';
 import { SalutationStateService } from '../../utils/salutation-state.service';
 import { SalutationModalComponent } from '../salutation-modal/salutation-modal.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'master-data-salutation-table',
@@ -21,6 +22,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
 
   private readonly salutationUtils = new SalutationUtils();
   private readonly salutationService = inject(SalutationService);
+  private readonly messageService =  inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedSalutation: number | null = null;
@@ -157,5 +159,13 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
     if (this.modalType === 'create' && this.salutationModalComponent) {
       this.salutationModalComponent.focusInputIfNeeded();
     }
+  }
+
+  onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
   }
 }
