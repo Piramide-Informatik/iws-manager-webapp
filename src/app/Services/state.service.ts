@@ -133,13 +133,13 @@ export class StateService {
    * @returns Empty Observable
    * @throws Error when state not found or server error occurs
    */
-  deleteState(id: number): void {
+  deleteState(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
-    this.http.delete<void>(url, this.httpOptions).pipe(
+    return this.http.delete<void>(url, this.httpOptions).pipe(
       tap({
         next: () => {
           this._states.update(states =>
-            states.filter(t => t.id !== id)
+            states.filter(s => s.id !== id)
           );
           this._error.set(null);
         },
@@ -147,7 +147,7 @@ export class StateService {
           this._error.set('Failed to delete state');
         }
       })
-    ).subscribe();
+    );
   }  
 
   // ==================== ERROR HANDLING ====================
