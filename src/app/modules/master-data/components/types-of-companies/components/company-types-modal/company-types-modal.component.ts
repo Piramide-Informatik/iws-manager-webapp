@@ -46,33 +46,43 @@ export class TypeOfCompaniesModalComponent implements OnInit {
     return this.modalType === 'create';
   }
 
-  onCompnayDeleteConfirm(): void {
+  onCompanyDeleteConfirm(): void {
     this.isLoading = true;
     if(this.companyTypeToDelete){
       this.companyTypeUtils.deleteCompanyType(this.companyTypeToDelete).subscribe({
         next: () => {
-          this.isLoading = false;
-          this.confirmDelete.emit({
+          this.handleDeletionCompanyType({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
             detail: 'MESSAGE.DELETE_SUCCESS'
-          }); 
-          this.closeModal();
+          });
         },
         error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete company type';
-          console.error('Delete error:', error);
-          this.confirmDelete.emit({
+          const errorMessage = error.message.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED';
+          this.handleDeletionCompanyType({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
+            detail: errorMessage,
+            error: error
           });
-          this.closeModal();
         }
       });
     }
   }  
+
+  handleDeletionCompanyType(message: {severity: string, summary: string, detail: string, error?: any}): void {
+    this.isLoading = false;
+    if (message.error) {
+      this.errorMessage = message.error.message ?? 'Failed to delete company type';
+      console.error('Deletion error:', message.error);
+    }
+    this.confirmDelete.emit({
+      severity: message.severity,
+      summary: message.summary,
+      detail: message.detail
+    });
+    this.closeModal();
+  }
 
   onCompanyTypeSubmit(): void {
     if (this.shouldPreventSubmission()) return;
