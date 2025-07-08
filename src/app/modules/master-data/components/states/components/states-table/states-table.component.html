@@ -25,9 +25,11 @@
             [stateName]="stateName"
             [stateToDelete]="selectedState"
             (isVisibleModal)="onModalVisibilityChange($event)"
+            (confirmStateDelete)="onConfirmStateDelete($event)"
             #stateModal
           ></app-state-modal>
         </p-dialog>
       </div>
     </div>
   </div>
+<p-toast/>

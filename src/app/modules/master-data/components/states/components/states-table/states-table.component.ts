@@ -10,6 +10,7 @@ import { StateService } from '../../../../../../Services/state.service';
 import { StateModalComponent } from '../state-modal/state-modal.component';
 import { State } from '../../../../../../Entities/state';
 import { StatesStateService } from '../../utils/states.state.service.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-states-table',
@@ -19,7 +20,8 @@ import { StatesStateService } from '../../utils/states.state.service.service';
 })
 export class StatesTableComponent implements OnInit, OnDestroy {
   private readonly stateUtils = new StateUtils();
-  private readonly stateService = inject(StateService)
+  private readonly stateService = inject(StateService);
+  private readonly messageService = inject(MessageService);
   cols: any[] = [];
   selectedColumns: any[] = [];
   userStatesPreferences: UserPreference = {};
@@ -165,5 +167,13 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     if (inputElement) {
       this.dt2.filter(inputElement.value, field, 'contains');
     }
+  }
+
+  onConfirmStateDelete(message: { severity: string, summary: string, detail: string }) {
+      this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
   }
 }

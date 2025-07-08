@@ -1,7 +1,8 @@
-import { EnvironmentInjector, Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, map, of, switchMap, take, throwError } from 'rxjs';
 import { StateService } from '../../../../../Services/state.service';
 import { State } from '../../../../../Entities/state';
+import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 
 /**
  * Utility class for state-related business logic and operations.
@@ -10,7 +11,7 @@ import { State } from '../../../../../Entities/state';
 @Injectable({ providedIn: 'root' }) 
 export class StateUtils {
   private readonly stateService = inject(StateService);
-  private readonly injector = inject(EnvironmentInjector);
+  private readonly customerUtils = inject(CustomerUtils)
 
   /**
    * Gets a state by ID with proper error handling
@@ -100,18 +101,30 @@ export class StateUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteState(id: number): Observable<void> {
-    return new Observable(observer => {
-      this.stateService.deleteState(id);
-
-      setTimeout(() => {
-        if (!this.stateService.error()) {
-          observer.next();
-          observer.complete();
-        } else {
-          observer.error(this.stateService.error());
+    return this.checkStateUsage(id).pipe(
+      switchMap(isUsed => {
+        if (isUsed) {
+          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
         }
-      }, 100);
-    });
+
+        return this.stateService.deleteState(id);
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Checks if a state is used by any customer.
+   * @param id - ID of the state to check
+   * @returns Observable emitting boolean indicating usage
+   */
+  private checkStateUsage(id: number): Observable<boolean> {
+    return this.customerUtils.getAllCustomers().pipe(
+      map(customers => customers.some(customer => customer.state?.id === id)),
+      catchError(() => of(false))
+    );
   }
 
   /**
