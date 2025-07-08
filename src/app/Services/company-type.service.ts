@@ -84,9 +84,9 @@ export class CompanyTypeService {
   }
 
   // DELETE
-  deleteCompanyType(id: number): void {
+  deleteCompanyType(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
-    this.http.delete<void>(url, this.httpOptions).pipe(
+    return this.http.delete<void>(url, this.httpOptions).pipe(
       tap({
         next: () => {
           this._companyTypes.update(companyTypes =>
@@ -99,7 +99,7 @@ export class CompanyTypeService {
           console.error('Error deleting company type:', err);
         }
       })
-    ).subscribe();
+    );
   }
 
   // READ

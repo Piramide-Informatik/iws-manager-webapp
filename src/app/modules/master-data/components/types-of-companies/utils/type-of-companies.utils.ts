@@ -1,8 +1,9 @@
-import { EnvironmentInjector, Injectable, inject } from '@angular/core';
-import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, filter, map, of, switchMap, take, throwError } from 'rxjs';
 import { CompanyType } from '../../../../../Entities/companyType';
 import { CompanyTypeService } from '../../../../../Services/company-type.service';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 
 /**
  * Utility class for company-type-related business logic and operations.
@@ -11,7 +12,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 @Injectable({ providedIn: 'root' })
 export class CompanyTypeUtils {
   private readonly companyTypeService = inject(CompanyTypeService);
-  private readonly injector = inject(EnvironmentInjector);
+  private readonly customerUtils = inject(CustomerUtils);
 
   /**
      * Gets a company type by ID with proper error handling
@@ -86,18 +87,30 @@ export class CompanyTypeUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteCompanyType(id: number): Observable<void> {
-    return new Observable(observer => {
-      this.companyTypeService.deleteCompanyType(id);
-
-      setTimeout(() => {
-        if (!this.companyTypeService.error()) {
-          observer.next();
-          observer.complete();
-        } else {
-          observer.error(this.companyTypeService.error());
+    return this.checkCompanyTypeUsage(id).pipe(
+      switchMap(isUsed => {
+        if (isUsed) {
+          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
         }
-      }, 100);
-    });
+
+        return this.companyTypeService.deleteCompanyType(id);
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Checks if a company type is used by any customer.
+   * @param id - ID of the company type to check
+   * @returns Observable emitting boolean indicating usage
+   */
+  private checkCompanyTypeUsage(id: number): Observable<boolean> {
+    return this.customerUtils.getAllCustomers().pipe(
+      map(customers => customers.some(customer => customer.companytype?.id === id)),
+      catchError(() => of(false))
+    );
   }
 
   /**

@@ -10,6 +10,7 @@ import { CompanyTypeService } from '../../../../../../Services/company-type.serv
 import { TypeOfCompaniesModalComponent } from '../company-types-modal/company-types-modal.component';
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.state.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-types-of-companies-table',
@@ -21,6 +22,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
 
   private readonly companyTypeUtils = new CompanyTypeUtils();
   private readonly companyTypeService = inject(CompanyTypeService);
+  private readonly messageService = inject(MessageService);
   typeOfCompaniesColumns: any[] = [];
   isTypeOfCompaniesChipVisible = false;
   userTypesOfCompaniesPreferences: UserPreference = {};
@@ -149,5 +151,13 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
     if (this.compnayTypeModalType === 'create' && this.companyTypeModalComponent) {
       this.companyTypeModalComponent.focusCompanyTypeInputIfNeeded();
     }
+  }
+
+  onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
   }
 }
