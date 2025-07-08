@@ -126,13 +126,13 @@ export class CountryService {
    * @returns Empty Observable
    * @throws Error when country not found or server error occurs
    */
-  deleteCountry(id: number): void {
+  deleteCountry(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
-    this.http.delete<void>(url, this.httpOptions).pipe(
+    return this.http.delete<void>(url, this.httpOptions).pipe(
       tap({
         next: () => {
           this._countries.update(countries =>
-            countries.filter(t => t.id !== id)
+            countries.filter(c => c.id !== id)
           );
           this._error.set(null);
         },
@@ -140,7 +140,7 @@ export class CountryService {
           this._error.set('Failed to delete country');
         }
       })
-    ).subscribe();
+    );
   }  
 
   // ==================== ERROR HANDLING ====================

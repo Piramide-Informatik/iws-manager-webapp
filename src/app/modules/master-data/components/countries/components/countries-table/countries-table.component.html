@@ -23,6 +23,7 @@
         <app-country-modal
           #countryModal
           (isVisibleModal)="onVisibleModal($event)"
+          (confirmDelete)="onConfirmDelete($event)"
           [modalType]="modalType"
           [countryName]="CountryName"
           [countryToDelete]="selectedCountry"
@@ -31,3 +32,4 @@
       </p-dialog>
   </div>
 </div>
+<p-toast/>
