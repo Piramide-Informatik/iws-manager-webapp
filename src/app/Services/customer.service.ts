@@ -151,17 +151,14 @@ export class CustomerService {
         return this.http.get<ContactPerson[]>(url, this.httpOptions).pipe(
             tap({
                 next: (contacts) => {
-                    this._contacts.set(contacts);
-                    this._contactsError.set(null);
+                    this.handleResponseSuccessContacts(contacts);
                 },
                 error: (err) => {
-                    this._contactsError.set('Failed to load contacts');
-                    console.error('Error loading contacts:', err);
+                    this.handleResponseErrorContacts(err);
                 }
             }),
             catchError(err => {
-                this._contactsError.set('Failed to fetch contacts');
-                console.error('Error fetching contacts:', err);
+                this.handleCatchError(err);
                 return of([]);
             }),
             tap(() => this._contactsLoading.set(false))
@@ -189,20 +186,32 @@ export class CustomerService {
         return this.http.get<ContactPerson[]>(`${this.apiUrlbyContacts}`, this.httpOptions).pipe(
             tap({
                 next: (contacts) => {
-                    this._contacts.set(contacts);
-                    this._contactsError.set(null);
+                    this.handleResponseSuccessContacts(contacts);
                 },
                 error: (err) => {
-                    this._contactsError.set('Failed to load contacts');
-                    console.error('Error loading contacts:', err);
+                    this.handleResponseErrorContacts(err);
                 }
             }),
             catchError(err => {
-                this._contactsError.set('Failed to fetch contacts');
-                console.error('Error fetching contacts:', err);
+                this.handleCatchError(err);
                 return of([]);
             }),
             tap(() => this._contactsLoading.set(false))
         );
+    }
+
+    private handleResponseSuccessContacts(contacts: ContactPerson[]): void {
+        this._contacts.set(contacts);
+        this._contactsError.set(null);
+    }
+
+    private handleResponseErrorContacts(error: HttpErrorResponse): void {
+        this._contactsError.set('Failed to load contacts');
+        console.error('Error loading contacts:', error);
+    }
+
+    private handleCatchError(error: HttpErrorResponse): void {
+        this._contactsError.set('Failed to fetch contacts');
+        console.error('Error fetching contacts:', error);
     }
 }
