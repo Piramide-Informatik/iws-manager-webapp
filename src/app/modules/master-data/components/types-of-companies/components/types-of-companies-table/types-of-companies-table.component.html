@@ -25,9 +25,11 @@
           [companyTypeName]="companyTypeName"
           [companyTypeToDelete]="selectedCompanyType"
           (isVisibleModal)="onModalVisibilityChange($event)"
+          (confirmDelete)="onConfirmDelete($event)"
           #companyTypeModal
         ></app-company-types-modal>
       </p-dialog>
     </div>
   </div>
 </div>
+<p-toast/>
