@@ -51,7 +51,7 @@ export class SalutationModalComponent implements OnInit {
           });
         },
         error: (error) => {
-          const errorMessage = this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED';
+          const errorMessage = error.message.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED';
           this.handleDeletion({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
