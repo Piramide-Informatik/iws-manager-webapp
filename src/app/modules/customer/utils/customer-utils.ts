@@ -179,4 +179,14 @@ export class CustomerUtils {
             return () => subscription.unsubscribe();
         });
     }
+
+    /**
+     * Gets all contacts from the DB.
+     * @returns Observable emitting array of ContactPerson or empty array if none found
+     */
+    getAllContacts(): Observable<ContactPerson[]> {
+        return this.customerService.getAllContacts().pipe(
+            catchError(() => throwError(() => new Error('Failed to load contacts')))
+        );
+    }
 }

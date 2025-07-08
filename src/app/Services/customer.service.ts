@@ -11,6 +11,7 @@ import { ContactPerson } from '../Entities/contactPerson';
 export class CustomerService {
     private readonly http = inject(HttpClient);
     private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/customers`;
+    private readonly apiUrlbyContacts = `${environment.BACK_END_HOST_DEV}/contacts`;
     // Signals
     private readonly _customers = signal<Customer[]>([]);
     private readonly _loading = signal<boolean>(false);
@@ -150,17 +151,14 @@ export class CustomerService {
         return this.http.get<ContactPerson[]>(url, this.httpOptions).pipe(
             tap({
                 next: (contacts) => {
-                    this._contacts.set(contacts);
-                    this._contactsError.set(null);
+                    this.handleResponseSuccessContacts(contacts);
                 },
                 error: (err) => {
-                    this._contactsError.set('Failed to load contacts');
-                    console.error('Error loading contacts:', err);
+                    this.handleResponseErrorContacts(err);
                 }
             }),
             catchError(err => {
-                this._contactsError.set('Failed to fetch contacts');
-                console.error('Error fetching contacts:', err);
+                this.handleCatchError(err);
                 return of([]);
             }),
             tap(() => this._contactsLoading.set(false))
@@ -177,5 +175,43 @@ export class CustomerService {
 
     updateCustomerData(customers: Customer[]) {
         this._customers.set(customers)
+    }
+
+    /**
+     * Fetches all contacts from the server and updates the internal contacts signal.
+     * @returns Observable emitting array of ContactPerson or empty array if none found
+     */
+    getAllContacts(): Observable<ContactPerson[]> {
+        this._contactsLoading.set(true);
+        return this.http.get<ContactPerson[]>(`${this.apiUrlbyContacts}`, this.httpOptions).pipe(
+            tap({
+                next: (contacts) => {
+                    this.handleResponseSuccessContacts(contacts);
+                },
+                error: (err) => {
+                    this.handleResponseErrorContacts(err);
+                }
+            }),
+            catchError(err => {
+                this.handleCatchError(err);
+                return of([]);
+            }),
+            tap(() => this._contactsLoading.set(false))
+        );
+    }
+
+    private handleResponseSuccessContacts(contacts: ContactPerson[]): void {
+        this._contacts.set(contacts);
+        this._contactsError.set(null);
+    }
+
+    private handleResponseErrorContacts(error: HttpErrorResponse): void {
+        this._contactsError.set('Failed to load contacts');
+        console.error('Error loading contacts:', error);
+    }
+
+    private handleCatchError(error: HttpErrorResponse): void {
+        this._contactsError.set('Failed to fetch contacts');
+        console.error('Error fetching contacts:', error);
     }
 }
