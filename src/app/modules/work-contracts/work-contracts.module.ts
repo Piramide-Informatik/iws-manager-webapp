@@ -67,5 +67,6 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
     MasterDataModule,
     TranslateDirective
   ],
+  exports: [ContractDetailsComponent]
 })
 export class WorkContractsModule {}

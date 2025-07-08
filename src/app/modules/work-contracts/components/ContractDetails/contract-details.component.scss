@@ -1,5 +1,10 @@
-.contract_form_wrapper {
-  margin-left: 60px;
+.create-employee-contract-form {
+  margin-left: 5% !important;
+  margin-right: 5% !important;
+}
+
+.form-container {
+  display: block !important;
 }
 
 .contract_input {
@@ -17,9 +22,14 @@
   input,
   p-select,
   p-datepicker {
-    width: 20vw;
+    width: 70% !important;
   }
 }
+
+.buttons-container {
+  display: flex;
+}
+
 .kunde {
   margin-bottom: 2rem !important;
   margin-top: 2rem !important;
@@ -33,7 +43,7 @@
   }
 
   input {
-    width: 20vw;
+    width: 70%;
   }
   .icon-field-wrapper {
       width: 20vw;
@@ -46,13 +56,13 @@
 
 .contract_input p-calendar,
 .contract_input p-calendar .p-inputtext {
-  width: 20vw;
+  width: 70%;
 }
 
 ::ng-deep .p-datepicker {
-  width: 20vw ;
-  min-width: 20vw ;
-  max-width: 20vw ;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
   padding: 0 ;
 }
