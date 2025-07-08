@@ -225,7 +225,9 @@
       "IS_INVOICE_RECIPIENT": "¿Es el destinatario de la factura?"
     },
     "MESSAGE": {
-      "UPDATE_SUCCESS":"Contacto actualizado exitosamente"
+      "UPDATE_SUCCESS":"Contacto actualizado exitosamente",
+      "CREATE_SUCCESS":"Contacto creado exitosamente",
+      "SUCCESS":"ÉXITO"
     }
   },
   "EMPLOYEE-CONTRACTS": {

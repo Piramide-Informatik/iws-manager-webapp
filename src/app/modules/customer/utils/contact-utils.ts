@@ -39,31 +39,30 @@ export class ContactUtils {
 
   /**
    * Creates a new contact person with validation
-   * @param firstName - First name for the new contact person
-   * @param lastName - Last name for the new contact person
-   * @returns Observable that completes when salutation is created
+   * @param contact - Contact person data
+   * @returns Observable that completes when contact person is created
    */
   createNewContactPerson(contact: Omit<ContactPerson, 'id'>): Observable<void> {
     if (!contact.lastName?.trim()) {
-      return throwError(() => new Error('last name cannot be empty'));
+      return throwError(() => new Error('Last name cannot be empty'));
     }
 
-    return new Observable<void>(subscriber => {
-      this.contactPersonService.addContactPerson({
-        firstName: contact.firstName?.trim(),
-        lastName: contact.lastName?.trim(),
-        forInvoicing: contact.forInvoicing,
-        function: contact.function?.trim(),
-        salutation: contact.salutation,
-        title: contact.title,
-        customer: contact.customer,
-        email: contact.email?.trim()
-      });
-
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
-    });
+    return this.contactPersonService.addContactPerson({
+      firstName: contact.firstName?.trim() ?? '',
+      lastName: contact.lastName.trim(),
+      forInvoicing: contact.forInvoicing ?? 0,
+      function: contact.function?.trim() ?? '',
+      salutation: contact.salutation,
+      title: contact.title,
+      customer: contact.customer,
+      email: contact.email?.trim() ?? ''
+    }).pipe(
+      map(() => void 0), // Convert ContactPerson to void
+      catchError(err => {
+        console.error('Error creating contact person:', err);
+        return throwError(() => new Error('Failed to create contact person'));
+      })
+    );
   }
 
   /**
@@ -74,7 +73,10 @@ export class ContactUtils {
   contactPersonExists(name: string): Observable<boolean> {
     return this.contactPersonService.getAllContactPersons().pipe(
       map(contacts => contacts.some(
-        c => c.firstName?.toLowerCase() === name.toLowerCase()
+        c => {
+          const fullName = `${c.firstName ?? ''} ${c.lastName ?? ''}`.trim();
+          return fullName.toLowerCase() === name.toLowerCase();
+        }
       )),
       catchError(err => {
         console.error('Error checking contact person existence:', err);
@@ -102,31 +104,31 @@ export class ContactUtils {
    * @returns Observable that completes when refresh is done
    */
   refreshContactsPersons(): Observable<void> {
-    return new Observable<void>(subscriber => {
-      this.contactPersonService.refreshContactPersons();
-      subscriber.next();
-      subscriber.complete();
-    });
+    return this.contactPersonService.getAllContactPersons().pipe(
+      map(() => void 0), // Convert to void
+      catchError(err => {
+        console.error('Error refreshing contact persons:', err);
+        return throwError(() => new Error('Failed to refresh contact persons'));
+      })
+    );
   }
 
   /**
- * Deletes a contact person by ID and updates the internal contacts persons signal.
- * @param id - ID of the contact person to delete
- * @returns Observable that completes when the deletion is done
- */
+   * Deletes a contact person by ID and updates the internal contacts persons signal.
+   * @param id - ID of the contact person to delete
+   * @returns Observable that completes when the deletion is done
+   */
   deleteContactPerson(id: number): Observable<void> {
-    return new Observable(observer => {
-      this.contactPersonService.deleteContactPerson(id);
+    if (!id || id <= 0) {
+      return throwError(() => new Error('Invalid contact person ID'));
+    }
 
-      setTimeout(() => {
-        if (!this.contactPersonService.error()) {
-          observer.next();
-          observer.complete();
-        } else {
-          observer.error(this.contactPersonService.error());
-        }
-      }, 100);
-    });
+    return this.contactPersonService.deleteContactPerson(id).pipe(
+      catchError(err => {
+        console.error('Error deleting contact person:', err);
+        return throwError(() => new Error('Failed to delete contact person'));
+      })
+    );
   }
 
   /**
@@ -134,27 +136,6 @@ export class ContactUtils {
  * @param id - ID of the contact person to update
  * @returns Observable that completes when the update is done
  */
-  // updateContactPerson(contact: ContactPerson): Observable<ContactPerson> {
-  //   if (!contact?.id) {
-  //     return throwError(() => new Error('Invalid contact person data'));
-  //   }
-
-  //   return new Observable<ContactPerson>(observer => {
-  //     this.contactPersonService.updateContactPerson(contact);
-
-  //     runInInjectionContext(this.injector, () => {
-  //       const sub = this.waitForUpdatedSalutation(contact.id, observer);
-  //       const errorSub = this.listenForUpdateErrors(observer);
-
-  //       // Cleanup
-  //       return () => {
-  //         sub.unsubscribe();
-  //         errorSub.unsubscribe();
-  //       };
-  //     });
-  //   });
-  // }
-
   updateContactPerson(contact: ContactPerson): Observable<ContactPerson> {
     if (!contact?.id) {
       return throwError(() => new Error('Invalid contact person data'));
