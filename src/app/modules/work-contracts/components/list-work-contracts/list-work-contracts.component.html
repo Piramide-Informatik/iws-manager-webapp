@@ -5,28 +5,32 @@
     [columns]="selectedColumns"
     [userPreferences]="userWorkContractsPreferences"
     [dataKeys]="dataKeys"
-    removeKey="employeeId"
+    removeKey="id"
     (onColumnChanges)="onUserWorkContractsPreferencesChanges($event)"
-    (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
-    (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
-    (onCreateRegister)="handleTableEvents({ type: 'create' })"
-    [isFileUploadButtonVisible]="true"
-    acceptFilesFormats="image/*"
+    (onEditRegister)="goToContractDetails($event)"
+    (onDeleteRegister)="handleContractTableEvents({ type: 'delete', data: $event })"
+    (onCreateRegister)="redirectToContractDetails()"
+    [isFileUploadButtonVisible]="false"
   ></master-data-genaral-table>
   <p-dialog 
-    [header]="modalType === 'edit' 
-      ? ('EMPLOYEE-CONTRACTS.LABEL.EDIT_EMPLOYEE_CONTRACT' | translate) 
-      : modalType === 'create' 
-       ? ('EMPLOYEE-CONTRACTS.LABEL.CREATE_EMPLOYEE_CONTRACT' | translate) 
-       : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" 
+    [header]="" 
     [modal]="true" 
-    [(visible)]="visibleModal"
+    [(visible)]="visibleContractModal"
   >
-    <app-contract-details
-      [modalType]="modalType"
-      [customer]="customer"
-      [workContract]="currentContract"
-      (isVisibleModal)="onModalVisibilityChange($event)"
-    ></app-contract-details>
+    <div class="confirmation-content mb-2 mt-4">
+      <p class="mb-4">
+        {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_CONTRACT_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ contractName }}"</strong>?
+      </p>
+
+      <div class="flex justify-content-center gap-2">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+          icon="pi pi-trash" iconPos="left" (onClick)="onContractDeleteConfirm()" severity="danger" [loading]="isLoading"
+          [disabled]="isLoading" />
+
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times" iconPos="left" (onClick)="this.visibleContractModal = false;" [disabled]="isLoading" />
+      </div>
+    </div>
   </p-dialog>
 </div>
