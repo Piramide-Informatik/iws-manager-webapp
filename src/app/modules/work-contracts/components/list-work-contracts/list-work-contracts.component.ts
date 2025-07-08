@@ -1,8 +1,7 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { EmploymentContract, EmploymentContractDisplay } from '../../../../Entities/employment-contract';
 import { EmploymentContractUtils } from '../../utils/employment-contract-utils';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { MessageService } from 'primeng/api';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,15 +18,10 @@ interface Column {
   routerLink?: (row: any) => string;
 }
 
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
-
 @Component({
   selector: 'app-list-work-contracts',
   standalone: false,
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService],
   templateUrl: './list-work-contracts.component.html',
   styleUrl: './list-work-contracts.component.scss',
 })
@@ -36,47 +30,37 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   private readonly customerUtils = inject(CustomerUtils);
   
   public customer!: Customer | undefined;
-  public customerLabel!: string;
   contracts: EmploymentContractDisplay[] = [];
-  selectedContracts!: EmploymentContractDisplay[] | null;
-  submitted: boolean = true;
-  @ViewChild('dt2') dt2!: Table;
   loading: boolean = true;
   public cols!: Column[];
   private langSubscription!: Subscription;
 
   public selectedColumns!: Column[];
-  public filterCols!: Column[];
-  public selectedFilterColumns!: Column[];
   userWorkContractsPreferences: UserPreference = {};
   tableKey: string = 'EmploymentContractOverview'
   dataKeys = ['employeeId', 'employeeFirstName', 'employeeLastName', 'startDate', 'salaryPerMonth', 'hoursPerWeek', 'workShortTime', 'specialPayment', 'maxHoursPerMonth', 'maxHoursPerDay', 'hourlyRate'];
 
-  // properties for modal - simplified like employee component
-  contractType: 'create' | 'delete' = 'create';
+  // properties for modal
   selectedContract: number | null = null;
   contractName: string = '';
   visibleContractModal: boolean = false;
   isLoading = false;
-  errorMessage: string = '';
 
   constructor(
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly confirmationService: ConfirmationService,
     private readonly route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.loadColHeaders();
     this.selectedColumns = this.cols;
-    this.selectedFilterColumns = this.filterCols;
 
     this.loading = false;
-
     this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.reloadComponent(true);
@@ -88,25 +72,26 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
         this.customer = customer; 
       });
 
-      this.employmentContractUtils.getAllContractsByCustomerId(params['id']).subscribe(contracts => {
-        this.contracts = contracts.map(contract => ({
-          ...contract,
-          employeeId: contract.employee?.id || 0,
-          employeeNo: contract.employee?.employeeno || 0,
-          employeeFirstName: contract.employee?.firstname || '',
-          employeeLastName: contract.employee?.lastname || '',
-          employeeFullName: `${contract.employee?.firstname || ''} ${contract.employee?.lastname || ''}`.trim()
-        }));
-      })
-    })
+      this.loadContracts(params['id']);
+    });
+  }
 
-    this.selectedColumns = this.cols;
-    this.selectedFilterColumns = this.filterCols;
+  private loadContracts(customerId: string): void {
+    this.employmentContractUtils.getAllContractsByCustomerId(+customerId).subscribe(contracts => {
+      this.contracts = contracts.map(contract => this.mapContractForDisplay(contract));
+    });
+  }
+
+  private mapContractForDisplay(contract: EmploymentContract): EmploymentContractDisplay {
+    return {
+      ...contract,
+      employeeId: contract.employee?.id || 0,
+      employeeFirstName: contract.employee?.firstname || '',
+      employeeLastName: contract.employee?.lastname || ''
+    };
   }
 
   loadColHeaders(): void {
-    this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
-
     this.cols = [
       { 
         field: 'employeeId', 
@@ -163,14 +148,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
         header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))
       },
     ];
-
-    //Filter columns
-    this.filterCols = [
-      { field: 'employeeId', header: 'Employee ID' },
-      { field: 'employeeFirstName', header: 'First Name' },
-      { field: 'employeeLastName', header: 'Last Name' },
-      { field: 'startDate', header: 'Start Date' }
-    ];
   }
 
   onUserWorkContractsPreferencesChanges(userWorkContractsPreferences: any) {
@@ -205,79 +182,52 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchContract(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement?.value) {
-      this.dt2.filterGlobal(inputElement.value, 'contains');
-    }
-  }
-
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
-
   handleContractTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-    this.contractType = event.type;
     if (event.type === 'delete' && event.data) {
       this.selectedContract = event.data;
       
       const localContract = this.contracts.find(contract => contract.id === this.selectedContract);
       
       if (localContract) {
-        const employeeName = `${localContract.employee?.firstname || ''} ${localContract.employee?.lastname || ''}`.trim();
-        this.contractName = `${employeeName}`;
+        const employeeName = `${localContract.employeeFirstName || ''} ${localContract.employeeLastName || ''}`.trim();
+        this.contractName = employeeName || 'Unknown Employee';
         this.visibleContractModal = true;
       } else {
         this.employmentContractUtils.getEmploymentContractById(this.selectedContract!).subscribe({
           next: (contract) => {
             const employeeName = `${contract?.employee?.firstname || ''} ${contract?.employee?.lastname || ''}`.trim();
-            this.contractName = `Contract for ${employeeName}`;
+            this.contractName = employeeName || 'Unknown Employee';
             this.visibleContractModal = true;
           },
           error: (err) => {
             console.error('Error fetching contract:', err);
-            this.contractName = '';
+            this.contractName = 'Unknown Employee';
             this.visibleContractModal = true;
           }
         });
-        return;
       }
-    }
-    
-    if (event.type !== 'delete') {
-      this.visibleContractModal = true;
     }
   }
 
   onContractDeleteConfirm() {
     this.isLoading = true;
-    if(this.selectedContract){
+    if (this.selectedContract) {
       this.employmentContractUtils.deleteEmploymentContract(this.selectedContract).subscribe({
         next: () => {
           this.isLoading = false;
           this.visibleContractModal = false;
           this.route.params.subscribe(params => {
-            this.employmentContractUtils.getAllContractsByCustomerId(params['id']).subscribe(contracts => {
-              // Flatten employee data for table display
-              this.contracts = contracts.map(contract => ({
-                ...contract,
-                // Add flattened employee fields for table
-                employeeId: contract.employee?.id || 0,
-                employeeNo: contract.employee?.employeeno || 0,
-                employeeFirstName: contract.employee?.firstname || '',
-                employeeLastName: contract.employee?.lastname || '',
-                employeeFullName: `${contract.employee?.firstname || ''} ${contract.employee?.lastname || ''}`.trim()
-              }));
-            })
-          })
+            this.loadContracts(params['id']);
+          });
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete employment contract';
           console.error('Delete error:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.message ?? 'Failed to delete employment contract'
+          });
         }
       });
     }

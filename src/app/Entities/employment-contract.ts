@@ -23,9 +23,7 @@ export interface EmploymentContract {
 
 export interface EmploymentContractDisplay extends EmploymentContract {
   employeeId?: number;
-  employeeNo?: number;
   employeeFirstName?: string;
   employeeLastName?: string;
-  employeeFullName?: string;
 }
 
