@@ -18,7 +18,7 @@ export class CountryModalComponent implements OnInit {
   @Input() countryName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() countryCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<number>();
+  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
   @ViewChild('countryNameInput') countryNameInput!: ElementRef<HTMLInputElement>;
   
   isLoading = false;
@@ -68,13 +68,23 @@ export class CountryModalComponent implements OnInit {
       this.countryUtils.deleteCountry(this.countryToDelete).subscribe({
         next: () => {
           this.isLoading = false;
-          this.confirmDelete.emit();
+          this.confirmDelete.emit({
+            severity: 'success',
+            summary: 'MESSAGE.SUCCESS',
+            detail: 'MESSAGE.DELETE_SUCCESS'
+          });
           this.closeModal();
         },
         error: (error) => {
           this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete country';
           console.error('Delete error:', error);
+          this.confirmDelete.emit({
+            severity: 'error',
+            summary: 'MESSAGE.ERROR',
+            detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
+          });
+          this.closeModal();
         }
       });
     }

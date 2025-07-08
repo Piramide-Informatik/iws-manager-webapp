@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
-import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, take, throwError } from 'rxjs';
 import { CountryService } from '../../../../../Services/country.service';
 import { Country } from '../../../../../Entities/country';
+import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 
 /**
  * Utility class for country-related business logic and operations.
@@ -9,6 +10,7 @@ import { Country } from '../../../../../Entities/country';
  */
 export class CountryUtils {
   private readonly countryService = inject(CountryService);
+  private readonly customerUtils = inject(CustomerUtils);
 
   /**
    * Gets a country by ID with proper error handling
@@ -97,18 +99,29 @@ export class CountryUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteCountry(id: number): Observable<void> {
-    return new Observable(observer => {
-      this.countryService.deleteCountry(id);
-      
-      setTimeout(() => {
-        if (!this.countryService.error()) {
-          observer.next();
-          observer.complete();
-        } else {
-          observer.error(this.countryService.error());
+    return this.checkCountryUsage(id).pipe(
+      switchMap(isUsed => {
+        if (isUsed) {
+          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
         }
-      }, 100);
-    });
+        return this.countryService.deleteCountry(id);
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Checks if a country is used by any customer.
+   * @param id - ID of the country to check
+   * @returns Observable emitting boolean indicating usage
+   */
+  private checkCountryUsage(id: number): Observable<boolean> {
+    return this.customerUtils.getAllCustomers().pipe(
+      map(customers => customers.some(customer => customer.country?.id === id)),
+      catchError(() => of(false))
+    );
   }
 
   /**

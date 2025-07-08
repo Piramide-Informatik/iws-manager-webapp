@@ -109,6 +109,7 @@
     "UPDATE_FAILED": "The record could not be updated.",
     "CREATE_FAILED": "The record could not be created.",
     "DELETE_FAILED": "The record could not be deleted.",
+    "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
     "SELECT_AT_LEAST_ONE": "There must be at least one column selected."
   },
   "DIALOG": {
@@ -230,7 +231,10 @@
       "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
     },
     "MESSAGE": {
-      "UPDATE_SUCCESS": "Contact Person was updated successfully"
+      "UPDATE_SUCCESS": "Contact Person was updated successfully",
+      "CREATE_SUCCESS": "Contact Person was created successfully",
+      "SUCCESS":"SUCCESS"
+
     }
   },
   "EMPLOYEE-CONTRACTS": {

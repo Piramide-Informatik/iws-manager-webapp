@@ -1,8 +1,10 @@
-import { EnvironmentInjector, Injectable, inject } from '@angular/core';
-import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, filter, forkJoin, map, of, switchMap, take, throwError } from 'rxjs';
 import { Salutation } from '../../../../../Entities/salutation';
 import { SalutationService } from '../../../../../Services/salutation.service';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { CustomerUtils } from '../../../../customer/utils/customer-utils';
+import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
 
 /**
  * Utility class for salutation-related business logic and operations.
@@ -11,7 +13,8 @@ import { toObservable } from '@angular/core/rxjs-interop';
 @Injectable({ providedIn: 'root' }) 
 export class SalutationUtils {
   private readonly salutationService = inject(SalutationService);
-  private readonly injector = inject(EnvironmentInjector);
+  private readonly customerUtils = inject(CustomerUtils);
+  private readonly employeeUtils = inject(EmployeeUtils);
 
   /**
    * Gets a salutation by ID with proper error handling
@@ -101,18 +104,37 @@ export class SalutationUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteSalutation(id: number): Observable<void> {
-    return new Observable(observer => {
-      this.salutationService.deleteSalutation(id);
-
-      setTimeout(() => {
-        if (!this.salutationService.error()) {
-          observer.next();
-          observer.complete();
-        } else {
-          observer.error(this.salutationService.error());
+    return this.checkSalutationUsage(id).pipe(
+      switchMap(isUsed => {
+        if (isUsed) {
+          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
         }
-      }, 100);
-    });
+        return this.salutationService.deleteSalutation(id);
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Checks if a salutation is used by any customer contacts or employees.
+   * @param idSalutation - ID of the salutation to check
+   * @returns Observable emitting boolean indicating usage
+   */
+  private checkSalutationUsage(idSalutation: number): Observable<boolean> {
+    return forkJoin([
+      this.customerUtils.getAllContacts().pipe(
+        map(contacts => contacts.some(contact => contact.salutation?.id === idSalutation)),
+        catchError(() => of(false))
+      ),
+      this.employeeUtils.getAllEmployees().pipe(
+        map(employees => employees.some(employee => employee.salutation?.id === idSalutation)),
+        catchError(() => of(false))
+      )
+    ]).pipe(
+      map(([usedInCustomers, usedInEmployees]) => usedInCustomers || usedInEmployees)
+    );
   }
 
   /**

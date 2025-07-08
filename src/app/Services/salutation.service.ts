@@ -86,9 +86,9 @@ export class SalutationService {
   }
   
   // DELETE
-  deleteSalutation(id: number): void {
+  deleteSalutation(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
-    this.http.delete<void>(url, this.httpOptions).pipe(
+    return this.http.delete<void>(url, this.httpOptions).pipe(
       tap({
         next: () => {
           this._salutations.update(salutations =>
@@ -101,7 +101,7 @@ export class SalutationService {
           console.error('Error deleting salutation:', err);
         }
       })
-    ).subscribe();
+    );
   }  
 
   // READ
