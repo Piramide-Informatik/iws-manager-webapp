@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WorkContract } from '../../../../Entities/work-contracts';
 
 @Component({
   selector: 'app-contract-details',
@@ -13,9 +12,8 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
 
   ContractDetailsForm!: FormGroup;
   @Input() modalType: string = "create";
-  @Input() customer!: string;
   employeeNumber: any;
-  @Input() workContract!: WorkContract;
+  @Input() workContract!: any;
   @Output() isVisibleModal = new EventEmitter<boolean>();
 
   constructor(
@@ -27,13 +25,11 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
     let workContractChange = changes['workContract'];
     if (workContractChange && !workContractChange.firstChange) {
       this.workContract = workContractChange.currentValue;
-      this.fillWorkContractForm();
-    }
-
-    let customerChange = changes['customer'];
-    if (customerChange && !customerChange.firstChange) {
-      this.customer = customerChange.currentValue;
-      this.ContractDetailsForm.get('customer')?.setValue(this.customer)
+      if (!this.workContract) {
+        this.ContractDetailsForm.reset();
+      } else {
+        this.fillWorkContractForm();
+      }
     }
   }
 
@@ -55,7 +51,7 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
   }
 
   goBackListContracts() {
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+    this.isVisibleModal.emit(false);
   }
 
   get isCreateMode(): boolean {
@@ -69,17 +65,17 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
 
   fillWorkContractForm() {
     this.ContractDetailsForm.patchValue({
-      customer: this.customer,
-      personalnr: this.workContract.employeeId,
-      vorname: this.workContract.firstName,
-      nachname: this.workContract.lastName,
+      customer: this.workContract.customer?.customername1,
+      personalnr: this.workContract.employee?.id,
+      vorname: this.workContract.employee?.firstname,
+      nachname: this.workContract.employee?.lastname,
       datum: this.workContract.startDate,
       gehalt: this.workContract.salaryPerMonth,
-      wochenstunden: this.workContract.weeklyHours,
-      kurz: this.workContract.worksShortTime,
+      wochenstunden: this.workContract.hoursPerWeek,
+      kurz: this.workContract.workShortTime,
       jahresauszahlung: this.workContract.specialPayment,
-      maxstudenmonat: this.workContract.maxHrspPerMonth,
-      maxstudentag: this.workContract.maxHrsPerDay,
+      maxstudenmonat: this.workContract.maxHoursPerMonth,
+      maxstudentag: this.workContract.maxHoursPerDay,
       stundensatz: this.workContract.hourlyRate
     })
   }

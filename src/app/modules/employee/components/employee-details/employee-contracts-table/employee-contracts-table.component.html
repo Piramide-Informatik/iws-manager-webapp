@@ -7,5 +7,23 @@
     [columns]="selectedColumns"
     [userPreferences]="userEmployeeDetailPreferences" 
     [dataKeys]="dataKeys"
-    (onColumnChanges)="onUserEmployeeDetailPreferencesChanges($event)">
+    (onColumnChanges)="onUserEmployeeDetailPreferencesChanges($event)"
+    (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
+    (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+    (onCreateRegister)="handleTableEvents({ type: 'create' })">
 </master-data-genaral-table>
+<p-dialog 
+  [header]="modalType === 'edit' 
+    ? ('EMPLOYEE-CONTRACTS.LABEL.EDIT_EMPLOYEE_CONTRACT' | translate) 
+    : modalType === 'create' 
+     ? ('EMPLOYEE-CONTRACTS.LABEL.CREATE_EMPLOYEE_CONTRACT' | translate) 
+     : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" 
+  [modal]="true" 
+  [(visible)]="visibleModal"
+>
+    <app-contract-details
+      [modalType]="modalType"
+      [workContract]="selectedEmployeeContract"
+      (isVisibleModal)="onModalVisibilityChange($event)"
+    ></app-contract-details>
+</p-dialog>

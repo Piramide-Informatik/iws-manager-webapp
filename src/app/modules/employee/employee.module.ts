@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //Modulos
 import { EmployeeRountingModule } from "./employee-routing.module";
+import { WorkContractsModule } from "../work-contracts/work-contracts.module"
 
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
@@ -61,7 +62,8 @@ import { SharedModule } from '../shared/shared.module';
         TranslatePipe,
         TranslateDirective,
         MasterDataModule,
-        SharedModule
+        SharedModule,
+        WorkContractsModule
     ]
 
 })
