@@ -517,7 +517,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.customerUtils.createNewCustomer(newCustomer).subscribe({
-        next: () => this.handleSuccess(),
+        next: (customer) => this.handleSuccess(customer),
         error: (err) => this.handleError(err)
       })
     )
@@ -560,13 +560,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     };
   }
 
-  private handleSuccess(): void {
+  private handleSuccess(customer: Customer): void {
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('CUSTOMERS.MESSAGE.SUCCESS'),
       detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_SUCCESS')
     });
     this.clearForm();
+    this.router.navigate(['../customer-details', customer.id], { relativeTo: this.activatedRoute });
   }
 
   private handleError(err: any): void {
