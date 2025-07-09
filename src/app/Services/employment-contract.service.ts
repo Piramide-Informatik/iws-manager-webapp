@@ -148,7 +148,6 @@ export class EmploymentContractService {
    */
   updateEmploymentContract(updatedContract: EmploymentContract): Observable<EmploymentContract> {
     const url = `${this.apiUrl}/${updatedContract.id}`;
-    console.log('Updating employment contract:', updatedContract);
     return this.http.put<EmploymentContract>(url, updatedContract, this.httpOptions).pipe(
       tap({
         next: (res) => {

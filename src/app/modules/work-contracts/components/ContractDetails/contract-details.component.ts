@@ -6,6 +6,8 @@ import { EmploymentContractUtils } from '../../../employee/utils/employment-cont
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { EmploymentContract } from '../../../../Entities/employment-contract';
+import { buildCustomer } from '../../../shared/utils/builders/customer';
+import { buildEmployee } from '../../../shared/utils/builders/employee';
 
 @Component({
   selector: 'app-contract-details',
@@ -59,7 +61,6 @@ export class ContractDetailsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.modalType);
     if (this.modalType === 'create') {
       this.createEmploymentContract();
     } else if (this.modalType === 'edit') {
@@ -76,7 +77,6 @@ export class ContractDetailsComponent implements OnInit, OnChanges, OnDestroy {
   updateEmploymentContract() {
     if (!this.validateContractForUpdate()) return;
     this.loading = true;
-    console.log('Updating employment contract:', this.workContract);
     const updatedContract = this.buildEmploymentContract(this.workContract.customer, this.workContract.employee);
 
     this.subscription.add(this.employmentContractUtils.updateEmploymentContract(updatedContract)
@@ -85,7 +85,6 @@ export class ContractDetailsComponent implements OnInit, OnChanges, OnDestroy {
         error: (err) => this.handleUpdateError(err),
         complete: () => this.loading = false
       }));
-    console.log('Updating employment contract:', updatedContract);
   }
 
   private handleUpdateSuccess(updatedContract: EmploymentContract): void {
@@ -125,66 +124,11 @@ export class ContractDetailsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private buildEmployeeFromSource(source: any): any {
-    return {
-      id: source?.id ?? 0,
-      employeeno: source?.employeeno ?? '',
-      salutation: {
-        id: source?.salutation?.id ?? 0,
-        name: source?.salutation?.name ?? '',
-        createdAt: '',
-        updatedAt: '',
-        version: 0
-      },
-      title: {
-        id: source?.title?.id ?? 0,
-        name: source?.title?.name ?? '',
-        createdAt: '',
-        updatedAt: '',
-        version: 0
-      },
-      firstname: source?.firstname ?? '',
-      lastname: source?.lastname ?? '',
-      createdAt: '',
-      updatedAt: '',
-      version: 0
-    };
+    return buildEmployee(source, { includeEmptyDates: true });
   }
 
   private buildCustomerFromSource(source: any): any {
-    return {
-      id: source?.id ?? 0,
-      version: 0,
-      createdAt: '',
-      updatedAt: '',
-      branch: {
-        id: source?.branch?.id ?? 0,
-        name: '',
-        version: 0
-      },
-      companytype: {
-        id: source?.companytype?.id ?? 0,
-        createdAt: '',
-        updatedAt: '',
-        name: '',
-        version: 0
-      },
-      country: {
-        id: source?.country?.id ?? 0,
-        name: '',
-        label: '',
-        isDefault: source?.country?.isDefault ?? false,
-        createdAt: '',
-        updatedAt: '',
-        version: 0
-      },
-      state: {
-        id: source?.state?.id ?? 0,
-        name: '',
-        createdAt: '',
-        updatedAt: '',
-        version: 0
-      }
-    };
+    return buildCustomer(source, { includeEmptyDates: true });
   }
 
   private validateContractForUpdate(): boolean {
