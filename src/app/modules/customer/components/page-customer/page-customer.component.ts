@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService, MenuItem } from 'primeng/api';
 import { SelectChangeEvent } from 'primeng/select';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -41,13 +41,16 @@ export class PageCustomerComponent implements OnInit {
   ];
 
   constructor(
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
   ){}
 
 
   ngOnInit(): void {
-    this.customer =  ''+this.router.url.split('/').pop()
-    this.selectedCustomer.set(Number(this.customer))
+    this.activatedRoute.firstChild?.paramMap.subscribe(params => {
+      this.customer = params.get('id') ?? '';
+      this.selectedCustomer.set(Number(this.customer))
+    })
     this.loadSidebarItems();
   }
 
