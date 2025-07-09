@@ -250,6 +250,26 @@
       "MAX_HOURS_PER_MONTH": "Max. Hours/Month",
       "MAX_HOURS_PER_DAY": "Max. Hours/Day",
       "HOURLY_RATE": "Hourly Rate"
+    },
+    "FORM": {
+      "CUSTOMER": "Customer",
+      "EMPLOYEE_ID": "Employee ID",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "START_DATE": "Start Date",
+      "SALARY_PER_MONTH": "Salary per Month",
+      "WEEKLY_HOURS": "Weekly Hours",
+      "WORK_SHORT_TIME": "Percentage Decrease",
+      "SPECIAL_PAYMENT": "Special Payment",
+      "MAX_HOURS_PER_MONTH": "Max. Hours/Month",
+      "MAX_HOURS_PER_DAY": "Max. Hours/Day",
+      "HOURLY_RATE": "Hourly Rate"
+    },
+    "LABEL": {
+      "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Are you sure you want to delete the Employee Contract",
+      "CREATE_EMPLOYEE_CONTRACT": "Create Employee Contract",
+      "EDIT_EMPLOYEE_CONTRACT": "Edit Employee Contract",
+      "DELETE_EMPLOYEE_CONTRACT": "Delete Employee Contract"
     }
   },
   "PROJECTS": {

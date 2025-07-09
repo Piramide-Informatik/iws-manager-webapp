@@ -61,8 +61,6 @@
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
       @if(workContract) {
         <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
-        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
-          [style]="{ background: '#ef4444' }" />
       } @else {
         <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
       }
@@ -75,12 +73,12 @@
     <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
             {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }}
-            <strong class="stronglock mt-1">"{{ workContract.employeeId }}"</strong>?
+            <strong class="stronglock mt-1">"{{ workContract }}"</strong>?
         </p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" severity="danger"
+                icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="removeEmploymentContract()"
              />
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
