@@ -25,5 +25,6 @@
       [modalType]="modalType"
       [workContract]="selectedEmployeeContract"
       (isVisibleModal)="onModalVisibilityChange($event)"
+      (onEmployeeContractDeleted)="onEmployeeContractDeleted($event)"
     ></app-contract-details>
 </p-dialog>
