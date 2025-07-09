@@ -5,7 +5,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //Modulos
 import { EmployeeRountingModule } from "./employee-routing.module";
-import { WorkContractsModule } from "../work-contracts/work-contracts.module"
 
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +20,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { MessageModule } from 'primeng/message';
 import { Dialog } from 'primeng/dialog';
+import { MessageService } from 'primeng/api';
 
 //Components
 import { EmployeeOverviewComponent } from "./components/employee-overview/employee-overview.component";
@@ -32,13 +32,15 @@ import { EmployeeFormComponent } from './components/employee-details/employee-fo
 import { EmployeeContractsTableComponent } from './components/employee-details/employee-contracts-table/employee-contracts-table.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { EmploymentContractModalComponent } from './components/employee-details/employment-contract-modal/employment-contract-modal.component';
 
 @NgModule({
     declarations: [
         EmployeeOverviewComponent,
         EmployeeDetailsComponent,
         EmployeeFormComponent,
-        EmployeeContractsTableComponent
+        EmployeeContractsTableComponent,
+        EmploymentContractModalComponent
     ],
     imports: [
         ButtonModule,
@@ -62,9 +64,8 @@ import { SharedModule } from '../shared/shared.module';
         TranslatePipe,
         TranslateDirective,
         MasterDataModule,
-        SharedModule,
-        WorkContractsModule
-    ]
-
+        SharedModule
+    ],
+    providers: [MessageService]
 })
 export class EmployeeModule {}

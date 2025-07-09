@@ -5,8 +5,10 @@ import { _, TranslateService } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { Subscription } from 'rxjs';
 import { EmploymentContractUtils } from '../../../utils/employment-contract-utils';
-import { WorkContract } from '../../../../../Entities/work-contracts';
 import { ActivatedRoute } from '@angular/router';
+import { Employee } from '../../../../../Entities/employee';
+import { EmployeeUtils } from '../../../utils/employee.utils';
+import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string,
@@ -19,21 +21,26 @@ interface Column {
   templateUrl: './employee-contracts-table.component.html',
 })
 export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
-
-  tableKey: string = 'EmployeeDetails'
-  modalType: 'create' | 'delete' | 'edit' = 'create';
-  visibleModal: boolean = false;
-  @Input() customer: any;
-  @Input() employeeId?: number;
-  selectedEmployeeContract!: WorkContract | undefined;
-  employeeContracts!: EmploymentContract[];
-  userEmployeeDetailPreferences: UserPreference = {};
-  dataKeys = ['startDate', 'salaryPerMonth', 'hoursPerWeek', 'workShortTime', 'maxHoursPerMonth', 'maxHoursPerDay', 'hourlyRate', 'specialPayment'];
-  public cols!: Column[];
   private readonly translate = inject(TranslateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly EmploymentContractUtils = inject(EmploymentContractUtils);
   private readonly route = inject(ActivatedRoute);
+  private readonly employeeUtils = inject(EmployeeUtils);
+  private readonly messageService = inject(MessageService);
+  currentEmployee!: Employee;
+  employeeContracts!: EmploymentContract[];
+  selectedEmployeeContract!: EmploymentContract | undefined;
+
+  @Input() customer: any;
+  @Input() employeeId!: number;
+
+  // Configuration table
+  tableKey: string = 'EmployeeDetails'
+  modalType: 'create' | 'delete' | 'edit' = 'create';
+  visibleModal: boolean = false;
+  userEmployeeDetailPreferences: UserPreference = {};
+  dataKeys = ['startDate', 'salaryPerMonth', 'hoursPerWeek', 'workShortTime', 'maxHoursPerMonth', 'maxHoursPerDay', 'hourlyRate', 'specialPayment'];
+  public cols!: Column[];
 
   private readonly subscriptions = new Subscription();
 
@@ -44,8 +51,11 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     const employeeIdFromRoute = this.route.snapshot.paramMap.get('employeeId');
     if (employeeIdFromRoute) {
       this.employeeId = parseInt(employeeIdFromRoute, 10);
+      this.employeeUtils.getEmployeeById(this.employeeId).subscribe(employee => {
+        if (employee) this.currentEmployee = employee;
+      })
     }
-
+    
     // Suscribirse a cambios en los parámetros de la ruta
     this.subscriptions.add(
       this.route.paramMap.subscribe(params => {
@@ -54,14 +64,14 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
           const parsedId = parseInt(newEmployeeId, 10);
           if (parsedId !== this.employeeId) {
             this.employeeId = parsedId;
-            this.loadEmployeeContracts();
+            this.loadEmployeeContracts(this.employeeId);
           }
         }
       })
     );
 
     // Cargar contratos inicialmente
-    this.loadEmployeeContracts();
+    this.loadEmployeeContracts(this.employeeId);
 
     this.loadEmployeeContractColumns();
     this.selectedColumns = this.cols;
@@ -113,9 +123,9 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     this.employeeContracts = this.employeeContracts.filter( employeeContract => employeeContract.id !== workContractId);
   }
 
-  private loadEmployeeContracts(): void {
-    if (this.employeeId && this.employeeId > 0) {
-      this.EmploymentContractUtils.getAllContractsByEmployeeId(this.employeeId).subscribe({
+  private loadEmployeeContracts(employeeId: number): void {
+    if (employeeId && employeeId > 0) {
+      this.EmploymentContractUtils.getAllContractsByEmployeeId(employeeId).subscribe({
         next: (data) => {
           this.employeeContracts = data;
         },
@@ -126,5 +136,17 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     } else {
       this.employeeContracts = [];
     }
+  }
+
+  updateEmployementContractsList(employeeId: number): void {
+    this.loadEmployeeContracts(employeeId);
+  }
+
+  onMessageOperation(message: {severity: string, summary: string, detail: string}): void{
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail))
+    });
   }
 }
