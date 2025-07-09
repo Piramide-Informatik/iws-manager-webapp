@@ -44,7 +44,7 @@ export class EmploymentContractService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    );
+    ).subscribe();
   }
 
   // ==================== CREATE OPERATIONS ====================
@@ -116,6 +116,23 @@ export class EmploymentContractService {
       catchError(err => {
         this._error.set('Failed to fetch employment contracts');
         console.error('Error fetching employment contracts:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
+   * Retrieves all employment contracts for a specific employee
+   * @param employeeId Employee ID to get his employment contracts
+   * @returns Observable with EmploymentContract array
+   * @throws Error when server request fails
+   */
+  getContractsByEmployeeId(employeeId: number): Observable<EmploymentContract[]> {
+    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/employee/${employeeId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch employment contracts for employee');
+        console.error('Error fetching employment contracts for employee:', err);
         return of([]);
       })
     );
