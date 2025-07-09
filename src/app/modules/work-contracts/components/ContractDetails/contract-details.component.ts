@@ -20,6 +20,7 @@ export class ContractDetailsComponent implements OnInit, OnChanges, OnDestroy {
   private readonly messageService = inject(MessageService);
 
   private loading = false;
+  public showOCCErrorModalContract = false;
 
   ContractDetailsForm!: FormGroup;
   @Input() modalType: string = "create";
@@ -98,7 +99,9 @@ export class ContractDetailsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private handleUpdateError(error: Error): void {
-    this.showError(error.message);
+    if (error.message.startsWith('VERSION_CONFLICT:')) {
+      this.showOCCErrorModalContract = true;
+    }
   }
 
   private buildEmploymentContract(customerSource: any, employeeSource: any): Omit<EmploymentContract, 'createdAt' | 'updatedAt' > {
