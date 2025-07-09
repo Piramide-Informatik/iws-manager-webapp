@@ -21,9 +21,9 @@
   [modal]="true" 
   [(visible)]="visibleModal"
 >
-    <app-contract-details
+    <app-employment-contract-modal
       [modalType]="modalType"
-      [workContract]="selectedEmployeeContract"
+      [employmentContract]="selectedEmployeeContract"
       (isVisibleModal)="onModalVisibilityChange($event)"
-    ></app-contract-details>
+    ></app-employment-contract-modal>
 </p-dialog>

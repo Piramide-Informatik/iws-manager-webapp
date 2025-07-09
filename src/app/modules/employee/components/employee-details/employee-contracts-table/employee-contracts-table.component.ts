@@ -5,7 +5,7 @@ import { _, TranslateService } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { Subscription } from 'rxjs';
 import { EmployeeContractService } from '../../../services/employee-contract.service';
-import { WorkContract } from '../../../../../Entities/work-contracts';
+import { EmploymentContract } from '../../../../../Entities/employment-contract';
 
 interface Column {
   field: string,
@@ -23,7 +23,7 @@ export class EmployeeContractsTableComponent {
   modalType: 'create' | 'delete' | 'edit' = 'create';
   visibleModal: boolean = false;
   @Input() customer: any;
-  selectedEmployeeContract!: WorkContract | undefined;
+  selectedEmployeeContract!: EmploymentContract | undefined;
   employeeContracts!: EmployeeContract[];
   userEmployeeDetailPreferences: UserPreference = {};
   dataKeys = ['startDate', 'salaryPerMonth', 'hoursPerWeek', 'workShortTime', 'maxHoursPerMonth', 'maxHoursPerDay', 'hourlyRate', 'specialPayment'];
