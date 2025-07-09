@@ -2,23 +2,6 @@
    <form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
     <div class="create-employee-contract-form align-items-center mb-2 mt-4">
       <div class="form-container flex align-items-center mb-6">
-        <!-- <div class="contract_input kunde mb-2">
-          <label for="SearchCustomer">{{ 'EMPLOYEE-CONTRACTS.FORM.CUSTOMER' | translate }}</label>
-          <input pInputText class="kunden-input" type="text" placeholder="" formControlName="customer" />
-        </div>          
-        <div class="contract_input mb-2">
-          <label for="personalnr">{{ 'EMPLOYEE-CONTRACTS.FORM.EMPLOYEE_ID' | translate }}</label>
-          <p-select formControlName="personalnr" [editable]="true" [showClear]="true"
-            optionLabel="name" autocomplete="off" />
-        </div>
-        <div class="contract_input mb-2">
-          <label for="vorname">{{ 'EMPLOYEE-CONTRACTS.FORM.FIRST_NAME' | translate }}</label>
-          <input pInputText type="text" id="vorname" formControlName="vorname" autocomplete="off" />
-        </div>
-        <div class="contract_input mb-2">
-          <label for="nachname">{{ 'EMPLOYEE-CONTRACTS.FORM.LAST_NAME' | translate }}</label>
-          <input pInputText type="text" id="nachname" formControlName="nachname" autocomplete="off" />
-        </div> -->
         <div class="contract_input contract_name mb-2">
           <label for="datum">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
           <p-datepicker id="datum"

@@ -178,25 +178,4 @@ export class EmploymentContractUtils {
       })
     );
   }
-
-  // updateEmploymentContract(contract: EmploymentContract): Observable<EmploymentContract> {
-  //   if (!contract.id) {
-  //     return throwError(() => new Error('Invalid employment contract data'));
-  //   }
-
-  //   return this.employmentContractService.getEmploymentContractById(contract.id).pipe(
-  //     take(1),
-  //     switchMap((currentContract) => {
-  //       if (!currentContract) {
-  //         return throwError(() => new Error('Employment contract not found'));
-  //       }
-
-  //       if (currentContract.version !== contract.version) {
-  //         return throwError(() => new Error('Conflict detected: employment contract version mismatch'));
-  //       }
-
-  //       return this.employmentContractService.updateEmploymentContract(contract);
-  //     })
-  //   );
-  // }
 }
