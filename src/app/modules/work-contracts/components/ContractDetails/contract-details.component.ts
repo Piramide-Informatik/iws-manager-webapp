@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-contract-details',
@@ -15,10 +18,14 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
   employeeNumber: any;
   @Input() workContract!: any;
   @Output() isVisibleModal = new EventEmitter<boolean>();
+  @Output() onEmployeeContractDeleted = new EventEmitter<number>();
+  private readonly employmentContractUtils = inject(EmploymentContractUtils);
 
   constructor(
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly messageService: MessageService,
+    private readonly translate: TranslateService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -63,20 +70,45 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
     this.ContractDetailsForm.reset();
   }
 
+  removeEmploymentContract() {
+    if (this.workContract) {
+      this.employmentContractUtils.deleteEmploymentContract(this.workContract).subscribe({
+        next: () => {
+          this.isVisibleModal.emit(false);
+          this.onEmployeeContractDeleted.emit(this.workContract);
+          this.messageService.add({
+            severity: 'success',
+            summary: this.translate.instant('MESSAGE.SUCCESS'),
+            detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
+          });
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: this.translate.instant('MESSAGE.ERROR'),
+            detail: this.translate.instant('MESSAGE.DELETE_FAILED')
+          });
+        }
+      });
+    }
+  }
+
   fillWorkContractForm() {
-    this.ContractDetailsForm.patchValue({
-      customer: this.workContract.customer?.customername1,
-      personalnr: this.workContract.employee?.id,
-      vorname: this.workContract.employee?.firstname,
-      nachname: this.workContract.employee?.lastname,
-      datum: this.workContract.startDate,
-      gehalt: this.workContract.salaryPerMonth,
-      wochenstunden: this.workContract.hoursPerWeek,
-      kurz: this.workContract.workShortTime,
-      jahresauszahlung: this.workContract.specialPayment,
-      maxstudenmonat: this.workContract.maxHoursPerMonth,
-      maxstudentag: this.workContract.maxHoursPerDay,
-      stundensatz: this.workContract.hourlyRate
-    })
+    if (typeof this.workContract === 'object') {
+      this.ContractDetailsForm.patchValue({
+        customer: this.workContract.customer?.customername1,
+        personalnr: this.workContract.employee?.id,
+        vorname: this.workContract.employee?.firstname,
+        nachname: this.workContract.employee?.lastname,
+        datum: this.workContract.startDate,
+        gehalt: this.workContract.salaryPerMonth,
+        wochenstunden: this.workContract.hoursPerWeek,
+        kurz: this.workContract.workShortTime,
+        jahresauszahlung: this.workContract.specialPayment,
+        maxstudenmonat: this.workContract.maxHoursPerMonth,
+        maxstudentag: this.workContract.maxHoursPerDay,
+        stundensatz: this.workContract.hourlyRate
+      })
+    }
   }
 }
