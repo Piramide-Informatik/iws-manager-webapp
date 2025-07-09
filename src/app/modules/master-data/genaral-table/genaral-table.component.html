@@ -91,7 +91,7 @@
                <ng-template #normalText>
                  {{
                  col.type === 'date'
-                 ? (row[col.field] | date : col.format)
+                 ? col.format ? (row[col.field] | date : col.format) : (row[col.field] | date : defaultDateFormat)
                  : row[col.field]
                  }}
                </ng-template>

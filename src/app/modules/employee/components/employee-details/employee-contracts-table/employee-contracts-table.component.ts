@@ -119,6 +119,10 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     this.visibleModal = visible;
   }
 
+  onEmployeeContractDeleted(workContractId: number) {
+    this.employeeContracts = this.employeeContracts.filter( employeeContract => employeeContract.id !== workContractId);
+  }
+
   private loadEmployeeContracts(employeeId: number): void {
     if (employeeId && employeeId > 0) {
       this.EmploymentContractUtils.getAllContractsByEmployeeId(employeeId).subscribe({
