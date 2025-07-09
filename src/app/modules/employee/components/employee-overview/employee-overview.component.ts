@@ -18,6 +18,7 @@ interface Column {
   header: string;
   customExportHeader?: string;
   routerLink?: (row: any) => string;
+  type?: string;
 }
 
 interface ExportColumn {
@@ -112,10 +113,10 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
       { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
       { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
-      { field: 'generalmanagersince', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
-      { field: 'shareholdersince', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
-      { field: 'soleproprietorsince', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
-      { field: 'coentrepreneursince', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
+      { field: 'generalmanagersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
+      { field: 'shareholdersince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
+      { field: 'soleproprietorsince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
+      { field: 'coentrepreneursince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
       { field: 'qualificationFZ', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
       { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
