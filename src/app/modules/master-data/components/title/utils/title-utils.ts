@@ -125,14 +125,14 @@ export class TitleUtils {
   private checkTitleUsage(idTitle: number): Observable<boolean> {
     return forkJoin([
       this.customerUtils.getAllContacts().pipe(
-        map(contacts => contacts.some(contact => contact.salutation?.id === idTitle)),
+        map(contacts => contacts.some(contact => contact.title?.id === idTitle)),
         catchError(() => of(false))
       ),
       this.employeeUtils.getAllEmployees().pipe(
-        map(employees => employees.some(employee => employee.salutation?.id === idTitle)),
+        map(employees => employees.some(employee => employee.title?.id === idTitle)),
         catchError(() => of(false))
       )
-    ]).pipe(
+    ] as const).pipe(
       map(([usedInCustomers, usedInEmployees]) => usedInCustomers || usedInEmployees)
     );
   }
