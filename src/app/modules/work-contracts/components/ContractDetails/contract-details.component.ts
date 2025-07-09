@@ -30,6 +30,7 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     let workContractChange = changes['workContract'];
+    console.log(this.workContract);
     if (workContractChange && !workContractChange.firstChange) {
       this.workContract = workContractChange.currentValue;
       if (!this.workContract) {
@@ -100,7 +101,7 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
         personalnr: this.workContract.employee?.id,
         vorname: this.workContract.employee?.firstname,
         nachname: this.workContract.employee?.lastname,
-        datum: this.workContract.startDate,
+        datum: this.workContract.startDate? new Date(this.workContract.startDate) : null,
         gehalt: this.workContract.salaryPerMonth,
         wochenstunden: this.workContract.hoursPerWeek,
         kurz: this.workContract.workShortTime,
