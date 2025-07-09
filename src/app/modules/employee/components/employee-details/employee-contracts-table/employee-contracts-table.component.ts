@@ -66,7 +66,7 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     this.loadEmployeeContractColumns();
     this.selectedColumns = this.cols;
     this.userEmployeeDetailPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-    
+
     this.subscriptions.add(
       this.translate.onLangChange.subscribe(() => {
         this.loadEmployeeContractColumns();
@@ -96,7 +96,7 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     localStorage.setItem('userPreferences', JSON.stringify(userEmployeeDetailPreferences));
   }
 
-  handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
+  handleTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalType = event.type;
     this.selectedEmployeeContract = event.data;
     this.visibleModal = true;
@@ -110,7 +110,26 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
   }
 
   onEmployeeContractDeleted(workContractId: number) {
-    this.employeeContracts = this.employeeContracts.filter( employeeContract => employeeContract.id !== workContractId);
+    this.employeeContracts = this.employeeContracts.filter(employeeContract => employeeContract.id !== workContractId);
+  }
+
+  onEmployeeContractUpdated(updatedContract: EmploymentContract): void {
+    if (!updatedContract?.id) {
+      console.error('Invalid contract received for update');
+      return;
+    }
+
+    const index = this.employeeContracts.findIndex(c => c.id === updatedContract.id);
+
+    if (index >= 0) {
+      this.employeeContracts = [
+        ...this.employeeContracts.slice(0, index),
+        updatedContract,
+        ...this.employeeContracts.slice(index + 1)
+      ];
+    } else {
+      this.employeeContracts = [updatedContract, ...this.employeeContracts];
+    }
   }
 
   private loadEmployeeContracts(): void {
