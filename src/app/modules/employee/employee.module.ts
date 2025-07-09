@@ -20,6 +20,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { MessageModule } from 'primeng/message';
 import { Dialog } from 'primeng/dialog';
+import { MessageService } from 'primeng/api';
 
 //Components
 import { EmployeeOverviewComponent } from "./components/employee-overview/employee-overview.component";
@@ -64,7 +65,7 @@ import { EmploymentContractModalComponent } from './components/employee-details/
         TranslateDirective,
         MasterDataModule,
         SharedModule
-    ]
-
+    ],
+    providers: [MessageService]
 })
 export class EmployeeModule {}

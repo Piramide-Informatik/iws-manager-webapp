@@ -53,7 +53,7 @@
         <p-button class="Delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
           [style]="{ background: '#ef4444' }" />
       } @else {
-        <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+        <p-button class="save" type="submit" (onClick)="onSubmit()" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
       }
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
       iconPos="left" (onClick)="goBackListContracts()"/>      

@@ -2,7 +2,7 @@ import { Customer } from './customer';
 import { Employee } from './employee';
 
 export interface EmploymentContract {
-  id?: number;
+  id: number;
   version?: number;
   createdAt?: string;   
   updatedAt?: string;

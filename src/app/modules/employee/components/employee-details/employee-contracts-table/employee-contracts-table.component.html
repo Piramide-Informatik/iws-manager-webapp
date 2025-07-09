@@ -24,6 +24,10 @@
     <app-employment-contract-modal
       [modalType]="modalType"
       [employmentContract]="selectedEmployeeContract"
+      [currentEmployee]="currentEmployee"
+      (messageOperation)="onMessageOperation($event)"
+      (onOperationEmploymentContract)="updateEmployementContractsList($event)"
       (isVisibleModal)="onModalVisibilityChange($event)"
     ></app-employment-contract-modal>
 </p-dialog>
+<p-toast/>
