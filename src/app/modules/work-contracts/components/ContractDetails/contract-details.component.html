@@ -1,5 +1,5 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
-   <form [formGroup]="ContractDetailsForm">
+   <form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
     <div class="create-employee-contract-form align-items-center mb-2 mt-4">
       <div class="form-container flex align-items-center mb-6">
         <!-- <div class="contract_input kunde mb-2">
@@ -60,7 +60,7 @@
     </div>
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
       @if(workContract) {
-        <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
       } @else {
         <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
       }

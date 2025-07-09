@@ -1,9 +1,10 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contract-details',
@@ -11,7 +12,11 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './contract-details.component.html',
   styleUrl: './contract-details.component.scss'
 })
-export class ContractDetailsComponent implements OnInit, OnChanges {
+export class ContractDetailsComponent implements OnInit, OnChanges, OnDestroy {
+
+  // private readonly subscription = inject(Subscription);
+  private readonly translate = inject(TranslateService);
+  private readonly messageService = inject(MessageService);
 
   ContractDetailsForm!: FormGroup;
   @Input() modalType: string = "create";
@@ -24,13 +29,10 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly messageService: MessageService,
-    private readonly translate: TranslateService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     let workContractChange = changes['workContract'];
-    console.log(this.workContract);
     if (workContractChange && !workContractChange.firstChange) {
       this.workContract = workContractChange.currentValue;
       if (!this.workContract) {
@@ -42,19 +44,51 @@ export class ContractDetailsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.initForm();
+  }
+
+  ngOnDestroy(): void {
+    // if (this.subscription) {
+    //   this.subscription.unsubscribe();
+    // }
+  }
+
+  onSubmit() {
+    console.log(this.modalType);
+    if (this.modalType === 'create') {
+      this.createEmploymentContract();
+    } else if (this.modalType === 'edit') {
+      this.updateEmploymentContract();
+    } else if (this.modalType === 'delete') {
+      this.removeEmploymentContract();
+    }
+  }
+
+  createEmploymentContract() {
+    //TODO: Implement create employment contract logic
+  }
+  
+  updateEmploymentContract() {
+    console.log(this.workContract);
+    //TODO: Implement update employment contract logic
+  }
+
+
+
+  initForm() {
     this.ContractDetailsForm = new FormGroup({
       customer: new FormControl('', [Validators.required]),
-      personalnr: new FormControl('', [Validators.required]),
-      vorname: new FormControl('', [Validators.required]),
-      nachname: new FormControl('', [Validators.required]),
-      datum: new FormControl('', [Validators.required]),
-      gehalt: new FormControl('', [Validators.required]),
-      wochenstunden: new FormControl('', [Validators.required]),
-      kurz: new FormControl('', [Validators.required]),
-      jahresauszahlung: new FormControl('', [Validators.required]),
-      maxstudenmonat: new FormControl('', [Validators.required]),
-      maxstudentag: new FormControl('', [Validators.required]),
-      stundensatz: new FormControl('', [Validators.required]),
+      personalnr: new FormControl(''),
+      vorname: new FormControl(''),
+      nachname: new FormControl(''),
+      datum: new FormControl(''),
+      gehalt: new FormControl(''),
+      wochenstunden: new FormControl(''),
+      kurz: new FormControl(''),
+      jahresauszahlung: new FormControl(''),
+      maxstudenmonat: new FormControl(''),
+      maxstudentag: new FormControl(''),
+      stundensatz: new FormControl(''),
     });
   }
 
