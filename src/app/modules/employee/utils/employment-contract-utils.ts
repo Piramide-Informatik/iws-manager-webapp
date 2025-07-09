@@ -50,6 +50,21 @@ export class EmploymentContractUtils {
   }
 
   /**
+  * Gets all employment contracts for a given employee
+  * @param employeeId - Employee ID to get his employment contracts
+  * @returns Observable emitting the raw list of employment contracts
+  */
+  getAllContractsByEmployeeId(employeeId: number): Observable<EmploymentContract[]> {
+    if (!employeeId || employeeId <= 0) {
+      return throwError(() => new Error('Invalid employee ID'));
+    }
+
+    return this.employmentContractService.getContractsByEmployeeId(employeeId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load employment contracts for employee')))
+    );
+  }
+
+  /**
   * Creates a new employment contract with validation
   * @param contract - Employment contract object to create (without id)
   * @returns Observable that completes when employment contract is created
