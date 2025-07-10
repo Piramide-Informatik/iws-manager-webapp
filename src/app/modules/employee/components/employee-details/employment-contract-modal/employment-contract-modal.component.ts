@@ -24,13 +24,13 @@ export class EmploymentContractModalComponent {
   private readonly employmentContractUtils = inject(EmploymentContractUtils);
 
   @Input() modalType: string = "create";
-  @Input() employmentContract!: EmploymentContract | undefined;
+  @Input() employmentContract!: any;
   @Input() currentEmployee!: Employee;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() messageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>();
   @Output() onOperationEmploymentContract = new EventEmitter<number>();
   @Output() onEmployeeContractUpdated = new EventEmitter<EmploymentContract>();
-  @Output() onEmployeeContractDeleted = new EventEmitter<EmploymentContract>();
+  @Output() onEmployeeContractDeleted = new EventEmitter<number>();
   @Output() onEmployeeContractCreated = new EventEmitter<EmploymentContract>(); // falta implementar
 
   isLoading = false;
@@ -159,7 +159,7 @@ export class EmploymentContractModalComponent {
   removeEmploymentContract() {
     if (this.employmentContract) {
       console.log('Removing employment xxxx:', this.employmentContract);
-      this.employmentContractUtils.deleteEmploymentContract(this.employmentContract.id).subscribe({
+      this.employmentContractUtils.deleteEmploymentContract(this.employmentContract).subscribe({
         next: () => {
           this.isVisibleModal.emit(false);
           this.onEmployeeContractDeleted.emit(this.employmentContract);
