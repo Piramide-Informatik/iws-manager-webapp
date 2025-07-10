@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,7 +16,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly messageService = inject(MessageService);
 
-  private loading = false;
   public showOCCErrorModalContract = false;
 
   ContractDetailsForm!: FormGroup;
