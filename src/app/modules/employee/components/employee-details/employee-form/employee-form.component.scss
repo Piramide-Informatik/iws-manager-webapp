@@ -18,7 +18,12 @@ label {
 
 input,
 p-select {
-  width: 20vw;
+  width: 20vw !important;
+}
+
+.datepicker-container{
+  width: 20vw !important;
+  display: inline-block;
 }
 
 ::ng-deep .p-datepicker table,
