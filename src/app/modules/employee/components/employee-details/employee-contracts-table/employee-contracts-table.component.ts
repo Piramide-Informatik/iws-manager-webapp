@@ -146,9 +146,10 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     if (employeeId && employeeId > 0) {
       this.EmploymentContractUtils.getAllContractsByEmployeeId(employeeId).subscribe({
         next: (data) => {
-          this.employeeContracts = data;
+          this.employeeContracts = [...data].reverse();
         },
-        error: () => {
+        error: (err) => {
+          console.log('Error load employee contracts', err);
           this.employeeContracts = [];
         }
       });

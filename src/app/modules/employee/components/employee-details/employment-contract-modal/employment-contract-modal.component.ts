@@ -129,9 +129,9 @@ export class EmploymentContractModalComponent {
     };
 
     this.employmentContractUtils.createNewEmploymentContract(newEmploymentContract).subscribe({
-      next: (response) => {
+      next: () => {
         this.isLoading = false;
-        this.onOperationEmploymentContract.emit(response.id);
+        this.onOperationEmploymentContract.emit(this.currentEmployee.id);
         console.log('Employment contract created successfully');
         this.isVisibleModal.emit(false);
         this.messageOperation.emit({
