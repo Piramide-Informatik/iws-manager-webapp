@@ -1,24 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
-   <form [formGroup]="ContractDetailsForm">
+   <form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
     <div class="create-employee-contract-form align-items-center mb-2 mt-4">
       <div class="form-container flex align-items-center mb-6">
-        <div class="contract_input kunde mb-2">
-          <label for="SearchCustomer">{{ 'EMPLOYEE-CONTRACTS.FORM.CUSTOMER' | translate }}</label>
-          <input pInputText class="kunden-input" type="text" placeholder="" formControlName="customer" />
-        </div>          
-        <div class="contract_input mb-2">
-          <label for="personalnr">{{ 'EMPLOYEE-CONTRACTS.FORM.EMPLOYEE_ID' | translate }}</label>
-          <p-select formControlName="personalnr" [editable]="true" [showClear]="true"
-            optionLabel="name" autocomplete="off" />
-        </div>
-        <div class="contract_input mb-2">
-          <label for="vorname">{{ 'EMPLOYEE-CONTRACTS.FORM.FIRST_NAME' | translate }}</label>
-          <input pInputText type="text" id="vorname" formControlName="vorname" autocomplete="off" />
-        </div>
-        <div class="contract_input mb-2">
-          <label for="nachname">{{ 'EMPLOYEE-CONTRACTS.FORM.LAST_NAME' | translate }}</label>
-          <input pInputText type="text" id="nachname" formControlName="nachname" autocomplete="off" />
-        </div>
         <div class="contract_input contract_name mb-2">
           <label for="datum">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
           <p-datepicker id="datum"
@@ -60,7 +43,7 @@
     </div>
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
       @if(workContract) {
-        <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
       } @else {
         <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
       }
@@ -78,7 +61,7 @@
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="removeEmploymentContract()"
+                icon="pi pi-trash" iconPos="left" severity="danger"
              />
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
@@ -87,3 +70,7 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalContract"
+  (onClose)="showOCCErrorModalContract = false">
+</app-occ-error-modal>

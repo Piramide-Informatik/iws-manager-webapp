@@ -81,10 +81,10 @@ export class EmploymentContractUtils {
   contractExists(contractId: number | string): Observable<boolean> {
     return this.employmentContractService.getAllEmploymentContracts().pipe(
       map(contracts => contracts.some(
-          c => c.id !== null && c.id?.toString().toLowerCase() === contractId.toString().toLowerCase()
+        c => c.id !== null && c.id?.toString().toLowerCase() === contractId.toString().toLowerCase()
       )),
       catchError(() => {
-          return throwError(() => new Error('Failed to check employment contract existence'));
+        return throwError(() => new Error('Failed to check employment contract existence'));
       })
     );
   }
@@ -101,8 +101,8 @@ export class EmploymentContractUtils {
         }
         // Filtra los contratos con nombre de cliente válido y ordena alfabéticamente
         return contracts
-        .filter(contract => !!contract.customer?.customername1 && contract.customer.customername1.trim() !== '')
-        .sort((a, b) => (a.customer?.customername1 ?? '').localeCompare(b.customer?.customername1 ?? ''));
+          .filter(contract => !!contract.customer?.customername1 && contract.customer.customername1.trim() !== '')
+          .sort((a, b) => (a.customer?.customername1 ?? '').localeCompare(b.customer?.customername1 ?? ''));
       }),
       catchError(() => throwError(() => new Error('Failed to sort employment contracts')))
     );
@@ -126,31 +126,56 @@ export class EmploymentContractUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteEmploymentContract(id: number): Observable<void> {
+    console.log('Deleting employment contract with ID:', id);
     return this.employmentContractService.deleteEmploymentContract(id);
   }
 
   /**
-  * Updates an employment contract by ID and updates the internal contracts signal.
-  * @param contract - Employment contract object with updated data
-  * @returns Observable that completes when the update is done
-  */
+   * Updates an employment contract by ID and updates the internal contracts signal.
+   * @param contract - Employment contract object with updated data
+   * @returns Observable that completes when the update is done
+   * @throws Error with specific codes:
+   *         - INVALID_DATA: When contract data is invalid
+   *         - NOT_FOUND: When contract doesn't exist
+   *         - VERSION_CONFLICT: When version mismatch occurs
+   *         - UPDATE_FAILED: For other update errors
+   */
   updateEmploymentContract(contract: EmploymentContract): Observable<EmploymentContract> {
-    if (!contract.id) {
-      return throwError(() => new Error('Invalid employment contract data'));
+    if (!contract?.id) {
+      return throwError(() => new Error('INVALID_DATA: Contract ID is required'));
+    }
+
+    if (!contract.employee?.id || !contract.customer?.id || !contract.startDate) {
+      return throwError(() => new Error('INVALID_DATA: Required contract fields are missing'));
     }
 
     return this.employmentContractService.getEmploymentContractById(contract.id).pipe(
       take(1),
       switchMap((currentContract) => {
+        // Case 1: Contract not found
         if (!currentContract) {
-          return throwError(() => new Error('Employment contract not found'));
+          return throwError(() => new Error('NOT_FOUND: The employment contract has been deleted or does not exist'));
         }
 
+        // Case 2: Version conflict
         if (currentContract.version !== contract.version) {
-          return throwError(() => new Error('Conflict detected: employment contract version mismatch'));
+          return throwError(() => new Error(
+            `VERSION_CONFLICT: The contract was modified by another user. ` +
+            `Current version: ${currentContract.version}, Your version: ${contract.version}`
+          ));
         }
 
+        // Update the contract
         return this.employmentContractService.updateEmploymentContract(contract);
+      }),
+      catchError((error: Error) => {
+        if (error.message.startsWith('INVALID_DATA:') ||
+          error.message.startsWith('NOT_FOUND:') ||
+          error.message.startsWith('VERSION_CONFLICT:')) {
+          return throwError(() => error);
+        }
+
+        return throwError(() => new Error(`UPDATE_FAILED: ${error.message}`));
       })
     );
   }

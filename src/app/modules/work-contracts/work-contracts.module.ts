@@ -33,6 +33,7 @@ import { ListWorkContractsComponent } from './components/list-work-contracts/lis
 import { ContractDetailsComponent } from './components/ContractDetails/contract-details.component';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -65,8 +66,9 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
     TranslateModule,
     TranslatePipe,
     MasterDataModule,
-    TranslateDirective
-  ],
+    TranslateDirective,
+    SharedModule
+],
   exports: [ContractDetailsComponent]
 })
 export class WorkContractsModule {}
