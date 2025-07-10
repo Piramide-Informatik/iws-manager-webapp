@@ -12,7 +12,8 @@ import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string,
-  header: string
+  header: string,
+  type?: string;
 }
 
 @Component({
@@ -92,7 +93,7 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
 
   loadEmployeeContractColumns() {
     this.cols = [
-      { field: 'startDate', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.START_DATE')) },
+      { field: 'startDate', type: 'date', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.START_DATE')) },
       { field: 'salaryPerMonth', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SALARY_PER_MONTH')) },
       { field: 'hoursPerWeek', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WEEKLY_HOURS')) },
       { field: 'workShortTime', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WORK_SHORT_TIME')) },
