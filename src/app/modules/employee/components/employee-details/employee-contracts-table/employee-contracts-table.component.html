@@ -21,11 +21,15 @@
   [modal]="true" 
   [(visible)]="visibleModal"
 >
-    <app-contract-details
+    <app-employment-contract-modal
       [modalType]="modalType"
-      [workContract]="selectedEmployeeContract"
+      [employmentContract]="selectedEmployeeContract"
+      [currentEmployee]="currentEmployee"
+      (messageOperation)="onMessageOperation($event)"
+      (onOperationEmploymentContract)="updateEmployementContractsList($event)"
       (isVisibleModal)="onModalVisibilityChange($event)"
       (onEmployeeContractUpdated)="onEmployeeContractUpdated($event)"
       (onEmployeeContractDeleted)="onEmployeeContractDeleted($event)"
-    ></app-contract-details>
+    ></app-employment-contract-modal>
 </p-dialog>
+<p-toast/>

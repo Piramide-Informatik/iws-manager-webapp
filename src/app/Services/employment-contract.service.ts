@@ -26,7 +26,7 @@ export class EmploymentContractService {
     })
   };
 
-  constructor(){
+  constructor() {
     this.loadInitialData();
   }
 
@@ -186,6 +186,54 @@ export class EmploymentContractService {
         }
       })
     )
+  }
+
+  // ==================== READ OPERATIONS (Additional Methods) ====================
+
+  /**
+   * Retrieves all employment contracts for a specific customer
+   * @param customerId The ID of the customer
+   * @returns Observable with array of EmploymentContract
+   */
+  getContractsByCustomer(customerId: number): Observable<EmploymentContract[]> {
+    this._loading.set(true);
+    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/customer/${customerId}`, this.httpOptions).pipe(
+      tap({
+        next: (contracts) => {
+          this._contracts.set(contracts);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to load contracts by customer');
+          console.error('Error loading contracts by customer:', err);
+        }
+      }),
+      catchError(() => of([])),
+      tap(() => this._loading.set(false))
+    );
+  }
+
+  /**
+   * Retrieves all employment contracts for a specific employee
+   * @param employeeId The ID of the employee
+   * @returns Observable with array of EmploymentContract
+   */
+  getContractsByEmployee(employeeId: number): Observable<EmploymentContract[]> {
+    this._loading.set(true);
+    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/employee/${employeeId}`, this.httpOptions).pipe(
+      tap({
+        next: (contracts) => {
+          this._contracts.set(contracts);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to load contracts by employee');
+          console.error('Error loading contracts by employee:', err);
+        }
+      }),
+      catchError(() => of([])),
+      tap(() => this._loading.set(false))
+    );
   }
 
   /**
