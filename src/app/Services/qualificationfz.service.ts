@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class BranchService {
+export class QualificationFZService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/qualificationfz`;
 
@@ -51,7 +51,7 @@ export class BranchService {
   }
 
   // CREATE
-  addQualificationFZ(qualificationFZ: Omit<QualificationFZ, 'id' | 'createdAt' | 'updatedAt' | 'verstion'>): Observable<QualificationFZ> {
+  addQualificationFZ(qualificationFZ: Omit<QualificationFZ, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<QualificationFZ> {
     return this.http.post<QualificationFZ>(this.apiUrl, qualificationFZ, this.httpOptions).pipe(
       tap({
         next: (newQualificationFZ) => {
