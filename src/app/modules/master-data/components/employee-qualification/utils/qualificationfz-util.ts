@@ -95,28 +95,11 @@ export class QualificationFZUtils {
    * @returns Observable that completes when the deletion is done
    */
   deleteQualification(id: number): Observable<void> {
-    return this.checkQualificationUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.qualificationFZService.deleteQualificationFZ(id);
-      }),
+    return this.qualificationFZService.deleteQualificationFZ(id).pipe(
       catchError(error => {
         return throwError(() => error);
       })
     );
-  }
-
-  /**
-   * Checks if a qualification is used by any employee or other entity.
-   * @param id - ID of the qualification to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkQualificationUsage(id: number): Observable<boolean> {
-    // TODO: Implement check for qualification usage in employees or other entities
-    // For now, return false to allow deletion
-    return of(false);
   }
 
   /**
