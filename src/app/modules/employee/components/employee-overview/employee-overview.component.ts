@@ -106,7 +106,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
     this.cols = [
       { 
-        field: 'id',
+        field: 'employeeno',
         routerLink: (row: any) => `./employee-details/${row.id}`,
         header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) 
       },
