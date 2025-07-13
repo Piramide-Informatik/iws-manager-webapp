@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SalutationUtils } from '../../../../master-data/components/salutation/utils/salutation.utils';
 import { TitleUtils } from '../../../../master-data/components/title/utils/title-utils';
+import { QualificationFZUtils } from '../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
 import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
@@ -21,6 +22,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly salutationUtils = inject(SalutationUtils);
   private readonly titleUtils = inject(TitleUtils);
+  private readonly qualificationFZUtils = inject(QualificationFZUtils);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly activatedRoute = inject(ActivatedRoute);
@@ -33,7 +35,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   public currentEmployee: Employee | undefined;
   public id = 0;
   public showOCCErrorModaEmployee = false;
-  public qualificationsFZ: QualificationFZ[] | undefined;
 
   public salutations = toSignal(
     this.salutationUtils.getSalutationsSortedByName().pipe(
@@ -45,6 +46,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   public titles = toSignal(
     this.titleUtils.getTitlesSortedByName().pipe(
       map(t => t.map(({ name, id }) => ({ name, id })))
+    ),
+    { initialValue: [] }
+  );
+
+  public qualificationsFZ = toSignal(
+    this.qualificationFZUtils.getAllQualifications().pipe(
+      map(q => q.map(({ qualification, id }) => ({ name: qualification, id })))
     ),
     { initialValue: [] }
   );
@@ -143,7 +151,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       shareholdersince: this.formatOptionalDate(formValues.shareholderSinceDate),
       soleproprietorsince: this.formatOptionalDate(formValues.solePropietorSinceDate),
       coentrepreneursince: this.formatOptionalDate(formValues.coentrepreneurSinceDate),
-      qualificationFZ: null,
+      qualificationFZ: this.mapQualificationFZIdToEntity(formValues.qualificationFzId),
       qualificationkmui: formValues.qualificationKMUi,
     };
   }
@@ -204,6 +212,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private mapIdToEntity(id: number | null): any {
     return id ? { id, name: '', createdAt: '', updatedAt: '', version: 0 } : null;
+  }
+
+  private mapQualificationFZIdToEntity(id: number | null): any {
+    return id ? { id, qualification: '', createdAt: '', updatedAt: '', version: 0 } : null;
   }
 
   private formatOptionalDate(date: Date | null): string | undefined {
