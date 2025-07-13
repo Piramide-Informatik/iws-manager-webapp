@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Contractor } from '../../../../Entities/contractor';
-import { ContractorService } from '../../services/contractor.service';
 import {TranslateService, _} from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,8 +41,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   dataKeys = ['contractorLabel', 'contractorName', 'countryLabel', 'street', 'zipCode', 'city', 'taxNro'];
   
 
-  constructor(
-    private readonly contractorService: ContractorService, 
+  constructor( 
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService, 
     private readonly router:Router,
@@ -52,7 +50,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit():void {
     this.loadContractOverviewHeaders();
-    this.contractors = this.contractorService.list();
+    this.contractors = [];
 
     this.selectedColumns = this.cols;
 
