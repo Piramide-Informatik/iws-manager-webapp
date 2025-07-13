@@ -1,35 +1,36 @@
 <div class="card">
-    <master-data-genaral-table
-      [tableId]="tableKey"
-      [tableValues]="employees"
-      [columns]="selectedColumns"
-      [userPreferences]="userEmployeeOverviewPreferences"
-      [dataKeys]="dataKeys"
-      (onColumnChanges)="onUserEmployeeOverviewPreferencesChanges($event)"
-      (onEditRegister)="goToEmployeeDetails($event)"
-      (onDeleteRegister)="handleEmployeeTableEvents({ type: 'delete', data: $event })"
-      (onCreateRegister)="redirectToEmployeeDetails()"
-    ></master-data-genaral-table>
-    <p-dialog 
-        [header]="('EMPLOYEE.LABELS.DELETE_EMPLOYEE' | translate)" 
-        [modal]="true" 
-        [(visible)]="visibleEmployeeModal" 
-      >
-        <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-            {{ 'EMPLOYEE.LABELS.REMOVE_EMPLOYEE_QUESTION' | translate }}
-            <strong class="stronglock mt-1">"{{ employeeName }}"</strong>?
-        </p>
+  <master-data-genaral-table
+    [tableId]="tableKey"
+    [tableValues]="employees"
+    [columns]="selectedColumns"
+    [userPreferences]="userEmployeeOverviewPreferences"
+    [dataKeys]="dataKeys"
+    (onColumnChanges)="onUserEmployeeOverviewPreferencesChanges($event)"
+    (onEditRegister)="goToEmployeeDetails($event)"
+    (onDeleteRegister)="handleEmployeeTableEvents({ type: 'delete', data: $event })"
+    (onCreateRegister)="redirectToEmployeeDetails()"
+  ></master-data-genaral-table>
+  <p-dialog 
+    [header]="('EMPLOYEE.LABELS.DELETE_EMPLOYEE' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleEmployeeModal" 
+  >
+    <div class="confirmation-content mb-2 mt-4">
+      <p class="mb-4">
+        {{ 'EMPLOYEE.LABELS.REMOVE_EMPLOYEE_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ employeeName }}"</strong>?
+      </p>
 
-        <div class="flex justify-content-center gap-2">
-            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" (onClick)="onEmployeeDeleteConfirm()" severity="danger" [loading]="isLoading"
-                [disabled]="isLoading" />
+      <div class="flex justify-content-center gap-2">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+            icon="pi pi-trash" iconPos="left" (onClick)="onEmployeeDeleteConfirm()" severity="danger" [loading]="isLoading"
+            [disabled]="isLoading" />
 
-            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (onClick)="this.visibleEmployeeModal = false;" [disabled]="isLoading" />
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" (onClick)="this.visibleEmployeeModal = false;" [disabled]="isLoading" />
 
-        </div>
+      </div>
     </div>
-      </p-dialog>
+  </p-dialog>
 </div>
+<p-toast/>

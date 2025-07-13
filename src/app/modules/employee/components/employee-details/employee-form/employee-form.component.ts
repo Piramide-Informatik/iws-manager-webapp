@@ -214,10 +214,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: (createdEmployee) => {
-          this.handleSuccess();
-          this.resetFormAndNavigation(createdEmployee.id);
+          this.handleSuccessCreate();
+          setTimeout(()=>{
+            this.resetFormAndNavigation(createdEmployee.id);
+          },2000)
         },
-        error: (err) => this.handleError(err)
+        error: (err) => this.handleErrorCreate(err)
       })
     );
   }
@@ -231,20 +233,20 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  private handleSuccess(): void {
+  private handleSuccessCreate(): void {
     this.messageService.add({
       severity: 'success',
-      summary: this.translate.instant('CUSTOMERS.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_SUCCESS')
+      summary: this.translate.instant('MESSAGE.SUCCESS'),
+      detail: this.translate.instant('MESSAGE.CREATE_SUCCESS')
     });
   }
 
-  private handleError(err: any): void {
+  private handleErrorCreate(err: any): void {
     console.error('Error creating employee:', err);
     this.messageService.add({
       severity: 'error',
-      summary: this.translate.instant('CUSTOMERS.MESSAGE.ERROR'),
-      detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_FAILED')
+      summary: this.translate.instant('MESSAGE.ERROR'),
+      detail: this.translate.instant('MESSAGE.CREATE_FAILED')
     });
   }
 
