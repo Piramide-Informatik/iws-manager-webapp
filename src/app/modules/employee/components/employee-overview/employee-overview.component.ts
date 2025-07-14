@@ -225,18 +225,36 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         next: () => {
           this.isLoading = false;
           this.visibleEmployeeModal = false;
+          this.handleMessageSuccess();
           this.route.params.subscribe(params => {
             this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
              this.employees = employees;
             })
-         })
+          })
         },
         error: (error) => {
           this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete employee';
+          this.handleMessageError();
           console.error('Delete error:', error);
         }
       });
     }
+  }
+
+  private handleMessageSuccess(): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant('MESSAGE.SUCCESS'),
+      detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
+    });
+  }
+
+  private handleMessageError(): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translate.instant('MESSAGE.ERROR'),
+      detail: this.translate.instant('MESSAGE.DELETE_FAILED')
+    });
   }
 }
