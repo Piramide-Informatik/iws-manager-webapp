@@ -1,30 +1,46 @@
-
-$input-width:15em;
-
-.contractor-form{
-    height: auto;
+.contractor-form {
+  margin-left: 5% !important;
+  margin-right: 5% !important;
 }
 
-.contractor-buttons{
-    p-button{
-        margin-left: 3px;
-    }
+.form-container {
+  display: block !important;
 }
 
-.contractor-input{
-    width: 100% !important;   
-    display: flex;
-    align-items: center;
+.contract_input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
 
-    label {
-        width: 6em;
-    }
+  label {
+    width: 150px !important;
+    font-weight: normal;
+  }
 
-    input{
-        width: $input-width;
-    }
+  input,
+  p-select,
+  p-datepicker {
+    width: 70% !important;
+  }
+}
 
-    p-dropdown{
-        width: $input-width;
-    }
+.buttons-container {
+  display: flex;
+}
+
+.postal-city {
+  width: 70% !important;
+  display: flex;
+  gap: 5px;
+  
+  .postal {
+    width: 33.333% !important;
+    
+  }
+  .city {
+    width: 100% !important;
+  }
+
 }

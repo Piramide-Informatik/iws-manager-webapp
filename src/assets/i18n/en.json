@@ -347,6 +347,22 @@
     }
   },
   "CONTRACTS": {
+    "FORM": {
+      "CUSTOMER": "Customer",
+      "CONTRACTOR_LABEL": "Label",
+      "CONTRACTOR_NAME": "Name",
+      "COUNTRY_LABEL": "Land",
+      "STREET": "Street",
+      "ZIP_CODE": "Zip Code",
+      "CITY": "City",
+      "TAX_NUMBER": "Tax Number"
+    },
+    "LABEL": {
+      "REMOVE_CONTRACTOR_QUESTION": "Are you sure you want to delete the Contractor",
+      "CREATE_CONTRACTOR": "Create Contractor",
+      "EDIT_CONTRACTOR": "Edit Contractor",
+      "DELETE_CONTRACTOR": "Delete Contractor"
+    },
     "TABLE": {
       "CONTRACTOR_LABEL": "Label",
       "CONTRACTOR_NAME": "Name",

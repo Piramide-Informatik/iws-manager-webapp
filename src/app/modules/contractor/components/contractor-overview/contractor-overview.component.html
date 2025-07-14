@@ -6,7 +6,23 @@
     [userPreferences]="userContractorOverviewPreferences"
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserContractorOverviewPreferencesChanges($event)"
-    (onEditRegister)="goToContractDetails($event)"
-    (onCreateRegister)="createContractDetail()"
+    (onEditRegister)="handleContractorTableEvents({ type: 'edit', data: $event })"
+    (onDeleteRegister)="handleContractorTableEvents({ type: 'delete', data: $event })"
+    (onCreateRegister)="handleContractorTableEvents({ type: 'create' })"
   ></master-data-genaral-table>
+  <p-dialog 
+    [header]="modalContractorType === 'edit' 
+      ? ('CONTRACTS.LABEL.CREATE_CONTRACTOR' | translate) 
+      : modalContractorType === 'create' 
+       ? ('CONTRACTS.LABEL.EDIT_CONTRACTOR' | translate) 
+       : ('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleModal"
+  >
+    <app-contractor-details
+      [modalContractType]="modalContractorType"
+      [contractor]="currentContract"
+      (isContractVisibleModal)="onModalVisibilityChange($event)"
+    ></app-contractor-details>
+  </p-dialog>
 </div>
