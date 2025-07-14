@@ -1,35 +1,24 @@
 <div class="my-2">
-    <span class="font-semibold">{{ 'EMPLOYEE.FORM.EMPLOYMENT_CONTRACTS' | translate }}</span>
+  <span class="font-semibold">{{ 'EMPLOYEE.FORM.EMPLOYMENT_CONTRACTS' | translate }}</span>
 </div>
-<master-data-genaral-table 
-    [tableId]="tableKey" 
-    [tableValues]="employeeContracts" 
-    [columns]="selectedColumns"
-    [userPreferences]="userEmployeeDetailPreferences" 
-    [dataKeys]="dataKeys"
+<div class="employment-contract">
+  <master-data-genaral-table [tableId]="tableKey" [tableValues]="employeeContracts" [columns]="selectedColumns"
+    [userPreferences]="userEmployeeDetailPreferences" [dataKeys]="dataKeys"
     (onColumnChanges)="onUserEmployeeDetailPreferencesChanges($event)"
     (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
     (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
     (onCreateRegister)="handleTableEvents({ type: 'create' })">
-</master-data-genaral-table>
-<p-dialog 
-  [header]="modalType === 'edit' 
+  </master-data-genaral-table>
+</div>
+<p-dialog [header]="modalType === 'edit' 
     ? ('EMPLOYEE-CONTRACTS.LABEL.EDIT_EMPLOYEE_CONTRACT' | translate) 
     : modalType === 'create' 
      ? ('EMPLOYEE-CONTRACTS.LABEL.CREATE_EMPLOYEE_CONTRACT' | translate) 
-     : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" 
-  [modal]="true" 
-  [(visible)]="visibleModal"
->
-    <app-employment-contract-modal
-      [modalType]="modalType"
-      [employmentContract]="selectedEmployeeContract"
-      [currentEmployee]="currentEmployee"
-      (messageOperation)="onMessageOperation($event)"
-      (onOperationEmploymentContract)="updateEmployementContractsList($event)"
-      (isVisibleModal)="onModalVisibilityChange($event)"
-      (onEmployeeContractUpdated)="onEmployeeContractUpdated($event)"
-      (onEmployeeContractDeleted)="onEmployeeContractDeleted($event)"
-    ></app-employment-contract-modal>
+     : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" [modal]="true" [(visible)]="visibleModal">
+  <app-employment-contract-modal [modalType]="modalType" [employmentContract]="selectedEmployeeContract"
+    [currentEmployee]="currentEmployee" (messageOperation)="onMessageOperation($event)"
+    (onOperationEmploymentContract)="updateEmployementContractsList($event)"
+    (isVisibleModal)="onModalVisibilityChange($event)" (onEmployeeContractUpdated)="onEmployeeContractUpdated($event)"
+    (onEmployeeContractDeleted)="onEmployeeContractDeleted($event)"></app-employment-contract-modal>
 </p-dialog>
-<p-toast/>
+<p-toast />
