@@ -1,52 +1,81 @@
-<div class="container">
-    <div class="contractor-form p-fluid">
-
-        <div class="contractor-input mb-2">
-            <label for="customer">Kunde</label>
-            <input pInputText id="customer" [ngModel]="customer()" (ngModelChange)="customer.set($event)" />
+<ng-container *ngIf="isCreateContractorMode; else deleteContractorTemplate">
+   <form [formGroup]="contractorForm" (ngSubmit)="onSubmit()">
+    <div class="contractor-form align-items-center mb-2 mt-4">
+      <div class="form-container flex align-items-center mb-6">
+        <div class="contract_input mb-2">
+          <label for="customer">{{ 'CONTRACTS.FORM.CUSTOMER' | translate }}</label>
+          <input pInputText type="text" id="customer" formControlName="customer" autocomplete="off" />
         </div>
-
-        <div class="contractor-input mb-2">
-            <label for="contractorLabel">Kurzname</label>
-            <input pInputText id="contractorLabel" [ngModel]="contractorLabel()"
-                (ngModelChange)="contractorLabel.set($event)" />
+        <div class="contract_input mb-2">
+          <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
+          <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off" />
         </div>
-
-        <div class="contractor-input mb-2">
-            <label for="contractorName">Name</label>
-            <input pInputText id="contractorName" [ngModel]="contractorName()"
-                (ngModelChange)="contractorName.set($event)" />
+        <div class="contract_input mb-2">
+          <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
+          <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
         </div>
+        <div class="contract_input mb-2">
+          <label for="jahresauszahlung">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
+          <p-select formControlName="country" 
+            id="country"
+            [options]="countries()"
+            optionLabel="name"
+            optionValue="id"
+          >
+            <!-- Opción seleccionada (visualización en el input) -->
+            <ng-template let-country pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2" *ngIf="country">
+                <span>{{ country.name }}</span>
+              </div>
+            </ng-template>
 
-        <div class="contractor-input mb-2">
-            <label for="countryname">Land</label>
-            <p-dropdown id="countryname" [options]="countries" [ngModel]="countryname()" (ngModelChange)="countryname.set($event)" optionLabel="label" optionValue="value" placeholder="Wähle ein Land"></p-dropdown>
+           <!-- Personalización de cada opción -->
+            <ng-template let-country pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ country.name }}</span>
+              </div>
+            </ng-template>
+          </p-select>
         </div>
-
-        <div class="contractor-input mb-2">
-            <label for="street">Straße</label>
-            <input pInputText id="street" [ngModel]="street()" (ngModelChange)="street.set($event)" />
+        <div class="contract_input mb-2">
+          <label for="street">{{ 'CONTRACTS.FORM.STREET' | translate }}</label>
+          <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
         </div>
-
-        <div class="contractor-input mb-2">
-            <label for="zipcode">PLZ</label>
-            <input pInputText id="zipcode" [ngModel]="zipcode()" (ngModelChange)="zipcode.set($event)" />
+        <div class="contract_input mb-2">
+          <label for="maxstudentag">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate }}</label>
+          <div class="postal-city">
+            <input type="text" id="zipcode" class="postal" pInputText formControlName="zipcode"/>
+            <input type="text" id="city" class="city" pInputText formControlName="city"/>
+          </div>
         </div>
-
-        <div class="contractor-input mb-2">
-            <label for="city">Ort</label>
-            <input pInputText id="city" [ngModel]="city()" (ngModelChange)="city.set($event)" />
+        <div class="contract_input mb-2">
+          <label for="taxno">{{ 'CONTRACTS.FORM.TAX_NUMBER' | translate }}</label>
+          <input pInputText type="text" id="taxno" formControlName="taxno" autocomplete="off" />
         </div>
+      </div>
+    </div>
+    <div class="buttons-container flex justify-content-center gap-2 mt-4">
+      <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+      iconPos="left" (onClick)="closeModal()"/>      
+    </div>
+  </form>
+</ng-container>
+<ng-template #deleteContractorTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'CONTRACTS.LABEL.REMOVE_CONTRACTOR_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ contractor }}"</strong>?
+        </p>
 
-        <div class="contractor-input mb-2">
-            <label for="taxNumber">USt.-ID</label>
-            <input pInputText id="taxNumber" [ngModel]="taxNumber()" (ngModelChange)="taxNumber.set($event)" />
-        </div>
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" severity="danger"
+             />
 
-        <div class="contractor-buttons  mt-4">
-            <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" [disabled]="!isFormValid()" (click)="onSubmit()" (keydown.enter)="onSubmit()"></p-button>
-            <p-button [label]="'BUTTONS.DELETE' | translate" (click)="onDelete()" (keydown.backspace)="onDelete()"></p-button>
-            <p-button [label]="'BUTTONS.CANCEL' | translate" class="cancel" icon="pi pi-times"  (onClick)="goBackListContractors()" (keydown.escape)="goBackListContractors()"></p-button>
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" />
+
         </div>
     </div>
-</div>
+</ng-template>

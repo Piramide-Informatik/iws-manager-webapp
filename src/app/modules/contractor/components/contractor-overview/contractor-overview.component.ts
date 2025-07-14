@@ -40,6 +40,11 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   
   dataKeys = ['contractorLabel', 'contractorName', 'countryLabel', 'street', 'zipCode', 'city', 'taxNro'];
   
+  modalContractorType: 'create' | 'delete' | 'edit' = 'create';
+    
+  visibleModal: boolean = false;
+    
+  currentContract!: Contractor;
 
   constructor( 
     private readonly translate: TranslateService,
@@ -83,6 +88,18 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+  }
+
+  handleContractorTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
+    this.modalContractorType = event.type;
+    if (event.type === 'delete' || event.type === 'edit') {
+      this.currentContract = event.data;
+    }
+    this.visibleModal = true;
+  }
+
+  onModalVisibilityChange(visible: any): void {
+    this.visibleModal = visible;
   }
 
   onUserContractorOverviewPreferencesChanges(userContractorOverviewPreferences: any) {

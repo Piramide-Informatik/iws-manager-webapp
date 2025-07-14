@@ -346,6 +346,22 @@
     }
   },
   "CONTRACTS": {
+    "FORM": {
+      "CUSTOMER": "Kunde",
+      "CONTRACTOR_LABEL": "Kurzname",
+      "CONTRACTOR_NAME": "Name",
+      "COUNTRY_LABEL": "Land",
+      "STREET": "Straße",
+      "ZIP_CODE": "PLZ",
+      "CITY": "Ort",
+      "TAX_NUMBER": "USt.-ID"
+    },
+    "LABEL": {
+      "REMOVE_CONTRACTOR_QUESTION": "Möchten Sie den Auftragnehmer wirklich löschen",
+      "CREATE_CONTRACTOR": "Auftragnehmer erstellen",
+      "EDIT_CONTRACTOR": "Auftragnehmer bearbeiten",
+      "DELETE_CONTRACTOR": "Auftragnehmer löschen"
+    },
     "TABLE": {
       "CONTRACTOR_LABEL": "Kurzname",
       "CONTRACTOR_NAME": "Name",

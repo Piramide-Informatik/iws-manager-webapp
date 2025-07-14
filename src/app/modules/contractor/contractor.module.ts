@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ContractorRoutingModule } from './contractor-routing.module';
 import { ContractorOverviewComponent } from './components/contractor-overview/contractor-overview.component';
@@ -17,6 +17,9 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ContractorDetailsComponent } from './components/contractor-details/contractor-details.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Dialog } from 'primeng/dialog';
+import { SelectModule } from 'primeng/select';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
@@ -43,7 +46,11 @@ import { MasterDataModule } from '../master-data/master-data.module';
     TranslateModule,
     TranslatePipe,
     TranslateDirective,
-    MasterDataModule
+    MasterDataModule,
+    ConfirmDialog,
+    Dialog,
+    SelectModule,
+    ReactiveFormsModule
 ]
 })
 export class ContractorModule { }

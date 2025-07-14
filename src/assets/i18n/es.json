@@ -340,6 +340,22 @@
     }
   },
   "CONTRACTS": {
+    "FORM": {
+      "CUSTOMER": "Cliente",
+      "CONTRACTOR_LABEL": "Sigla",
+      "CONTRACTOR_NAME": "Nombre",
+      "COUNTRY_LABEL": "País",
+      "STREET": "Calle",
+      "ZIP_CODE": "Código Postal",
+      "CITY": "Ciudad",
+      "TAX_NUMBER": "Numero de Impuesto"
+    },
+    "LABEL": {
+      "REMOVE_CONTRACTOR_QUESTION": "¿Está seguro que desea eliminar el contratista",
+      "CREATE_CONTRACTOR": "Crear Contratista",
+      "EDIT_CONTRACTOR": "Editar Contratista",
+      "DELETE_CONTRACTOR": "Eliminar Contratista"
+    },
     "TABLE": {
       "CONTRACTOR_LABEL": "Sigla",
       "CONTRACTOR_NAME": "Nombre",

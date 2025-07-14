@@ -69,8 +69,8 @@
 
       <div class="field">
         <label for="qualificationFzId">{{ 'EMPLOYEE.FORM.QUALIFICATION_FZ' | translate }}</label>
-        <p-select [options]="qualificationsFZ" formControlName="qualificationFzId" [showClear]="true" optionLabel="name"
-          dateFormat="dd.mm.yy" inputId="qualificationFzId" />
+        <p-select [options]="qualificationsFZ()" optionLabel="name" optionValue="id" formControlName="qualificationFzId" 
+          [showClear]="true" inputId="qualificationFzId" />
       </div>
 
       <div class="field">
