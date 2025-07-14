@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, map, of, switchMap, take, throwError } from 'rxjs';
 import { QualificationFZService } from '../../../../../Services/qualificationfz.service';
 import { QualificationFZ } from '../../../../../Entities/qualificationfz';
@@ -7,6 +7,9 @@ import { QualificationFZ } from '../../../../../Entities/qualificationfz';
  * Utility class for qualification-related business logic and operations.
  * Works with QualificationFZService's reactive signals while providing additional functionality.
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class QualificationFZUtils {
   private readonly qualificationFZService = inject(QualificationFZService);
 
