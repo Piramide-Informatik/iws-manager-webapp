@@ -45,17 +45,17 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   constructor(
     private readonly translate: TranslateService,
     private readonly messageService: MessageService
-  ){}
+  ) { }
 
   ngAfterViewChecked(): void {
     this.loadStorageData();
   }
 
-  generateBooleanHeaders() : any[] {
+  generateBooleanHeaders(): any[] {
     return [
       {
         value: true,
-        header: this.translate.instant(_('COMMON.YES')) 
+        header: this.translate.instant(_('COMMON.YES'))
       },
       {
         value: false,
@@ -63,10 +63,10 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
       }
     ];
   }
- 
+
   changeSelect(event: any) {
     if (event.value.length === 0) {
-        this.messageService.add({
+      this.messageService.add({
         severity: 'error',
         summary: this.translate.instant('MESSAGE.ERROR'),
         detail: this.translate.instant('MESSAGE.SELECT_AT_LEAST_ONE')
@@ -125,7 +125,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
     }
   }
 
-  editRegister(register: any){
+  editRegister(register: any) {
     this.onEditRegister.emit(register);
   }
 
@@ -150,21 +150,25 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
 
   calculateOrderColumns() {
     if (this.columns) {
-       this.colOrders = this.columns.reduce((acc: any, curr: any, index: number) => {
-       acc[curr.field] = index;
-       return acc;
+      this.colOrders = this.columns.reduce((acc: any, curr: any, index: number) => {
+        acc[curr.field] = index;
+        return acc;
       }, {})
     }
   }
 
   processColumnsOrders() {
     const aux = this.userPreferences[this.tableId].displayedColumns;
-    this.userPreferences[this.tableId].displayedColumns = aux.map((column: any) => Object.assign(column, {pos: this.colOrders[column.field]})).sort((a: any, b: any) => a.pos > b.pos);
+    this.userPreferences[this.tableId].displayedColumns = aux.map((column: any) => Object.assign(column, { pos: this.colOrders[column.field] })).sort((a: any, b: any) => a.pos > b.pos);
   }
   loadStorageData() {
     if (!localStorage.getItem(this.dt2.stateKey ?? '')) {
-       this.dt2._filter(); 
+      this.dt2._filter();
     }
+  }
+
+  getNestedValue(obj: any, path: string): any {
+    return path.split('.').reduce((acc, part) => acc?.[part], obj);
   }
 
 }
