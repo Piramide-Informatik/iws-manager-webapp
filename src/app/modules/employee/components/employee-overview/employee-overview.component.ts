@@ -117,7 +117,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       { field: 'shareholdersince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
       { field: 'soleproprietorsince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
       { field: 'coentrepreneursince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
-      { field: 'qualificationFZ', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
+      { field: 'qualificationFZ.qualification', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
       { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
     ];
