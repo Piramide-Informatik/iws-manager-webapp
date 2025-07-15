@@ -91,10 +91,13 @@
             </ng-container>
             <ng-template #normalText>
               {{
-              col.type === 'date'
-              ? col.format ? (getNestedValue(row, col.field) | date : col.format) : (getNestedValue(row, col.field) |
-              date : defaultDateFormat)
-              : getNestedValue(row, col.field)
+               col.type === 'date'
+              ? col.format 
+                ? (getNestedValue(row, col.field) | date:col.format) 
+                : (getNestedValue(row, col.field) | date:defaultDateFormat)
+              : col.type === 'double'
+                ? (row[col.field] | number:'1.2-2')
+                : getNestedValue(row, col.field)
               }}
             </ng-template>
           </ng-template>
