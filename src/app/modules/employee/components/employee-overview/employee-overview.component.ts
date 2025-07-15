@@ -19,6 +19,7 @@ interface Column {
   customExportHeader?: string;
   routerLink?: (row: any) => string;
   type?: string;
+  isNumeric?: boolean;  
 }
 
 interface ExportColumn {
@@ -108,15 +109,16 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       { 
         field: 'employeeno',
         routerLink: (row: any) => `./employee-details/${row.id}`,
-        header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')) 
+        header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')),
+        isNumeric: true
       },
       { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
       { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
       { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
-      { field: 'generalmanagersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')) },
-      { field: 'shareholdersince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')) },
-      { field: 'soleproprietorsince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')) },
-      { field: 'coentrepreneursince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')) },
+      { field: 'generalmanagersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')), isNumeric: true },
+      { field: 'shareholdersince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')), isNumeric: true },
+      { field: 'soleproprietorsince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), isNumeric: true },
+      { field: 'coentrepreneursince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')), isNumeric: true },
       { field: 'qualificationFZ', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
       { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
