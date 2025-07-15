@@ -12,9 +12,9 @@
   ></master-data-genaral-table>
   <p-dialog 
     [header]="modalContractorType === 'edit' 
-      ? ('CONTRACTS.LABEL.CREATE_CONTRACTOR' | translate) 
+      ? ('CONTRACTS.LABEL.EDIT_CONTRACTOR' | translate) 
       : modalContractorType === 'create' 
-       ? ('CONTRACTS.LABEL.EDIT_CONTRACTOR' | translate) 
+       ? ('CONTRACTS.LABEL.CREATE_CONTRACTOR' | translate) 
        : ('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" 
     [modal]="true" 
     [(visible)]="visibleModal"

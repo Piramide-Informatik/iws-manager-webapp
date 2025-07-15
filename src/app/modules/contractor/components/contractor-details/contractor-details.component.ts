@@ -30,7 +30,6 @@ export class ContractorDetailsComponent {
     private readonly fb: FormBuilder
   ) {
     this.contractorForm = this.fb.group({
-      customer: [''],
       contractorlabel: [''],
       contractorname: [''],
       country: [''],
