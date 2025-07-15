@@ -67,6 +67,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
         field: 'rate',
         styles: { width: '100px' },
         header: this.translate.instant(_('FUNDING.TABLE.RATE')),
+        isNumeric: true
       },
     ];
   }

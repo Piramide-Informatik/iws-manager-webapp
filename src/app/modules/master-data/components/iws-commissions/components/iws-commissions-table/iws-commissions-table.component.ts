@@ -51,11 +51,13 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
         field: 'threshold',
         styles: { width: '120px' },
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.THRESHOLD')),
+        isNumeric: true,
       },
       {
         field: 'percentage',
         styles: { width: '120px' },
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.PERCENTAGE')),
+        isNumeric: true,
       },
       {
         field: 'minCommission',
@@ -63,6 +65,7 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
         header: this.translate.instant(
           _('IWS_COMMISSIONS.TABLE.MIN_COMMISSION')
         ),
+        isNumeric: true,
       },
     ];
   }
