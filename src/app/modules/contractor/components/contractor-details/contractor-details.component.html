@@ -21,6 +21,8 @@
             [options]="countries()"
             optionLabel="name"
             optionValue="id"
+            appendTo="body"
+            [showClear]="true"
           >
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">

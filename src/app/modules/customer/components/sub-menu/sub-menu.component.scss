@@ -3,6 +3,7 @@
 .sidebar {
   width: 100%;
   background: $accent-color;
+  overflow-x: auto;
 
   .sidebar-content {
     display: flex;
