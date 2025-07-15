@@ -399,7 +399,7 @@
     },
     "DELETE": {
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
-      "CONFIRMATION": "Eliminar Saludo"
+      "CONFIRMATION": "Eliminar saludo"
     },
     "LABEL": {
       "EDIT_TITLE": "Editar Saludo",

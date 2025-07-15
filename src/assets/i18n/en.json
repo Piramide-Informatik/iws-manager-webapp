@@ -406,7 +406,7 @@
     },
     "DELETE": {
       "CONFIRM_QUESTION": "Are you sure you want to delete the Salutation ",
-      "CONFIRMATION": "Delete Salutation"
+      "CONFIRMATION": "Delete salutation"
     },
     "LABEL": {
       "EDIT_TITLE": "Edit Salutation",
