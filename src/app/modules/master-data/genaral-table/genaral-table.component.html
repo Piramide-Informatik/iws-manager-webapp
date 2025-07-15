@@ -92,7 +92,9 @@
                  {{
                  col.type === 'date'
                  ? col.format ? (row[col.field] | date : col.format) : (row[col.field] | date : defaultDateFormat)
-                 : row[col.field]
+                 : col.type === 'double' 
+                    ? (row[col.field] | number:'1.2-2')
+                    : row[col.field]
                  }}
                </ng-template>
              </ng-template>
