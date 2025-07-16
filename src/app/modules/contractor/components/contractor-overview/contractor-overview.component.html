@@ -23,6 +23,7 @@
       [modalContractType]="modalContractorType"
       [contractor]="currentContract"
       (isContractVisibleModal)="onModalVisibilityChange($event)"
+      (contractorUpdated)="onContractorUpdated($event)"
     ></app-contractor-details>
   </p-dialog>
 </div>

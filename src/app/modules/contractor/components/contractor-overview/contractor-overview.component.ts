@@ -142,4 +142,12 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  onContractorUpdated(updated: Contractor): void {
+    const index = this.contractors.findIndex(c => c.id === updated.id);
+    if (index !== -1) {
+      this.contractors[index] = { ...updated };
+      this.contractors = [...this.contractors];
+    }
+  }
+
 }
