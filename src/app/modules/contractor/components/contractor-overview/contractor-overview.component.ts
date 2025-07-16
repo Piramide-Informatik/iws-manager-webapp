@@ -79,7 +79,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
       });
 
       this.contractorUtils.getAllContractorsByCustomerId(customerId).subscribe(contractors => {
-        this.contractors = contractors;
+        this.contractors = [...contractors].reverse();
       });
     });
   }
