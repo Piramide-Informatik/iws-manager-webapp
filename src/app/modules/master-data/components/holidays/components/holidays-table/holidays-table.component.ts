@@ -62,6 +62,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy {
         field: 'sort',
         styles: { width: '100px' },
         header: this.translate.instant(_('HOLIDAYS.TABLE.SORT')),
+        customClasses: ['align-right'] 
       },
       {
         field: 'name',

@@ -46,7 +46,7 @@ export class RealitationProbabilitiesComponent {
   
   loadColHeadersProbabilities(): void {
     this.columsHeaderFieldProbabilities = [
-      { field: 'realizationProbabilities', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.REALIZATION_PROBABILITIES')) },
+      { field: 'realizationProbabilities', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.REALIZATION_PROBABILITIES')), customClasses: ['align-right'] },
     ];
   }
   

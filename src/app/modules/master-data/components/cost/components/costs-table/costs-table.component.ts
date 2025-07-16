@@ -1,7 +1,7 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 
@@ -63,6 +63,7 @@ export class CostsTableComponent implements OnInit, OnDestroy {
         field: 'sort',
         styles: { width: '100px' },
         header: this.translate.instant(_('COSTS.TABLE.SORT')),
+        customClasses: ['align-right']
       },
     ];
   }

@@ -47,7 +47,7 @@ export class ProjectFunnelsComponent {
 
   loadColHeadersProjectFunnels(): void {
     this.columsHeaderFieldProjecFunnels = [
-      { field: 'id', styles: {'width': 'auto'}, header: 'Nr' },
+      { field: 'id', styles: {'width': 'auto'}, header: 'Nr', customClasses: ['align-right'] },
       { field: 'projectSponsor', styles: {'width': 'auto'},  header: this.translate.instant(_('PROJECT_FUNNELS.TABLE.PROJECT_SPONSOR')) },
     ];
   }
