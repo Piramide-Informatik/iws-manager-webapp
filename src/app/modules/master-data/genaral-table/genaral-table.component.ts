@@ -4,6 +4,9 @@ import { MessageService } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
+import localeDe from '@angular/common/locales/de';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeDe, 'de-DE');
 
 @Component({
   selector: 'master-data-genaral-table',

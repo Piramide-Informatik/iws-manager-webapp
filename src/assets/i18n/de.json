@@ -223,7 +223,7 @@
       "EMAIL_ADDRESS": "Mailadresse"
     },
     "LABELS": {
-      "TITLE_DIALOG_CREATE": "Neue Ansprechpartner",
+      "TITLE_DIALOG_CREATE": "Neuer Ansprechpartner",
       "TITLE_DIALOG_EDIT": "Ansprechpartner bearbeiten",
       "TITLE_DIALOG_DELETE": "Ansprechpartner Löschen",
       "CONFIRM_QUESTION_DELETE": "Sind Sie sicher, dass Sie den Ansprechpartner löschen möchten: ",
