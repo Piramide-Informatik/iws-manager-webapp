@@ -1,12 +1,15 @@
-import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Subscription } from 'rxjs';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { ContractorUtils } from '../../utils/contractor-utils';
+import { Contractor } from '../../../../Entities/contractor';
+import { Customer } from '../../../../Entities/customer';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import { Contractor } from '../../../../Entities/contractor';
 import { buildCustomer } from '../../../shared/utils/builders/customer';
 import { buildCountry } from '../../../shared/utils/builders/country';
 
@@ -16,23 +19,28 @@ import { buildCountry } from '../../../shared/utils/builders/country';
   templateUrl: './contractor-details.component.html',
   styleUrl: './contractor-details.component.scss'
 })
-export class ContractorDetailsComponent implements OnInit, OnChanges {
-
-  private readonly countryUtils = inject(CountryUtils);
+export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy {
   private readonly contractorUtils = inject(ContractorUtils);
+  private readonly countryUtils = inject(CountryUtils);
+  private readonly customerUtils = inject(CustomerUtils);
+  private readonly route = inject(ActivatedRoute);
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
   private readonly subscription = new Subscription();
 
+  public contractId!: number;
   public contractorForm!: FormGroup;
   public showOCCErrorModalContractor = false;
   private loading = false;
 
-
+  @Input() currentCustomer!: Customer | undefined;
   @Input() contractor: Contractor | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
+  @Output() onMessageOperation = new EventEmitter<{severity: string, summary: string, detail: string}>()
   @Output() contractorUpdated = new EventEmitter<Contractor>();
+  @Output() contractorCreated = new EventEmitter<Contractor>();
+  
 
   countries = toSignal(
     this.countryUtils.getCountriesSortedByName().pipe(
@@ -55,6 +63,27 @@ export class ContractorDetailsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initFormContractor();
+    if(this.modalContractType === 'create'){
+      this.getCurrentCustomer();
+    }
+  }
+
+  ngOnDestroy() {
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
+  }
+
+  private getCurrentCustomer(): void {
+    this.route.params.subscribe(params => {
+      const customerId = params['id'];
+
+      this.subscription.add(
+        this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+          this.currentCustomer = customer;
+        })
+      );
+    });
   }
 
   private initFormContractor(): void {
@@ -83,14 +112,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges {
     }
     if (this.modalContractType === 'create') {
       this.contractorForm.reset();
-    }
-  }
-
-  onSubmit() {
-    if (this.modalContractType === 'create') {
-      this.createContractor();
-    } else if (this.modalContractType === 'edit') {
-      this.updateContractor();
     }
   }
 
@@ -124,10 +145,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges {
   private getSelectedCountry(): any {
     const selectedCountryId = this.contractorForm.value.country;
     return this.countries().find(c => c.id === selectedCountryId);
-  }
-
-  createContractor() { 
-     // comment explaining why the method is empty
   }
 
   updateContractor() {
@@ -167,12 +184,18 @@ export class ContractorDetailsComponent implements OnInit, OnChanges {
     return this.modalContractType !== 'delete';
   }
 
-  private showSuccess(detail: string): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
-      detail
-    });
+  onSubmit() {
+    if (this.contractorForm.valid) {
+
+      if (this.modalContractType === 'create') {
+        const newContractor = this.buildContractorFromForm();
+        this.createContractor(newContractor);
+      } else if(this.modalContractType === 'edit') {
+        this.updateContractor();
+      } else {
+        console.log('delete');
+      }
+    }
   }
 
   private showError(detail: string): void {
@@ -191,6 +214,59 @@ export class ContractorDetailsComponent implements OnInit, OnChanges {
     });
     this.isContractVisibleModal.emit(false);
     this.contractorUpdated.emit(updatedContractor);
+  }
+
+  private createContractor(newContractor: Omit<Contractor, 'id'>): void {
+    this.subscription.add(
+      this.contractorUtils.createNewContractor(newContractor).subscribe({
+        next: () => {
+          this.handleMessageOperation({
+            severity: 'success',
+            summary: 'MESSAGE.SUCCESS',
+            detail: 'MESSAGE.CREATE_SUCCESS'
+          });
+          this.closeModal();
+        },
+        error: (err) => {
+          console.log('Error creating contractor', err);
+          this.handleMessageOperation({
+            severity: 'error',
+            summary: 'MESSAGE.ERROR',
+            detail: 'MESSAGE.CREATE_FAILED'
+          });
+          this.closeModal();
+        }
+      })
+    )
+  }
+
+  private buildContractorFromForm(): Omit<Contractor, 'id'> {
+    return {
+      version: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      city: this.contractorForm.value.city,
+      label: this.contractorForm.value.contractorlabel,
+      name: this.contractorForm.value.contractorname,
+      number: 0,
+      street: this.contractorForm.value.street,
+      taxNumber: this.contractorForm.value.taxno,
+      zipCode: this.contractorForm.value.zipcode,
+      country: {
+        id: this.contractorForm.value.country,
+        version: 0,
+        createdAt: '',
+        updatedAt: '',
+        isDefault: false,
+        label: '',
+        name: ''
+      },
+      customer: this.currentCustomer ?? null
+    }
+  }
+
+  private handleMessageOperation(message: {severity: string, summary: string, detail: string}): void {
+    this.onMessageOperation.emit(message);
   }
 
   closeModal(): void {

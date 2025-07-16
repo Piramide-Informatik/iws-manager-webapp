@@ -11,7 +11,7 @@
           <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
         </div>
         <div class="contract_input mb-2">
-          <label for="jahresauszahlung">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
+          <label for="country">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
           <p-select formControlName="country" id="country" [options]="countries()" optionLabel="name" optionValue="id"
             appendTo="body" [showClear]="true">
             <!-- Opción seleccionada (visualización en el input) -->
@@ -34,11 +34,10 @@
           <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
         </div>
         <div class="contract_input mb-2">
-          <label for="maxstudentag">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate
-            }}</label>
+          <label for="zipcode">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate }}</label>
           <div class="postal-city">
-            <input type="text" id="zipcode" class="postal" pInputText formControlName="zipcode" />
-            <input type="text" id="city" class="city" pInputText formControlName="city" />
+            <input type="text" id="zipcode" class="postal" pInputText formControlName="zipcode"/>
+            <input type="text" id="city" class="city" pInputText formControlName="city"/>
           </div>
         </div>
         <div class="contract_input mb-2">

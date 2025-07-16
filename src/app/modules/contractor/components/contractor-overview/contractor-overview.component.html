@@ -21,9 +21,12 @@
   >
     <app-contractor-details
       [modalContractType]="modalContractorType"
+      [currentCustomer]="customer"
       [contractor]="currentContract"
+      (onMessageOperation)="messageOperation($event)"
       (isContractVisibleModal)="onModalVisibilityChange($event)"
       (contractorUpdated)="onContractorUpdated($event)"
     ></app-contractor-details>
   </p-dialog>
 </div>
+<p-toast/>
