@@ -47,7 +47,7 @@ button.p-ripple.p-button.p-component {
 
 //Cancel button
 .cancel button.p-ripple.p-button {
-  background-color: #fff ;
+  background-color: #fff;
   color: $primary-color;
   border: 1px solid $primary-color;
 }
@@ -86,7 +86,7 @@ input,
   }
 }
 
-.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
+.p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(odd) {
   background-color: #34495e38 !important;
 }
 
@@ -103,34 +103,32 @@ th {
   width: 1.5rem !important;
 }
 
-.w-13em
-  .p-datepicker:has(.p-datepicker-input-icon-container)
-  .p-datepicker-input {
+.w-13em .p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
   width: 15em !important;
 }
 
-.p-datatable-thead > tr > th.p-datatable-column-sorted {
+.p-datatable-thead>tr>th.p-datatable-column-sorted {
   background: $primary-color !important;
   color: #fff !important;
 }
 
-.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider{
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
   background: $primary-color !important;
 }
 
-.p-toggleswitch-handle{
+.p-toggleswitch-handle {
   background: #fff !important;
   color: $primary-color !important;
   border-color: $primary-color !important;
 }
 
-.p-toggleswitch-slider{
+.p-toggleswitch-slider {
   background: #fff !important;
   border-color: $primary-color !important;
 }
 
 // Submenu popup activated by hover
-.p-tieredmenu-root-list .p-tieredmenu-item:hover  .p-tieredmenu-submenu {
+.p-tieredmenu-root-list .p-tieredmenu-item:hover .p-tieredmenu-submenu {
   display: block !important;
   position: absolute !important;
   left: 100% !important;
@@ -154,20 +152,20 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
 }
 
 // Selected item popup
-.p-tieredmenu-item-content  {
+.p-tieredmenu-item-content {
   color: #fff !important;
   background: transparent !important;
   border-radius: 6px !important;
 }
 
-.p-tieredmenu-item-active > .p-tieredmenu-item-content {
+.p-tieredmenu-item-active>.p-tieredmenu-item-content {
   color: #fff !important;
   background: #30465d !important;
   border-radius: 6px !important;
 }
 
 // Hover item popup
-.p-tieredmenu-item:not(.p-disabled) > .p-tieredmenu-item-content:hover {
+.p-tieredmenu-item:not(.p-disabled)>.p-tieredmenu-item-content:hover {
   color: #fff !important;
   background: #30465d !important;
   border-radius: 6px;
@@ -188,7 +186,7 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
   background: #ffffff !important;
 }
 
-.p-checkbox.p-checkbox-checked .p-checkbox-box{
+.p-checkbox.p-checkbox-checked .p-checkbox-box {
   background: #267bbf !important;
   border-color: #267bbf !important;
 }
@@ -197,15 +195,17 @@ div.p-tieredmenu.p-component.p-tieredmenu-overlay {
 p-multiselect.p-component.p-inputwrapper.p-multiselect {
   width: inherit;
   min-width: 130px !important;
+
   .p-multiselect-label-container {
     height: 25px !important;
-    .p-multiselect-label{
+
+    .p-multiselect-label {
       padding: 3.5px 0.75rem !important;
     }
   }
 }
 
-/* Hide columns in cell table */ 
+/* Hide columns in cell table */
 #hide-columns {
   overflow: inherit;
   padding: 0 !important;
@@ -218,18 +218,18 @@ p-multiselect.p-component.p-inputwrapper.p-multiselect {
     min-width: auto !important;
     height: 25px !important;
     display: flex;
-    align-items: center; 
-    justify-content: center; 
-    gap: 0; 
+    align-items: center;
+    justify-content: center;
+    gap: 0;
   }
 
   .p-multiselect-label-container {
-    display: none !important; 
+    display: none !important;
   }
 
   .p-multiselect-dropdown-icon {
     color: #fff !important;
-    font-size: 1.2rem; 
+    font-size: 1.2rem;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -237,12 +237,36 @@ p-multiselect.p-component.p-inputwrapper.p-multiselect {
   }
 }
 
-#pn_id_1-table{
+#pn_id_1-table {
   width: 100% !important;
 }
 
+.employment-contract {
+
+  #pn_id_1-table>.p-datatable-thead>tr>th:nth-child(1),
+  #pn_id_1-table>.p-datatable-tbody>tr>td:nth-child(1),
+  #pn_id_1-table>.p-datatable-tfoot>tr>td:nth-child(1) {
+    width: 72px !important;
+    max-width: 72px !important;
+  }
+
+  #pn_id_1-table>.p-datatable-thead>tr>th:nth-child(n+2):nth-child(-n+8),
+  #pn_id_1-table>.p-datatable-tbody>tr>td:nth-child(n+2):nth-child(-n+8),
+  #pn_id_1-table>.p-datatable-tfoot>tr>td:nth-child(n+2):nth-child(-n+8) {
+    width: 147px !important;
+    max-width: 147px !important;
+    min-width: 147px !important;
+  }
+
+  .p-inputtext {
+    min-width: 80px !important;
+    width: 100% !important;
+  }
+}
+
 /*Styles password*/
-.user-form .p-password, .p-password-input {
+.user-form .p-password,
+.p-password-input {
   width: 100% !important;
   max-width: 100%;
   box-sizing: border-box;
@@ -257,14 +281,14 @@ p-password {
 
 /* Cambia el color de los íconos de los controles del PickList */
 .p-picklist .p-button svg {
-  color: #ffffff !important; 
+  color: #ffffff !important;
 }
 
 /* Form modals create and delete */
 .p-dialog-header {
   background: $primary-color !important;
   text-align: center;
-  padding: 0.4rem 1rem !important; 
+  padding: 0.4rem 1rem !important;
   min-height: unset !important;
   border-top-left-radius: 10px !important;
   border-top-right-radius: 10px !important;
@@ -291,11 +315,11 @@ p-password {
 
 .p-dialog {
   border: none !important;
-  box-shadow: none !important; 
-  border-radius: 11px !important; 
+  box-shadow: none !important;
+  border-radius: 11px !important;
 }
 
-thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue{
+thead.p-datatable-thead>tr>th#hide-columns.thead-bg-blue {
   width: 75px !important;
   max-width: 75px !important;
   min-width: 75px !important;

@@ -115,7 +115,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
  }
 
   goToContractDetails(currentContract: Contractor) {
-    this.router.navigate(['contract-details', currentContract.contractorLabel], { 
+    this.router.navigate(['contract-details', currentContract.label], { 
       relativeTo: this.route,
       state: { customer: "Joe Doe", contractData: currentContract } 
     });

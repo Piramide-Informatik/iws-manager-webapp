@@ -95,13 +95,13 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
   loadEmployeeContractColumns() {
     this.cols = [
       { field: 'startDate', type: 'date', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.START_DATE')), customClasses: ['align-right'] },
-      { field: 'salaryPerMonth', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SALARY_PER_MONTH')), customClasses: ['align-right'] },
+      { field: 'salaryPerMonth', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SALARY_PER_MONTH')), customClasses: ['align-right'] },
       { field: 'hoursPerWeek', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WEEKLY_HOURS')), customClasses: ['align-right'] },
       { field: 'workShortTime', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WORK_SHORT_TIME')), customClasses: ['align-right'] },
       { field: 'maxHoursPerMonth', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.MAX_HOURS_PER_MONTH')), customClasses: ['align-right'] },
       { field: 'maxHoursPerDay', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.MAX_HOURS_PER_DAY')), customClasses: ['align-right'] },
-      { field: 'hourlyRate', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.HOURLY_RATE')), customClasses: ['align-right'] },
-      { field: 'specialPayment', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SPECIAL_PAYMENT')), customClasses: ['align-right'] }
+      { field: 'hourlyRate', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.HOURLY_RATE')) },
+      { field: 'specialPayment', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SPECIAL_PAYMENT')), customClasses: ['align-right'] }
     ];
   }
   onUserEmployeeDetailPreferencesChanges(userEmployeeDetailPreferences: any) {
