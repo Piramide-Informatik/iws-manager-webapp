@@ -7,7 +7,6 @@ import { ContractorUtils } from '../../utils/contractor-utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Contractor } from '../../../../Entities/contractor';
-import { buildContractor } from '../../../shared/utils/builders/contractor';
 import { buildCustomer } from '../../../shared/utils/builders/customer';
 import { buildCountry } from '../../../shared/utils/builders/country';
 
@@ -127,8 +126,10 @@ export class ContractorDetailsComponent implements OnInit, OnChanges {
     return this.countries().find(c => c.id === selectedCountryId);
   }
 
+  createContractor() { 
+     // comment explaining why the method is empty
+  }
 
-  createContractor() { }
   updateContractor() {
     if (!this.validateContractorForUpdate()) return;
     this.loading = true;
