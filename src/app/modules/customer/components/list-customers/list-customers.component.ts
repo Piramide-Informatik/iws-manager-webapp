@@ -28,7 +28,6 @@ interface Column {
   filter?: any;
   customClasses?: string[];
   routerLink?: (row: any) => string;
-  isNumeric?: boolean;  
 }
 
 @Component({
@@ -224,8 +223,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       {
         field: 'id',
         minWidth: 110,
+        customClasses: ['align-right'],
         header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')),
-        isNumeric: true 
       },
       {
         field: 'companyName',

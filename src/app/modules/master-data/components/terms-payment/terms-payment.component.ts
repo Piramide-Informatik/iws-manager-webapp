@@ -46,7 +46,7 @@ export class TermsPaymentComponent {
   loadColHeadersTermsPayment(): void {
     this.columsHeaderFieldTermsPayment = [
       { field: 'termsPayment', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERMS_OF_PAYMENT')) },
-      { field: 'termPayment', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERM_OF_PAYMENT')), isNumeric: true },
+      { field: 'termPayment', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERM_OF_PAYMENT')), customClasses: ['align-right'] },
     ];
   }
 
