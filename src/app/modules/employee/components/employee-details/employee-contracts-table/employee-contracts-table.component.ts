@@ -100,7 +100,7 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
       { field: 'workShortTime', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WORK_SHORT_TIME')), customClasses: ['align-right'] },
       { field: 'maxHoursPerMonth', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.MAX_HOURS_PER_MONTH')), customClasses: ['align-right'] },
       { field: 'maxHoursPerDay', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.MAX_HOURS_PER_DAY')), customClasses: ['align-right'] },
-      { field: 'hourlyRate', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.HOURLY_RATE')) },
+      { field: 'hourlyRate', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.HOURLY_RATE')), customClasses: ['align-right'] },
       { field: 'specialPayment', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SPECIAL_PAYMENT')), customClasses: ['align-right'] }
     ];
   }
