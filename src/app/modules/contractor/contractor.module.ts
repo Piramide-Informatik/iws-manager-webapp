@@ -23,6 +23,7 @@ import { SelectModule } from 'primeng/select';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { MasterDataModule } from '../master-data/master-data.module';
     ConfirmDialog,
     Dialog,
     SelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
 ]
 })
 export class ContractorModule { }

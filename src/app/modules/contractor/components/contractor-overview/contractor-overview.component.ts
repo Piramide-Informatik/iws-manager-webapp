@@ -9,6 +9,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { ContractorUtils } from '../../utils/contractor-utils';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string,
@@ -20,7 +21,8 @@ interface Column {
   selector: 'app-contractor-overview',
   standalone: false,
   templateUrl: './contractor-overview.component.html',
-  styleUrl: './contractor-overview.component.scss'
+  styleUrl: './contractor-overview.component.scss',
+  providers: [MessageService]
 })
 export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
@@ -53,6 +55,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly messageService = inject(MessageService);
 
 
   ngOnInit(): void {
@@ -83,7 +86,6 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.customerLabel = this.translate.instant(_('COMMON.CONTRACTOR_NAME'));
-    console.log(this.customerLabel);
     this.cols = [
       {
         field: 'label',
@@ -107,6 +109,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   handleContractorTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalContractorType = event.type;
+    
     if (event.type === 'delete' || event.type === 'edit') {
       this.currentContract = event.data;
     }
@@ -145,4 +148,20 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   onContractorDeleted(contractorId: number) {
     this.contractors = this.contractors.filter(contract => contract.id !== contractorId);
   }
+  public messageOperation(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail))
+    })
+  }
+  
+  onContractorUpdated(updated: Contractor): void {
+    const index = this.contractors.findIndex(c => c.id === updated.id);
+    if (index !== -1) {
+      this.contractors[index] = { ...updated };
+      this.contractors = [...this.contractors];
+    }
+  }
+
 }

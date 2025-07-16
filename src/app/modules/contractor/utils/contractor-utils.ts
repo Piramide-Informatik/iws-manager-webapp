@@ -75,25 +75,6 @@ export class ContractorUtils {
   }
 
   /**
-  * Gets all contractors sorted alphabetically by contractorName
-  * @returns Observable emitting sorted array of contractor
-  */
-  // getContractorsSortedByName(): Observable<Contractor[]> {
-  //   return this.contractorService.getAllContractors().pipe(
-  //     map((contractors: Contractor[]) => {
-  //       if (!Array.isArray(contractors)) {
-  //         return [];
-  //       }
-  //       // Filtra los contratistas con nombre válido y ordena alfabéticamente
-  //       return contractors
-  //       .filter(contractor => !!contractor.contractorName && contractor.contractorName.trim() !== '')
-  //       .sort((a, b) => (a.contractorName ?? '').localeCompare(b.contractorName ?? ''));
-  //     }),
-  //     catchError(() => throwError(() => new Error('Failed to sort contractors')))
-  //   );
-  // }
-
-  /**
    * Refreshes contractors data
    * @returns Observable that completes when refresh is done
    */
