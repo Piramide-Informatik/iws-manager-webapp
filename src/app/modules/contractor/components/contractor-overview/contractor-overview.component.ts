@@ -142,4 +142,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  onContractorDeleted(contractorId: number) {
+    this.contractors = this.contractors.filter(contract => contract.id !== contractorId);
+  }
 }
