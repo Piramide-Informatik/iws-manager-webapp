@@ -1,6 +1,6 @@
 //Angular
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -240,6 +240,6 @@ import { SharedModule } from '../shared/shared.module';
   exports: [
     GenaralTableComponent
   ],
-  providers: [UserPreferenceService, TitleUtils, CountryUtils, MessageService]
+  providers: [UserPreferenceService, TitleUtils, CountryUtils, MessageService, DatePipe]
 })
 export class MasterDataModule {}

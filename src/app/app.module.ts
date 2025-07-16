@@ -12,7 +12,7 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS, registerLocaleData } from '@angular/common';
 
 //Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -42,10 +42,20 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { ContractorModule } from './modules/contractor/contractor.module';
 import { BlankComponent } from './core/components/blank/blank.component';
 import { UserPreferenceService } from './Services/user-preferences.service';
+import { LocaleProvider } from './locale/locale.provider';
+
+//locales
+import localeEs from '@angular/common/locales/es';
+import localeEn from '@angular/common/locales/en';
+import localeDe from '@angular/common/locales/de';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+registerLocaleData(localeEs);
+registerLocaleData(localeEn);
+registerLocaleData(localeDe);
 
 @NgModule({
   declarations: [AppComponent, BlankComponent],
@@ -99,9 +109,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     provideHttpClient(),
     {
       provide: DATE_PIPE_DEFAULT_OPTIONS,
-      useValue: { dateFormat: "longDate" }
+      useValue: { dateFormat: "dd/MM/yyyy" }
     },
-    UserPreferenceService
+    UserPreferenceService,
+    LocaleProvider
   ],
   bootstrap: [AppComponent],
 })

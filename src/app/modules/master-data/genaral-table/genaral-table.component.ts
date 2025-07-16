@@ -4,6 +4,8 @@ import { MessageService } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
+import { LocaleService } from '../../../Services/locale.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'master-data-genaral-table',
