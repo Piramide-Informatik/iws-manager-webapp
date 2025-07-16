@@ -3,12 +3,12 @@
     <div class="contractor-form align-items-center mb-2 mt-4">
       <div class="form-container flex align-items-center mb-6">
         <div class="contract_input mb-2">
-          <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
-          <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off" />
+          <label for="label">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
+          <input pInputText type="text" id="label" formControlName="label" autocomplete="off" />
         </div>
         <div class="contract_input mb-2">
-          <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
-          <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
+          <label for="name">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
+          <input pInputText type="text" id="name" formControlName="name" autocomplete="off" />
         </div>
         <div class="contract_input mb-2">
           <label for="jahresauszahlung">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
@@ -40,15 +40,15 @@
           <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
         </div>
         <div class="contract_input mb-2">
-          <label for="maxstudentag">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate }}</label>
+          <label for="zipCode">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate }}</label>
           <div class="postal-city">
-            <input type="text" id="zipcode" class="postal" pInputText formControlName="zipcode"/>
+            <input type="text" id="zipCode" class="postal" pInputText formControlName="zipCode"/>
             <input type="text" id="city" class="city" pInputText formControlName="city"/>
           </div>
         </div>
         <div class="contract_input mb-2">
-          <label for="taxno">{{ 'CONTRACTS.FORM.TAX_NUMBER' | translate }}</label>
-          <input pInputText type="text" id="taxno" formControlName="taxno" autocomplete="off" />
+          <label for="taxNumber">{{ 'CONTRACTS.FORM.TAX_NUMBER' | translate }}</label>
+          <input pInputText type="text" id="taxNumber" formControlName="taxNumber" autocomplete="off" />
         </div>
       </div>
     </div>
