@@ -110,8 +110,14 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   handleContractorTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalContractorType = event.type;
     
-    if (event.type === 'delete' || event.type === 'edit') {
+    if (event.type === 'edit') {
       this.currentContract = event.data;
+    }
+    if (event.type === 'delete') {
+      const tempContractor = this.contractors.find((contractor) => contractor.id === Number(event.data));
+      if (tempContractor) {
+        this.currentContract = tempContractor;
+      }
     }
     this.visibleModal = true;
   }

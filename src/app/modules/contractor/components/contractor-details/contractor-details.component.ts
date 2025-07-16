@@ -271,10 +271,10 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   removeContractor() {
-    this.contractorUtils.deleteContractor(this.contractor).subscribe({
+    this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
       next: () => {
         this.isContractVisibleModal.emit(false);
-        this.onContractorDeleted.emit(this.contractor);
+        this.onContractorDeleted.emit(this.contractor.id);
         this.messageService.add({
           severity: 'success',
           summary: this.translate.instant('MESSAGE.SUCCESS'),
