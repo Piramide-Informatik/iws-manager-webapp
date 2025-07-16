@@ -86,7 +86,6 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.customerLabel = this.translate.instant(_('COMMON.CONTRACTOR_NAME'));
-    console.log(this.customerLabel);
     this.cols = [
       {
         field: 'label',
@@ -110,6 +109,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   handleContractorTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalContractorType = event.type;
+    
     if (event.type === 'delete' || event.type === 'edit') {
       this.currentContract = event.data;
     }
@@ -145,6 +145,9 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  onContractorDeleted(contractorId: number) {
+    this.contractors = this.contractors.filter(contract => contract.id !== contractorId);
+  }
   public messageOperation(message: {severity: string, summary: string, detail: string}): void {
     this.messageService.add({
       severity: message.severity,

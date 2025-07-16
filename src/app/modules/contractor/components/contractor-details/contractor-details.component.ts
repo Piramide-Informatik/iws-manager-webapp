@@ -4,12 +4,12 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { map, Subscription } from 'rxjs';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { ContractorUtils } from '../../utils/contractor-utils';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 import { Contractor } from '../../../../Entities/contractor';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 import { buildCustomer } from '../../../shared/utils/builders/customer';
 import { buildCountry } from '../../../shared/utils/builders/country';
 
@@ -34,12 +34,13 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   private loading = false;
 
   @Input() currentCustomer!: Customer | undefined;
-  @Input() contractor: Contractor | null = null;
+  @Input() contractor: any | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() onMessageOperation = new EventEmitter<{severity: string, summary: string, detail: string}>()
   @Output() contractorUpdated = new EventEmitter<Contractor>();
   @Output() contractorCreated = new EventEmitter<Contractor>();
+  @Output() onContractorDeleted = new EventEmitter<number>();
   
 
   countries = toSignal(
@@ -63,6 +64,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   ngOnInit(): void {
     this.initFormContractor();
+    
     if(this.modalContractType === 'create'){
       this.getCurrentCustomer();
     }
@@ -156,8 +158,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       this.getSelectedCountry()
     );
 
-    console.log("Updating contractor:", updatedContractor);
-
     this.subscription.add(this.contractorUtils.updateContractor(updatedContractor)
       .subscribe({
         next: (updated) => this.handleUpdateSuccess(updated),
@@ -186,14 +186,11 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   onSubmit() {
     if (this.contractorForm.valid) {
-
       if (this.modalContractType === 'create') {
         const newContractor = this.buildContractorFromForm();
         this.createContractor(newContractor);
       } else if(this.modalContractType === 'edit') {
         this.updateContractor();
-      } else {
-        console.log('delete');
       }
     }
   }
@@ -228,7 +225,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
           this.closeModal();
         },
         error: (err) => {
-          console.log('Error creating contractor', err);
           this.handleMessageOperation({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
@@ -272,5 +268,26 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   closeModal(): void {
     this.isContractVisibleModal.emit(false);
     this.contractorForm.reset();
+  }
+
+  removeContractor() {
+    this.contractorUtils.deleteContractor(this.contractor).subscribe({
+      next: () => {
+        this.isContractVisibleModal.emit(false);
+        this.onContractorDeleted.emit(this.contractor);
+        this.messageService.add({
+          severity: 'success',
+          summary: this.translate.instant('MESSAGE.SUCCESS'),
+          detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
+        });
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: this.translate.instant('MESSAGE.ERROR'),
+          detail: this.translate.instant('MESSAGE.DELETE_FAILED')
+        });
+      }
+    })
   }
 }

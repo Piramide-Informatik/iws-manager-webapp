@@ -25,6 +25,7 @@
       [contractor]="currentContract"
       (onMessageOperation)="messageOperation($event)"
       (isContractVisibleModal)="onModalVisibilityChange($event)"
+      (onContractorDeleted)="onContractorDeleted($event)"
       (contractorUpdated)="onContractorUpdated($event)"
     ></app-contractor-details>
   </p-dialog>

@@ -63,7 +63,7 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" />
+        iconPos="left" severity="danger" (onClick)="removeContractor()"/>
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
         iconPos="left" (onClick)="closeModal()" />
