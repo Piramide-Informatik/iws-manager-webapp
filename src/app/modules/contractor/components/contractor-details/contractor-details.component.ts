@@ -261,7 +261,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
         label: '',
         name: ''
       },
-      customer: this.currentCustomer? this.currentCustomer : null
+      customer: this.currentCustomer ?? null
     }
   }
 
