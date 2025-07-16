@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { buildCustomer } from '../../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../../shared/utils/builders/employee';
+import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-employment-contract-modal',
@@ -89,7 +90,7 @@ export class EmploymentContractModalComponent {
 
   fillEmploymentContractForm() {
     this.employmentContractForm.patchValue({
-      startDate: this.employmentContract?.startDate? new Date(this.employmentContract.startDate) : null,
+      startDate: momentCreateDate(this.employmentContract?.startDate),
       salaryPerMonth: this.employmentContract?.salaryPerMonth,
       hoursPerWeek: this.employmentContract?.hoursPerWeek,
       workShortTime: this.employmentContract?.workShortTime,
@@ -115,7 +116,7 @@ export class EmploymentContractModalComponent {
     this.errorMessage = null;
 
     const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      startDate: this.employmentContractForm.value.startDate,
+      startDate: momentFormatDate(this.employmentContractForm.value.startDate),
       salaryPerMonth: this.employmentContractForm.value.salaryPerMonth,
       hoursPerWeek: this.employmentContractForm.value.hoursPerWeek,
       workShortTime: this.employmentContractForm.value.workShortTime,
@@ -211,7 +212,7 @@ export class EmploymentContractModalComponent {
       version: this.employmentContract?.version ?? 0,
       customer: this.buildCustomerFromSource(customerSource),
       employee: this.buildEmployeeFromSource(employeeSource),
-      startDate: formValues.startDate,
+      startDate: momentFormatDate(formValues.startDate),
       salaryPerMonth: formValues.salaryPerMonth,
       hoursPerWeek: formValues.hoursPerWeek,
       workShortTime: formValues.workShortTime,
