@@ -10,6 +10,7 @@ import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-employee-form',
@@ -79,10 +80,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
                   employeeFirstName: employee.firstname,
                   employeeLastName: employee.lastname,
                   employeeEmail: employee.email,
-                  generalManagerSinceDate: employee.generalmanagersince ? new Date(employee.generalmanagersince) : null,
-                  shareholderSinceDate: employee.shareholdersince ? new Date(employee.shareholdersince) : null,
-                  solePropietorSinceDate: employee.soleproprietorsince ? new Date(employee.soleproprietorsince) : null,
-                  coentrepreneurSinceDate: employee.coentrepreneursince ? new Date(employee.coentrepreneursince) : null,
+                  generalManagerSinceDate: momentCreateDate(employee.generalmanagersince),
+                  shareholderSinceDate: momentCreateDate(employee.shareholdersince),
+                  solePropietorSinceDate: momentCreateDate(employee.soleproprietorsince),
+                  coentrepreneurSinceDate: momentCreateDate(employee.coentrepreneursince),
                   qualificationFzId: employee.qualificationFZ?.id ?? '',
                   qualificationKMUi: employee.qualificationkmui ?? ''
                 });
@@ -146,10 +147,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       email: formValues.employeeEmail,
       label: '',
       phone: '',
-      generalmanagersince: this.formatOptionalDate(formValues.generalManagerSinceDate),
-      shareholdersince: this.formatOptionalDate(formValues.shareholderSinceDate),
-      soleproprietorsince: this.formatOptionalDate(formValues.solePropietorSinceDate),
-      coentrepreneursince: this.formatOptionalDate(formValues.coentrepreneurSinceDate),
+      generalmanagersince: momentFormatDate(formValues.generalManagerSinceDate),
+      shareholdersince: momentFormatDate(formValues.shareholderSinceDate),
+      soleproprietorsince: momentFormatDate(formValues.solePropietorSinceDate),
+      coentrepreneursince: momentFormatDate(formValues.coentrepreneurSinceDate),
       qualificationFZ: this.mapQualificationFZIdToEntity(formValues.qualificationFzId),
       qualificationkmui: formValues.qualificationKMUi,
     };
@@ -215,10 +216,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private mapQualificationFZIdToEntity(id: number | null): any {
     return id ? { id, qualification: '', createdAt: '', updatedAt: '', version: 0 } : null;
-  }
-
-  private formatOptionalDate(date: Date | null): string | undefined {
-    return date ? date.toISOString().split('T')[0] : undefined;
   }
 
   private createEmployee(newEmployee: Omit<Employee, 'id'>): void {
