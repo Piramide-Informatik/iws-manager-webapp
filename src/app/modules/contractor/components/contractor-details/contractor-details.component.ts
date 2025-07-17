@@ -39,9 +39,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() onMessageOperation = new EventEmitter<{severity: string, summary: string, detail: string}>()
   @Output() contractorUpdated = new EventEmitter<Contractor>();
-  @Output() contractorCreated = new EventEmitter<Contractor>();
+  @Output() onContractorCreated = new EventEmitter<Contractor>();
   @Output() onContractorDeleted = new EventEmitter<number>();
-  
 
   countries = toSignal(
     this.countryUtils.getCountriesSortedByName().pipe(
@@ -216,7 +215,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   private createContractor(newContractor: Omit<Contractor, 'id'>): void {
     this.subscription.add(
       this.contractorUtils.createNewContractor(newContractor).subscribe({
-        next: () => {
+        next: (resContractor) => {
+          this.onContractorCreated.emit(resContractor);
           this.handleMessageOperation({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
