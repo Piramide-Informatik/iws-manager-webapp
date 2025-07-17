@@ -324,3 +324,15 @@ thead.p-datatable-thead>tr>th#hide-columns.thead-bg-blue {
   max-width: 75px !important;
   min-width: 75px !important;
 }
+
+/* Hide arrows on inputs type="number" (Chrome, Edge, Safari) */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows on inputs type="number" Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
