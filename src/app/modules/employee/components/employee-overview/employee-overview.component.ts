@@ -1,6 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { WorkContract } from '../../../../Entities/work-contracts';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Employee } from '../../../../Entities/employee';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +10,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { EmployeeUtils } from '../../utils/employee.utils';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { Customer } from '../../../../Entities/customer';
+import { MESSAGE } from '../../../../general-models/messages';
 
 
 interface Column {
@@ -22,15 +22,10 @@ interface Column {
   customClasses?: string[];
 }
 
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
-
 @Component({
   selector: 'app-employee-overview',
   standalone: false,
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService],
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })
@@ -38,20 +33,12 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly customerUtils = inject(CustomerUtils);
   public customer!: Customer | undefined;
-  public customerLabel!: string;
   employees: Employee[] = [];
-  selectedCustomers!: WorkContract[] | null;
-  selectedCustomer!: WorkContract[] | null;
-  submitted: boolean = true;
-  statuses!: any[];
   @ViewChild('dt2') dt2!: Table;
-  loading: boolean = true;
   public cols!: Column[];
   private langSubscription!: Subscription;
 
   public selectedColumns!: Column[];
-  public filterCols!: Column[];
-  public selectedFilterColumns!: Column[];
   userEmployeeOverviewPreferences: UserPreference = {};
   tableKey: string = 'EmployeeOverview'
   dataKeys = ['id', 'firstname', 'lastname', 'email', 'generalmanagersince', 'shareholdersince', 'soleproprietorsince', 'coentrepreneursince', 'qualificationFZ', 'qualificationkmui'];
@@ -69,16 +56,12 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly confirmationService: ConfirmationService,
     private readonly route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.loadColHeaders();
     this.selectedColumns = this.cols;
-    this.selectedFilterColumns = this.filterCols;
-
-    this.loading = false;
 
     this.userEmployeeOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -98,13 +81,9 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     })
 
     this.selectedColumns = this.cols;
-    this.selectedFilterColumns = this.filterCols;
   }
 
   loadColHeaders(): void {
-
-    this.customerLabel = this.translate.instant(_('COMMON.CUSTOMER_NAME'));
-
     this.cols = [
       { 
         field: 'employeeno',
@@ -123,15 +102,6 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
     ];
-
-    //Filter colums
-    this.filterCols = [
-      { field: 'id', header: 'Pers. Nr.' },
-      { field: 'firstName', header: 'Vorname' },
-      { field: 'lastName', header: 'Nachname' },
-      { field: 'email', header: 'Email' }
-    ];
-
   }
 
   onUserEmployeeOverviewPreferencesChanges(userEmployeeOverviewPreferences: any) {
@@ -227,7 +197,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         next: () => {
           this.isLoading = false;
           this.visibleEmployeeModal = false;
-          this.handleMessageSuccess();
+          this.handleMessages(MESSAGE.severity.success, MESSAGE.summary.SUCCESS, MESSAGE.detail.DELETE_SUCCESS);
           this.route.params.subscribe(params => {
             this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
              this.employees = employees;
@@ -237,26 +207,18 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete employee';
-          this.handleMessageError();
+          this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_FAILED);
           console.error('Delete error:', error);
         }
       });
     }
   }
 
-  private handleMessageSuccess(): void {
+  private handleMessages(severity: string, summary: string, detail: string): void {
     this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
-    });
-  }
-
-  private handleMessageError(): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.DELETE_FAILED')
+      severity,
+      summary: this.translate.instant(summary),
+      detail: this.translate.instant(detail)
     });
   }
 }

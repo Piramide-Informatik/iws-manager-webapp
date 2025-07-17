@@ -84,10 +84,33 @@
     <p-button type="submit" class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
       iconPos="left" />
     <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
-      [style]="{ background: '#ef4444' }" />
+      [style]="{ background: '#ef4444' }" (onClick)="showModalDelete()"/>
     <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
       (onClick)="goBack()" />
   </div>
-  <p-toast></p-toast>
-  <app-occ-error-modal *ngIf="showOCCErrorModaEmployee" (onClose)="showOCCErrorModaEmployee = false">
-  </app-occ-error-modal>
+</form>
+<p-dialog 
+    [header]="('EMPLOYEE.LABELS.DELETE_EMPLOYEE' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleEmployeeModalDelete" 
+>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'EMPLOYEE.LABELS.REMOVE_EMPLOYEE_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ getFullNameEmployee() }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+          icon="pi pi-trash" iconPos="left" (onClick)="onEmployeeDeleteConfirm()" severity="danger" [loading]="isLoading"
+          [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times" iconPos="left" (onClick)="this.visibleEmployeeModalDelete = false;" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</p-dialog>
+<p-toast/>
+<app-occ-error-modal *ngIf="showOCCErrorModaEmployee" (onClose)="showOCCErrorModaEmployee = false">
+</app-occ-error-modal>

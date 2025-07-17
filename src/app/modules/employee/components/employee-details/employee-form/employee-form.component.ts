@@ -11,6 +11,7 @@ import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
+import { MESSAGE } from '../../../../../general-models/messages';
 
 @Component({
   selector: 'app-employee-form',
@@ -24,7 +25,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
   private readonly qualificationFZUtils = inject(QualificationFZUtils);
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
@@ -35,6 +35,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   public currentEmployee: Employee | undefined;
   public id = 0;
   public showOCCErrorModaEmployee = false;
+  // Modal delete
+  public visibleEmployeeModalDelete: boolean = false;
+  public isLoading = false;
 
   public salutations = toSignal(
     this.salutationUtils.getSalutationsSortedByName().pipe(
@@ -222,12 +225,15 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: (createdEmployee) => {
-          this.handleSuccessCreate();
+          this.handleMessages(MESSAGE.severity.success, MESSAGE.summary.SUCCESS, MESSAGE.detail.CREATE_SUCCESS);
           setTimeout(()=>{
             this.resetFormAndNavigation(createdEmployee.id);
           },2000)
         },
-        error: (err) => this.handleErrorCreate(err)
+        error: (err) => {
+          console.error('Error creating employee:', err);
+          this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.CREATE_FAILED);
+        }
       })
     );
   }
@@ -235,45 +241,45 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private updateEmployee(updatedEmployee: Employee): void {
     this.subscriptions.add(
       this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
-        next: (savedEmployee) => this.handleUpdateEmployeeSuccess(savedEmployee),
+        next: () => this.handleMessages(MESSAGE.severity.success,MESSAGE.summary.SUCCESS,MESSAGE.detail.UPDATE_SUCCESS),
         error: (err) => this.handleUpdateEmployeeError(err)
       })
     );
   }
 
-  private handleSuccessCreate(): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.CREATE_SUCCESS')
-    });
+  onEmployeeDeleteConfirm() {
+    this.isLoading = true;
+    if(this.currentEmployee?.id){
+      this.employeeUtils.deleteEmployee(this.currentEmployee.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.visibleEmployeeModalDelete = false;
+          this.handleMessages(MESSAGE.severity.success, MESSAGE.summary.SUCCESS, MESSAGE.detail.DELETE_SUCCESS);
+          setTimeout(()=>{
+            this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+          },2000);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_FAILED);
+          console.error('Failed to delete employee:', error);
+        }
+      });
+    }
   }
 
-  private handleErrorCreate(err: any): void {
-    console.error('Error creating employee:', err);
+  private handleMessages(severity: string, summary: string, detail: string): void {
     this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.CREATE_FAILED')
+      severity,
+      summary: this.translate.instant(summary),
+      detail: this.translate.instant(detail)
     });
-  }
-
-  private handleUpdateEmployeeSuccess(savedEmployee: Employee): void {
-    this.showSuccessMessage('TITLE.MESSAGE.UPDATE_SUCCESS');
   }
 
   private handleUpdateEmployeeError(err: any): void {
     if (err.message === 'Conflict detected: employee person version mismatch') {
       this.showOCCErrorModaEmployee = true;
     }
-  }
-
-  private showSuccessMessage(messageKey: string): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
-      detail: this.translate.instant(messageKey)
-    });
   }
 
   private resetFormAndNavigation(id: number): void {
@@ -287,5 +293,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   clearForm(): void {
     this.employeeForm.reset();
+  }
+
+  showModalDelete(): void {
+    this.visibleEmployeeModalDelete = true;
+  }
+
+  public getFullNameEmployee(): string {
+    return `${this.currentEmployee?.firstname} ${this.currentEmployee?.lastname}`.trim();
   }
 }
