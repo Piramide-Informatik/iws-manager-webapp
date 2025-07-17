@@ -164,4 +164,8 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
+  onContractorCreated(newContractor: Contractor) {
+    this.contractors.unshift(newContractor);
+  }
+
 }
