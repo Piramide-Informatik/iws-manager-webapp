@@ -4,9 +4,6 @@ import { MessageService } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
-import localeDe from '@angular/common/locales/de';
-import { registerLocaleData } from '@angular/common';
-registerLocaleData(localeDe, 'de-DE');
 
 @Component({
   selector: 'master-data-genaral-table',
@@ -14,6 +11,7 @@ registerLocaleData(localeDe, 'de-DE');
   templateUrl: './genaral-table.component.html',
   styleUrl: './genaral-table.component.scss'
 })
+
 export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() tableId: string = '';
   @Input() tableTitle: string = 'Table title';
@@ -26,10 +24,11 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Input() nameNewButton: string = '';
   @Input() isFileUploadButtonVisible: boolean = false;
   @Input() acceptFilesFormats: string = '.pdf,.xml,.csv'
+  @Input() userPreferences: any = [];
   selectedColumns: any[] = [];
   displayedColumns: any[] = [];
   booleanHeaders: any[] = [];
-  @Input() userPreferences: any = [];
+  
   colOrders: any = {};
   defaultDateFormat = "dd.MM.YYYY"
 
@@ -170,8 +169,14 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
     }
   }
 
+  isNumeric(value: any): boolean {
+    return typeof value === 'number' && !isNaN(value);
+  }
+
   getNestedValue(obj: any, path: string): any {
-    return path.split('.').reduce((acc, part) => acc?.[part], obj);
+    //return path.split('.').reduce((acc, part) => acc?.[part], obj);
+    const value = path.split('.').reduce((acc, part) => acc?.[part], obj);
+    return !isNaN(value) && value !== null && value !== '' ? Number(value) : value;
   }
 
 }
