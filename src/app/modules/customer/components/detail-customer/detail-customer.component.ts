@@ -19,6 +19,7 @@ import { CustomerStateService } from '../../utils/customer-state.service';
 import { Customer } from '../../../../Entities/customer';
 import { MessageService } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 interface Column {
   field: string,
@@ -123,7 +124,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly contactStateService: ContactStateService,
     private readonly customerUtils: CustomerUtils,
     private readonly messageService: MessageService,
-    private readonly titleService: Title
+    private readonly titleService: Title,
+    private readonly commmonMessageService: CommonMessagesService
   ) {
     this.formDetailCustomer = this.fb.group({
       customerNo: [''],
@@ -421,7 +423,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveSuccess(savedCustomer: Customer): void {
-    this.showSuccessMessage('TITLE.MESSAGE.UPDATE_SUCCESS');
+    this.commmonMessageService.showEditSucessfullMessage();
     this.resetFormAndNavigation();
   }
 
@@ -432,24 +434,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.showErrorMessage('TITLE.MESSAGE.UPDATE_FAILED');
+    this.commmonMessageService.showErrorEditMessage();
     this.isSaving = false;
-  }
-
-  private showSuccessMessage(messageKey: string): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
-      detail: this.translate.instant(messageKey)
-    });
-  }
-
-  private showErrorMessage(messageKey: string): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
-      detail: this.translate.instant(messageKey)
-    });
   }
 
   private resetFormAndNavigation(): void {
@@ -561,21 +547,13 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private handleSuccess(customer: Customer): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('CUSTOMERS.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_SUCCESS')
-    });
+    this.commmonMessageService.showCreatedSuccesfullMessage();
     this.clearForm();
     this.router.navigate(['../customer-details', customer.id], { relativeTo: this.activatedRoute });
   }
 
   private handleError(err: any): void {
     console.error('Error creating customer:', err);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('CUSTOMERS.MESSAGE.ERROR'),
-      detail: this.translate.instant('CUSTOMERS.MESSAGE.CREATE_FAILED')
-    });
+    this.commmonMessageService.showErrorCreatedMessage();
   }
 }

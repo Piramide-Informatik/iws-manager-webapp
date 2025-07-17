@@ -11,6 +11,7 @@ import { EmployeeUtils } from '../../utils/employee.utils';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { Customer } from '../../../../Entities/customer';
 import { MESSAGE } from '../../../../general-models/messages';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 
 interface Column {
@@ -56,7 +57,8 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnInit() {
@@ -197,7 +199,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         next: () => {
           this.isLoading = false;
           this.visibleEmployeeModal = false;
-          this.handleMessages(MESSAGE.severity.success, MESSAGE.summary.SUCCESS, MESSAGE.detail.DELETE_SUCCESS);
+          this.commonMessageService.showDeleteSucessfullMessage();
           this.route.params.subscribe(params => {
             this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
              this.employees = employees;
@@ -207,7 +209,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete employee';
-          this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_FAILED);
+          this.commonMessageService.showErrorDeleteMessage();
           console.error('Delete error:', error);
         }
       });
