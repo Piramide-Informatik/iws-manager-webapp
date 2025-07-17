@@ -10,7 +10,6 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { EmployeeUtils } from '../../utils/employee.utils';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { Customer } from '../../../../Entities/customer';
-import { MESSAGE } from '../../../../general-models/messages';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 
