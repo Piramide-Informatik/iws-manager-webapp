@@ -174,7 +174,6 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   }
 
   getNestedValue(obj: any, path: string): any {
-    //return path.split('.').reduce((acc, part) => acc?.[part], obj);
     const value = path.split('.').reduce((acc, part) => acc?.[part], obj);
     return !isNaN(value) && value !== null && value !== '' ? Number(value) : value;
   }

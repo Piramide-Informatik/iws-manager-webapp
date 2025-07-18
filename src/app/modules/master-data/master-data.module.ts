@@ -1,6 +1,6 @@
 //Angular
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -120,9 +120,7 @@ import { SalutationFormComponent } from './components/salutation/components/salu
 import { TypeOfCompaniesModalComponent } from './components/types-of-companies/components/company-types-modal/company-types-modal.component';
 import { StateModalComponent } from './components/states/components/state-modal/state-modal.component';
 import { SharedModule } from '../shared/shared.module';
-
 import localeDe from '@angular/common/locales/de';
-import { registerLocaleData } from '@angular/common';
 
 registerLocaleData(localeDe, 'de-DE');
 
