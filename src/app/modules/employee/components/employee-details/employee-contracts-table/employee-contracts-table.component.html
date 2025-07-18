@@ -1,3 +1,4 @@
+@if(employeeId){
 <div class="my-2">
   <span class="font-semibold">{{ 'EMPLOYEE.FORM.EMPLOYMENT_CONTRACTS' | translate }}</span>
 </div>
@@ -22,3 +23,4 @@
     (onEmployeeContractDeleted)="onEmployeeContractDeleted($event)"></app-employment-contract-modal>
 </p-dialog>
 <p-toast />
+}
