@@ -28,13 +28,12 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   private readonly translate = inject(TranslateService);
   private readonly subscription = new Subscription();
 
-  public contractId!: number;
   public contractorForm!: FormGroup;
   public showOCCErrorModalContractor = false;
   private loading = false;
-
+  
   @Input() currentCustomer!: Customer | undefined;
-  @Input() contractor: any | null = null;
+  @Input() contractor: Contractor | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() onMessageOperation = new EventEmitter<{severity: string, summary: string, detail: string}>()
@@ -271,23 +270,25 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   removeContractor() {
-    this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
-      next: () => {
-        this.isContractVisibleModal.emit(false);
-        this.onContractorDeleted.emit(this.contractor.id);
-        this.messageService.add({
-          severity: 'success',
-          summary: this.translate.instant('MESSAGE.SUCCESS'),
-          detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
-        });
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: this.translate.instant('MESSAGE.ERROR'),
-          detail: this.translate.instant('MESSAGE.DELETE_FAILED')
-        });
-      }
-    })
+    if(this.contractor){
+      this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
+        next: () => {
+          this.isContractVisibleModal.emit(false);
+          this.onContractorDeleted.emit(this.contractor?.id);
+          this.messageService.add({
+            severity: 'success',
+            summary: this.translate.instant('MESSAGE.SUCCESS'),
+            detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
+          });
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: this.translate.instant('MESSAGE.ERROR'),
+            detail: this.translate.instant('MESSAGE.DELETE_FAILED')
+          });
+        }
+      })
+    }
   }
 }
