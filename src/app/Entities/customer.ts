@@ -9,7 +9,7 @@ export interface Customer {
   updatedAt: string;
   version: number;
 
-  branch: Branch | null; 
+  branch?: Branch | null; 
   city?: string;
   companytype: CompanyType | null; 
   country: Country | null; 

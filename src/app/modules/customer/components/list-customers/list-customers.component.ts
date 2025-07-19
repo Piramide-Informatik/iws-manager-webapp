@@ -20,6 +20,7 @@ import { CustomerUtils } from '../../utils/customer-utils';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
 import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 interface Column {
   field: string;
@@ -83,7 +84,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   public customers!: Customer[];
 
-  constructor() { }
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     this.pageTitleService.setTranslatedTitle('PAGETITLE.CUSTOMER_OVERVIEW');
@@ -331,11 +332,13 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
           this.visibleCustomerModal = false;
           this.customerData = this.customerData.filter(c => c.id !== this.selectedCustomer);
           this.customers = this.customers.filter(c => c.id !== this.selectedCustomer);
+          this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (error) => {
           this.isLoadingCustomer = false;
           this.errorMessage = error.message ?? 'Failed to delete customer';
           console.error('Delete error:', error);
+          this.commonMessageService.showErrorDeleteMessage();
         }
       });
     }
