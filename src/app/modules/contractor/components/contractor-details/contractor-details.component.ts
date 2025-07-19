@@ -29,13 +29,12 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   private readonly translate = inject(TranslateService);
   private readonly subscription = new Subscription();
 
-  public contractId!: number;
   public contractorForm!: FormGroup;
   public showOCCErrorModalContractor = false;
   private loading = false;
-
+  
   @Input() currentCustomer!: Customer | undefined;
-  @Input() contractor: any | null = null;
+  @Input() contractor: Contractor | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() onMessageOperation = new EventEmitter<{severity: string, summary: string, detail: string}>()
@@ -258,15 +257,17 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   removeContractor() {
-    this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
-      next: () => {
-        this.isContractVisibleModal.emit(false);
-        this.onContractorDeleted.emit(this.contractor.id);
-        this.commonMessageService.showDeleteSucessfullMessage();
-      },
-      error: (error) => {
-        this.commonMessageService.showErrorDeleteMessage();
-      }
-    })
+    if(this.contractor){
+      this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
+        next: () => {
+          this.isContractVisibleModal.emit(false);
+          this.onContractorDeleted.emit(this.contractor?.id);
+          this.commonMessageService.showDeleteSucessfullMessage();
+        },
+        error: (error) => {
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+      })
+    }
   }
 }

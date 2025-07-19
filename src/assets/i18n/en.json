@@ -112,6 +112,13 @@
     "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
     "SELECT_AT_LEAST_ONE": "There must be at least one column selected."
   },
+  "primeng_date": {
+    "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "dayNamesMin": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    "monthNames": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "monthNamesShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmation",
     "DELETE": "Are you sure you want to delete {{value}}?",
