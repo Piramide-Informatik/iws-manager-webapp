@@ -32,9 +32,9 @@ export class projectStatusService {
         this.loadInitialData();
     }
 
-    private loadInitialData(): void {
+    private loadInitialData(): Observable<ProjectStatus[]> {
         this._loading.set(true);
-        this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
+        return this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
             tap({
                 next: (projectStatus) => {
                     this._projectStatus.set(projectStatus);
@@ -47,12 +47,12 @@ export class projectStatusService {
             }),
             catchError(() => of([])),
             tap(() => this._loading.set(false))
-        ).subscribe();
+        );
     }
 
     // CREATE 
-    addProjectStatus(projectStatus: Omit<ProjectStatus, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
-        this.http.post<ProjectStatus>(this.apiUrl, projectStatus, this.httpOptions).pipe(
+    addProjectStatus(projectStatus: Omit<ProjectStatus, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ProjectStatus> {
+        return this.http.post<ProjectStatus>(this.apiUrl, projectStatus, this.httpOptions).pipe(
             tap({
                 next: (newProjectStatus) => {
                     this._projectStatus.update(projectStatus => [...projectStatus, newProjectStatus]);
@@ -63,7 +63,7 @@ export class projectStatusService {
                     console.error('Error adding projectStatus:', err);
                 }
             })
-        ).subscribe();
+        );
     }
 
     // UPDATE
