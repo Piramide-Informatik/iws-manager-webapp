@@ -408,7 +408,9 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     return {
       id: branchId,
       name: '',
-      version: 0
+      version: 0,
+      updatedAt: '',
+      createdAt: ''
     };
   }
 
@@ -519,7 +521,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }
         : null,
       branch: formValues.selectedSector
-        ? { id: formValues.selectedSector, name: '', version: 0 }
+        ? { id: formValues.selectedSector, name: '', version: 0, createdAt: '', updatedAt: '' }
         : null,
       country: formValues.selectedCountry
         ? { id: formValues.selectedCountry, version: 0, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
