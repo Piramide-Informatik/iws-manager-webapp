@@ -12,6 +12,7 @@ import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { ActivatedRoute } from '@angular/router';
 import { buildCustomer } from '../../../shared/utils/builders/customer';
 import { buildCountry } from '../../../shared/utils/builders/country';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-contractor-details',
@@ -48,7 +49,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     { initialValue: [] }
   );
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.contractorForm = this.fb.group({
       contractorlabel: ['', Validators.required],
       contractorname: ['', Validators.required],
@@ -175,6 +176,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   handleUpdateError(error: Error): void {
     if (error.message.startsWith('Conflict detected: contractor version mismatch')) {
       this.showOCCErrorModalContractor = true;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 
@@ -202,11 +205,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private handleUpdateSuccess(updatedContractor: Contractor): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.isContractVisibleModal.emit(false);
     this.contractorUpdated.emit(updatedContractor);
   }
@@ -216,19 +215,11 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       this.contractorUtils.createNewContractor(newContractor).subscribe({
         next: (resContractor) => {
           this.onContractorCreated.emit(resContractor);
-          this.handleMessageOperation({
-            severity: 'success',
-            summary: 'MESSAGE.SUCCESS',
-            detail: 'MESSAGE.CREATE_SUCCESS'
-          });
+          this.commonMessageService.showCreatedSuccesfullMessage();
           this.closeModal();
         },
         error: (err) => {
-          this.handleMessageOperation({
-            severity: 'error',
-            summary: 'MESSAGE.ERROR',
-            detail: 'MESSAGE.CREATE_FAILED'
-          });
+          this.commonMessageService.showErrorCreatedMessage();
           this.closeModal();
         }
       })
@@ -260,10 +251,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     }
   }
 
-  private handleMessageOperation(message: {severity: string, summary: string, detail: string}): void {
-    this.onMessageOperation.emit(message);
-  }
-
   closeModal(): void {
     this.isContractVisibleModal.emit(false);
     this.contractorForm.reset();
@@ -275,18 +262,10 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
         next: () => {
           this.isContractVisibleModal.emit(false);
           this.onContractorDeleted.emit(this.contractor?.id);
-          this.messageService.add({
-            severity: 'success',
-            summary: this.translate.instant('MESSAGE.SUCCESS'),
-            detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
-          });
+          this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: this.translate.instant('MESSAGE.ERROR'),
-            detail: this.translate.instant('MESSAGE.DELETE_FAILED')
-          });
+          this.commonMessageService.showErrorDeleteMessage();
         }
       })
     }

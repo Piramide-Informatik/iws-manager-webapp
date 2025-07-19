@@ -1,6 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { EmploymentContract } from '../../../../../Entities/employment-contract';
 import { EmploymentContractUtils } from '../../../utils/employment-contract-utils';
 import { Employee } from '../../../../../Entities/employee';
@@ -10,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { buildCustomer } from '../../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../../shared/utils/builders/employee';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
+import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-employment-contract-modal',
@@ -42,8 +42,7 @@ export class EmploymentContractModalComponent {
   public showOCCErrorModalContract = false;
 
   constructor(
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -135,11 +134,7 @@ export class EmploymentContractModalComponent {
         this.onOperationEmploymentContract.emit(this.currentEmployee.id);
         console.log('Employment contract created successfully');
         this.isVisibleModal.emit(false);
-        this.messageOperation.emit({
-          severity: 'success',
-          summary: 'MESSAGE.SUCCESS',
-          detail: 'MESSAGE.CREATE_SUCCESS'
-        })
+        this.commonMessageService.showCreatedSuccesfullMessage();
         this.employmentContractForm.reset();
       },
       error: (error) => {
@@ -147,11 +142,7 @@ export class EmploymentContractModalComponent {
         this.errorMessage = error.message;
         console.error('Error creating employment contract:', error);
         this.isVisibleModal.emit(false);
-        this.messageOperation.emit({
-          severity: 'error',
-          summary: 'MESSAGE.ERROR',
-          detail: 'MESSAGE.CREATE_FAILED'
-        });
+        this.commonMessageService.showErrorCreatedMessage();
         this.employmentContractForm.reset();
       }
     });
@@ -164,29 +155,17 @@ export class EmploymentContractModalComponent {
         next: () => {
           this.isVisibleModal.emit(false);
           this.onEmployeeContractDeleted.emit(this.employmentContract);
-          this.messageService.add({
-            severity: 'success',
-            summary: this.translate.instant('MESSAGE.SUCCESS'),
-            detail: this.translate.instant('MESSAGE.DELETE_SUCCESS')
-          });
+          this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: this.translate.instant('MESSAGE.ERROR'),
-            detail: this.translate.instant('MESSAGE.DELETE_FAILED')
-          });
+          this.commonMessageService.showErrorDeleteMessage();
         }
       });
     }
   }
 
   private handleUpdateSuccess(updatedContract: EmploymentContract): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.isVisibleModal.emit(false);
     this.onEmployeeContractUpdated.emit(updatedContract);
   }
@@ -194,6 +173,8 @@ export class EmploymentContractModalComponent {
   private handleUpdateError(error: Error): void {
     if (error.message.startsWith('VERSION_CONFLICT:')) {
       this.showOCCErrorModalContract = true;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 
