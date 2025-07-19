@@ -261,8 +261,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isLoading = false;
-          this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_FAILED);
-          console.error('Failed to delete employee:', error);
+          console.error('Failed to delete employee:', error.message);
+          if(error.message.includes('Canot be deleted because have associated employement contracts')){
+            this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_ERROR_WITH_RECORDS);
+          }else{
+            this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_FAILED);
+          }
         }
       });
     }

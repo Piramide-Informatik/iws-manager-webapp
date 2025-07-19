@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { EmployeeService } from '../../../Services/employee.service';
 import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { Employee } from '../../../Entities/employee';
+import { EmploymentContractUtils } from './employment-contract-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -10,7 +11,7 @@ import { Employee } from '../../../Entities/employee';
  */
 export class EmployeeUtils {
   private readonly employeeService = inject(EmployeeService);
-
+  private readonly employmentContractUitls = inject(EmploymentContractUtils);
   /**
   * Gets all employees without any transformation
   * @returns Observable emitting the raw list of employees
@@ -111,7 +112,15 @@ export class EmployeeUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteEmployee(id: number): Observable<void> {
-    return this.employeeService.deleteEmployee(id);
+    return this.employmentContractUitls.getAllContractsByEmployeeId(id).pipe(
+      take(1),
+      switchMap((contracts) => {
+        if(contracts.length > 0){
+          return throwError(() => new Error('Canot be deleted because have associated employement contracts'))
+        }
+        return this.employeeService.deleteEmployee(id);
+      })
+    );
   }
 
   /**
