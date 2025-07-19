@@ -1,5 +1,5 @@
 // Angular
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -66,6 +66,6 @@ import { EmploymentContractModalComponent } from './components/employee-details/
         MasterDataModule,
         SharedModule
     ],
-    providers: [MessageService]
+    providers: [MessageService, DecimalPipe]
 })
 export class EmployeeModule {}
