@@ -10,6 +10,8 @@ import { MessageService } from 'primeng/api';
 import { buildCustomer } from '../../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../../shared/utils/builders/employee';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
+import { DecimalPipe } from '@angular/common';
+import { parseGermanNumber } from '../../../../shared/utils/parser-input';
 
 @Component({
   selector: 'app-employment-contract-modal',
@@ -43,7 +45,8 @@ export class EmploymentContractModalComponent {
 
   constructor(
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly decimalPipe: DecimalPipe
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -91,13 +94,13 @@ export class EmploymentContractModalComponent {
   fillEmploymentContractForm() {
     this.employmentContractForm.patchValue({
       startDate: momentCreateDate(this.employmentContract?.startDate),
-      salaryPerMonth: this.employmentContract?.salaryPerMonth,
-      hoursPerWeek: this.employmentContract?.hoursPerWeek,
-      workShortTime: this.employmentContract?.workShortTime,
-      specialPayment: this.employmentContract?.specialPayment,
-      maxHoursPerMonth: this.employmentContract?.maxHoursPerMonth,
-      maxHoursPerDay: this.employmentContract?.maxHoursPerDay,
-      hourlyRate: this.employmentContract?.hourlyRate
+      salaryPerMonth: this.changeNumberFormat(this.employmentContract?.salaryPerMonth),
+      hoursPerWeek: this.changeNumberFormat(this.employmentContract?.hoursPerWeek),
+      workShortTime: this.changeNumberFormat(this.employmentContract?.workShortTime),
+      specialPayment: this.changeNumberFormat(this.employmentContract?.specialPayment),
+      maxHoursPerMonth: this.changeNumberFormat(this.employmentContract?.maxHoursPerMonth),
+      maxHoursPerDay: this.changeNumberFormat(this.employmentContract?.maxHoursPerDay),
+      hourlyRate: this.changeNumberFormat(this.employmentContract?.hourlyRate)
     });
   }
 
@@ -117,13 +120,13 @@ export class EmploymentContractModalComponent {
 
     const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       startDate: momentFormatDate(this.employmentContractForm.value.startDate),
-      salaryPerMonth: this.employmentContractForm.value.salaryPerMonth,
-      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek,
-      workShortTime: this.employmentContractForm.value.workShortTime,
-      specialPayment: this.employmentContractForm.value.specialPayment,
-      maxHoursPerMonth: this.employmentContractForm.value.maxHoursPerMonth,
-      maxHoursPerDay: this.employmentContractForm.value.maxHoursPerDay,
-      hourlyRate: this.employmentContractForm.value.hourlyRate,
+      salaryPerMonth: parseGermanNumber(this.employmentContractForm.value.salaryPerMonth ?? ''),
+      hoursPerWeek: parseGermanNumber(this.employmentContractForm.value.hoursPerWeek?? ''),
+      workShortTime: parseGermanNumber(this.employmentContractForm.value.workShortTime?? ''),
+      specialPayment: parseGermanNumber(this.employmentContractForm.value.specialPayment?? ''),
+      maxHoursPerMonth: parseGermanNumber(this.employmentContractForm.value.maxHoursPerMonth?? ''),
+      maxHoursPerDay: parseGermanNumber(this.employmentContractForm.value.maxHoursPerDay?? ''),
+      hourlyRate: parseGermanNumber(this.employmentContractForm.value.hourlyRate?? ''),
       hourlyRealRate: 0,
       employee: this.currentEmployee,
       customer: this.currentEmployee.customer ?? null
@@ -213,14 +216,14 @@ export class EmploymentContractModalComponent {
       customer: this.buildCustomerFromSource(customerSource),
       employee: this.buildEmployeeFromSource(employeeSource),
       startDate: momentFormatDate(formValues.startDate),
-      salaryPerMonth: formValues.salaryPerMonth,
-      hoursPerWeek: formValues.hoursPerWeek,
-      workShortTime: formValues.workShortTime,
-      specialPayment: formValues.specialPayment,
-      maxHoursPerMonth: formValues.maxHoursPerMonth,
-      maxHoursPerDay: formValues.maxHoursPerDay,
-      hourlyRate: formValues.hourlyRate,
-      hourlyRealRate: formValues.hourlyRealRate,
+      salaryPerMonth: parseGermanNumber(formValues.salaryPerMonth),
+      hoursPerWeek: parseGermanNumber(formValues.hoursPerWeek),
+      workShortTime: parseGermanNumber(formValues.workShortTime),
+      specialPayment: parseGermanNumber(formValues.specialPayment),
+      maxHoursPerMonth: parseGermanNumber(formValues.maxHoursPerMonth),
+      maxHoursPerDay: parseGermanNumber(formValues.maxHoursPerDay),
+      hourlyRate: parseGermanNumber(formValues.hourlyRate),
+      hourlyRealRate: parseGermanNumber(formValues.hourlyRealRate),
       createdAt: "",
       updatedAt: ""
     };
@@ -254,6 +257,12 @@ export class EmploymentContractModalComponent {
         error: (err) => this.handleUpdateError(err),
         complete: () => this.loading = false
       }));
+  }
+
+  private changeNumberFormat(number: number): any {
+    if (number === null) return ''; 
+    const numberText = number.toString();
+    return this.decimalPipe.transform(numberText, '1.2-2', 'de-DE');
   }
 
 }
