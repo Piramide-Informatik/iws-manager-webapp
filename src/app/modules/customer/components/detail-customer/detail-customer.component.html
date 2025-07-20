@@ -26,6 +26,7 @@
             [(ngModel)]="selectedCountry"
             optionLabel="name"
             optionValue="id"
+            [showClear]="true"
           >
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
@@ -64,6 +65,7 @@
           [(ngModel)]="selectedTypeCompany"
           optionLabel="name"
           optionValue="id"
+          [showClear]="true"
           />
         </div>
 
@@ -74,6 +76,7 @@
           [options]="sectors()" 
           optionLabel="name"
           optionValue="code" 
+          [showClear]="true"
           />
         </div>
 
@@ -84,6 +87,7 @@
           [options]="states()" 
           optionLabel="name"
           optionValue="id"
+          [showClear]="true"
           />
         </div>
 
