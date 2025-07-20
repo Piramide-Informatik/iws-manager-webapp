@@ -11,7 +11,7 @@ import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
-import { MESSAGE } from '../../../../../general-models/messages';
+import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -60,7 +60,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
-  constructor() { }
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -225,14 +225,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: (createdEmployee) => {
-          this.handleMessages(MESSAGE.severity.success, MESSAGE.summary.SUCCESS, MESSAGE.detail.CREATE_SUCCESS);
+          this.commonMessageService.showCreatedSuccesfullMessage();
           setTimeout(()=>{
             this.resetFormAndNavigation(createdEmployee.id);
           },2000)
         },
         error: (err) => {
           console.error('Error creating employee:', err);
-          this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.CREATE_FAILED);
+          this.commonMessageService.showErrorCreatedMessage();
         }
       })
     );
@@ -241,7 +241,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private updateEmployee(updatedEmployee: Employee): void {
     this.subscriptions.add(
       this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
-        next: () => this.handleMessages(MESSAGE.severity.success,MESSAGE.summary.SUCCESS,MESSAGE.detail.UPDATE_SUCCESS),
+        next: () => this.commonMessageService.showEditSucessfullMessage(),
         error: (err) => this.handleUpdateEmployeeError(err)
       })
     );
@@ -254,7 +254,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         next: () => {
           this.isLoading = false;
           this.visibleEmployeeModalDelete = false;
-          this.handleMessages(MESSAGE.severity.success, MESSAGE.summary.SUCCESS, MESSAGE.detail.DELETE_SUCCESS);
+          this.commonMessageService.showDeleteSucessfullMessage();
           setTimeout(()=>{
             this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
           },2000);
@@ -263,9 +263,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           console.error('Failed to delete employee:', error.message);
           if(error.message.includes('Canot be deleted because have associated employement contracts')){
-            this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_ERROR_WITH_RECORDS);
+            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
           }else{
-            this.handleMessages(MESSAGE.severity.error, MESSAGE.summary.ERROR, MESSAGE.detail.DELETE_FAILED);
+            this.commonMessageService.showErrorDeleteMessage();
           }
         }
       });
@@ -283,6 +283,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private handleUpdateEmployeeError(err: any): void {
     if (err.message === 'Conflict detected: employee person version mismatch') {
       this.showOCCErrorModaEmployee = true;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 

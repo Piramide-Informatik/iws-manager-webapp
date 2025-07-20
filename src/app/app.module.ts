@@ -35,6 +35,7 @@ import { MenuModule } from 'primeng/menu';
 import { AvatarModule } from 'primeng/avatar';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MessageModule } from 'primeng/message'
+import { ToastModule } from 'primeng/toast';
 
 //Components
 import { AppComponent } from './app.component';
@@ -42,6 +43,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { ContractorModule } from './modules/contractor/contractor.module';
 import { BlankComponent } from './core/components/blank/blank.component';
 import { UserPreferenceService } from './Services/user-preferences.service';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -77,6 +79,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslatePipe,
     DatePipe,
     TranslateDirective,
+    ToastModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
