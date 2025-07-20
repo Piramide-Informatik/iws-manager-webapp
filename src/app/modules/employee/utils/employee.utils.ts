@@ -116,7 +116,7 @@ export class EmployeeUtils {
       take(1),
       switchMap((contracts) => {
         if(contracts.length > 0){
-          return throwError(() => new Error('Canot be deleted because have associated employement contracts'))
+          return throwError(() => new Error('Cannot be deleted because have associated employment contracts'))
         }
         return this.employeeService.deleteEmployee(id);
       })
