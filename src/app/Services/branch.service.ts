@@ -51,7 +51,7 @@ export class BranchService {
   }
 
   // CREATE
-  addBranch(branch: Omit<Branch, 'id'>): void {
+  addBranch(branch: Omit<Branch, 'id' | 'version' | 'createdAt' | 'updatedAt'>): void {
     this.http.post<Branch>(this.apiUrl, branch, this.httpOptions).pipe(
       tap({
         next: (newBranch) => {

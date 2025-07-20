@@ -10,9 +10,8 @@ import { catchError, finalize, map, of, Subscription, switchMap } from 'rxjs';
 import { ContactUtils } from '../../utils/contact-utils';
 import { Customer } from '../../../../Entities/customer';
 import { ContactStateService } from '../../utils/contact-state.service';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 import { CustomerStateService } from '../../utils/customer-state.service';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-contact',
@@ -51,8 +50,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   errorMessage: string | null = null;
 
   constructor(
-    private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnInit(): void {
@@ -117,12 +115,13 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     ).subscribe({
       next: (result) => {
         if (result !== null) {
-          this.showSuccessMessage('CONTACT.MESSAGE.CREATE_SUCCESS');
+          this.commonMessageService.showCreatedSuccesfullMessage();
           this.onOperationContact.emit(this.currentCustomer.id);
           this.handleClose();
         }
       },
       error: (err) => {
+        this.commonMessageService.showErrorCreatedMessage();
         this.handleError('COUNTRY.ERROR.CREATION_FAILED', err);
       }
     });
@@ -156,7 +155,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       finalize(() => this.isSaving = false)
     ).subscribe({
       next: () => {
-        this.showSuccessMessage('CONTACT.MESSAGE.UPDATE_SUCCESS');
+        this.commonMessageService.showEditSucessfullMessage();
         this.onOperationContact.emit(this.currentCustomer.id);
         this.handleClose();
       },
@@ -164,14 +163,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.subscriptions.add(updateSub);
-  }
-
-  private showSuccessMessage(messageKey: string): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('CONTACT.MESSAGE.SUCCESS'),
-      detail: this.translate.instant(messageKey)
-    });
   }
 
   private handleSaveError(error: any): void {
@@ -183,11 +174,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('COUNTRIES.MESSAGE.ERROR'),
-      detail: this.translate.instant('COUNTRIES.MESSAGE.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
   }
 
   private handleContactExistence(exists: boolean, newContact: Omit<ContactPerson, 'id'>) {
@@ -247,12 +234,13 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       ).subscribe({
         next: () => {
           this.onOperationContact.emit(this.currentCustomer.id);
+          this.commonMessageService.showDeleteSucessfullMessage();
           this.handleClose();
         },
         error: (error) => {
           this.errorMessage = error.message ?? 'Failed to delete contact person';
           console.error('Delete error:', error);
-
+          this.commonMessageService.showErrorDeleteMessage();
         }
       });
     }

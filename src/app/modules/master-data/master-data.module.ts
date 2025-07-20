@@ -1,6 +1,6 @@
 //Angular
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -120,6 +120,9 @@ import { SalutationFormComponent } from './components/salutation/components/salu
 import { TypeOfCompaniesModalComponent } from './components/types-of-companies/components/company-types-modal/company-types-modal.component';
 import { StateModalComponent } from './components/states/components/state-modal/state-modal.component';
 import { SharedModule } from '../shared/shared.module';
+import localeDe from '@angular/common/locales/de';
+
+registerLocaleData(localeDe, 'de-DE');
 
 @NgModule({
   declarations: [
@@ -240,6 +243,12 @@ import { SharedModule } from '../shared/shared.module';
   exports: [
     GenaralTableComponent
   ],
-  providers: [UserPreferenceService, TitleUtils, CountryUtils, MessageService]
+  providers: [
+    UserPreferenceService, 
+    TitleUtils, 
+    CountryUtils, 
+    MessageService,
+    { provide: LOCALE_ID, useValue: 'de-DE' }
+  ]
 })
 export class MasterDataModule {}

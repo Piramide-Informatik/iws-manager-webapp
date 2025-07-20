@@ -11,7 +11,7 @@ export class BranchUtils {
 
   getBranchesSortedByName(): Observable<Branch[]> {
     return this.branchService.getAllBranches().pipe(
-      map(branches => [...branches].sort((a, b) => a.name.localeCompare(b.name))),
+      map(branches => [...branches].sort((a, b) => a.name!.localeCompare(b.name!))),
       catchError(err => {
         return throwError(() => new Error('Failed to sort branches'));
       })

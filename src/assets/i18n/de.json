@@ -113,6 +113,13 @@
     "DELETE_ERROR_IN_USE": "Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
     "SELECT_AT_LEAST_ONE": "Es muss mindestens eine Spalte ausgewählt sein."
   },
+  "primeng_date": {
+    "dayNames": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+    "dayNamesShort": ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
+    "dayNamesMin": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+    "monthNames": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+    "monthNamesShort": ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+  },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",
     "DELETE": "Möchten Sie wirklich löschen {{value}} ?",
