@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmploymentContract } from '../../../../../Entities/employment-contract';
 import { EmploymentContractUtils } from '../../../utils/employment-contract-utils';
@@ -68,13 +68,13 @@ export class EmploymentContractModalComponent {
   private initFormEmploymentContract(): void {
     this.employmentContractForm = new FormGroup({
       startDate: new FormControl(''),
-      salaryPerMonth: new FormControl(''),
-      hoursPerWeek: new FormControl(''),
-      workShortTime: new FormControl(''),
-      specialPayment: new FormControl(''),
-      maxHoursPerMonth: new FormControl(''),
-      maxHoursPerDay: new FormControl(''),
-      hourlyRate: new FormControl(''),
+      salaryPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
+      hoursPerWeek: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
+      workShortTime: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
+      specialPayment: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
+      maxHoursPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
+      maxHoursPerDay: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
+      hourlyRate: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
     });
   }
 

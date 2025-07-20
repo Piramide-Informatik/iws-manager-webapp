@@ -10,42 +10,119 @@
 
       <div class="contract_input">
         <label for="salaryPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
-        <input pInputText type="text" id="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off" />
+        <div>
+          <input pInputText type="text" id="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('salaryPerMonth')?.invalid 
+            && employmentContractForm.get('salaryPerMonth')?.dirty 
+            && employmentContractForm.get('salaryPerMonth')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('salaryPerMonth')?.invalid && 
+            employmentContractForm.get('salaryPerMonth')?.dirty && 
+            employmentContractForm.get('salaryPerMonth')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="contract_input">
         <label for="hoursPerWeek">{{ 'EMPLOYEE-CONTRACTS.FORM.WEEKLY_HOURS' | translate }}</label>
-        <input pInputText type="text" id="hoursPerWeek" formControlName="hoursPerWeek" autocomplete="off" />
+        <div>
+          <input pInputText type="text" id="hoursPerWeek" formControlName="hoursPerWeek" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('hoursPerWeek')?.invalid 
+            && employmentContractForm.get('hoursPerWeek')?.dirty 
+            && employmentContractForm.get('hoursPerWeek')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('hoursPerWeek')?.invalid && 
+            employmentContractForm.get('hoursPerWeek')?.dirty && 
+            employmentContractForm.get('hoursPerWeek')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="contract_input">
         <label for="workShortTime">{{ 'EMPLOYEE-CONTRACTS.FORM.WORK_SHORT_TIME' | translate }}</label>
-        <input pInputText type="text" id="workShortTime" formControlName="workShortTime" autocomplete="off" />
+        <div>
+          <input pInputText type="text" id="workShortTime" formControlName="workShortTime" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('workShortTime')?.invalid 
+            && employmentContractForm.get('workShortTime')?.dirty 
+            && employmentContractForm.get('workShortTime')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('workShortTime')?.invalid && 
+            employmentContractForm.get('workShortTime')?.dirty && 
+            employmentContractForm.get('workShortTime')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="contract_input">
         <label for="specialPayment">{{ 'EMPLOYEE-CONTRACTS.FORM.SPECIAL_PAYMENT' | translate }}</label>
-        <input pInputText type="text" id="specialPayment" formControlName="specialPayment" autocomplete="off" />
+        <div>
+          <input pInputText type="text" id="specialPayment" formControlName="specialPayment" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('specialPayment')?.invalid 
+            && employmentContractForm.get('specialPayment')?.dirty 
+            && employmentContractForm.get('specialPayment')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('specialPayment')?.invalid && 
+            employmentContractForm.get('specialPayment')?.dirty && 
+            employmentContractForm.get('specialPayment')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="contract_input">
         <label for="maxHoursPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
-        <input pInputText type="text" id="maxHoursPerMonth" formControlName="maxHoursPerMonth" autocomplete="off" />
+        <div>
+          <input pInputText type="text" id="maxHoursPerMonth" formControlName="maxHoursPerMonth" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('maxHoursPerMonth')?.invalid 
+            && employmentContractForm.get('maxHoursPerMonth')?.dirty 
+            && employmentContractForm.get('maxHoursPerMonth')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('maxHoursPerMonth')?.invalid && 
+            employmentContractForm.get('maxHoursPerMonth')?.dirty && 
+            employmentContractForm.get('maxHoursPerMonth')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="contract_input">
         <label for="maxHoursPerDay">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
-        <input pInputText type="text" id="maxHoursPerDay" formControlName="maxHoursPerDay" autocomplete="off" />
+        <div>
+          <input pInputText type="text" id="maxHoursPerDay" formControlName="maxHoursPerDay" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('maxHoursPerDay')?.invalid 
+            && employmentContractForm.get('maxHoursPerDay')?.dirty 
+            && employmentContractForm.get('maxHoursPerDay')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('maxHoursPerDay')?.invalid && 
+            employmentContractForm.get('maxHoursPerDay')?.dirty && 
+            employmentContractForm.get('maxHoursPerDay')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="contract_input">
         <label for="hourlyRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
-        <input pInputText type="text" id="hourlyRate" formControlName="hourlyRate" autocomplete="off" />
+        <div>
+          <input pInputText type="text" id="hourlyRate" formControlName="hourlyRate" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('hourlyRate')?.invalid 
+            && employmentContractForm.get('hourlyRate')?.dirty 
+            && employmentContractForm.get('hourlyRate')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('hourlyRate')?.invalid && 
+            employmentContractForm.get('hourlyRate')?.dirty && 
+            employmentContractForm.get('hourlyRate')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
       </div>
 
     </div>
     <div class="flex justify-content-center gap-4 mt-4">
-      <p-button class="save" type="submit" (onClick)="onSubmit()" size="small" [label]="'BUTTONS.SAVE' | translate"
+      <p-button class="save" type="submit" (onClick)="onSubmit()" [disabled]="!employmentContractForm.valid" size="small" [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check" iconPos="left" />
       @if(employmentContract) {
       <p-button class="Delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
