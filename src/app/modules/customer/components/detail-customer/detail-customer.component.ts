@@ -429,7 +429,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private handleSaveSuccess(savedCustomer: Customer): void {
     this.commmonMessageService.showEditSucessfullMessage();
-    this.resetFormAndNavigation();
+    this.customerStateService.setCustomerToEdit(savedCustomer);
+    this.isSaving = false;
   }
 
   private handleSaveError(error: any): void {
@@ -443,12 +444,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.isSaving = false;
   }
 
-  private resetFormAndNavigation(): void {
-    this.customerStateService.setCustomerToEdit(null);
-    this.clearForm();
-    this.isSaving = false;
-    this.router.navigate(['/customers']);
-  }
 
   private shouldPreventSubmission(): boolean {
     return this.formDetailCustomer.invalid ||
