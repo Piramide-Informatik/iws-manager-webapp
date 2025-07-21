@@ -59,11 +59,36 @@ export class CommonMessagesService {
     });
   }
 
+  showErrorRecordAlreadyExist() {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.transaleService.instant('MESSAGE.ERROR'),
+      detail: this.transaleService.instant('MESSAGE.RECORD_ALREADY_EXISTS')
+    })
+  }
+
+  
   showErrorDeleteMessageContainsOtherEntities() {
     this.messageService.add({
       severity: 'error',
       summary: this.transaleService.instant('MESSAGE.ERROR'),
       detail: this.transaleService.instant('MESSAGE.DELETE_ERROR_WITH_RECORDS')
     });
+  }
+  
+  showSuccessMessage(messageDetail: string){
+    this.messageService.add({
+      severity: 'success',
+      summary: this.transaleService.instant('MESSAGE.SUCCESS'),
+      detail: this.transaleService.instant(messageDetail)
+    }); 
+  }
+
+  showErrorMessage(messageDetail: string){
+    this.messageService.add({
+      severity: 'error',
+      summary: this.transaleService.instant('MESSAGE.ERROR'),
+      detail: this.transaleService.instant(messageDetail)
+    })
   }
 }

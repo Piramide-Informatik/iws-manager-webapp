@@ -67,15 +67,15 @@ export class ContactUtils {
 
   /**
    * Checks if a contact person exists (case-insensitive comparison)
-   * @param name - Name to check
+   * @param fullNameContact - First name and last name to check
    * @returns Observable emitting boolean indicating existence
    */
-  contactPersonExists(name: string): Observable<boolean> {
+  contactPersonExists(fullNameContact: string): Observable<boolean> {
     return this.contactPersonService.getAllContactPersons().pipe(
       map(contacts => contacts.some(
         c => {
           const fullName = `${c.firstName ?? ''} ${c.lastName ?? ''}`.trim();
-          return fullName.toLowerCase() === name.toLowerCase();
+          return fullName.toLowerCase() === fullNameContact.toLowerCase();
         }
       )),
       catchError(err => {

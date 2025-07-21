@@ -111,6 +111,7 @@
     "CREATE_FAILED": "Der Datensatz konnte nicht erstellt werden.",
     "DELETE_FAILED": "Der Datensatz konnte nicht gelöscht werden.",
     "DELETE_ERROR_IN_USE": "Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
+    "RECORD_ALREADY_EXISTS": "Der Datensatz existiert bereits.",
     "DELETE_ERROR_WITH_RECORDS": "Der Datensatz kann nicht gelöscht werden, weil verknüpfte Datensätze vorhanden sind.",
     "SELECT_AT_LEAST_ONE": "Es muss mindestens eine Spalte ausgewählt sein."
   },
