@@ -13,7 +13,8 @@
       "TITLE": "Error de concurrencia",
       "TEXT": "Lo sentimos, parece que alguien más ha realizado cambios en este registro mientras lo estabas editando. Por favor, actualiza la página y vuelve a intentarlo.",
       "BUTTON": "Actualizar"
-    }
+    },
+    "NUMBER_FORMAT_ERROR": "Se espera un número con el siguiente formato 1.234,56."
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -110,8 +111,9 @@
     "CREATE_FAILED": "No se pudo crear el registro.",
     "DELETE_FAILED": "No se pudo eliminar el registro.",
     "DELETE_ERROR_IN_USE": "No se puede eliminar el registro porque está en uso por otras entidades.",
-    "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada.",
-    "RECORD_ALREADY_EXISTS": "El registro ya existe."
+    "RECORD_ALREADY_EXISTS": "El registro ya existe.",
+    "DELETE_ERROR_WITH_RECORDS": "No se puede eliminar el registro porque tiene otros registros asociados",
+    "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada."
   },
   "primeng_date": {
     "dayNames": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],

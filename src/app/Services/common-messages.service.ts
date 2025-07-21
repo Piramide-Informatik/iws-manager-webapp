@@ -67,6 +67,15 @@ export class CommonMessagesService {
     })
   }
 
+  
+  showErrorDeleteMessageContainsOtherEntities() {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.transaleService.instant('MESSAGE.ERROR'),
+      detail: this.transaleService.instant('MESSAGE.DELETE_ERROR_WITH_RECORDS')
+    });
+  }
+  
   showSuccessMessage(messageDetail: string){
     this.messageService.add({
       severity: 'success',

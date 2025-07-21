@@ -4,7 +4,7 @@ import { ContactPerson } from '../../../../Entities/contactPerson';
 import { Salutation } from '../../../../Entities/salutation';
 import { SalutationService } from '../../../../Services/salutation.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Title } from '../../../employee/models/title';
+import { Title } from '../../../../Entities/title';
 import { TitleService } from '../../../../Services/title.service';
 import { finalize, of, Subscription, switchMap } from 'rxjs';
 import { ContactUtils } from '../../utils/contact-utils';
