@@ -70,13 +70,13 @@ export class EmploymentContractModalComponent {
   private initFormEmploymentContract(): void {
     this.employmentContractForm = new FormGroup({
       startDate: new FormControl(''),
-      salaryPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
-      hoursPerWeek: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
-      workShortTime: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
-      specialPayment: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
-      maxHoursPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
-      maxHoursPerDay: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
-      hourlyRate: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:\.[0-9]{3})*(?:\,[0-9]+)?)$")),
+      salaryPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
+      hoursPerWeek: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
+      workShortTime: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
+      specialPayment: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
+      maxHoursPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
+      maxHoursPerDay: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
+      hourlyRate: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
     });
   }
 
