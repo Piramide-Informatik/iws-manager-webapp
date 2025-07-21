@@ -110,7 +110,8 @@
     "CREATE_FAILED": "The record could not be created.",
     "DELETE_FAILED": "The record could not be deleted.",
     "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
-    "SELECT_AT_LEAST_ONE": "There must be at least one column selected."
+    "SELECT_AT_LEAST_ONE": "There must be at least one column selected.",
+    "RECORD_ALREADY_EXISTS": "The record already exists."
   },
   "primeng_date": {
     "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
