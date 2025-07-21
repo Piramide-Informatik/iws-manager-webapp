@@ -111,6 +111,7 @@
     "CREATE_FAILED": "No se pudo crear el registro.",
     "DELETE_FAILED": "No se pudo eliminar el registro.",
     "DELETE_ERROR_IN_USE": "No se puede eliminar el registro porque está en uso por otras entidades.",
+    "DELETE_ERROR_WITH_RECORDS": "No se puede eliminar el registro porque tiene otros registros asociados",
     "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada."
   },
   "primeng_date": {
