@@ -38,6 +38,9 @@ interface Column {
   providers: [MessageService]
 })
 export class DetailCustomerComponent implements OnInit, OnDestroy {
+  public showDeleteCustomerModal = false;
+  public isLoadingCustomer = false;
+  public errorMessage: string = '';
 
   private readonly customerStateService = inject(CustomerStateService);
   public currentCustomerToEdit: Customer | null = null;
@@ -426,7 +429,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private handleSaveSuccess(savedCustomer: Customer): void {
     this.commmonMessageService.showEditSucessfullMessage();
-    this.resetFormAndNavigation();
+    this.customerStateService.setCustomerToEdit(savedCustomer);
+    this.isSaving = false;
   }
 
   private handleSaveError(error: any): void {
@@ -440,12 +444,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.isSaving = false;
   }
 
-  private resetFormAndNavigation(): void {
-    this.customerStateService.setCustomerToEdit(null);
-    this.clearForm();
-    this.isSaving = false;
-    this.router.navigate(['/customers']);
-  }
 
   private shouldPreventSubmission(): boolean {
     return this.formDetailCustomer.invalid ||
@@ -557,5 +555,25 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   private handleError(err: any): void {
     console.error('Error creating customer:', err);
     this.commmonMessageService.showErrorCreatedMessage();
+  }
+
+    onCustomerDeleteConfirm() {
+    this.isLoadingCustomer = true;
+    if (this.customerId) {
+      this.customerUtils.deleteCustomer(this.customerId).subscribe({
+        next: () => {
+          this.isLoadingCustomer = false;
+          this.showDeleteCustomerModal = false;
+          this.commmonMessageService.showDeleteSucessfullMessage();
+          this.router.navigate(['/customers']);
+        },
+        error: (error) => {
+          this.isLoadingCustomer = false;
+          this.commmonMessageService.showErrorDeleteMessage();
+          this.errorMessage = error.message ?? 'Failed to delete customer';
+          console.error('Delete error:', error);
+        }
+      });
+    }
   }
 }

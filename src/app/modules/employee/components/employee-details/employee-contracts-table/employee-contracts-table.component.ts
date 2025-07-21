@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { EmploymentContract } from '../../../../../Entities/employment-contract';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { _, TranslateService } from '@ngx-translate/core';
@@ -33,8 +33,7 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
   employeeContracts!: EmploymentContract[];
   selectedEmployeeContract!: EmploymentContract | undefined;
 
-  @Input() customer: any;
-  @Input() employeeId!: number;
+  public employeeId!: number;
 
   // Configuration table
   tableKey: string = 'EmployeeDetails'
