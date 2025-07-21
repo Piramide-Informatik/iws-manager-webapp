@@ -13,7 +13,8 @@
       "TITLE": "Parallelitätsfehler",
       "TEXT": "Entschuldigung, es scheint, dass jemand anderes diesen Datensatz bearbeitet hat, während Sie ihn geändert haben. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut, um mit den neuesten Daten zu arbeiten.",
       "BUTTON": "Aktualisieren"
-    }
+    },
+    "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",

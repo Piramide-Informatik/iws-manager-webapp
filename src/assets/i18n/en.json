@@ -13,7 +13,8 @@
       "TITLE": "Concurrency Error",
       "TEXT": "We're sorry, it seems someone else has made changes to this record while you were editing it. Please refresh the page and try again to ensure you're working with the latest information.",
       "BUTTON": "Refresh"
-    }
+    },
+    "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",

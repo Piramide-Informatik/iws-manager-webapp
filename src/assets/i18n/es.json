@@ -13,7 +13,8 @@
       "TITLE": "Error de concurrencia",
       "TEXT": "Lo sentimos, parece que alguien más ha realizado cambios en este registro mientras lo estabas editando. Por favor, actualiza la página y vuelve a intentarlo.",
       "BUTTON": "Actualizar"
-    }
+    },
+    "NUMBER_FORMAT_ERROR": "Se espera un número con el siguiente formato 1.234,56."
   },
   "MENU": {
     "DASHBOARD": "Panel",
