@@ -121,6 +121,8 @@ import { TypeOfCompaniesModalComponent } from './components/types-of-companies/c
 import { StateModalComponent } from './components/states/components/state-modal/state-modal.component';
 import { SharedModule } from '../shared/shared.module';
 import localeDe from '@angular/common/locales/de';
+import { ModelProjectStatusComponent } from './components/project-status/components/model-project-status/model-project-status.component';
+import { TableProjectStatusComponent } from './components/project-status/components/table-project-status/table-project-status.component';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -207,7 +209,9 @@ registerLocaleData(localeDe, 'de-DE');
     CountryModalComponent,
     SalutationModalComponent,
     TypeOfCompaniesModalComponent,
-    StateModalComponent
+    StateModalComponent,
+    ModelProjectStatusComponent,
+    TableProjectStatusComponent
   ],
   imports: [
     ButtonModule,

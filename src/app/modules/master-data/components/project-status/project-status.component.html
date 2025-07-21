@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
       <div class="col-6">
-        <master-data-genaral-table
+        <!-- <master-data-genaral-table
           [tableId]="tableKey"
           [tableValues]="projects"
           [columns]="columsHeaderFieldProjects"
@@ -10,7 +10,8 @@
           [userPreferences]="userProjectStatusPreferences"
           [dataKeys]="dataKeys"
           (onColumnChanges)="onUserProjectStatusPreferencesChanges($event)"
-        ></master-data-genaral-table>
+        ></master-data-genaral-table> -->
+        <app-table-project-status></app-table-project-status>
       </div>
       <div class="col-6">
         <master-data-edit-project-status></master-data-edit-project-status>

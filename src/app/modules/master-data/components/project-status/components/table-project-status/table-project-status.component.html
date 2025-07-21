@@ -1,0 +1,10 @@
+<master-data-genaral-table
+    [tableId]="tableKey"
+    [tableValues]="projects"
+    [columns]="columsHeaderFieldProjects"
+    [hideColumns]="false"
+    tableTitle="PROJECT_STATUS.PROJECT_STATUS"
+    [userPreferences]="userProjectStatusPreferences"
+    [dataKeys]="dataKeys"
+    (onColumnChanges)="onUserProjectStatusPreferencesChanges($event)"
+></master-data-genaral-table>
