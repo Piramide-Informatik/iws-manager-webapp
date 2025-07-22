@@ -1,4 +1,4 @@
-import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Subscription } from 'rxjs';
@@ -32,15 +32,19 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   public contractorForm!: FormGroup;
   public showOCCErrorModalContractor = false;
   private loading = false;
-  
+
   @Input() currentCustomer!: Customer | undefined;
   @Input() contractor: Contractor | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
+  @Input() visible = false;
+
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
-  @Output() onMessageOperation = new EventEmitter<{severity: string, summary: string, detail: string}>()
+  @Output() onMessageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>()
   @Output() contractorUpdated = new EventEmitter<Contractor>();
   @Output() onContractorCreated = new EventEmitter<Contractor>();
   @Output() onContractorDeleted = new EventEmitter<number>();
+
+  @ViewChild('contractorLabelInput') contractorLabelInput!: ElementRef<HTMLInputElement>;
 
   countries = toSignal(
     this.countryUtils.getCountriesSortedByName().pipe(
@@ -63,14 +67,14 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   ngOnInit(): void {
     this.initFormContractor();
-    
-    if(this.modalContractType === 'create'){
+
+    if (this.modalContractType === 'create') {
       this.getCurrentCustomer();
     }
   }
 
   ngOnDestroy() {
-    if(this.subscription){
+    if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
@@ -190,7 +194,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       if (this.modalContractType === 'create') {
         const newContractor = this.buildContractorFromForm();
         this.createContractor(newContractor);
-      } else if(this.modalContractType === 'edit') {
+      } else if (this.modalContractType === 'edit') {
         this.updateContractor();
       }
     }
@@ -257,7 +261,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   removeContractor() {
-    if(this.contractor){
+    if (this.contractor) {
       this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
         next: () => {
           this.isContractVisibleModal.emit(false);
