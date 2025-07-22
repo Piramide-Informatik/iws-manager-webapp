@@ -113,7 +113,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       });
     }
     if (this.modalContractType === 'create') {
-      this.contractorForm.reset();
     }
   }
 
