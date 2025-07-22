@@ -1,6 +1,5 @@
-import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { EmploymentContract } from '../../../../../Entities/employment-contract';
 import { EmploymentContractUtils } from '../../../utils/employment-contract-utils';
 import { Employee } from '../../../../../Entities/employee';
@@ -10,8 +9,6 @@ import { MessageService } from 'primeng/api';
 import { buildCustomer } from '../../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../../shared/utils/builders/employee';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
-import { DecimalPipe } from '@angular/common';
-import { parseGermanNumber } from '../../../../shared/utils/parser-input';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 
 @Component({
@@ -20,7 +17,7 @@ import { CommonMessagesService } from '../../../../../Services/common-messages.s
   templateUrl: './employment-contract-modal.component.html',
   styleUrl: './employment-contract-modal.component.scss'
 })
-export class EmploymentContractModalComponent {
+export class EmploymentContractModalComponent implements OnInit, OnChanges {
 
   private readonly subscription = new Subscription();
   private readonly translate = inject(TranslateService);
@@ -30,6 +27,7 @@ export class EmploymentContractModalComponent {
   @Input() modalType: string = "create";
   @Input() employmentContract!: any;
   @Input() currentEmployee!: Employee;
+  @Input() modalVisible!: boolean;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() messageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>();
   @Output() onOperationEmploymentContract = new EventEmitter<number>();
@@ -45,17 +43,13 @@ export class EmploymentContractModalComponent {
   public showOCCErrorModalContract = false;
 
   constructor(
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly decimalPipe: DecimalPipe,
     private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let employmentContractChange = changes['employmentContract'];
-    if (employmentContractChange && !employmentContractChange.firstChange) {
-      this.employmentContract = employmentContractChange.currentValue;
+    if (changes['modalVisible'] || changes['employmentContract']) {
       if (!this.employmentContract) {
+        this.initFormEmploymentContract();
         this.employmentContractForm.reset();
       } else {
         this.fillEmploymentContractForm();
@@ -70,18 +64,14 @@ export class EmploymentContractModalComponent {
   private initFormEmploymentContract(): void {
     this.employmentContractForm = new FormGroup({
       startDate: new FormControl(''),
-      salaryPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
-      hoursPerWeek: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
-      workShortTime: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
-      specialPayment: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
-      maxHoursPerMonth: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
-      maxHoursPerDay: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
-      hourlyRate: new FormControl('', Validators.pattern("^([0-9]{1,3}(?:.[0-9]{3})*(?:,[0-9]+)?)$")),
+      salaryPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      hoursPerWeek: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      workShortTime: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      specialPayment: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      maxHoursPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      maxHoursPerDay: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      hourlyRate: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
     });
-  }
-
-  goBackListContracts() {
-    this.isVisibleModal.emit(false);
   }
 
   get isCreateMode(): boolean {
@@ -96,13 +86,13 @@ export class EmploymentContractModalComponent {
   fillEmploymentContractForm() {
     this.employmentContractForm.patchValue({
       startDate: momentCreateDate(this.employmentContract?.startDate),
-      salaryPerMonth: this.changeNumberFormat(this.employmentContract?.salaryPerMonth),
-      hoursPerWeek: this.changeNumberFormat(this.employmentContract?.hoursPerWeek),
-      workShortTime: this.changeNumberFormat(this.employmentContract?.workShortTime),
-      specialPayment: this.changeNumberFormat(this.employmentContract?.specialPayment),
-      maxHoursPerMonth: this.changeNumberFormat(this.employmentContract?.maxHoursPerMonth),
-      maxHoursPerDay: this.changeNumberFormat(this.employmentContract?.maxHoursPerDay),
-      hourlyRate: this.changeNumberFormat(this.employmentContract?.hourlyRate)
+      salaryPerMonth: this.employmentContract?.salaryPerMonth,
+      hoursPerWeek: this.employmentContract?.hoursPerWeek,
+      workShortTime: this.employmentContract?.workShortTime,
+      specialPayment: this.employmentContract?.specialPayment,
+      maxHoursPerMonth: this.employmentContract?.maxHoursPerMonth,
+      maxHoursPerDay: this.employmentContract?.maxHoursPerDay,
+      hourlyRate: this.employmentContract?.hourlyRate
     });
   }
 
@@ -122,13 +112,13 @@ export class EmploymentContractModalComponent {
 
     const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       startDate: momentFormatDate(this.employmentContractForm.value.startDate),
-      salaryPerMonth: parseGermanNumber(this.employmentContractForm.value.salaryPerMonth ?? ''),
-      hoursPerWeek: parseGermanNumber(this.employmentContractForm.value.hoursPerWeek?? ''),
-      workShortTime: parseGermanNumber(this.employmentContractForm.value.workShortTime?? ''),
-      specialPayment: parseGermanNumber(this.employmentContractForm.value.specialPayment?? ''),
-      maxHoursPerMonth: parseGermanNumber(this.employmentContractForm.value.maxHoursPerMonth?? ''),
-      maxHoursPerDay: parseGermanNumber(this.employmentContractForm.value.maxHoursPerDay?? ''),
-      hourlyRate: parseGermanNumber(this.employmentContractForm.value.hourlyRate?? ''),
+      salaryPerMonth: this.employmentContractForm.value.salaryPerMonth ?? '',
+      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek?? '',
+      workShortTime: this.employmentContractForm.value.workShortTime?? '',
+      specialPayment: this.employmentContractForm.value.specialPayment?? '',
+      maxHoursPerMonth: this.employmentContractForm.value.maxHoursPerMonth?? '',
+      maxHoursPerDay: this.employmentContractForm.value.maxHoursPerDay?? '',
+      hourlyRate: this.employmentContractForm.value.hourlyRate?? '',
       hourlyRealRate: 0,
       employee: this.currentEmployee,
       customer: this.currentEmployee.customer ?? null
@@ -156,14 +146,17 @@ export class EmploymentContractModalComponent {
 
   removeEmploymentContract() {
     if (this.employmentContract) {
-      console.log('Removing employment xxxx:', this.employmentContract);
+      this.isLoading = true;
       this.employmentContractUtils.deleteEmploymentContract(this.employmentContract).subscribe({
         next: () => {
+          this.isLoading = false;
           this.isVisibleModal.emit(false);
           this.onEmployeeContractDeleted.emit(this.employmentContract);
+          console.log('Delete employment contract successfull');
           this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (error) => {
+          this.isLoading = false;
           this.commonMessageService.showErrorDeleteMessage();
         }
       });
@@ -200,14 +193,14 @@ export class EmploymentContractModalComponent {
       customer: this.buildCustomerFromSource(customerSource),
       employee: this.buildEmployeeFromSource(employeeSource),
       startDate: momentFormatDate(formValues.startDate),
-      salaryPerMonth: parseGermanNumber(formValues.salaryPerMonth),
-      hoursPerWeek: parseGermanNumber(formValues.hoursPerWeek),
-      workShortTime: parseGermanNumber(formValues.workShortTime),
-      specialPayment: parseGermanNumber(formValues.specialPayment),
-      maxHoursPerMonth: parseGermanNumber(formValues.maxHoursPerMonth),
-      maxHoursPerDay: parseGermanNumber(formValues.maxHoursPerDay),
-      hourlyRate: parseGermanNumber(formValues.hourlyRate),
-      hourlyRealRate: parseGermanNumber(formValues.hourlyRealRate),
+      salaryPerMonth: formValues.salaryPerMonth,
+      hoursPerWeek: formValues.hoursPerWeek,
+      workShortTime: formValues.workShortTime,
+      specialPayment: formValues.specialPayment,
+      maxHoursPerMonth: formValues.maxHoursPerMonth,
+      maxHoursPerDay: formValues.maxHoursPerDay,
+      hourlyRate: formValues.hourlyRate,
+      hourlyRealRate: formValues.hourlyRealRate,
       createdAt: "",
       updatedAt: ""
     };
@@ -234,19 +227,18 @@ export class EmploymentContractModalComponent {
     this.loading = true;
     const updatedContract = this.buildEmploymentContract(this.employmentContract?.customer, this.employmentContract?.employee);
 
-    console.log('Updating employment contract:', updatedContract);
+    console.log('Updating employment contract');
     this.subscription.add(this.employmentContractUtils.updateEmploymentContract(updatedContract)
       .subscribe({
-        next: (updated) => this.handleUpdateSuccess(updated),
-        error: (err) => this.handleUpdateError(err),
+        next: (updated) =>{
+          this.isLoading = false;
+          this.handleUpdateSuccess(updated)
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.handleUpdateError(err)
+        },
         complete: () => this.loading = false
       }));
   }
-
-  private changeNumberFormat(number: number): any {
-    if (number === null) return ''; 
-    const numberText = number.toString();
-    return this.decimalPipe.transform(numberText, '1.2-2', 'de-DE');
-  }
-
 }
