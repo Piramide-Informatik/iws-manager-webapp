@@ -8,7 +8,7 @@ import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular
 export class AutoFocusOnVisibleDirective implements OnChanges {
   @Input('appAutoFocusOnVisible') visible = false;
 
-  constructor(private el: ElementRef<HTMLInputElement>) {}
+  constructor(private readonly el: ElementRef<HTMLInputElement>) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
