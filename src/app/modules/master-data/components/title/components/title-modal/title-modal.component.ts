@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
-import { of, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-title-modal',
@@ -35,7 +35,13 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
+    this.loadInitialData();
     this.resetForm();
+  }
+
+  private loadInitialData() {
+    const sub = this.titleUtils.loadInitialData().subscribe(); 
+    this.subscriptions.add(sub);
   }
 
   ngOnDestroy(): void {

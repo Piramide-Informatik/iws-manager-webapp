@@ -33,9 +33,9 @@ export class TitleService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): void {
+  public loadInitialData(): Observable<Title[]> {
     this._loading.set(true);
-    this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (titles) => {
           this._titles.set(titles);
@@ -48,7 +48,7 @@ export class TitleService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    );
   }
 
   // CREATE
@@ -86,7 +86,7 @@ export class TitleService {
       })
     );
   }
-  
+
   // DELETE
   deleteTitle(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
@@ -104,7 +104,7 @@ export class TitleService {
         }
       })
     );
-  }  
+  }
 
   // READ
   getAllTitles(): Observable<Title[]> {
@@ -117,12 +117,12 @@ export class TitleService {
       })
     );
   }
-  
+
   getTitleById(id: number): Observable<Title | undefined> {
     return this.getAllTitles().pipe(
       map(titles => titles.find(t => t.id === id))
     );
-  }  
+  }
 
   public refreshTitles(): void {
     this.loadInitialData();

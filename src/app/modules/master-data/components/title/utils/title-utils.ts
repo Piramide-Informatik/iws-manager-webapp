@@ -16,6 +16,10 @@ export class TitleUtils {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly employeeUtils = inject(EmployeeUtils);
 
+  loadInitialData(): Observable<Title[]> {
+    return this.titleService.loadInitialData();
+  }
+
   /**
    * Gets a title by ID with proper error handling
    * @param id - ID of the title to retrieve
@@ -39,7 +43,7 @@ export class TitleUtils {
    * @param nameTitle - Name for the new title
    * @returns Observable that completes when title is created
    */
-  
+
   addTitle(nameTitle: string): Observable<Title> {
     const trimmedName = nameTitle?.trim();
 
@@ -84,6 +88,10 @@ export class TitleUtils {
     );
   }
 
+  getAllTitles(): Observable<Title[]> {
+    return this.titleService.getAllTitles();
+  }
+
   /**
    * Gets all titles sorted alphabetically by name
    * @returns Observable emitting sorted array of titles
@@ -99,12 +107,12 @@ export class TitleUtils {
   }
 
   /**
-   * Refreshes titles data
-   * @returns Observable that completes when refresh is done
-   */
+     * Refreshes customers data
+     * @returns Observable that completes when refresh is done
+     */
   refreshTitles(): Observable<void> {
     return new Observable<void>(subscriber => {
-      this.titleService.refreshTitles();
+      this.titleService.loadInitialData();
       subscriber.next();
       subscriber.complete();
     });
