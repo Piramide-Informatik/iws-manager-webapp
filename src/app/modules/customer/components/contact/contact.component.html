@@ -10,6 +10,7 @@
                     pInputText
                     [ngClass]="{'ng-invalid ng-dirty': contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched}"
                     autocomplete="off"
+                    [appAutoFocusOnVisible]="visible"
                 >
             </div>
     
