@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
+import { Observable, catchError, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
 import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
 

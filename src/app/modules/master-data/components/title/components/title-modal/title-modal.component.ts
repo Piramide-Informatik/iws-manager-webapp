@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 
 export class TitleModalComponent implements OnInit, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -100,34 +100,6 @@ export class TitleModalComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(sub);
   }
-
-
-  // onSubmit(): void {
-  //   if (this.shouldPreventSubmission()) return;
-
-  //   this.prepareForSubmission();
-  //   const titleName = this.getSanitizedTitleName();
-
-  //   const sub = this.titleUtils.addTitle(titleName).pipe(
-  //     finalize(() => this.isLoading = false)
-  //   ).subscribe({
-  //     next: () => {
-  //       this.titleCreated.emit();
-  //       this.toastMessage.emit({
-  //         severity: 'success',
-  //         summary: 'MESSAGE.SUCCESS',
-  //         detail: 'MESSAGE.CREATE_SUCCESS'
-  //       });
-  //       this.handleClose();
-  //     },
-  //     error: (error) => {
-  //       this.errorMessage = error?.message ?? 'TITLE.ERROR.CREATION_FAILED';
-  //       console.error('Creation error:', error);
-  //     }
-  //   });
-
-  //   this.subscriptions.add(sub);
-  // }
 
   private handleSuccess(): void {
     this.toastMessage.emit({
