@@ -4,9 +4,9 @@ import { ContactPerson } from '../../../../Entities/contactPerson';
 import { Salutation } from '../../../../Entities/salutation';
 import { SalutationService } from '../../../../Services/salutation.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Title } from '../../../employee/models/title';
+import { Title } from '../../../../Entities/title';
 import { TitleService } from '../../../../Services/title.service';
-import { catchError, finalize, map, of, Subscription, switchMap } from 'rxjs';
+import { finalize, of, Subscription, switchMap } from 'rxjs';
 import { ContactUtils } from '../../utils/contact-utils';
 import { Customer } from '../../../../Entities/customer';
 import { ContactStateService } from '../../utils/contact-state.service';
@@ -101,28 +101,17 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     if (this.shouldPreventSubmission()) return;
 
     this.prepareForSubmission();
-    const { firstName, lastName } = this.getContactFormValues();
     const newContact = this.getContactFormValues();
 
-    const createSub = this.contactUtils.contactPersonExists(firstName + ' ' + lastName).pipe(
-      switchMap(exists => this.handleContactExistence(exists, newContact)),
-      switchMap((result) => {
-        if (result === null) return of(null); 
-        return this.contactUtils.refreshContactsPersons().pipe(map(() => result));
-      }),
-      catchError(err => this.handleError('CONTACT.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.isLoading = false)
-    ).subscribe({
-      next: (result) => {
-        if (result !== null) {
-          this.commonMessageService.showCreatedSuccesfullMessage();
-          this.onOperationContact.emit(this.currentCustomer.id);
-          this.handleClose();
-        }
+    const createSub = this.contactUtils.createNewContactPerson(newContact).subscribe({
+      next: () => {
+        this.commonMessageService.showSuccessMessage('MESSAGE.CREATE_SUCCESS');
+        this.onOperationContact.emit(this.currentCustomer.id);
+        this.handleClose();
       },
       error: (err) => {
         this.commonMessageService.showErrorCreatedMessage();
-        this.handleError('COUNTRY.ERROR.CREATION_FAILED', err);
+        this.handleError('MESSAGE.CREATE_FAILED', err);
       }
     });
 
@@ -147,8 +136,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       email: this.contactForm.value.emailAddress,
     };
 
-    console.log("reload contacts for update")
-    console.log(updatedContact);
 
     const updateSub = this.contactUtils.updateContactPerson(updatedContact).pipe(
       switchMap(() => this.contactUtils.refreshContactsPersons()),
@@ -177,16 +164,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     this.commonMessageService.showErrorEditMessage();
   }
 
-  private handleContactExistence(exists: boolean, newContact: Omit<ContactPerson, 'id'>) {
-    if (exists) {
-      this.errorMessage = 'COUNTRY.ERROR.ALREADY_EXISTS';
-      return of(null);
-    }
-    return this.contactUtils.createNewContactPerson(newContact).pipe(
-      catchError(err => this.handleError('COUNTRY.ERROR.CREATION_FAILED', err))
-    );
-  }
-
   private shouldPreventSubmission(): boolean {
     return this.contactForm.invalid || this.isLoading || this.isSaving;
   }
@@ -198,6 +175,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   private handleError(messageKey: string, error: any) {
     this.errorMessage = messageKey;
+    this.commonMessageService.showErrorMessage(this.errorMessage);
     console.error('Error:', error);
     return of(null);
   }

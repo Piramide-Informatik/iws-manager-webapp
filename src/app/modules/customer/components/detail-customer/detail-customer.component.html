@@ -26,6 +26,7 @@
             [(ngModel)]="selectedCountry"
             optionLabel="name"
             optionValue="id"
+            [showClear]="true"
           >
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
@@ -64,6 +65,7 @@
           [(ngModel)]="selectedTypeCompany"
           optionLabel="name"
           optionValue="id"
+          [showClear]="true"
           />
         </div>
 
@@ -74,6 +76,7 @@
           [options]="sectors()" 
           optionLabel="name"
           optionValue="code" 
+          [showClear]="true"
           />
         </div>
 
@@ -84,6 +87,7 @@
           [options]="states()" 
           optionLabel="name"
           optionValue="id"
+          [showClear]="true"
           />
         </div>
 
@@ -174,13 +178,31 @@
         <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
             iconPos="left" (onClick)="createCustomer()" />
       }
+
       <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-          iconPos="left" [style]="{ background: '#ef4444' }" />
+          iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="showDeleteCustomerModal = true" />
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
           iconPos="left" routerLink="/customers"/>
-  </div>
+    </div>
   </div>
 </div>
+
+<p-dialog [header]="'CUSTOMERS.LABELS.DELETE_CUSTOMER' | translate" [modal]="true" [(visible)]="showDeleteCustomerModal">
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'CUSTOMERS.LABELS.REMOVE_CUSTOMER_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ formDetailCustomer.get('companyText1')?.value }}"</strong>
+      {{ 'CUSTOMERS.LABELS.REMOVE_CONTACT_LIST' | translate }}?
+    </p>
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onCustomerDeleteConfirm()" severity="danger" [loading]="isLoadingCustomer"
+        [disabled]="isLoadingCustomer" />
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="showDeleteCustomerModal = false;" [disabled]="isLoadingCustomer" />
+    </div>
+  </div>
+</p-dialog>
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalCustomer"

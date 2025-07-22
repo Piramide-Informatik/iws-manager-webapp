@@ -13,7 +13,8 @@
       "TITLE": "Concurrency Error",
       "TEXT": "We're sorry, it seems someone else has made changes to this record while you were editing it. Please refresh the page and try again to ensure you're working with the latest information.",
       "BUTTON": "Refresh"
-    }
+    },
+    "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected."
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -110,6 +111,7 @@
     "CREATE_FAILED": "The record could not be created.",
     "DELETE_FAILED": "The record could not be deleted.",
     "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
+    "RECORD_ALREADY_EXISTS": "The record already exists.",
     "DELETE_ERROR_WITH_RECORDS": "The record cannot be deleted because it has associated records.",
     "SELECT_AT_LEAST_ONE": "There must be at least one column selected."
   },
