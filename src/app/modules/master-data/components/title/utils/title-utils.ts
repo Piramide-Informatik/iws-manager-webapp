@@ -185,27 +185,4 @@ export class TitleUtils {
       })
     );
   }
-
-  private waitForUpdatedTitle(id: number, observer: any) {
-    return toObservable(this.titleService.titles).pipe(
-      map(titles => titles.find(t => t.id === id)),
-      filter(updated => !!updated),
-      take(1)
-    ).subscribe({
-      next: (updatedTitle) => {
-        observer.next(updatedTitle);
-        observer.complete();
-      },
-      error: (err) => observer.error(err)
-    });
-  }
-
-  private listenForUpdateErrors(observer: any) {
-    return toObservable(this.titleService.error).pipe(
-      filter(error => !!error),
-      take(1)
-    ).subscribe({
-      next: (err) => observer.error(err)
-    });
-  }
 }

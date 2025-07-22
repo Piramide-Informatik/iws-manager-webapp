@@ -63,7 +63,7 @@ export class TitleService {
           this._error.set('Failed to add title');
           console.error('Error adding title:', err);
         },
-        // finalize: () => this._loading.set(false)
+        finalize: () => this._loading.set(false)
       })
     );
   }
