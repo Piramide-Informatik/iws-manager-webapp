@@ -30,6 +30,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   // Iputs & Outputs
   @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
   @Input() currentContact!: ContactPerson | null;
+  @Input() visible = false;
   @Output() onVisibility = new EventEmitter<boolean>();
   @Output() onOperationContact = new EventEmitter<number>();
 
@@ -160,7 +161,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       this.showOCCErrorModal = true;
       return;
     }
-    
+
     this.commonMessageService.showErrorEditMessage();
   }
 
@@ -198,7 +199,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     this.isSaving = false;
     this.errorMessage = null;
     this.onVisibility.emit(false);
-    this.contactForm.reset();
     this.contactForm.markAsUntouched();
     this.contactForm.markAsPristine();
   }
