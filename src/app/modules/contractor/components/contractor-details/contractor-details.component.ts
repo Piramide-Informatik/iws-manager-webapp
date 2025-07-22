@@ -253,7 +253,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   closeModal(): void {
     this.isContractVisibleModal.emit(false);
-    this.contractorForm.reset();
   }
 
   removeContractor() {

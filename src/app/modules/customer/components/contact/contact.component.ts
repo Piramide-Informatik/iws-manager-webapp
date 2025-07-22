@@ -198,7 +198,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     this.isSaving = false;
     this.errorMessage = null;
     this.onVisibility.emit(false);
-    this.contactForm.reset();
     this.contactForm.markAsUntouched();
     this.contactForm.markAsPristine();
   }
