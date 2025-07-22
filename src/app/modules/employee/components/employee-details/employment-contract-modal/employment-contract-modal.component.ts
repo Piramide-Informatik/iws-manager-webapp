@@ -30,10 +30,9 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
   @Input() modalVisible!: boolean;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() messageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>();
-  @Output() onOperationEmploymentContract = new EventEmitter<number>();
+  @Output() onOperationEmploymentContract = new EventEmitter<number>(); // Create
   @Output() onEmployeeContractUpdated = new EventEmitter<EmploymentContract>();
   @Output() onEmployeeContractDeleted = new EventEmitter<number>();
-  @Output() onEmployeeContractCreated = new EventEmitter<EmploymentContract>(); // falta implementar
 
   isLoading = false;
   errorMessage: string | null = null;
