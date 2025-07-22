@@ -52,8 +52,8 @@ export class TitleService {
   }
 
   // CREATE
-  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
-    this.http.post<Title>(this.apiUrl, title, this.httpOptions).pipe(
+  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Title> {
+    return this.http.post<Title>(this.apiUrl, title, this.httpOptions).pipe(
       tap({
         next: (newTitle) => {
           this._titles.update(titles => [...titles, newTitle]);
@@ -62,9 +62,10 @@ export class TitleService {
         error: (err) => {
           this._error.set('Failed to add title');
           console.error('Error adding title:', err);
-        }
+        },
+        // finalize: () => this._loading.set(false)
       })
-    ).subscribe();
+    );
   }
 
   // UPDATE

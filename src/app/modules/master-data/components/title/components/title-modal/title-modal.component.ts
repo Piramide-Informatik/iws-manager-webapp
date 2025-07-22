@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { catchError, switchMap, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-title-modal',
@@ -11,15 +11,17 @@ import { of } from 'rxjs';
   styleUrls: ['./title-modal.component.scss']
 })
 
-export class TitleModalComponent implements OnInit {
+export class TitleModalComponent implements OnInit, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
+  private subscriptions = new Subscription();
+
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() titleToDelete: number | null = null;
   @Input() titleName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
+  @Output() confirmDelete = new EventEmitter<{ severity: string, summary: string, detail: string }>();
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -36,13 +38,17 @@ export class TitleModalComponent implements OnInit {
     this.resetForm();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   get isCreateMode(): boolean {
     return this.modalType === 'create';
   }
 
   onDeleteConfirm(): void {
     this.isLoading = true;
-    if(this.titleToDelete){
+    if (this.titleToDelete) {
       this.titleUtils.deleteTitle(this.titleToDelete).subscribe({
         next: () => {
           this.isLoading = false;
@@ -50,7 +56,7 @@ export class TitleModalComponent implements OnInit {
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
             detail: 'MESSAGE.DELETE_SUCCESS'
-          }); 
+          });
           this.closeModal();
         },
         error: (error) => {
@@ -66,7 +72,7 @@ export class TitleModalComponent implements OnInit {
         }
       });
     }
-  }  
+  }
 
   onSubmit(): void {
     if (this.shouldPreventSubmission()) return;
@@ -74,13 +80,20 @@ export class TitleModalComponent implements OnInit {
     this.prepareForSubmission();
     const titleName = this.getSanitizedTitleName();
 
-    this.titleUtils.titleExists(titleName).pipe(
-      switchMap(exists => this.handleTitleExistence(exists, titleName)),
-      catchError(err => this.handleError('TITLE.ERROR.CHECKING_DUPLICATE', err)),
+    const sub = this.titleUtils.addTitle(titleName).pipe(
       finalize(() => this.isLoading = false)
-    ).subscribe();
+    ).subscribe({
+      next: () => {
+        this.titleCreated.emit();
+        this.handleClose();
+      },
+      error: (error) => {
+        this.errorMessage = error?.message ?? 'TITLE.ERROR.CREATION_FAILED';
+        console.error('Creation error:', error);
+      }
+    });
 
-    this.handleClose();
+    this.subscriptions.add(sub);
   }
 
   private shouldPreventSubmission(): boolean {
@@ -94,23 +107,6 @@ export class TitleModalComponent implements OnInit {
 
   private getSanitizedTitleName(): string {
     return this.createTitleForm.value.name?.trim() ?? '';
-  }
-
-  private handleTitleExistence(exists: boolean, titleName: string) {
-    if (exists) {
-      this.errorMessage = 'TITLE.ERROR.ALREADY_EXISTS';
-      return of(null);
-    }
-
-    return this.titleUtils.createNewTitle(titleName).pipe(
-      catchError(err => this.handleError('TITLE.ERROR.CREATION_FAILED', err))
-    );
-  }
-
-  private handleError(messageKey: string, error: any) {
-    this.errorMessage = messageKey;
-    console.error('Error:', error);
-    return of(null);
   }
 
   private resetForm(): void {
@@ -136,9 +132,9 @@ export class TitleModalComponent implements OnInit {
     if (this.isCreateMode && this.titleInput) {
       setTimeout(() => {
         if (this.titleInput?.nativeElement) {
-          this.titleInput.nativeElement.focus(); 
+          this.titleInput.nativeElement.focus();
         }
-      }, 150); 
+      }, 150);
     }
   }
 }

@@ -10,7 +10,7 @@ import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
  * Utility class for title-related business logic and operations.
  * Works with TitleService's reactive signals while providing additional functionality.
  */
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 export class TitleUtils {
   private readonly titleService = inject(TitleService);
   private readonly customerUtils = inject(CustomerUtils);
@@ -39,21 +39,33 @@ export class TitleUtils {
    * @param nameTitle - Name for the new title
    * @returns Observable that completes when title is created
    */
-  createNewTitle(nameTitle: string): Observable<void> {
-    if (!nameTitle?.trim()) {
-      return throwError(() => new Error('Title name cannot be empty'));
+  
+  addTitle(nameTitle: string): Observable<Title> {
+    const trimmedName = nameTitle?.trim();
+
+    if (!trimmedName) {
+      return throwError(() => new Error('TITLE.ERROR.EMPTY'));
     }
 
-    return new Observable<void>(subscriber => {
-      this.titleService.addTitle({
-        name: nameTitle.trim()
-      });
+    return this.titleExists(trimmedName).pipe(
+      switchMap(exists => {
+        if (exists) {
+          return throwError(() => new Error('TITLE.ERROR.ALREADY_EXISTS'));
+        }
 
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
-    });
+        return this.titleService.addTitle({ name: trimmedName });
+      }),
+      catchError(err => {
+        if (err.message === 'TITLE.ERROR.ALREADY_EXISTS' || err.message === 'TITLE.ERROR.EMPTY') {
+          return throwError(() => err);
+        }
+
+        console.error('Error creating title:', err);
+        return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
+      })
+    );
   }
+
 
   /**
    * Checks if a title exists (case-insensitive comparison)
@@ -158,7 +170,7 @@ export class TitleUtils {
         }
         return title;
       }),
-      switchMap((validatedTitle: Title) => this.titleService.updateTitle(validatedTitle)), 
+      switchMap((validatedTitle: Title) => this.titleService.updateTitle(validatedTitle)),
       catchError((err) => {
         console.error('Error updating title:', err);
         return throwError(() => err);
