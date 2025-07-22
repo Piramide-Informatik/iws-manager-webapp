@@ -11,7 +11,7 @@
       <div class="contract_input">
         <label for="salaryPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
         <div>
-          <input pInputText type="text" id="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off" [ngClass]="{
+          <input pInputText [appAutoFocusOnVisible]="visible" type="text" id="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('salaryPerMonth')?.invalid 
             && employmentContractForm.get('salaryPerMonth')?.dirty 
             && employmentContractForm.get('salaryPerMonth')?.touched}"/>

@@ -30,6 +30,7 @@ export class EmploymentContractModalComponent {
   @Input() modalType: string = "create";
   @Input() employmentContract!: any;
   @Input() currentEmployee!: Employee;
+  @Input() visible = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() messageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>();
   @Output() onOperationEmploymentContract = new EventEmitter<number>();
@@ -123,12 +124,12 @@ export class EmploymentContractModalComponent {
     const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       startDate: momentFormatDate(this.employmentContractForm.value.startDate),
       salaryPerMonth: parseGermanNumber(this.employmentContractForm.value.salaryPerMonth ?? ''),
-      hoursPerWeek: parseGermanNumber(this.employmentContractForm.value.hoursPerWeek?? ''),
-      workShortTime: parseGermanNumber(this.employmentContractForm.value.workShortTime?? ''),
-      specialPayment: parseGermanNumber(this.employmentContractForm.value.specialPayment?? ''),
-      maxHoursPerMonth: parseGermanNumber(this.employmentContractForm.value.maxHoursPerMonth?? ''),
-      maxHoursPerDay: parseGermanNumber(this.employmentContractForm.value.maxHoursPerDay?? ''),
-      hourlyRate: parseGermanNumber(this.employmentContractForm.value.hourlyRate?? ''),
+      hoursPerWeek: parseGermanNumber(this.employmentContractForm.value.hoursPerWeek ?? ''),
+      workShortTime: parseGermanNumber(this.employmentContractForm.value.workShortTime ?? ''),
+      specialPayment: parseGermanNumber(this.employmentContractForm.value.specialPayment ?? ''),
+      maxHoursPerMonth: parseGermanNumber(this.employmentContractForm.value.maxHoursPerMonth ?? ''),
+      maxHoursPerDay: parseGermanNumber(this.employmentContractForm.value.maxHoursPerDay ?? ''),
+      hourlyRate: parseGermanNumber(this.employmentContractForm.value.hourlyRate ?? ''),
       hourlyRealRate: 0,
       employee: this.currentEmployee,
       customer: this.currentEmployee.customer ?? null
@@ -244,7 +245,7 @@ export class EmploymentContractModalComponent {
   }
 
   private changeNumberFormat(number: number): any {
-    if (number === null) return ''; 
+    if (number === null) return '';
     const numberText = number.toString();
     return this.decimalPipe.transform(numberText, '1.2-2', 'de-DE');
   }
