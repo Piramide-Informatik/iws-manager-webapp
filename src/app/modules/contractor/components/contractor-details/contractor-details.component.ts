@@ -38,6 +38,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
   @Input() visible = false;
 
+  @Input() isVisibleModal: boolean = false;
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() onMessageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>()
   @Output() contractorUpdated = new EventEmitter<Contractor>();
@@ -104,7 +105,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['contractor'] && this.modalContractType === 'edit' && this.contractor) {
+    if ((changes['contractor'] || changes['isVisibleModal']) && this.modalContractType === 'edit' && this.contractor) {
       this.contractorForm.patchValue({
         contractorlabel: this.contractor.label,
         contractorname: this.contractor.name,
