@@ -33,9 +33,9 @@ export class TitleService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): void {
+  public loadInitialData(): Observable<Title[]> {
     this._loading.set(true);
-    this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (titles) => {
           this._titles.set(titles);
@@ -48,12 +48,12 @@ export class TitleService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    );
   }
 
   // CREATE
-  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
-    this.http.post<Title>(this.apiUrl, title, this.httpOptions).pipe(
+  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Title> {
+    return this.http.post<Title>(this.apiUrl, title, this.httpOptions).pipe(
       tap({
         next: (newTitle) => {
           this._titles.update(titles => [...titles, newTitle]);
@@ -62,9 +62,10 @@ export class TitleService {
         error: (err) => {
           this._error.set('Failed to add title');
           console.error('Error adding title:', err);
-        }
+        },
+        finalize: () => this._loading.set(false)
       })
-    ).subscribe();
+    );
   }
 
   // UPDATE
@@ -85,7 +86,7 @@ export class TitleService {
       })
     );
   }
-  
+
   // DELETE
   deleteTitle(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
@@ -103,7 +104,7 @@ export class TitleService {
         }
       })
     );
-  }  
+  }
 
   // READ
   getAllTitles(): Observable<Title[]> {
@@ -116,12 +117,12 @@ export class TitleService {
       })
     );
   }
-  
+
   getTitleById(id: number): Observable<Title | undefined> {
     return this.getAllTitles().pipe(
       map(titles => titles.find(t => t.id === id))
     );
-  }  
+  }
 
   public refreshTitles(): void {
     this.loadInitialData();

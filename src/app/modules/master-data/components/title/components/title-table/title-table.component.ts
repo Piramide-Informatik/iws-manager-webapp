@@ -162,7 +162,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void {
+  toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
