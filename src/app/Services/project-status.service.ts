@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class projectStatusService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/projectStatus`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/projectstatus`;
 
     private readonly httpOptions = {
         headers: new HttpHeaders({
@@ -19,12 +19,12 @@ export class projectStatusService {
     };
 
     // Signals para estado reactivo
-    private readonly _projectStatus = signal<ProjectStatus[]>([]);
+    private readonly _projectStatuses = signal<ProjectStatus[]>([]);
     private readonly _loading = signal<boolean>(false);
     private readonly _error = signal<string | null>(null);
 
     // Exponer señales como read-only
-    public projectStatus = this._projectStatus.asReadonly();
+    public projectStatuses = this._projectStatuses.asReadonly();
     public loading = this._loading.asReadonly();
     public error = this._error.asReadonly();
 
@@ -32,17 +32,17 @@ export class projectStatusService {
         this.loadInitialData();
     }
 
-    private loadInitialData(): Observable<ProjectStatus[]> {
+    private loadInitialData(): void {
         this._loading.set(true);
-        return this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
+        this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
             tap({
-                next: (projectStatus) => {
-                    this._projectStatus.set(projectStatus);
+                next: (projectStatuses) => {
+                    this._projectStatuses.set(projectStatuses);
                     this._error.set(null);
                 },
                 error: (err) => {
-                    this._error.set('Failed to load projectStatus');
-                    console.error('Error loading projectStatus:', err);
+                    this._error.set('Failed to load projectStatuses');
+                    console.error('Error loading projectStatuses:', err);
                 }
             }),
             catchError(() => of([])),
@@ -55,7 +55,7 @@ export class projectStatusService {
         return this.http.post<ProjectStatus>(this.apiUrl, projectStatus, this.httpOptions).pipe(
             tap({
                 next: (newProjectStatus) => {
-                    this._projectStatus.update(projectStatus => [...projectStatus, newProjectStatus]);
+                    this._projectStatuses.update(projectStatuses => [...projectStatuses, newProjectStatus]);
                     this._error.set(null);
                 },
                 error: (err) => {
@@ -72,8 +72,8 @@ export class projectStatusService {
         return this.http.put<ProjectStatus>(url, updatedProjectStatus, this.httpOptions).pipe(
             tap({
                 next: (res) => {
-                    this._projectStatus.update(projectStatus =>
-                        projectStatus.map(t=> t.id === res.id ? res : t)
+                    this._projectStatuses.update(projectStatuses =>
+                        projectStatuses.map(t=> t.id === res.id ? res : t)
                     );
                     this._error.set(null);
                 },
@@ -91,8 +91,8 @@ export class projectStatusService {
         return this.http.delete<void>(url, this.httpOptions).pipe(
             tap({
                 next: () => {
-                    this._projectStatus.update(projectStatus =>
-                        projectStatus.filter(t => t.id !== id)
+                    this._projectStatuses.update(projectStatuses =>
+                        projectStatuses.filter(t => t.id !== id)
                     );
                     this._error.set(null);
                 },
@@ -104,7 +104,7 @@ export class projectStatusService {
         );
     }
     //READ
-    getAllProjectStatus(): Observable<ProjectStatus[]> {
+    getAllProjectStatuses(): Observable<ProjectStatus[]> {
         return this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
             tap(() => this._error.set(null)),
             catchError(err => {
@@ -116,12 +116,12 @@ export class projectStatusService {
     }
 
     getProjectStatusById(id: number): Observable<ProjectStatus | undefined> {
-        return this.getAllProjectStatus().pipe(
-            map(projectStatus => projectStatus.find(t => t.id === id))
+        return this.getAllProjectStatuses().pipe(
+            map(projectStatuses => projectStatuses.find(t => t.id === id))
         );
     }
 
-    public refreshProjectStatus(): void {
+    public refreshProjectStatuses(): void {
         this.loadInitialData();
     }
 }

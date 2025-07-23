@@ -35,8 +35,8 @@ export class ProjectStatusUtils {
 
     //Check if a projectStatus exists
     projectExists(name: string): Observable<boolean> {
-        return this.projectStatusService.getAllProjectStatus().pipe(
-            map(projectStatus => projectStatus.some(
+        return this.projectStatusService.getAllProjectStatuses().pipe(
+            map(projectStatuses => projectStatuses.some(
                 t => t.name.toLowerCase() === name.toLowerCase()
             )),
             catchError(err => {
@@ -48,8 +48,8 @@ export class ProjectStatusUtils {
 
     //Gets all projectStatuses sorted alphabetically by name
     getProjectStatusesSortedByName() : Observable<ProjectStatus[]> {
-        return this.projectStatusService.getAllProjectStatus().pipe(
-            map(projectStatus => [...projectStatus].sort((a, b) => a.name.localeCompare(b.name))),
+        return this.projectStatusService.getAllProjectStatuses().pipe(
+            map(projectStatuses => [...projectStatuses].sort((a, b) => a.name.localeCompare(b.name))),
             catchError(err => {
                 console.error('Error sorting projectStatus:', err);
                 return throwError(() => new Error('Failed to sort projectStatus'));
@@ -60,7 +60,7 @@ export class ProjectStatusUtils {
     //Refreshes projectStatuses data
     refreshProjectStatuses(): Observable<void> {
         return new Observable<void>(subscriber => {
-            this.projectStatusService.refreshProjectStatus();
+            this.projectStatusService.refreshProjectStatuses();
             subscriber.next();
             subscriber.complete();
         });
@@ -80,8 +80,8 @@ export class ProjectStatusUtils {
             })
         );
     }
-    //Checks if a title is used by any entity
-    private checkProjectStatusUsage(idTitle: number): Observable<boolean> {
+    //Checks if a projectStatus is used by any entity
+    private checkProjectStatusUsage(idProjectStatus: number): Observable<boolean> {
         // For now, no use has been verified in any entity.
         return of(false);
     }

@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, OnChanges, OnDestroy, OnInit, computed, SimpleChanges } from '@angular/core';
+import { Component, ViewChild, inject, OnChanges, OnDestroy, OnInit, computed, SimpleChanges, effect } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { _, TranslateService } from '@ngx-translate/core';
@@ -19,6 +19,9 @@ import { MessageService } from 'primeng/api';
   styleUrl: './table-project-status.component.scss'
 })
 export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges {
+  private projectStatusSvc = inject(projectStatusService);
+  projectStatusess = this.projectStatusSvc.projectStatuses;
+
   private readonly projectStatusUtils = new ProjectStatusUtils();
   private readonly projectStatusService = inject(projectStatusService);
   private readonly messageService = inject(MessageService);
@@ -27,6 +30,7 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   selectedProjectStatus: number | null = null;
   projectStatusName: string = '';
   @ViewChild('projectStatusModel') projectStatusModelComponent!: ModelProjectStatusComponent;
+  
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if(event.type === 'delete' && event.data) {
@@ -43,54 +47,64 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     }
     this.visibleModal = true;
   }
-
-  readonly projetStatuses = computed(() => {
-    return this.projectStatusService.projectStatus().map(projectStatus => ({
-      id: projectStatus.id,
-      name: projectStatus.name
-    }));
-  });
   
   projects: any[] = [];
-  columsHeaderFieldProjects: any[] = [];
+  projectColumns: any[] = [];
   projectStatusDisplayedColumns: any[] = [];
   isChipsVisible = false;
   userProjectStatusPreferences: UserPreference = {};
   tableKey: string = 'ProjectStatus'
-  dataKeys = ['label','projectStatus'];
+  dataKeys = ['projectStatus'];
+  projectStatusData: ProjectStatus[] = [];
 
   @ViewChild('dt2') dt2!:Table;
 
   private langSubscription!: Subscription;
 
+  readonly projectStatuses = computed(()=>{
+    return this.projectStatusService.projectStatuses().map(ProjectStatus => ({
+      id: ProjectStatus.id,
+      name: ProjectStatus.name,
+    }));
+  });
   constructor(
         private readonly translate: TranslateService,
         private readonly masterDataService: MasterDataService,
         private readonly userPreferenceService: UserPreferenceService,
         private readonly routerUtils: RouterUtilsService
-      ){}
+      ){
+        effect(() => {
+      console.log('Project statuses:', this.projectStatusess());
+    });
+  }
     
   ngOnInit(): void {
-    this.projects = this.masterDataService.getProjectStatusData();
-    
-    this.loadColHeadersProjects();
-    this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
+    this.loadProjectStatusHeadersAndColumns();
+    this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.projectStatusDisplayedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeadersProjects();
-      this.routerUtils.reloadComponent(true);
-      this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
-    });
+      this.loadProjectStatusHeadersAndColumns();
+      this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.projectStatusDisplayedColumns);
+    })
+    this.projects = this.masterDataService.getProjectStatusData();
+
+    this.projectStatusService.getAllProjectStatuses().subscribe(data =>{
+      this.projectStatusData =data;
+    })
+    
+    // this.loadColHeadersProjects();
+    // this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
+    // this.langSubscription = this.translate.onLangChange.subscribe(() => {
+    //   this.loadColHeadersProjects();
+    //   this.routerUtils.reloadComponent(true);
+    //   this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
+    // });
   }
     
   onUserProjectStatusPreferencesChanges(userProjectStatusPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userProjectStatusPreferences));
   }
     
-  loadColHeadersProjects(): void {
-    this.columsHeaderFieldProjects = [
-      { field: 'projectStatus', styles: {'width': 'auto'}, header: this.translate.instant(_('PROJECT_STATUS.PROJECT_STATUS')) },
-    ];
-  }
+  
     
   ngOnDestroy(): void {
     if (this.langSubscription) {
@@ -98,6 +112,27 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-      
+      if (changes['projectStatuses']) {
+      this.prepareTableData();
+    }
+  }
+
+  private prepareTableData () {
+    if (this.projectStatuses().length > 0){
+      this.projectStatusDisplayedColumns = [
+        {field:'name', header: 'Project Status'}
+      ]
+    }
+  }
+  
+  loadProjectStatusHeadersAndColumns() {
+    this.loadProjectStatusHeaders();
+    this.projectStatusDisplayedColumns = this.projectColumns.filter(col => col.field !== 'label');
+  }
+  
+  loadProjectStatusHeaders(){
+    this.projectColumns = [
+      { field: 'projectStatus', minWidth: 110, header: this.translate.instant(_('PROJECT_STATUS.PROJECT_STATUS')) }
+    ];
   }
 }
