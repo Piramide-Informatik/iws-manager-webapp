@@ -46,9 +46,9 @@
     <div class="order_input order_name mb-2">
       <label for="invoiceDate">{{ 'SUB-CONTRACTS.FORM.INVOICE_DATE' | translate }}</label>
       <p-datepicker
-        id="invoiceDate"
+        inputId="invoiceDate"
         [showIcon]="true"
-        iconDisplay="input"
+        [showClear]="true"
         formControlName="invoiceDate"
         dateFormat="dd.mm.yy"
       ></p-datepicker>
@@ -58,7 +58,8 @@
       <label for="netOrGross">{{ 'SUB-CONTRACTS.FORM.INVOICE_NET_OR_GROSS' | translate }}</label>
       <p-select
         [style]="{ width: '20vw' }"
-        id="netOrGross"
+        inputId="netOrGross"
+        [showClear]="true"
         [options]="[
           { label: 'Netto', value: 'net' },
           { label: 'Brutto', value: 'gross' }
@@ -70,7 +71,7 @@
 
     <!-- Monto -->
     <div class="order_input order_name mb-2">
-      <label for="amount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
+      <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
       <input
         pInputText
         id="invoiceAmount"
