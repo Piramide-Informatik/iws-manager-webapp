@@ -378,7 +378,6 @@
   },
   "SUB-CONTRACTS": {
     "FORM": {
-      "CUSTOMER": "Cliente",
       "ORDER_TITLE": "Título de Orden",
       "CONTRACTOR": "Contratista",
       "INVOICE_NUMBER": "Número de Factura",

@@ -384,7 +384,6 @@
   },
   "SUB-CONTRACTS": {
     "FORM": {
-      "CUSTOMER": "Kunde",
       "ORDER_TITLE": "Auftrag",
       "CONTRACTOR": "Auftragnehmer",
       "INVOICE_NUMBER": "Rechnungsnummer",

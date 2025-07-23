@@ -385,14 +385,13 @@
   },
   "SUB-CONTRACTS": {
     "FORM": {
-      "CUSTOMER": "Customer",
       "ORDER_TITLE": "Order Title",
       "CONTRACTOR": "Contractor",
       "INVOICE_NUMBER": "Invoice Number",
       "INVOICE_DATE": "Invoice Date",
       "INVOICE_NET_OR_GROSS": "Net or gross",
       "INVOICE_AMOUNT": "Invoice amount",
-      "IS_AFA": "AfA",
+      "IS_AFA": "Drepreciation",
       "AFA_MONTHS": "Depreciation period (months)",
       "DESCRIPTION":"Description"
     },
