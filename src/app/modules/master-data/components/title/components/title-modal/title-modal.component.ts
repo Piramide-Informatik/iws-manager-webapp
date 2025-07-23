@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-title-modal',
@@ -11,15 +11,17 @@ import { of } from 'rxjs';
   styleUrls: ['./title-modal.component.scss']
 })
 
-export class TitleModalComponent implements OnInit {
+export class TitleModalComponent implements OnInit, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
+  private readonly subscriptions = new Subscription();
+
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() titleToDelete: number | null = null;
   @Input() titleName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
+  @Output() toastMessage = new EventEmitter<{ severity: string, summary: string, detail: string }>();
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -33,7 +35,17 @@ export class TitleModalComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.loadInitialData();
     this.resetForm();
+  }
+
+  private loadInitialData() {
+    const sub = this.titleUtils.loadInitialData().subscribe();
+    this.subscriptions.add(sub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   get isCreateMode(): boolean {
@@ -42,31 +54,36 @@ export class TitleModalComponent implements OnInit {
 
   onDeleteConfirm(): void {
     this.isLoading = true;
-    if(this.titleToDelete){
-      this.titleUtils.deleteTitle(this.titleToDelete).subscribe({
+
+    if (this.titleToDelete) {
+      const sub = this.titleUtils.deleteTitle(this.titleToDelete).pipe(
+        finalize(() => this.isLoading = false)
+      ).subscribe({
         next: () => {
-          this.isLoading = false;
-          this.confirmDelete.emit({
+          this.toastMessage.emit({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
             detail: 'MESSAGE.DELETE_SUCCESS'
-          }); 
+          });
           this.closeModal();
         },
         error: (error) => {
-          this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete title';
-          this.confirmDelete.emit({
+          this.toastMessage.emit({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
+            detail: this.errorMessage?.includes('it is in use by other entities')
+              ? 'MESSAGE.DELETE_ERROR_IN_USE'
+              : 'MESSAGE.DELETE_FAILED'
           });
           console.error('Delete error:', error);
           this.closeModal();
         }
       });
+
+      this.subscriptions.add(sub);
     }
-  }  
+  }
 
   onSubmit(): void {
     if (this.shouldPreventSubmission()) return;
@@ -74,13 +91,49 @@ export class TitleModalComponent implements OnInit {
     this.prepareForSubmission();
     const titleName = this.getSanitizedTitleName();
 
-    this.titleUtils.titleExists(titleName).pipe(
-      switchMap(exists => this.handleTitleExistence(exists, titleName)),
-      catchError(err => this.handleError('TITLE.ERROR.CHECKING_DUPLICATE', err)),
+    const sub = this.titleUtils.addTitle(titleName).pipe(
       finalize(() => this.isLoading = false)
-    ).subscribe();
+    ).subscribe({
+      next: () => this.handleSuccess(),
+      error: (error) => this.handleError(error)
+    });
 
+    this.subscriptions.add(sub);
+  }
+
+  private handleSuccess(): void {
+    this.toastMessage.emit({
+      severity: 'success',
+      summary: 'MESSAGE.SUCCESS',
+      detail: 'MESSAGE.CREATE_SUCCESS'
+    });
+    this.titleCreated.emit();
     this.handleClose();
+  }
+
+  private handleError(error: any): void {
+    this.errorMessage = error?.message ?? 'TITLE.ERROR.CREATION_FAILED';
+
+    const detail = this.getErrorDetail(error.message);
+
+    this.toastMessage.emit({
+      severity: 'error',
+      summary: 'MESSAGE.ERROR',
+      detail
+    });
+
+    console.error('Creation error:', error);
+  }
+
+  private getErrorDetail(errorCode: string): string {
+    switch (errorCode) {
+      case 'TITLE.ERROR.EMPTY':
+        return 'MESSAGE.EMPTY_ERROR';
+      case 'TITLE.ERROR.ALREADY_EXISTS':
+        return 'MESSAGE.RECORD_ALREADY_EXISTS';
+      default:
+        return 'MESSAGE.CREATE_FAILED';
+    }
   }
 
   private shouldPreventSubmission(): boolean {
@@ -94,23 +147,6 @@ export class TitleModalComponent implements OnInit {
 
   private getSanitizedTitleName(): string {
     return this.createTitleForm.value.name?.trim() ?? '';
-  }
-
-  private handleTitleExistence(exists: boolean, titleName: string) {
-    if (exists) {
-      this.errorMessage = 'TITLE.ERROR.ALREADY_EXISTS';
-      return of(null);
-    }
-
-    return this.titleUtils.createNewTitle(titleName).pipe(
-      catchError(err => this.handleError('TITLE.ERROR.CREATION_FAILED', err))
-    );
-  }
-
-  private handleError(messageKey: string, error: any) {
-    this.errorMessage = messageKey;
-    console.error('Error:', error);
-    return of(null);
   }
 
   private resetForm(): void {
@@ -136,9 +172,9 @@ export class TitleModalComponent implements OnInit {
     if (this.isCreateMode && this.titleInput) {
       setTimeout(() => {
         if (this.titleInput?.nativeElement) {
-          this.titleInput.nativeElement.focus(); 
+          this.titleInput.nativeElement.focus();
         }
-      }, 150); 
+      }, 150);
     }
   }
 }
