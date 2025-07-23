@@ -6,18 +6,21 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
 
 //Components
 import { OccErrorModalComponent } from './components/occ-error-modal/occ-error-modal.component';
+import { AutoFocusOnVisibleDirective } from './directives/auto-focus-on-visible.directive';
 
 @NgModule({
   declarations: [
-    OccErrorModalComponent
+    OccErrorModalComponent,
+    AutoFocusOnVisibleDirective
   ],
   imports: [
     TranslateDirective,
     TranslateModule,
-    TranslatePipe
+    TranslatePipe,
   ],
   exports: [
-    OccErrorModalComponent
+    OccErrorModalComponent,
+    AutoFocusOnVisibleDirective
   ]
 })
 export class SharedModule { }
