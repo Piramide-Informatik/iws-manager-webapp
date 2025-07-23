@@ -1,0 +1,14 @@
+<master-data-genaral-table
+    [tableId]="tableKey"
+    [tableValues]="projectStatusData"
+    [columns]="projectStatusDisplayedColumns"
+    [userPreferences]="userProjectStatusPreferences"
+    [hideColumns]="false"
+    tableTitle="PROJECT_STATUS.PROJECT_STATUS"
+    [dataKeys]="dataKeys"
+    (onColumnChanges)="onUserProjectStatusPreferencesChanges($event)"
+></master-data-genaral-table>
+
+<p>{{ projectStatusData | json}}</p>
+<p>{{ projectStatuses() | json}}</p>
+
