@@ -27,6 +27,14 @@ p-floatlabel{
     flex: unset; 
     width: 20vw;
 }
+
+ /* Estilo del calendario */
+::ng-deep .p-datepicker {
+    width: 20vw;
+    min-width: 20vw;
+    max-width: 20vw;
+}
+
 ::ng-deep .p-datepicker table,
 ::ng-deep .p-datepicker .p-monthpicker,
 ::ng-deep .p-datepicker .p-yearpicker,
