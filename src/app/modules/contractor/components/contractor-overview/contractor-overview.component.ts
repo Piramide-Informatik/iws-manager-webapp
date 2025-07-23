@@ -94,9 +94,9 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
       { field: 'name', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
       { field: 'country.label', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL')) },
       { field: 'street', header: this.translate.instant(_('CONTRACTS.TABLE.STREET')) },
-      { field: 'zipCode', customClasses: ['align-right'], header: this.translate.instant(_('CONTRACTS.TABLE.ZIP_CODE')) },
+      { field: 'zipCode', header: this.translate.instant(_('CONTRACTS.TABLE.ZIP_CODE')) },
       { field: 'city', header: this.translate.instant(_('CONTRACTS.TABLE.CITY')) },
-      { field: 'taxNumber', customClasses: ['align-right'], header: this.translate.instant(_('CONTRACTS.TABLE.TAX_NUMBER')) }
+      { field: 'taxNumber', header: this.translate.instant(_('CONTRACTS.TABLE.TAX_NUMBER')) }
     ];
   }
 
