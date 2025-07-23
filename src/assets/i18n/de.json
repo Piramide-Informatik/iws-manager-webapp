@@ -383,6 +383,18 @@
     }
   },
   "SUB-CONTRACTS": {
+    "FORM": {
+      "CUSTOMER": "Kunde",
+      "ORDER_TITLE": "Auftrag",
+      "CONTRACTOR": "Auftragnehmer",
+      "INVOICE_NUMBER": "Rechnungsnummer",
+      "INVOICE_DATE": "Rechnungsdatum",
+      "INVOICE_NET_OR_GROSS": "Netto oder brutto",
+      "INVOICE_AMOUNT": "Rechnungsbetrag",
+      "IS_AFA": "AfA",
+      "AFA_MONTHS": "AfA Dauer (Monate)",
+      "DESCRIPTION":"Beschreibung"
+    },
     "TABLE": {
       "ORDER_TITLE": "Autrag",
       "CONTRACTOR": "Auftragnehmer",
@@ -392,6 +404,18 @@
       "NET_INVOICE": "Netto",
       "GROSS_INVOICE": "Brutto",
       "SHARE": "Anteil"
+    },
+    "DEPRECIATION_COLUMNS": {
+      "TABLE_NAME": "Aufteilung auf Jahre",
+      "YEAR": "Jahr",
+      "SERVICE_LIFE": "Nutzungsanteil",
+      "AFA_BY_YEAR": "AfA im Jahr"
+    },
+    "PROJECT": {
+      "TABLE_NAME": "Projekte",
+      "PROJECT": "Projekt",
+      "SHARE": "Anteil",
+      "AMOUNT": "Betrag"
     }
   },
   "ABSENCE_TYPES": {

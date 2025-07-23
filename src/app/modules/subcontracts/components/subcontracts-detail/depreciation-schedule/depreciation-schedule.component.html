@@ -1,5 +1,5 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
-  <ng-template #title>Aufteilung auf Jahre</ng-template>
+  <ng-template #title>{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.TABLE_NAME' | translate }}</ng-template>
 
   <master-data-genaral-table
     [tableId]="tableKey"
@@ -26,7 +26,7 @@
     <hr class="mt-0" />
     <form [formGroup]="depreciationForm" (ngSubmit)="saveDepreciation()">
       <div class="flex gap-4 mb-3">
-        <label for="year" class="w-3">Jahr</label>
+        <label for="year" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
         <input
           pInputText
           id="year"
@@ -36,7 +36,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="usagePercentage" class="w-3">Nutzungsanteil %</label>
+        <label for="usagePercentage" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
         <input
           pInputText
           id="usagePercentage"
@@ -46,7 +46,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="depreciationAmount" class="w-3">AfA im Jahr</label>
+        <label for="depreciationAmount" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' | translate }}</label>
         <input
           pInputText
           id="depreciationAmount"
@@ -57,13 +57,15 @@
       </div>
       <div class="flex justify-content-center gap-2">
         <p-button
-          label="Save"
+          [label]="'BUTTONS.SAVE' | translate"
           (click)="saveDepreciation()"
           (keydown.enter)="saveDepreciation()"
         ></p-button>
 
         <p-button
-          label="Cancel"
+          [label]="'BUTTONS.CANCEL' | translate"
+          class="cancel"
+          icon="pi pi-times"
           (click)="closeModal()"
           (keydown.enter)="closeModal()"
         ></p-button>

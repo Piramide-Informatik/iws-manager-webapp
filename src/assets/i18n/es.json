@@ -377,6 +377,18 @@
     }
   },
   "SUB-CONTRACTS": {
+    "FORM": {
+      "CUSTOMER": "Cliente",
+      "ORDER_TITLE": "Título de Orden",
+      "CONTRACTOR": "Contratista",
+      "INVOICE_NUMBER": "Número de Factura",
+      "INVOICE_DATE": "Fecha de Factura",
+      "INVOICE_NET_OR_GROSS": "Neto o Bruto",
+      "INVOICE_AMOUNT": "Importe de Factura",
+      "IS_AFA": "Tiene Depreciación",
+      "AFA_MONTHS": "Periodo de Depreciación (meses)",
+      "DESCRIPTION":"Descripción"
+    },
     "TABLE": {
       "ORDER_TITLE": "Título",
       "CONTRACTOR": "Contratista",
@@ -386,6 +398,18 @@
       "NET_INVOICE": "Importe Neto Factura",
       "GROSS_INVOICE": "Importe Bruto Factura",
       "SHARE": "Parte"
+    },
+    "DEPRECIATION_COLUMNS": {
+      "TABLE_NAME": "División en Años",
+      "YEAR": "Año",
+      "SERVICE_LIFE": "Porcentaje de Uso",
+      "AFA_BY_YEAR": "Depreciación por Año"
+    },
+    "PROJECT": {
+      "TABLE_NAME": "Proyectos",
+      "PROJECT": "Proyecto",
+      "SHARE": "Porcentaje del crédito del proyecto",
+      "AMOUNT": "Cantidad"
     }
   },
   "ABSENCE_TYPES": {
