@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
+import { TranslateService, _ } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 interface DepreciationEntry {
   year: number;
@@ -34,8 +36,11 @@ export class DepreciationScheduleComponent implements OnInit {
   userDepreciationPreferences: UserPreference = {};
   tableKey: string = 'DepreciationSchedule'
   dataKeys = ['year', 'usagePercentage', 'depreciationAmount']
+  private langSubscription!: Subscription;
 
-  constructor(private readonly userPreferenceService: UserPreferenceService) { }
+  constructor(
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly translate: TranslateService) { }
 
   ngOnInit(): void {
     this.depreciationEntries = [
@@ -73,16 +78,24 @@ export class DepreciationScheduleComponent implements OnInit {
     });
 
     this.loading = false;
-    this.depreciationColumns = [
-      { field: 'year', customClasses: ['align-right'], header: 'Jahr' },
-      { field: 'usagePercentage', customClasses: ['align-right'], header: 'Nutzungsanteil %' },
-      { field: 'depreciationAmount', customClasses: ['align-right'], header: 'AfA im Jahr' },
-    ];
+    this.loadColumns();
     this.userDepreciationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.depreciationColumns);
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColumns();
+      this.userDepreciationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.depreciationColumns);
+    });
   }
 
   onUserDepreciationPreferencesChanges(userDepreciationPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userDepreciationPreferences));
+  }
+
+  loadColumns() {
+    this.depreciationColumns = [
+      { field: 'year', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')) },
+      { field: 'usagePercentage', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')) },
+      { field: 'depreciationAmount', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')) },
+    ];
   }
 
   showModal(option: string, year?: number) {

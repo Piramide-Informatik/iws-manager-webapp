@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
+import { Subscription } from 'rxjs';
+import { TranslateService, _ } from '@ngx-translate/core';
 
 interface ProjectAllocationEntry {
   projectName: string;
@@ -34,8 +36,11 @@ export class ProjectAllocationComponent implements OnInit {
   userAllocationsPreferences: UserPreference = {};
   tableKey: string = 'Allocations'
   dataKeys = ['projectName', 'percentage', 'amount'];
+  private langSubscription!: Subscription;
 
-  constructor(private readonly userPreferenceService: UserPreferenceService) { }
+  constructor(
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly translate: TranslateService) { }
 
   ngOnInit(): void {
     this.allocations = [
@@ -72,13 +77,21 @@ export class ProjectAllocationComponent implements OnInit {
       amount: new FormControl('', Validators.required),
     });
 
-    this.allocationsColumns = [
-      { field: 'projectName', header: 'Projekt' },
-      { field: 'percentage', customClasses: ['align-right'], header: 'Anteil %' },
-      { field: 'amount', customClasses: ['align-right'], header: 'Betrag' },
-    ];
+    this.loadColumns()
     this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
     this.loading = false;
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColumns();
+      this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
+    });
+  }
+
+  loadColumns() {
+    this.allocationsColumns = [
+      { field: 'projectName', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
+      { field: 'percentage', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
+      { field: 'amount', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
+    ];
   }
 
   onUserAllocationsPreferencesChanges(userAllocationsPreferences: any) {

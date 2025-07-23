@@ -1,7 +1,7 @@
 <form [formGroup]="subcontractForm" (ngSubmit)="onSubmit()">
   <div class="align-items-center mb-2">
     <div class="order_input order_name mb-2">
-      <label for="customer">Kunde</label>
+      <label for="customer">{{ 'SUB-CONTRACTS.FORM.CUSTOMER' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -12,7 +12,7 @@
     </div>
 
     <div class="order_input order_name mb-2">
-      <label for="order">Auftrag</label>
+      <label for="order">{{ 'SUB-CONTRACTS.FORM.ORDER_TITLE' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -23,7 +23,7 @@
     </div>
 
     <div class="order_input order_name mb-2">
-      <label for="contractor">Auftragnehmer</label>
+      <label for="contractor">{{ 'SUB-CONTRACTS.FORM.CONTRACTOR' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -33,7 +33,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="invoiceNumber">Rechnungsnummer</label>
+      <label for="invoiceNumber">{{ 'SUB-CONTRACTS.FORM.INVOICE_NUMBER' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -44,7 +44,7 @@
     </div>
 
     <div class="order_input order_name mb-2">
-      <label for="invoiceDate">Rechnungsdatum</label>
+      <label for="invoiceDate">{{ 'SUB-CONTRACTS.FORM.INVOICE_DATE' | translate }}</label>
       <p-datepicker
         id="invoiceDate"
         [showIcon]="true"
@@ -55,7 +55,7 @@
     </div>
 
     <div class="order_input order_name mb-2">
-      <label for="netOrGross">Netto oder brutto</label>
+      <label for="netOrGross">{{ 'SUB-CONTRACTS.FORM.INVOICE_NET_OR_GROSS' | translate }}</label>
       <p-select
         [style]="{ width: '20vw' }"
         id="netOrGross"
@@ -65,13 +65,12 @@
         ]"
         formControlName="netOrGross"
         optionLabel="label"
-        placeholder="Auswählen"
       ></p-select>
     </div>
 
     <!-- Monto -->
     <div class="order_input order_name mb-2">
-      <label for="amount">Rechnungsbetrag</label>
+      <label for="amount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
       <input
         pInputText
         id="invoiceAmount"
@@ -82,7 +81,7 @@
     </div>
 
     <div class="order_input order_name mb-2">
-      <label for="afa">AfA</label>
+      <label for="afa">{{ 'SUB-CONTRACTS.FORM.IS_AFA' | translate }}</label>
       <p-checkbox
         inputId="afa"
         formControlName="afa"
@@ -91,7 +90,7 @@
     </div>
 
     <div class="order_input order_name mb-2">
-      <label for="afaDurationMonths">AfA Dauer (Monate)</label>
+      <label for="afaDurationMonths">{{ 'SUB-CONTRACTS.FORM.AFA_MONTHS' | translate }}</label>
       <input
         id="afaDurationMonths"
         type="number"
@@ -102,7 +101,7 @@
 
     <!-- Descripción -->
     <div class="order_input order_name mb-2 flex">
-      <label for="description">Beschreibung</label>
+      <label for="description">{{ 'SUB-CONTRACTS.FORM.DESCRIPTION' | translate }}</label>
       <textarea
         id="description"
         pTextarea
