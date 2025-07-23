@@ -11,7 +11,7 @@
       <div class="contract_input">
         <label for="salaryPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" id="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off" />
+          <p-inputnumber #salaryPerMonth mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off" />
           <p-message severity="error" variant="simple" size="small" *ngIf="
             employmentContractForm.get('salaryPerMonth')?.invalid && 
             employmentContractForm.get('salaryPerMonth')?.dirty && 
@@ -24,7 +24,7 @@
       <div class="contract_input">
         <label for="hoursPerWeek">{{ 'EMPLOYEE-CONTRACTS.FORM.WEEKLY_HOURS' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" id="hoursPerWeek" formControlName="hoursPerWeek" autocomplete="off" [ngClass]="{
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hoursPerWeek" formControlName="hoursPerWeek" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('hoursPerWeek')?.invalid 
             && employmentContractForm.get('hoursPerWeek')?.dirty 
             && employmentContractForm.get('hoursPerWeek')?.touched}"/>
@@ -40,7 +40,7 @@
       <div class="contract_input">
         <label for="workShortTime">{{ 'EMPLOYEE-CONTRACTS.FORM.WORK_SHORT_TIME' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" id="workShortTime" formControlName="workShortTime" autocomplete="off" [ngClass]="{
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="workShortTime" formControlName="workShortTime" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('workShortTime')?.invalid 
             && employmentContractForm.get('workShortTime')?.dirty 
             && employmentContractForm.get('workShortTime')?.touched}"/>
@@ -56,7 +56,7 @@
       <div class="contract_input">
         <label for="specialPayment">{{ 'EMPLOYEE-CONTRACTS.FORM.SPECIAL_PAYMENT' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" id="specialPayment" formControlName="specialPayment" autocomplete="off" [ngClass]="{
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="specialPayment" formControlName="specialPayment" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('specialPayment')?.invalid 
             && employmentContractForm.get('specialPayment')?.dirty 
             && employmentContractForm.get('specialPayment')?.touched}"/>
@@ -72,7 +72,7 @@
       <div class="contract_input">
         <label for="maxHoursPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" id="maxHoursPerMonth" formControlName="maxHoursPerMonth" autocomplete="off" [ngClass]="{
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxHoursPerMonth" formControlName="maxHoursPerMonth" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('maxHoursPerMonth')?.invalid 
             && employmentContractForm.get('maxHoursPerMonth')?.dirty 
             && employmentContractForm.get('maxHoursPerMonth')?.touched}"/>
@@ -88,7 +88,7 @@
       <div class="contract_input">
         <label for="maxHoursPerDay">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" id="maxHoursPerDay" formControlName="maxHoursPerDay" autocomplete="off" [ngClass]="{
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxHoursPerDay" formControlName="maxHoursPerDay" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('maxHoursPerDay')?.invalid 
             && employmentContractForm.get('maxHoursPerDay')?.dirty 
             && employmentContractForm.get('maxHoursPerDay')?.touched}"/>
@@ -104,7 +104,7 @@
       <div class="contract_input">
         <label for="hourlyRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" id="hourlyRate" formControlName="hourlyRate" autocomplete="off" [ngClass]="{
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRate" formControlName="hourlyRate" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('hourlyRate')?.invalid 
             && employmentContractForm.get('hourlyRate')?.dirty 
             && employmentContractForm.get('hourlyRate')?.touched}"/>
@@ -146,3 +146,6 @@
     </div>
   </div>
 </ng-template>
+
+<app-occ-error-modal *ngIf="showOCCErrorModalContract" (onClose)="showOCCErrorModalContract = false">
+</app-occ-error-modal>

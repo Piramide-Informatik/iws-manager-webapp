@@ -17,7 +17,7 @@
      ? ('EMPLOYEE-CONTRACTS.LABEL.CREATE_EMPLOYEE_CONTRACT' | translate) 
      : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" [modal]="true" [(visible)]="visibleModal">
   <app-employment-contract-modal [modalType]="modalType" [employmentContract]="selectedEmployeeContract"
-    [modalVisible]="visibleModal" 
+    [visible]="visibleModal"
     [currentEmployee]="currentEmployee" (messageOperation)="onMessageOperation($event)"
     (onOperationEmploymentContract)="updateEmployementContractsList($event)"
     (isVisibleModal)="onModalVisibilityChange($event)" (onEmployeeContractUpdated)="onEmployeeContractUpdated($event)"

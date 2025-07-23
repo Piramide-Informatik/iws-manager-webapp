@@ -151,6 +151,7 @@
         <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
         <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
           <app-contact (onVisibility)="closeVisibility($event)" 
+            [visible]="visible"
             [modalType]="modalType" 
             [currentContact]="currentContactPerson"
             (onOperationContact)="updateContactList($event)"

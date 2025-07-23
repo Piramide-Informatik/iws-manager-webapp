@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmploymentContract } from '../../../../../Entities/employment-contract';
 import { EmploymentContractUtils } from '../../../utils/employment-contract-utils';
@@ -10,6 +10,7 @@ import { buildCustomer } from '../../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../../shared/utils/builders/employee';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-employment-contract-modal',
@@ -27,12 +28,13 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
   @Input() modalType: string = "create";
   @Input() employmentContract!: any;
   @Input() currentEmployee!: Employee;
-  @Input() modalVisible!: boolean;
+  @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() messageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>();
   @Output() onOperationEmploymentContract = new EventEmitter<number>(); // Create
   @Output() onEmployeeContractUpdated = new EventEmitter<EmploymentContract>();
   @Output() onEmployeeContractDeleted = new EventEmitter<number>();
+  @ViewChild('salaryPerMonth') firstInputNumber!: InputNumber;
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -46,10 +48,15 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['modalVisible'] || changes['employmentContract']) {
+    if (changes['visible'] || changes['employmentContract']) {
       if (!this.employmentContract) {
         this.initFormEmploymentContract();
         this.employmentContractForm.reset();
+        if(this.firstInputNumber){
+          setTimeout(()=>{
+            this.firstInputNumber.input.nativeElement.focus()
+          },300)
+        }
       } else {
         this.fillEmploymentContractForm();
       }
