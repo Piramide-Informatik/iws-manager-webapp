@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, filter, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
+import { Observable, catchError, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
 import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
 
@@ -10,11 +9,15 @@ import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
  * Utility class for title-related business logic and operations.
  * Works with TitleService's reactive signals while providing additional functionality.
  */
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 export class TitleUtils {
   private readonly titleService = inject(TitleService);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly employeeUtils = inject(EmployeeUtils);
+
+  loadInitialData(): Observable<Title[]> {
+    return this.titleService.loadInitialData();
+  }
 
   /**
    * Gets a title by ID with proper error handling
@@ -39,21 +42,33 @@ export class TitleUtils {
    * @param nameTitle - Name for the new title
    * @returns Observable that completes when title is created
    */
-  createNewTitle(nameTitle: string): Observable<void> {
-    if (!nameTitle?.trim()) {
-      return throwError(() => new Error('Title name cannot be empty'));
+
+  addTitle(nameTitle: string): Observable<Title> {
+    const trimmedName = nameTitle?.trim();
+
+    if (!trimmedName) {
+      return throwError(() => new Error('TITLE.ERROR.EMPTY'));
     }
 
-    return new Observable<void>(subscriber => {
-      this.titleService.addTitle({
-        name: nameTitle.trim()
-      });
+    return this.titleExists(trimmedName).pipe(
+      switchMap(exists => {
+        if (exists) {
+          return throwError(() => new Error('TITLE.ERROR.ALREADY_EXISTS'));
+        }
 
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
-    });
+        return this.titleService.addTitle({ name: trimmedName });
+      }),
+      catchError(err => {
+        if (err.message === 'TITLE.ERROR.ALREADY_EXISTS' || err.message === 'TITLE.ERROR.EMPTY') {
+          return throwError(() => err);
+        }
+
+        console.error('Error creating title:', err);
+        return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
+      })
+    );
   }
+
 
   /**
    * Checks if a title exists (case-insensitive comparison)
@@ -72,6 +87,10 @@ export class TitleUtils {
     );
   }
 
+  getAllTitles(): Observable<Title[]> {
+    return this.titleService.getAllTitles();
+  }
+
   /**
    * Gets all titles sorted alphabetically by name
    * @returns Observable emitting sorted array of titles
@@ -87,12 +106,12 @@ export class TitleUtils {
   }
 
   /**
-   * Refreshes titles data
-   * @returns Observable that completes when refresh is done
-   */
+     * Refreshes customers data
+     * @returns Observable that completes when refresh is done
+     */
   refreshTitles(): Observable<void> {
     return new Observable<void>(subscriber => {
-      this.titleService.refreshTitles();
+      this.titleService.loadInitialData();
       subscriber.next();
       subscriber.complete();
     });
@@ -158,34 +177,11 @@ export class TitleUtils {
         }
         return title;
       }),
-      switchMap((validatedTitle: Title) => this.titleService.updateTitle(validatedTitle)), 
+      switchMap((validatedTitle: Title) => this.titleService.updateTitle(validatedTitle)),
       catchError((err) => {
         console.error('Error updating title:', err);
         return throwError(() => err);
       })
     );
-  }
-
-  private waitForUpdatedTitle(id: number, observer: any) {
-    return toObservable(this.titleService.titles).pipe(
-      map(titles => titles.find(t => t.id === id)),
-      filter(updated => !!updated),
-      take(1)
-    ).subscribe({
-      next: (updatedTitle) => {
-        observer.next(updatedTitle);
-        observer.complete();
-      },
-      error: (err) => observer.error(err)
-    });
-  }
-
-  private listenForUpdateErrors(observer: any) {
-    return toObservable(this.titleService.error).pipe(
-      filter(error => !!error),
-      take(1)
-    ).subscribe({
-      next: (err) => observer.error(err)
-    });
   }
 }

@@ -1,5 +1,5 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
-  <ng-template #title>Projekte</ng-template>
+  <ng-template #title>{{ 'SUB-CONTRACTS.PROJECT.TABLE_NAME' | translate }}</ng-template>
 
   <master-data-genaral-table
     [tableId]="tableKey"
@@ -27,7 +27,7 @@
     <hr class="mt-0" />
     <form [formGroup]="allocationForm" (ngSubmit)="saveAllocation()">
       <div class="flex gap-4 mb-3">
-        <label for="projectName" class="w-3">Projekt</label>
+        <label for="projectName" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
         <input
           pInputText
           id="projectName"
@@ -37,7 +37,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="percentage" class="w-3">Anteil %</label>
+        <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
         <input
           pInputText
           id="percentage"
@@ -47,7 +47,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="amount" class="w-3">Betrag</label>
+        <label for="amount" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>
         <input
           pInputText
           id="amount"
@@ -58,14 +58,16 @@
       </div>
       <div class="flex justify-content-center gap-2">
         <p-button
-          label="Save"
+          [label]="'BUTTONS.SAVE' | translate"
           (click)="saveAllocation()"
           (keydown.enter)="saveAllocation()"
         ></p-button>
 
         <p-button
-          label="Cancel"
+          [label]="'BUTTONS.CANCEL' | translate"
           (click)="closeModal()"
+          class="cancel"
+          icon="pi pi-times"
           (keydown.enter)="closeModal()"
         ></p-button>
       </div>

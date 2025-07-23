@@ -1,14 +1,4 @@
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-    <p-toolbar styleClass="mb-1">
-        <ng-template #start>
-            <label for="SearchCustomer">Kunde</label>
-            <p-iconfield class="px-4">
-                <p-inputicon styleClass="pi pi-search px-4" />
-                <input pInputText type="text"  />
-            </p-iconfield>
-        </ng-template>
-    </p-toolbar>
-    <br>
     <div class="align-items-center mb-2">
         <div class="order_input order_id mb-2">
             <label for="orderId">Rahmenvertrag-Nr.</label>
@@ -20,7 +10,7 @@
         </div>
         <div class="order_input order_name mb-2">
             <label for="orderDate">Datum</label>
-            <p-datepicker id="orderDate" showIcon iconDisplay="input" formControlName="orderDate"  dateFormat="dd.mm.yy"  />
+            <p-datepicker id="orderDate" showIcon showClear formControlName="orderDate"  dateFormat="dd.mm.yy"  />
         </div>
         <div class="order_input order_name mb-2">
             <label for="orderTitle">Langtext</label>
@@ -28,22 +18,22 @@
         </div>
         <div class="order_input order_name mb-2"> 
             <label for="approvalDate">Unterschriftsdatum</label>
-            <p-datepicker id="approvalDate" showIcon iconDisplay="input" formControlName="approvalDate"  dateFormat="dd.mm.yy"  />
+            <p-datepicker id="approvalDate" showIcon showClear formControlName="approvalDate"  dateFormat="dd.mm.yy"  />
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="contractTitle">Förderprogramm</label>
-            <p-dropdown id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle"></p-dropdown>
+            <p-select id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle" showClear></p-select>
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="employeeiws">Vertragsstatus</label>
-            <p-dropdown id="employeeiws" [options]="vertragsstatusOptions" formControlName="employeeiws" ></p-dropdown>
+            <p-select id="employeeiws" [options]="vertragsstatusOptions" formControlName="employeeiws" showClear></p-select>
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="orderValue">IWS Mitarbeiter</label>
-            <p-dropdown id="orderValue" [options]="iwsMitarbeiterOptions" formControlName="orderValue" ></p-dropdown>
+            <p-select id="orderValue" [options]="iwsMitarbeiterOptions" formControlName="orderValue" showClear></p-select>
         </div>  
     </div>
 </form>
