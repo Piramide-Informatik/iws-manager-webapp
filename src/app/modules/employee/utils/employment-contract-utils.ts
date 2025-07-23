@@ -126,7 +126,6 @@ export class EmploymentContractUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteEmploymentContract(id: number): Observable<void> {
-    console.log('Deleting employment contract with ID:', id);
     return this.employmentContractService.deleteEmploymentContract(id);
   }
 
