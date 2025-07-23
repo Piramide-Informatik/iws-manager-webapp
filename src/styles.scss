@@ -31,11 +31,38 @@ body {
   padding: 0;
 }
 
+// Configuration DatePicker
 .p-datepicker:has(.p-datepicker-input-icon-container) .p-datepicker-input {
   height: 27px !important;
   font-size: 0.85rem;
   padding: 2px 6px;
   width: 20vw;
+}
+.p-datepicker table,
+.p-datepicker .p-monthpicker,
+.p-datepicker .p-yearpicker,
+.p-datepicker .p-datepicker-group {
+  td, th {
+    padding: 0 !important;
+    text-align: center;
+  }
+
+}
+
+.p-datepicker{
+  button.p-ripple.p-button.p-component{
+    background-color: initial !important;
+    border: none;
+    color: $primary-color;
+
+    &:hover{
+      background-color: $accent-color !important;
+    }
+  }
+
+  .p-datepicker-day-selected{
+    background: $primary-color !important;
+  }
 }
 
 //Button  +New
