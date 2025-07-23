@@ -161,6 +161,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
+      this.loadColumnHeaders();
+      this.selectedColumns = this.cols;
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
@@ -245,8 +247,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     });
   }
 
-  onUserCustomerDetailPreferencesChanges(userCustomerDetailPreferences: any) {
-    localStorage.setItem('userPreferences', JSON.stringify(userCustomerDetailPreferences));
+  onUserCustomerDetailPreferencesChanges(userDetailCustomerPreferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(userDetailCustomerPreferences));
   }
 
   updateHeadersAndColumns() {
