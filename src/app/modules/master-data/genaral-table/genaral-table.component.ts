@@ -28,7 +28,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   selectedColumns: any[] = [];
   displayedColumns: any[] = [];
   booleanHeaders: any[] = [];
-  
+
   colOrders: any = {};
   defaultDateFormat = "dd.MM.YYYY"
 
@@ -51,6 +51,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
 
   ngAfterViewChecked(): void {
     this.loadStorageData();
+    this.fixFirstColumnWidth();
   }
 
   generateBooleanHeaders(): any[] {
@@ -166,6 +167,28 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   loadStorageData() {
     if (!localStorage.getItem(this.dt2.stateKey ?? '')) {
       this.dt2._filter();
+    }
+  }
+
+  fixFirstColumnWidth(): void {
+    const firstHeader = document.getElementById('hide-columns') as HTMLElement;
+    if (firstHeader) {
+      firstHeader.style.width = '75px';
+      firstHeader.style.minWidth = '75px';
+      firstHeader.style.maxWidth = '75px';
+    }
+
+    const table = this.dt2?.el?.nativeElement as HTMLElement;
+    if (table) {
+      const rows = table.querySelectorAll('tbody > tr');
+      rows.forEach(row => {
+        const firstCell = row.querySelector('td') as HTMLElement;
+        if (firstCell) {
+          firstCell.style.width = '75px';
+          firstCell.style.minWidth = '75px';
+          firstCell.style.maxWidth = '75px';
+        }
+      });
     }
   }
 

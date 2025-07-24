@@ -17,7 +17,7 @@
 
 <div class="card">
   <p-dialog
-    header="Unterauftrag – Abschreibung Jahre"
+    [header]="'SUB-CONTRACTS.DEPRECIATION_COLUMNS.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
     (onHide)="closeModal()"
     [modal]="true"
     [(visible)]="visibleModal"
