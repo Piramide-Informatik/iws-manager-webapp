@@ -5,6 +5,8 @@ import { Table } from 'primeng/table';
 import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
+import { Subscription } from 'rxjs';
+import { TranslateService, _ } from '@ngx-translate/core';
 
 interface Column {
   field: string;
@@ -37,47 +39,68 @@ export class IwsProvisionComponent implements OnInit{
   cols!: Column[];
   visibleModalIWSCommission = signal(false);
   optionIwsCommission = {
-    new: 'neu',
-    edit: 'bearbeiten'
+    new: 'new',
+    edit: 'edit'
   };
   optionSelected: string = '';
   userIwsProvisionPreferences: UserPreference = {};
   tableKey: string = 'IwsProvision'
   dataKeys = ['fromOrderValue', 'commission', 'minCommission'];
+  private langSubscription!: Subscription;
 
-  constructor( private readonly orderCommissionService: OrderCommissionService,
-               private readonly userPreferenceService: UserPreferenceService
-   ){ }
+  constructor( 
+    private readonly orderCommissionService: OrderCommissionService,
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly translate: TranslateService){ }
 
   ngOnInit(): void {
-    this.loadIwsProvisionColumnHeaders()
-    this.iwsEmployeeForm = new FormGroup({
-      fixCommission: new FormControl('', [Validators.required]),
-      maxCommission: new FormControl('', [Validators.required]),
-      estimated: new FormControl('', [Validators.required]),
-    });
+  this.loadColumns();
+  this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
+  this.loading = false;
 
-    this.iwsCommissionForm = new FormGroup({
-      fromOrderValue: new FormControl('', [Validators.required]),
-      provision: new FormControl('', [Validators.required]),
-      minCommission: new FormControl('', [Validators.required])
-    })
-
-    this.orderCommissions = this.orderCommissionService.getOrderCommission();
+  this.langSubscription = this.translate.onLangChange.subscribe(() => {
+    this.loadColumns();
     this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
-    this.loading = false;
-  }
+  });
+
+  this.iwsEmployeeForm = new FormGroup({
+    fixCommission: new FormControl('', [Validators.required]),
+    maxCommission: new FormControl('', [Validators.required]),
+    estimated: new FormControl('', [Validators.required]),
+  });
+
+  this.iwsCommissionForm = new FormGroup({
+    fromOrderValue: new FormControl('', [Validators.required]),
+    provision: new FormControl('', [Validators.required]),
+    minCommission: new FormControl('', [Validators.required])
+  });
+
+  this.orderCommissions = this.orderCommissionService.getOrderCommission();
+}    
 
   onUserIwsProvisionPreferencesChanges(userIwsProvisionPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userIwsProvisionPreferences));
   }
 
-  loadIwsProvisionColumnHeaders() {
-    this.cols = [
-          { field: 'fromOrderValue', customClasses: ['align-right'], useSameAsEdit: true, header: 'ab Wert'},
-          { field: 'commission', customClasses: ['align-right'], header: 'Provision'},
-          { field: 'minCommission', customClasses: ['align-right'], header: 'Mindestprovision'},
-        ];
+  loadColumns() {
+  this.cols = [
+    {
+      field: 'fromOrderValue',
+      customClasses: ['align-right'],
+      useSameAsEdit: true,
+      header: this.translate.instant(_('ORDERS.COMMISSIONS.FROM_VALUE')),
+    },
+    {
+      field: 'commission',
+      customClasses: ['align-right'],
+      header: this.translate.instant(_('ORDERS.COMMISSIONS.COMMISSION')),
+    },
+    {
+      field: 'minCommission',
+      customClasses: ['align-right'],
+      header: this.translate.instant(_('ORDERS.COMMISSIONS.MIN_COMMISSION')),
+    },
+  ];
   }
 
   onSubmit(): void {
