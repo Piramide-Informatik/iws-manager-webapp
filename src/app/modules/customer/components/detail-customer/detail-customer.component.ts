@@ -128,7 +128,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly customerUtils: CustomerUtils,
     private readonly messageService: MessageService,
     private readonly titleService: Title,
-    private readonly commmonMessageService: CommonMessagesService
+    private readonly commonMessageService: CommonMessagesService
   ) {
     this.formDetailCustomer = this.fb.group({
       customerNo: [''],
@@ -428,7 +428,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveSuccess(savedCustomer: Customer): void {
-    this.commmonMessageService.showEditSucessfullMessage();
+    this.commonMessageService.showEditSucessfullMessage();
     this.customerStateService.setCustomerToEdit(savedCustomer);
     this.isSaving = false;
   }
@@ -440,7 +440,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.commmonMessageService.showErrorEditMessage();
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 
@@ -547,29 +547,34 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private handleSuccess(customer: Customer): void {
-    this.commmonMessageService.showCreatedSuccesfullMessage();
+    this.commonMessageService.showCreatedSuccesfullMessage();
     this.clearForm();
     this.router.navigate(['../customer-details', customer.id], { relativeTo: this.activatedRoute });
   }
 
   private handleError(err: any): void {
     console.error('Error creating customer:', err);
-    this.commmonMessageService.showErrorCreatedMessage();
+    this.commonMessageService.showErrorCreatedMessage();
   }
 
-    onCustomerDeleteConfirm() {
+  onCustomerDeleteConfirm() {
     this.isLoadingCustomer = true;
     if (this.customerId) {
       this.customerUtils.deleteCustomer(this.customerId).subscribe({
         next: () => {
           this.isLoadingCustomer = false;
           this.showDeleteCustomerModal = false;
-          this.commmonMessageService.showDeleteSucessfullMessage();
+          this.commonMessageService.showDeleteSucessfullMessage();
           this.router.navigate(['/customers']);
         },
         error: (error) => {
           this.isLoadingCustomer = false;
-          this.commmonMessageService.showErrorDeleteMessage();
+          if(error.message.includes('have associated employees') || 
+             error.message.includes('have associated contractors')){
+              this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
           this.errorMessage = error.message ?? 'Failed to delete customer';
           console.error('Delete error:', error);
         }

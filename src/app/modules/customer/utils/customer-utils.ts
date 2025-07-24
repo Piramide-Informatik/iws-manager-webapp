@@ -4,6 +4,10 @@ import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { ContactUtils } from './contact-utils';
+import { EmployeeUtils } from '../../employee/utils/employee.utils';
+import { ContractorUtils } from '../../contractor/utils/contractor-utils';
+import { Employee } from '../../../Entities/employee';
+import { Contractor } from '../../../Entities/contractor';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -13,6 +17,8 @@ import { ContactUtils } from './contact-utils';
 export class CustomerUtils {
     private readonly customerService = inject(CustomerService);
     private readonly contactUtils = inject(ContactUtils);
+    private readonly employeeUtils = inject(EmployeeUtils);
+    private readonly contractorUtils = inject(ContractorUtils);
     private readonly injector = inject(EnvironmentInjector);
 
     /**
@@ -108,24 +114,39 @@ export class CustomerUtils {
      * @returns Observable that completes when the deletion is done
      */
     deleteCustomer(id: number): Observable<void> {
-        return this.getContactsByCustomerId(id).pipe(
+        // Primero verificar empleados
+        return this.employeeUtils.getAllEmployeesByCustomerId(id).pipe(
+            take(1),
+            switchMap((employees: Employee[]) => {
+                if (employees.length > 0) {
+                    return throwError(() => new Error('Cannot be deleted because have associated employees'));
+                }
+                // Si no hay empleados, verificar contratistas
+                return this.contractorUtils.getAllContractorsByCustomerId(id);
+            }),
+            take(1),
+            switchMap((contractors: Contractor[]) => {
+                if (contractors.length > 0) {
+                    return throwError(() => new Error('Cannot be deleted because have associated contractors'));
+                }
+                // Si no hay contratistas, verificar contactos
+                return this.getContactsByCustomerId(id);
+            }),
             take(1),
             switchMap((contacts: ContactPerson[]) => {
                 if (contacts.length === 0) {
                     // No hay contactos, solo elimina el customer
                     return this.customerService.deleteCustomer(id);
                 }
-                // Si hay contactos, primero elimina los contactos
-                return (
-                    forkJoin(
-                        contacts.map(contact => this.contactUtils.deleteContactPerson(contact.id))
-                    ).pipe(
-                        switchMap(() => this.customerService.deleteCustomer(id))
-                    )
+                // Si hay contactos, eliminarlos primero
+                return forkJoin(
+                    contacts.map(contact => this.contactUtils.deleteContactPerson(contact.id))
+                ).pipe(
+                    switchMap(() => this.customerService.deleteCustomer(id))
                 );
             }),
             map(() => void 0),
-            catchError(err => throwError(() => new Error('Error deleting customer and contacts')))
+            catchError(err => throwError(() => new Error(err.message || 'Error deleting customer and contacts')))
         );
     }
 
