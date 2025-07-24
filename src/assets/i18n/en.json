@@ -353,7 +353,28 @@
       "DATE": "Date",
       "FUNDING_PROGRAM": "Funding Program",
       "CONTRACT_STATUS": "Contract Status",
-      "IWS_EMPLOYEE": "IWS Enployees"
+      "IWS_EMPLOYEE": "IWS Employees"
+    },
+    "DETAIL": {
+      "FORM": {
+        "FRAMEWORK_AGREEMENT_NO": "Framework Agreement No.",
+        "FRAMEWORK_AGREEMENT": "Framework Agreement",
+        "DATE": "Date",
+        "LONG_TEXT": "Long text",
+        "SIGNATURE_DATE": "Signature Date",
+        "FUNDING_PROGRAM": "Funding Program",
+        "CONTRACT_STATUS": "Contract Status",
+        "IWS_EMPLOYEES": "IWS Employees"
+      },
+      "FORM_TABLE_IWS_COMMISSION": {
+        "TITLE_TABLE": "IWS Commission",
+        "FIXED_COMMISSION": "Fixed Commission",
+        "MAX_COMMISSION": "Max. Commission",
+        "EURO": "Euro",
+        "FROM_VALUE": "From Value",
+        "COMMISSION": "Commission",
+        "MIN_COMMISSION": "Minimum Commission"
+      }
     }
   },
   "CONTRACTS": {

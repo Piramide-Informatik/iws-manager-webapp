@@ -347,6 +347,27 @@
       "FUNDING_PROGRAM": "Pr. Financiamiento",
       "CONTRACT_STATUS": "Estado del Contrato",
       "IWS_EMPLOYEE": "IWS Empleados"
+    },
+    "DETAIL": {
+      "FORM": {
+        "FRAMEWORK_AGREEMENT_NO": "Acuerdo Marco N°",
+        "FRAMEWORK_AGREEMENT": "Acuerdo Marco",
+        "DATE": "Fecha",
+        "LONG_TEXT": "Texto Largo",
+        "SIGNATURE_DATE": "Fecha de Firma",
+        "FUNDING_PROGRAM": "Pr. Financiamiento",
+        "CONTRACT_STATUS": "Estado del Contrato",
+        "IWS_EMPLOYEES": "IWS Empleados"
+      },
+      "FORM_TABLE_IWS_COMMISSION": {
+        "TITLE_TABLE": "Comisión de IWS",
+        "FIXED_COMMISSION": "Comisión Fija",
+        "MAX_COMMISSION": "Comisión Máxima",
+        "EURO": "Euro",
+        "FROM_VALUE": "Del Valor",
+        "COMMISSION": "Comisión",
+        "MIN_COMMISSION": "Comisión mínima"
+      }
     }
   },
   "CONTRACTS": {
