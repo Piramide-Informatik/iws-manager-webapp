@@ -31,6 +31,7 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   projectStatusName: string = '';
   @ViewChild('projectStatusModel') projectStatusModelComponent!: ModelProjectStatusComponent;
   
+  projectStatusModalComponent!: ModelProjectStatusComponent;
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if(event.type === 'delete' && event.data) {
@@ -48,25 +49,27 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     this.visibleModal = true;
   }
   
+  readonly projectStatuses = computed(()=>{
+    return this.projectStatusService.projectStatuses().map(projectStatus => ({
+      id: projectStatus.id,
+      projectStatus: projectStatus.name,
+    }));
+  });
+
   projects: any[] = [];
   projectColumns: any[] = [];
   projectStatusDisplayedColumns: any[] = [];
   isChipsVisible = false;
   userProjectStatusPreferences: UserPreference = {};
   tableKey: string = 'ProjectStatus'
-  dataKeys = ['projectStatus'];
+  dataKeys = ['label','projectStatus'];
   projectStatusData: ProjectStatus[] = [];
 
   @ViewChild('dt2') dt2!:Table;
 
   private langSubscription!: Subscription;
 
-  readonly projectStatuses = computed(()=>{
-    return this.projectStatusService.projectStatuses().map(ProjectStatus => ({
-      id: ProjectStatus.id,
-      name: ProjectStatus.name,
-    }));
-  });
+  
   constructor(
         private readonly translate: TranslateService,
         private readonly masterDataService: MasterDataService,
@@ -75,10 +78,12 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
       ){
         effect(() => {
       console.log('Project statuses:', this.projectStatusess());
+      console.log('projectColumns antes de filtrar:', this.projectColumns);
     });
   }
     
   ngOnInit(): void {
+    this.loadProjectStatusData();
     this.loadProjectStatusHeadersAndColumns();
     this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.projectStatusDisplayedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -86,10 +91,6 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
       this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.projectStatusDisplayedColumns);
     })
     this.projects = this.masterDataService.getProjectStatusData();
-
-    this.projectStatusService.getAllProjectStatuses().subscribe(data =>{
-      this.projectStatusData =data;
-    })
     
     // this.loadColHeadersProjects();
     // this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
@@ -120,19 +121,59 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   private prepareTableData () {
     if (this.projectStatuses().length > 0){
       this.projectStatusDisplayedColumns = [
-        {field:'name', header: 'Project Status'}
+        {field:'name', header: 'ProjectStatus'}
       ]
     }
   }
   
   loadProjectStatusHeadersAndColumns() {
     this.loadProjectStatusHeaders();
-    this.projectStatusDisplayedColumns = this.projectColumns.filter(col => col.field !== 'label');
+    this.projectStatusDisplayedColumns = this.projectColumns.filter(col => col != null);
   }
   
-  loadProjectStatusHeaders(){
+  loadProjectStatusHeaders(): void{
     this.projectColumns = [
-      { field: 'projectStatus', minWidth: 110, header: this.translate.instant(_('PROJECT_STATUS.PROJECT_STATUS')) }
+      { field: 'label',
+        minWidth: 110, 
+        header: this.translate.instant(_('PROJECT_STATUS.PROJECT_STATUS')) 
+      },
+      {
+        field: 'projectStatus',
+        minWidth: 110,
+        header: this.translate.instant(_('PROJECT_STATUS.PROJECT_STATUS'))
+      }
     ];
+  }
+
+  onDialogShow() {
+    if( this.modalType === 'create' && this.projectStatusModalComponent) {
+      this.projectStatusModalComponent.focusInputIfNeeded();
+    }
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if(!visible) {
+      this.selectedProjectStatus = null;
+    }
+  }
+  onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void{
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    })
+  }
+
+  loadProjectStatusData(): void {
+    this.projectStatusService.getAllProjectStatuses().subscribe({
+      next: (data: ProjectStatus[]) => {
+        this.projectStatusData = data;
+      },
+      error: (error) => {
+        console.error('Error loading project status data:', error);
+        this.projectStatusData = []; // Fallback to empty array
+      }
+    });
   }
 }

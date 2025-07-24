@@ -29,12 +29,12 @@ export class projectStatusService {
     public error = this._error.asReadonly();
 
     constructor() {
-        this.loadInitialData();
+        this.loadInitialData().subscribe();
     }
 
-    private loadInitialData(): void {
+    public loadInitialData(): Observable<ProjectStatus[]> {
         this._loading.set(true);
-        this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
+        return this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
             tap({
                 next: (projectStatuses) => {
                     this._projectStatuses.set(projectStatuses);
@@ -61,7 +61,8 @@ export class projectStatusService {
                 error: (err) => {
                     this._error.set('Failed to add projectStatus');
                     console.error('Error adding projectStatus:', err);
-                }
+                },
+                finalize: () => this._loading.set(false)
             })
         );
     }

@@ -18,7 +18,7 @@ export class ModelProjectStatusComponent implements OnInit {
   @Input() projectStatusName: string | null = null;
   @Output() isVisibleModel = new EventEmitter<boolean>();
   @Output() projectStatusCreated = new EventEmitter<void>();
-  @Output() confirmDeleted = new EventEmitter<{severity: string, summary: string, detail: string}>();
+  @Output() toastMessage  = new EventEmitter<{severity: string, summary: string, detail: string}>();
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -39,13 +39,16 @@ export class ModelProjectStatusComponent implements OnInit {
     return this.modalType === 'create';
   }
 
+  private loadInitialData(){
+    const sub = this.projectStatusUtils.loadInitialData().subscribe()
+  }
   onDeleteConfirm(): void {
     this.isLoading = true;
     if(this.projectStatusToDelete){
       this.projectStatusUtils.deleteProjectStatus(this.projectStatusToDelete).subscribe({
         next: () => {
           this.isLoading = false;
-          this.confirmDeleted.emit({
+          this.toastMessage.emit({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
             detail: 'MESSAGE.DELETE_SUCCESS'
@@ -55,7 +58,7 @@ export class ModelProjectStatusComponent implements OnInit {
         error: (error) => {
           this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete title';
-          this.confirmDeleted.emit({
+          this.toastMessage.emit({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
             detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_FAILED_IN_USE' : 'MESSAGE.DELETE_FAILED'
@@ -125,6 +128,15 @@ export class ModelProjectStatusComponent implements OnInit {
 
   onCancel(): void {
     this.handleClose();
+  }
+  public focusInputIfNeeded() {
+    if (this.isCreateMode && this.projectStatusInput) {
+      setTimeout(() => {
+        if (this.projectStatusInput?.nativeElement) {
+          this.projectStatusInput.nativeElement.focus();
+        }
+      }, 150);
+    }
   }
 
 }

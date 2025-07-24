@@ -7,6 +7,10 @@ import { projectStatusService } from '../../../../../Services/project-status.ser
 export class ProjectStatusUtils {
     private readonly projectStatusService = inject(projectStatusService);
     
+    loadInitialData(): Observable<ProjectStatus[]> {
+        return this.projectStatusService.loadInitialData();
+    }
+
     //Get a projectStatus by ID
     getProjectStatusById(id: number): Observable< ProjectStatus | undefined> {
         if (!id || id <= 0) {
