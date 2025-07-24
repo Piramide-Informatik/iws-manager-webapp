@@ -409,13 +409,17 @@
       "TABLE_NAME": "Allocation by years",
       "YEAR": "Year",
       "SERVICE_LIFE": "Usage Percentage",
-      "AFA_BY_YEAR": "AfA per Year"
+      "AFA_BY_YEAR": "AfA per Year",
+      "MODAL_TITLE_NEW": "Subcontract - New depreciation year",
+      "MODAL_TITLE_EDIT": "Subcontract - Edit depreciation year"
     },
     "PROJECT": {
       "TABLE_NAME": "Projects",
       "PROJECT": "Project",
       "SHARE": "Share",
-      "AMOUNT": "Amount"
+      "AMOUNT": "Amount",
+      "MODAL_TITLE_NEW": "Subcontract - New project",
+      "MODAL_TITLE_EDIT": "Subcontract - Edit project"
     }
   },
   "ABSENCE_TYPES": {
