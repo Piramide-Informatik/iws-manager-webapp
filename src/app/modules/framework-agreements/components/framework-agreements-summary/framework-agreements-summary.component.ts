@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { FrameworkAgreements } from '../../../../Entities/Framework-agreements';
 import { FrameworkAgreementsService } from '../../services/framework-agreements.service';
 import { Table } from 'primeng/table';
@@ -23,10 +23,15 @@ interface Column {
 })
 export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
+  private readonly FrameworkAgreementsService = inject(FrameworkAgreementsService);
+  private readonly translate = inject(TranslateService); 
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  
   public cols!: Column[];
   private langSubscription!: Subscription;
   public frameworkAgreements!: FrameworkAgreements[];
-  public customer!: string;
   public selectedColumns!: Column[];
   userFrameworkAgreementsPreferences: UserPreference = {};
   tableKey: string = 'FrameworkAgreements'
@@ -34,16 +39,11 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   
   @ViewChild('dt2') dt2!: Table;
 
-  constructor(private readonly FrameworkAgreementsService: FrameworkAgreementsService, 
-              private readonly translate: TranslateService,
-              private readonly userPreferenceService: UserPreferenceService,
-              private readonly router: Router,
-              private readonly route: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.loadFrameworkAgreementsColHeaders();
     this.frameworkAgreements = this.FrameworkAgreementsService.list();
-    this.customer = 'Joe Doe';
     this.selectedColumns = this.cols;
     this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {

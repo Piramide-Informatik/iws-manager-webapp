@@ -353,6 +353,27 @@
       "FUNDING_PROGRAM": "Förderprogramm",
       "CONTRACT_STATUS": "Vertragsstatus",
       "IWS_EMPLOYEE": "IWS MA"
+    },
+    "DETAIL": {
+      "FORM": {
+        "FRAMEWORK_AGREEMENT_NO": "Rahmenvertrag-Nr.",
+        "FRAMEWORK_AGREEMENT": "Rahmenvertrag",
+        "DATE": "Datum",
+        "LONG_TEXT": "Langtext",
+        "SIGNATURE_DATE": "Unterschriftsdatum",
+        "FUNDING_PROGRAM": "Förderprogramm",
+        "CONTRACT_STATUS": "Vertragsstatus",
+        "IWS_EMPLOYEES": "IWS Mitarbeiter"
+      },
+      "FORM_TABLE_IWS_COMMISSION": {
+        "TITLE_TABLE": "IWS Provision",
+        "FIXED_COMMISSION": "Fixe Provision",
+        "MAX_COMMISSION": "Max. Provision",
+        "EURO": "Euro",
+        "FROM_VALUE": "ab Wert",
+        "COMMISSION": "Provision",
+        "MIN_COMMISSION": "Mindestprovision"
+      }
     }
   },
   "CONTRACTS": {
