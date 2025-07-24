@@ -384,7 +384,6 @@
   },
   "SUB-CONTRACTS": {
     "FORM": {
-      "CUSTOMER": "Kunde",
       "ORDER_TITLE": "Auftrag",
       "CONTRACTOR": "Auftragnehmer",
       "INVOICE_NUMBER": "Rechnungsnummer",
@@ -409,13 +408,17 @@
       "TABLE_NAME": "Aufteilung auf Jahre",
       "YEAR": "Jahr",
       "SERVICE_LIFE": "Nutzungsanteil",
-      "AFA_BY_YEAR": "AfA im Jahr"
+      "AFA_BY_YEAR": "AfA im Jahr",
+      "MODAL_TITLE_NEW": "Unterauftrag - Abschreibung Jahre",
+      "MODAL_TITLE_EDIT": "Unterauftrag - Abschreibung Jahre"
     },
     "PROJECT": {
       "TABLE_NAME": "Projekte",
       "PROJECT": "Projekt",
       "SHARE": "Anteil",
-      "AMOUNT": "Betrag"
+      "AMOUNT": "Betrag",
+      "MODAL_TITLE_NEW": "Unterauftrag - Projekte",
+      "MODAL_TITLE_EDIT": "Unterauftrag - Projekte"
     }
   },
   "ABSENCE_TYPES": {

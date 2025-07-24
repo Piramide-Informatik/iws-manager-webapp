@@ -1,15 +1,5 @@
 <form [formGroup]="subcontractForm" (ngSubmit)="onSubmit()">
   <div class="align-items-center mb-2">
-    <div class="order_input order_name mb-2">
-      <label for="customer">{{ 'SUB-CONTRACTS.FORM.CUSTOMER' | translate }}</label>
-      <input
-        pInputText
-        type="text"
-        id="customer"
-        formControlName="customer"
-        autocomplete="off"
-      />
-    </div>
 
     <div class="order_input order_name mb-2">
       <label for="order">{{ 'SUB-CONTRACTS.FORM.ORDER_TITLE' | translate }}</label>
