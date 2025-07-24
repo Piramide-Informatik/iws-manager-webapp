@@ -2,24 +2,19 @@
     width: 20vw;
 }
 
-p-floatlabel{
-    margin-left: 5px;
-
-    #customerId{
-        width: 6vw;
-    }
-
-    #customerName{
-        width: 13.1vw;
-    }
-}
-
 .order_input{
     width: 100% !important;
 
     label {
         width: 33%;
     }
+}
+
+/* Estilo del calendario */
+::ng-deep .p-datepicker {
+    width: 20vw;
+    min-width: 20vw;
+    max-width: 20vw;
 }
 ::ng-deep .p-datepicker table,
 ::ng-deep .p-datepicker .p-monthpicker,

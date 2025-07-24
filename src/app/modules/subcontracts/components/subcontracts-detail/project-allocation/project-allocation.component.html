@@ -18,7 +18,7 @@
 
 <div class="card">
   <p-dialog
-    header="Unterauftrag – Projekte"
+    [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
     (onHide)="closeModal()"
     [modal]="true"
     [(visible)]="visibleModal"
