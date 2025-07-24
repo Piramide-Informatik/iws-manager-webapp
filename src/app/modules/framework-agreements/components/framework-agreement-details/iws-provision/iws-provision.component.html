@@ -1,24 +1,24 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
-    <ng-template #title>IWS Provision</ng-template>
+    <ng-template #title>{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.TITLE_TABLE' | translate}}</ng-template>
 
     <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
             <div class="iws-employeeInput project_name mb-2">
-                <label for="fixCommission">Fixe Provision</label>
+                <label for="fixCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.FIXED_COMMISSION' | translate}}</label>
                 <input pInputText type="text" id="fixCommission" formControlName="fixCommission" autocomplete="off" />
-                Euro
+                {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
             </div>
             <div class="iws-employeeInput order_maxCommission mb-2">
-                <label for="maxCommission">Max. Provision</label>
+                <label for="maxCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.MAX_COMMISSION' | translate}}</label>
                 <input pInputText type="text" id="maxCommission" formControlName="maxCommission" autocomplete="off" />
-                Euro
+                {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
             </div>
         </div>
     </form>
     <master-data-genaral-table
       [tableId]="tableKey"
       [tableValues]="orderCommissions"
-      [columns]="cols"
+      [columns]="selectedColumns"
       [userPreferences]="userIwsProvisionPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserIwsProvisionPreferencesChanges($event)"

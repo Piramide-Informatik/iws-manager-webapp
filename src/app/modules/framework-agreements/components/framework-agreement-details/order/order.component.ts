@@ -9,12 +9,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class OrderComponent implements OnInit{
 
-  orderForm!: FormGroup;
-
-  public customer!: string;
+  public orderForm!: FormGroup;
 
   ngOnInit(): void {
-    this.customer = 'Joe Doe'
+    this.initOrderForm();
+  }
+
+  private initOrderForm(): void {
     this.orderForm = new FormGroup({
       orderId: new FormControl('', [Validators.required]),
       orderLabel: new FormControl('', [Validators.required]),
@@ -28,9 +29,10 @@ export class OrderComponent implements OnInit{
       contractStatus: new FormControl('', [Validators.required]),
       approvalDate: new FormControl('', [Validators.required]),
       contractTitle: new FormControl('', [Validators.required]),
-      employeeiws: new FormControl('', [Validators.required]),
       orderValue: new FormControl('', [Validators.required]),
+      employeeiws: new FormControl('', [Validators.required]),
     });
+    this.orderForm.get('orderId')?.disable();
   }
 
   onSubmit(): void {

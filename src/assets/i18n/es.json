@@ -385,6 +385,27 @@
       "FUNDING_PROGRAM": "Pr. Financiamiento",
       "CONTRACT_STATUS": "Estado del Contrato",
       "IWS_EMPLOYEE": "IWS Empleados"
+    },
+    "DETAIL": {
+      "FORM": {
+        "FRAMEWORK_AGREEMENT_NO": "Acuerdo Marco N°",
+        "FRAMEWORK_AGREEMENT": "Acuerdo Marco",
+        "DATE": "Fecha",
+        "LONG_TEXT": "Texto Largo",
+        "SIGNATURE_DATE": "Fecha de Firma",
+        "FUNDING_PROGRAM": "Pr. Financiamiento",
+        "CONTRACT_STATUS": "Estado del Contrato",
+        "IWS_EMPLOYEES": "IWS Empleados"
+      },
+      "FORM_TABLE_IWS_COMMISSION": {
+        "TITLE_TABLE": "Comisión de IWS",
+        "FIXED_COMMISSION": "Comisión Fija",
+        "MAX_COMMISSION": "Comisión Máxima",
+        "EURO": "Euro",
+        "FROM_VALUE": "Del Valor",
+        "COMMISSION": "Comisión",
+        "MIN_COMMISSION": "Comisión mínima"
+      }
     }
   },
   "CONTRACTS": {
@@ -416,7 +437,6 @@
   },
   "SUB-CONTRACTS": {
     "FORM": {
-      "CUSTOMER": "Cliente",
       "ORDER_TITLE": "Título de Orden",
       "CONTRACTOR": "Contratista",
       "INVOICE_NUMBER": "Número de Factura",
@@ -441,13 +461,17 @@
       "TABLE_NAME": "División en Años",
       "YEAR": "Año",
       "SERVICE_LIFE": "Porcentaje de Uso",
-      "AFA_BY_YEAR": "Depreciación por Año"
+      "AFA_BY_YEAR": "Depreciación por Año",
+      "MODAL_TITLE_NEW": "Subcontrato - Agregar año de depreciación",
+      "MODAL_TITLE_EDIT": "Subcontrato - Editar año de depreciación"
     },
     "PROJECT": {
       "TABLE_NAME": "Proyectos",
       "PROJECT": "Proyecto",
       "SHARE": "Porcentaje del crédito del proyecto",
-      "AMOUNT": "Cantidad"
+      "AMOUNT": "Cantidad",
+      "MODAL_TITLE_NEW": "Subcontratación - Nuevo proyecto",
+      "MODAL_TITLE_EDIT": "Subcontratación - Editar proyecto"
     }
   },
   "ABSENCE_TYPES": {
