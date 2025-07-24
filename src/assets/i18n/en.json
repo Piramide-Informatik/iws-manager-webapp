@@ -296,6 +296,23 @@
     }
   },
   "ORDERS": {
+    "FORM": {
+    "ORDER_ID": "Order No.",
+    "ORDER_LABEL": "Order",
+    "ORDER_TYPE": "Order Type",
+    "CUSTOMER": "Customer",
+    "NR": "No.",
+    "NAME": "Name",
+    "ACRONYM": "Acronym",
+    "ORDER_TITLE": "Description",
+    "ORDER_DATE": "Order Date",
+    "FUNDING_PROGRAM": "Funding Program",
+    "CONTRACT_STATUS": "Contract Status",
+    "SIGNATURE_DATE": "Signature Date",
+    "CONTRACT_TITLE": "Master Agreement",
+    "IWS_EMPLOYEE": "IWS Employee",
+    "ORDER_VALUE": "Estimated Order Value"
+  },
     "TABLE": {
       "ORDER_ID": "Order ID",
       "ORDER_LABEL": "Label",
@@ -309,6 +326,23 @@
       "CONTRACT_TITLE": "Contract Title",
       "IWS_PERCENT": "IWS %",
       "IWS_PERCENT_VALUE": "IWS-Value"
+    },
+    "PROJECT":{
+      "PROJECT": "Project",
+      "SPONSOR_ID": "Project sponsor ID",
+      "SPONSOR": "Project sponsor",
+      "START_DATE": "Start date",
+      "END_DATE": "End date"
+    },
+    "COMMISSIONS": {
+    "FIXED_COMMISSION": "Fixed Commission",
+    "MAX_COMMISSION": "Max Commission",
+    "FROM_VALUE": "From Value",
+    "COMMISSION": "Commission",
+    "MIN_COMMISSION": "Minimum Commission",
+    "ESTIMATED_IWS_COMMISSION": "Estimated IWS Commission",
+    "TITLE_DIALOG_NEW": "New IWS Commission",
+    "TITLE_DIALOG_EDIT": "Edit IWS Commission"
     }
   },
   "RECEIVABLES": {

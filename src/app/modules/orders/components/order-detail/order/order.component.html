@@ -1,7 +1,7 @@
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
   <div class="align-items-center mb-2">
     <div class="order_input order_id mb-2">
-      <label for="orderId">Auftrag-Nr.</label>
+      <label for="orderId">{{ 'ORDERS.FORM.ORDER_ID' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -11,7 +11,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="orderLabel">Auftrag</label>
+      <label for="orderLabel">{{ 'ORDERS.FORM.ORDER_LABEL' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -21,7 +21,7 @@
       />
     </div>
     <div class="order_input order_type mb-2">
-      <label for="orderType">Auftragsart</label>
+      <label for="orderType">{{ 'ORDERS.FORM.ORDER_TYPE' | translate }}</label>
       <p-select
         [style]="{ width: '15em' }"
         formControlName="orderType"
@@ -32,13 +32,13 @@
       />
     </div>
     <div class="order_input order_customer me-0 mb-2 d-flex">
-      <span>Kunde</span>
+      <span>{{ 'ORDERS.FORM.CUSTOMER' | translate }}</span>
       <div class="flex gap-2" style="width: 20vw;">
         <div class="customerId">
           <input
             pInputText
             type="text"
-            placeholder="Nr."
+            placeholder="{{ 'ORDERS.FORM.NR' | translate }}"
             id="customerId"
             formControlName="customerId"
             autocomplete="off"
@@ -48,7 +48,7 @@
           <input
             pInputText
             id="customerName"
-            placeholder="Name"
+            placeholder="{{ 'ORDERS.FORM.NAME' | translate }}"
             formControlName="customerName"
             autocomplete="off"
           />
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="order_input order_name mb-2">
-      <label for="acronym">Akronym</label>
+      <label for="acronym">{{ 'ORDERS.FORM.ACRONYM' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -66,7 +66,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="orderTitle">Langtext</label>
+      <label for="orderTitle">{{ 'ORDERS.FORM.ORDER_TITLE' | translate }}</label>
       <input
         pInputText
         type="text"
@@ -76,7 +76,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="orderDate">Auftragsdatum</label>
+      <label for="orderDate">{{ 'ORDERS.FORM.ORDER_DATE' | translate }}</label>
       <p-datepicker
         class="w-13em"
         id="orderDate"
@@ -87,7 +87,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="fundingProgram">Förderprogramm</label>
+      <label for="fundingProgram">{{ 'ORDERS.FORM.FUNDING_PROGRAM' | translate }}</label>
       <p-select
         [style]="{ width: '15em' }"
         id="fundingProgram"
@@ -99,7 +99,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="contractStatus">Vertragsstatus</label>
+      <label for="contractStatus">{{ 'ORDERS.FORM.CONTRACT_STATUS' | translate }}</label>
       <p-select
         [style]="{ width: '15em' }"
         id="contractStatus"
@@ -111,7 +111,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="approvalDate">Unterschriftsdatum</label>
+      <label for="approvalDate">{{ 'ORDERS.FORM.SIGNATURE_DATE' | translate }}</label>
       <p-datepicker
         class="w-13em"
         id="approvalDate"
@@ -122,7 +122,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="contractTitle">Rahmenvertrag</label>
+      <label for="contractTitle">{{ 'ORDERS.FORM.CONTRACT_TITLE' | translate }}</label>
       <p-select
         [style]="{ width: '15em' }"
         id="contractTitle"
@@ -134,7 +134,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="employeeiws">IWS Mitarbeiter</label>
+      <label for="employeeiws">{{ 'ORDERS.FORM.IWS_EMPLOYEE' | translate }}</label>
       <p-select
         [style]="{ width: '15em' }"
         id="employeeiws"
@@ -146,7 +146,7 @@
       />
     </div>
     <div class="order_input order_name mb-2">
-      <label for="orderValue">Geschätzter Auftragswert</label>
+      <label for="orderValue">{{ 'ORDERS.FORM.ORDER_VALUE' | translate }}</label>
       <input
         pInputText
         type="text"

@@ -289,6 +289,24 @@
     }
   },
   "ORDERS": {
+    "FORM": {
+      "ORDER_ID": "Nº de Orden",
+      "ORDER_LABEL": "Orden",
+      "ORDER_TYPE": "Tipo de Orden",
+      "CUSTOMER": "Cliente",
+      "NR": "Nº",
+      "NAME": "Nombre",
+      "ACRONYM": "Acrónimo",
+      "ORDER_TITLE": "Descripción Completa",
+      "ORDER_DATE": "Fecha de la Orden",
+      "FUNDING_PROGRAM": "Programa de Financiamiento",
+      "CONTRACT_STATUS": "Estado del Contrato",
+      "SIGNATURE_DATE": "Fecha de Firma",
+      "CONTRACT_TITLE": "Contrato Marco",
+      "IWS_EMPLOYEE": "Empleado IWS",
+      "ORDER_VALUE": "Valor Estimado de la Orden"
+    },
+
     "TABLE": {
       "ORDER_ID": "ID Orden",
       "ORDER_LABEL": "Sigla",
@@ -302,6 +320,26 @@
       "CONTRACT_TITLE": "Título de Contrato",
       "IWS_PERCENT": "IWS %",
       "IWS_PERCENT_VALUE": "IWS-Valor"
+    },
+
+    "PROJECT":{
+      "PROJECT": "Proyecto",
+      "SPONSOR_ID": "ID del Responsable del Proyecto",
+      "SPONSOR": "Responsable del Proyecto",
+      "START_DATE": "Fecha de Inicio",
+      "END_DATE": "Fecha de Finalización"
+    },
+
+     "COMMISSIONS": {
+    "FIXED_COMMISSION": "Fija comisión",
+    "MAX_COMMISSION": "Comisión máxima",
+    "FROM_VALUE": "Del valor",
+    "COMMISSION": "Comisión",
+    "MIN_COMMISSION": "Comisión mínima",
+    "ESTIMATED_IWS_COMMISSION": "Comisión IWS estimada",
+    "NEW": "Nuevo",
+    "TITLE_DIALOG_NEW": "Nueva comisión IWS",
+    "TITLE_DIALOG_EDIT": "Editar comisión IWS"
     }
   },
   "RECEIVABLES": {

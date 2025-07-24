@@ -2,7 +2,7 @@
   <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
       <div class="iws-employeeInput project_name mb-2">
-        <label for="fixCommission">Fixe Provision</label>
+        <label for="fixCommission">{{ 'ORDERS.COMMISSIONS.FIXED_COMMISSION' | translate }}</label>
         <input
           pInputText
           type="text"
@@ -13,7 +13,7 @@
         Euro
       </div>
       <div class="iws-employeeInput order_maxCommission mb-2">
-        <label for="maxCommission">Max. Provision</label>
+        <label for="maxCommission">{{ 'ORDERS.COMMISSIONS.MAX_COMMISSION' | translate }}</label>
         <input
           pInputText
           type="text"
@@ -40,7 +40,7 @@
     <div class="row">
       <div class="col-12">
         <div class="project_name mb-2">
-          <label class="me-2" for="estimated">Geschätzte IWS-Provision:</label>
+          <label class="me-2" for="estimated">{{ 'ORDERS.COMMISSIONS.ESTIMATED_IWS_COMMISSION' | translate }}</label>
           <input
           pInputText
           type="text"
@@ -57,7 +57,7 @@
 <!-- Modal IWS Commission -->
 <div class="card">
   <p-dialog
-    [header]="'IWS Commission '+ optionSelected"
+    [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + optionSelected.toUpperCase() | translate"
     (onHide)="closeModalIwsCommission()"
     [modal]="true"
     [(visible)]="visibleModalIWSCommission"
@@ -66,7 +66,7 @@
     <hr class="mt-0" />
     <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmit()">
       <div class="flex gap-4 mb-3">
-        <label for="fromValue" class="w-3">ab Auftragswert</label>
+        <label for="fromValue" class="w-3">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
         <input
           pInputText
           id="fromValue"
@@ -76,7 +76,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="provision" class="w-3">Provision (%)</label>
+        <label for="provision" class="w-3">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
         <input
           pInputText
           id="provision"
@@ -86,7 +86,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="minCommission" class="w-3">Mindestprovision</label>
+        <label for="minCommission" class="w-3">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
         <input
           pInputText
           id="minCommission"
