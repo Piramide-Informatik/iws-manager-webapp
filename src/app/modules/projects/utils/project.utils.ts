@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { ProjectService } from '../../../Services/project.service';
 import { Project } from '../../../Entities/project';
 
