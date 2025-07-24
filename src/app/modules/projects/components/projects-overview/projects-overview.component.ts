@@ -20,7 +20,7 @@ interface Column {
 @Component({
   selector: 'app-projects-overview',
   standalone: false,
-  providers: [MessageService, ConfirmationService, Project, TranslatePipe, TranslateDirective],
+  providers: [MessageService, ConfirmationService, TranslatePipe, TranslateDirective],
   templateUrl: './projects-overview.component.html',
   styleUrl: './projects-overview.component.scss'
 })

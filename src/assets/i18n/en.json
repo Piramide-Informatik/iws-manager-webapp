@@ -406,14 +406,13 @@
   },
   "SUB-CONTRACTS": {
     "FORM": {
-      "CUSTOMER": "Customer",
       "ORDER_TITLE": "Order Title",
       "CONTRACTOR": "Contractor",
       "INVOICE_NUMBER": "Invoice Number",
       "INVOICE_DATE": "Invoice Date",
       "INVOICE_NET_OR_GROSS": "Net or gross",
       "INVOICE_AMOUNT": "Invoice amount",
-      "IS_AFA": "AfA",
+      "IS_AFA": "Drepreciation",
       "AFA_MONTHS": "Depreciation period (months)",
       "DESCRIPTION":"Description"
     },
@@ -431,13 +430,17 @@
       "TABLE_NAME": "Allocation by years",
       "YEAR": "Year",
       "SERVICE_LIFE": "Usage Percentage",
-      "AFA_BY_YEAR": "AfA per Year"
+      "AFA_BY_YEAR": "AfA per Year",
+      "MODAL_TITLE_NEW": "Subcontract - New depreciation year",
+      "MODAL_TITLE_EDIT": "Subcontract - Edit depreciation year"
     },
     "PROJECT": {
       "TABLE_NAME": "Projects",
       "PROJECT": "Project",
       "SHARE": "Share",
-      "AMOUNT": "Amount"
+      "AMOUNT": "Amount",
+      "MODAL_TITLE_NEW": "Subcontract - New project",
+      "MODAL_TITLE_EDIT": "Subcontract - Edit project"
     }
   },
   "ABSENCE_TYPES": {
