@@ -11,6 +11,31 @@ export class ProjectStatusUtils {
         return this.projectStatusService.loadInitialData();
     }
 
+    addProjectStatus(nameProjectStatus: string): Observable<ProjectStatus>{
+        const trimmedName = nameProjectStatus?.trim();
+        if (!trimmedName) {
+            return throwError(() => new Error('ProjectStatus name cannot be empty'));
+        }
+
+        return this.projectExists(trimmedName).pipe(
+        switchMap(exists => {
+            if (exists) {
+            return throwError(() => new Error('TITLE.ERROR.ALREADY_EXISTS'));
+            }
+
+            return this.projectStatusService.addProjectStatus({ name: trimmedName });
+        }),
+        catchError(err => {
+            if (err.message === 'TITLE.ERROR.ALREADY_EXISTS' || err.message === 'TITLE.ERROR.EMPTY') {
+            return throwError(() => err);
+            }
+
+            console.error('Error creating title:', err);
+            return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
+        })
+        );
+    }
+
     //Get a projectStatus by ID
     getProjectStatusById(id: number): Observable< ProjectStatus | undefined> {
         if (!id || id <= 0) {

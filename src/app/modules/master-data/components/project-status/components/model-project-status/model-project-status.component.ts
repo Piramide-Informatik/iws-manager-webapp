@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, switchMap, finalize, tap } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-model-project-status',
@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 })
 export class ModelProjectStatusComponent implements OnInit {
   private readonly projectStatusUtils = inject(ProjectStatusUtils);
+  private readonly subscriptions = new Subscription();
   @ViewChild('projectStatusInput') projectStatusInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() projectStatusToDelete: number | null = null;
@@ -32,7 +33,8 @@ export class ModelProjectStatusComponent implements OnInit {
   });
 
   ngOnInit(): void {
-      this.resetForm();
+    this.loadInitialData()
+    this.resetForm();
   }
 
   get isCreateMode(): boolean {
@@ -41,11 +43,14 @@ export class ModelProjectStatusComponent implements OnInit {
 
   private loadInitialData(){
     const sub = this.projectStatusUtils.loadInitialData().subscribe()
+    this.subscriptions.add(sub);
   }
   onDeleteConfirm(): void {
     this.isLoading = true;
     if(this.projectStatusToDelete){
-      this.projectStatusUtils.deleteProjectStatus(this.projectStatusToDelete).subscribe({
+      const sub = this.projectStatusUtils.deleteProjectStatus(this.projectStatusToDelete).pipe(
+        finalize(() => this.isLoading = false)
+      ).subscribe({
         next: () => {
           this.isLoading = false;
           this.toastMessage.emit({
@@ -57,30 +62,72 @@ export class ModelProjectStatusComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete title';
+          this.errorMessage = error.message ?? 'Failed to delete projectStatus';
           this.toastMessage.emit({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_FAILED_IN_USE' : 'MESSAGE.DELETE_FAILED'
+            detail: this.errorMessage?.includes('it is in use by other entities') 
+            ? 'MESSAGE.DELETE_FAILED_IN_USE' 
+            : 'MESSAGE.DELETE_FAILED'
           });
         console.error('Error deleting projectStatus:', error);
         this.closeModel();
         }
-      })
+      });
+      this.subscriptions.add(sub);
     }
   }
 
-  onSubmit(): void {
+  onSubmit(): void { //Aqui se debe cambiar el nombre de la funcion
     if (this.shouldPreventSubmission()) return;
 
     this.prepareForSubmission();
     const projectStatusName = this.getSanitizedProjectStatusName();
 
-    this.projectStatusUtils.projectExists(projectStatusName).pipe(
-      switchMap(exists => this.handleProjectStatusExistence(exists, projectStatusName)),
+    const sub =  this.projectStatusUtils.addProjectStatus(projectStatusName).pipe(
       finalize(() => this.isLoading = false)
-    ).subscribe();
+    ).subscribe({
+      next: () => this.handleSuccess(),
+      error: (error) => {
+        console.log('Entró a error del subscribe');
+        this.handleError(error);}
+    });
+    this.subscriptions.add(sub);
+  }
+
+  private handleSuccess(): void {
+    this.toastMessage.emit({
+      severity: 'success',
+      summary: 'MESSAGE.SUCCESS',
+      detail: 'MESSAGE.CREATE_SUCCESS'
+    });
+    this.projectStatusCreated.emit();
     this.handleClose();
+  }
+
+  private handleError(error: any): void {
+    this.errorMessage = error?.message ?? 'TITLE.ERROR.CREATION_FAILED';
+
+    const detail = this.getErrorDetail(error.message);
+
+    this.toastMessage.emit({
+      severity: 'error',
+      summary: 'MESSAGE.ERROR',
+      detail
+    });
+
+    console.error('Creation error:', error);
+  }
+
+  private getErrorDetail(errorCode: string): string {
+    switch (errorCode) {
+      case 'TITLE.ERROR.EMPTY':
+        return 'MESSAGE.EMPTY_ERROR';
+      case 'TITLE.ERROR.ALREADY_EXISTS':
+        return 'MESSAGE.RECORD_ALREADY_EXISTS';
+      default:
+        return 'MESSAGE.CREATE_FAILED';
+    }
   }
 
   private shouldPreventSubmission(): boolean {
@@ -96,21 +143,6 @@ export class ModelProjectStatusComponent implements OnInit {
     return this.createdProjectStatusForm.value.name?.trim() ?? '';
   }
 
-  private handleProjectStatusExistence(exists: boolean, projectStatusName: string){
-    if (exists) {
-      this.errorMessage = 'Error: projectStatus already exists';
-      return of(null);
-    }
-
-    return this.projectStatusUtils.createNewProjectStatus(projectStatusName).pipe(
-      catchError(err => this.handleError('creation failed', err)));
-  }
-
-  private handleError(messageKey: string, error: any) {
-    this.errorMessage = messageKey;
-    console.error('Error:', error);
-    return of(null);
-  }
 
   handleClose(): void {
     this.isLoading = false;
@@ -118,9 +150,12 @@ export class ModelProjectStatusComponent implements OnInit {
     this.resetForm();
   }
 
-  resetForm(): void {
+  private resetForm(): void {
     this.createdProjectStatusForm.reset();
   }
+
+ 
+
   closeModel(): void {
     this.isVisibleModel.emit(false);
     this.createdProjectStatusForm.reset();
