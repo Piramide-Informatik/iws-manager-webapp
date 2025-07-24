@@ -378,7 +378,6 @@
   },
   "SUB-CONTRACTS": {
     "FORM": {
-      "CUSTOMER": "Cliente",
       "ORDER_TITLE": "Título de Orden",
       "CONTRACTOR": "Contratista",
       "INVOICE_NUMBER": "Número de Factura",
@@ -403,13 +402,17 @@
       "TABLE_NAME": "División en Años",
       "YEAR": "Año",
       "SERVICE_LIFE": "Porcentaje de Uso",
-      "AFA_BY_YEAR": "Depreciación por Año"
+      "AFA_BY_YEAR": "Depreciación por Año",
+      "MODAL_TITLE_NEW": "Subcontrato - Agregar año de depreciación",
+      "MODAL_TITLE_EDIT": "Subcontrato - Editar año de depreciación"
     },
     "PROJECT": {
       "TABLE_NAME": "Proyectos",
       "PROJECT": "Proyecto",
       "SHARE": "Porcentaje del crédito del proyecto",
-      "AMOUNT": "Cantidad"
+      "AMOUNT": "Cantidad",
+      "MODAL_TITLE_NEW": "Subcontratación - Nuevo proyecto",
+      "MODAL_TITLE_EDIT": "Subcontratación - Editar proyecto"
     }
   },
   "ABSENCE_TYPES": {
