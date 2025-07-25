@@ -1,0 +1,33 @@
+<master-data-genaral-table
+    [tableId]="tableKey"
+    [tableValues]="projectStatuses()"
+    [columns]="projectStatusDisplayedColumns"
+    [userPreferences]="userProjectStatusPreferences"
+    [hideColumns]="false"
+    tableTitle="PROJECT_STATUS.PROJECT_STATUS"
+    [dataKeys]="dataKeys"
+    (onColumnChanges)="onUserProjectStatusPreferencesChanges($event)"
+    (onCreateRegister)="handleTableEvents({ type: 'create' })"
+    (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+    (onEditRegister)="editProjectStatus($event)"
+></master-data-genaral-table>
+
+<p-dialog
+    [header]="modalType === 'create' 
+    ? ('Nuevo Estado de Proyecto' | translate) 
+    : ('Eliminar Estado de Proyecto' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleModal" 
+    (onShow)="onDialogShow()"
+    >
+    <app-model-project-status
+        [modalType]="modalType"
+        [projectStatusName]="projectStatusName"
+        [projectStatusToDelete]="selectedProjectStatus"
+        (isVisibleModel)="onModalVisibilityChange($event)"
+        (toastMessage)="toastMessageDisplay($event)"
+        #projectStatusModel>
+    </app-model-project-status>
+</p-dialog>
+<p-toast/>
+

@@ -1,16 +1,31 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'PROJECT_STATUS.EDIT_PROJECT_STATUS' | translate ">
     <form [formGroup]="editProjectStatusForm" (ngSubmit)="onSubmit()">
-        <div class="flex flex-column mb-2 mt-4 px-5">
-            <div class="project-status-form flex flex-row mb-6 align-items-center">
-                <label for="project-status">{{ 'PROJECT_STATUS.PROJECT_STATUS' | translate }}</label>
-                <input pInputText type="text" id="project-status" formControlName="projectStatus" autocomplete="off" />
+        <div class="project-status-form flex align-items-center pb-4">
+            <label for="projectStatus"> {{ 'PROJECT_STATUS.PROJECT_STATUS' | translate }}</label>
+            <div class="input-message">
+                <input pInputText type="text" id="projectStatus" formControlName="projectStatus" [ngClass]="{'ng-invalid ng-dirty': editProjectStatusForm.get('projectStatus')?.invalid &&
+                    editProjectStatusForm.get('projectStatus')?.touched}" autocomplete="off"/>
+                    <p-message severity="error" variant="simple" size="small" *ngIf="
+                        editProjectStatusForm.get('projectStatus')?.invalid &&
+                        editProjectStatusForm.get('projectStatus')?.touched &&
+                        editProjectStatusForm.get('projectStatus')!.hasError('required')
+                    ">
+                        {{ 'TITLE.ERROR.TITLE_LABEL_REQUIRED' | translate }}
+                    </p-message>
             </div>
-            <div class="row">
-                <div class="col flex justify-content-center">
-                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
-                </div>
-            </div>
+        </div>
+        <div class="flex justify-content-center gap-2 mt-4">
+            <p-button  type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
+                [disabled]="editProjectStatusForm.invalid || !editProjectStatusForm.dirty || isSaving"/>
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (click)="clearForm()" (keydown.enter)="clearForm()"/>
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+    *ngIf="showOCCErrorModalProjectStatus"
+    [useEmitter]="true"
+    (close)="showOCCErrorModalProjectStatus = false"
+    (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>

@@ -12,7 +12,6 @@
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
         (onEditRegister)="editTitle($event)"
       ></master-data-genaral-table>
-
       <p-dialog 
         [header]="modalType === 'create' 
           ? ('TITLE.FORM.TITLE_FORM' | translate) 
