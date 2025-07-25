@@ -1,20 +1,20 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
     <ng-template #title>{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.TITLE_TABLE' | translate}}</ng-template>
 
-    <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
-        <div class="align-items-center mb-2">
-            <div class="iws-employeeInput project_name mb-2">
-                <label for="fixCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.FIXED_COMMISSION' | translate}}</label>
-                <input pInputText type="text" id="fixCommission" formControlName="fixCommission" autocomplete="off" />
-                {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
-            </div>
-            <div class="iws-employeeInput order_maxCommission mb-2">
-                <label for="maxCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.MAX_COMMISSION' | translate}}</label>
-                <input pInputText type="text" id="maxCommission" formControlName="maxCommission" autocomplete="off" />
-                {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
-            </div>
+    <!-- Consultar funcionalidad de Inputs -->
+    <div class="align-items-center mb-2">
+        <div class="iws-commissionInput project_name mb-2">
+            <label for="fixCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.FIXED_COMMISSION' | translate}}</label>
+            <input pInputText type="text" id="fixCommission" autocomplete="off" />
+            {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
         </div>
-    </form>
+        <div class="iws-commissionInput order_maxCommission mb-2">
+            <label for="maxCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.MAX_COMMISSION' | translate}}</label>
+            <input pInputText type="text" id="maxCommission" autocomplete="off" />
+            {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
+        </div>
+    </div>
+ 
     <master-data-genaral-table
       [tableId]="tableKey"
       [tableValues]="orderCommissions"
@@ -22,6 +22,68 @@
       [userPreferences]="userIwsProvisionPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserIwsProvisionPreferencesChanges($event)"
+      (onCreateRegister)="showModalIwsCommission(optionIwsCommission.new)"
+      (onEditRegister)="showModalIwsCommission(optionIwsCommission.edit, $event)"
     ></master-data-genaral-table>
 
 </p-card>
+
+<!-- Modal IWS Commission Framework Agreements FA -->
+<p-dialog
+  [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + optionSelected | translate"
+  (onHide)="closeModalIwsCommission()"
+  [modal]="true"
+  [(visible)]="visibleModalIWSCommission"
+  [style]="{ width: '40rem' }"
+>
+  <form [formGroup]="iwsCommissionFAForm" (ngSubmit)="onSubmit()">
+    <div class="flex gap-4 mb-3 mt-4">
+      <label for="fromValue" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
+      <input
+        pInputText
+        id="fromValue"
+        class="flex-auto"
+        formControlName="fromOrderValue"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex gap-4 mb-3">
+      <label for="provision" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
+      <input
+        pInputText
+        id="provision"
+        class="flex-auto"
+        formControlName="provision"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex gap-4 mb-3">
+      <label for="minCommission" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
+      <input
+        pInputText
+        id="minCommission"
+        class="flex-auto"
+        formControlName="minCommission"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex justify-content-center gap-2">
+      <p-button
+        [label]="'BUTTONS.SAVE' | translate"
+        icon="pi pi-check"
+        size="small"
+        iconPos="left"
+      ></p-button>
+
+      <p-button
+        [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times"
+        iconPos="left"
+        size="small"
+        class="cancel"
+        (click)="closeModalIwsCommission()"
+        (keydown.enter)="closeModalIwsCommission()"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>
