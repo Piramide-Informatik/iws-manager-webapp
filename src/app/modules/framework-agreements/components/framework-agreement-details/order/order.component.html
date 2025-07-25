@@ -1,49 +1,39 @@
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-    <p-toolbar styleClass="mb-1">
-        <ng-template #start>
-            <label for="SearchCustomer">Kunde</label>
-            <p-iconfield class="px-4">
-                <p-inputicon styleClass="pi pi-search px-4" />
-                <input pInputText type="text"  />
-            </p-iconfield>
-        </ng-template>
-    </p-toolbar>
-    <br>
     <div class="align-items-center mb-2">
         <div class="order_input order_id mb-2">
-            <label for="orderId">Rahmenvertrag-Nr.</label>
-            <input pInputText type="text" id="orderId" formControlName="orderId" autocomplete="off" />
+            <label for="orderId">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FRAMEWORK_AGREEMENT_NO' | translate }}</label>
+            <input pInputText readonly [disabled]="true" type="text" id="orderId" formControlName="orderId" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderLabel">Rahmenvertrag</label>
+            <label for="orderLabel">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FRAMEWORK_AGREEMENT' | translate }}</label>
             <input pInputText type="text" id="orderLabel" formControlName="orderLabel" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderDate">Datum</label>
-            <p-datepicker id="orderDate" showIcon iconDisplay="input" formControlName="orderDate"  dateFormat="dd.mm.yy"  />
+            <label for="orderDate">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.DATE' | translate }}</label>
+            <p-datepicker id="orderDate" showIcon showClear formControlName="orderDate"  dateFormat="dd.mm.yy"  />
         </div>
         <div class="order_input order_name mb-2">
-            <label for="orderTitle">Langtext</label>
+            <label for="orderTitle">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.LONG_TEXT' | translate }}</label>
             <input pInputText type="text" id="orderTitle" formControlName="orderTitle" autocomplete="off" />
         </div>
         <div class="order_input order_name mb-2"> 
-            <label for="approvalDate">Unterschriftsdatum</label>
-            <p-datepicker id="approvalDate" showIcon iconDisplay="input" formControlName="approvalDate"  dateFormat="dd.mm.yy"  />
+            <label for="approvalDate">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.SIGNATURE_DATE' | translate }}</label>
+            <p-datepicker id="approvalDate" showIcon showClear formControlName="approvalDate"  dateFormat="dd.mm.yy"  />
         </div>
         
         <div class="order_input order_name mb-2">
-            <label for="contractTitle">Förderprogramm</label>
-            <p-dropdown id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle"></p-dropdown>
+            <label for="contractTitle">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FUNDING_PROGRAM' | translate }}</label>
+            <p-select id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle" showClear></p-select>
         </div>
         
         <div class="order_input order_name mb-2">
-            <label for="employeeiws">Vertragsstatus</label>
-            <p-dropdown id="employeeiws" [options]="vertragsstatusOptions" formControlName="employeeiws" ></p-dropdown>
+            <label for="orderValue">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.CONTRACT_STATUS' | translate }}</label>
+            <p-select id="orderValue" [options]="vertragsstatusOptions" formControlName="orderValue" showClear></p-select>
         </div>
         
         <div class="order_input order_name mb-2">
-            <label for="orderValue">IWS Mitarbeiter</label>
-            <p-dropdown id="orderValue" [options]="iwsMitarbeiterOptions" formControlName="orderValue" ></p-dropdown>
+            <label for="employeeiws">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.IWS_EMPLOYEES' | translate }}</label>
+            <p-select id="employeeiws" [options]="iwsMitarbeiterOptions" formControlName="employeeiws" showClear></p-select>
         </div>  
     </div>
 </form>

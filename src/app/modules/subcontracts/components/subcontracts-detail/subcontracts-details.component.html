@@ -19,18 +19,8 @@
   <!-- Botones -->
   <div class="buttons mt-4">
     <div class="row">
-      <div class="col-4">
-        <p-button
-          class="order_PDF"
-          size="small"
-          [label]="'BUTTONS.GENERATE_PDF_SUBCONTRACT' | translate"
-          icon="pi pi-file-pdf"
-          iconPos="right"
-          [style]="{ background: '#656565' }"
-        ></p-button>
-      </div>
 
-      <div class="col-8">
+      <div class="form-row flex flex-wrap gap-3 justify-content-center">
         <p-button
           class="Save me-2"
           size="small"
@@ -47,12 +37,11 @@
           [style]="{ background: '#ef4444' }"
         ></p-button>
         <p-button
-          class="Cancel me-2"
+          class="cancel"
           size="small"
           [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times"
           iconPos="left"
-          [style]="{ background: '#000' }"
           (onClick)="goBackListSubcontracts()"
         ></p-button>
       </div>

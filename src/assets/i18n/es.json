@@ -2,6 +2,7 @@
   "PAGETITLE": {
     "CUSTOMER_OVERVIEW": "Lista de Clientes",
     "CUSTOMER": "Cliente - ",
+    "NEW_CUSTOMER": "Nuevo Cliente",
     "COUNTRIES": "Países",
     "TITLES": "Título",
     "SALUTATION": "Saludo",
@@ -289,6 +290,24 @@
     }
   },
   "ORDERS": {
+    "FORM": {
+      "ORDER_ID": "Nº de Orden",
+      "ORDER_LABEL": "Orden",
+      "ORDER_TYPE": "Tipo de Orden",
+      "CUSTOMER": "Cliente",
+      "NR": "Nº",
+      "NAME": "Nombre",
+      "ACRONYM": "Acrónimo",
+      "ORDER_TITLE": "Descripción Completa",
+      "ORDER_DATE": "Fecha de la Orden",
+      "FUNDING_PROGRAM": "Programa de Financiamiento",
+      "CONTRACT_STATUS": "Estado del Contrato",
+      "SIGNATURE_DATE": "Fecha de Firma",
+      "CONTRACT_TITLE": "Contrato Marco",
+      "IWS_EMPLOYEE": "Empleado IWS",
+      "ORDER_VALUE": "Valor Estimado de la Orden"
+    },
+
     "TABLE": {
       "ORDER_ID": "ID Orden",
       "ORDER_LABEL": "Sigla",
@@ -302,6 +321,26 @@
       "CONTRACT_TITLE": "Título de Contrato",
       "IWS_PERCENT": "IWS %",
       "IWS_PERCENT_VALUE": "IWS-Valor"
+    },
+
+    "PROJECT":{
+      "PROJECT": "Proyecto",
+      "SPONSOR_ID": "ID del Responsable del Proyecto",
+      "SPONSOR": "Responsable del Proyecto",
+      "START_DATE": "Fecha de Inicio",
+      "END_DATE": "Fecha de Finalización"
+    },
+
+     "COMMISSIONS": {
+    "FIXED_COMMISSION": "Fija comisión",
+    "MAX_COMMISSION": "Comisión máxima",
+    "FROM_VALUE": "Del valor",
+    "COMMISSION": "Comisión",
+    "MIN_COMMISSION": "Comisión mínima",
+    "ESTIMATED_IWS_COMMISSION": "Comisión IWS estimada",
+    "NEW": "Nuevo",
+    "TITLE_DIALOG_NEW": "Nueva comisión IWS",
+    "TITLE_DIALOG_EDIT": "Editar comisión IWS"
     }
   },
   "RECEIVABLES": {
@@ -347,6 +386,27 @@
       "FUNDING_PROGRAM": "Pr. Financiamiento",
       "CONTRACT_STATUS": "Estado del Contrato",
       "IWS_EMPLOYEE": "IWS Empleados"
+    },
+    "DETAIL": {
+      "FORM": {
+        "FRAMEWORK_AGREEMENT_NO": "Acuerdo Marco N°",
+        "FRAMEWORK_AGREEMENT": "Acuerdo Marco",
+        "DATE": "Fecha",
+        "LONG_TEXT": "Texto Largo",
+        "SIGNATURE_DATE": "Fecha de Firma",
+        "FUNDING_PROGRAM": "Pr. Financiamiento",
+        "CONTRACT_STATUS": "Estado del Contrato",
+        "IWS_EMPLOYEES": "IWS Empleados"
+      },
+      "FORM_TABLE_IWS_COMMISSION": {
+        "TITLE_TABLE": "Comisión de IWS",
+        "FIXED_COMMISSION": "Comisión Fija",
+        "MAX_COMMISSION": "Comisión Máxima",
+        "EURO": "Euro",
+        "FROM_VALUE": "Del Valor",
+        "COMMISSION": "Comisión",
+        "MIN_COMMISSION": "Comisión mínima"
+      }
     }
   },
   "CONTRACTS": {
@@ -377,6 +437,17 @@
     }
   },
   "SUB-CONTRACTS": {
+    "FORM": {
+      "ORDER_TITLE": "Título de Orden",
+      "CONTRACTOR": "Contratista",
+      "INVOICE_NUMBER": "Número de Factura",
+      "INVOICE_DATE": "Fecha de Factura",
+      "INVOICE_NET_OR_GROSS": "Neto o Bruto",
+      "INVOICE_AMOUNT": "Importe de Factura",
+      "IS_AFA": "Tiene Depreciación",
+      "AFA_MONTHS": "Periodo de Depreciación (meses)",
+      "DESCRIPTION":"Descripción"
+    },
     "TABLE": {
       "ORDER_TITLE": "Título",
       "CONTRACTOR": "Contratista",
@@ -386,6 +457,22 @@
       "NET_INVOICE": "Importe Neto Factura",
       "GROSS_INVOICE": "Importe Bruto Factura",
       "SHARE": "Parte"
+    },
+    "DEPRECIATION_COLUMNS": {
+      "TABLE_NAME": "División en Años",
+      "YEAR": "Año",
+      "SERVICE_LIFE": "Porcentaje de Uso",
+      "AFA_BY_YEAR": "Depreciación por Año",
+      "MODAL_TITLE_NEW": "Subcontrato - Agregar año de depreciación",
+      "MODAL_TITLE_EDIT": "Subcontrato - Editar año de depreciación"
+    },
+    "PROJECT": {
+      "TABLE_NAME": "Proyectos",
+      "PROJECT": "Proyecto",
+      "SHARE": "Porcentaje del crédito del proyecto",
+      "AMOUNT": "Cantidad",
+      "MODAL_TITLE_NEW": "Subcontratación - Nuevo proyecto",
+      "MODAL_TITLE_EDIT": "Subcontratación - Editar proyecto"
     }
   },
   "ABSENCE_TYPES": {

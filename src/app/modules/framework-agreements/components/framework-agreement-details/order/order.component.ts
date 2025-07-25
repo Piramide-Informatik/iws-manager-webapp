@@ -9,28 +9,24 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class OrderComponent implements OnInit{
 
-  orderForm!: FormGroup;
-
-  public customer!: string;
+  public orderForm!: FormGroup;
 
   ngOnInit(): void {
-    this.customer = 'Joe Doe'
+    this.initOrderForm();
+  }
+
+  private initOrderForm(): void {
     this.orderForm = new FormGroup({
       orderId: new FormControl('', [Validators.required]),
       orderLabel: new FormControl('', [Validators.required]),
-      orderType: new FormControl('', [Validators.required]),
-      customerId: new FormControl('', [Validators.required]),
-      customerName: new FormControl('', [Validators.required]),
-      acronym: new FormControl('', [Validators.required]),
-      orderTitle: new FormControl('', [Validators.required]),
       orderDate: new FormControl('', [Validators.required]),
-      fundingProgram: new FormControl('', [Validators.required]),
-      contractStatus: new FormControl('', [Validators.required]),
+      orderTitle: new FormControl('', [Validators.required]),
       approvalDate: new FormControl('', [Validators.required]),
       contractTitle: new FormControl('', [Validators.required]),
-      employeeiws: new FormControl('', [Validators.required]),
       orderValue: new FormControl('', [Validators.required]),
+      employeeiws: new FormControl('', [Validators.required]),
     });
+    this.orderForm.get('orderId')?.disable();
   }
 
   onSubmit(): void {

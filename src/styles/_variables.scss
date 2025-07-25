@@ -2,3 +2,11 @@ $primary-color: rgb(38,123,191);
 $primary-dark: rgb(18,67,93);
 $primary-light: rgb(234,243,250);
 $accent-color: rgb(172,205,231);
+
+.form-item-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
+}

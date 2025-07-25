@@ -2,7 +2,7 @@
   <form [formGroup]="iwsEmployeeForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
       <div class="iws-employeeInput project_name mb-2">
-        <label for="fixCommission">Fixe Provision</label>
+        <label for="fixCommission">{{ 'ORDERS.COMMISSIONS.FIXED_COMMISSION' | translate }}</label>
         <input
           pInputText
           type="text"
@@ -13,7 +13,7 @@
         Euro
       </div>
       <div class="iws-employeeInput order_maxCommission mb-2">
-        <label for="maxCommission">Max. Provision</label>
+        <label for="maxCommission">{{ 'ORDERS.COMMISSIONS.MAX_COMMISSION' | translate }}</label>
         <input
           pInputText
           type="text"
@@ -24,8 +24,7 @@
         Euro
       </div>
     </div>
-  </form>
-  <master-data-genaral-table
+    <master-data-genaral-table
     [tableId]="tableKey"
     [tableValues]="orderCommissions"
     [columns]="cols"
@@ -36,28 +35,29 @@
     (onEditRegister)="showModalIwsCommission(optionIwsCommission.edit, $event)"
     (onDeleteRegister)="deleteCommission($event)"
     (onCreateRegister)="showModalIwsCommission(optionIwsCommission.new)"
-  ></master-data-genaral-table>
-
-  <div class="row">
-    <div class="col-12">
-      <div class="project_name mb-2">
-        <label class="me-2" for="estimated">Geschätzte IWS-Provision:</label>
-        <input
+    ></master-data-genaral-table>
+    
+    <div class="row">
+      <div class="col-12">
+        <div class="project_name mb-2">
+          <label class="me-2" for="estimated">{{ 'ORDERS.COMMISSIONS.ESTIMATED_IWS_COMMISSION' | translate }}</label>
+          <input
           pInputText
           type="text"
           id="estimated"
           formControlName="estimated"
           autocomplete="off"
-        />
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </form>
 </p-card>
 
 <!-- Modal IWS Commission -->
 <div class="card">
   <p-dialog
-    [header]="'IWS Commission '+ optionSelected"
+    [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + optionSelected.toUpperCase() | translate"
     (onHide)="closeModalIwsCommission()"
     [modal]="true"
     [(visible)]="visibleModalIWSCommission"
@@ -65,8 +65,8 @@
   >
     <hr class="mt-0" />
     <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmit()">
-      <div class="flex gap-4 mb-3">
-        <label for="fromValue" class="w-3">ab Auftragswert</label>
+      <div class="form-item-container  flex gap-4 mb-3">
+        <label for="fromValue" class="w-3">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
         <input
           pInputText
           id="fromValue"
@@ -75,8 +75,8 @@
           autocomplete="off"
         />
       </div>
-      <div class="flex gap-4 mb-3">
-        <label for="provision" class="w-3">Provision (%)</label>
+      <div class="form-item-container  flex gap-4 mb-3">
+        <label for="provision" class="w-3">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
         <input
           pInputText
           id="provision"
@@ -85,8 +85,8 @@
           autocomplete="off"
         />
       </div>
-      <div class="flex gap-4 mb-3">
-        <label for="minCommission" class="w-3">Mindestprovision</label>
+      <div class="form-item-container  flex gap-4 mb-3">
+        <label for="minCommission" class="w-3">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
         <input
           pInputText
           id="minCommission"
@@ -97,13 +97,20 @@
       </div>
       <div class="flex justify-content-center gap-2">
         <p-button
-          label="Speichern"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          size="small"
+          iconPos="left"
           (click)="addIwsCommission()"
           (keydown.enter)="addIwsCommission()"
         ></p-button>
 
         <p-button
-          label="Abbrechen"
+          [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times"
+          iconPos="left"
+          size="small"
+          class="cancel"
           (click)="closeModalIwsCommission()"
           (keydown.enter)="closeModalIwsCommission()"
         ></p-button>
