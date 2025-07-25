@@ -27,10 +27,19 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private langSubscription!: Subscription;
-  iwsEmployeeForm!: FormGroup;
+  public iwsCommissionFAForm!: FormGroup; // IWS Commission Fremework Agreements Form
   selectedOrderCommission!: null;
   orderCommissions: OrderCommission[] = [];
 
+  // Modal configuration
+  public visibleModalIWSCommission: boolean = false;
+  public readonly optionIwsCommission = {
+    new: 'NEW',
+    edit: 'EDIT'
+  };
+  optionSelected: string = '';
+
+  // Table IWS Commission configuration
   @ViewChild('dt') dt!: Table;
   public loading: boolean = false;
   public cols!: Column[];
@@ -43,10 +52,10 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   constructor(){ }
 
   ngOnInit(): void {
-    this.iwsEmployeeForm = new FormGroup({
-      fixCommission: new FormControl('', [Validators.required]),
-      maxCommission: new FormControl('', [Validators.required]),
-      estimated: new FormControl('', [Validators.required]),
+    this.iwsCommissionFAForm = new FormGroup({
+      fromOrderValue: new FormControl('', [Validators.required]),
+      provision: new FormControl('', [Validators.required]),
+      minCommission: new FormControl('', [Validators.required]),
     });
     
     this.updateHeadersAndColumns();
@@ -82,11 +91,28 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   }
 
   onSubmit(): void {
-    if (this.iwsEmployeeForm.valid) {
-      console.log(this.iwsEmployeeForm.value);
+    if (this.iwsCommissionFAForm.valid) {
+      console.log(this.iwsCommissionFAForm.value);
     } else {
       console.log("Formulario no válido");
     }
   }
 
+  closeModalIwsCommission(){
+    this.visibleModalIWSCommission = false;
+    this.iwsCommissionFAForm.reset();
+    this.optionSelected = '';
+  }
+
+  showModalIwsCommission(option: string, data?: any){
+    this.optionSelected = option;
+    
+    if(data && this.optionSelected == this.optionIwsCommission.edit){
+      this.iwsCommissionFAForm.get('fromOrderValue')?.setValue(data?.fromOrderValue);
+      this.iwsCommissionFAForm.get('provision')?.setValue(data?.commission);
+      this.iwsCommissionFAForm.get('minCommission')?.setValue(data?.minCommission);
+    }
+
+    this.visibleModalIWSCommission = true;
+  }
 }
