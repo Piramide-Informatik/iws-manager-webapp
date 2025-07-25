@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -32,15 +32,11 @@ export class EditProjectStatusComponent {
   ngOnInit(): void {
     this.initForm();
     this.setupProjectStatusSubscription();
-    // Check if we need to load a project status after page refresh
     const savedProjectStatusId = localStorage.getItem('selectedProjectStatusId');
     if (savedProjectStatusId){
       this.loadProjectStatuAfterRefresh(savedProjectStatusId);
       localStorage.removeItem('selectedProjectStatusId');
     }
-    // this.editProjectStatusForm = new FormGroup({
-    //   projectStatus: new FormControl('AngebotLOLLO', [Validators.required]),
-    // });
   }
 
   private initForm(): void {
@@ -107,7 +103,6 @@ export class EditProjectStatusComponent {
 
   
 
-  //Aquí se marca como tocado todos los controles del formulario
   private markAllAsTouched(): void {
     Object.values(this.editProjectStatusForm.controls).forEach(control => {
       control.markAsTouched();

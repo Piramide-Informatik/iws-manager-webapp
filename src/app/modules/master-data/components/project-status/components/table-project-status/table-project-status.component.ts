@@ -1,15 +1,14 @@
-import { Component, ViewChild, inject, OnChanges, OnDestroy, OnInit, computed, SimpleChanges, effect } from '@angular/core';
+import { Component, ViewChild, inject, OnChanges, OnDestroy, OnInit, computed, SimpleChanges } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { _, TranslateService } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
-import { projectStatusService } from '../../../../../../Services/project-status.service';
+import { ProjectStatusService } from '../../../../../../Services/project-status.service';
 import { ProjectStatusUtils } from '../../../../../../modules/master-data/components/project-status/utils/project-status-utils';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
 import { ModelProjectStatusComponent  } from '../model-project-status/model-project-status.component';
 import { MasterDataService } from '../../../../master-data.service';
-import { RouterUtilsService } from '../../../../router-utils.service';
 import { MessageService } from 'primeng/api';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 
@@ -20,11 +19,9 @@ import { ProjectStatusStateService } from '../../utils/project-status-state.serv
   styleUrl: './table-project-status.component.scss'
 })
 export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges {
-  private projectStatusSvc = inject(projectStatusService);
-  projectStatusess = this.projectStatusSvc.projectStatuses;
 
   private readonly projectStatusUtils = new ProjectStatusUtils();
-  private readonly projectStatusService = inject(projectStatusService);
+  private readonly projectStatusService = inject(ProjectStatusService);
   private readonly messageService = inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
@@ -75,14 +72,8 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
         private readonly translate: TranslateService,
         private readonly masterDataService: MasterDataService,
         private readonly userPreferenceService: UserPreferenceService,
-        private readonly projectStatusStateService: ProjectStatusStateService,
-        private readonly routerUtils: RouterUtilsService
-      ){
-        effect(() => {
-      console.log('Project statuses:', this.projectStatusess());
-      console.log('projectColumns antes de filtrar:', this.projectColumns);
-    });
-  }
+        private readonly projectStatusStateService: ProjectStatusStateService
+      ){ }
     
   ngOnInit(): void {
     this.loadProjectStatusData();
@@ -94,13 +85,6 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     })
     this.projects = this.masterDataService.getProjectStatusData();
     
-    // this.loadColHeadersProjects();
-    // this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
-    // this.langSubscription = this.translate.onLangChange.subscribe(() => {
-    //   this.loadColHeadersProjects();
-    //   this.routerUtils.reloadComponent(true);
-    //   this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
-    // });
   }
     
   onUserProjectStatusPreferencesChanges(userProjectStatusPreferences: any) {
@@ -203,7 +187,7 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
         }
       },
       error: (err) => {
-        console.error('Error al vargar projectStatus',err);
+        console.error('Error Id projectStatus',err);
       }
     });
   }

@@ -1,11 +1,11 @@
 import {Injectable, inject} from '@angular/core';
 import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
 import { ProjectStatus} from  '../../../../../Entities/projectStatus';
-import { projectStatusService } from '../../../../../Services/project-status.service';
+import { ProjectStatusService } from '../../../../../Services/project-status.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectStatusUtils {
-    private readonly projectStatusService = inject(projectStatusService);
+    private readonly projectStatusService = inject(ProjectStatusService);
     
     loadInitialData(): Observable<ProjectStatus[]> {
         return this.projectStatusService.loadInitialData();

@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
-import { catchError, switchMap, finalize, tap } from 'rxjs/operators';
-import { of, Subscription } from 'rxjs';
+import {  finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-model-project-status',
@@ -78,7 +78,7 @@ export class ModelProjectStatusComponent implements OnInit {
     }
   }
 
-  onSubmit(): void { //Aqui se debe cambiar el nombre de la funcion
+  onSubmit(): void { 
     if (this.shouldPreventSubmission()) return;
 
     this.prepareForSubmission();
@@ -153,8 +153,6 @@ export class ModelProjectStatusComponent implements OnInit {
   private resetForm(): void {
     this.createdProjectStatusForm.reset();
   }
-
- 
 
   closeModel(): void {
     this.isVisibleModel.emit(false);

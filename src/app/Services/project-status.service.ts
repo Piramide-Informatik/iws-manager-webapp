@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
     providedIn: 'root'
 })
-export class projectStatusService {
+export class ProjectStatusService {
     private readonly http = inject(HttpClient);
     private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/projectstatus`;
 
@@ -18,12 +18,11 @@ export class projectStatusService {
         })
     };
 
-    // Signals para estado reactivo
     private readonly _projectStatuses = signal<ProjectStatus[]>([]);
     private readonly _loading = signal<boolean>(false);
     private readonly _error = signal<string | null>(null);
 
-    // Exponer señales como read-only
+
     public projectStatuses = this._projectStatuses.asReadonly();
     public loading = this._loading.asReadonly();
     public error = this._error.asReadonly();

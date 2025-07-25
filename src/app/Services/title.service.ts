@@ -12,19 +12,18 @@ export class TitleService {
   private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/titles`;
 
   private readonly httpOptions = {
-    //withCredentials: true,
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     })
   };
 
-  // Signals para estado reactivo
+
   private readonly _titles = signal<Title[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
 
-  // Exponer señales como read-only
+
   public titles = this._titles.asReadonly();
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
@@ -103,7 +102,7 @@ export class TitleService {
         }
       })
     );
-  }  
+  }
 
   // READ
   getAllTitles(): Observable<Title[]> {
@@ -121,7 +120,7 @@ export class TitleService {
     return this.getAllTitles().pipe(
       map(titles => titles.find(t => t.id === id))
     );
-  }  
+  }
 
   public refreshTitles(): void {
     this.loadInitialData();

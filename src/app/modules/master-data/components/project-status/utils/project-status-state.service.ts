@@ -1,4 +1,3 @@
-//project-status-state.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ProjectStatus } from '../../../../../Entities/projectStatus';
