@@ -11,6 +11,7 @@ import { ModelProjectStatusComponent  } from '../model-project-status/model-proj
 import { MasterDataService } from '../../../../master-data.service';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { MessageService } from 'primeng/api';
+import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 
 @Component({
   selector: 'app-table-project-status',
@@ -74,6 +75,7 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
         private readonly translate: TranslateService,
         private readonly masterDataService: MasterDataService,
         private readonly userPreferenceService: UserPreferenceService,
+        private readonly projectStatusStateService: ProjectStatusStateService,
         private readonly routerUtils: RouterUtilsService
       ){
         effect(() => {
@@ -182,6 +184,27 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
       detail: this.translate.instant(_(message.detail)),
+    });
+  }
+
+  editProjectStatus(projectStatus: ProjectStatus){
+    const projectStatusToEdit: ProjectStatus ={
+      id: projectStatus.id,
+      name: projectStatus.name,
+      createdAt: '',
+      updatedAt: '',
+      version: 0
+    };
+
+    this.projectStatusUtils.getProjectStatusById(projectStatusToEdit.id).subscribe({
+      next: (fullProjectStatus) => {
+        if (fullProjectStatus) {
+          this.projectStatusStateService.setProjectStatusToEdit(fullProjectStatus);
+        }
+      },
+      error: (err) => {
+        console.error('Error al vargar projectStatus',err);
+      }
     });
   }
 }

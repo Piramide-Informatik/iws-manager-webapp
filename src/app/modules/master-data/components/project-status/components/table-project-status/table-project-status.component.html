@@ -9,6 +9,7 @@
     (onColumnChanges)="onUserProjectStatusPreferencesChanges($event)"
     (onCreateRegister)="handleTableEvents({ type: 'create' })"
     (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+    (onEditRegister)="editProjectStatus($event)"
 ></master-data-genaral-table>
 
 <p-dialog
