@@ -59,6 +59,9 @@
       <div class="flex justify-content-center gap-2">
         <p-button
           [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          size="small"
           (click)="saveAllocation()"
           (keydown.enter)="saveAllocation()"
         ></p-button>
@@ -68,6 +71,8 @@
           (click)="closeModal()"
           class="cancel"
           icon="pi pi-times"
+          iconPos="left"
+          size="small"
           (keydown.enter)="closeModal()"
         ></p-button>
       </div>

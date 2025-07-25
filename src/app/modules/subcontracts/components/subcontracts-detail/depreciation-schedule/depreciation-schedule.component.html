@@ -58,6 +58,9 @@
       <div class="flex justify-content-center gap-2">
         <p-button
           [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          size="small"
           (click)="saveDepreciation()"
           (keydown.enter)="saveDepreciation()"
         ></p-button>
@@ -66,6 +69,8 @@
           [label]="'BUTTONS.CANCEL' | translate"
           class="cancel"
           icon="pi pi-times"
+          iconPos="left"
+          size="small"
           (click)="closeModal()"
           (keydown.enter)="closeModal()"
         ></p-button>
