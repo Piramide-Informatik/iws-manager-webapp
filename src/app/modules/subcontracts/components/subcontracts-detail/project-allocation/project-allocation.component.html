@@ -27,7 +27,7 @@
     <hr class="mt-0" />
     <form [formGroup]="allocationForm" (ngSubmit)="saveAllocation()">
       <div class="flex gap-4 mb-3">
-        <label for="projectName" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
+        <label for="projectName" class="label-modal">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
         <input
           pInputText
           id="projectName"
@@ -37,7 +37,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
+        <label for="percentage" class="label-modal">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
         <input
           pInputText
           id="percentage"
@@ -47,7 +47,7 @@
         />
       </div>
       <div class="flex gap-4 mb-3">
-        <label for="amount" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>
+        <label for="amount" class="label-modal">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>
         <input
           pInputText
           id="amount"
@@ -59,6 +59,9 @@
       <div class="flex justify-content-center gap-2">
         <p-button
           [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          size="small"
           (click)="saveAllocation()"
           (keydown.enter)="saveAllocation()"
         ></p-button>
@@ -68,6 +71,8 @@
           (click)="closeModal()"
           class="cancel"
           icon="pi pi-times"
+          iconPos="left"
+          size="small"
           (keydown.enter)="closeModal()"
         ></p-button>
       </div>
