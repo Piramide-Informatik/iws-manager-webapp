@@ -65,7 +65,7 @@
   >
     <hr class="mt-0" />
     <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmit()">
-      <div class="flex gap-4 mb-3">
+      <div class="form-item-container  flex gap-4 mb-3">
         <label for="fromValue" class="w-3">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
         <input
           pInputText
@@ -75,7 +75,7 @@
           autocomplete="off"
         />
       </div>
-      <div class="flex gap-4 mb-3">
+      <div class="form-item-container  flex gap-4 mb-3">
         <label for="provision" class="w-3">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
         <input
           pInputText
@@ -85,7 +85,7 @@
           autocomplete="off"
         />
       </div>
-      <div class="flex gap-4 mb-3">
+      <div class="form-item-container  flex gap-4 mb-3">
         <label for="minCommission" class="w-3">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
         <input
           pInputText

@@ -25,7 +25,7 @@
   >
     <hr class="mt-0" />
     <form [formGroup]="depreciationForm" (ngSubmit)="saveDepreciation()">
-      <div class="flex gap-4 mb-3">
+      <div class="form-item-container flex gap-4 mb-3">
         <label for="year" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
         <input
           pInputText
@@ -35,7 +35,7 @@
           autocomplete="off"
         />
       </div>
-      <div class="flex gap-4 mb-3">
+      <div class="form-item-container flex gap-4 mb-3">
         <label for="usagePercentage" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
         <input
           pInputText
@@ -45,7 +45,7 @@
           autocomplete="off"
         />
       </div>
-      <div class="flex gap-4 mb-3">
+      <div class="form-item-container flex gap-4 mb-3">
         <label for="depreciationAmount" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' | translate }}</label>
         <input
           pInputText
