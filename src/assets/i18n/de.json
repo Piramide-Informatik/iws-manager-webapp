@@ -811,7 +811,36 @@
   },
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Projektstatus",
-    "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten"
+    "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten",
+    "MESSAGE":{
+      "SUCCESS": "ERFOLGREICH",
+      "UPDATE_SUCCESS": "Aktualisierung erfolgreich",
+      "ERROR": "FEHLER",
+      "UPDATE_FAILED":"Aktualisierung fehlgeschlagen"
+      },
+    "LABEL":{
+      "EDIT_PROJECT_STATUS":"Projektstatus bearbeiten",
+      "PROJECT_STATUS_LABEL":"Projektstatus"
+      },
+    "ERROR":{
+      "PROJECT_STATUS_LABEL_REQUIRED": "Der Projektstatus ist erforderlich",
+      "CREATION_FAILED": "Bei der Erstellung des Projektstatus ist ein Fehler aufgetreten.",
+      "EMPTY": "Der Name des Projektstatus muss aus mindestens einem Zeichen bestehen",
+      "ALREADY_EXISTS":"Der Datensatz existiert bereits"
+      },
+    "DELETE":{
+      "CONFIRM_QUESTION":"Sind Sie sicher, dass Sie Folgendes entfernen möchten",
+      "CONFIRMATION":"Projektstatus löschen Projekt"
+      },
+    "TABLE_PROJECT_STATUS":{
+      "PROJECT_STATUS_LABEL": "Projektstatus",
+      "PROJECT_STATUS":"Projektstatus"
+      },
+    "FORM": {
+    "PROJECT_STATUS_FORM":"Neuer Projektstatus"
+    ,
+      "NEW_PROJECT_STATUS":"Projektstatus"
+    }
   },
   "NETWORKS": {
     "LABEL": {

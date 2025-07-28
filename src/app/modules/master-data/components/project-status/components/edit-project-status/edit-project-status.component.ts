@@ -113,8 +113,8 @@ export class EditProjectStatusComponent {
   private handleSaveSuccess(savedProjectStatus: ProjectStatus): void{
     this.messageService.add({
       severity: 'success',
-      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_SUCCESS')
+      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.SUCCESS'),
+      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_SUCCESS')
     });
     this.projectStatusStateService.setProjectStatusToEdit(null);
     this.clearForm();
@@ -133,8 +133,8 @@ export class EditProjectStatusComponent {
     console.error('Error saving title:', error);
     this.messageService.add({
       severity: 'error',
-      summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
-      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_FAILED')
+      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.ERROR'),
+      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_FAILED')
     });
     this.isSaving = false;
   }

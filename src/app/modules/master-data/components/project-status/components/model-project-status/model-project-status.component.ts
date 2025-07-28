@@ -106,7 +106,7 @@ export class ModelProjectStatusComponent implements OnInit {
   }
 
   private handleError(error: any): void {
-    this.errorMessage = error?.message ?? 'TITLE.ERROR.CREATION_FAILED';
+    this.errorMessage = error?.message ?? 'PROJECT_STATUS.ERROR.CREATION_FAILED';
 
     const detail = this.getErrorDetail(error.message);
 
@@ -121,9 +121,9 @@ export class ModelProjectStatusComponent implements OnInit {
 
   private getErrorDetail(errorCode: string): string {
     switch (errorCode) {
-      case 'TITLE.ERROR.EMPTY':
+      case 'PROJECT_STATUS.ERROR.EMPTY':
         return 'MESSAGE.EMPTY_ERROR';
-      case 'TITLE.ERROR.ALREADY_EXISTS':
+      case 'PROJECT_STATUS.ERROR.ALREADY_EXISTS':
         return 'MESSAGE.RECORD_ALREADY_EXISTS';
       default:
         return 'MESSAGE.CREATE_FAILED';

@@ -121,12 +121,12 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     this.projectColumns = [
       { field: 'label',
         minWidth: 110, 
-        header: this.translate.instant(_('PROJECT_STATUS.PROJECT_STATUS')) 
+        header: this.translate.instant(_('PROJECT_STATUS.TABLE_PROJECT_STATUS.PROJECT_STATUS_LABEL')) 
       },
       {
         field: 'projectStatus',
         minWidth: 110,
-        header: this.translate.instant(_('PROJECT_STATUS.PROJECT_STATUS'))
+        header: this.translate.instant(_('PROJECT_STATUS.TABLE_PROJECT_STATUS.PROJECT_STATUS'))
       }
     ];
   }
