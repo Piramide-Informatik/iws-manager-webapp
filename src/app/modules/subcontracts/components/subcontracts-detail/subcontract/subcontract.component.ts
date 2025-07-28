@@ -22,6 +22,12 @@ export class SubcontractComponent implements OnInit {
       this.loadOptionsInvoiceLabel();
     });
 
+    this.initForm();
+
+    this.checkboxAfaChange();
+  }
+
+  private initForm(): void {
     this.subcontractForm = new FormGroup({
       customer: new FormControl('', Validators.required),
       order: new FormControl('', Validators.required),
@@ -34,13 +40,16 @@ export class SubcontractComponent implements OnInit {
       afaDurationMonths: new FormControl({ value: '', disabled: true }), // solo si afa = true
       description: new FormControl(''),
     });
+  }
 
-    this.subcontractForm.get('afa')?.valueChanges.subscribe((checked) => {
-      const control = this.subcontractForm.get('afaDurationMonths');
-      if (checked) {
-        control?.enable();
+  checkboxAfaChange(): void {
+    this.subcontractForm.get('afa')?.valueChanges.subscribe((value: boolean) => {
+      const afaDurationControl = this.subcontractForm.get('afaDurationMonths');
+      if (value) {
+        afaDurationControl?.enable();
       } else {
-        control?.disable();
+        afaDurationControl?.disable();
+        afaDurationControl?.setValue('');
       }
     });
   }
