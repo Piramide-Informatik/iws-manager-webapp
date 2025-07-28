@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -7,14 +7,28 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './subcontracts-details.component.html',
   styleUrls: ['./subcontracts-details.component.scss'],
 })
-export class SubcontractsDetailsComponent {
+export class SubcontractsDetailsComponent implements OnInit {
+
+  subcontractId!: number;
 
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ){}
 
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      this.subcontractId = params['subContractId'];
+      if (this.subcontractId) {
+        console.log("Edit Logic");
+      } else {
+        console.log("Create Logic")
+      }
+    })
+  }
+
   goBackListSubcontracts(): void{
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+    const path = this.subcontractId ? '../../' : '../'
+    this.router.navigate([path], { relativeTo: this.activatedRoute });
   }
 }
