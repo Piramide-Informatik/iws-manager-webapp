@@ -121,7 +121,7 @@ export class EditProjectStatusComponent {
   }
 
   private handleError(err: any): void {
-    if (err.message === 'Version conflict: Title has been updated by another user') {
+    if (err.message === 'Version conflict: ProjectStatus has been updated by another user') {
       this.showOCCErrorModalProjectStatus = true;
     } else {
       this.handleSaveError(err);
