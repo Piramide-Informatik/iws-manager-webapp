@@ -443,6 +443,8 @@
       "INVOICE_NUMBER": "Número de Factura",
       "INVOICE_DATE": "Fecha de Factura",
       "INVOICE_NET_OR_GROSS": "Neto o Bruto",
+      "NET": "Neto",
+      "GROSS": "Bruto", 
       "INVOICE_AMOUNT": "Importe de Factura",
       "IS_AFA": "Tiene Depreciación",
       "AFA_MONTHS": "Periodo de Depreciación (meses)",
