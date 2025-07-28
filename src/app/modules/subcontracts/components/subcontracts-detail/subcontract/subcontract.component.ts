@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
@@ -29,13 +29,13 @@ export class SubcontractComponent implements OnInit {
 
   private initForm(): void {
     this.subcontractForm = new FormGroup({
-      customer: new FormControl('', Validators.required),
-      order: new FormControl('', Validators.required),
-      contractor: new FormControl('', Validators.required),
-      invoiceNumber: new FormControl('', Validators.required),
-      invoiceDate: new FormControl('', Validators.required),
-      netOrGross: new FormControl('', Validators.required), // default: 'net'
-      invoiceAmount: new FormControl('', Validators.required),
+      customer: new FormControl(''),
+      order: new FormControl(''),
+      contractor: new FormControl(''),
+      invoiceNumber: new FormControl(''),
+      invoiceDate: new FormControl(''),
+      netOrGross: new FormControl(this.optionsNetOrGross[0].value), // default: 'net'
+      invoiceAmount: new FormControl(''),
       afa: new FormControl(false), // checkbox
       afaDurationMonths: new FormControl({ value: '', disabled: true }), // solo si afa = true
       description: new FormControl(''),
