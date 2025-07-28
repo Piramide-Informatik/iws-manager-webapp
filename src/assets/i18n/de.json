@@ -445,6 +445,8 @@
       "INVOICE_NUMBER": "Rechnungsnummer",
       "INVOICE_DATE": "Rechnungsdatum",
       "INVOICE_NET_OR_GROSS": "Netto oder brutto",
+      "NET": "Netto",
+      "GROSS": "Brutto",
       "INVOICE_AMOUNT": "Rechnungsbetrag",
       "IS_AFA": "AfA",
       "AFA_MONTHS": "AfA Dauer (Monate)",

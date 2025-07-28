@@ -1,39 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-subcontract',
   standalone: false,
   templateUrl: './subcontract.component.html',
-    providers: [MessageService, ConfirmationService],
   styleUrls: ['./subcontract.component.scss'],
 })
 export class SubcontractComponent implements OnInit {
-  subcontractForm!: FormGroup;
+  private readonly translate = inject(TranslateService);
+  private langSubscription!: Subscription;
+  public subcontractForm!: FormGroup;
+
+  public optionsNetOrGross!: { label: string, value: string }[];
 
   ngOnInit(): void {
+    this.loadOptionsInvoiceLabel();
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadOptionsInvoiceLabel();
+    });
+
+    this.initForm();
+
+    this.checkboxAfaChange();
+  }
+
+  private initForm(): void {
     this.subcontractForm = new FormGroup({
       customer: new FormControl('', Validators.required),
       order: new FormControl('', Validators.required),
       contractor: new FormControl('', Validators.required),
       invoiceNumber: new FormControl('', Validators.required),
       invoiceDate: new FormControl('', Validators.required),
-      netOrGross: new FormControl('net', Validators.required), // default: 'net'
+      netOrGross: new FormControl('', Validators.required), // default: 'net'
       invoiceAmount: new FormControl('', Validators.required),
       afa: new FormControl(false), // checkbox
       afaDurationMonths: new FormControl({ value: '', disabled: true }), // solo si afa = true
       description: new FormControl(''),
     });
+  }
 
-    this.subcontractForm.get('afa')?.valueChanges.subscribe((checked) => {
-      const control = this.subcontractForm.get('afaDurationMonths');
-      if (checked) {
-        control?.enable();
+  checkboxAfaChange(): void {
+    this.subcontractForm.get('afa')?.valueChanges.subscribe((value: boolean) => {
+      const afaDurationControl = this.subcontractForm.get('afaDurationMonths');
+      if (value) {
+        afaDurationControl?.enable();
       } else {
-        control?.disable();
+        afaDurationControl?.disable();
+        afaDurationControl?.setValue('');
       }
     });
+  }
+
+  loadOptionsInvoiceLabel(): void {
+    this.optionsNetOrGross = [
+      { label: this.translate.instant('SUB-CONTRACTS.FORM.NET'), value: 'net' },
+      { label: this.translate.instant('SUB-CONTRACTS.FORM.GROSS'), value: 'gross' }
+    ];
   }
 
   onSubmit(): void {
