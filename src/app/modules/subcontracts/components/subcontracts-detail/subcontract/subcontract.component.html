@@ -49,13 +49,10 @@
       <p-select
         [style]="{ width: '20vw' }"
         inputId="netOrGross"
-        [showClear]="true"
-        [options]="[
-          { label: 'Netto', value: 'net' },
-          { label: 'Brutto', value: 'gross' }
-        ]"
+        [options]="optionsNetOrGross"
         formControlName="netOrGross"
         optionLabel="label"
+        optionValue="value"
       ></p-select>
     </div>
 

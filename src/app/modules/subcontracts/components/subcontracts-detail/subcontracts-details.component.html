@@ -1,23 +1,29 @@
 <div class="container">
   <div class="row">
-    <!-- Sección izquierda: Datos del subcontrato -->
-    <div class="col-md-6">
-      <app-subcontract></app-subcontract>
-    </div>
-
-    <!-- Sección derecha: Asignaciones -->
-    <div class="col-md-6">
-      <div class="mb-2">
-        <app-project-allocation></app-project-allocation>
+    
+    @if(subcontractId){
+      <!-- Sección izquierda: Datos del subcontrato -->
+      <div class="col-md-6">
+        <app-subcontract></app-subcontract>
       </div>
-      <div class="mb-2">
-        <app-depreciation-schedule></app-depreciation-schedule>
+      <!-- Sección derecha: Asignaciones -->
+      <div class="col-md-6">
+        <div class="mb-2">
+          <app-project-allocation></app-project-allocation>
+        </div>
+          <div class="mb-2">
+          <app-depreciation-schedule></app-depreciation-schedule>
+        </div>
       </div>
-    </div>
+    } @else {
+      <div class="col-md-12">
+        <app-subcontract></app-subcontract>
+      </div>
+    }
   </div>
 
   <!-- Botones -->
-  <div class="buttons mt-4">
+  <div class="buttons mt-4 mb-4">
     <div class="row">
 
       <div class="form-row flex flex-wrap gap-3 justify-content-center">
