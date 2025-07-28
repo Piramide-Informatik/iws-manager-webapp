@@ -3,8 +3,7 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center mb-6">
                 <label for="projectStatusName" class="block">
-                    {{ 'Project Status'}}
-                    <!-- Aqui  -->
+                    {{ 'PROJECT_STATUS.FORM.NEW_PROJECT_STATUS' | translate}}
                 </label>
                 <input #projectStatusInput pInputText type="text" id="projectStatusName" formControlName="name" autocomplete="off"
                     [attr.aria-invalid]="createdProjectStatusForm.get('name')?.invalid"
@@ -30,8 +29,7 @@
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
-            {{ 'Está seguro que desea eliminar' }}
-            <!-- Aqui  -->
+            {{ 'PROJECT_STATUS.DELETE.CONFIRM_QUESTION' | translate }}
             <strong class="stronglock mt-1">{{ projectStatusName }}</strong>?
         </p>
 
@@ -41,7 +39,7 @@
                 [disabled]="isLoading"/>
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-trash" iconPos="left" (onClick)="closeModel()" [disabled]="isLoading" />
+                icon="pi pi-times" iconPos="left" (onClick)="closeModel()" [disabled]="isLoading" />
         </div>
     </div>
 </ng-template>
