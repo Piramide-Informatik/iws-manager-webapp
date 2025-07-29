@@ -450,6 +450,10 @@
       "AFA_MONTHS": "Periodo de Depreciación (meses)",
       "DESCRIPTION":"Descripción"
     },
+    "LABEL": {
+      "REMOVE_SUBCONTRACT_QUESTION": "¿Está seguro que desea eliminar el Subcontratista",
+      "DELETE_SUBCONTRACT": "Eliminar Subcontratista"
+    },
     "TABLE": {
       "ORDER_TITLE": "Título",
       "CONTRACTOR": "Contratista",
@@ -807,7 +811,36 @@
   },
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Estado del Proyecto",
-    "EDIT_PROJECT_STATUS": "Editar Estado del Proyecto"
+    "EDIT_PROJECT_STATUS": "Editar Estado del Proyecto",
+    "MESSAGE":{
+      "SUCCESS": "ÉXITO",
+      "UPDATE_SUCCESS": "Actualización exitosa",
+      "ERROR": "ERROR",
+      "UPDATE_FAILED":"Actualización fallida"
+    },
+    "LABEL":{
+      "EDIT_PROJECT_STATUS":"Editar Estado del Proyecto",
+      "PROJECT_STATUS_LABEL":"Estado del Proyecto"
+    },
+    "ERROR":{
+      "PROJECT_STATUS_LABEL_REQUIRED": "El estado del proyecto es requerido",
+      "CREATION_FAILED": "Hubo un error durante la creacion del estado del proyecto.",
+      "EMPTY": "El nombre del estado del proyecto tiene que tener al menos un caracter",
+      "ALREADY_EXISTS":"El registro ya existe"
+    },
+    "DELETE":{
+      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar ",
+      "CONFIRMATION":"Eliminar Estado del Proyecto"
+    },
+    "TABLE_PROJECT_STATUS":{
+      "PROJECT_STATUS_LABEL": "Estado del Proyecto",
+      "PROJECT_STATUS":"Estado del Proyecto"
+    },
+    "FORM": {
+      "PROJECT_STATUS_FORM":"Nuevo Estado del Proyecto",
+      "NEW_PROJECT_STATUS":"Estado del Proyecto"
+    }
+
   },
   "NETWORKS": {
     "LABEL": {

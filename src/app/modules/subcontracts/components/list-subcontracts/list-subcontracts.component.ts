@@ -9,6 +9,7 @@ import { SubcontractUtils } from '../../utils/subcontracts-utils';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { Customer } from '../../../../Entities/customer';
 import { Subcontract } from '../../../../Entities/subcontract';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 interface Column {
   field: string,
@@ -46,10 +47,19 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   
   dataKeys = ['contractTitle', 'contractor', 'projectCostCenter', 'date', 'invoiceNo', 'invoiceNet', 'invoiceGross', 'share'];
 
+  selectedSubcontract!: Subcontract;
+
+  visibleSubcontractModal: boolean = false;
+
+  subcontractName: string = '';
+
+  isDeletingSubcontract: boolean = false;
+
   constructor( private readonly translate: TranslateService,
                private readonly userPreferenceService: UserPreferenceService, 
                private readonly router:Router,
-               private readonly route: ActivatedRoute){}
+               private readonly route: ActivatedRoute,
+               private readonly commonMessageService: CommonMessagesService){}
 
   
   ngOnInit(): void {
@@ -122,5 +132,32 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   goToEditSubContractDetails(subcontract: any) {
     this.router.navigate(['subcontracts-details', subcontract.orderTitle], { relativeTo: this.route })
+  }
+
+  handleDeleteSubcontracts(id: number) {
+    const subcontract = this.subcontracts.find( sub => sub.id === id);
+    if (subcontract) {
+      this.selectedSubcontract = subcontract
+      this.subcontractName = subcontract.contractTitle
+    }
+    this.visibleSubcontractModal = true;
+  }
+
+  onSubcontractDeleteConfirm() {
+    this.isDeletingSubcontract = true;
+    if (this.selectedSubcontract) {
+      this.subcontractsUtils.deleteSubcontract(this.selectedSubcontract.id).subscribe({
+        next: () => {
+          this.isDeletingSubcontract = false;
+          this.visibleSubcontractModal = false;
+          this.subcontracts = this.subcontracts.filter(sc => sc.id !== this.selectedSubcontract.id);
+          this.commonMessageService.showDeleteSucessfullMessage();
+        },
+        error: (error) => {
+          this.isDeletingSubcontract = false;
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+      });
+    }
   }
 }
