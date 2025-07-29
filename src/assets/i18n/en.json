@@ -453,6 +453,10 @@
       "AFA_MONTHS": "Depreciation period (months)",
       "DESCRIPTION":"Description"
     },
+    "LABEL": {
+      "REMOVE_SUBCONTRACT_QUESTION": "Are you sure you want to delete the Subcontract",
+      "DELETE_SUBCONTRACT": "Delete Subcontract"
+    },
     "TABLE": {
       "ORDER_TITLE": "Order Title",
       "CONTRACTOR": "Contractor",

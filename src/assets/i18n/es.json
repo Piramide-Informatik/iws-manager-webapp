@@ -450,6 +450,10 @@
       "AFA_MONTHS": "Periodo de Depreciación (meses)",
       "DESCRIPTION":"Descripción"
     },
+    "LABEL": {
+      "REMOVE_SUBCONTRACT_QUESTION": "¿Está seguro que desea eliminar el Subcontratista",
+      "DELETE_SUBCONTRACT": "Eliminar Subcontratista"
+    },
     "TABLE": {
       "ORDER_TITLE": "Título",
       "CONTRACTOR": "Contratista",
