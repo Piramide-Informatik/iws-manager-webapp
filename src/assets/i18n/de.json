@@ -452,6 +452,10 @@
       "AFA_MONTHS": "AfA Dauer (Monate)",
       "DESCRIPTION":"Beschreibung"
     },
+    "LABEL": {
+      "REMOVE_SUBCONTRACT_QUESTION": "Möchten Sie den Untervertrag wirklich löschen",
+      "DELETE_SUBCONTRACT": "Untervertrag löschen"
+    },
     "TABLE": {
       "ORDER_TITLE": "Autrag",
       "CONTRACTOR": "Auftragnehmer",

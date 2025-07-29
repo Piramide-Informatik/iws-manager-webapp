@@ -5,10 +5,25 @@
     [columns]="selectedColumns"
     [userPreferences]="userSubcontractsListPreferences"
     [dataKeys]="dataKeys"
-    removeKey="orderTitle"
+    removeKey="id"
     (onColumnChanges)="onUserSubcontractsListPreferencesChanges($event)"
     (onCreateRegister)="goToSubContractDetails()"
     (onEditRegister)="goToEditSubContractDetails($event)"
-    (onDeleteRegister)="deleteSubcontract($event)"
+    (onDeleteRegister)="handleDeleteSubcontracts($event)"
   ></master-data-genaral-table>
 </div>
+<p-dialog [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT' | translate" [modal]="true" [(visible)]="visibleSubcontractModal">
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ subcontractName }}"</strong>?
+    </p>
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onSubcontractDeleteConfirm()" severity="danger" [loading]="isDeletingSubcontract"
+          [disabled]="isDeletingSubcontract"/>
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="this.visibleSubcontractModal = false;" [disabled]="isDeletingSubcontract"/>
+    </div>
+  </div>
+</p-dialog>
