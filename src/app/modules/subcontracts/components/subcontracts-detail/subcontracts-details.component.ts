@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SubcontractComponent } from './subcontract/subcontract.component';
 
 @Component({
   selector: 'app-subcontracts-details',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./subcontracts-details.component.scss'],
 })
 export class SubcontractsDetailsComponent implements OnInit {
-
+  @ViewChild(SubcontractComponent) subcontractComponent!: SubcontractComponent;
   subcontractId!: number;
 
   constructor(
@@ -25,6 +26,10 @@ export class SubcontractsDetailsComponent implements OnInit {
         console.log("Create Logic")
       }
     })
+  }
+
+  onSubmit(): void {
+    this.subcontractComponent.onSubmit();
   }
 
   goBackListSubcontracts(): void{

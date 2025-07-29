@@ -9,61 +9,61 @@ export class CommonMessagesService {
 
   constructor( 
     private readonly messageService: MessageService,
-    private readonly transaleService: TranslateService) { }
+    private readonly translateService: TranslateService) { }
 
   showCreatedSuccesfullMessage() {
     this.messageService.add({
       severity: 'success',
-      summary: this.transaleService.instant('MESSAGE.SUCCESS'),
-      detail: this.transaleService.instant('MESSAGE.CREATE_SUCCESS')
+      summary: this.translateService.instant('MESSAGE.SUCCESS'),
+      detail: this.translateService.instant('MESSAGE.CREATE_SUCCESS')
     });    
   }
 
   showEditSucessfullMessage() {
     this.messageService.add({
       severity: 'success',
-      summary: this.transaleService.instant('MESSAGE.SUCCESS'),
-      detail: this.transaleService.instant('MESSAGE.UPDATE_SUCCESS')
+      summary: this.translateService.instant('MESSAGE.SUCCESS'),
+      detail: this.translateService.instant('MESSAGE.UPDATE_SUCCESS')
     });
   }
 
   showDeleteSucessfullMessage() {
     this.messageService.add({
       severity: 'success',
-      summary: this.transaleService.instant('MESSAGE.SUCCESS'),
-      detail: this.transaleService.instant('MESSAGE.DELETE_SUCCESS')
+      summary: this.translateService.instant('MESSAGE.SUCCESS'),
+      detail: this.translateService.instant('MESSAGE.DELETE_SUCCESS')
     });
   }
 
   showErrorCreatedMessage() {
     this.messageService.add({
       severity: 'error',
-      summary: this.transaleService.instant('MESSAGE.ERROR'),
-      detail: this.transaleService.instant('MESSAGE.CREATE_FAILED')
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('MESSAGE.CREATE_FAILED')
     });
   }
 
   showErrorEditMessage() {
     this.messageService.add({
       severity: 'error',
-      summary: this.transaleService.instant('MESSAGE.ERROR'),
-      detail: this.transaleService.instant('MESSAGE.UPDATE_FAILED')
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('MESSAGE.UPDATE_FAILED')
     });
   }
 
   showErrorDeleteMessage() {
     this.messageService.add({
       severity: 'error',
-      summary: this.transaleService.instant('MESSAGE.ERROR'),
-      detail: this.transaleService.instant('MESSAGE.DELETE_FAILED')
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('MESSAGE.DELETE_FAILED')
     });
   }
 
   showErrorRecordAlreadyExist() {
     this.messageService.add({
       severity: 'error',
-      summary: this.transaleService.instant('MESSAGE.ERROR'),
-      detail: this.transaleService.instant('MESSAGE.RECORD_ALREADY_EXISTS')
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('MESSAGE.RECORD_ALREADY_EXISTS')
     })
   }
 
@@ -71,24 +71,24 @@ export class CommonMessagesService {
   showErrorDeleteMessageContainsOtherEntities() {
     this.messageService.add({
       severity: 'error',
-      summary: this.transaleService.instant('MESSAGE.ERROR'),
-      detail: this.transaleService.instant('MESSAGE.DELETE_ERROR_WITH_RECORDS')
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('MESSAGE.DELETE_ERROR_WITH_RECORDS')
     });
   }
   
   showSuccessMessage(messageDetail: string){
     this.messageService.add({
       severity: 'success',
-      summary: this.transaleService.instant('MESSAGE.SUCCESS'),
-      detail: this.transaleService.instant(messageDetail)
+      summary: this.translateService.instant('MESSAGE.SUCCESS'),
+      detail: this.translateService.instant(messageDetail)
     }); 
   }
 
   showErrorMessage(messageDetail: string){
     this.messageService.add({
       severity: 'error',
-      summary: this.transaleService.instant('MESSAGE.ERROR'),
-      detail: this.transaleService.instant(messageDetail)
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant(messageDetail)
     })
   }
 }
