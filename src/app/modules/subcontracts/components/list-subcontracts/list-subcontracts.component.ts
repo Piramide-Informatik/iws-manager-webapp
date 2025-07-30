@@ -100,10 +100,10 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
           },
           { field: 'contractor.name', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR'))},
           { field: 'projectCostCenter.costCenter', customClasses: ['text-center'], header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT'))},
-          { field: 'date', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE'))},
-          { field: 'invoiceNo', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER'))},
-          { field: 'invoiceNet', type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE'))},
-          { field: 'invoiceGross', type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE'))},
+          { field: 'date', type: 'date', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE'))},
+          { field: 'invoiceNo', customClasses: ['align-left'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER'))},
+          { field: 'invoiceNet', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE'))},
+          { field: 'invoiceGross', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE'))},
           { field: 'share',header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE'))}
         ];
   }
