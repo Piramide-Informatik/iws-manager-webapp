@@ -131,7 +131,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   }
 
   goToEditSubContractDetails(subcontract: any) {
-    this.router.navigate(['subcontracts-details', subcontract.orderTitle], { relativeTo: this.route })
+    this.router.navigate(['subcontracts-details', subcontract.id], { relativeTo: this.route })
   }
 
   handleDeleteSubcontracts(id: number) {

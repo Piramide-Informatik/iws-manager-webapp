@@ -29,7 +29,7 @@ export class SubcontractComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private langSubscription!: Subscription;
   public subcontractForm!: FormGroup;
-
+  public showOCCErrorModalSubcontract = false;
   public optionsNetOrGross!: { label: string, value: string }[];
 
   isLoading = false;
@@ -160,5 +160,13 @@ export class SubcontractComponent implements OnInit {
     this.isLoading = false;
     console.error('Error create subcontract:', error);
     this.commonMessageService.showErrorCreatedMessage();
+  }
+
+  private handleUpdateSubcontractError(err: any): void {
+    if (err.message === 'Conflict detected: employee person version mismatch') {
+      this.showOCCErrorModalSubcontract = true;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
+    }
   }
 }
