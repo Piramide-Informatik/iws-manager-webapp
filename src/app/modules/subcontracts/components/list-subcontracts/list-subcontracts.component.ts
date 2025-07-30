@@ -95,7 +95,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     this.cols = [
           { 
             field: 'contractTitle', 
-            routerLink: (row: any) => `./subcontracts-details/${row.orderTitle}`,
+            routerLink: (row: any) => `./subcontracts-details/${row.id}`,
             header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))
           },
           { field: 'contractor.name', header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR'))},
@@ -130,8 +130,8 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     this.router.navigate(['subcontracts-details'], { relativeTo: this.route })
   }
 
-  goToEditSubContractDetails(subcontract: any) {
-    this.router.navigate(['subcontracts-details', subcontract.orderTitle], { relativeTo: this.route })
+  goToEditSubContractDetails(subcontract: Subcontract) {
+    this.router.navigate(['subcontracts-details', subcontract.id], { relativeTo: this.route })
   }
 
   handleDeleteSubcontracts(id: number) {
