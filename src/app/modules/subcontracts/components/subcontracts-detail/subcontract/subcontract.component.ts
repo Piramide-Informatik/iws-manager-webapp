@@ -163,7 +163,7 @@ export class SubcontractComponent implements OnInit {
   }
 
   private handleUpdateSubcontractError(err: any): void {
-    if (err.message === 'Conflict detected: employee person version mismatch') {
+    if (err.message === 'Conflict detected: subcontract version mismatch') {
       this.showOCCErrorModalSubcontract = true;
     } else {
       this.commonMessageService.showErrorEditMessage();
