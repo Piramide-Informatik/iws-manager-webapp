@@ -100,6 +100,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
       afaDurationMonths: new FormControl({ value: '', disabled: true }), // solo si afa = true
       description: new FormControl(''),
     });
+    this.subcontractForm.reset();
   }
 
   private checkboxAfaChange(): void {
