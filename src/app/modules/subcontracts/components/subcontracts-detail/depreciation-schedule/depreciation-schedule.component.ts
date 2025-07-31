@@ -23,7 +23,7 @@ interface DepreciationEntry {
   styleUrl: './depreciation-schedule.component.scss',
 })
 export class DepreciationScheduleComponent implements OnInit {
-  private subcontractsYearUtils = inject(SubcontractYearUtils)
+  private readonly subcontractsYearUtils = inject(SubcontractYearUtils)
   depreciationForm!: FormGroup;
   depreciationEntries: DepreciationEntry[] = [];
 
