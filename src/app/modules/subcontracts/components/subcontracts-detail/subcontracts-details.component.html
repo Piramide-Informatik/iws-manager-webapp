@@ -4,7 +4,7 @@
     @if(subcontractId){
       <!-- Sección izquierda: Datos del subcontrato -->
       <div class="col-md-6">
-        <app-subcontract></app-subcontract>
+        <app-subcontract (onLoadingOperation)="setLoadingOperation($event)"></app-subcontract>
       </div>
       <!-- Sección derecha: Asignaciones -->
       <div class="col-md-6">
@@ -34,6 +34,8 @@
           icon="pi pi-check"
           iconPos="left"
           (onClick)="onSubmit()"
+          [loading]="isLoading"
+          [disabled]="isLoading"
         ></p-button>
         @if(subcontractId){
         <p-button
