@@ -9,7 +9,7 @@ import { SubcontractYear } from '../Entities/subcontract-year';
 })
 export class SubcontractYearService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/subcontracts-year`;
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/subcontractyear`;
   private readonly _subcontractsYear = signal<SubcontractYear[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
