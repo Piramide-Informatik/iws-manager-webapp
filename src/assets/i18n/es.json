@@ -452,7 +452,9 @@
     },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "¿Está seguro que desea eliminar el Subcontratista",
-      "DELETE_SUBCONTRACT": "Eliminar Subcontratista"
+      "DELETE_SUBCONTRACT": "Eliminar Subcontratista",
+      "REMOVE_SUBCONTRACT_YEAR_QUESTION": "¿Está seguro que desea eliminar el año de subcontratación",
+      "DELETE_SUBCONTRACT_YEAR": "Eliminar año de subcontratación"
     },
     "TABLE": {
       "ORDER_TITLE": "Título",
