@@ -1,5 +1,6 @@
 import { Contractor } from "./contractor";
 import { Customer } from "./customer";
+import { ProjectCostCenter } from "./projectCostCenter";
 
 export interface Subcontract {
   id: number;
@@ -9,6 +10,7 @@ export interface Subcontract {
 
   contractor: Contractor | null;
   customer: Customer | null;
+  projectCostCenter: ProjectCostCenter | null;
 
   afamonths: number;
   contractTitle: string;
@@ -22,5 +24,4 @@ export interface Subcontract {
   isAfa: boolean; 
   netOrGross: boolean;
   note: string;
-  projectCostCenter: any
 }

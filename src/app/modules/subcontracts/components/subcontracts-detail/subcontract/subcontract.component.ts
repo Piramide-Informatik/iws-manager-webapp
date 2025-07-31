@@ -7,7 +7,7 @@ import { SubcontractUtils } from '../../../utils/subcontracts-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContractorUtils } from '../../../../contractor/utils/contractor-utils';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Contractor } from '../../../../../Entities/contractor';
 import { momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { Customer } from '../../../../../Entities/customer';
@@ -27,6 +27,7 @@ export class SubcontractComponent implements OnInit {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private langSubscription!: Subscription;
   public subcontractForm!: FormGroup;
   public showOCCErrorModalSubcontract = false;
@@ -58,6 +59,12 @@ export class SubcontractComponent implements OnInit {
     this.initForm();
 
     this.checkboxAfaChange();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 
   private initForm(): void {
@@ -104,10 +111,9 @@ export class SubcontractComponent implements OnInit {
     } 
     this.isLoading = true;
     const newSubcontract = this.buildSubcontractFromForm();
-    console.log('Creating new subcontract:', newSubcontract);
     this.subscriptions.add(
       this.subcontractUtils.createNewSubcontract(newSubcontract).subscribe({
-        next: (response: Subcontract) => this.handleSuccess(response),
+        next: (response: Subcontract) => this.handleCreateSuccess(response),
         error: (error) => this.handleError(error)
       })
     );
@@ -118,7 +124,7 @@ export class SubcontractComponent implements OnInit {
     const controlNetOrGross: boolean =  this.subcontractForm.value.netOrGross === 'net';
     return {
       contractTitle: this.subcontractForm.value.contractTitle,
-      contractor: this.subcontractForm.value.contractor ? (this.getContractorById(this.subcontractForm.value.contractor) ?? null) : null,
+      contractor: this.subcontractForm.value.contractor ? this.getContractorById(this.subcontractForm.value.contractor) : null,
       invoiceNo: this.subcontractForm.value.invoiceNumber,
       invoiceDate: momentFormatDate(this.subcontractForm.value.invoiceDate),
       netOrGross: controlNetOrGross,
@@ -138,8 +144,8 @@ export class SubcontractComponent implements OnInit {
     };
   }
 
-  private getContractorById(contractorId: number): Contractor | undefined {
-    return this.contractors.find(c => c.id === contractorId);
+  private getContractorById(contractorId: number): Contractor | null {
+    return this.contractors.find(c => c.id === contractorId) ?? null;
   }
 
   private getCurrentCustomer(): void {
@@ -150,10 +156,11 @@ export class SubcontractComponent implements OnInit {
     );
   }
 
-  private handleSuccess(response: Subcontract): void {
+  private handleCreateSuccess(response: Subcontract): void {
     this.isLoading = false;
     this.commonMessageService.showCreatedSuccesfullMessage();
     this.subcontractForm.reset();
+    this.router.navigate(['.', response.id], { relativeTo: this.route });
   }
 
   private handleError(error: any): void {
