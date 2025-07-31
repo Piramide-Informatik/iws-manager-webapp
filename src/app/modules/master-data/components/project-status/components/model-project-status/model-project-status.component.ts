@@ -89,7 +89,6 @@ export class ModelProjectStatusComponent implements OnInit {
     ).subscribe({
       next: () => this.handleSuccess(),
       error: (error) => {
-        console.log('Entró a error del subscribe');
         this.handleError(error);}
     });
     this.subscriptions.add(sub);
@@ -116,7 +115,6 @@ export class ModelProjectStatusComponent implements OnInit {
       detail
     });
 
-    console.error('Creation error:', error);
   }
 
   private getErrorDetail(errorCode: string): string {

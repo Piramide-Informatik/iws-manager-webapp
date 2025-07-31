@@ -31,6 +31,7 @@ import { DepreciationScheduleComponent } from './components/subcontracts-detail/
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { MasterDataModule } from '../master-data/master-data.module';
     ReactiveFormsModule,
     SubcontractsRoutingModule,
     MasterDataModule,
+    SharedModule,
 
     // PrimeNG
     ButtonModule,
