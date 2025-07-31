@@ -1,12 +1,17 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { SubcontractYearUtils } from '../../../utils/subcontract-year-utils';
+import { CommonMessagesService } from '../../../../../Services/common-messages.service';
+import { ActivatedRoute } from '@angular/router';
+import { SubcontractYear } from '../../../../../Entities/subcontract-year';
 
 interface DepreciationEntry {
+  id: number;
   year: number;
   usagePercentage: number;
   depreciationAmount: number;
@@ -19,6 +24,7 @@ interface DepreciationEntry {
   styleUrl: './depreciation-schedule.component.scss',
 })
 export class DepreciationScheduleComponent implements OnInit {
+  private readonly subcontractYearUtils = inject(SubcontractYearUtils)
   depreciationForm!: FormGroup;
   depreciationEntries: DepreciationEntry[] = [];
 
@@ -29,6 +35,7 @@ export class DepreciationScheduleComponent implements OnInit {
   option = {
     new: 'New',
     edit: 'Edit',
+    delete: 'Delete',
   };
   optionSelected: string = '';
   selectedYear!: number;
@@ -36,40 +43,36 @@ export class DepreciationScheduleComponent implements OnInit {
   userDepreciationPreferences: UserPreference = {};
   tableKey: string = 'DepreciationSchedule'
   dataKeys = ['year', 'usagePercentage', 'depreciationAmount']
+  modalType!: string;
+  protected selectedSubcontractYear!: any;
+  isLoading: boolean = false;
+  subcontractId!: number;
   private langSubscription!: Subscription;
 
   constructor(
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly translate: TranslateService) { }
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService,
+    private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.depreciationEntries = [
-      {
-        year: 2025,
-        usagePercentage: 40,
-        depreciationAmount: 3000,
-      },
-      {
-        year: 2026,
-        usagePercentage: 30,
-        depreciationAmount: 2250,
-      },
-      {
-        year: 2027,
-        usagePercentage: 20,
-        depreciationAmount: 1500,
-      },
-      {
-        year: 2028,
-        usagePercentage: 10,
-        depreciationAmount: 750,
-      },
-      {
-        year: 2029,
-        usagePercentage: 5,
-        depreciationAmount: 375,
-      },
-    ];
+    this.depreciationEntries = [];
+    this.route.params.subscribe(params => {
+      this.subcontractId = params['subContractId'];
+      this.subcontractYearUtils.getAllSubcontractsYear(this.subcontractId).subscribe( sc => {
+        this.depreciationEntries = sc.reduce((acc: any, curr: SubcontractYear) => {
+          const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
+          const afamonths = curr.subcontract?.afamonths ?? 0;
+          const subcontractsYearMonths = Number(curr.months);
+          acc.push({
+            id: curr.id,
+            year: curr.year,
+            usagePercentage: curr.months,
+            depreciationAmount: afamonths === 0 || subcontractsYearMonths === 0 ? 0 : invoiceNet / (afamonths * subcontractsYearMonths)});
+          return acc;  
+        }, [])
+      })  
+    })
 
     this.depreciationForm = new FormGroup({
       year: new FormControl('', Validators.required),
@@ -100,7 +103,6 @@ export class DepreciationScheduleComponent implements OnInit {
 
   showModal(option: string, year?: number) {
     this.optionSelected = option;
-
     if (option === this.option.edit && year != null) {
       const entry = this.depreciationEntries.find((d) => d.year === year);
       if (entry) {
@@ -113,6 +115,10 @@ export class DepreciationScheduleComponent implements OnInit {
       }
     }
 
+    if (option === this.option.delete) {
+      this.selectedSubcontractYear = this.depreciationEntries.find(e => e.id === year);
+    }
+    this.modalType = option;
     this.visibleModal.set(true);
   }
 
@@ -138,9 +144,23 @@ export class DepreciationScheduleComponent implements OnInit {
     this.closeModal();
   }
 
-  deleteDepreciation(year: number) {
-    this.depreciationEntries = this.depreciationEntries.filter(
-      (entry) => entry.year !== year
-    );
+  removeSubcontractYear() {
+    if (this.selectedSubcontractYear) {
+      this.isLoading = true;
+      this.subcontractYearUtils.deleteSubcontractYear(this.selectedSubcontractYear.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.commonMessageService.showDeleteSucessfullMessage();
+          this.visibleModal.set(false);
+          this.depreciationEntries = this.depreciationEntries.filter( de => de.id !== this.selectedSubcontractYear.id);
+          this.selectedSubcontractYear = undefined;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.commonMessageService.showErrorDeleteMessage();
+          this.visibleModal.set(false);
+        }
+      });
+    }
   }
 }
