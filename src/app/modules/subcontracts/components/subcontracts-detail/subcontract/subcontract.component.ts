@@ -30,7 +30,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private langSubscription!: Subscription;
   public subcontractForm!: FormGroup;
-
+  public showOCCErrorModalSubcontract = false;
   public optionsNetOrGross!: { label: string, value: string }[];
 
   isLoading = false;
@@ -253,5 +253,13 @@ export class SubcontractComponent implements OnInit, OnDestroy {
     this.isLoading = false;
     console.error('Error create subcontract:', error);
     this.commonMessageService.showErrorCreatedMessage();
+  }
+
+  private handleUpdateSubcontractError(err: any): void {
+    if (err.message === 'Conflict detected: subcontract version mismatch') {
+      this.showOCCErrorModalSubcontract = true;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
+    }
   }
 }

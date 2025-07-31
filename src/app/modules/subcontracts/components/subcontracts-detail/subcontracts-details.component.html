@@ -35,6 +35,7 @@
           iconPos="left"
           (onClick)="onSubmit()"
         ></p-button>
+        @if(subcontractId){
         <p-button
           class="Delete me-2"
           size="small"
@@ -43,6 +44,7 @@
           iconPos="left"
           [style]="{ background: '#ef4444' }"
         ></p-button>
+        }
         <p-button
           class="cancel"
           size="small"
