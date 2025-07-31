@@ -1,4 +1,4 @@
-import { EnvironmentInjector, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, forkJoin, map, switchMap, take, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
@@ -8,6 +8,8 @@ import { EmployeeUtils } from '../../employee/utils/employee.utils';
 import { ContractorUtils } from '../../contractor/utils/contractor-utils';
 import { Employee } from '../../../Entities/employee';
 import { Contractor } from '../../../Entities/contractor';
+import { SubcontractUtils } from '../../subcontracts/utils/subcontracts-utils';
+import { Subcontract } from '../../../Entities/subcontract';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -19,7 +21,7 @@ export class CustomerUtils {
     private readonly contactUtils = inject(ContactUtils);
     private readonly employeeUtils = inject(EmployeeUtils);
     private readonly contractorUtils = inject(ContractorUtils);
-    private readonly injector = inject(EnvironmentInjector);
+    private readonly subcontractUtils = inject(SubcontractUtils);
 
     /**
      * Gets all customers without any transformation
@@ -121,7 +123,15 @@ export class CustomerUtils {
                 if (employees.length > 0) {
                     return throwError(() => new Error('Cannot be deleted because have associated employees'));
                 }
-                // Si no hay empleados, verificar contratistas
+                // Si no hay empleados, verificar subcontratos
+                return this.subcontractUtils.getAllSubcontractsByCustomerId(id);
+            }),
+            take(1),
+            switchMap((subcontracts: Subcontract[]) => {
+                if (subcontracts.length > 0) {
+                    return throwError(() => new Error('Cannot be deleted because have associated subcontracts'));
+                }
+                // Si no hay subcontratos, verificar contratistas
                 return this.contractorUtils.getAllContractorsByCustomerId(id);
             }),
             take(1),
@@ -140,12 +150,13 @@ export class CustomerUtils {
                 }
                 // Si hay contactos, eliminarlos primero
                 return forkJoin(
-                    contacts.map(contact => this.contactUtils.deleteContactPerson(contact.id))
+                    contacts.map(contact => this.contactUtils.deleteContactPerson(contact.id).pipe(
+                        map(() => undefined as void)
+                    ))
                 ).pipe(
                     switchMap(() => this.customerService.deleteCustomer(id))
                 );
             }),
-            map(() => void 0),
             catchError(err => throwError(() => new Error(err.message || 'Error deleting customer and contacts')))
         );
     }

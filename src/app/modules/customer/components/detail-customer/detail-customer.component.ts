@@ -566,7 +566,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoadingCustomer = false;
           if(error.message.includes('have associated employees') || 
-             error.message.includes('have associated contractors')){
+             error.message.includes('have associated contractors') ||
+             error.message.includes('have associated subcontracts')) {
               this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
           } else {
             this.commonMessageService.showErrorDeleteMessage();
