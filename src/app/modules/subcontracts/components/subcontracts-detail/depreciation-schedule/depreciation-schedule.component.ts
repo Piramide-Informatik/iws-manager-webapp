@@ -7,6 +7,8 @@ import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SubcontractYearUtils } from '../../../utils/subcontract-year-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
+import { ActivatedRoute } from '@angular/router';
+import { SubcontractYear } from '../../../../../Entities/subcontract-year';
 
 interface DepreciationEntry {
   id: number;
@@ -44,15 +46,33 @@ export class DepreciationScheduleComponent implements OnInit {
   modalType!: string;
   protected selectedSubcontractYear!: any;
   isLoading: boolean = false;
+  subcontractId!: number;
   private langSubscription!: Subscription;
 
   constructor(
     private readonly userPreferenceService: UserPreferenceService,
     private readonly translate: TranslateService,
-    private readonly commonMessageService: CommonMessagesService) { }
+    private readonly commonMessageService: CommonMessagesService,
+    private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.depreciationEntries = [];
+    this.route.params.subscribe(params => {
+      this.subcontractId = params['subContractId'];
+      this.subcontractYearUtils.getAllSubcontractsYear(this.subcontractId).subscribe( sc => {
+        this.depreciationEntries = sc.reduce((acc: any, curr: SubcontractYear) => {
+          const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
+          const afamonths = curr.subcontract?.afamonths ?? 0;
+          const subcontractsYearMonths = Number(curr.months);
+          acc.push({
+            id: curr.id,
+            year: curr.year,
+            usagePercentage: curr.months,
+            depreciationAmount: afamonths === 0 || subcontractsYearMonths === 0 ? 0 : invoiceNet / (afamonths * subcontractsYearMonths)});
+          return acc;  
+        }, [])
+      })  
+    })
 
     this.depreciationForm = new FormGroup({
       year: new FormControl('', Validators.required),
@@ -83,7 +103,6 @@ export class DepreciationScheduleComponent implements OnInit {
 
   showModal(option: string, year?: number) {
     this.optionSelected = option;
-
     if (option === this.option.edit && year != null) {
       const entry = this.depreciationEntries.find((d) => d.year === year);
       if (entry) {
