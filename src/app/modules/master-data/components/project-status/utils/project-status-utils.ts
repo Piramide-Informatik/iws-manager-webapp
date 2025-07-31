@@ -20,18 +20,18 @@ export class ProjectStatusUtils {
         return this.projectExists(trimmedName).pipe(
         switchMap(exists => {
             if (exists) {
-            return throwError(() => new Error('TITLE.ERROR.ALREADY_EXISTS'));
+            return throwError(() => new Error('PROJECT_STATUS.ERROR.ALREADY_EXISTS'));
             }
 
             return this.projectStatusService.addProjectStatus({ name: trimmedName });
         }),
         catchError(err => {
-            if (err.message === 'TITLE.ERROR.ALREADY_EXISTS' || err.message === 'TITLE.ERROR.EMPTY') {
+            if (err.message === 'PROJECT_STATUS.ERROR.ALREADY_EXISTS' || err.message === 'PROJECT_STATUS.ERROR.EMPTY') {
             return throwError(() => err);
             }
 
             console.error('Error creating title:', err);
-            return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
+            return throwError(() => new Error('PROJECT_STATUS.ERROR.CREATION_FAILED'));
         })
         );
     }
