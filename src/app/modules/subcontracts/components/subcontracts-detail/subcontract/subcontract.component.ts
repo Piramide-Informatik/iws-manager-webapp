@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Subscription } from 'rxjs';
@@ -19,7 +19,7 @@ import { CustomerUtils } from '../../../../customer/utils/customer-utils';
   templateUrl: './subcontract.component.html',
   styleUrls: ['./subcontract.component.scss'],
 })
-export class SubcontractComponent implements OnInit {
+export class SubcontractComponent implements OnInit, OnDestroy {
   private readonly subcontractUtils = inject(SubcontractUtils);
   private readonly contractorUtils = inject(ContractorUtils);
   private readonly customerUtils = inject(CustomerUtils);
@@ -35,8 +35,10 @@ export class SubcontractComponent implements OnInit {
 
   isLoading = false;
 
+  mode: 'create' | 'edit' = 'create';
+  public subcontractToEdit!: Subcontract | null;
   private readonly customerId: number = this.route.snapshot.params['id'];
-
+  subcontractId!: number;
   private contractors: Contractor[] = [];
   public contractorsName = toSignal(
     this.contractorUtils.getAllContractorsByCustomerId(this.customerId).pipe(
@@ -50,15 +52,34 @@ export class SubcontractComponent implements OnInit {
   public currentCustomer!: Customer | undefined;
 
   ngOnInit(): void {
-    this.getCurrentCustomer();
     this.loadOptionsInvoiceLabel();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadOptionsInvoiceLabel();
     });
-    
-    this.initForm();
 
+    this.initForm();
     this.checkboxAfaChange();
+    
+    this.route.params.subscribe(params => {
+      this.subcontractId = params['subContractId'];
+      if (this.subcontractId) {
+        this.mode = 'edit';
+        this.subscriptions.add(
+          this.subcontractUtils.getSubcontractById(this.subcontractId).subscribe({
+            next: (subcontract) => {
+              if(subcontract) {
+                this.subcontractToEdit = subcontract;
+                this.loadSubcontractDataForm(subcontract);
+              }
+            },
+            error: (error) => console.error('Error fetching subcontract:', error)
+          })
+        );
+      } else {
+        this.mode = 'create';
+        this.getCurrentCustomer();
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -101,7 +122,11 @@ export class SubcontractComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.createSubcontract();
+    if(this.mode === 'edit') {
+      this.updateSubcontract();
+    } else {
+      this.createSubcontract();
+    }
   }
 
   private createSubcontract(): void {
@@ -114,7 +139,7 @@ export class SubcontractComponent implements OnInit {
     this.subscriptions.add(
       this.subcontractUtils.createNewSubcontract(newSubcontract).subscribe({
         next: (response: Subcontract) => this.handleCreateSuccess(response),
-        error: (error) => this.handleError(error)
+        error: (error) => this.handleErrorCreated(error)
       })
     );
   }
@@ -148,6 +173,67 @@ export class SubcontractComponent implements OnInit {
     return this.contractors.find(c => c.id === contractorId) ?? null;
   }
 
+  private updateSubcontract(): void {
+    if (this.subcontractForm.invalid) {
+      console.error('Form is invalid');
+      return;
+    }
+    this.isLoading = true;
+    const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
+    this.subscriptions.add(
+      this.subcontractUtils.updateSubcontract(subcontractUpdated).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.commonMessageService.showEditSucessfullMessage();
+          this.router.navigate(['.', response.id], { relativeTo: this.route });
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error updating subcontract:', error);
+          this.commonMessageService.showErrorEditMessage();
+        }
+      })
+    );
+  }
+
+  private loadSubcontractDataForm(subcontract: Subcontract): void {
+    this.subcontractForm.patchValue({
+      contractTitle: subcontract.contractTitle,
+      contractor: subcontract.contractor?.id,
+      invoiceNumber: subcontract.invoiceNo,
+      invoiceDate: subcontract.invoiceDate ? new Date(subcontract.invoiceDate) : null,
+      netOrGross: subcontract.netOrGross ? 'net' : 'gross',
+      invoiceAmount: subcontract.netOrGross ? subcontract.invoiceNet : subcontract.invoiceGross,
+      afa: subcontract.isAfa,
+      afaDurationMonths: subcontract.afamonths > 0 ? subcontract.afamonths : '',
+      description: subcontract.description
+    });
+  }
+
+  private buildSubcontractEdited(subcontractSource: any): Subcontract {
+    return {
+      id: this.subcontractId,
+      createdAt: subcontractSource.createdAt ?? new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      version: subcontractSource?.version ?? 0,
+      contractor: this.getContractorById(this.subcontractForm.value.contractor),
+      customer: subcontractSource.customer ?? null,
+      projectCostCenter: null, // falta
+      afamonths: this.subcontractForm.value.afa ? this.subcontractForm.value.afaDurationMonths : 0,
+      contractTitle: this.subcontractForm.value.contractTitle,
+      date: '',
+      description: this.subcontractForm.value.description,
+      invoiceAmount: this.subcontractForm.value.invoiceAmount,
+      invoiceDate: momentFormatDate(this.subcontractForm.value.invoiceDate),
+      invoiceGross: this.subcontractForm.value.netOrGross === 'gross' ? this.subcontractForm.value.invoiceAmount : 0,
+      invoiceNet: this.subcontractForm.value.netOrGross === 'net' ? this.subcontractForm.value.invoiceAmount : 0,
+      invoiceNo: this.subcontractForm.value.invoiceNumber,
+      isAfa: this.subcontractForm.value.afa,
+      netOrGross: this.subcontractForm.value.netOrGross === 'net',
+      note: '',
+    }
+  }
+
   private getCurrentCustomer(): void {
     this.subscriptions.add(
       this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
@@ -163,7 +249,7 @@ export class SubcontractComponent implements OnInit {
     this.router.navigate(['.', response.id], { relativeTo: this.route });
   }
 
-  private handleError(error: any): void {
+  private handleErrorCreated(error: any): void {
     this.isLoading = false;
     console.error('Error create subcontract:', error);
     this.commonMessageService.showErrorCreatedMessage();
