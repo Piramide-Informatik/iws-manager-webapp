@@ -336,7 +336,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.prepareForSubmission();
+    this.isSaving = true;
     const updatedCustomer = this.buildUpdatedCustomer();
 
     this.updateCustomer(updatedCustomer);
@@ -452,12 +452,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       !this.currentCustomerToEdit ||
       this.isSaving;
   }
-
-  private prepareForSubmission(): void {
-    this.isSaving = true;
-  }
-
-
 
   private markAllAsTouched(): void {
     Object.values(this.formDetailCustomer.controls).forEach(control => {
