@@ -12,6 +12,8 @@ export class SubcontractsDetailsComponent implements OnInit {
   @ViewChild(SubcontractComponent) subcontractComponent!: SubcontractComponent;
   subcontractId!: number;
 
+  isLoading: boolean = false;
+
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
@@ -30,5 +32,9 @@ export class SubcontractsDetailsComponent implements OnInit {
   goBackListSubcontracts(): void{
     const path = this.subcontractId ? '../../' : '../'
     this.router.navigate([path], { relativeTo: this.activatedRoute });
+  }
+
+  setLoadingOperation(loading: boolean): void {
+    this.isLoading = loading;
   }
 }
