@@ -191,6 +191,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoading = false;
           console.error('Error updating subcontract:', error);
+          this.handleUpdateSubcontractError(error);
           this.commonMessageService.showErrorEditMessage();
         }
       })
