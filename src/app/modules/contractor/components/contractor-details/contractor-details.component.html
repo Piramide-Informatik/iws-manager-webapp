@@ -13,7 +13,7 @@
         <div class="contract_input mb-2">
           <label for="country">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
           <p-select formControlName="country" id="country" [options]="countries()" optionLabel="name" optionValue="id"
-            appendTo="body" [showClear]="true">
+            appendTo="body" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate">
             <!-- Opción seleccionada (visualización en el input) -->
             <ng-template let-country pTemplate="selectedItem">
               <div class="flex align-items-center gap-2" *ngIf="country">
