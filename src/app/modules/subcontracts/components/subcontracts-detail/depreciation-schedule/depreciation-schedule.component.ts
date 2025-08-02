@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
@@ -9,10 +9,11 @@ import { SubcontractYearUtils } from '../../../utils/subcontract-year-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { ActivatedRoute } from '@angular/router';
 import { SubcontractYear } from '../../../../../Entities/subcontract-year';
+import { Subcontract } from '../../../../../Entities/subcontract';
 
 interface DepreciationEntry {
   id: number;
-  year: number;
+  year: string;
   usagePercentage: number;
   depreciationAmount: number;
 }
@@ -24,43 +25,39 @@ interface DepreciationEntry {
   styleUrl: './depreciation-schedule.component.scss',
 })
 export class DepreciationScheduleComponent implements OnInit {
-  private readonly subcontractYearUtils = inject(SubcontractYearUtils)
-  depreciationForm!: FormGroup;
-  depreciationEntries: DepreciationEntry[] = [];
+  private readonly subcontractYearUtils = inject(SubcontractYearUtils);
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly translate = inject(TranslateService);
+  private readonly route = inject(ActivatedRoute);
+  private langSubscription = new Subscription();
+  
+  @Input() currentSubcontract!: Subcontract;
 
-  @ViewChild('dt') dt!: Table;
-  loading: boolean = true;
+  depreciationForm!: FormGroup;
+  subcontractsYear: DepreciationEntry[] = [];
 
   visibleModal = signal(false);
-  option = {
-    new: 'New',
-    edit: 'Edit',
-    delete: 'Delete',
-  };
-  optionSelected: string = '';
-  selectedYear!: number;
+  modalType: 'new' | 'edit' | 'delete' = 'new';
+
+  public selectedSubcontractYear!: any;
+  subcontractId!: number;
+  isLoading: boolean = false;
+
+  // Configuration table Subcontract Year
+  @ViewChild('dt') dt!: Table;
   depreciationColumns: any[] = [];
   userDepreciationPreferences: UserPreference = {};
   tableKey: string = 'DepreciationSchedule'
   dataKeys = ['year', 'usagePercentage', 'depreciationAmount']
-  modalType!: string;
-  protected selectedSubcontractYear!: any;
-  isLoading: boolean = false;
-  subcontractId!: number;
-  private langSubscription!: Subscription;
 
-  constructor(
-    private readonly userPreferenceService: UserPreferenceService,
-    private readonly translate: TranslateService,
-    private readonly commonMessageService: CommonMessagesService,
-    private readonly route: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.depreciationEntries = [];
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
       this.subcontractYearUtils.getAllSubcontractsYear(this.subcontractId).subscribe( sc => {
-        this.depreciationEntries = sc.reduce((acc: any, curr: SubcontractYear) => {
+        this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
           const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
           const afamonths = curr.subcontract?.afamonths ?? 0;
           const subcontractsYearMonths = Number(curr.months);
@@ -68,24 +65,39 @@ export class DepreciationScheduleComponent implements OnInit {
             id: curr.id,
             year: curr.year,
             usagePercentage: curr.months,
-            depreciationAmount: afamonths === 0 || subcontractsYearMonths === 0 ? 0 : invoiceNet / (afamonths * subcontractsYearMonths)});
-          return acc;  
-        }, [])
+            depreciationAmount: this.calculateDepreciationAmount(invoiceNet, afamonths, subcontractsYearMonths)
+          } as DepreciationEntry);
+            return acc;  
+          }, [])
       })  
     })
+    this.initForm();
+    this.inputMonthsChange();
 
-    this.depreciationForm = new FormGroup({
-      year: new FormControl('', Validators.required),
-      usagePercentage: new FormControl('', Validators.required),
-      depreciationAmount: new FormControl('', Validators.required),
-    });
-
-    this.loading = false;
     this.loadColumns();
     this.userDepreciationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.depreciationColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumns();
       this.userDepreciationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.depreciationColumns);
+    });
+  }
+
+  private initForm(): void {
+    this.depreciationForm = new FormGroup({
+      year: new FormControl(''),
+      months: new FormControl(''),
+      depreciationAmount: new FormControl(''),
+    });
+    this.depreciationForm.get('depreciationAmount')?.disable();
+  }
+
+  private inputMonthsChange(): void {
+    this.depreciationForm.get('months')?.valueChanges.subscribe(value => {
+      const months = value ? Number(value) : 0;
+      const invoiceNet = this.currentSubcontract?.invoiceNet ?? 0;
+      const afamonths = this.currentSubcontract?.afamonths ?? 0;
+      const depreciationAmount = this.calculateDepreciationAmount(invoiceNet, afamonths, months);
+      this.depreciationForm.get('depreciationAmount')?.setValue(depreciationAmount);
     });
   }
 
@@ -97,51 +109,118 @@ export class DepreciationScheduleComponent implements OnInit {
     this.depreciationColumns = [
       { field: 'year', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')) },
       { field: 'usagePercentage', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')) },
-      { field: 'depreciationAmount', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')) },
+      { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')) },
     ];
   }
 
-  showModal(option: string, year?: number) {
-    this.optionSelected = option;
-    if (option === this.option.edit && year != null) {
-      const entry = this.depreciationEntries.find((d) => d.year === year);
-      if (entry) {
-        this.depreciationForm.setValue({
-          year: entry.year,
-          usagePercentage: entry.usagePercentage,
-          depreciationAmount: entry.depreciationAmount,
+  showModal(option: 'new' | 'edit' | 'delete', idSubcontracYear?: number) {
+    this.modalType = option;
+    if( option === 'delete' || option === 'edit' ) {
+      this.selectedSubcontractYear = this.subcontractsYear.find(e => e.id === idSubcontracYear);
+    }
+    if (option === 'edit') {
+      if (this.selectedSubcontractYear) {
+        this.depreciationForm.patchValue({
+          year: this.selectedSubcontractYear.year,
+          months: this.selectedSubcontractYear.usagePercentage,
+          depreciationAmount: this.selectedSubcontractYear.depreciationAmount
         });
-        this.selectedYear = entry.year;
       }
     }
 
-    if (option === this.option.delete) {
-      this.selectedSubcontractYear = this.depreciationEntries.find(e => e.id === year);
-    }
-    this.modalType = option;
     this.visibleModal.set(true);
   }
 
   closeModal() {
+    this.isLoading = false;
     this.visibleModal.set(false);
     this.depreciationForm.reset();
-    this.optionSelected = '';
   }
 
-  saveDepreciation() {
+  private calculateDepreciationAmount(invoiceNet: number, afamonths: number, months: number): number {
+    return afamonths === 0 || months === 0 ? 0 : invoiceNet / (afamonths * months);
+  }
+
+  public onSubmit(): void {
+    if (this.modalType === 'new'){
+      this.createSubcontractYear();
+    } else if (this.modalType === 'edit'){
+      this.updateSubcontractYear();
+    }
+  }
+
+  private updateSubcontractYear(): void {
     if (this.depreciationForm.invalid) return;
 
-    const data = this.depreciationForm.value;
+    const updatedSubcontractYear: SubcontractYear = {
+      id: this.selectedSubcontractYear.id,
+      year: this.depreciationForm.value.year,
+      months: this.depreciationForm.value.months,
+      subcontract: { 
+        id: this.currentSubcontract.id,
+        version: 0
+      } as Subcontract, 
+      createdAt: this.selectedSubcontractYear.createdAt,
+      updatedAt: new Date().toISOString(),
+      version: 0
+    };
 
-    if (this.optionSelected === this.option.new) {
-      this.depreciationEntries.push(data);
-    } else if (this.optionSelected === this.option.edit) {
-      this.depreciationEntries = this.depreciationEntries.map((entry) =>
-        entry.year === this.selectedYear ? data : entry
-      );
-    }
+    this.isLoading = true;
+    this.subcontractYearUtils.updateSubcontractYear(updatedSubcontractYear).subscribe({
+      next: () => {
+        this.closeModal();
+        this.commonMessageService.showEditSucessfullMessage();
+        const index = this.subcontractsYear.findIndex(e => e.id === updatedSubcontractYear.id);
+        if (index !== -1) {
+          this.subcontractsYear[index] = {
+            id: updatedSubcontractYear.id,
+            year: updatedSubcontractYear.year,
+            usagePercentage: updatedSubcontractYear.months,
+            depreciationAmount: this.calculateDepreciationAmount(
+              this.currentSubcontract.invoiceNet, 
+              this.currentSubcontract.afamonths, 
+              updatedSubcontractYear.months ?? 0
+            )
+          };
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonMessageService.showErrorEditMessage();
+      }
+    });
+  }
 
-    this.closeModal();
+  private createSubcontractYear(): void {
+    if (this.depreciationForm.invalid) return;
+
+    const newSubcontractYear: Omit<SubcontractYear, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      year: this.depreciationForm.value.year,
+      months: this.depreciationForm.value.months,
+      subcontract: { 
+        id: this.currentSubcontract.id,
+        version: 0
+      } as Subcontract, 
+    };
+    
+    this.isLoading = true;
+    this.subcontractYearUtils.createNewSubcontractYear(newSubcontractYear).subscribe({
+      next: (response: SubcontractYear) => {
+        this.closeModal();
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.subcontractsYear.push({
+          id: response.id,
+          year: response.year,
+          usagePercentage: response.months,
+          depreciationAmount: this.calculateDepreciationAmount(this.currentSubcontract.invoiceNet, 
+            this.currentSubcontract.afamonths, response.months ?? 0)
+        } as DepreciationEntry);
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    });
   }
 
   removeSubcontractYear() {
@@ -149,16 +228,14 @@ export class DepreciationScheduleComponent implements OnInit {
       this.isLoading = true;
       this.subcontractYearUtils.deleteSubcontractYear(this.selectedSubcontractYear.id).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.closeModal();
           this.commonMessageService.showDeleteSucessfullMessage();
-          this.visibleModal.set(false);
-          this.depreciationEntries = this.depreciationEntries.filter( de => de.id !== this.selectedSubcontractYear.id);
+          this.subcontractsYear = this.subcontractsYear.filter( de => de.id !== this.selectedSubcontractYear?.id);
           this.selectedSubcontractYear = undefined;
         },
-        error: (error) => {
-          this.isLoading = false;
+        error: () => {
+          this.closeModal();
           this.commonMessageService.showErrorDeleteMessage();
-          this.visibleModal.set(false);
         }
       });
     }

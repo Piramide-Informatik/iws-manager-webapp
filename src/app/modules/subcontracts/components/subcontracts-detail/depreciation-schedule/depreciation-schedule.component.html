@@ -3,28 +3,28 @@
 
   <master-data-genaral-table
     [tableId]="tableKey"
-    [tableValues]="depreciationEntries"
+    [tableValues]="subcontractsYear"
     [columns]="depreciationColumns"
     [userPreferences]="userDepreciationPreferences"
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserDepreciationPreferencesChanges($event)"
-    (onCreateRegister)="showModal(option.new)"
-    (onEditRegister)="showModal(option.edit, $event.year)"
-    (onDeleteRegister)="showModal(option.delete, $event)"
+    (onCreateRegister)="showModal('new')"
+    (onEditRegister)="showModal('edit', $event.id)"
+    (onDeleteRegister)="showModal('delete', $event)"
   ></master-data-genaral-table>
 </p-card>
 
 <div class="card">
   <p-dialog
-    [header]="modalType === 'Delete' ?  ('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_YEAR' | translate)  : 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
+    [header]="modalType === 'delete' ?  ('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_YEAR' | translate)  : 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.MODAL_TITLE_' + modalType.toUpperCase() | translate"
     (onHide)="closeModal()"
     [modal]="true"
     [(visible)]="visibleModal"
     [style]="{ width: '40rem' }"
   >
-    <ng-container *ngIf="modalType !== 'Delete'; else deleteTemplate">
+    <ng-container *ngIf="modalType !== 'delete'; else deleteTemplate">
       <hr class="mt-0" />
-      <form [formGroup]="depreciationForm" (ngSubmit)="saveDepreciation()">
+      <form [formGroup]="depreciationForm" (ngSubmit)="onSubmit()">
         <div class="form-item-container flex gap-4 mb-3">
           <label for="year" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
           <input
@@ -36,23 +36,24 @@
           />
         </div>
         <div class="form-item-container flex gap-4 mb-3">
-          <label for="usagePercentage" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
+          <label for="months" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
           <input
             pInputText
-            id="usagePercentage"
+            id="months"
             class="flex-auto"
-            formControlName="usagePercentage"
+            formControlName="months"
             autocomplete="off"
           />
         </div>
         <div class="form-item-container flex gap-4 mb-3">
           <label for="depreciationAmount" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' | translate }}</label>
-          <input
-            pInputText
-            id="depreciationAmount"
+          <p-inputnumber
+            inputId="depreciationAmount"
             class="flex-auto"
             formControlName="depreciationAmount"
             autocomplete="off"
+            [disabled]="true"
+            readonly
           />
         </div>
         <div class="flex justify-content-center gap-2">
@@ -61,8 +62,9 @@
             icon="pi pi-check"
             iconPos="left"
             size="small"
-            (click)="saveDepreciation()"
-            (keydown.enter)="saveDepreciation()"
+            type="submit"
+            [loading]="isLoading"
+            [disabled]="isLoading"
           ></p-button>
   
           <p-button
@@ -86,7 +88,7 @@
     
         <div class="flex justify-content-center gap-2">
           <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-            iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeSubcontractYear()" />
+            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" (onClick)="removeSubcontractYear()" />
     
           <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
             iconPos="left" (onClick)="closeModal()" />
