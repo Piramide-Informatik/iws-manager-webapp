@@ -14,7 +14,7 @@
           [showClear]="true" 
           [placeholder]="'COMMON.SELECT_CUSTOMER' | translate" 
           [appendTo]="'body'"
-          [emptyMessage]="'COMMON.NO_DATA_AVAILABLE' | translate"
+          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           (onChange)="onSelectedItem($event)">
             <ng-template #selectedItem let-selectedOption>

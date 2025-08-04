@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Subscription } from 'rxjs';
@@ -34,6 +34,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
   public optionsNetOrGross!: { label: string, value: string }[];
 
   isLoading = false;
+  @Output() public onLoadingOperation = new EventEmitter<boolean>();
 
   mode: 'create' | 'edit' = 'create';
   public subcontractToEdit!: Subcontract | null;
@@ -136,6 +137,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
       return;
     } 
     this.isLoading = true;
+    this.onLoadingOperation.emit(this.isLoading);
     const newSubcontract = this.buildSubcontractFromForm();
     this.subscriptions.add(
       this.subcontractUtils.createNewSubcontract(newSubcontract).subscribe({
@@ -180,17 +182,20 @@ export class SubcontractComponent implements OnInit, OnDestroy {
       return;
     }
     this.isLoading = true;
+    this.onLoadingOperation.emit(this.isLoading);
     const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
     this.subscriptions.add(
       this.subcontractUtils.updateSubcontract(subcontractUpdated).subscribe({
-        next: (response) => {
+        next: () => {
           this.isLoading = false;
+          this.onLoadingOperation.emit(this.isLoading);
           this.commonMessageService.showEditSucessfullMessage();
-          this.router.navigate(['.', response.id], { relativeTo: this.route });
         },
         error: (error) => {
           this.isLoading = false;
+          this.onLoadingOperation.emit(this.isLoading);
           console.error('Error updating subcontract:', error);
+          this.handleUpdateSubcontractError(error);
           this.commonMessageService.showErrorEditMessage();
         }
       })
@@ -245,6 +250,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
 
   private handleCreateSuccess(response: Subcontract): void {
     this.isLoading = false;
+    this.onLoadingOperation.emit(this.isLoading);
     this.commonMessageService.showCreatedSuccesfullMessage();
     this.subcontractForm.reset();
     this.router.navigate(['.', response.id], { relativeTo: this.route });
@@ -252,6 +258,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
 
   private handleErrorCreated(error: any): void {
     this.isLoading = false;
+    this.onLoadingOperation.emit(this.isLoading);
     console.error('Error create subcontract:', error);
     this.commonMessageService.showErrorCreatedMessage();
   }

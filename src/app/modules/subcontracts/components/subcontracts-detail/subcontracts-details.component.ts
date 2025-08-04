@@ -1,6 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubcontractComponent } from './subcontract/subcontract.component';
+import { SubcontractUtils } from '../../utils/subcontracts-utils';
+import { Subcontract } from '../../../../Entities/subcontract';
+import { Subscription, switchMap } from 'rxjs';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-subcontracts-details',
@@ -9,8 +13,16 @@ import { SubcontractComponent } from './subcontract/subcontract.component';
   styleUrls: ['./subcontracts-details.component.scss'],
 })
 export class SubcontractsDetailsComponent implements OnInit {
+  private readonly subcontractUtils = inject(SubcontractUtils);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly subscriptions = new Subscription();
   @ViewChild(SubcontractComponent) subcontractComponent!: SubcontractComponent;
   subcontractId!: number;
+  currentSubcontract!: Subcontract;
+
+  visibleSubcontractModal: boolean = false;
+  isLoading: boolean = false;
+
 
   constructor(
     private readonly router: Router,
@@ -18,9 +30,25 @@ export class SubcontractsDetailsComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
+    const routeSub = this.activatedRoute.params.pipe(
+      switchMap(params => {
       this.subcontractId = params['subContractId'];
+      return this.subcontractUtils.getSubcontractById(this.subcontractId);
     })
+    ).subscribe({
+      next: (subcontract) => {
+        if (subcontract) {
+          this.currentSubcontract = subcontract;
+        }
+      },
+      error: (err) => console.error('Error al cargar subcontrato:', err)
+    });
+
+    this.subscriptions.add(routeSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   onSubmit(): void {
@@ -30,5 +58,27 @@ export class SubcontractsDetailsComponent implements OnInit {
   goBackListSubcontracts(): void{
     const path = this.subcontractId ? '../../' : '../'
     this.router.navigate([path], { relativeTo: this.activatedRoute });
+  }
+
+  setLoadingOperation(loading: boolean): void {
+    this.isLoading = loading;
+  }
+
+  public onSubcontractDeleteConfirm() {
+    this.isLoading = true;
+    if (this.currentSubcontract) {
+      this.subcontractUtils.deleteSubcontract(this.currentSubcontract.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.visibleSubcontractModal = false;
+          this.commonMessageService.showDeleteSucessfullMessage();
+          this.goBackListSubcontracts();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+      });
+    }
   }
 }

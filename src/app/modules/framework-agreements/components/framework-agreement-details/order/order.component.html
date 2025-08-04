@@ -23,17 +23,20 @@
         
         <div class="order_input order_name mb-2">
             <label for="contractTitle">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FUNDING_PROGRAM' | translate }}</label>
-            <p-select id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle" showClear></p-select>
+            <p-select id="contractTitle" [options]="forderprogrammOptions" formControlName="contractTitle" showClear
+             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"></p-select>
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="orderValue">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.CONTRACT_STATUS' | translate }}</label>
-            <p-select id="orderValue" [options]="vertragsstatusOptions" formControlName="orderValue" showClear></p-select>
+            <p-select id="orderValue" [options]="vertragsstatusOptions" formControlName="orderValue" showClear
+             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"></p-select>
         </div>
         
         <div class="order_input order_name mb-2">
             <label for="employeeiws">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.IWS_EMPLOYEES' | translate }}</label>
-            <p-select id="employeeiws" [options]="iwsMitarbeiterOptions" formControlName="employeeiws" showClear></p-select>
+            <p-select id="employeeiws" [options]="iwsMitarbeiterOptions" formControlName="employeeiws" showClear
+             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"></p-select>
         </div>  
     </div>
 </form>
