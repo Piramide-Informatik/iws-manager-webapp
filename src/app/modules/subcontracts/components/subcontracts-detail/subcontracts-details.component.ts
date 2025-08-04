@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SubcontractComponent } from './subcontract/subcontract.component';
 import { SubcontractUtils } from '../../utils/subcontracts-utils';
 import { Subcontract } from '../../../../Entities/subcontract';
+import { Subscription, switchMap } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
@@ -14,11 +15,13 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 export class SubcontractsDetailsComponent implements OnInit {
   private readonly subcontractUtils = inject(SubcontractUtils);
   private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly subscriptions = new Subscription();
   @ViewChild(SubcontractComponent) subcontractComponent!: SubcontractComponent;
   subcontractId!: number;
+  currentSubcontract!: Subcontract;
+
   visibleSubcontractModal: boolean = false;
   isLoading: boolean = false;
-  public currentSubcontract!: Subcontract | undefined;
 
 
   constructor(
@@ -27,12 +30,25 @@ export class SubcontractsDetailsComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
+    const routeSub = this.activatedRoute.params.pipe(
+      switchMap(params => {
       this.subcontractId = params['subContractId'];
-      this.subcontractUtils.getSubcontractById(this.subcontractId).subscribe(subcontract => {
-        this.currentSubcontract = subcontract;
-      });
+      return this.subcontractUtils.getSubcontractById(this.subcontractId);
+    })
+    ).subscribe({
+      next: (subcontract) => {
+        if (subcontract) {
+          this.currentSubcontract = subcontract;
+        }
+      },
+      error: (err) => console.error('Error al cargar subcontrato:', err)
     });
+
+    this.subscriptions.add(routeSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   onSubmit(): void {
