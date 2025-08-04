@@ -4,6 +4,7 @@ import { SubcontractComponent } from './subcontract/subcontract.component';
 import { SubcontractUtils } from '../../utils/subcontracts-utils';
 import { Subcontract } from '../../../../Entities/subcontract';
 import { Subscription, switchMap } from 'rxjs';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-subcontracts-details',
@@ -13,10 +14,14 @@ import { Subscription, switchMap } from 'rxjs';
 })
 export class SubcontractsDetailsComponent implements OnInit {
   private readonly subcontractUtils = inject(SubcontractUtils);
+  private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
   @ViewChild(SubcontractComponent) subcontractComponent!: SubcontractComponent;
   subcontractId!: number;
   currentSubcontract!: Subcontract;
+
+  visibleSubcontractModal: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private readonly router: Router,
@@ -52,5 +57,23 @@ export class SubcontractsDetailsComponent implements OnInit {
   goBackListSubcontracts(): void{
     const path = this.subcontractId ? '../../' : '../'
     this.router.navigate([path], { relativeTo: this.activatedRoute });
+  }
+
+  public onSubcontractDeleteConfirm() {
+    this.isLoading = true;
+    if (this.currentSubcontract) {
+      this.subcontractUtils.deleteSubcontract(this.currentSubcontract.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.visibleSubcontractModal = false;
+          this.commonMessageService.showDeleteSucessfullMessage();
+          this.goBackListSubcontracts();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+      });
+    }
   }
 }

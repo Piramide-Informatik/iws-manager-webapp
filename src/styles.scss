@@ -79,6 +79,13 @@ button.p-ripple.p-button.p-component {
   border: 1px solid $primary-color;
 }
 
+//Delete button
+.delete button.p-ripple.p-button {
+  background-color: #ef4444;
+  color: #fff;
+  border: 1px solid #ef4444;
+}
+
 .active {
   background-color: $primary-color;
   border-color: $primary-color;

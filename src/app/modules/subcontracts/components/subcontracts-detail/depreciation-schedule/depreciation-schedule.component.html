@@ -20,36 +20,33 @@
     (onHide)="closeModal()"
     [modal]="true"
     [(visible)]="visibleModal"
-    [style]="{ width: '40rem' }"
+    [style]="{ width: '30rem' }"
   >
     <ng-container *ngIf="modalType !== 'delete'; else deleteTemplate">
       <hr class="mt-0" />
       <form [formGroup]="depreciationForm" (ngSubmit)="onSubmit()">
         <div class="form-item-container flex gap-4 mb-3">
-          <label for="year" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
+          <label for="year" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
           <input
             pInputText
             id="year"
-            class="flex-auto"
             formControlName="year"
             autocomplete="off"
           />
         </div>
         <div class="form-item-container flex gap-4 mb-3">
-          <label for="months" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
+          <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
           <input
             pInputText
             id="months"
-            class="flex-auto"
             formControlName="months"
             autocomplete="off"
           />
         </div>
         <div class="form-item-container flex gap-4 mb-3">
-          <label for="depreciationAmount" class="w-3">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' | translate }}</label>
+          <label for="depreciationAmount" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' | translate }}</label>
           <p-inputnumber
             inputId="depreciationAmount"
-            class="flex-auto"
             formControlName="depreciationAmount"
             autocomplete="off"
             [disabled]="true"

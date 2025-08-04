@@ -9,13 +9,13 @@
       <div class="field">
         <label for="salutation">{{ 'EMPLOYEE.FORM.SALUTATION' | translate }}</label>
         <p-select [options]="salutations()" optionLabel="name" optionValue="id" formControlName="salutation"
-          inputId="salutation" [showClear]="true" />
+          inputId="salutation" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
       </div>
 
       <div class="field">
         <label for="title">{{ 'EMPLOYEE.FORM.TITLE' | translate }}</label>
         <p-select [options]="titles()" optionLabel="name" optionValue="id" formControlName="title" inputId="title"
-          [showClear]="true" />
+          [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
       </div>
 
       <div class="field">
@@ -70,7 +70,7 @@
       <div class="field">
         <label for="qualificationFzId">{{ 'EMPLOYEE.FORM.QUALIFICATION_FZ' | translate }}</label>
         <p-select [options]="qualificationsFZ()" optionLabel="name" optionValue="id" formControlName="qualificationFzId"
-          [showClear]="true" inputId="qualificationFzId" />
+          [showClear]="true" inputId="qualificationFzId" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
       </div>
 
       <div class="field">
