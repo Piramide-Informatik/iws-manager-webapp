@@ -46,7 +46,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   private initForm(): void {
     this.editApprovalStatusForm = new FormGroup({
       status: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-      order: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
+      order: new FormControl(''),
       forProject: new FormControl(false),
       forNetwork: new FormControl(false),
     });

@@ -30,9 +30,7 @@ export class ModalApprovalStatusComponent implements OnInit {
       Validators.minLength(2),
       Validators.maxLength(50)
     ]),
-    order: new FormControl(0,[
-      Validators.required,
-      Validators.pattern('^[0-9]+$')]),
+    order: new FormControl(0),
     isProject: new FormControl(false),
     isNetwork: new FormControl(false)
   });
