@@ -13,6 +13,9 @@ import { Subcontract } from '../../../../../Entities/subcontract';
 
 interface DepreciationEntry {
   id: number;
+  createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
+  updatedAt: string;
+  version: number;
   year: string;
   usagePercentage: number;
   depreciationAmount: number;
@@ -40,7 +43,7 @@ export class DepreciationScheduleComponent implements OnInit {
   visibleModal = signal(false);
   modalType: 'new' | 'edit' | 'delete' = 'new';
 
-  public selectedSubcontractYear!: any;
+  public selectedSubcontractYear!: DepreciationEntry | undefined;
   subcontractId!: number;
   isLoading: boolean = false;
 
@@ -56,20 +59,7 @@ export class DepreciationScheduleComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
-      this.subcontractYearUtils.getAllSubcontractsYear(this.subcontractId).subscribe( sc => {
-        this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
-          const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
-          const afamonths = curr.subcontract?.afamonths ?? 0;
-          const subcontractsYearMonths = Number(curr.months);
-          acc.push({
-            id: curr.id,
-            year: curr.year,
-            usagePercentage: curr.months,
-            depreciationAmount: this.calculateDepreciationAmount(invoiceNet, afamonths, subcontractsYearMonths)
-          } as DepreciationEntry);
-            return acc;  
-          }, [])
-      })  
+      this.loadSubcontractYears(this.subcontractId);  
     })
     this.initForm();
     this.inputMonthsChange();
@@ -150,19 +140,16 @@ export class DepreciationScheduleComponent implements OnInit {
   }
 
   private updateSubcontractYear(): void {
-    if (this.depreciationForm.invalid) return;
+    if (this.depreciationForm.invalid || !this.selectedSubcontractYear) return;
 
     const updatedSubcontractYear: SubcontractYear = {
       id: this.selectedSubcontractYear.id,
       year: this.depreciationForm.value.year,
-      months: this.depreciationForm.value.months,
-      subcontract: { 
-        id: this.currentSubcontract.id,
-        version: 0
-      } as Subcontract, 
+      months: Number(this.depreciationForm.value.months),
+      subcontract: this.currentSubcontract, 
       createdAt: this.selectedSubcontractYear.createdAt,
       updatedAt: new Date().toISOString(),
-      version: 0
+      version: this.selectedSubcontractYear.version
     };
 
     this.isLoading = true;
@@ -170,19 +157,7 @@ export class DepreciationScheduleComponent implements OnInit {
       next: () => {
         this.closeModal();
         this.commonMessageService.showEditSucessfullMessage();
-        const index = this.subcontractsYear.findIndex(e => e.id === updatedSubcontractYear.id);
-        if (index !== -1) {
-          this.subcontractsYear[index] = {
-            id: updatedSubcontractYear.id,
-            year: updatedSubcontractYear.year,
-            usagePercentage: updatedSubcontractYear.months,
-            depreciationAmount: this.calculateDepreciationAmount(
-              this.currentSubcontract.invoiceNet, 
-              this.currentSubcontract.afamonths, 
-              updatedSubcontractYear.months ?? 0
-            )
-          };
-        }
+        this.loadSubcontractYears(this.subcontractId);
       },
       error: () => {
         this.isLoading = false;
@@ -223,7 +198,7 @@ export class DepreciationScheduleComponent implements OnInit {
     });
   }
 
-  removeSubcontractYear() {
+  public removeSubcontractYear() {
     if (this.selectedSubcontractYear) {
       this.isLoading = true;
       this.subcontractYearUtils.deleteSubcontractYear(this.selectedSubcontractYear.id).subscribe({
@@ -239,5 +214,25 @@ export class DepreciationScheduleComponent implements OnInit {
         }
       });
     }
+  }
+
+  private loadSubcontractYears(subcontractId: number): void {
+    this.subcontractYearUtils.getAllSubcontractsYear(subcontractId).subscribe( sc => {
+      this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
+        const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
+        const afamonths = curr.subcontract?.afamonths ?? 0;
+        const subcontractsYearMonths = Number(curr.months);
+        acc.push({
+          id: curr.id,
+          createdAt: curr.createdAt,
+          updatedAt: curr.updatedAt,
+          version: curr.version,
+          year: curr.year,
+          usagePercentage: curr.months,
+          depreciationAmount: this.calculateDepreciationAmount(invoiceNet, afamonths, subcontractsYearMonths)
+        } as DepreciationEntry);
+          return acc;  
+      }, [])
+    });
   }
 }
