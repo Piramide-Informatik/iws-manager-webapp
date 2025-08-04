@@ -49,6 +49,8 @@
             inputId="depreciationAmount"
             formControlName="depreciationAmount"
             autocomplete="off"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
             [disabled]="true"
             readonly
           />
