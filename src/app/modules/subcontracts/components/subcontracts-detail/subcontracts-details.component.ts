@@ -20,6 +20,7 @@ export class SubcontractsDetailsComponent implements OnInit {
   isLoading: boolean = false;
   public currentSubcontract!: Subcontract | undefined;
 
+
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
@@ -41,6 +42,10 @@ export class SubcontractsDetailsComponent implements OnInit {
   goBackListSubcontracts(): void{
     const path = this.subcontractId ? '../../' : '../'
     this.router.navigate([path], { relativeTo: this.activatedRoute });
+  }
+
+  setLoadingOperation(loading: boolean): void {
+    this.isLoading = loading;
   }
 
   public onSubcontractDeleteConfirm() {
