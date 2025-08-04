@@ -67,29 +67,35 @@ export class ModalApprovalStatusComponent implements OnInit {
     this.isLoading = true;
     if (this.approvalStatusToDelete) {
       this.approvalStatusUtils.deleteApprovalStatus(this.approvalStatusToDelete).subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.confirmDelete.emit({
-            severity: 'success',
-            summary: 'MESSAGE.SUCCESS',
-            detail: 'MESSAGE.DELETE_SUCCESS'
-          });
-          this.closeModal();
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete approval status';
-          console.error('Delete error:', error);
-          this.confirmDelete.emit({
-            severity: 'error',
-            summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
-          });
-          this.closeModal();
-        }
+        next: () => this.handleDeleteSuccess(),
+        error: (error) => this.handleDeleteError(error)
       });
     }
   }
+
+  private handleDeleteSuccess(): void {
+  this.isLoading = false;
+  this.confirmDelete.emit({
+    severity: 'success',
+    summary: 'APPROVAL_STATUS.MESSAGE.SUCCESS',
+    detail: 'APPROVAL_STATUS.MESSAGE.DELETE_SUCCESS'
+  });
+  this.closeModal();
+}
+
+private handleDeleteError(error: any): void {
+  this.isLoading = false;
+  this.errorMessage = error.message ?? 'Failed to delete approval status';
+  console.error('Delete error:', error);
+  this.confirmDelete.emit({
+    severity: 'error',
+    summary: 'APPROVAL_STATUS.MESSAGE.ERROR',
+    detail: this.errorMessage?.includes('it is in use by other entities')
+      ? 'APPROVAL_STATUS.MESSAGE.DELETE_ERROR_IN_USE'
+      : 'APPROVAL_STATUS.MESSAGE.DELETE_FAILED'
+  });
+  this.closeModal();
+}
 
   onCancel(): void {
     this.handleClose();

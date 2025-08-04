@@ -572,6 +572,13 @@
       "NAME":"Estado de Aprobación",
       "IS_PROJECTS": "Aplica a Proyectos",
       "IS_NETWORKS": "Aplica a Redes"
+    },
+    "MESSAGE":{
+      "SUCCESS":"ÉXITO",
+      "DELETE_SUCCESS":"Registro eliminado exitosamente.",
+      "ERROR":"ERROR",
+      "DELETE_ERROR_IN_USE":"No se puede eliminar el registro porque está en uso por otras entidades.",
+      "DELETE_FAILED":"No se pudo eliminar el registro."
     }
   },
   "USERS": {

@@ -574,6 +574,13 @@
       "NAME":"Bewilligungsstatus",
       "IS_PROJECTS": "Gilt für Projekte",
       "IS_NETWORKS": "Gilt für Netzwerke"
+    },
+    "MESSAGE":{
+      "SUCCESS":"ERFOLG",
+      "DELETE_SUCCESS":"Datensatz erfolgreich gelöscht.",
+      "ERROR":"FEHLER",
+      "DELETE_ERROR_IN_USE":"Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
+      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden."
     }
   },
   "USERS": {
