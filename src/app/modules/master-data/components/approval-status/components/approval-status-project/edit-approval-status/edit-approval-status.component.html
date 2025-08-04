@@ -1,22 +1,50 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'APPROVAL_STATUS.FORM.TITLE_FORM' | translate">
-    <form [formGroup]="editApprovalStatusForm">
-        <div class="form-container">
+    <form [formGroup]="editApprovalStatusForm"  (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2">
             <!-- Grupo: Bewilligungsstatus -->
-            <div class="form-group">
+            <div class="approval-status-form">
                 <label for="approvalStatus">{{ 'APPROVAL_STATUS.TABLE.APPROVAL_STATUS' | translate }}</label>
-                <input pInputText type="text" id="approvalStatus" formControlName="approvalStatus" autocomplete="off" />
+                <div class="input-message">
+                    <input
+                        pInputText
+                        type="text"
+                        id="status"
+                        formControlName="status"
+                        [ngClass]="{'ng-invalid ng-dirty': editApprovalStatusForm.get('status')?.invalid && editApprovalStatusForm.get('status')?.touched}"
+                        autocomplete="off" />
+                    <p-message severity="error" variant="simple" size="small"
+                        *ngIf="editApprovalStatusForm.get('status')?.invalid && editApprovalStatusForm.get('status')?.touched && editApprovalStatusForm.get('status')!.hasError('required')">
+                        {{ 'APPROVAL_STATUS.ERROR.APPROVAL_STATUS_REQUIRED' | translate }}
+                    </p-message>
+                </div>
             </div>
 
             <!-- Grupo: Reihenfolge -->
-            <div class="form-group">
+            <div class="approval-status-form">
                 <label for="order">{{ 'APPROVAL_STATUS.TABLE.ORDER' | translate }}</label>
-                <input pInputText type="text" id="order" formControlName="order" autocomplete="off" />
+                <div class="input-message">
+                    <input
+                        pInputText
+                        type="text"
+                        id="order"
+                        formControlName="order"
+                        [ngClass]="{'ng-invalid ng-dirty': editApprovalStatusForm.get('order')?.invalid && editApprovalStatusForm.get('order')?.touched}"
+                        autocomplete="off" 
+                    />
+                    <p-message severity="error" variant="simple" size="small"
+                        *ngIf="editApprovalStatusForm.get('order')?.invalid && editApprovalStatusForm.get('order')?.touched && editApprovalStatusForm.get('order')!.hasError('required')">
+                        {{ 'APPROVAL_STATUS.ERROR.ORDER_REQUIRED' | translate }}
+                    </p-message>
+                </div>
             </div>
 
             <!-- Grupo: gilt für Projekte -->
-            <div class="form-group-check">
-                <label for="appliesToProject">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_PROJECT' | translate }}</label>
-                <p-toggleswitch formControlName="appliesToProject" id="appliesToProject">
+            <div class="approval-status-form">
+                <label for="forProject">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_PROJECT' | translate }}</label>
+                <p-toggleswitch 
+                    formControlName="forProject"
+                    class="flex"
+                >
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>
@@ -24,9 +52,12 @@
             </div>
 
             <!-- Grupo: gilt fur Netzwerke -->
-            <div class="form-group-check">
-                <label for="appliesToNetwork">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_NETWORK' | translate }}</label>
-                <p-toggleswitch formControlName="appliesToNetwork" id="appliesToNetwork">
+            <div class="approval-status-form">
+                <label for="forNetwork">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_NETWORK' | translate }}</label>
+                <p-toggleswitch 
+                    formControlName="forNetwork"
+                    class="flex"
+                >
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>
@@ -35,9 +66,31 @@
 
             <!-- Botones -->
             <div class="flex justify-content-center gap-2 mt-4">
-                <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                <p-button
+                    type="submit"
+                    size="small"
+                    [label]="'BUTTONS.SAVE' | translate"
+                    icon="pi pi-check"
+                    iconPos="left"
+                    [disabled]="editApprovalStatusForm.invalid || !editApprovalStatusForm.dirty || isSaving"/>
+                <p-button
+                    type="button"
+                    class="cancel"
+                    size="small"
+                    [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times"
+                    iconPos="left"
+                    (click)="clearForm()"
+                    (keydown.enter)="clearForm()"/>
             </div>
         </div>
     </form>
 </p-card>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalApprovalStatus"
+  [useEmitter]="true"
+  (close)="showOCCErrorModalApprovalStatus = false"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>
