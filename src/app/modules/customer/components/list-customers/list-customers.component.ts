@@ -338,7 +338,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
           this.isLoadingCustomer = false;
           this.errorMessage = error.message ?? 'Failed to delete customer';
           if(error.message.includes('have associated employees') || 
-             error.message.includes('have associated contractors')){
+             error.message.includes('have associated contractors') ||
+             error.message.includes('have associated subcontracts')){
               this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
           } else {
             this.commonMessageService.showErrorDeleteMessage();
