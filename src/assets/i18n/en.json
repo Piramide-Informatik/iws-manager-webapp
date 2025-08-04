@@ -558,6 +558,23 @@
       "TITLE_FORM": "Edit approval status",
       "APPLIES_TO_PROJECT": "Applies to Project",
       "APPLIES_TO_NETWORK": "Applies to Network"
+    },
+    "DELETE": {
+      "CONFIRMATION": "Delete Approval Status"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "New Approval Status"
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Approval Status Required",
+      "ORDER_REQUIRED" : "Order Required",
+      "CHECKING_DUPLICATE": "Checking for Duplicate",
+      "CREATION_FAILED":"There was an error creating the Approval Status."
+    },
+    "LABEL": {
+      "NAME":"Approval Status",
+      "IS_PROJECTS": "Applies to Projects",
+      "IS_NETWORKS": "Applies to Networks"
     }
   },
   "USERS": {

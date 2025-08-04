@@ -555,6 +555,23 @@
       "TITLE_FORM": "Editar Estado de Aprobación",
       "APPLIES_TO_PROJECT": "Aplica a Proyectos",
       "APPLIES_TO_NETWORK": "Aplica a Redes"
+    },
+    "DELETE": {
+      "CONFIRMATION": "Eliminar Estado de Aprobación"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "Nuevo Estado de Aprobación"
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Estado de Aprobación requerido",
+      "ORDER_REQUIRED" : "Orden requerido",
+      "CHECKING_DUPLICATE": "Verificando duplicado",
+      "CREATION_FAILED":"Hubo un error durante la creacion del Estado de Aprobación."
+    },
+    "LABEL": {
+      "NAME":"Estado de Aprobación",
+      "IS_PROJECTS": "Aplica a Proyectos",
+      "IS_NETWORKS": "Aplica a Redes"
     }
   },
   "USERS": {

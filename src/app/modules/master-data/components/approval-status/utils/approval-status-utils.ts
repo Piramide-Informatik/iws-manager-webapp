@@ -94,13 +94,13 @@ export class ApprovalStatusUtils {
                         throw new Error('ApprovalStatus not found');
                     }
                     if (currentApprovalStatus.version !== approvalStatus.version) {
-                        throw new Error('Version conflict: ProjectStatus has been updated by another user');
+                        throw new Error('Version conflict: approvalStatus has been updated by another user');
                     }
                     return approvalStatus;
                 }),
                 switchMap((validatedApprovalStatus: ApprovalStatus) => this.approvalStatusService.updateApprovalStatus(validatedApprovalStatus)),
                 catchError((err) => {
-                    console.error('Error updating projectStatus:', err);
+                    console.error('Error updating approvalStatus:', err);
                     return throwError(() => err);
                 })
             );
