@@ -31,7 +31,9 @@ import { DepreciationScheduleComponent } from './components/subcontracts-detail/
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { SharedModule } from '../shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -53,6 +55,7 @@ import { SharedModule } from '../shared/shared.module';
     ButtonModule,
     TableModule,
     InputTextModule,
+    InputNumberModule,
     DialogModule,
     DatePickerModule,
     SelectModule,
