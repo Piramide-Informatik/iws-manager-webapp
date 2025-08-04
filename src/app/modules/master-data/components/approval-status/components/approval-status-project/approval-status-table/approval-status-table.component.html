@@ -3,13 +3,34 @@
       <div class>
         <master-data-genaral-table
           [tableId]="tableKey"
-          [tableValues]="appovalStatuses"
+          [tableValues]="approvalStatusesD()"
           [columns]="selectedColumns"
           [userPreferences]="userApprovalTypePreferences"
           [dataKeys]="dataKeys"
           (onColumnChanges)="onUserApprovalTypePreferencesChanges($event)"
+          (onCreateRegister)="handleTableEvents({ type: 'create' })"
+          (onDeleteRegister)="handleTableEvents({type: 'delete', data: $event})"
+          (onEditRegister)="editApprovalStatus($event)"
         ></master-data-genaral-table>
+        <p-dialog 
+          [header]="modalType === 'create' 
+            ? ('APPROVAL_STATUS.MODAL_CREATE.CREATE_FORM' |  translate) 
+            : ('APPROVAL_STATUS.DELETE.CONFIRMATION' | translate)" 
+          [modal]="true" 
+          [(visible)]="visibleModal"
+          (onShow)="onDialogShow()" 
+        >
+          <app-modal-approval-status
+            #approvalStatusModal
+            (isVisibleModal)="onVisibleModal($event)"
+            (confirmDelete)="onConfirmDelete($event)"
+            [modalType]="modalType"
+            [approvalStatusName]="approvalStatusName"
+            [approvalStatusToDelete]="selectedApprovalStatus"
+            (isVisibleModal)="onModalVisibilityChange($event)"
+          ></app-modal-approval-status>
+        </p-dialog>
       </div>
     </div>
   </div>
- 
+<p-toast/>

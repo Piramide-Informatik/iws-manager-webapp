@@ -1,24 +1,25 @@
-// Contenedor principal del formulario
-.form-container {
-    display: flex;
-    flex-direction: column;
-}
-
-// Grupos de formulario
-.form-group,
-.form-group-check {
+.approval-status-form {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
 
     label {
-        width: 150px;
+        flex-shrink: 0;
+        width: 100px;
     }
 
-    input,
-    p-toggleswitch {
-        flex: 1;
-        max-width: 300px;
-        margin-left: 1rem;
+    .input-message {
+        width: 100%;
+        position: relative;
+
+        input {
+            width: 100%;
+        }
+
+        p-message {
+            position: absolute;
+            left: 0px;
+            bottom: -18px;
+        }
     }
 }

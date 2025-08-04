@@ -557,6 +557,30 @@
       "TITLE_FORM": "Bewilligungsstatus bearbeiten",
       "APPLIES_TO_PROJECT": "gilt für Projekte",
       "APPLIES_TO_NETWORK": "gilt fur Netzwerke"
+    },
+    "DELETE": {
+      "CONFIRMATION": "Genehmigungsstatus löschen"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "Neuer Genehmigungsstatus"
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Genehmigungsstatus erforderlich",
+      "ORDER_REQUIRED" : "Bestellung erforderlich",
+      "CHECKING_DUPLICATE": "Duplikatprüfung",
+      "CREATION_FAILED":"Beim Erstellen des Genehmigungsstatus ist ein Fehler aufgetreten."
+    },
+    "LABEL": {
+      "NAME":"Bewilligungsstatus",
+      "IS_PROJECTS": "Gilt für Projekte",
+      "IS_NETWORKS": "Gilt für Netzwerke"
+    },
+    "MESSAGE":{
+      "SUCCESS":"ERFOLG",
+      "DELETE_SUCCESS":"Datensatz erfolgreich gelöscht.",
+      "ERROR":"FEHLER",
+      "DELETE_ERROR_IN_USE":"Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
+      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden."
     }
   },
   "USERS": {
