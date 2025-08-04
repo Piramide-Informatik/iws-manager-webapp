@@ -20,7 +20,7 @@
     (onHide)="closeModal()"
     [modal]="true"
     [(visible)]="visibleModal"
-    [style]="{ width: '40rem' }"
+    [style]="{ width: '30rem' }"
   >
     <ng-container *ngIf="modalType !== 'Delete'; else deleteTemplate">
       <hr class="mt-0" />
@@ -30,7 +30,6 @@
           <input
             pInputText
             id="year"
-            class="flex-auto"
             formControlName="year"
             autocomplete="off"
           />
@@ -40,7 +39,6 @@
           <input
             pInputText
             id="usagePercentage"
-            class="flex-auto"
             formControlName="usagePercentage"
             autocomplete="off"
           />
@@ -50,7 +48,6 @@
           <input
             pInputText
             id="depreciationAmount"
-            class="flex-auto"
             formControlName="depreciationAmount"
             autocomplete="off"
           />
