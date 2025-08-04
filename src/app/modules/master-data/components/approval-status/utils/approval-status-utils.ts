@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, map, of, switchMap, take, tap, throwError } from "rxjs";
+import { Observable, catchError, map, of, switchMap, take, throwError } from "rxjs";
 import { ApprovalStatus } from "../../../../../Entities/approvalStatus";
 import { ApprovalStatusService } from "../../../../../Services/approval-status.service";
 
@@ -23,7 +23,7 @@ export class ApprovalStatusUtils {
             })
         );
     }
-    //Creates a new approvalStatus with validation <-----------
+    //Creates a new approvalStatus with validation 
     createNewApprovalStatus(status: string, order:number, projects:number, networks:number ): Observable<void> {
         
         if (!status?.trim()) {

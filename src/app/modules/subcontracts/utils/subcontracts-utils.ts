@@ -117,7 +117,7 @@ export class SubcontractUtils {
         }
 
         if (currentSubcontract.version !== subcontract.version) {
-          return throwError(() => new Error('Conflict detected: subcontract person version mismatch'));
+          return throwError(() => new Error('Conflict detected: subcontract version mismatch'));
         }
 
         return this.subcontractService.updateSubcontract(subcontract);

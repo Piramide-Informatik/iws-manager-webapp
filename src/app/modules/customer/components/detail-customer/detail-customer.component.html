@@ -175,13 +175,12 @@
       @if(customerId){
         <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
             iconPos="left" (onClick)="onSubmit()" />
+        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="showDeleteCustomerModal = true" />    
       }@else{
         <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
             iconPos="left" (onClick)="createCustomer()" />
       }
-
-      <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-          iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="showDeleteCustomerModal = true" />
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
           iconPos="left" routerLink="/customers"/>
     </div>

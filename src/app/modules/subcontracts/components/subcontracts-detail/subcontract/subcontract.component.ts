@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Subscription } from 'rxjs';
@@ -7,7 +7,7 @@ import { SubcontractUtils } from '../../../utils/subcontracts-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContractorUtils } from '../../../../contractor/utils/contractor-utils';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Contractor } from '../../../../../Entities/contractor';
 import { momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { Customer } from '../../../../../Entities/customer';
@@ -19,7 +19,7 @@ import { CustomerUtils } from '../../../../customer/utils/customer-utils';
   templateUrl: './subcontract.component.html',
   styleUrls: ['./subcontract.component.scss'],
 })
-export class SubcontractComponent implements OnInit {
+export class SubcontractComponent implements OnInit, OnDestroy {
   private readonly subcontractUtils = inject(SubcontractUtils);
   private readonly contractorUtils = inject(ContractorUtils);
   private readonly customerUtils = inject(CustomerUtils);
@@ -27,15 +27,18 @@ export class SubcontractComponent implements OnInit {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private langSubscription!: Subscription;
   public subcontractForm!: FormGroup;
-
+  public showOCCErrorModalSubcontract = false;
   public optionsNetOrGross!: { label: string, value: string }[];
 
   isLoading = false;
 
+  mode: 'create' | 'edit' = 'create';
+  public subcontractToEdit!: Subcontract | null;
   private readonly customerId: number = this.route.snapshot.params['id'];
-
+  subcontractId!: number;
   private contractors: Contractor[] = [];
   public contractorsName = toSignal(
     this.contractorUtils.getAllContractorsByCustomerId(this.customerId).pipe(
@@ -49,15 +52,40 @@ export class SubcontractComponent implements OnInit {
   public currentCustomer!: Customer | undefined;
 
   ngOnInit(): void {
-    this.getCurrentCustomer();
     this.loadOptionsInvoiceLabel();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadOptionsInvoiceLabel();
     });
-    
-    this.initForm();
 
+    this.initForm();
     this.checkboxAfaChange();
+    
+    this.route.params.subscribe(params => {
+      this.subcontractId = params['subContractId'];
+      if (this.subcontractId) {
+        this.mode = 'edit';
+        this.subscriptions.add(
+          this.subcontractUtils.getSubcontractById(this.subcontractId).subscribe({
+            next: (subcontract) => {
+              if(subcontract) {
+                this.subcontractToEdit = subcontract;
+                this.loadSubcontractDataForm(subcontract);
+              }
+            },
+            error: (error) => console.error('Error fetching subcontract:', error)
+          })
+        );
+      } else {
+        this.mode = 'create';
+        this.getCurrentCustomer();
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 
   private initForm(): void {
@@ -72,6 +100,7 @@ export class SubcontractComponent implements OnInit {
       afaDurationMonths: new FormControl({ value: '', disabled: true }), // solo si afa = true
       description: new FormControl(''),
     });
+    this.subcontractForm.reset();
   }
 
   private checkboxAfaChange(): void {
@@ -94,7 +123,11 @@ export class SubcontractComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.createSubcontract();
+    if(this.mode === 'edit') {
+      this.updateSubcontract();
+    } else {
+      this.createSubcontract();
+    }
   }
 
   private createSubcontract(): void {
@@ -104,11 +137,10 @@ export class SubcontractComponent implements OnInit {
     } 
     this.isLoading = true;
     const newSubcontract = this.buildSubcontractFromForm();
-    console.log('Creating new subcontract:', newSubcontract);
     this.subscriptions.add(
       this.subcontractUtils.createNewSubcontract(newSubcontract).subscribe({
-        next: (response: Subcontract) => this.handleSuccess(response),
-        error: (error) => this.handleError(error)
+        next: (response: Subcontract) => this.handleCreateSuccess(response),
+        error: (error) => this.handleErrorCreated(error)
       })
     );
   }
@@ -118,7 +150,7 @@ export class SubcontractComponent implements OnInit {
     const controlNetOrGross: boolean =  this.subcontractForm.value.netOrGross === 'net';
     return {
       contractTitle: this.subcontractForm.value.contractTitle,
-      contractor: this.subcontractForm.value.contractor ? (this.getContractorById(this.subcontractForm.value.contractor) ?? null) : null,
+      contractor: this.subcontractForm.value.contractor ? this.getContractorById(this.subcontractForm.value.contractor) : null,
       invoiceNo: this.subcontractForm.value.invoiceNumber,
       invoiceDate: momentFormatDate(this.subcontractForm.value.invoiceDate),
       netOrGross: controlNetOrGross,
@@ -138,8 +170,69 @@ export class SubcontractComponent implements OnInit {
     };
   }
 
-  private getContractorById(contractorId: number): Contractor | undefined {
-    return this.contractors.find(c => c.id === contractorId);
+  private getContractorById(contractorId: number): Contractor | null {
+    return this.contractors.find(c => c.id === contractorId) ?? null;
+  }
+
+  private updateSubcontract(): void {
+    if (this.subcontractForm.invalid) {
+      console.error('Form is invalid');
+      return;
+    }
+    this.isLoading = true;
+    const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
+    this.subscriptions.add(
+      this.subcontractUtils.updateSubcontract(subcontractUpdated).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.commonMessageService.showEditSucessfullMessage();
+          this.router.navigate(['.', response.id], { relativeTo: this.route });
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error updating subcontract:', error);
+          this.commonMessageService.showErrorEditMessage();
+        }
+      })
+    );
+  }
+
+  private loadSubcontractDataForm(subcontract: Subcontract): void {
+    this.subcontractForm.patchValue({
+      contractTitle: subcontract.contractTitle,
+      contractor: subcontract.contractor?.id,
+      invoiceNumber: subcontract.invoiceNo,
+      invoiceDate: subcontract.invoiceDate ? new Date(subcontract.invoiceDate) : null,
+      netOrGross: subcontract.netOrGross ? 'net' : 'gross',
+      invoiceAmount: subcontract.netOrGross ? subcontract.invoiceNet : subcontract.invoiceGross,
+      afa: subcontract.isAfa,
+      afaDurationMonths: subcontract.afamonths > 0 ? subcontract.afamonths : '',
+      description: subcontract.description
+    });
+  }
+
+  private buildSubcontractEdited(subcontractSource: any): Subcontract {
+    return {
+      id: this.subcontractId,
+      createdAt: subcontractSource.createdAt ?? new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      version: subcontractSource?.version ?? 0,
+      contractor: this.getContractorById(this.subcontractForm.value.contractor),
+      customer: subcontractSource.customer ?? null,
+      projectCostCenter: null, // falta
+      afamonths: this.subcontractForm.value.afa ? this.subcontractForm.value.afaDurationMonths : 0,
+      contractTitle: this.subcontractForm.value.contractTitle,
+      date: '',
+      description: this.subcontractForm.value.description,
+      invoiceAmount: this.subcontractForm.value.invoiceAmount,
+      invoiceDate: momentFormatDate(this.subcontractForm.value.invoiceDate),
+      invoiceGross: this.subcontractForm.value.netOrGross === 'gross' ? this.subcontractForm.value.invoiceAmount : 0,
+      invoiceNet: this.subcontractForm.value.netOrGross === 'net' ? this.subcontractForm.value.invoiceAmount : 0,
+      invoiceNo: this.subcontractForm.value.invoiceNumber,
+      isAfa: this.subcontractForm.value.afa,
+      netOrGross: this.subcontractForm.value.netOrGross === 'net',
+      note: '',
+    }
   }
 
   private getCurrentCustomer(): void {
@@ -150,15 +243,24 @@ export class SubcontractComponent implements OnInit {
     );
   }
 
-  private handleSuccess(response: Subcontract): void {
+  private handleCreateSuccess(response: Subcontract): void {
     this.isLoading = false;
     this.commonMessageService.showCreatedSuccesfullMessage();
     this.subcontractForm.reset();
+    this.router.navigate(['.', response.id], { relativeTo: this.route });
   }
 
-  private handleError(error: any): void {
+  private handleErrorCreated(error: any): void {
     this.isLoading = false;
     console.error('Error create subcontract:', error);
     this.commonMessageService.showErrorCreatedMessage();
+  }
+
+  private handleUpdateSubcontractError(err: any): void {
+    if (err.message === 'Conflict detected: subcontract version mismatch') {
+      this.showOCCErrorModalSubcontract = true;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
+    }
   }
 }

@@ -20,11 +20,6 @@ export class SubcontractsDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
-      if (this.subcontractId) {
-        console.log("Edit Logic");
-      } else {
-        console.log("Create Logic")
-      }
     })
   }
 

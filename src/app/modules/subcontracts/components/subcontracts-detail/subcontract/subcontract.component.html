@@ -61,13 +61,7 @@
     <!-- Monto -->
     <div class="order_input order_name mb-2">
       <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
-      <input
-        pInputText
-        id="invoiceAmount"
-        type="number"
-        pInputText
-        formControlName="invoiceAmount"
-      />
+      <p-inputNumber class="p-inputnumber-input" size="large" id="invoiceAmount" formControlName="invoiceAmount" mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
     </div>
 
     <div class="order_input order_name mb-2">
@@ -102,3 +96,5 @@
     </div>
   </div>
 </form>
+<app-occ-error-modal *ngIf="showOCCErrorModalSubcontract" (onClose)="showOCCErrorModalSubcontract = false">
+</app-occ-error-modal>

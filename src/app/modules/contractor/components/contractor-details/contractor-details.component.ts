@@ -169,7 +169,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   validateContractorForUpdate(): boolean {
     if (!this.contractor?.id) {
-      this.showError(this.translate.instant('MESSAGE.UPDATE_FAILED'))
+      this.commonMessageService.showErrorEditMessage();
       return false;
     }
     return true;
@@ -196,14 +196,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
         this.updateContractor();
       }
     }
-  }
-
-  private showError(detail: string): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
-      detail
-    });
   }
 
   private handleUpdateSuccess(updatedContractor: Contractor): void {
