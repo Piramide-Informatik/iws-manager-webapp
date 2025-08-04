@@ -37,12 +37,12 @@
         ></p-button>
         @if(subcontractId){
         <p-button
-          class="Delete me-2"
+          class="delete me-2"
           size="small"
           [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash"
           iconPos="left"
-          [style]="{ background: '#ef4444' }"
+          (onClick)="visibleSubcontractModal = true"
         ></p-button>
         }
         <p-button
@@ -57,3 +57,18 @@
     </div>
   </div>
 </div>
+<p-dialog [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT' | translate" [modal]="true" [(visible)]="visibleSubcontractModal">
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ currentSubcontract?.contractTitle }}"</strong>?
+    </p>
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onSubcontractDeleteConfirm()" severity="danger" [loading]="isLoading"
+          [disabled]="isLoading"/>
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="this.visibleSubcontractModal = false;" [disabled]="isLoading"/>
+    </div>
+  </div>
+</p-dialog>
