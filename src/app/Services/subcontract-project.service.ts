@@ -9,7 +9,7 @@ import { SubcontractProject } from '../Entities/subcontract-project';
 })
 export class SubcontractProjectService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/subcontracts-project`;
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/subcontractproject`;
   private readonly _subcontractsProject = signal<SubcontractProject[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
