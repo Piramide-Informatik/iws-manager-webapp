@@ -33,6 +33,7 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
 import { MasterDataModule } from '../master-data/master-data.module';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SharedModule } from '../shared/shared.module';
+import { ProjectAllocationModalComponent } from './components/subcontracts-detail/project-allocation/project-allocation-modal/project-allocation-modal.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { SharedModule } from '../shared/shared.module';
     SubcontractComponent,
     ProjectAllocationComponent,
     DepreciationScheduleComponent,
+    ProjectAllocationModalComponent,
   ],
   imports: [
     CommonModule,
