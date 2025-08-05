@@ -1,11 +1,33 @@
 @use 'variables' as *;
 
-.align-right {
-    text-align: right;
+.label-modal {
+  display: flex;
+  align-items: center;
+  width: 120px;
+  flex-shrink: 0;
+}
+
+::ng-deep .p-inputtext {
+  width: auto;
+}
+
+::ng-deep .p-datepicker{
+  width: auto !important;
+  min-width: 0;
+}
+
+::ng-deep .p-datepicker-panel {
+  button.p-ripple.p-button.p-component{
+    background-color: initial !important;
+    border: none;
+    color: $primary-color;
+
+    &:hover{
+      background-color: $accent-color !important;
+    }
   }
 
-.label-modal {
-    display: flex;
-    align-items: center;
-    width: 130px;
+  .p-datepicker-year-selected{
+    background: $primary-color !important;
+  }
 }
