@@ -12,7 +12,7 @@ import { EmploymentContractUtils } from '../../../employee/utils/employment-cont
   templateUrl: './contract-details.component.html',
   styleUrl: './contract-details.component.scss'
 })
-export class ContractDetailsComponent implements OnInit, OnDestroy {
+export class ContractDetailsComponent implements OnDestroy {
 
   private readonly subscription = new Subscription();
   private readonly translate = inject(TranslateService);
@@ -30,9 +30,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   isDeleteEmployeeContract: boolean = false;
 
   constructor( private readonly commonMessageService: CommonMessagesService) {}
-  
-  ngOnInit(): void {}
-
   
 
   ngOnDestroy(): void {

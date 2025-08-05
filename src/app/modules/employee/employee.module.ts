@@ -34,7 +34,6 @@ import { EmployeeContractsTableComponent } from './components/employee-details/e
 
 import { SharedModule } from '../shared/shared.module';
 import { EmploymentContractModalComponent } from './components/employee-details/employment-contract-modal/employment-contract-modal.component';
-import { EmploymentContractUtils } from './utils/employment-contract-utils';
 
 @NgModule({
     declarations: [
