@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,8 +31,6 @@ export class ContractDetailsComponent implements OnDestroy {
 
   constructor( private readonly commonMessageService: CommonMessagesService) {}
 
-  ngOnInit(): void {
-  }
 
   ngOnDestroy(): void {
     if (this.subscription) {
