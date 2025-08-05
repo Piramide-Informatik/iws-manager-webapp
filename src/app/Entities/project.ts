@@ -14,6 +14,7 @@ export interface Project {
   endDate: string;
   authDate: string;
   fundingRate: string;
-  customer: Customer
+  customer: Customer;
+  shareResearch?: number
 }
   
