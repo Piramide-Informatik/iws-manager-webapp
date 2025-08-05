@@ -56,16 +56,16 @@
     <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
             {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }}
-            <strong class="stronglock mt-1">"{{ workContract }}"</strong>?
+            <strong class="stronglock mt-1">"{{ workContract?.id }}"</strong>?
         </p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" severity="danger"
-             />
+                icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContract()"
+              [loading]="isDeleteEmployeeContract" />
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" />
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [loading]="isDeleteEmployeeContract"  />
 
         </div>
     </div>
