@@ -5,6 +5,7 @@ import { UserPreferenceService } from '../../../../../Services/user-preferences.
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
+import { SubcontractProject } from '../../../../../Entities/subcontract-project';
 
 interface ProjectAllocationEntry {
   projectName: string;
@@ -21,11 +22,14 @@ interface ProjectAllocationEntry {
 export class ProjectAllocationComponent implements OnInit {
   allocationForm!: FormGroup;
   allocations: ProjectAllocationEntry[] = [];
+  modalType: 'create' | 'delete' | 'edit' = 'create';
+  currentSubcontractProject!: SubcontractProject;
+  public subcontractProjectList!: SubcontractProject[];
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
+  visibleModal: boolean = false;
 
-  visibleModal = signal(false);
   option = {
     new: 'New',
     edit: 'Edit',
@@ -113,11 +117,11 @@ export class ProjectAllocationComponent implements OnInit {
       }
     }
 
-    this.visibleModal.set(true);
+    this.visibleModal = true;
   }
 
   closeModal() {
-    this.visibleModal.set(false);
+    this.visibleModal = false;
     this.allocationForm.reset();
     this.optionSelected = '';
   }
@@ -142,5 +146,24 @@ export class ProjectAllocationComponent implements OnInit {
     this.allocations = this.allocations.filter(
       (entry) => entry.projectName !== projectName
     );
+  }
+
+  handleSubcontractProjectTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
+    this.modalType = event.type;
+    
+    if (event.type === 'edit') {
+      this.currentSubcontractProject = event.data;
+    }
+    if (event.type === 'delete') {
+      const tempSubcontractProject = this.subcontractProjectList.find((subcontractproject) => subcontractproject.id === Number(event.data));
+      if (tempSubcontractProject) {
+        this.currentSubcontractProject = tempSubcontractProject;
+      }
+    }
+    this.visibleModal = true;
+  }
+
+  onModalVisibilityChange(visible: any): void {
+    this.visibleModal = visible;
   }
 }

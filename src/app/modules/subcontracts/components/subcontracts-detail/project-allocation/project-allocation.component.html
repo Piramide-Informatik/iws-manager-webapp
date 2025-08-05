@@ -15,6 +15,9 @@
     (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
     <hr class="mt-0" />
     <app-project-allocation-modal
+      [visible]="visibleModal"
+      [modalType]="modalType"
+      (isProjectAllocationVisibleModal)="onModalVisibilityChange($event)"
     ></app-project-allocation-modal>
   </p-dialog>
 </div>

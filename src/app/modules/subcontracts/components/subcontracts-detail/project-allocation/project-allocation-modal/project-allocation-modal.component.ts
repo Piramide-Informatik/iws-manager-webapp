@@ -10,6 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ProjectAllocationModalComponent {
 
+  @Input() visible = false;
+  @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
+
   @Output() onSave = new EventEmitter<any>();
   @Output() onClose = new EventEmitter<void>();
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
@@ -42,6 +45,7 @@ export class ProjectAllocationModalComponent {
   }
 
   closeModal(): void {
+    this.isProjectAllocationVisibleModal.emit(false);
   }
 
 }
