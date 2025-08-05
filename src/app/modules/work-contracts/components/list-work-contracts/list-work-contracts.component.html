@@ -5,7 +5,7 @@
     [columns]="selectedColumns"
     [userPreferences]="userWorkContractsPreferences"
     [dataKeys]="dataKeys"
-    removeKey="employeeId"
+    removeKey="id"
     (onColumnChanges)="onUserWorkContractsPreferencesChanges($event)"
     (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
     (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
@@ -26,6 +26,7 @@
       [modalType]="modalType"
       [workContract]="currentContract"
       (isVisibleModal)="onModalVisibilityChange($event)"
+      (deletedEmployeeContract)="onDeleteEmployeeContract($event)"
     ></app-contract-details>
   </p-dialog>
 </div>

@@ -1,5 +1,5 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
-   <form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
+   <!-- <form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
     <div class="create-employee-contract-form align-items-center mb-2 mt-4">
       <div class="form-container flex align-items-center mb-6">
         <div class="contract_input contract_name mb-2">
@@ -50,22 +50,22 @@
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
       iconPos="left" (onClick)="goBackListContracts()"/>      
     </div>
-  </form>
+  </form> -->
 </ng-container>
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
             {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }}
-            <strong class="stronglock mt-1">"{{ workContract }}"</strong>?
+            <strong class="stronglock mt-1">"{{ workContract?.id }}"</strong>?
         </p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" severity="danger"
-             />
+                icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContract()"
+              [loading]="isDeleteEmployeeContract" />
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" />
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [loading]="isDeleteEmployeeContract"  />
 
         </div>
     </div>

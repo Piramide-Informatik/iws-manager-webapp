@@ -44,8 +44,8 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   productDialog: boolean = false;
   modalType: 'create' | 'delete' | 'edit' = 'create';
   visibleModal: boolean = false;
-  currentContract!: WorkContract;
-  public contracts: WorkContract[] = [];
+  currentContract!: any;
+  public contracts!: WorkContract[];
   selectedProducts: WorkContract[] | null | undefined;
   submitted: boolean = true;
   searchTerm: string = '';
@@ -223,6 +223,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
     this.modalType = event.type;
+    if (event.type === 'delete') {
+      this.currentContract = this.contracts.find(c => c.id === event.data)
+    }
     this.visibleModal = true;
   }
 
@@ -300,5 +303,10 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.productDialog = false;
     this.currentContract = {} as WorkContract;
     this.selectedProducts = [];
+  }
+
+  onDeleteEmployeeContract(deletedWorkContract: WorkContract) {
+    this.contracts = this.contracts.filter(c => c.id !== deletedWorkContract.id);
+    this.currentContract = undefined;
   }
 }
