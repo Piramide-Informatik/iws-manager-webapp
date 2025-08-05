@@ -1,4 +1,56 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
+   <form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
+    <div class="create-employee-contract-form align-items-center mb-2 mt-4">
+      <div class="form-container flex align-items-center mb-6">
+        <div class="contract_input contract_name mb-2">
+          <label for="datum">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
+          <p-datepicker id="datum"
+                        formControlName="datum"
+                        [showIcon]="true"
+                        iconDisplay="input"
+                        dateFormat="dd.mm.yy">
+          </p-datepicker>
+        </div>
+        <div class="contract_input mb-2">
+          <label for="gehalt">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
+          <input pInputText type="number" id="gehalt" formControlName="gehalt" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="wochenstunden">{{ 'EMPLOYEE-CONTRACTS.FORM.WEEKLY_HOURS' | translate }}</label>
+          <input pInputText type="number" id="wochenstunden" formControlName="wochenstunden" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="kurz">{{ 'EMPLOYEE-CONTRACTS.FORM.WORK_SHORT_TIME' | translate }}</label>
+          <input pInputText type="text" id="kurz" formControlName="kurz" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="jahresauszahlung">{{ 'EMPLOYEE-CONTRACTS.FORM.SPECIAL_PAYMENT' | translate }}</label>
+          <input pInputText type="number" id="jahresauszahlung" formControlName="jahresauszahlung" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="maxstudenmonat">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
+          <input pInputText type="number" id="maxstudenmonat" formControlName="maxstudenmonat" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="maxstudentag">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
+          <input pInputText type="number" id="maxstudentag" formControlName="maxstudentag" autocomplete="off" />
+        </div>
+        <div class="contract_input mb-2">
+          <label for="stundensatz">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
+          <input pInputText type="number" id="stundensatz" formControlName="stundensatz" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+    <div class="buttons-container flex justify-content-center gap-2 mt-4">
+      @if(workContract) {
+        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+      } @else {
+        <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
+      }
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+      iconPos="left" (onClick)="goBackListContracts()"/>      
+    </div>
+  </form>
 </ng-container>
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
