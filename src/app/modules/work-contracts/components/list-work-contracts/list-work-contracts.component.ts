@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
 import { WorkContractsService } from '../../services/work-contracts.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
 
 interface Column {
   field: string;
@@ -16,6 +17,7 @@ interface Column {
   customExportHeader?: string;
   customClasses?: string[];
   routerLink?: (row: any) => string;
+  type?: string;
 }
 
 interface ExportColumn {
@@ -32,16 +34,18 @@ interface ExportColumn {
 })
 export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
+  private readonly employmentContractUtils = inject(EmploymentContractUtils)
+
   public cols!: Column[];
 
   public selectedColumns!: Column[];
 
-  public customer!: string;
+  public customerId!: string;
   productDialog: boolean = false;
   modalType: 'create' | 'delete' | 'edit' = 'create';
   visibleModal: boolean = false;
-  currentContract!: WorkContract;
-  public contracts: WorkContract[] = [];
+  currentContract!: any;
+  public contracts!: WorkContract[];
   selectedProducts: WorkContract[] | null | undefined;
   submitted: boolean = true;
   searchTerm: string = '';
@@ -70,19 +74,33 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loadColHeaders();
-    this.selectedColumns = this.cols;
-    this.customer = 'Joe Doe';
-
-    this.contracts = this.workContractsService.list();
-    this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
-      this.reloadComponent(true);
-      this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    this.route.params.subscribe(params => {
+      this.employmentContractUtils.getAllContractsByCustomerId(params['id']).subscribe( employeeContracts => {
+        this.contracts = employeeContracts.map( ec => {
+          return {
+            id: ec.id,
+            employeeId: ec.employee?.id,
+            firstName: ec.employee?.firstname,
+            lastName: ec.employee?.lastname,
+            startDate: ec.startDate,
+            salaryPerMonth: ec.salaryPerMonth,
+            weeklyHours: ec.hoursPerWeek,
+            worksShortTime: ec.workShortTime,
+            specialPayment: ec.specialPayment,
+            maxHrspPerMonth: ec.maxHoursPerMonth,
+            maxHrsPerDay: ec.maxHoursPerDay,
+            hourlyRate: ec.hourlyRate
+          }
+        })
+        this.loadColHeaders();
+        this.selectedColumns = this.cols;
+        this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+        this.langSubscription = this.translate.onLangChange.subscribe(() => {
+          this.loadColHeaders();
+          this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+        });
+      })
     });
-
-    this.selectedColumns = this.cols;
   }
 
   onUserWorkContractsPreferencesChanges(userWorkContractsPreferences: any) {
@@ -99,14 +117,14 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
       },
       { field: 'firstName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
       { field: 'lastName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
-      { field: 'startDate', customClasses: ['text-center'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
-      { field: 'salaryPerMonth', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
-      { field: 'weeklyHours', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
-      { field: 'worksShortTime', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
-      { field: 'specialPayment', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
-      { field: 'maxHrspPerMonth', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
-      { field: 'maxHrsPerDay', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
-      { field: 'hourlyRate', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
+      { field: 'startDate', type: 'date', customClasses: ['text-center'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
+      { field: 'salaryPerMonth', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
+      { field: 'weeklyHours', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
+      { field: 'worksShortTime', type: 'double', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
+      { field: 'specialPayment', type: 'double', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
+      { field: 'maxHrspPerMonth', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
+      { field: 'maxHrsPerDay', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
+      { field: 'hourlyRate', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
     ];
   }
 
@@ -205,6 +223,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
     this.modalType = event.type;
+    if (event.type === 'delete') {
+      this.currentContract = this.contracts.find(c => c.id === event.data)
+    }
     this.visibleModal = true;
   }
 
@@ -282,5 +303,10 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.productDialog = false;
     this.currentContract = {} as WorkContract;
     this.selectedProducts = [];
+  }
+
+  onDeleteEmployeeContract(deletedWorkContract: WorkContract) {
+    this.contracts = this.contracts.filter(c => c.id !== deletedWorkContract.id);
+    this.currentContract = undefined;
   }
 }
