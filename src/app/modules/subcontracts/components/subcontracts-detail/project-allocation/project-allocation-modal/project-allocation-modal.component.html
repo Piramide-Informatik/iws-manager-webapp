@@ -1,7 +1,7 @@
 <form [formGroup]="allocationForm" (ngSubmit)="saveAllocation()">
     <div class="form-item-container flex gap-4 mb-3">
-        <label for="projectName" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
-        <input pInputText id="projectName" class="flex-auto" formControlName="projectName" autocomplete="off" />
+        <label for="projectLabel" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
+        <input pInputText id="projectLabel" class="flex-auto" formControlName="projectLabel" autocomplete="off" />
     </div>
     <div class="form-item-container flex gap-4 mb-3">
         <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>

@@ -1,11 +1,13 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
   <ng-template #title>{{ 'SUB-CONTRACTS.PROJECT.TABLE_NAME' | translate }}</ng-template>
 
-  <master-data-genaral-table [tableId]="tableKey" [tableValues]="allocations" [columns]="allocationsColumns"
+  <master-data-genaral-table [tableId]="tableKey" [tableValues]="subcontractProjectList" [columns]="allocationsColumns"
     [userPreferences]="userAllocationsPreferences" [dataKeys]="dataKeys" removeKey="projectName"
-    (onColumnChanges)="onUserAllocationsPreferencesChanges($event)" (onCreateRegister)="showModal(option.new)"
-    (onEditRegister)="showModal(option.edit, $event.projectName)"
-    (onDeleteRegister)="deleteAllocation($event)"></master-data-genaral-table>
+    (onColumnChanges)="onUserAllocationsPreferencesChanges($event)" 
+    (onCreateRegister)="handleSubcontractProjectTableEvents({ type: 'create'})"
+    (onEditRegister)="handleSubcontractProjectTableEvents({ type: 'edit', data: $event})"
+    (onDeleteRegister)="handleSubcontractProjectTableEvents({ type: 'delete', data: $event })">
+  </master-data-genaral-table>
 
 </p-card>
 

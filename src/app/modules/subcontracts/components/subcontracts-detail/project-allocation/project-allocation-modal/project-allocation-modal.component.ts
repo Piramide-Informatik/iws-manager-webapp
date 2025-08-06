@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
@@ -9,7 +9,7 @@ import { SubcontractProject } from '../../../../../../Entities/subcontract-proje
   templateUrl: './project-allocation-modal.component.html',
   styleUrl: './project-allocation-modal.component.scss'
 })
-export class ProjectAllocationModalComponent {
+export class ProjectAllocationModalComponent implements OnChanges {
 
   @Input() visible = false;
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
@@ -34,10 +34,22 @@ export class ProjectAllocationModalComponent {
 
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
-      projectName: [''],
+      projectLabel: [''],
       percentage: [''],
       amount: ['']
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("SubcontractProject: ", this.subcontractProject)
+
+    if (changes['subcontractProject'] && this.subcontractProject && this.modalType === 'edit') {
+      this.allocationForm.patchValue({
+        projectLabel: this.subcontractProject.project?.projectLabel ?? '',
+        percentage: this.subcontractProject.share ?? '',
+        amount: this.subcontractProject.amount ?? ''
+      });
+    }
   }
 
   saveAllocation(): void {
@@ -51,8 +63,7 @@ export class ProjectAllocationModalComponent {
   }
 
   closeModal(): void {
-    console.log("SubcontractProject: ", this.subcontractProject)
-    // this.isProjectAllocationVisibleModal.emit(false);
+    this.isProjectAllocationVisibleModal.emit(false);
   }
 
 }

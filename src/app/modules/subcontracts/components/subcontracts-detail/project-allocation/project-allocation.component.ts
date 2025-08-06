@@ -10,13 +10,6 @@ import { MessageService } from 'primeng/api';
 import { SubcontractProjectUtils } from '../../../utils/subcontract-project.utils';
 import { ActivatedRoute } from '@angular/router';
 
-interface ProjectAllocationEntry {
-  id: number;
-  projectName: string;
-  percentage: number;
-  amount: number;
-}
-
 @Component({
   selector: 'app-project-allocation',
   standalone: false,
@@ -29,8 +22,6 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
   private readonly messageService = inject(MessageService);
   
-  allocationForm!: FormGroup;
-  allocations: ProjectAllocationEntry[] = [];
   modalType: 'create' | 'delete' | 'edit' = 'create';
   currentSubcontractProject!: SubcontractProject;
   public subcontractProjectList!: SubcontractProject[];
@@ -40,18 +31,12 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   visibleModal: boolean = false;
 
-  option = {
-    new: 'New',
-    edit: 'Edit',
-  };
   optionSelected: string = '';
-  selectedProjectName!: string;
   allocationsColumns: any[] = [];
   userAllocationsPreferences: UserPreference = {};
   tableKey: string = 'Allocations'
-  dataKeys = ['projectName', 'percentage', 'amount'];
+  dataKeys = ['projectLabel', 'share', 'amount'];
   subcontractId!: number;
-  private langSubscription!: Subscription;
 
   constructor(
     private readonly userPreferenceService: UserPreferenceService,
@@ -63,11 +48,13 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
      this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
       this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe( sc => {
-        this.allocations = sc.reduce((acc: any[], curr: SubcontractProject) => {
+        this.subcontractProjectList = sc.reduce((acc: any[], curr: SubcontractProject) => {
           acc.push({
             id: curr.id,
-            projectName: curr.project?.projectName,
-            percentage: curr.project?.shareResearch,
+            project:{
+              projectLabel: curr.project?.projectLabel,
+            }, 
+            share: curr.share,
             amount: curr.amount ?? 0
           });
           return acc;
@@ -75,17 +62,10 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
       })  
     })
 
-
-    this.allocationForm = new FormGroup({
-      projectName: new FormControl('', Validators.required),
-      percentage: new FormControl('', Validators.required),
-      amount: new FormControl('', Validators.required),
-    });
-
     this.loadColumns()
     this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
     this.loading = false;
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+    this.subscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumns();
       this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
     });
@@ -93,8 +73,8 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   loadColumns() {
     this.allocationsColumns = [
-      { field: 'projectName', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
-      { field: 'percentage', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
+      { field: 'project.projectLabel', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
+      { field: 'share', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
       { field: 'amount', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
     ];
   }
@@ -109,64 +89,29 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     localStorage.setItem('userPreferences', JSON.stringify(userAllocationsPreferences));
   }
 
-  showModal(option: string, projectName?: string) {
-    this.optionSelected = option;
-
-    if (option === this.option.edit && projectName != null) {
-      const entry = this.allocations.find((a) => a.projectName === projectName);
-      if (entry) {
-        this.allocationForm.setValue({
-          projectName: entry.projectName,
-          percentage: entry.percentage,
-          amount: entry.amount,
-        });
-        this.selectedProjectName = entry.projectName;
-      }
-    }
-
-    this.visibleModal = true;
-  }
-
   closeModal() {
     this.visibleModal = false;
-    this.allocationForm.reset();
     this.optionSelected = '';
-  }
-
-  saveAllocation() {
-    if (this.allocationForm.invalid) return;
-
-    const data = this.allocationForm.value;
-
-    if (this.optionSelected === this.option.new) {
-      this.allocations.push(data);
-    } else if (this.optionSelected === this.option.edit) {
-      this.allocations = this.allocations.map((entry) =>
-        entry.projectName === this.selectedProjectName ? data : entry
-      );
-    }
-
-    this.closeModal();
-  }
-
-  deleteAllocation(projectName: any) {
-    this.allocations = this.allocations.filter(
-      (entry) => entry.projectName !== projectName
-    );
   }
 
   handleSubcontractProjectTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalType = event.type;
-
+    console.log("Modal type: ",this.modalType)
     if (event.type === 'edit') {
+      this.optionSelected = "EDIT"
       this.currentSubcontractProject = event.data;
     }
     if (event.type === 'delete') {
+      this.optionSelected = "DELETE";
       const tempSubcontractProject = this.subcontractProjectList.find((subcontractproject) => subcontractproject.id === Number(event.data));
       if (tempSubcontractProject) {
         this.currentSubcontractProject = tempSubcontractProject;
       }
     }
+    if (event.type === 'create') {
+    this.optionSelected = "NEW";
+  }
+
     this.visibleModal = true;
   }
 
