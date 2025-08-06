@@ -4,8 +4,8 @@
       <div class="form-container flex align-items-center mb-6">      
         <div class="contract_input">
           <label for="employeNro">Employee</label>
-          <p-select inputId="employeNro" formControlName="employeNro" [options]="" showClear=""
-            emptyMessage=""></p-select>
+          <p-select inputId="employeNro" formControlName="employeNro" [options]="employeeOptions" showClear="true"
+            emptyMessage="No employees found"></p-select>
         </div>
         <div class="contract_input">
           <label for="firstName">{{ 'EMPLOYEE-CONTRACTS.FORM.FIRST_NAME' | translate }}</label>
