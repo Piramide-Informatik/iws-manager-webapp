@@ -10,14 +10,16 @@
 </p-card>
 
 <div class="card">
-  <p-dialog 
-  [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
+  <p-dialog [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
     (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
     <hr class="mt-0" />
-    <app-project-allocation-modal
-      [visible]="visibleModal"
-      [modalType]="modalType"
+    <app-project-allocation-modal [visible]="visibleModal" [modalType]="modalType"
+      [subcontractProject]="currentSubcontractProject" [isVisibleModal]="visibleModal"
+      (onMessageOperation)="messageOperation($event)"
       (isProjectAllocationVisibleModal)="onModalVisibilityChange($event)"
-    ></app-project-allocation-modal>
+      (onSubcontractProjectDeleted)="onSubcontractProjectDeleted($event)" 
+      (SubcontractProjectUpdated)="onSubcontractProjectUpdated($event)"
+      (onSubcontractProjectCreated)="onSubcontractProjectCreated($event)">
+    </app-project-allocation-modal>
   </p-dialog>
 </div>

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 
 @Component({
   selector: 'app-project-allocation-modal',
@@ -12,11 +13,16 @@ export class ProjectAllocationModalComponent {
 
   @Input() visible = false;
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
+  @Input() subcontractProject: SubcontractProject | null = null;
+  @Input() isVisibleModal: boolean = false;
 
   @Output() onSave = new EventEmitter<any>();
   @Output() onClose = new EventEmitter<void>();
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
-
+  @Output() onMessageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>()
+  @Output() SubcontractProjectUpdated = new EventEmitter<SubcontractProject>();
+  @Output() onSubcontractProjectCreated = new EventEmitter<SubcontractProject>();
+  @Output() onSubcontractProjectDeleted = new EventEmitter<number>();
 
   private readonly translate = inject(TranslateService);
 
@@ -45,7 +51,8 @@ export class ProjectAllocationModalComponent {
   }
 
   closeModal(): void {
-    this.isProjectAllocationVisibleModal.emit(false);
+    console.log("SubcontractProject: ", this.subcontractProject)
+    // this.isProjectAllocationVisibleModal.emit(false);
   }
 
 }

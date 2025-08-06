@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
@@ -6,6 +6,7 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../Entities/subcontract-project';
+import { MessageService } from 'primeng/api';
 
 interface ProjectAllocationEntry {
   projectName: string;
@@ -18,13 +19,17 @@ interface ProjectAllocationEntry {
   standalone: false,
   templateUrl: './project-allocation.component.html',
   styleUrl: './project-allocation.component.scss',
+  providers: [MessageService]
 })
-export class ProjectAllocationComponent implements OnInit {
+export class ProjectAllocationComponent implements OnInit, OnDestroy {
   allocationForm!: FormGroup;
   allocations: ProjectAllocationEntry[] = [];
   modalType: 'create' | 'delete' | 'edit' = 'create';
   currentSubcontractProject!: SubcontractProject;
   public subcontractProjectList!: SubcontractProject[];
+
+  private readonly messageService = inject(MessageService);
+  private subscription!: Subscription;
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
@@ -98,6 +103,12 @@ export class ProjectAllocationComponent implements OnInit {
     ];
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   onUserAllocationsPreferencesChanges(userAllocationsPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userAllocationsPreferences));
   }
@@ -150,7 +161,7 @@ export class ProjectAllocationComponent implements OnInit {
 
   handleSubcontractProjectTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalType = event.type;
-    
+
     if (event.type === 'edit') {
       this.currentSubcontractProject = event.data;
     }
@@ -161,6 +172,30 @@ export class ProjectAllocationComponent implements OnInit {
       }
     }
     this.visibleModal = true;
+  }
+
+  public messageOperation(message: { severity: string, summary: string, detail: string }): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail))
+    })
+  }
+
+  onSubcontractProjectDeleted(subcontractprojectId: number) {
+    this.subcontractProjectList = this.subcontractProjectList.filter(subcontractproject => subcontractproject.id !== subcontractprojectId);
+  }
+
+  onSubcontractProjectUpdated(updated: SubcontractProject): void {
+    const index = this.subcontractProjectList.findIndex(c => c.id === updated.id);
+    if (index !== -1) {
+      this.subcontractProjectList[index] = { ...updated };
+      this.subcontractProjectList = [...this.subcontractProjectList];
+    }
+  }
+
+  onSubcontractProjectCreated(newSubcontractProj: SubcontractProject) {
+    this.subcontractProjectList.unshift(newSubcontractProj);
   }
 
   onModalVisibilityChange(visible: any): void {
