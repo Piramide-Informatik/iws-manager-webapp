@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
@@ -7,8 +7,11 @@ import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../Entities/subcontract-project';
 import { MessageService } from 'primeng/api';
+import { SubcontractProjectUtils } from '../../../utils/subcontract-project.utils';
+import { ActivatedRoute } from '@angular/router';
 
 interface ProjectAllocationEntry {
+  id: number;
   projectName: string;
   percentage: number;
   amount: number;
@@ -22,13 +25,15 @@ interface ProjectAllocationEntry {
   providers: [MessageService]
 })
 export class ProjectAllocationComponent implements OnInit, OnDestroy {
+  
+  private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
+  private readonly messageService = inject(MessageService);
+  
   allocationForm!: FormGroup;
   allocations: ProjectAllocationEntry[] = [];
   modalType: 'create' | 'delete' | 'edit' = 'create';
   currentSubcontractProject!: SubcontractProject;
   public subcontractProjectList!: SubcontractProject[];
-
-  private readonly messageService = inject(MessageService);
   private subscription!: Subscription;
 
   @ViewChild('dt') dt!: Table;
@@ -45,40 +50,31 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
   userAllocationsPreferences: UserPreference = {};
   tableKey: string = 'Allocations'
   dataKeys = ['projectName', 'percentage', 'amount'];
+  subcontractId!: number;
   private langSubscription!: Subscription;
 
   constructor(
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly translate: TranslateService) { }
+    private readonly translate: TranslateService,
+    private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.allocations = [
-      {
-        projectName: 'Webportal Ausbau',
-        percentage: 25,
-        amount: 2500,
-      },
-      {
-        projectName: 'Infrastruktur Update',
-        percentage: 20,
-        amount: 2000,
-      },
-      {
-        projectName: 'ERP Integration',
-        percentage: 15,
-        amount: 1500,
-      },
-      {
-        projectName: 'UX Optimierung',
-        percentage: 30,
-        amount: 3000,
-      },
-      {
-        projectName: 'Mobile App Entwicklung',
-        percentage: 10,
-        amount: 1000,
-      },
-    ];
+    
+     this.route.params.subscribe(params => {
+      this.subcontractId = params['subContractId'];
+      this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe( sc => {
+        this.allocations = sc.reduce((acc: any[], curr: SubcontractProject) => {
+          acc.push({
+            id: curr.id,
+            projectName: curr.project?.projectName,
+            percentage: curr.project?.shareResearch,
+            amount: curr.amount ?? 0
+          });
+          return acc;
+        }, []);
+      })  
+    })
+
 
     this.allocationForm = new FormGroup({
       projectName: new FormControl('', Validators.required),
