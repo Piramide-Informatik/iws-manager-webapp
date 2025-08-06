@@ -26,7 +26,7 @@ export class ProjectAllocationModalComponent {
   isSubcontractProjectPerformigAction: boolean = false
   public allocationForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
+  constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.initializeForm();
   }
 
