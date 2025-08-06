@@ -12,8 +12,8 @@ export interface SubcontractProject {
   project: Project | null;
   subcontract: Subcontract | null;
 
-  amount?: Number;
-  months?: Number;
-  share?: Number;
-  year?: String;
+  amount?: number;
+  months?: number;
+  share?: number;
+  year?: string;
 }
