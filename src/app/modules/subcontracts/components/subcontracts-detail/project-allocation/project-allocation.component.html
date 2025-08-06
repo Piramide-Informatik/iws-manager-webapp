@@ -1,81 +1,20 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
   <ng-template #title>{{ 'SUB-CONTRACTS.PROJECT.TABLE_NAME' | translate }}</ng-template>
 
-  <master-data-genaral-table
-    [tableId]="tableKey"
-    [tableValues]="allocations"
-    [columns]="allocationsColumns"
-    [userPreferences]="userAllocationsPreferences"
-    [dataKeys]="dataKeys"
-    removeKey="projectName"
-    (onColumnChanges)="onUserAllocationsPreferencesChanges($event)"
-    (onCreateRegister)="showModal(option.new)"
+  <master-data-genaral-table [tableId]="tableKey" [tableValues]="allocations" [columns]="allocationsColumns"
+    [userPreferences]="userAllocationsPreferences" [dataKeys]="dataKeys" removeKey="projectName"
+    (onColumnChanges)="onUserAllocationsPreferencesChanges($event)" (onCreateRegister)="showModal(option.new)"
     (onEditRegister)="showModal(option.edit, $event.projectName)"
-    (onDeleteRegister)="deleteAllocation($event)"
-  ></master-data-genaral-table>
+    (onDeleteRegister)="deleteAllocation($event)"></master-data-genaral-table>
 
 </p-card>
 
 <div class="card">
-  <p-dialog
-    [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
-    (onHide)="closeModal()"
-    [modal]="true"
-    [(visible)]="visibleModal"
-    [style]="{ width: '40rem' }"
-  >
+  <p-dialog 
+  [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
+    (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
     <hr class="mt-0" />
-    <form [formGroup]="allocationForm" (ngSubmit)="saveAllocation()">
-      <div class="form-item-container flex gap-4 mb-3">
-        <label for="projectName" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
-        <input
-          pInputText
-          id="projectName"
-          class="flex-auto"
-          formControlName="projectName"
-          autocomplete="off"
-        />
-      </div>
-      <div class="form-item-container flex gap-4 mb-3">
-        <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
-        <input
-          pInputText
-          id="percentage"
-          class="flex-auto"
-          formControlName="percentage"
-          autocomplete="off"
-        />
-      </div>
-      <div class="form-item-container flex gap-4 mb-3">
-        <label for="amount" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>
-        <input
-          pInputText
-          id="amount"
-          class="flex-auto"
-          formControlName="amount"
-          autocomplete="off"
-        />
-      </div>
-      <div class="flex justify-content-center gap-2">
-        <p-button
-          [label]="'BUTTONS.SAVE' | translate"
-          icon="pi pi-check"
-          iconPos="left"
-          size="small"
-          (click)="saveAllocation()"
-          (keydown.enter)="saveAllocation()"
-        ></p-button>
-
-        <p-button
-          [label]="'BUTTONS.CANCEL' | translate"
-          (click)="closeModal()"
-          class="cancel"
-          icon="pi pi-times"
-          iconPos="left"
-          size="small"
-          (keydown.enter)="closeModal()"
-        ></p-button>
-      </div>
-    </form>
+    <app-project-allocation-modal
+    ></app-project-allocation-modal>
   </p-dialog>
 </div>
