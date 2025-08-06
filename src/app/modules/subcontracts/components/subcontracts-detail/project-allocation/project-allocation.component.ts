@@ -18,12 +18,12 @@ import { ActivatedRoute } from '@angular/router';
   providers: [MessageService]
 })
 export class ProjectAllocationComponent implements OnInit, OnDestroy {
-  
+
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
   private readonly messageService = inject(MessageService);
-  
+
   modalType: 'create' | 'delete' | 'edit' = 'create';
-  currentSubcontractProject!: SubcontractProject;
+  public currentSubcontractProject!: SubcontractProject | null;
   public subcontractProjectList!: SubcontractProject[];
   private subscription!: Subscription;
 
@@ -44,23 +44,23 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
-     this.route.params.subscribe(params => {
+
+    this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
-      this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe( sc => {
+      this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe(sc => {
         this.subcontractProjectList = sc.reduce((acc: any[], curr: SubcontractProject) => {
           acc.push({
             id: curr.id,
-            project:{
+            project: {
               projectLabel: curr.project?.projectLabel,
-            }, 
+            },
             share: curr.share,
             amount: curr.amount ?? 0
           });
           return acc;
         }, []);
-      })  
-    })
+      })
+    });
 
     this.loadColumns()
     this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
@@ -96,7 +96,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   handleSubcontractProjectTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalType = event.type;
-    console.log("Modal type: ",this.modalType)
+    console.log("Modal type: ", this.modalType)
     if (event.type === 'edit') {
       this.optionSelected = "EDIT"
       this.currentSubcontractProject = event.data;
@@ -109,8 +109,9 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
       }
     }
     if (event.type === 'create') {
-    this.optionSelected = "NEW";
-  }
+      this.optionSelected = "NEW";
+      this.currentSubcontractProject = null;
+    }
 
     this.visibleModal = true;
   }

@@ -50,15 +50,26 @@ export class ProjectAllocationModalComponent implements OnChanges {
         amount: this.subcontractProject.amount ?? ''
       });
     }
+
+    if (this.modalType === 'create') {
+      this.allocationForm.reset();
+    } 
   }
 
-  saveAllocation(): void {
+  onSubmit(): void {
     if (this.allocationForm.invalid) {
       this.allocationForm.markAllAsTouched();
       return;
     }
 
     const formData = this.allocationForm.value;
+
+    if (this.modalType === 'edit' && this.subcontractProject) {
+      
+    } else if (this.modalType === 'create') {
+
+    }
+    
     this.onSave.emit(formData);
   }
 
