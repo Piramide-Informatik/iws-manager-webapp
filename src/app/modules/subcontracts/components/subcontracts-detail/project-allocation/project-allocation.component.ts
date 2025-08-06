@@ -25,7 +25,7 @@ interface ProjectAllocationEntry {
 export class ProjectAllocationComponent implements OnInit {
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils)
   allocationForm!: FormGroup;
-  allocations: any[] = [];
+  allocations: ProjectAllocationEntry[] = [];
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
@@ -38,7 +38,7 @@ export class ProjectAllocationComponent implements OnInit {
   };
   optionSelected: string = '';
   selectedProjectName!: string;
-  selectedSubcontractProject!: any;
+  selectedSubcontractProject!: ProjectAllocationEntry | undefined;
   allocationsColumns: any[] = [];
   userAllocationsPreferences: UserPreference = {};
   tableKey: string = 'Allocations'
@@ -97,24 +97,14 @@ export class ProjectAllocationComponent implements OnInit {
     localStorage.setItem('userPreferences', JSON.stringify(userAllocationsPreferences));
   }
 
-  showModal(option: string, projectName?: any) {
-    this.optionSelected = option;
-
-    if (option === this.option.edit && projectName != null) {
-      const entry = this.allocations.find((a) => a.projectName === projectName);
-      if (entry) {
-        this.allocationForm.setValue({
-          projectName: entry.projectName,
-          percentage: entry.percentage,
-          amount: entry.amount,
-        });
-        this.selectedProjectName = entry.projectName;
+  handleEmployeeTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      const projectAllocationEntry = this.allocations.find( allocation => allocation.id === event.data);
+      if (projectAllocationEntry) {
+        this.selectedSubcontractProject = projectAllocationEntry;
       }
     }
-    if (option === this.option.delete) {
-      this.selectedSubcontractProject = this.allocations.find(alc => alc.id === projectName);
-    }
-    this.modalType = option;
     this.visibleModal.set(true);
   }
 

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, inject, Input, OnChanges, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
@@ -13,8 +13,8 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class ProjectAllocationModalComponent {
 
-  @Input() subcontractProject!: SubcontractProject;
-
+  @Input() subcontractProject!: any;
+  @Input() modalType!: string;
   @Output() onSave = new EventEmitter<any>();
   @Output() onClose = new EventEmitter<void>();
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
@@ -49,9 +49,14 @@ export class ProjectAllocationModalComponent {
   }
 
   closeModal(): void {
+    this.isProjectAllocationVisibleModal.emit(false);
   }
 
-  removeSubcontractYear() {
+  get isCreateMode(): boolean {
+    return this.modalType !== 'delete';
+  }
+
+  removeSubcontractProject() {
     if (this.subcontractProject) {
       this.isSubcontractProjectPerformigAction = true;
       this.subcontractProjectUtils.deleteSubcontractProject(this.subcontractProject.id).subscribe({

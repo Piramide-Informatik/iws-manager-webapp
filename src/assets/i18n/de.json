@@ -456,7 +456,9 @@
       "REMOVE_SUBCONTRACT_QUESTION": "Möchten Sie den Untervertrag wirklich löschen",
       "DELETE_SUBCONTRACT": "Untervertrag löschen",
       "REMOVE_SUBCONTRACT_YEAR_QUESTION": "Möchten Sie das Untervertragsjahr wirklich löschen",
-      "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen"
+      "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
+      "REMOVE_SUBCONTRACT_PROJECT_QUESTION": "Möchten Sie das Unterouftrag Projekt wirklich löschen",
+      "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen"
     },
     "TABLE": {
       "ORDER_TITLE": "Autrag",

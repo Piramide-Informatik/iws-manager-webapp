@@ -3,16 +3,17 @@
 
   <master-data-genaral-table [tableId]="tableKey" [tableValues]="allocations" [columns]="allocationsColumns"
     [userPreferences]="userAllocationsPreferences" [dataKeys]="dataKeys" removeKey="id"
-    (onColumnChanges)="onUserAllocationsPreferencesChanges($event)" (onCreateRegister)="showModal(option.new)"
-    (onEditRegister)="showModal(option.edit, $event.projectName)"
-    (onDeleteRegister)="showModal(option.delete, $event)"></master-data-genaral-table>
+    (onColumnChanges)="onUserAllocationsPreferencesChanges($event)" 
+    (onCreateRegister)="handleEmployeeTableEvents({ type: 'create'})"
+    (onEditRegister)="handleEmployeeTableEvents({ type: 'edit', data: $event })"
+    (onDeleteRegister)="handleEmployeeTableEvents({ type: 'delete', data: $event })"></master-data-genaral-table>
 
 </p-card>
 <div class="card">
   <p-dialog
-    [header]="modalType === 'Delete' 
+    [header]="modalType === 'delete' 
                 ?  ('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT' | translate)  
-                : modalType === 'Create' 
+                : modalType === 'create' 
                   ? ('SUB-CONTRACTS.PROJECT.MODAL_TITLE_NEW' | translate) 
                   : ('SUB-CONTRACTS.PROJECT.MODAL_TITLE_EDIT' | translate) "
     (onHide)="closeModal()"
@@ -22,6 +23,7 @@
   >
     <app-project-allocation-modal 
       [subcontractProject]="selectedSubcontractProject"
+      [modalType]="modalType"
       (isProjectAllocationVisibleModal)="onSubcontractProjectModalVisible($event)"
       (subcontractProjectDeleted)="onSubcontractProjecteDeleted($event)"
     ></app-project-allocation-modal>
