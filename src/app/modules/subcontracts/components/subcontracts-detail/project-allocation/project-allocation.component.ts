@@ -1,51 +1,41 @@
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Table } from 'primeng/table';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table'; 
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
+import { SubcontractProject } from '../../../../../Entities/subcontract-project';
+import { MessageService } from 'primeng/api';
 import { SubcontractProjectUtils } from '../../../utils/subcontract-project.utils';
 import { ActivatedRoute } from '@angular/router';
-import { SubcontractProject } from '../../../../../Entities/subcontract-project';
-
-interface ProjectAllocationEntry {
-  id: number;
-  projectName: string;
-  percentage: number;
-  amount: number;
-}
 
 @Component({
   selector: 'app-project-allocation',
   standalone: false,
   templateUrl: './project-allocation.component.html',
   styleUrl: './project-allocation.component.scss',
+  providers: [MessageService]
 })
-export class ProjectAllocationComponent implements OnInit {
-  private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils)
-  allocationForm!: FormGroup;
-  allocations: ProjectAllocationEntry[] = [];
+export class ProjectAllocationComponent implements OnInit, OnDestroy {
+
+  private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
+  private readonly messageService = inject(MessageService);
+
+  modalType: 'create' | 'delete' | 'edit' = 'create';
+  public currentSubcontractProject!: SubcontractProject | null;
+  public subcontractProjectList!: SubcontractProject[];
+  private subscription!: Subscription;
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
+  visibleModal: boolean = false;
 
-  visibleModal = signal(false);
-  option = {
-    new: 'New',
-    edit: 'Edit',
-    delete: 'Delete'
-  };
   optionSelected: string = '';
-  selectedProjectName!: string;
-  selectedSubcontractProject!: ProjectAllocationEntry | undefined;
   allocationsColumns: any[] = [];
   userAllocationsPreferences: UserPreference = {};
   tableKey: string = 'Allocations'
-  modalType!: string;
-  dataKeys = ['projectName', 'percentage', 'amount'];
+  dataKeys = ['projectLabel', 'share', 'amount'];
   subcontractId!: number;
-  private langSubscription!: Subscription;
 
   constructor(
     private readonly userPreferenceService: UserPreferenceService,
@@ -53,33 +43,28 @@ export class ProjectAllocationComponent implements OnInit {
     private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
-     this.route.params.subscribe(params => {
+
+    this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
-      this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe( sc => {
-        this.allocations = sc.reduce((acc: any[], curr: SubcontractProject) => {
+      this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe(sc => {
+        this.subcontractProjectList = sc.reduce((acc: any[], curr: SubcontractProject) => {
           acc.push({
             id: curr.id,
-            projectName: curr.project?.projectName,
-            percentage: curr.project?.shareResearch,
+            project: {
+              projectLabel: curr.project?.projectLabel,
+            },
+            share: curr.share,
             amount: curr.amount ?? 0
           });
           return acc;
         }, []);
-      })  
-    })
-
-
-    this.allocationForm = new FormGroup({
-      projectName: new FormControl('', Validators.required),
-      percentage: new FormControl('', Validators.required),
-      amount: new FormControl('', Validators.required),
+      })
     });
 
     this.loadColumns()
     this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
     this.loading = false;
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+    this.subscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumns();
       this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
     });
@@ -87,61 +72,79 @@ export class ProjectAllocationComponent implements OnInit {
 
   loadColumns() {
     this.allocationsColumns = [
-      { field: 'projectName', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
-      { field: 'percentage', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
+      { field: 'project.projectLabel', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
+      { field: 'share', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
       { field: 'amount', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
     ];
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onUserAllocationsPreferencesChanges(userAllocationsPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userAllocationsPreferences));
   }
 
-  handleEmployeeTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      const projectAllocationEntry = this.allocations.find( allocation => allocation.id === event.data);
-      if (projectAllocationEntry) {
-        this.selectedSubcontractProject = projectAllocationEntry;
-      }
-    }
-    this.visibleModal.set(true);
-  }
-
   closeModal() {
-    this.visibleModal.set(false);
-    this.allocationForm.reset();
+    this.visibleModal = false;
     this.optionSelected = '';
   }
 
-  saveAllocation() {
-    if (this.allocationForm.invalid) return;
-
-    const data = this.allocationForm.value;
-
-    if (this.optionSelected === this.option.new) {
-      this.allocations.push(data);
-    } else if (this.optionSelected === this.option.edit) {
-      this.allocations = this.allocations.map((entry) =>
-        entry.projectName === this.selectedProjectName ? data : entry
-      );
+  handleSubcontractProjectTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
+    this.modalType = event.type;
+    console.log("Modal type: ", this.modalType)
+    if (event.type === 'edit') {
+      this.optionSelected = "EDIT"
+      this.currentSubcontractProject = event.data;
+    }
+    if (event.type === 'delete') {
+      this.optionSelected = "DELETE";
+      const tempSubcontractProject = this.subcontractProjectList.find((subcontractproject) => subcontractproject.id === Number(event.data));
+      if (tempSubcontractProject) {
+        this.currentSubcontractProject = tempSubcontractProject;
+      }
+    }
+    if (event.type === 'create') {
+      this.optionSelected = "NEW";
+      this.currentSubcontractProject = null;
     }
 
-    this.closeModal();
+    this.visibleModal = true;
   }
 
-  deleteAllocation(projectName: any) {
-    this.allocations = this.allocations.filter(
-      (entry) => entry.projectName !== projectName
-    );
+  public messageOperation(message: { severity: string, summary: string, detail: string }): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail))
+    })
   }
 
-  onSubcontractProjectModalVisible(isVisible: boolean) {
-    this.visibleModal.set(isVisible);
+  onSubcontractProjectDeleted(subcontractprojectId: number) {
+    this.subcontractProjectList = this.subcontractProjectList.filter(subcontractproject => subcontractproject.id !== subcontractprojectId);
+  }
+
+  onSubcontractProjectUpdated(updated: SubcontractProject): void {
+    const index = this.subcontractProjectList.findIndex(c => c.id === updated.id);
+    if (index !== -1) {
+      this.subcontractProjectList[index] = { ...updated };
+      this.subcontractProjectList = [...this.subcontractProjectList];
+    }
+  }
+
+  onSubcontractProjectCreated(newSubcontractProj: SubcontractProject) {
+    this.subcontractProjectList.unshift(newSubcontractProj);
+  }
+
+  onModalVisibilityChange(visible: any): void {
+    this.visibleModal = visible;
   }
 
   onSubcontractProjecteDeleted(subContractProject: SubcontractProject) {
-    this.allocations = this.allocations.filter( sp => sp.id !== subContractProject.id);
-    this.selectedSubcontractProject = undefined;
+    this.subcontractProjectList = this.subcontractProjectList.filter( sp => sp.id !== subContractProject.id);
+    console.log("subcontractprojLIST:", this.subcontractProjectList);
   }
 }
