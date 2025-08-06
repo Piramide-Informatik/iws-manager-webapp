@@ -46,7 +46,15 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
     this.allocationForm = this.fb.group({
       projectLabel: [''],
       percentage: [''],
-      amount: ['']
+      amount: [{ value: '', disabled: true }]
+    });
+
+    this.allocationForm.get('percentage')?.valueChanges.subscribe((share: number) => {
+      const invoiceGross = this.subcontractProject?.subcontract?.invoiceGross ?? 0;
+
+      const calculatedAmount = (share * invoiceGross).toFixed(2);
+
+      this.allocationForm.get('amount')?.setValue(calculatedAmount, { emitEvent: false });
     });
   }
 
@@ -106,11 +114,14 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
     if (!this.subcontractProject) return;
 
     const raw = this.allocationForm.value;
+    const share = Number(raw.percentage);
+    const invoiceGross = this.subcontractProject.subcontract?.invoiceGross ?? 0;
+    const amount = share * invoiceGross;
 
     const updatedProject: SubcontractProject = {
       ...this.subcontractProject,
-      share: Number(raw.percentage),
-      amount: Number(raw.amount)
+      share,
+      amount
     };
 
     this.isSubcontractProjectPerformigAction = true;
