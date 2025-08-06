@@ -155,7 +155,12 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isDeletingSubcontract = false;
-          this.commonMessageService.showErrorDeleteMessage();
+          if(error.message.includes('have associated subcontract projects') || 
+             error.message.includes('have associated subcontract years')){
+            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
         }
       });
     }
