@@ -1,10 +1,14 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
+import { Customer } from '../../../../Entities/customer';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { EmploymentContract } from '../../../../Entities/employment-contract';
 
 @Component({
   selector: 'app-contract-details',
@@ -17,10 +21,13 @@ export class ContractDetailsComponent implements OnDestroy {
   private readonly subscription = new Subscription();
   private readonly translate = inject(TranslateService);
   private readonly messageService = inject(MessageService);
-  private readonly employeeContractUtils = inject(EmploymentContractUtils)
+  private readonly employeeContractUtils = inject(EmploymentContractUtils);
+  private readonly customerUtils = inject(CustomerUtils);
+  private readonly route = inject(ActivatedRoute);
 
   public showOCCErrorModalContract = false;
 
+  @Input() currentCustomer!: Customer | undefined;
   ContractDetailsForm!: FormGroup;
   @Input() modalType: string = "create";
   employeeNumber: any;
@@ -31,7 +38,7 @@ export class ContractDetailsComponent implements OnDestroy {
 
   isLoading = false;
   errorMsg: string | null = null;
-  @Output() onContractCreated = new EventEmitter<number>();
+  @Output() onContractCreated = new EventEmitter<EmploymentContract>();
 
   constructor( private readonly commonMessageService: CommonMessagesService) {}
 
@@ -43,11 +50,25 @@ export class ContractDetailsComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    if (!this.ContractDetailsForm) {
-      this.initContractDetailsForm();
+    this.initContractDetailsForm();
+    if (this.modalType === 'create') {
+      this.getCurrentCustomer();
     }
   }
 
+  private getCurrentCustomer(): void {
+    this.route.params.subscribe(params => {
+      const customerId = params['id'];
+      if (customerId) {
+        this.subscription.add(
+          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+            this.currentCustomer = customer;
+          })
+        );
+      }
+    });
+  }
+  
   private initContractDetailsForm(): void {
     this.ContractDetailsForm = new FormGroup({
       datum: new FormControl('', []),
@@ -83,6 +104,20 @@ export class ContractDetailsComponent implements OnDestroy {
     this.isLoading = true;
     this.errorMsg = null;
 
+    if (!this.currentCustomer) {
+      const customerId = this.route.snapshot.paramMap.get('id');
+      if (customerId) {
+        this.customerUtils.getCustomerById(Number(customerId)).subscribe(customer => {
+          this.currentCustomer = customer;
+          this._doCreateWorkContract();
+        });
+        return;
+      }
+    }
+    this._doCreateWorkContract();
+  }
+
+  private _doCreateWorkContract() {
     const newWorkContract = {
       startDate: this.ContractDetailsForm.value.datum,
       salaryPerMonth: this.ContractDetailsForm.value.gehalt ?? '',
@@ -93,13 +128,13 @@ export class ContractDetailsComponent implements OnDestroy {
       maxHoursPerDay: this.ContractDetailsForm.value.maxstudentag ?? '',
       hourlyRate: this.ContractDetailsForm.value.stundensatz ?? '',
       employee: this.ContractDetailsForm.value.employeNro,
-      customer: this.workContract?.customer ?? null
+      customer: this.currentCustomer ?? null
     };
 
     this.employeeContractUtils.createNewEmploymentContract(newWorkContract).subscribe({
-      next: () => {
+      next: (createdContract) => {
         this.isLoading = false;
-        this.onContractCreated.emit(this.ContractDetailsForm.value.employeNro);
+        this.onContractCreated.emit(createdContract);
         this.isVisibleModal.emit(false);
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.ContractDetailsForm.reset();
