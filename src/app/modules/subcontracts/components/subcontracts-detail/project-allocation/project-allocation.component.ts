@@ -1,5 +1,4 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
@@ -142,5 +141,10 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   onModalVisibilityChange(visible: any): void {
     this.visibleModal = visible;
+  }
+
+  onSubcontractProjecteDeleted(subContractProject: SubcontractProject) {
+    this.subcontractProjectList = this.subcontractProjectList.filter( sp => sp.id !== subContractProject.id);
+    console.log("subcontractprojLIST:", this.subcontractProjectList);
   }
 }

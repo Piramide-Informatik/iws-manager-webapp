@@ -10,7 +10,6 @@
   </master-data-genaral-table>
 
 </p-card>
-
 <div class="card">
   <p-dialog [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
     (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
@@ -19,7 +18,7 @@
       [subcontractProject]="currentSubcontractProject" [isVisibleModal]="visibleModal"
       (onMessageOperation)="messageOperation($event)"
       (isProjectAllocationVisibleModal)="onModalVisibilityChange($event)"
-      (onSubcontractProjectDeleted)="onSubcontractProjectDeleted($event)" 
+      (onSubcontractProjectDeleted)="onSubcontractProjecteDeleted($event)" 
       (SubcontractProjectUpdated)="onSubcontractProjectUpdated($event)"
       (onSubcontractProjectCreated)="onSubcontractProjectCreated($event)">
     </app-project-allocation-modal>
