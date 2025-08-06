@@ -312,20 +312,21 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   onContractCreated(newContract: any) {
     if (newContract) {
-      this.contracts = [...this.contracts, {
-        id: newContract.id,
-        employeeId: newContract.employee?.id,
-        firstName: newContract.employee?.firstname,
-        lastName: newContract.employee?.lastname,
-        startDate: newContract.startDate,
-        salaryPerMonth: newContract.salaryPerMonth,
-        weeklyHours: newContract.hoursPerWeek,
-        worksShortTime: newContract.workShortTime,
-        specialPayment: newContract.specialPayment,
-        maxHrspPerMonth: newContract.maxHoursPerMonth,
-        maxHrsPerDay: newContract.maxHoursPerDay,
-        hourlyRate: newContract.hourlyRate
-      }];
+    const contractObj = {
+      id: newContract.id,
+      employeeId: newContract.employee?.id,
+      firstName: newContract.employee?.firstname,
+      lastName: newContract.employee?.lastname,
+      startDate: newContract.startDate,
+      salaryPerMonth: newContract.salaryPerMonth,
+      weeklyHours: newContract.hoursPerWeek,
+      worksShortTime: newContract.workShortTime,
+      specialPayment: newContract.specialPayment,
+      maxHrspPerMonth: newContract.maxHoursPerMonth,
+      maxHrsPerDay: newContract.maxHoursPerDay,
+      hourlyRate: newContract.hourlyRate
+    };
+    this.contracts.unshift(contractObj);
     }
   }
 }
