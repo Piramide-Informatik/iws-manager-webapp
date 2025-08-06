@@ -36,7 +36,7 @@ export class ContractDetailsComponent implements OnDestroy {
   ContractDetailsForm!: FormGroup;
   @Input() modalType: string = "create";
   employeeNumber: any;
-  private employeesMap: Map<number, any> = new Map();
+  private readonly employeesMap: Map<number, any> = new Map();
   employeeOptions: any[] = [];
   @Input() workContract!: any;
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -51,9 +51,7 @@ export class ContractDetailsComponent implements OnDestroy {
 
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -61,24 +59,20 @@ export class ContractDetailsComponent implements OnDestroy {
     if (this.modalType === 'create') {
       this.getCurrentCustomer();
     }
-    if (this.currentCustomer && this.currentCustomer.id) {
-      this.loadEmployeesByCustomer(this.currentCustomer.id);
-    }
+    this.currentCustomer?.id && this.loadEmployeesByCustomer(this.currentCustomer.id);
   }
 
   private getCurrentCustomer(): void {
     this.route.params.subscribe(params => {
       const customerId = params['id'];
-      if (customerId) {
-        this.subscription.add(
-          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
-            this.currentCustomer = customer;
-            if (customer && customer.id) {
-              this.loadEmployeesByCustomer(customer.id);
-            }
-          })
-        );
-      }
+    if (customerId) {
+      this.subscription.add(
+        this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+          this.currentCustomer = customer;
+          customer?.id && this.loadEmployeesByCustomer(customer.id);
+        })
+      );
+    }
     });
 
   }
