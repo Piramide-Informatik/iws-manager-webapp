@@ -1,9 +1,10 @@
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms'; 
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-project-allocation-modal',
@@ -11,14 +12,13 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   templateUrl: './project-allocation-modal.component.html',
   styleUrl: './project-allocation-modal.component.scss'
 })
-export class ProjectAllocationModalComponent implements OnChanges {
+export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
 
   @Input() visible = false;
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() subcontractProject: any | null = null;
   @Input() isVisibleModal: boolean = false;
 
-  // @Input() subcontractProject!: any;
   @Output() onSave = new EventEmitter<any>();
   @Output() onClose = new EventEmitter<void>();
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
@@ -29,11 +29,17 @@ export class ProjectAllocationModalComponent implements OnChanges {
 
   private readonly subcontractProjectUtils = inject(SubcontractProjectUtils);
   private readonly translate = inject(TranslateService);
+  private readonly subscription = new Subscription();
+
   isSubcontractProjectPerformigAction: boolean = false
   public allocationForm!: FormGroup;
 
   constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.initializeForm();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private initializeForm(): void {
@@ -45,19 +51,37 @@ export class ProjectAllocationModalComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("SubcontractProject: ", this.subcontractProject)
-
     if (changes['subcontractProject'] && this.subcontractProject && this.modalType === 'edit') {
-      this.allocationForm.patchValue({
-        projectLabel: this.subcontractProject.project?.projectLabel ?? '',
-        percentage: this.subcontractProject.share ?? '',
-        amount: this.subcontractProject.amount ?? ''
+      this.isSubcontractProjectPerformigAction = true;
+
+      const sub = this.subcontractProjectUtils.getSubcontractProjectById(this.subcontractProject.id).subscribe({
+        next: (fullProject: SubcontractProject | undefined) => {
+          if (!fullProject) {
+            this.isSubcontractProjectPerformigAction = false;
+            return;
+          }
+
+          this.subcontractProject = fullProject;
+
+          this.allocationForm.patchValue({
+            projectLabel: fullProject.project?.projectLabel ?? '',
+            percentage: fullProject.share ?? '',
+            amount: fullProject.amount ?? ''
+          });
+
+          this.isSubcontractProjectPerformigAction = false;
+        },
+        error: () => {
+          this.isSubcontractProjectPerformigAction = false;
+        }
       });
+
+      this.subscription.add(sub);
     }
 
     if (this.modalType === 'create') {
       this.allocationForm.reset();
-    } 
+    }
   }
 
   onSubmit(): void {
@@ -69,12 +93,42 @@ export class ProjectAllocationModalComponent implements OnChanges {
     const formData = this.allocationForm.value;
 
     if (this.modalType === 'edit' && this.subcontractProject) {
-      
+      this.updateSubcontractProject();
     } else if (this.modalType === 'create') {
-
+      this.createSubcontractProject();
     }
-    
     this.onSave.emit(formData);
+  }
+
+  private createSubcontractProject(): void { }
+
+  private updateSubcontractProject(): void {
+    if (!this.subcontractProject) return;
+
+    const raw = this.allocationForm.value;
+
+    const updatedProject: SubcontractProject = {
+      ...this.subcontractProject,
+      share: Number(raw.percentage),
+      amount: Number(raw.amount)
+    };
+
+    this.isSubcontractProjectPerformigAction = true;
+
+    this.subscription.add(
+      this.subcontractProjectUtils.updateSubcontractProject(updatedProject).subscribe({
+        next: (updated: SubcontractProject) => {
+          this.isSubcontractProjectPerformigAction = false;
+          this.SubcontractProjectUpdated.emit(updated);
+          this.commonMessageService.showEditSucessfullMessage();
+          this.isProjectAllocationVisibleModal.emit(false);
+        },
+        error: () => {
+          this.isSubcontractProjectPerformigAction = false;
+          this.commonMessageService.showErrorEditMessage();
+        }
+      })
+    );
   }
 
   closeModal(): void {
