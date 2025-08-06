@@ -27,18 +27,20 @@
       <form [formGroup]="depreciationForm" (ngSubmit)="onSubmit()">
         <div class="form-item-container flex gap-4 mb-3">
           <label for="year" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
-          <input
-            pInputText
-            id="year"
+          <p-datepicker 
             formControlName="year"
-            autocomplete="off"
+            inputId="year"
+            view="year"
+            dateFormat="yy"
+            appendTo="body"
+            showIcon
+            showClear
           />
         </div>
         <div class="form-item-container flex gap-4 mb-3">
           <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
-          <input
-            pInputText
-            id="months"
+          <p-inputnumber
+            inputId="months"
             formControlName="months"
             autocomplete="off"
           />
