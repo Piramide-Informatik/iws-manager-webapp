@@ -72,10 +72,10 @@ export class ContractDetailsComponent implements OnDestroy {
   private initContractDetailsForm(): void {
     this.ContractDetailsForm = new FormGroup({
       datum: new FormControl('', []),
-      gehalt: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^[0-9]{1,5}(\.[0-9]{1,2})?$/)]),
-      wochenstunden: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^[0-9]{1,5}(\.[0-9]{1,2})?$/)]),
-      kurz: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^[0-9]{1,5}(\.[0-9]{1,2})?$/)]),
-      jahresauszahlung: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^[0-9]{1,5}(\.[0-9]{1,2})?$/)]),
+      gehalt: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      wochenstunden: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      kurz: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      jahresauszahlung: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
       maxstudenmonat: new FormControl(null, []),
       maxstudentag: new FormControl(null, []),
       stundensatz: new FormControl(null, []),
