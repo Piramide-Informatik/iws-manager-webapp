@@ -34,12 +34,15 @@ export class ProjectAllocationComponent implements OnInit {
   option = {
     new: 'New',
     edit: 'Edit',
+    delete: 'Delete'
   };
   optionSelected: string = '';
   selectedProjectName!: string;
+  selectedSubcontractProject!: ProjectAllocationEntry | undefined;
   allocationsColumns: any[] = [];
   userAllocationsPreferences: UserPreference = {};
   tableKey: string = 'Allocations'
+  modalType!: string;
   dataKeys = ['projectName', 'percentage', 'amount'];
   subcontractId!: number;
   private langSubscription!: Subscription;
@@ -94,21 +97,14 @@ export class ProjectAllocationComponent implements OnInit {
     localStorage.setItem('userPreferences', JSON.stringify(userAllocationsPreferences));
   }
 
-  showModal(option: string, projectName?: string) {
-    this.optionSelected = option;
-
-    if (option === this.option.edit && projectName != null) {
-      const entry = this.allocations.find((a) => a.projectName === projectName);
-      if (entry) {
-        this.allocationForm.setValue({
-          projectName: entry.projectName,
-          percentage: entry.percentage,
-          amount: entry.amount,
-        });
-        this.selectedProjectName = entry.projectName;
+  handleEmployeeTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      const projectAllocationEntry = this.allocations.find( allocation => allocation.id === event.data);
+      if (projectAllocationEntry) {
+        this.selectedSubcontractProject = projectAllocationEntry;
       }
     }
-
     this.visibleModal.set(true);
   }
 
@@ -138,5 +134,14 @@ export class ProjectAllocationComponent implements OnInit {
     this.allocations = this.allocations.filter(
       (entry) => entry.projectName !== projectName
     );
+  }
+
+  onSubcontractProjectModalVisible(isVisible: boolean) {
+    this.visibleModal.set(isVisible);
+  }
+
+  onSubcontractProjecteDeleted(subContractProject: SubcontractProject) {
+    this.allocations = this.allocations.filter( sp => sp.id !== subContractProject.id);
+    this.selectedSubcontractProject = undefined;
   }
 }
