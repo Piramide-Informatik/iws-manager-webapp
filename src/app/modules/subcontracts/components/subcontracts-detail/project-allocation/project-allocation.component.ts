@@ -25,7 +25,7 @@ interface ProjectAllocationEntry {
 export class ProjectAllocationComponent implements OnInit {
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils)
   allocationForm!: FormGroup;
-  allocations: ProjectAllocationEntry[] = [];
+  allocations: any[] = [];
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
@@ -34,12 +34,15 @@ export class ProjectAllocationComponent implements OnInit {
   option = {
     new: 'New',
     edit: 'Edit',
+    delete: 'Delete'
   };
   optionSelected: string = '';
   selectedProjectName!: string;
+  selectedSubcontractProject!: any;
   allocationsColumns: any[] = [];
   userAllocationsPreferences: UserPreference = {};
   tableKey: string = 'Allocations'
+  modalType!: string;
   dataKeys = ['projectName', 'percentage', 'amount'];
   subcontractId!: number;
   private langSubscription!: Subscription;
@@ -94,7 +97,7 @@ export class ProjectAllocationComponent implements OnInit {
     localStorage.setItem('userPreferences', JSON.stringify(userAllocationsPreferences));
   }
 
-  showModal(option: string, projectName?: string) {
+  showModal(option: string, projectName?: any) {
     this.optionSelected = option;
 
     if (option === this.option.edit && projectName != null) {
@@ -108,7 +111,10 @@ export class ProjectAllocationComponent implements OnInit {
         this.selectedProjectName = entry.projectName;
       }
     }
-
+    if (option === this.option.delete) {
+      this.selectedSubcontractProject = this.allocations.find(alc => alc.id === projectName);
+    }
+    this.modalType = option;
     this.visibleModal.set(true);
   }
 
@@ -138,5 +144,14 @@ export class ProjectAllocationComponent implements OnInit {
     this.allocations = this.allocations.filter(
       (entry) => entry.projectName !== projectName
     );
+  }
+
+  onSubcontractProjectModalVisible(isVisible: boolean) {
+    this.visibleModal.set(isVisible);
+  }
+
+  onSubcontractProjecteDeleted(subContractProject: SubcontractProject) {
+    this.allocations = this.allocations.filter( sp => sp.id !== subContractProject.id);
+    this.selectedSubcontractProject = undefined;
   }
 }

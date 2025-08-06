@@ -2,19 +2,28 @@
   <ng-template #title>{{ 'SUB-CONTRACTS.PROJECT.TABLE_NAME' | translate }}</ng-template>
 
   <master-data-genaral-table [tableId]="tableKey" [tableValues]="allocations" [columns]="allocationsColumns"
-    [userPreferences]="userAllocationsPreferences" [dataKeys]="dataKeys" removeKey="projectName"
+    [userPreferences]="userAllocationsPreferences" [dataKeys]="dataKeys" removeKey="id"
     (onColumnChanges)="onUserAllocationsPreferencesChanges($event)" (onCreateRegister)="showModal(option.new)"
     (onEditRegister)="showModal(option.edit, $event.projectName)"
-    (onDeleteRegister)="deleteAllocation($event)"></master-data-genaral-table>
+    (onDeleteRegister)="showModal(option.delete, $event)"></master-data-genaral-table>
 
 </p-card>
-
 <div class="card">
-  <p-dialog 
-  [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
-    (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
-    <hr class="mt-0" />
-    <app-project-allocation-modal
+  <p-dialog
+    [header]="modalType === 'Delete' 
+                ?  ('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT' | translate)  
+                : modalType === 'Create' 
+                  ? ('SUB-CONTRACTS.PROJECT.MODAL_TITLE_NEW' | translate) 
+                  : ('SUB-CONTRACTS.PROJECT.MODAL_TITLE_EDIT' | translate) "
+    (onHide)="closeModal()"
+    [modal]="true"
+    [(visible)]="visibleModal"
+    [style]="{ width: '40rem' }"
+  >
+    <app-project-allocation-modal 
+      [subcontractProject]="selectedSubcontractProject"
+      (isProjectAllocationVisibleModal)="onSubcontractProjectModalVisible($event)"
+      (subcontractProjectDeleted)="onSubcontractProjecteDeleted($event)"
     ></app-project-allocation-modal>
   </p-dialog>
 </div>
