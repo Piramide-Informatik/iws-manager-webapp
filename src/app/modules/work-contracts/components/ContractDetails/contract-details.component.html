@@ -1,54 +1,111 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
    <form [formGroup]="ContractDetailsForm" (ngSubmit)="onSubmit()">
     <div class="create-employee-contract-form align-items-center mb-2 mt-4">
-      <div class="form-container flex align-items-center mb-6">
+      <div class="form-container flex align-items-center mb-6">      
+        <div class="contract_input">
+          <label for="employeNro">Employee</label>
+          <p-select inputId="employeNro" formControlName="employeNro" [options]="" showClear=""
+            emptyMessage=""></p-select>
+        </div>
+        <div class="contract_input">
+          <label for="firstName">{{ 'EMPLOYEE-CONTRACTS.FORM.FIRST_NAME' | translate }}</label>
+          <input pInputText type="text" id="firstName" formControlName="firstName" autocomplete="off">
+        </div>
+        <div class="contract_input">
+          <label for="lastName">{{ 'EMPLOYEE-CONTRACTS.FORM.LAST_NAME' | translate }}</label>
+          <input pInputText type="text" id="lastName" formControlName="lastName" autocomplete="off">
+        </div>
         <div class="contract_input contract_name mb-2">
           <label for="datum">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
           <p-datepicker id="datum"
                         formControlName="datum"
                         [showIcon]="true"
                         iconDisplay="input"
-                        dateFormat="dd.mm.yy">
+                        dateFormat="dd.mm.yy"
+                        [ngClass]="{'ng-invalid': ContractDetailsForm.get('datum')?.invalid && ContractDetailsForm.get('datum')?.dirty && ContractDetailsForm.get('datum')?.touched}">
           </p-datepicker>
+          <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('datum')?.invalid && ContractDetailsForm.get('datum')?.dirty">
+            {{ 'ERROR.DATE_FORMAT_ERROR' | translate }}
+          </p-message>
         </div>
         <div class="contract_input mb-2">
           <label for="gehalt">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
-          <input pInputText type="number" id="gehalt" formControlName="gehalt" autocomplete="off" />
+          <div>
+            <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="gehalt" formControlName="gehalt" autocomplete="off"
+              [ngClass]="{'ng-invalid': ContractDetailsForm.get('gehalt')?.invalid && ContractDetailsForm.get('gehalt')?.dirty && ContractDetailsForm.get('gehalt')?.touched}" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('gehalt')?.invalid && ContractDetailsForm.get('gehalt')?.dirty && ContractDetailsForm.get('gehalt')!.hasError('pattern')">
+              {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input mb-2">
           <label for="wochenstunden">{{ 'EMPLOYEE-CONTRACTS.FORM.WEEKLY_HOURS' | translate }}</label>
-          <input pInputText type="number" id="wochenstunden" formControlName="wochenstunden" autocomplete="off" />
+          <div>
+            <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="wochenstunden" formControlName="wochenstunden" autocomplete="off"
+              [ngClass]="{'ng-invalid': ContractDetailsForm.get('wochenstunden')?.invalid && ContractDetailsForm.get('wochenstunden')?.dirty && ContractDetailsForm.get('wochenstunden')?.touched}" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('wochenstunden')?.invalid && ContractDetailsForm.get('wochenstunden')?.dirty && ContractDetailsForm.get('wochenstunden')!.hasError('pattern')">
+              {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input mb-2">
           <label for="kurz">{{ 'EMPLOYEE-CONTRACTS.FORM.WORK_SHORT_TIME' | translate }}</label>
-          <input pInputText type="text" id="kurz" formControlName="kurz" autocomplete="off" />
+          <div>
+            <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="kurz" formControlName="kurz" autocomplete="off"
+              [ngClass]="{'ng-invalid': ContractDetailsForm.get('kurz')?.invalid && ContractDetailsForm.get('kurz')?.dirty && ContractDetailsForm.get('kurz')?.touched}" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('kurz')?.invalid && ContractDetailsForm.get('kurz')?.dirty && ContractDetailsForm.get('kurz')!.hasError('pattern')">
+              {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input mb-2">
           <label for="jahresauszahlung">{{ 'EMPLOYEE-CONTRACTS.FORM.SPECIAL_PAYMENT' | translate }}</label>
-          <input pInputText type="number" id="jahresauszahlung" formControlName="jahresauszahlung" autocomplete="off" />
+          <div>
+            <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="jahresauszahlung" formControlName="jahresauszahlung" autocomplete="off"
+              [ngClass]="{'ng-invalid': ContractDetailsForm.get('jahresauszahlung')?.invalid && ContractDetailsForm.get('jahresauszahlung')?.dirty && ContractDetailsForm.get('jahresauszahlung')?.touched}" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('jahresauszahlung')?.invalid && ContractDetailsForm.get('jahresauszahlung')?.dirty && ContractDetailsForm.get('jahresauszahlung')!.hasError('pattern')">
+              {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input mb-2">
           <label for="maxstudenmonat">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
-          <input pInputText type="number" id="maxstudenmonat" formControlName="maxstudenmonat" autocomplete="off" />
+          <div>
+            <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxstudenmonat" formControlName="maxstudenmonat" autocomplete="off"
+              [ngClass]="{'ng-invalid': ContractDetailsForm.get('maxstudenmonat')?.invalid && ContractDetailsForm.get('maxstudenmonat')?.dirty && ContractDetailsForm.get('maxstudenmonat')?.touched}" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('maxstudenmonat')?.invalid && ContractDetailsForm.get('maxstudenmonat')?.dirty && ContractDetailsForm.get('maxstudenmonat')!.hasError('pattern')">
+              {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input mb-2">
           <label for="maxstudentag">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
-          <input pInputText type="number" id="maxstudentag" formControlName="maxstudentag" autocomplete="off" />
+          <div>
+            <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxstudentag" formControlName="maxstudentag" autocomplete="off"
+              [ngClass]="{'ng-invalid': ContractDetailsForm.get('maxstudentag')?.invalid && ContractDetailsForm.get('maxstudentag')?.dirty && ContractDetailsForm.get('maxstudentag')?.touched}" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('maxstudentag')?.invalid && ContractDetailsForm.get('maxstudentag')?.dirty && ContractDetailsForm.get('maxstudentag')!.hasError('pattern')">
+              {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input mb-2">
           <label for="stundensatz">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
-          <input pInputText type="number" id="stundensatz" formControlName="stundensatz" autocomplete="off" />
+          <div>
+            <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="stundensatz" formControlName="stundensatz" autocomplete="off"
+              [ngClass]="{'ng-invalid': ContractDetailsForm.get('stundensatz')?.invalid && ContractDetailsForm.get('stundensatz')?.dirty && ContractDetailsForm.get('stundensatz')?.touched}" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('stundensatz')?.invalid && ContractDetailsForm.get('stundensatz')?.dirty && ContractDetailsForm.get('stundensatz')!.hasError('pattern')">
+              {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            </p-message>
+          </div>
         </div>
       </div>
     </div>
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
-      @if(workContract) {
-        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
-      } @else {
-        <p-button class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"  />
-      }
-      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-      iconPos="left" (onClick)="goBackListContracts()"/>      
+      <p-button class="save" type="submit" [disabled]="!ContractDetailsForm.valid" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+      <ng-container *ngIf="workContract">
+        <p-button class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left" [style]="{ background: '#ef4444' }" />
+      </ng-container>
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" (onClick)="goBackListContracts()"/>      
     </div>
   </form>
 </ng-container>
