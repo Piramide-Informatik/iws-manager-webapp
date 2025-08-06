@@ -2,6 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { SubcontractService } from '../../../Services/subcontracts.service';
 import { Subcontract } from '../../../Entities/subcontract';
+import { SubcontractYearUtils } from './subcontract-year-utils';
+import { SubcontractProjectUtils } from './subcontract-project.utils';
+import { SubcontractProject } from '../../../Entities/subcontract-project';
+import { SubcontractYear } from '../../../Entities/subcontract-year';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -10,6 +14,8 @@ import { Subcontract } from '../../../Entities/subcontract';
  */
 export class SubcontractUtils {
   private readonly subcontractService = inject(SubcontractService);
+  private readonly subcontractYearUtils = inject(SubcontractYearUtils);
+  private readonly subcontractProjectUtils = inject(SubcontractProjectUtils);
   /**
   * Gets all subcontracts without any transformation
   * @returns Observable emitting the raw list of subcontracts
@@ -91,11 +97,22 @@ export class SubcontractUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteSubcontract(id: number): Observable<void> {
-    return this.subcontractService.deleteSubcontract(id).pipe(
-      catchError(error => {
-        console.log('Error delete subcontract', error)
-        return throwError(() => error);
-      })
+    return this.subcontractProjectUtils.getAllSubcontractsProject(id).pipe(
+      take(1),
+      switchMap((subcontractProjectList: SubcontractProject[]) => {
+        if(subcontractProjectList.length > 0){
+          return throwError(() => new Error('Cannot be deleted because have associated subcontract projects'));
+        }
+        return this.subcontractYearUtils.getAllSubcontractsYear(id);
+      }),
+      take(1),
+      switchMap((subcontractYearList: SubcontractYear[]) => {
+        if(subcontractYearList.length > 0){
+          return throwError(() => new Error('Cannot be deleted because have associated subcontract years'));
+        }
+        return this.subcontractService.deleteSubcontract(id);
+      }),
+      catchError(err => throwError(() => new Error(err.message || 'Error deleting subcontract')))
     );
   }
 
