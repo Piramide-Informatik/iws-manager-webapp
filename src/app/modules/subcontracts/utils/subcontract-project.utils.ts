@@ -80,7 +80,7 @@ export class SubcontractProjectUtils {
         }
 
         if (currentSubcontractProject.version !== subcontractProject.version) {
-          return throwError(() => new Error('Conflict detected: subcontract project person version mismatch'));
+          return throwError(() => new Error('Conflict detected: subcontract project version mismatch'));
         }
 
         return this.subcontractProjectService.updateSubcontractProject(subcontractProject);

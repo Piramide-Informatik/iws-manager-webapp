@@ -1,8 +1,8 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
-  <form [formGroup]="allocationForm" (ngSubmit)="saveAllocation()">
+  <form [formGroup]="allocationForm" (ngSubmit)="onSubmit()">
       <div class="form-item-container flex gap-4 mb-3">
-          <label for="projectName" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
-          <input pInputText id="projectName" class="flex-auto" formControlName="projectName" autocomplete="off" />
+          <label for="projectLabel" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
+          <input pInputText id="projectLabel" class="flex-auto" formControlName="projectLabel" autocomplete="off" />
       </div>
       <div class="form-item-container flex gap-4 mb-3">
           <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
@@ -13,8 +13,7 @@
           <input pInputText id="amount" class="flex-auto" formControlName="amount" autocomplete="off" />
       </div>
       <div class="flex justify-content-center gap-2">
-          <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" size="small"
-              (click)="saveAllocation()" (keydown.enter)="saveAllocation()"></p-button>
+          <p-button type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" size="small"></p-button>
   
           <p-button [label]="'BUTTONS.CANCEL' | translate" (click)="closeModal()" class="cancel" icon="pi pi-times"
               iconPos="left" size="small" (keydown.enter)="closeModal()"></p-button>
@@ -25,7 +24,7 @@
   <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4">
       {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_PROJECT_QUESTION' | translate }} 
-      <strong class="stronglock mt-1">"{{subcontractProject?.projectName}}"</strong>
+      <strong class="stronglock mt-1">"{{subcontractProject?.project.projectLabel}}"</strong>
       ?
     </p>
 

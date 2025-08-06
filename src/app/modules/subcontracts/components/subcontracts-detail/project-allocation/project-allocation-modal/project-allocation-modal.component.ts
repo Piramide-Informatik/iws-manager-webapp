@@ -1,5 +1,5 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms'; 
 import { TranslateService } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
@@ -11,15 +11,21 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   templateUrl: './project-allocation-modal.component.html',
   styleUrl: './project-allocation-modal.component.scss'
 })
-export class ProjectAllocationModalComponent {
+export class ProjectAllocationModalComponent implements OnChanges {
 
-  @Input() subcontractProject!: any;
-  @Input() modalType!: string;
+  @Input() visible = false;
+  @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
+  @Input() subcontractProject: any | null = null;
+  @Input() isVisibleModal: boolean = false;
+
+  // @Input() subcontractProject!: any;
   @Output() onSave = new EventEmitter<any>();
   @Output() onClose = new EventEmitter<void>();
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
-  @Output() subcontractProjectDeleted = new EventEmitter<SubcontractProject>();
-
+  @Output() onMessageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>()
+  @Output() SubcontractProjectUpdated = new EventEmitter<SubcontractProject>();
+  @Output() onSubcontractProjectCreated = new EventEmitter<SubcontractProject>();
+  @Output() onSubcontractProjectDeleted = new EventEmitter<SubcontractProject>();
 
   private readonly subcontractProjectUtils = inject(SubcontractProjectUtils);
   private readonly translate = inject(TranslateService);
@@ -32,19 +38,42 @@ export class ProjectAllocationModalComponent {
 
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
-      projectName: [''],
+      projectLabel: [''],
       percentage: [''],
       amount: ['']
     });
   }
 
-  saveAllocation(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("SubcontractProject: ", this.subcontractProject)
+
+    if (changes['subcontractProject'] && this.subcontractProject && this.modalType === 'edit') {
+      this.allocationForm.patchValue({
+        projectLabel: this.subcontractProject.project?.projectLabel ?? '',
+        percentage: this.subcontractProject.share ?? '',
+        amount: this.subcontractProject.amount ?? ''
+      });
+    }
+
+    if (this.modalType === 'create') {
+      this.allocationForm.reset();
+    } 
+  }
+
+  onSubmit(): void {
     if (this.allocationForm.invalid) {
       this.allocationForm.markAllAsTouched();
       return;
     }
 
     const formData = this.allocationForm.value;
+
+    if (this.modalType === 'edit' && this.subcontractProject) {
+      
+    } else if (this.modalType === 'create') {
+
+    }
+    
     this.onSave.emit(formData);
   }
 
@@ -61,7 +90,7 @@ export class ProjectAllocationModalComponent {
       this.isSubcontractProjectPerformigAction = true;
       this.subcontractProjectUtils.deleteSubcontractProject(this.subcontractProject.id).subscribe({
         next: () => {
-          this.subcontractProjectDeleted.emit(this.subcontractProject);
+          this.onSubcontractProjectDeleted.emit(this.subcontractProject);
           this.isProjectAllocationVisibleModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.isSubcontractProjectPerformigAction = false;
