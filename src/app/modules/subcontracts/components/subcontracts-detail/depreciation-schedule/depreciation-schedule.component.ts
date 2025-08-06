@@ -10,6 +10,7 @@ import { CommonMessagesService } from '../../../../../Services/common-messages.s
 import { ActivatedRoute } from '@angular/router';
 import { SubcontractYear } from '../../../../../Entities/subcontract-year';
 import { Subcontract } from '../../../../../Entities/subcontract';
+import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 
 interface DepreciationEntry {
   id: number;
@@ -83,7 +84,7 @@ export class DepreciationScheduleComponent implements OnInit {
 
   private inputMonthsChange(): void {
     this.depreciationForm.get('months')?.valueChanges.subscribe(value => {
-      const months = value ? Number(value) : 0;
+      const months = value ?? 0;
       const invoiceNet = this.currentSubcontract?.invoiceNet ?? 0;
       const afamonths = this.currentSubcontract?.afamonths ?? 0;
       const depreciationAmount = this.calculateDepreciationAmount(invoiceNet, afamonths, months);
@@ -97,7 +98,7 @@ export class DepreciationScheduleComponent implements OnInit {
 
   loadColumns() {
     this.depreciationColumns = [
-      { field: 'year', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')) },
+      { field: 'year', customClasses: ['align-right'], type: 'dateYear', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')) },
       { field: 'usagePercentage', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')) },
       { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')) },
     ];
@@ -111,7 +112,7 @@ export class DepreciationScheduleComponent implements OnInit {
     if (option === 'edit') {
       if (this.selectedSubcontractYear) {
         this.depreciationForm.patchValue({
-          year: this.selectedSubcontractYear.year,
+          year: momentCreateDate(this.selectedSubcontractYear.year),
           months: this.selectedSubcontractYear.usagePercentage,
           depreciationAmount: this.selectedSubcontractYear.depreciationAmount
         });
@@ -145,7 +146,7 @@ export class DepreciationScheduleComponent implements OnInit {
     const updatedSubcontractYear: SubcontractYear = {
       id: this.selectedSubcontractYear.id,
       year: this.depreciationForm.value.year,
-      months: Number(this.depreciationForm.value.months),
+      months: this.depreciationForm.value.months,
       subcontract: this.currentSubcontract, 
       createdAt: this.selectedSubcontractYear.createdAt,
       updatedAt: new Date().toISOString(),
@@ -170,7 +171,7 @@ export class DepreciationScheduleComponent implements OnInit {
     if (this.depreciationForm.invalid) return;
 
     const newSubcontractYear: Omit<SubcontractYear, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      year: this.depreciationForm.value.year,
+      year: momentFormatDate(this.depreciationForm.value.year),
       months: this.depreciationForm.value.months,
       subcontract: { 
         id: this.currentSubcontract.id,
@@ -180,16 +181,10 @@ export class DepreciationScheduleComponent implements OnInit {
     
     this.isLoading = true;
     this.subcontractYearUtils.createNewSubcontractYear(newSubcontractYear).subscribe({
-      next: (response: SubcontractYear) => {
+      next: () => {
         this.closeModal();
         this.commonMessageService.showCreatedSuccesfullMessage();
-        this.subcontractsYear.push({
-          id: response.id,
-          year: response.year,
-          usagePercentage: response.months,
-          depreciationAmount: this.calculateDepreciationAmount(this.currentSubcontract.invoiceNet, 
-            this.currentSubcontract.afamonths, response.months ?? 0)
-        } as DepreciationEntry);
+        this.loadSubcontractYears(this.subcontractId);
       },
       error: () => {
         this.isLoading = false;
@@ -221,7 +216,7 @@ export class DepreciationScheduleComponent implements OnInit {
       this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
         const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
         const afamonths = curr.subcontract?.afamonths ?? 0;
-        const subcontractsYearMonths = Number(curr.months);
+        const subcontractsYearMonths = curr.months;
         acc.push({
           id: curr.id,
           createdAt: curr.createdAt,

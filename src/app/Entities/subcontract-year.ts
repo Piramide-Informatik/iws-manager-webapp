@@ -6,7 +6,7 @@ export interface SubcontractYear {
   updatedAt: string;
   version: number;
 
-  year: string;
+  year?: string;
   months: number;
   subcontract: Subcontract | undefined;
   //value: number;  double (subcontract.invoicenet /subcontract.afamonths *subcontractyear.months)
