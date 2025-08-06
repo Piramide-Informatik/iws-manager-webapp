@@ -85,9 +85,9 @@ export class ContractDetailsComponent implements OnDestroy {
     });
     this.ContractDetailsForm.get("firstName")?.disable();
     this.ContractDetailsForm.get("lastName")?.disable();
-    this.ContractDetailsForm.get("stundensatz")?.disable();
-    this.ContractDetailsForm.get("maxstudentag")?.disable();
-    this.ContractDetailsForm.get("maxstudenmonat")?.disable();
+    this.ContractDetailsForm.get("hourlyRate")?.disable();
+    this.ContractDetailsForm.get("maxHoursPerDay")?.disable();
+    this.ContractDetailsForm.get("maxHoursPerMonth")?.disable();
   }
 
   onSubmit() {
@@ -118,16 +118,17 @@ export class ContractDetailsComponent implements OnDestroy {
   }
 
   private _doCreateWorkContract() {
+    const raw = this.ContractDetailsForm.getRawValue();
     const newWorkContract = {
-      startDate: this.ContractDetailsForm.value.datum,
-      salaryPerMonth: this.ContractDetailsForm.value.gehalt ?? '',
-      hoursPerWeek: this.ContractDetailsForm.value.wochenstunden ?? '',
-      workShortTime: this.ContractDetailsForm.value.kurz ?? '',
-      specialPayment: this.ContractDetailsForm.value.jahresauszahlung ?? '',
-      maxHoursPerMonth: this.ContractDetailsForm.value.maxstudenmonat ?? '',
-      maxHoursPerDay: this.ContractDetailsForm.value.maxstudentag ?? '',
-      hourlyRate: this.ContractDetailsForm.value.stundensatz ?? '',
-      employee: this.ContractDetailsForm.value.employeNro,
+      startDate: raw.startDate,
+      salaryPerMonth: raw.salaryPerMonth ?? '',
+      hoursPerWeek: raw.hoursPerWeek ?? '',
+      workShortTime: raw.workShortTime ?? '',
+      specialPayment: raw.specialPayment ?? '',
+      maxHoursPerMonth: raw.maxHoursPerMonth ?? '',
+      maxHoursPerDay: raw.maxHoursPerDay ?? '',
+      hourlyRate: raw.hourlyRate ?? '',
+      employee: raw.employeNro,
       customer: this.currentCustomer ?? null
     };
 
