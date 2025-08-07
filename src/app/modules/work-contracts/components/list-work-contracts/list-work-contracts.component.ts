@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
-import { WorkContract } from '../../../../Entities/work-contracts';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -7,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
+import { EmploymentContract } from '../../../../Entities/employment-contract';
 
 interface Column {
   field: string;
@@ -28,10 +28,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
-  private langSubscription!: Subscription;
 
   currentContract!: any;
-  public contracts!: WorkContract[];
+  public employmentContracts!: EmploymentContract[];
 
   // Configuration modal
   modalType: 'create' | 'delete' | 'edit' = 'create';
@@ -46,71 +45,63 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   dataKeys = ['employeeId', 'firstName', 'lastName', 'startDate', 'salaryPerMonth', 'weeklyHours', 'worksShortTime', 'specialPayment', 'maxHrspPerMonth', 'maxHrsPerDay', 'hourlyRate'];
   @ViewChild('dt2') dt2!: Table;
 
+  private readonly subscriptions = new Subscription();
+
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.employmentContractUtils.getAllContractsByCustomerId(params['id']).subscribe( employeeContracts => {
-        this.contracts = employeeContracts.map( ec => {
-          return {
-            id: ec.id,
-            employeeId: ec.employee?.id,
-            firstName: ec.employee?.firstname,
-            lastName: ec.employee?.lastname,
-            startDate: ec.startDate,
-            salaryPerMonth: ec.salaryPerMonth,
-            weeklyHours: ec.hoursPerWeek,
-            worksShortTime: ec.workShortTime,
-            specialPayment: ec.specialPayment,
-            maxHrspPerMonth: ec.maxHoursPerMonth,
-            maxHrsPerDay: ec.maxHoursPerDay,
-            hourlyRate: ec.hourlyRate
-          }
-        })
+    this.subscriptions.add(
+      this.route.params.subscribe(params => {
+        this.employmentContractUtils.getAllContractsByCustomerId(params['id']).subscribe(employeeContracts => {
+          this.employmentContracts = employeeContracts;
+          });
       })
-    });
+    );
+
     this.loadColHeaders();
     this.selectedColumns = this.cols;
     this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeaders();
-      this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-    });
+        
+    this.subscriptions.add(
+      this.translate.onLangChange.subscribe(() => {
+        this.loadColHeaders();
+        this.selectedColumns = this.cols;
+        this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+      })
+    );
   }
 
   onUserWorkContractsPreferencesChanges(userWorkContractsPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userWorkContractsPreferences));
   }
 
-  loadColHeaders(): void {
+   loadColHeaders(): void {
     this.cols = [
       { 
-        field: 'employeeId', 
+        field: 'employee.id', 
         customClasses: ['align-right'],
         routerLink: (row: any) => `./contractDetails/${row.employeeId}`, 
         header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))
       },
-      { field: 'firstName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
-      { field: 'lastName', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
+      { field: 'employee.firstname', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
+      { field: 'employee.lastname', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME'))},
       { field: 'startDate', type: 'date', customClasses: ['text-center'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE'))},
       { field: 'salaryPerMonth', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH'))},
-      { field: 'weeklyHours', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
-      { field: 'worksShortTime', type: 'double', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
+      { field: 'hoursPerWeek', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS'))},
+      { field: 'workShortTime', type: 'double', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME'))},
       { field: 'specialPayment', type: 'double', customClasses: ['align-right'],  header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT'))},
-      { field: 'maxHrspPerMonth', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
-      { field: 'maxHrsPerDay', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
+      { field: 'maxHoursPerMonth', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH'))},
+      { field: 'maxHoursPerDay', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY'))},
       { field: 'hourlyRate', type: 'double', customClasses: ['align-right'], header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE'))},
     ];
   }
 
   ngOnDestroy(): void {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
 
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete') {
-      this.currentContract = this.contracts.find(c => c.id === event.data)
+       this.currentContract = this.employmentContracts.find(c => c.id === event.data);
     }
     this.visibleModal = true;
   }
@@ -119,28 +110,15 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.visibleModal = visible;
   }
 
-  onDeleteEmployeeContract(deletedWorkContract: WorkContract) {
-    this.contracts = this.contracts.filter(c => c.id !== deletedWorkContract.id);
+  onDeleteEmployeeContract(deletedWorkContract: EmploymentContract) {
+    this.employmentContracts = this.employmentContracts.filter(c => c.id !== deletedWorkContract.id);
     this.currentContract = undefined;
   }
 
-  onCreateEmployeeContract(newEmployeeContract: any) {
+  onCreateEmployeeContract(newEmployeeContract: EmploymentContract) {
     if (newEmployeeContract) {
-      const employeeContract = {
-        id: newEmployeeContract.id,
-        employeeId: newEmployeeContract.employee?.id,
-        firstName: newEmployeeContract.employee?.firstname,
-        lastName: newEmployeeContract.employee?.lastname,
-        startDate: newEmployeeContract.startDate,
-        salaryPerMonth: newEmployeeContract.salaryPerMonth,
-        weeklyHours: newEmployeeContract.hoursPerWeek,
-        worksShortTime: newEmployeeContract.workShortTime,
-        specialPayment: newEmployeeContract.specialPayment,
-        maxHrspPerMonth: newEmployeeContract.maxHoursPerMonth,
-        maxHrsPerDay: newEmployeeContract.maxHoursPerDay,
-        hourlyRate: newEmployeeContract.hourlyRate
-    };
-    this.contracts.unshift(employeeContract);
+      this.employmentContracts.unshift(newEmployeeContract);
     }
   }
+
 }
