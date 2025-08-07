@@ -5,7 +5,6 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../Entities/subcontract-project';
-import { MessageService } from 'primeng/api';
 import { SubcontractProjectUtils } from '../../../utils/subcontract-project.utils';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,13 +12,11 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-project-allocation',
   standalone: false,
   templateUrl: './project-allocation.component.html',
-  styleUrl: './project-allocation.component.scss',
-  providers: [MessageService]
+  styleUrl: './project-allocation.component.scss'
 })
 export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
-  private readonly messageService = inject(MessageService);
 
   modalType: 'create' | 'delete' | 'edit' = 'create';
   public currentSubcontractProject!: SubcontractProject | undefined;
@@ -114,18 +111,6 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     this.visibleModal = true;
   }
 
-  public messageOperation(message: { severity: string, summary: string, detail: string }): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail))
-    })
-  }
-
-  onSubcontractProjectDeleted(subcontractprojectId: number) {
-    this.subcontractProjectList = this.subcontractProjectList.filter(subcontractproject => subcontractproject.id !== subcontractprojectId);
-  }
-
   onSubcontractProjectUpdated(updated: SubcontractProject): void {
     const index = this.subcontractProjectList.findIndex(c => c.id === updated.id);
     if (index !== -1) {
@@ -142,7 +127,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     this.visibleModal = visible;
   }
 
-  onSubcontractProjecteDeleted(subContractProject: SubcontractProject) {
+  onSubcontractProjectDeleted(subContractProject: SubcontractProject) {
     this.subcontractProjectList = this.subcontractProjectList.filter( sp => sp.id !== subContractProject.id);
   }
 }

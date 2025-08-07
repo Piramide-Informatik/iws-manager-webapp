@@ -1,6 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -23,10 +22,7 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() subcontractProject!: SubcontractProject | undefined;
 
-  @Output() onSave = new EventEmitter<any>();
-  @Output() onClose = new EventEmitter<void>();
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
-  @Output() onMessageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>()
   @Output() SubcontractProjectUpdated = new EventEmitter<SubcontractProject>();
   @Output() onSubcontractProjectCreated = new EventEmitter<SubcontractProject>();
   @Output() onSubcontractProjectDeleted = new EventEmitter<SubcontractProject>();
@@ -35,7 +31,7 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
   private readonly projectUtils = inject(ProjectUtils);
   private readonly subcontractUtils = inject(SubcontractUtils);
   private readonly route = inject(ActivatedRoute);
-  private readonly translate = inject(TranslateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscription = new Subscription();
 
   private currentSubcontract!: Subcontract;
@@ -53,7 +49,7 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
     { initialValue: [] }
   );
 
-  constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
+  constructor(private readonly fb: FormBuilder) {
     this.initializeForm();
   }
 
@@ -129,14 +125,11 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
       return;
     }
 
-    const formData = this.allocationForm.value;
-
     if (this.modalType === 'edit' && this.subcontractProject) {
       this.updateSubcontractProject();
     } else if (this.modalType === 'create') {
       this.createSubcontractProject();
     }
-    this.onSave.emit(formData);
   }
 
   private createSubcontractProject(): void {

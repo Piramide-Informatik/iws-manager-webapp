@@ -17,9 +17,8 @@
     <hr class="mt-0" />
     <app-project-allocation-modal [modalType]="modalType"
       [subcontractProject]="currentSubcontractProject"
-      (onMessageOperation)="messageOperation($event)"
       (isProjectAllocationVisibleModal)="onModalVisibilityChange($event)"
-      (onSubcontractProjectDeleted)="onSubcontractProjecteDeleted($event)" 
+      (onSubcontractProjectDeleted)="onSubcontractProjectDeleted($event)" 
       (SubcontractProjectUpdated)="onSubcontractProjectUpdated($event)"
       (onSubcontractProjectCreated)="onSubcontractProjectCreated($event)">
     </app-project-allocation-modal>
