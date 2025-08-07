@@ -30,28 +30,31 @@ export class ContractDetailsComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly employeeUtils = inject(EmployeeUtils);
 
-  public showOCCErrorModalContract = false;
-
   @Input() currentCustomer!: Customer | undefined;
-  ContractDetailsForm!: FormGroup;
   @Input() modalType: string = "create";
-  employeeNumber: any;
-  private readonly employeesMap: Map<number, any> = new Map();
-  employeeOptions: any[] = [];
   @Input() workContract!: any;
+
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() deletedEmployeeContract = new EventEmitter<any>();
-  isDeleteEmployeeContract: boolean = false;
-
-  isLoading = false;
-  errorMsg: string | null = null;
   @Output() onContractCreated = new EventEmitter<EmploymentContract>();
+
+  public showOCCErrorModalContract = false;
+  public ContractDetailsForm!: FormGroup;
+  employeeOptions: any[] = [];
+
+  private isLoading = false;
+  private readonly employeesMap: Map<number, any> = new Map();
+  employeeNumber: any;
+  isDeleteEmployeeContract: boolean = false;
+  errorMsg: string | null = null;
 
   constructor( private readonly commonMessageService: CommonMessagesService) {}
 
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -59,7 +62,6 @@ export class ContractDetailsComponent implements OnDestroy {
     if (this.modalType === 'create') {
       this.getCurrentCustomer();
     }
-    this.currentCustomer?.id && this.loadEmployeesByCustomer(this.currentCustomer.id);
   }
 
   private getCurrentCustomer(): void {

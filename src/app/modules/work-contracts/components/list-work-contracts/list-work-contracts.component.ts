@@ -310,22 +310,23 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.currentContract = undefined;
   }
 
-  onContractCreated(newContract: any) {
-    if (newContract) {
-      this.contracts = [...this.contracts, {
-        id: newContract.id,
-        employeeId: newContract.employee?.id,
-        firstName: newContract.employee?.firstname,
-        lastName: newContract.employee?.lastname,
-        startDate: newContract.startDate,
-        salaryPerMonth: newContract.salaryPerMonth,
-        weeklyHours: newContract.hoursPerWeek,
-        worksShortTime: newContract.workShortTime,
-        specialPayment: newContract.specialPayment,
-        maxHrspPerMonth: newContract.maxHoursPerMonth,
-        maxHrsPerDay: newContract.maxHoursPerDay,
-        hourlyRate: newContract.hourlyRate
-      }];
+  onCreateEmployeeContract(newEmployeeContract: any) {
+    if (newEmployeeContract) {
+      const employeeContract = {
+        id: newEmployeeContract.id,
+        employeeId: newEmployeeContract.employee?.id,
+        firstName: newEmployeeContract.employee?.firstname,
+        lastName: newEmployeeContract.employee?.lastname,
+        startDate: newEmployeeContract.startDate,
+        salaryPerMonth: newEmployeeContract.salaryPerMonth,
+        weeklyHours: newEmployeeContract.hoursPerWeek,
+        worksShortTime: newEmployeeContract.workShortTime,
+        specialPayment: newEmployeeContract.specialPayment,
+        maxHrspPerMonth: newEmployeeContract.maxHoursPerMonth,
+        maxHrsPerDay: newEmployeeContract.maxHoursPerDay,
+        hourlyRate: newEmployeeContract.hourlyRate
+    };
+    this.contracts.unshift(employeeContract);
     }
   }
 }
