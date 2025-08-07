@@ -2,7 +2,7 @@
   <ng-template #title>{{ 'SUB-CONTRACTS.PROJECT.TABLE_NAME' | translate }}</ng-template>
 
   <master-data-genaral-table [tableId]="tableKey" [tableValues]="subcontractProjectList" [columns]="allocationsColumns"
-    [userPreferences]="userAllocationsPreferences" [dataKeys]="dataKeys" removeKey="projectName"
+    [userPreferences]="userAllocationsPreferences" [dataKeys]="dataKeys" removeKey="id"
     (onColumnChanges)="onUserAllocationsPreferencesChanges($event)" 
     (onCreateRegister)="handleSubcontractProjectTableEvents({ type: 'create'})"
     (onEditRegister)="handleSubcontractProjectTableEvents({ type: 'edit', data: $event})"
@@ -11,14 +11,14 @@
 
 </p-card>
 <div class="card">
-  <p-dialog [header]="'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() | translate"
+  <p-dialog [header]="(modalType !== 'delete' ? 'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() 
+            : 'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT') | translate"
     (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
     <hr class="mt-0" />
-    <app-project-allocation-modal [visible]="visibleModal" [modalType]="modalType"
-      [subcontractProject]="currentSubcontractProject" [isVisibleModal]="visibleModal"
-      (onMessageOperation)="messageOperation($event)"
+    <app-project-allocation-modal [modalType]="modalType"
+      [subcontractProject]="currentSubcontractProject"
       (isProjectAllocationVisibleModal)="onModalVisibilityChange($event)"
-      (onSubcontractProjectDeleted)="onSubcontractProjecteDeleted($event)" 
+      (onSubcontractProjectDeleted)="onSubcontractProjectDeleted($event)" 
       (SubcontractProjectUpdated)="onSubcontractProjectUpdated($event)"
       (onSubcontractProjectCreated)="onSubcontractProjectCreated($event)">
     </app-project-allocation-modal>

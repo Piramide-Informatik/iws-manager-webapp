@@ -73,7 +73,7 @@ export class ProjectService {
    * @throws Error when server request fails
    */
   getAllProjectsByCustomerId(customerId: number): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.apiUrl}/customer/${customerId}`, this.httpOptions).pipe(
+    return this.http.get<Project[]>(`${this.apiUrl}/by-customer/${customerId}`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch projects');
