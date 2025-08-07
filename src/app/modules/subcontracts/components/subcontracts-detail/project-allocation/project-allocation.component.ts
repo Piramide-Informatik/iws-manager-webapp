@@ -74,7 +74,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     this.allocationsColumns = [
       { field: 'project.projectLabel', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
       { field: 'share', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
-      { field: 'amount', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
+      { field: 'amount', type: 'double',customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
     ];
   }
 
