@@ -5,7 +5,6 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../Entities/subcontract-project';
-import { MessageService } from 'primeng/api';
 import { SubcontractProjectUtils } from '../../../utils/subcontract-project.utils';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,16 +12,14 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-project-allocation',
   standalone: false,
   templateUrl: './project-allocation.component.html',
-  styleUrl: './project-allocation.component.scss',
-  providers: [MessageService]
+  styleUrl: './project-allocation.component.scss'
 })
 export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
-  private readonly messageService = inject(MessageService);
 
   modalType: 'create' | 'delete' | 'edit' = 'create';
-  public currentSubcontractProject!: SubcontractProject | null;
+  public currentSubcontractProject!: SubcontractProject | undefined;
   public subcontractProjectList!: SubcontractProject[];
   private subscription!: Subscription;
 
@@ -74,7 +71,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     this.allocationsColumns = [
       { field: 'project.projectLabel', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
       { field: 'share', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
-      { field: 'amount', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
+      { field: 'amount', type: 'double',customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
     ];
   }
 
@@ -95,7 +92,6 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   handleSubcontractProjectTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalType = event.type;
-    console.log("Modal type: ", this.modalType)
     if (event.type === 'edit') {
       this.optionSelected = "EDIT"
       this.currentSubcontractProject = event.data;
@@ -109,22 +105,10 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     }
     if (event.type === 'create') {
       this.optionSelected = "NEW";
-      this.currentSubcontractProject = null;
+      this.currentSubcontractProject = undefined;
     }
 
     this.visibleModal = true;
-  }
-
-  public messageOperation(message: { severity: string, summary: string, detail: string }): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail))
-    })
-  }
-
-  onSubcontractProjectDeleted(subcontractprojectId: number) {
-    this.subcontractProjectList = this.subcontractProjectList.filter(subcontractproject => subcontractproject.id !== subcontractprojectId);
   }
 
   onSubcontractProjectUpdated(updated: SubcontractProject): void {
@@ -143,8 +127,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     this.visibleModal = visible;
   }
 
-  onSubcontractProjecteDeleted(subContractProject: SubcontractProject) {
+  onSubcontractProjectDeleted(subContractProject: SubcontractProject) {
     this.subcontractProjectList = this.subcontractProjectList.filter( sp => sp.id !== subContractProject.id);
-    console.log("subcontractprojLIST:", this.subcontractProjectList);
   }
 }
