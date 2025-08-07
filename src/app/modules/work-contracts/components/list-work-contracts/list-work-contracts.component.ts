@@ -1,12 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { WorkContract } from '../../../../Entities/work-contracts';
-import { WorkContractsService } from '../../services/work-contracts.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
@@ -20,58 +17,34 @@ interface Column {
   type?: string;
 }
 
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
-
 @Component({
   selector: 'app-list-work-contracts',
   standalone: false,
-  providers: [MessageService, ConfirmationService, WorkContractsService],
   templateUrl: './list-work-contracts.component.html',
   styleUrl: './list-work-contracts.component.scss',
 })
 export class ListWorkContractsComponent implements OnInit, OnDestroy {
+  private readonly employmentContractUtils = inject(EmploymentContractUtils);
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly translate = inject(TranslateService);
+  private readonly route = inject(ActivatedRoute);
+  private langSubscription!: Subscription;
 
-  private readonly employmentContractUtils = inject(EmploymentContractUtils)
-
-  public cols!: Column[];
-
-  public selectedColumns!: Column[];
-
-  public customerId!: string;
-  productDialog: boolean = false;
-  modalType: 'create' | 'delete' | 'edit' = 'create';
-  visibleModal: boolean = false;
   currentContract!: any;
   public contracts!: WorkContract[];
-  selectedProducts: WorkContract[] | null | undefined;
-  submitted: boolean = true;
-  searchTerm: string = '';
-  statuses!: any[];
+
+  // Configuration modal
+  modalType: 'create' | 'delete' | 'edit' = 'create';
+  visibleModal: boolean = false;
+  loading: boolean = true;
+  
+  // Configuration table
+  public cols!: Column[];
+  public selectedColumns!: Column[];
   userWorkContractsPreferences: UserPreference = {};
   tableKey: string = 'WorkContracts'
   dataKeys = ['employeeId', 'firstName', 'lastName', 'startDate', 'salaryPerMonth', 'weeklyHours', 'worksShortTime', 'specialPayment', 'maxHrspPerMonth', 'maxHrsPerDay', 'hourlyRate'];
-
-
   @ViewChild('dt2') dt2!: Table;
-
-  loading: boolean = true;
-
-  private langSubscription!: Subscription;
-
-  exportColumns!: ExportColumn[];
-  constructor(
-    private readonly workContractsService: WorkContractsService,
-    private readonly messageService: MessageService,
-    private readonly confirmationService: ConfirmationService,
-    private readonly cd: ChangeDetectorRef,
-    private readonly userPreferenceService: UserPreferenceService,
-    private readonly translate: TranslateService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute
-  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -92,14 +65,14 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
             hourlyRate: ec.hourlyRate
           }
         })
-        this.loadColHeaders();
-        this.selectedColumns = this.cols;
-        this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-        this.langSubscription = this.translate.onLangChange.subscribe(() => {
-          this.loadColHeaders();
-          this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-        });
       })
+    });
+    this.loadColHeaders();
+    this.selectedColumns = this.cols;
+    this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.userWorkContractsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
   }
 
@@ -134,93 +107,6 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-      })
-    })
-  }
-
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
-
-  exportCSV() {
-    if (this.contracts?.length) {
-      setTimeout(() => {
-        if (this.dt2?.exportCSV) {
-          this.dt2.exportCSV();
-        } else {
-          console.error('La tabla no tiene el método exportCSV disponible');
-        }
-      }, 0);
-    } else {
-      console.error('No hay datos para exportar');
-    }
-  }
-
-  editWorkContract(currentContract: WorkContract) {
-    this.currentContract = { ...currentContract };
-    this.productDialog = true;
-  }
-
-  deleteSelectedProducts() {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.contracts = this.contracts.filter(
-          (val) => !this.selectedProducts?.includes(val)
-        );
-        this.selectedProducts = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Products Deleted',
-          life: 3000,
-        });
-      },
-    });
-  }
-
-  hideDialog() {
-    this.productDialog = false;
-    this.submitted = false;
-  }
-
-  deleteWorkContract(workContractEmployeeId: any) {
-     this.confirmationService.confirm({
-      message: this.translate.instant(_('DIALOG.DELETE'), { value: workContractEmployeeId }),
-      header: this.translate.instant(_('DIALOG.CONFIRM_TITLE')),
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: this.translate.instant(_('DIALOG.ACCEPT_LABEL')),
-      rejectLabel: this.translate.instant(_('DIALOG.REJECT_LABEL')),
-      accept: () => {
-        this.contracts = this.contracts.filter(
-          (val) => val.employeeId !== workContractEmployeeId
-        );
-        this.messageService.add({
-          severity: 'success',
-          summary: this.translate.instant(_('DIALOG.SUCCESSFUL_MESSAGE')),
-          detail: this.translate.instant(_('DIALOG.WORKCONTRACT_SUCCESS_DELETED_MESSAGE')),
-          life: 3000
-        });
-      },
-    });
-  }
-
-  goToWorkContractDetails(currentWContract: WorkContract) {
-    this.router.navigate(['contractDetails', currentWContract.employeeId], { 
-      relativeTo: this.route,
-      state: { customer: "Joe Doe", workContract: currentWContract } 
-    });
-  }
-
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete') {
@@ -229,80 +115,8 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.visibleModal = true;
   }
 
-  createWorkContractDetails() {
-    this.router.navigate(['contractDetails'], { 
-      relativeTo: this.route,
-      state: { customer: "Joe Doe", workContract: {} } 
-    });
-  }
-
-  findIndexById(id: number): number {
-    return this.contracts.findIndex(
-      (currentContract) => currentContract.employeeId === id
-    );
-  }
-
-  createUniqueId(): number {
-    let id: number;
-    do {
-      id = Math.floor(Math.random() * 1000);
-    } while (
-      this.contracts.some(
-        (currentContract) => currentContract.employeeId === id
-      )
-    );
-    return id;
-  }
-  getSeverity(status: string) {
-    if (status === 'Active') {
-      return 'success';
-    }
-    if (status === 'Pending') {
-      return 'warning';
-    }
-    return 'info';
-  }
-
   onModalVisibilityChange(visible: boolean): void {
     this.visibleModal = visible;
-  }
-
-  saveProduct() {
-    this.submitted = true;
-
-    if (this.currentContract.firstName?.trim()) {
-      const productAction = this.currentContract.employeeId
-        ? this.workContractsService.updateProduct(this.currentContract)
-        : this.workContractsService.addProduct({
-          ...this.currentContract,
-          employeeId:
-            this.currentContract.employeeId || this.createUniqueId(),
-        });
-
-      productAction.then(() => {
-
-        this.cd.detectChanges();
-
-        const actionMessage = this.currentContract.employeeId
-          ? 'Product Updated'
-          : 'Product Created';
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: actionMessage,
-          life: 3000,
-        });
-
-        this.resetProductDialog();
-      });
-    }
-  }
-
-  resetProductDialog() {
-    this.productDialog = false;
-    this.currentContract = {} as WorkContract;
-    this.selectedProducts = [];
   }
 
   onDeleteEmployeeContract(deletedWorkContract: WorkContract) {

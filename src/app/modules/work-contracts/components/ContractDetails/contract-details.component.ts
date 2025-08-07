@@ -150,7 +150,7 @@ export class ContractDetailsComponent implements OnDestroy {
       if (customerId) {
         this.customerUtils.getCustomerById(Number(customerId)).subscribe(customer => {
           this.currentCustomer = customer;
-          if (customer && customer.id) {
+          if (customer?.id) {
             this.loadEmployeesByCustomer(customer.id);
           }
           this._doCreateWorkContract();

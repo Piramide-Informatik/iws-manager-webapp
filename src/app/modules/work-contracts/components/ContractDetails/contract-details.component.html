@@ -4,8 +4,12 @@
       <div class="form-container flex align-items-center mb-6">      
         <div class="contract_input">
           <label for="employeNro">Employee</label>
-          <p-select inputId="employeNro" formControlName="employeNro" [options]="employeeOptions" showClear="true"
-            emptyMessage="No employees found"></p-select>
+          <p-select inputId="employeNro" 
+            formControlName="employeNro" 
+            [options]="employeeOptions" 
+            showClear
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          ></p-select>
         </div>
         <div class="contract_input">
           <label for="firstName">{{ 'EMPLOYEE-CONTRACTS.FORM.FIRST_NAME' | translate }}</label>
@@ -18,11 +22,11 @@
         <div class="contract_input contract_name mb-2">
           <label for="startDate">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
           <p-datepicker id="startDate"
-                        formControlName="startDate"
-                        [showIcon]="true"
-                        iconDisplay="input"
-                        dateFormat="dd.mm.yy"
-                        [ngClass]="{'ng-invalid': ContractDetailsForm.get('startDate')?.invalid && ContractDetailsForm.get('startDate')?.dirty && ContractDetailsForm.get('startDate')?.touched}">
+            formControlName="startDate"
+            [showIcon]="true"
+            [showClear]="true"
+            dateFormat="dd.mm.yy"
+            [ngClass]="{'ng-invalid': ContractDetailsForm.get('startDate')?.invalid && ContractDetailsForm.get('startDate')?.dirty && ContractDetailsForm.get('startDate')?.touched}">
           </p-datepicker>
           <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('startDate')?.invalid && ContractDetailsForm.get('startDate')?.dirty">
             {{ 'ERROR.DATE_FORMAT_ERROR' | translate }}
