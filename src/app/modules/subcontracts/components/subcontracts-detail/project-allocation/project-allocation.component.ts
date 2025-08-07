@@ -22,7 +22,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
   private readonly messageService = inject(MessageService);
 
   modalType: 'create' | 'delete' | 'edit' = 'create';
-  public currentSubcontractProject!: SubcontractProject | null;
+  public currentSubcontractProject!: SubcontractProject | undefined;
   public subcontractProjectList!: SubcontractProject[];
   private subscription!: Subscription;
 
@@ -95,7 +95,6 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   handleSubcontractProjectTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalType = event.type;
-    console.log("Modal type: ", this.modalType)
     if (event.type === 'edit') {
       this.optionSelected = "EDIT"
       this.currentSubcontractProject = event.data;
@@ -109,7 +108,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     }
     if (event.type === 'create') {
       this.optionSelected = "NEW";
-      this.currentSubcontractProject = null;
+      this.currentSubcontractProject = undefined;
     }
 
     this.visibleModal = true;
@@ -145,6 +144,5 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   onSubcontractProjecteDeleted(subContractProject: SubcontractProject) {
     this.subcontractProjectList = this.subcontractProjectList.filter( sp => sp.id !== subContractProject.id);
-    console.log("subcontractprojLIST:", this.subcontractProjectList);
   }
 }
