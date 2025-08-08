@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Project } from '../../../../Entities/project';
@@ -10,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { ProjectUtils } from '../../utils/project.utils';
 
 interface Column {
   field: string,
@@ -26,6 +26,8 @@ interface Column {
 })
 export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
+  private readonly projectUtils = inject(ProjectUtils);
+
   filterIndex = 5;
 
   public cols!: Column[];
@@ -36,7 +38,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   public projects!: Project[];
   
-  public customer!: string;
+  public customer!: number;
 
   private langSubscription!: Subscription;
 
@@ -51,7 +53,6 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   constructor(
   
     private activatedRoute: ActivatedRoute,
-    private projectService: ProjectService,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     public router:Router
@@ -61,20 +62,18 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadProjectColHeaders();
     this.selectedColumns = this.cols;
-
-    this.customer = 'Joe Doe';
-
-    this.projects = this.projectService.list();
-
-    this.selectedColumns = this.cols;
-
     this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadProjectColHeaders();
-      this.reloadComponent(true);
+      this.selectedColumns = this.cols;
       this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
+    this.activatedRoute.params.subscribe( params => {
+      this.customer = params['id'];
+      this.projectUtils.getAllProjectByCustomerId(this.customer).subscribe(projects => {
+        this.projects = projects
+      })
+    })
   }
 
   onUserProjectPreferencesChanges(userProjectPreferences: any) {
@@ -83,19 +82,19 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   loadProjectColHeaders(): void {
     this.cols = [
-          { field: 'projectLabel', header:  this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL'))},
-          { 
-            field: 'projectName',
-            routerLink: (row: any) => `./projects-detail/${row.projectName}`, 
-            header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME'))},
-          { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM'))},
-          { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER'))},
-          { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL'))},
-          { field: 'startDate', header: this.translate.instant(_('PROJECTS.TABLE.START_DATE'))},
-          { field: 'endDate',  header: this.translate.instant(_('PROJECTS.TABLE.END_DATE'))},
-          { field: 'authDate',  header: this.translate.instant(_('PROJECTS.TABLE.AUTH_DATE'))},
-          { field: 'fundingRate', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_RATE'))}
-        ];
+      { field: 'projectLabel', header:  this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL'))},
+      { 
+        field: 'projectName',
+        routerLink: (row: any) => `./projects-detail/${row.projectName}`, 
+        header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME'))},
+      { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM'))},
+      { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER'))},
+      { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL'))},
+      { field: 'startDate', header: this.translate.instant(_('PROJECTS.TABLE.START_DATE'))},
+      { field: 'endDate',  header: this.translate.instant(_('PROJECTS.TABLE.END_DATE'))},
+      { field: 'authDate',  header: this.translate.instant(_('PROJECTS.TABLE.AUTH_DATE'))},
+      { field: 'fundingRate', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_RATE'))}
+    ];
   }
 
   ngOnDestroy(): void {
