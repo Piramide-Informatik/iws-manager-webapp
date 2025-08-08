@@ -29,7 +29,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
 
-  currentContract!: any;
+  currentContract!: EmploymentContract | undefined;
   public employmentContracts!: EmploymentContract[];
 
   // Configuration modal
@@ -101,7 +101,11 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit' , data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete') {
-       this.currentContract = this.employmentContracts.find(c => c.id === event.data);
+      this.currentContract = this.employmentContracts.find(c => c.id === event.data);
+    }else if(event.type === 'edit'){
+      this.currentContract = event.data
+    }else if(event.type === 'create'){
+      this.currentContract = undefined
     }
     this.visibleModal = true;
   }
@@ -121,4 +125,11 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onUpdateEmployeeContract(updatedEmployeeContract: EmploymentContract) {
+    const index = this.employmentContracts.findIndex(e => e.id === updatedEmployeeContract.id);
+    if(index !== -1){
+      this.employmentContracts[index] = {...updatedEmployeeContract};
+      this.employmentContracts = [...this.employmentContracts];
+    }
+  }
 }
