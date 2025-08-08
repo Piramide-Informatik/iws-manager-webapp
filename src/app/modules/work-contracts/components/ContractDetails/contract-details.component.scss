@@ -1,37 +1,18 @@
-.create-employee-contract-form {
-  margin-left: 5% !important;
-  margin-right: 5% !important;
-}
-
-.form-container {
-  display: block !important;
-}
-
 .contract_input {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-weight: normal;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 
   label {
     width: 150px;
-    font-weight: normal;
     flex-shrink: 0;
   }
 
   input,
   p-select,
+  p-inputnumber,
   p-datepicker {
-    width: 100% !important;
-  }
-
-  div {
-    width: 100% !important;
-  }
-
-  div input,
-  div p-inputnumber {
     width: 100% !important;
   }
 }

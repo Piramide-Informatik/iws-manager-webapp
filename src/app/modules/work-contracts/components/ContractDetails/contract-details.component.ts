@@ -1,8 +1,6 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
@@ -21,17 +19,15 @@ import { momentFormatDate } from '../../../shared/utils/moment-date-utils';
   styleUrl: './contract-details.component.scss'
 })
 export class ContractDetailsComponent implements OnDestroy {
-
   private readonly subscription = new Subscription();
-  private readonly translate = inject(TranslateService);
-  private readonly messageService = inject(MessageService);
   private readonly employeeContractUtils = inject(EmploymentContractUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly employeeUtils = inject(EmployeeUtils);
+  private readonly commonMessageService = inject(CommonMessagesService);
 
   @Input() currentCustomer!: Customer | undefined;
-  @Input() modalType: string = "create";
+  @Input() modalType: 'create' | 'delete' | 'edit' = "create";
   @Input() workContract!: any;
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -47,9 +43,6 @@ export class ContractDetailsComponent implements OnDestroy {
   employeeNumber: any;
   isDeleteEmployeeContract: boolean = false;
   errorMsg: string | null = null;
-
-  constructor( private readonly commonMessageService: CommonMessagesService) {}
-
 
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -211,11 +204,9 @@ export class ContractDetailsComponent implements OnDestroy {
   }
 
   updateWorkContract() {
-    // Implementar lógica de actualización si es necesario
-  }
+    if(this.ContractDetailsForm.invalid) return
 
-  goBackListContracts() {
-    this.isVisibleModal.emit(false);
+    
   }
 
   get isCreateMode(): boolean {
