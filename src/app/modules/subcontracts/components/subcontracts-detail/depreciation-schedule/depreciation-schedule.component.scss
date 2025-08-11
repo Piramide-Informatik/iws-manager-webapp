@@ -7,13 +7,12 @@
   flex-shrink: 0;
 }
 
-::ng-deep .p-inputtext {
+::ng-deep .form-item-container p-inputnumber {
   width: auto;
 }
 
-::ng-deep .p-datepicker{
-  width: auto !important;
-  min-width: 0;
+::ng-deep .form-item-container .p-datepicker{
+  width: 20vw !important;
 }
 
 ::ng-deep .p-datepicker-panel {
