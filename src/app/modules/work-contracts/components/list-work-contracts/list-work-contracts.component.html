@@ -1,7 +1,7 @@
 <div class="card">
   <master-data-genaral-table
     [tableId]="tableKey"
-    [tableValues]="contracts"
+    [tableValues]="employmentContracts"
     [columns]="selectedColumns"
     [userPreferences]="userWorkContractsPreferences"
     [dataKeys]="dataKeys"
@@ -24,10 +24,12 @@
   >
     <app-contract-details
       [modalType]="modalType"
-      [workContract]="currentContract"
+      [visibleModal]="visibleModal"
+      [currentEmploymentContract]="currentContract"
       (isVisibleModal)="onModalVisibilityChange($event)"
       (deletedEmployeeContract)="onDeleteEmployeeContract($event)"
       (onContractCreated)="onCreateEmployeeContract($event)"
+      (onContractUpdated)="onUpdateEmployeeContract($event)"
     ></app-contract-details>
   </p-dialog>
 </div>
