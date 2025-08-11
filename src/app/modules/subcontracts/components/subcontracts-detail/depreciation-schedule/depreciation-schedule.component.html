@@ -20,7 +20,7 @@
     (onHide)="closeModal()"
     [modal]="true"
     [(visible)]="visibleModal"
-    [style]="{ width: '30rem' }"
+    [style]="{ width: 'auto' }"
   >
     <ng-container *ngIf="modalType !== 'delete'; else deleteTemplate">
       <hr class="mt-0" />
