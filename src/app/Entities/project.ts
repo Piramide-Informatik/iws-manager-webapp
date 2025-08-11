@@ -1,3 +1,4 @@
+import { Country } from "./country";
 import { Customer } from "./customer";
 
 export interface Project {
@@ -41,9 +42,26 @@ export interface Project {
   startApproval?: String;
   startDate?: String;
   title?: String;
+  fundingProgram: FundingProgram | null;
+  promoter: Promoter | null;  
+}
 
+export interface FundingProgram {
+  defaultFundingRate: number;
+  defaultHoursPerYear: number;
+  defaultResearchShare: number;
+  defaultStuffFlat: number;
+  name: string;
+}
 
-  // fundingProgram: FundingProgram | null;
-  // promoter: Promoter | null;  
+export interface Promoter {
+  city: string;
+  country: Country;
+  projectPromoter: string;
+  promoterName1: string;
+  promoterName2: string;
+  promoterNo: string;
+  street: string;
+  zipCode: string;
 }
   
