@@ -77,7 +77,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
    loadColHeaders(): void {
     this.cols = [
       { 
-        field: 'employee.id', 
+        field: 'employee.employeeno', 
         customClasses: ['align-right'],
         useSameAsEdit: true,
         header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))
