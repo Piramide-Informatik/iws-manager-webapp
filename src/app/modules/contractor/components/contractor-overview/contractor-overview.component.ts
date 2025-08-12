@@ -27,7 +27,6 @@ interface Column {
 export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   public cols!: Column[];
-  public customerLabel!: string;
   public contractors!: Contractor[];
   public customer!: Customer | undefined;
 
@@ -85,7 +84,6 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   }
 
   loadColHeaders(): void {
-    this.customerLabel = this.translate.instant(_('COMMON.CONTRACTOR_NAME'));
     this.cols = [
       {
         field: 'label',
@@ -136,19 +134,6 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
       this.router.navigate([`/${url}`]).then(() => {
       })
     })
-  }
-
-  goToContractDetails(currentContract: Contractor) {
-    this.router.navigate(['contract-details', currentContract.label], {
-      relativeTo: this.route,
-      state: { customer: this.customer, contractData: currentContract }
-    });
-  }
-
-  createContractDetail() {
-    this.router.navigate(['contract-details'], {
-      relativeTo: this.route
-    });
   }
 
   onContractorDeleted(contractorId: number) {
