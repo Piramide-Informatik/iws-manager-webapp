@@ -15,6 +15,7 @@ interface Column {
   customClasses?: string[];
   routerLink?: (row: any) => string;
   type?: string;
+  useSameAsEdit?: boolean;
 }
 
 @Component({
@@ -78,7 +79,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
       { 
         field: 'employee.id', 
         customClasses: ['align-right'],
-        routerLink: (row: any) => `./contractDetails/${row.employeeId}`, 
+        useSameAsEdit: true,
         header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))
       },
       { field: 'employee.firstname', header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME'))},
