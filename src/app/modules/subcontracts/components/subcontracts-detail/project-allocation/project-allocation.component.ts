@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table'; 
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
@@ -7,6 +7,8 @@ import { TranslateService, _ } from '@ngx-translate/core';
 import { SubcontractProject } from '../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../utils/subcontract-project.utils';
 import { ActivatedRoute } from '@angular/router';
+import { SubcontractStateService } from '../../../utils/subcontract-state.service';
+import { Subcontract } from '../../../../../Entities/subcontract';
 
 @Component({
   selector: 'app-project-allocation',
@@ -17,11 +19,14 @@ import { ActivatedRoute } from '@angular/router';
 export class ProjectAllocationComponent implements OnInit, OnDestroy {
 
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
+  private readonly subcontractStateService = inject(SubcontractStateService);
 
   modalType: 'create' | 'delete' | 'edit' = 'create';
   public currentSubcontractProject!: SubcontractProject | undefined;
   public subcontractProjectList!: SubcontractProject[];
   private subscription!: Subscription;
+
+  @Input() currentSubcontract!: Subcontract;
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
@@ -40,22 +45,14 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
+    this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
+      if(updatedSubcontract && updatedSubcontract.invoiceGross !== this.currentSubcontract.invoiceGross){
+        this.loadSubcontractProjects();
+      }
+    });
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
-      this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe(sc => {
-        this.subcontractProjectList = sc.reduce((acc: any[], curr: SubcontractProject) => {
-          acc.push({
-            id: curr.id,
-            project: {
-              projectLabel: curr.project?.projectLabel,
-            },
-            share: curr.share,
-            amount: curr.amount ?? 0
-          });
-          return acc;
-        }, []);
-      })
+      this.loadSubcontractProjects();
     });
 
     this.loadColumns()
@@ -73,6 +70,22 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
       { field: 'share', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
       { field: 'amount', type: 'double',customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
     ];
+  }
+
+  private loadSubcontractProjects(): void {
+    this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe(sc => {
+      this.subcontractProjectList = sc.reduce((acc: any[], curr: SubcontractProject) => {
+        acc.push({
+          id: curr.id,
+          project: {
+            projectLabel: curr.project?.projectLabel,
+          },
+          share: curr.share,
+          amount: curr.amount ?? 0
+        });
+        return acc;
+      }, []);
+    })
   }
 
   ngOnDestroy(): void {
