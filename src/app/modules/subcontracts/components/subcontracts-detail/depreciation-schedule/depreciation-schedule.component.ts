@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SubcontractYear } from '../../../../../Entities/subcontract-year';
 import { Subcontract } from '../../../../../Entities/subcontract';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
+import { SubcontractStateService } from '../../../utils/subcontract-state.service';
 
 interface DepreciationEntry {
   id: number;
@@ -30,6 +31,7 @@ interface DepreciationEntry {
 })
 export class DepreciationScheduleComponent implements OnInit {
   private readonly subcontractYearUtils = inject(SubcontractYearUtils);
+  private readonly subcontractStateService = inject(SubcontractStateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly translate = inject(TranslateService);
@@ -58,6 +60,12 @@ export class DepreciationScheduleComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
+      if(updatedSubcontract && (updatedSubcontract?.invoiceNet !== this.currentSubcontract.invoiceNet || 
+        updatedSubcontract.afamonths !== this.currentSubcontract.afamonths )){
+        this.loadSubcontractYears(updatedSubcontract.id)
+      }
+    });
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
       this.loadSubcontractYears(this.subcontractId);  
