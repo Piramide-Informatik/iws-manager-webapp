@@ -121,10 +121,6 @@
     <div class="flex justify-content-center gap-4 mt-4">
       <p-button class="save" type="submit" (onClick)="onSubmit()" [disabled]="!employmentContractForm.valid" size="small" [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check" iconPos="left" />
-      @if(employmentContract) {
-      <p-button class="Delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
-        [style]="{ background: '#ef4444' }" />
-      }
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="closeModal()" />
     </div>

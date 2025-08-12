@@ -108,10 +108,10 @@
     <div class="flex justify-content-center gap-3">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
         icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContract()"
-        [loading]="isDeleteEmployeeContract" 
+        [loading]="isLoading" 
       />
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [loading]="isDeleteEmployeeContract"
+        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [loading]="isLoading"
       />
     </div>
   </div>
