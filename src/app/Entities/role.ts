@@ -1,3 +1,4 @@
+
 export interface Role {
     id: number;
     createdAt: string; // ISO: "2025-06-17T06:21:35.281056"
