@@ -103,5 +103,11 @@ export class RoleUtils {
         );
     }
 
+    getAllRoles(): Observable<Role[]> {
+            return this.roleService.getAllRoles().pipe(
+                catchError(() => throwError(() => new Error('Failed to load contacts')))
+            );
+        }
+
 }
 
