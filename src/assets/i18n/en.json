@@ -617,9 +617,28 @@
       "EXECUTE": "Execute"
     },
     "LABEL": {
-      "EDIT_ROL": "Edit Rol",
-      "ROL": "Rol",
+      "EDIT_ROL": "Edit Role",
+      "ROL": "Role",
       "MODULE": "Module"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "New Role"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Delete Role",
+      "CONFIRM_QUESTION":"Are you sure you want to delete "
+    },
+    "MESSAGE":{
+      "SUCCESS":"SUCCESS",
+      "DELETE_SUCCESS":"Record successfully deleted.",
+      "ERROR":"ERROR",
+      "DELETE_ERROR_IN_USE":"The record cannot be deleted because it is in use by other entities.",
+      "DELETE_FAILED":"The record could not be deleted."
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Required role",
+      "CHECKING_DUPLICATE": "Checking duplicate",
+      "CREATION_FAILED":"There was an error during role creation"
     }
   },
   "HOLIDAYS": {

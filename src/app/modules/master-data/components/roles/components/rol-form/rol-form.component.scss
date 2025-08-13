@@ -5,16 +5,29 @@
   align-items: center;
 
   label {
-    width: 120px;
+    width: 80px;
     font-weight: 500;
     margin-left: 25px;
   }
 
-  input,
   .p-select {
-    flex: 1;
-    max-width: 490px;
+    width: 100%;
   }
+
+  .input-message {
+        width: 100%;
+        position: relative;
+
+        input {
+            width: 100%;
+        }
+
+        p-message {
+            position: absolute;
+            left: 0px;
+            bottom: -18px;
+        }
+    }
 }
 
 //Styles table head
