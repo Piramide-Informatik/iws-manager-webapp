@@ -130,7 +130,6 @@ export class ContractorService {
    */
   updateContractor(updatedContractor: Contractor): Observable<Contractor> {
     const url = `${this.apiUrl}/${updatedContractor.id}`;
-    console.log('Updating contractor:', updatedContractor);
     return this.http.put<Contractor>(url, updatedContractor, this.httpOptions).pipe(
       tap({
         next: (res) => {
