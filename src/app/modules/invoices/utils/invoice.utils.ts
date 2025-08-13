@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { InvoiceService } from '../../../Services/invoice.service';
-import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { Invoice } from '../../../Entities/invoices';
 
 @Injectable({ providedIn: 'root' })
