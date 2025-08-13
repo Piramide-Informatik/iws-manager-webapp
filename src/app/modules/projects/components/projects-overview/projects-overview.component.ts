@@ -52,10 +52,10 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
   
-    private activatedRoute: ActivatedRoute,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    public router:Router
+    private readonly router:Router
   ) {
   }
 
@@ -75,8 +75,8 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
           acc.push({
             projectLabel: curr.projectLabel,
             projectName: curr.projectName,
-            fundingProgram: curr.fundingProgram?.name ?? '',
-            promoter: curr.promoter?.projectPromoter ?? '',
+            fundingProgram: curr.fundingProgram?.fundingprogram ?? '',
+            promoter: curr.promoter?.promoter ?? '',
             fundingLabel: curr.fundingLabel,
             startDate: curr.startDate,
             endDate: curr.endDate,

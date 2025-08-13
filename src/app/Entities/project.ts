@@ -12,7 +12,7 @@ export interface Project {
   empiws20: null; // falta
   empiws30: null; // falta
   empiws50: null; // falta
-  fundingprogram: FundingProgram | null;
+  fundingProgram: FundingProgram | null;
   network: null; //falta
   promoter: Promoter | null;
   status: null; //falta
