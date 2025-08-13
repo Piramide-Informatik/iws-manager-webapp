@@ -1,7 +1,11 @@
 import { ApprovalStatus } from "./approvalStatus";
+import { BasicContract } from "./basicContract";
 import { Contractor } from "./contractor";
 import { ContractStatus } from "./contractStatus";
+import { CostType } from "./costType";
 import { Customer } from "./customer";
+import { EmployeeIws } from "./employeeIws";
+import { FundingProgram } from "./fundingProgram";
 import { Project } from "./project";
 import { Promoter } from "./promoter";
 
@@ -12,13 +16,13 @@ export interface Order {
   version: number;
 
   approvalstatus: ApprovalStatus | null;
-  basiccontract: null; //falta
+  basiccontract: BasicContract | null;
   contractor: Contractor | null;
   contractstatus: ContractStatus | null;
   customer: Customer | null;
-  employeeiws: null;  //falta
-  fundingprogram: null; //falta
-  ordertype: null; //falta
+  employeeiws: EmployeeIws | null; 
+  fundingprogram: FundingProgram | null;
+  ordertype: CostType | null; // reference costtype
   project: Project | null;
   promoter: Promoter | null;
 
