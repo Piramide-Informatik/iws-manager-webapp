@@ -10,4 +10,5 @@ export interface Invoice {
   value: number;
   netAmount: number;
   totalAmount: number;
+  version: number;
 }
