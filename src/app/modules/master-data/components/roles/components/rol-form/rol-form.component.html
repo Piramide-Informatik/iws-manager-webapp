@@ -32,12 +32,12 @@
 
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="function">{{ 'ROLES.TABLE_MODULES.FUNCTION' | translate }} <p-sortIcon field="function" /></th>
-                    <th>{{ 'ROLES.TABLE_MODULES.READ' | translate }}</th>
-                    <th>{{ 'ROLES.TABLE_MODULES.INSERT' | translate }}</th>
-                    <th>{{ 'ROLES.TABLE_MODULES.MODIFY' | translate }}</th>
-                    <th>{{ 'ROLES.TABLE_MODULES.DELETE' | translate }}</th>
-                    <th>{{ 'ROLES.TABLE_MODULES.EXECUTE' | translate }}</th>
+                    <th pSortableColumn="function"  scope="col">{{ 'ROLES.TABLE_MODULES.FUNCTION' | translate }} <p-sortIcon field="function" /></th>
+                    <th  scope="col">{{ 'ROLES.TABLE_MODULES.READ' | translate }}</th>
+                    <th  scope="col">{{ 'ROLES.TABLE_MODULES.INSERT' | translate }}</th>
+                    <th  scope="col">{{ 'ROLES.TABLE_MODULES.MODIFY' | translate }}</th>
+                    <th  scope="col">{{ 'ROLES.TABLE_MODULES.DELETE' | translate }}</th>
+                    <th  scope="col">{{ 'ROLES.TABLE_MODULES.EXECUTE' | translate }}</th>
                 </tr>
             </ng-template>
 
@@ -59,9 +59,16 @@
                 icon="pi pi-check" iconPos="left"
                 [disabled]="editRoleForm.invalid || !editRoleForm.dirty || isSaving"></p-button>
 
-            <p-button type="button" class="cancel" size="small"
-                [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
-                (click)="clearForm()"></p-button>
+            <p-button type="button"
+                class="cancel"
+                size="small"
+                [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times"
+                iconPos="left"
+                (click)="clearForm()"
+                (keydown.enter)="clearForm()"
+                (keydown.space)="clearForm()">
+            </p-button>
         </div>
     </form>
 </p-card>

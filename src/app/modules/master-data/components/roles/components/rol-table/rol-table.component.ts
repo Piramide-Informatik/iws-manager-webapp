@@ -10,8 +10,6 @@ import { MessageService } from 'primeng/api';
 import { RoleUtils } from '../../utils/role-utils';
 import { RoleStateService } from '../../utils/role-state.service';
 import { RolModalComponent } from '../rol-modal/rol-modal.component';
-import { Router } from '@angular/router'; // can delete
-import { GERMAN_ROLES } from './roles.data';// can delete
 
 @Component({
   selector: 'app-rol-table',
@@ -47,7 +45,6 @@ export class RolTableComponent implements OnInit, OnDestroy {
     this.visibleModal = true;
   }
   roleDatas: Role[] = [];
-  roles = [...GERMAN_ROLES];
   cols: any[] = [];
   selectedColumns: any[] = [];
   userRolPreferences: UserPreference = {};
@@ -65,7 +62,7 @@ export class RolTableComponent implements OnInit, OnDestroy {
     }))
   });
 
-  constructor(private readonly router: Router,
+  constructor(
               private readonly userPreferenceService: UserPreferenceService,
               private readonly roleStateService: RoleStateService,
               private readonly translate: TranslateService ) { }
