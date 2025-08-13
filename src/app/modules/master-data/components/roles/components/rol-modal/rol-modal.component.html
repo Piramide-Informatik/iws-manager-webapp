@@ -1,0 +1,77 @@
+<ng-container *ngIf="isCreateMode;  else deleteTemplate">
+    <form [formGroup]="createRoleForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center display mb-2 mt-4">
+            <div class="role-form mb-3 flex align-items-center">
+                <label for="name">{{ "ROLES.LABEL.ROL" | translate}}</label>
+                <input
+                    #roleNameInput
+                    pInputText
+                    type="text"
+                    id="name"
+                    formControlName="name"
+                    autocomplete="off"
+                    />
+            </div>
+            <div class="flex justify-content-center gap-2 mt-4">
+                <p-button
+                type="submit"
+                class="save"
+                size="small"
+                [label]="'BUTTONS.SAVE' | translate"
+                icon="pi pi-check"
+                iconPos="left"
+                [loading]="isLoading"
+                [disabled]="createRoleForm.invalid || isLoading"
+                />
+
+                <p-button
+                type="button"
+                class="cancel"
+                size="small"
+                [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times"
+                iconPos="left"
+                (click)="onCancel()"
+                (keypress)="onCancel()"
+                [disabled]="isLoading"
+                />
+            </div>
+        </div>
+    </form>
+</ng-container>
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+        {{ 'ROLES.DELETE.CONFIRM_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ roleName }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+        <p-button
+            type="button"
+            class="delete"
+            size="small"
+            [label]="'BUTTONS.DELETE' | translate"
+            icon="pi pi-trash"
+            iconPos="left"
+            (click)="onDeleteConfirm()"
+            (keypress)="onDeleteConfirm()"
+            severity="danger"
+            [loading]="isLoading"
+            [disabled]="isLoading"
+        />
+        
+        <p-button
+            type="button"
+            class="cancel"
+            size="small"
+            [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times"
+            iconPos="left"
+            (click)="onCancel()"
+            (keypress)="onCancel()"
+            [disabled]="isLoading"
+        />
+        </div>
+    </div>
+</ng-template>

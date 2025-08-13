@@ -124,6 +124,7 @@ import localeDe from '@angular/common/locales/de';
 import { ModelProjectStatusComponent } from './components/project-status/components/model-project-status/model-project-status.component';
 import { TableProjectStatusComponent } from './components/project-status/components/table-project-status/table-project-status.component';
 import { ModalApprovalStatusComponent } from './components/approval-status/components/approval-status-project/modal-approval-status/modal-approval-status.component';
+import { RolModalComponent } from './components/roles/components/rol-modal/rol-modal.component';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -213,7 +214,8 @@ registerLocaleData(localeDe, 'de-DE');
     StateModalComponent,
     ModelProjectStatusComponent,
     TableProjectStatusComponent,
-    ModalApprovalStatusComponent
+    ModalApprovalStatusComponent,
+    RolModalComponent
   ],
   imports: [
     ButtonModule,
