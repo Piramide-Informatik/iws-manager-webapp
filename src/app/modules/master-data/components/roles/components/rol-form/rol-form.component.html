@@ -1,84 +1,77 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'ROLES.LABEL.EDIT_ROL' | translate">
-    <form [formGroup]="editRolForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="editRoleForm" (ngSubmit)="onSubmit()">
+
         <div class="align-items-center mb-4">
+            <!-- Nombre rol -->
             <div class="rol-form mb-2">
-                <label for="stateName">{{ 'ROLES.LABEL.ROL' | translate }}</label>
-                <input pInputText type="text" id="stateName" formControlName="stateName" autocomplete="off" />
+                <label for="name">{{ 'ROLES.LABEL.ROL' | translate }}</label>
+                <div class="input-message">
+                    <input pInputText type="text" id="name" formControlName="name"
+                        [ngClass]="{'ng-invalid ng-dirty': editRoleForm.get('name')?.invalid && editRoleForm.get('name')?.touched}"
+                        autocomplete="off" />
+                    <p-message severity="error" variant="simple" size="small"
+                        *ngIf="editRoleForm.get('name')?.invalid && editRoleForm.get('name')?.touched && editRoleForm.get('name')!.hasError('required')">
+                        {{ 'ROLES.ERROR.ROL_REQUIRED' | translate }}
+                    </p-message>
+                </div>
             </div>
+
+            <!-- Módulo -->
             <div class="rol-form mb-2">
                 <label for="selectedModule">{{ 'ROLES.LABEL.MODULE' | translate }}</label>
                 <p-select formControlName="selectedModule" id="selectedModule" [options]="modules" optionLabel="name" />
             </div>
         </div>
-    </form>
-    <p-table 
-        #dt 
-        [value]="roles" 
-        showGridlines 
-        stripedRows 
-        [tableStyle]="{ 'min-width': '100%' }" 
-        [rows]="15"
-        [columns]="cols" 
-        [paginator]="true" 
-        scrollable="true" 
-        [rowsPerPageOptions]="[15, 30, 50]" 
-        scrollHeight="90vh"
-        [globalFilterFields]="['function',]" 
-        [(selection)]="selectedOrderCommission" 
-        [rowHover]="true" 
-        dataKey="id"
-        [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
-        [showCurrentPageReport]="true">
-        <ng-template #header>
-            <tr>
-                <th id="t-header" pSortableColumn="function" class="thead">
-                    {{ 'ROLES.TABLE_MODULES.FUNCTION' | translate }}<p-sortIcon field="function" />
-                </th>
-                <th id="t-header" class="thead">
-                    {{ 'ROLES.TABLE_MODULES.READ' | translate }}
-                </th>
-                <th id="t-header" class="thead">
-                    {{ 'ROLES.TABLE_MODULES.INSERT' | translate }}
-                </th>
-                <th id="t-header" class="thead">
-                    {{ 'ROLES.TABLE_MODULES.MODIFY' | translate }}
-                </th>
-                <th id="t-header" class="thead">
-                    {{ 'ROLES.TABLE_MODULES.DELETE' | translate }}
-                </th>
-                <th id="t-header"  class="thead">
-                    {{ 'ROLES.TABLE_MODULES.EXECUTE' | translate }}
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-rol let-i="rowIndex" let-columns="columns">
-            <tr class="odd-row">
-                <td>
-                    {{ rol.function }}
-                </td>
-                <td [ngClass]="'text-center'">
-                    <p-checkbox [(ngModel)]="rol.read" [binary]="true" />
-                </td>
-                <td [ngClass]="'text-center'">
-                    <p-checkbox [(ngModel)]="rol.insert" [binary]="true" />
-                </td>
-                <td [ngClass]="'text-center'">
-                    <p-checkbox [(ngModel)]="rol.modify" [binary]="true" />
-                </td>
-                <td [ngClass]="'text-center'">
-                    <p-checkbox [(ngModel)]="rol.delete" [binary]="true" />
-                </td>
-                <td [ngClass]="'text-center'">
-                    <p-checkbox [(ngModel)]="rol.execute" [binary]="true" />
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
 
-    <div class="flex justify-content-center gap-2 mt-4">
-        <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-            iconPos="left" />
-        <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-            icon="pi pi-times" iconPos="left" />
-    </div>
+        <!-- Tabla permisos -->
+        <p-table [value]="roles" showGridlines stripedRows [tableStyle]="{ 'min-width': '100%' }"
+                 [rows]="15" [paginator]="true" scrollable="true" [rowsPerPageOptions]="[15, 30, 50]" scrollHeight="90vh"
+                 [globalFilterFields]="['function']" [rowHover]="true" dataKey="id"
+                 [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
+                 [showCurrentPageReport]="true">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="function">{{ 'ROLES.TABLE_MODULES.FUNCTION' | translate }} <p-sortIcon field="function" /></th>
+                    <th>{{ 'ROLES.TABLE_MODULES.READ' | translate }}</th>
+                    <th>{{ 'ROLES.TABLE_MODULES.INSERT' | translate }}</th>
+                    <th>{{ 'ROLES.TABLE_MODULES.MODIFY' | translate }}</th>
+                    <th>{{ 'ROLES.TABLE_MODULES.DELETE' | translate }}</th>
+                    <th>{{ 'ROLES.TABLE_MODULES.EXECUTE' | translate }}</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-rol>
+                <tr>
+                    <td>{{ rol.function }}</td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="rol.read" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="rol.insert" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="rol.modify" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="rol.delete" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="rol.execute" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <!-- Botones -->
+        <div class="flex justify-content-center gap-2 mt-4">
+            <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate"
+                icon="pi pi-check" iconPos="left"
+                [disabled]="editRoleForm.invalid || !editRoleForm.dirty || isSaving"></p-button>
+
+            <p-button type="button" class="cancel" size="small"
+                [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+                (click)="clearForm()"></p-button>
+        </div>
+    </form>
 </p-card>
+
+
+
+<app-occ-error-modal
+    *ngIf="showOCCErrorModalRole"
+    [useEmitter]="true"
+    (close)="showOCCErrorModalRole = false"
+    (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>

@@ -619,6 +619,25 @@
       "EDIT_ROL": "Rollen bearbeiten",
       "ROL": "Benutzerrolle",
       "MODULE": "Modul"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "Neue Rolle"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Rolle löschen",
+      "CONFIRM_QUESTION":"Sind Sie sicher, dass Sie löschen möchten "
+    },
+    "MESSAGE":{
+      "SUCCESS":"ERFOLG",
+      "DELETE_SUCCESS":"Datensatz erfolgreich gelöscht.",
+      "ERROR":"FEHLER",
+      "DELETE_ERROR_IN_USE":"Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
+      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden."
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",
+      "CHECKING_DUPLICATE": "Duplikatprüfung",
+      "CREATION_FAILED":"Beim Erstellen der Rolle ist ein Fehler aufgetreten"
     }
   },
   "HOLIDAYS": {
