@@ -93,7 +93,7 @@
     <div class="buttons-container flex justify-content-center gap-3 mt-4">
       <p-button class="save" type="submit" [loading]="isLoading" [disabled]="!ContractDetailsForm.valid || !currentCustomer" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
       <ng-container *ngIf="currentEmploymentContract">
-        <p-button class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left" [style]="{ background: '#ef4444' }" />
+        <p-button class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="this.visibleContractModal = true;" />
       </ng-container>
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" (onClick)="closeModal()"/>      
     </div>
@@ -120,3 +120,24 @@
   *ngIf="showOCCErrorModalContract"
   (onClose)="showOCCErrorModalContract = false">
 </app-occ-error-modal>
+<p-dialog 
+  [header]="'EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate" 
+  [modal]="true" 
+  [(visible)]="visibleContractModal"
+>
+  <div class="confirmation-content mt-4">
+    <p *ngIf="currentEmploymentContract"  class="mb-4">
+      {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }}<strong class="stronglock mt-1">"{{ currentEmploymentContract.id }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-3">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContract()"
+        [loading]="isLoading" 
+      />
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times" iconPos="left" (onClick)="this.visibleContractModal = false;"
+      />
+    </div>
+  </div>
+</p-dialog>

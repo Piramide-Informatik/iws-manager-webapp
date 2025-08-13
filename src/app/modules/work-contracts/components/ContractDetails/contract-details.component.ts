@@ -42,6 +42,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   employeeOptions: {label: string, value: number}[] = [];
 
   public isLoading: boolean = false;
+  public visibleContractModal: boolean = false;
   private readonly employeesMap: Map<number, Employee> = new Map();
   errorMsg: string | null = null;
 
@@ -274,6 +275,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       this.employeeContractUtils.deleteEmploymentContract(this.currentEmploymentContract.id).subscribe({
         next: () => {
           this.isLoading = false;
+          this.visibleContractModal = false;
           this.isVisibleModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.deletedEmployeeContract.emit(this.currentEmploymentContract);
