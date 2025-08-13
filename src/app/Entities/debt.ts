@@ -1,0 +1,46 @@
+import { Customer } from "./customer";
+import { Order } from "./order";
+import { Project, Promoter } from "./project";
+
+export interface Debt {
+  id: number;
+  createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
+  updatedAt: string;
+  version: number;
+
+  customer: Customer | null;
+  order: Order | null;
+  project: Project | null;
+  promoter: Promoter | null;
+
+  billingend?: string; //date
+  billingmonths?: number;
+  billingstart?: string; //date
+  comment?: string;
+  confdatelevel1?: string; //date
+  confdatelevel2?: string; //date
+  date?: string; //date
+  debtno?: number; 
+  debttitle?: string;
+  donation?: number; 
+  fundinglabel?: string;
+  grossamount?: number;
+  iwsdeptamount1?: number;
+  iwsdeptamount2?: number;
+  iwspercent?: number;
+  kmui0838?: number;
+  kmui0848?: number;
+  kmui0847?: number;
+  kmui0850?: number;
+  kmui0856?: number;
+  kmui0860?: number;
+  lastpaymentdate?: string; // date
+  netamount?: number; 
+  openamount?: number;
+  payedamount?: number;
+  projectcosts?: number;
+  projectend?: string;  // date
+  projectstart?: string;  // date
+  requestno?: number;
+  taxamount?: number;
+}
