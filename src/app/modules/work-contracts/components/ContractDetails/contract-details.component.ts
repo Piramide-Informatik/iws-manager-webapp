@@ -39,7 +39,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
-  employeeOptions: {label: string, value: number}[] = [];
+  employeeOptions: {label: number, value: number}[] = [];
 
   public isLoading: boolean = false;
   private readonly employeesMap: Map<number, Employee> = new Map();
@@ -105,7 +105,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.subscription.add(
       this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe({
         next: (employees: Employee[]) => {
-          this.employeeOptions = employees.map((emp: Employee) => ({ label: emp.firstname + ' ' + emp.lastname, value: emp.id }));
+          this.employeeOptions = employees.map((emp: Employee) => ({ label: emp.employeeno ?? 0 , value: emp.id }));
           // Guardar empleados en un mapa para acceso rápido
           this.employeesMap.clear();
           employees.forEach((emp: Employee) => {

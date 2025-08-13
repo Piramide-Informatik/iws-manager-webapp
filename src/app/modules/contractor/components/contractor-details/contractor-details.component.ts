@@ -4,8 +4,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { map, Subscription } from 'rxjs';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { ContractorUtils } from '../../utils/contractor-utils';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 import { Contractor } from '../../../../Entities/contractor';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
@@ -25,20 +23,17 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   private readonly countryUtils = inject(CountryUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly route = inject(ActivatedRoute);
-  private readonly messageService = inject(MessageService);
-  private readonly translate = inject(TranslateService);
   private readonly subscription = new Subscription();
 
   public contractorForm!: FormGroup;
   public showOCCErrorModalContractor = false;
-  private loading = false;
+  public isLoading = false;
 
   @Input() currentCustomer!: Customer | undefined;
   @Input() contractor: Contractor | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
-  @Input() visible = false;
-
   @Input() isVisibleModal: boolean = false;
+
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() onMessageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>()
   @Output() contractorUpdated = new EventEmitter<Contractor>();
@@ -116,6 +111,9 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
         taxno: this.contractor.taxNumber
       });
     }
+    if (changes['modalContractType'] && this.modalContractType === 'create'){
+      this.contractorForm.reset();
+    }
   }
 
   private buildContractor(customerSource: any, countrySource: any): Contractor {
@@ -152,7 +150,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   updateContractor() {
     if (!this.validateContractorForUpdate()) return;
-    this.loading = true;
+    this.isLoading = true;
 
     const updatedContractor = this.buildContractor(
       this.contractor?.customer,
@@ -163,7 +161,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       .subscribe({
         next: (updated) => this.handleUpdateSuccess(updated),
         error: (err) => this.handleUpdateError(err),
-        complete: () => this.loading = false
+        complete: () => this.isLoading = false
       }));
   }
 
@@ -205,16 +203,18 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private createContractor(newContractor: Omit<Contractor, 'id'>): void {
+    this.isLoading = true;
     this.subscription.add(
       this.contractorUtils.createNewContractor(newContractor).subscribe({
         next: (resContractor) => {
+          this.isLoading = false;
           this.onContractorCreated.emit(resContractor);
           this.commonMessageService.showCreatedSuccesfullMessage();
           this.closeModal();
         },
-        error: (err) => {
+        error: () => {
+          this.isLoading = false;
           this.commonMessageService.showErrorCreatedMessage();
-          this.closeModal();
         }
       })
     )
@@ -247,17 +247,21 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   closeModal(): void {
     this.isContractVisibleModal.emit(false);
+    this.contractorForm.reset();
   }
 
   removeContractor() {
     if (this.contractor) {
+      this.isLoading = true;
       this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
         next: () => {
+          this.isLoading = false;
           this.isContractVisibleModal.emit(false);
           this.onContractorDeleted.emit(this.contractor?.id);
           this.commonMessageService.showDeleteSucessfullMessage();
         },
-        error: (error) => {
+        error: () => {
+          this.isLoading = false;
           this.commonMessageService.showErrorDeleteMessage();
         }
       })
