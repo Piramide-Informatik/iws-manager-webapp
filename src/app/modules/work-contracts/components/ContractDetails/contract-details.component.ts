@@ -39,32 +39,19 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
-  employeeOptions: {label: string, value: number}[] = [];
+  employeeOptions: {label: number, value: number}[] = [];
 
-  public isLoading = false;
+  public isLoading: boolean = false;
   private readonly employeesMap: Map<number, Employee> = new Map();
-  employeeNumber: any;
-  isDeleteEmployeeContract: boolean = false;
   errorMsg: string | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     if((changes['currentEmploymentContract'] || changes['visibleModal']) && (this.modalType === 'edit' && this.currentEmploymentContract)){
       this.initContractDetailsForm();
-      console.log('modaltype',this.modalType)
       if(this.currentEmploymentContract.customer){
         this.loadEmployeesByCustomer(this.currentEmploymentContract.customer?.id)
       }
-      this.ContractDetailsForm.patchValue({
-        employeNro: this.currentEmploymentContract?.employee?.id,
-        startDate: momentCreateDate(this.currentEmploymentContract?.startDate),
-        salaryPerMonth: this.currentEmploymentContract?.salaryPerMonth,
-        hoursPerWeek: this.currentEmploymentContract?.hoursPerWeek,
-        workShortTime: this.currentEmploymentContract?.workShortTime,
-        specialPayment: this.currentEmploymentContract?.specialPayment,
-        maxHoursPerMonth: this.currentEmploymentContract?.maxHoursPerMonth,
-        maxHoursPerDay: this.currentEmploymentContract?.maxHoursPerDay,
-        hourlyRate: this.currentEmploymentContract?.hourlyRate
-      })
+      this.laodDataToForm();
     }
     if(changes['modalType'] && this.modalType === 'create'){
       this.initContractDetailsForm();
@@ -83,6 +70,20 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     if (this.modalType === 'create') {
       this.getCurrentCustomer();
     }
+  }
+
+  private laodDataToForm(): void {
+    this.ContractDetailsForm.patchValue({
+      employeNro: this.currentEmploymentContract?.employee?.id,
+      startDate: momentCreateDate(this.currentEmploymentContract?.startDate),
+      salaryPerMonth: this.currentEmploymentContract?.salaryPerMonth,
+      hoursPerWeek: this.currentEmploymentContract?.hoursPerWeek,
+      workShortTime: this.currentEmploymentContract?.workShortTime,
+      specialPayment: this.currentEmploymentContract?.specialPayment,
+      maxHoursPerMonth: this.currentEmploymentContract?.maxHoursPerMonth,
+      maxHoursPerDay: this.currentEmploymentContract?.maxHoursPerDay,
+      hourlyRate: this.currentEmploymentContract?.hourlyRate
+    });
   }
 
   private getCurrentCustomer(): void {
@@ -104,7 +105,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.subscription.add(
       this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe({
         next: (employees: Employee[]) => {
-          this.employeeOptions = employees.map((emp: Employee) => ({ label: emp.firstname + ' ' + emp.lastname, value: emp.id }));
+          this.employeeOptions = employees.map((emp: Employee) => ({ label: emp.employeeno ?? 0 , value: emp.id }));
           // Guardar empleados en un mapa para acceso rápido
           this.employeesMap.clear();
           employees.forEach((emp: Employee) => {
@@ -269,16 +270,16 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   deleteEmployeeContract() {
     if (this.currentEmploymentContract) {
-      this.isDeleteEmployeeContract = true;
+      this.isLoading = true;
       this.employeeContractUtils.deleteEmploymentContract(this.currentEmploymentContract.id).subscribe({
         next: () => {
-          this.isDeleteEmployeeContract = false;
+          this.isLoading = false;
           this.isVisibleModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.deletedEmployeeContract.emit(this.currentEmploymentContract);
         },
         error: (error) => {
-          this.isDeleteEmployeeContract = false;
+          this.isLoading = false;
           this.commonMessageService.showErrorDeleteMessage();
         }
       });

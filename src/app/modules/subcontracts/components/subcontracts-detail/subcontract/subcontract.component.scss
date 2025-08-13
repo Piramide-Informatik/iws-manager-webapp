@@ -2,7 +2,7 @@
     width: 20vw;
 }
 
-::ng-deep .p-inputtext {
+::ng-deep .p-inputtext, p-inputnumber {
   width: 20vw;
 }
 
@@ -15,7 +15,7 @@
 }
 
 /* Estilo del calendario */
-::ng-deep .p-datepicker {
+::ng-deep .order_input .p-datepicker {
     width: 20vw;
     min-width: 20vw;
     max-width: 20vw;

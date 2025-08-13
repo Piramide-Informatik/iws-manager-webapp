@@ -12,6 +12,7 @@ import { Contractor } from '../../../../../Entities/contractor';
 import { momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { Customer } from '../../../../../Entities/customer';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
+import { SubcontractStateService } from '../../../utils/subcontract-state.service';
 
 @Component({
   selector: 'app-subcontract',
@@ -21,6 +22,7 @@ import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 })
 export class SubcontractComponent implements OnInit, OnDestroy {
   private readonly subcontractUtils = inject(SubcontractUtils);
+  private readonly subcontractStateService = inject(SubcontractStateService);
   private readonly contractorUtils = inject(ContractorUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly translate = inject(TranslateService);
@@ -186,9 +188,10 @@ export class SubcontractComponent implements OnInit, OnDestroy {
     const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
     this.subscriptions.add(
       this.subcontractUtils.updateSubcontract(subcontractUpdated).subscribe({
-        next: () => {
+        next: (updated: Subcontract) => {
           this.isLoading = false;
           this.onLoadingOperation.emit(this.isLoading);
+          this.subcontractStateService.notifySubcontractUpdate(updated);
           this.commonMessageService.showEditSucessfullMessage();
         },
         error: (error) => {
@@ -217,6 +220,8 @@ export class SubcontractComponent implements OnInit, OnDestroy {
   }
 
   private buildSubcontractEdited(subcontractSource: any): Subcontract {
+    // controlNetOrGross == true -> invoiceNet, false -> invoiceGross
+    const controlNetOrGross: boolean =  this.subcontractForm.value.netOrGross === 'net';
     return {
       id: this.subcontractId,
       createdAt: subcontractSource.createdAt ?? new Date().toISOString(),
@@ -231,8 +236,8 @@ export class SubcontractComponent implements OnInit, OnDestroy {
       description: this.subcontractForm.value.description,
       invoiceAmount: this.subcontractForm.value.invoiceAmount,
       invoiceDate: momentFormatDate(this.subcontractForm.value.invoiceDate),
-      invoiceGross: this.subcontractForm.value.netOrGross === 'gross' ? this.subcontractForm.value.invoiceAmount : 0,
-      invoiceNet: this.subcontractForm.value.netOrGross === 'net' ? this.subcontractForm.value.invoiceAmount : 0,
+      invoiceGross: controlNetOrGross ? 0 : this.subcontractForm.value.invoiceAmount,
+      invoiceNet: controlNetOrGross ? this.subcontractForm.value.invoiceAmount : 0,
       invoiceNo: this.subcontractForm.value.invoiceNumber,
       isAfa: this.subcontractForm.value.afa,
       netOrGross: this.subcontractForm.value.netOrGross === 'net',
