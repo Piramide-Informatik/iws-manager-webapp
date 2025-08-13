@@ -7,7 +7,7 @@ export class SubcontractStateService {
   private readonly editSubcontractSource = new BehaviorSubject<Subcontract | null>(null);
   currentSubcontract$ = this.editSubcontractSource.asObservable();
 
-  setSubcontractToEdit(subcontract: Subcontract | null): void {
+  notifySubcontractUpdate(subcontract: Subcontract | null): void {
     this.editSubcontractSource.next(subcontract);
   }
 
