@@ -37,6 +37,7 @@ export class DepreciationScheduleComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
   private langSubscription = new Subscription();
+  public showOCCErrorModalDepreciation = false;
   
   @Input() currentSubcontract!: Subcontract;
 
@@ -168,9 +169,13 @@ export class DepreciationScheduleComponent implements OnInit {
         this.commonMessageService.showEditSucessfullMessage();
         this.loadSubcontractYears(this.subcontractId);
       },
-      error: () => {
+      error: (err) => {
         this.isLoading = false;
-        this.commonMessageService.showErrorEditMessage();
+        if (err.message === 'Conflict detected: subcontract year version mismatch') {
+          this.showOCCErrorModalDepreciation = true;
+        } else {
+          this.commonMessageService.showErrorEditMessage();
+        }
       }
     });
   }
