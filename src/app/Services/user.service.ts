@@ -11,11 +11,12 @@ import { Role } from "../Entities/role";
 export class UserService {
     private readonly http = inject(HttpClient);
     private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/users`;
-    private readonly _user = signal<User[]>([]);
+
+    private readonly _users = signal<User[]>([]);
     private readonly _loading = signal<boolean>(false);
     private readonly _error = signal<string | null>(null);
     
-    public subcontracts = this._user.asReadonly();
+    public users = this._users.asReadonly();
     public loading = this._loading.asReadonly();
     public error = this._error.asReadonly();
     
@@ -25,13 +26,16 @@ export class UserService {
         'Accept': 'application/json',
         })
     };
+    constructor() {
+        this.loadInitialData().subscribe();
+    }
 
     public loadInitialData(): Observable<User[]> {
         this._loading.set(true);
         return this.http.get<User[]>(this.apiUrl, this.httpOptions).pipe(
             tap({
             next: (titles) => {
-                this._user.set(titles);
+                this._users.set(titles);
                 this._error.set(null);
             },
             error: (err) => {
@@ -49,14 +53,14 @@ export class UserService {
         return this.http.post<User>(this.apiUrl, user, this.httpOptions).pipe(
             tap({
             next: (newUser) => {
-                this._user.update(user => [...user, newUser]);
+                this._users.update(users => [...users, newUser]);
                 this._error.set(null);
             },
             error: (err) => {
                 this._error.set('Failed to add subcontract user');
                 console.error('Error adding subcontract user:', err);
-                return of(user);
-            }
+            },
+            finalize: () => this._loading.set(false)
             })
         );
     }
@@ -67,7 +71,7 @@ export class UserService {
         return this.http.put<User>(url, updatedTitle, this.httpOptions).pipe(
             tap({
             next: (res) => {
-                this._user.update(users =>
+                this._users.update(users =>
                 users.map(u => u.id === res.id ? res : u)
             );
                 this._error.set(null);
@@ -86,7 +90,7 @@ export class UserService {
     return this.http.delete<void>(url, this.httpOptions).pipe(
         tap({
         next: () => {
-            this._user.update(user =>
+            this._users.update(user =>
             user.filter(u => u.id !== id)
         );
             this._error.set(null);
@@ -122,7 +126,7 @@ export class UserService {
     return this.http.post<User>(url, roleIds, this.httpOptions).pipe(
         tap({
             next: (updatedUser) => {
-                this._user.update(users =>
+                this._users.update(users =>
                     users.map(u => u.id === updatedUser.id ? updatedUser : u)
                 );
                 this._error.set(null);

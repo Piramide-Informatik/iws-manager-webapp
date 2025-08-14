@@ -8,6 +8,7 @@ export interface User{
 
     username: string;
     password?: string;
+    active?: boolean;
     email?: string;
     firstName?: string;
     lastName?: string;
