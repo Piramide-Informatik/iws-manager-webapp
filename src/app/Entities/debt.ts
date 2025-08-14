@@ -1,6 +1,7 @@
 import { Customer } from "./customer";
 import { Order } from "./order";
-import { Project, Promoter } from "./project";
+import { Project } from "./project";
+import { Promoter } from "./promoter";
 
 export interface Debt {
   id: number;

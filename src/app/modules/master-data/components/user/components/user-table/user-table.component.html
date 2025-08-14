@@ -3,12 +3,14 @@
     <div class>
       <master-data-genaral-table
         [tableId]="tableKey"
-        [tableValues]="userUI"
-        [columns]="columsHeaderFieldUser"
-        [userPreferences]="userPreferences"
+        [tableValues]="users()"
+        [columns]="userDisplayedColumns"
+        [userPreferences]="userUserPreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserPreferencesChanges($event)"
       ></master-data-genaral-table>
     </div>
   </div>
 </div>
+
+<p>Data: {{ users() | json }}</p>
