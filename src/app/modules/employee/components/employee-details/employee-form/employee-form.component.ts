@@ -8,8 +8,6 @@ import { TitleUtils } from '../../../../master-data/components/title/utils/title
 import { QualificationFZUtils } from '../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
 import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 
@@ -26,14 +24,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly qualificationFZUtils = inject(QualificationFZUtils);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly messageService = inject(MessageService);
-  private readonly translate = inject(TranslateService);
   private readonly subscriptions = new Subscription();
 
   public employeeForm!: FormGroup;
   public formType: 'create' | 'update' = 'create';
   public currentEmployee: Employee | undefined;
-  public id = 0;
   public showOCCErrorModaEmployee = false;
   // Modal delete
   public visibleEmployeeModalDelete: boolean = false;
@@ -105,7 +100,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.employeeForm = new FormGroup({
-      employeeNumber: new FormControl(''),
+      employeeNumber: new FormControl(null),
       salutation: new FormControl(''),
       title: new FormControl(''),
       employeeFirstName: new FormControl(''),
@@ -222,15 +217,18 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private createEmployee(newEmployee: Omit<Employee, 'id'>): void {
+    this.isLoading = true;
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: (createdEmployee) => {
+          this.isLoading = false;
           this.commonMessageService.showCreatedSuccesfullMessage();
           setTimeout(()=>{
             this.resetFormAndNavigation(createdEmployee.id);
           },2000)
         },
         error: (err) => {
+          this.isLoading = false;
           console.error('Error creating employee:', err);
           this.commonMessageService.showErrorCreatedMessage();
         }
@@ -239,10 +237,17 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private updateEmployee(updatedEmployee: Employee): void {
+    this.isLoading = true;
     this.subscriptions.add(
       this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
-        next: () => this.commonMessageService.showEditSucessfullMessage(),
-        error: (err) => this.handleUpdateEmployeeError(err)
+        next: () => {
+          this.isLoading = false;
+          this.commonMessageService.showEditSucessfullMessage()
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.handleUpdateEmployeeError(err)
+        }
       })
     );
   }
@@ -270,14 +275,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  private handleMessages(severity: string, summary: string, detail: string): void {
-    this.messageService.add({
-      severity,
-      summary: this.translate.instant(summary),
-      detail: this.translate.instant(detail)
-    });
   }
 
   private handleUpdateEmployeeError(err: any): void {
