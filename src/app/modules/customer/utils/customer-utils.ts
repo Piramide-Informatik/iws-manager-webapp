@@ -12,6 +12,7 @@ import { ProjectUtils } from '../../projects/utils/project.utils';
 import { OrderUtils } from '../../orders/utils/order-utils';
 import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 import { InvoiceUtils } from '../../invoices/utils/invoice.utils';
+import { FrameworkAgreementsUtils } from '../../framework-agreements/utils/framework-agreement.service';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -29,6 +30,7 @@ export class CustomerUtils {
     private readonly orderUtils = inject(OrderUtils);
     private readonly receivableUtils = inject(ReceivableUtils);
     private readonly invoiceUtils = inject(InvoiceUtils);
+    private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
 
     /**
      * Gets all customers without any transformation
@@ -179,6 +181,13 @@ export class CustomerUtils {
                 map(invoices => ({
                     valid: invoices.length === 0,
                     error: 'Cannot be deleted because have associated invoices'
+                }))
+            ),
+            this.frameworkUtils.getAllFrameworkAgreementsByCustomerId(id).pipe(
+                take(1),
+                map(frameworks => ({
+                    valid: frameworks.length === 0,
+                    error: 'Cannot be deleted because have associated framework agreements'
                 }))
             )
         ];
