@@ -4,6 +4,7 @@ export class FrameworkAgreements {
     date!: string; 
     fundingProgram!: string; 
     contractStatus!: string; 
-    iwsEmployee!: string; 
+    iwsEmployee!: string;
+    version?: number
   }
   

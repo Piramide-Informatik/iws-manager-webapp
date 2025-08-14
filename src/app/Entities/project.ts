@@ -1,5 +1,8 @@
 import { Customer } from "./customer";
+import { EmployeeIws } from "./employeeIws";
 import { FundingProgram } from "./fundingProgram";
+import { Network } from "./network";
+import { ProjectStatus } from "./projectStatus";
 import { Promoter } from "./promoter";
 
 export interface Project {
@@ -9,13 +12,13 @@ export interface Project {
   version: number;
 
   customer: Customer | null;
-  empiws20: null; // falta
-  empiws30: null; // falta
-  empiws50: null; // falta
+  empiws20: EmployeeIws | null;
+  empiws30: EmployeeIws | null;
+  empiws50: EmployeeIws | null;
   fundingProgram: FundingProgram | null;
-  network: null; //falta
+  network: Network | null;
   promoter: Promoter | null;
-  status: null; //falta
+  status: ProjectStatus | null;
   
   approvalDate?: string;
   authorizationDate?: string;
