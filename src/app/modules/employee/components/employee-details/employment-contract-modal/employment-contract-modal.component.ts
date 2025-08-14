@@ -39,8 +39,6 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
   isLoading = false;
   errorMessage: string | null = null;
   employmentContractForm!: FormGroup;
-  employeeNumber: any;
-  private loading = false;
   public showOCCErrorModalContract = false;
 
   constructor(
@@ -111,7 +109,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
   }
 
   createEmploymentContract() {
-    if (this.employmentContractForm.invalid || this.isLoading) return;
+    if (this.employmentContractForm.invalid) return;
 
     this.isLoading = true;
     this.errorMessage = null;
@@ -134,7 +132,6 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       next: () => {
         this.isLoading = false;
         this.onOperationEmploymentContract.emit(this.currentEmployee.id);
-        console.log('Employment contract created successfully');
         this.isVisibleModal.emit(false);
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.employmentContractForm.reset();
@@ -142,7 +139,6 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       error: (error) => {
         this.isLoading = false;
         this.errorMessage = error.message;
-        console.error('Error creating employment contract:', error);
         this.isVisibleModal.emit(false);
         this.commonMessageService.showErrorCreatedMessage();
         this.employmentContractForm.reset();
@@ -161,7 +157,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
           console.log('Delete employment contract successfull');
           this.commonMessageService.showDeleteSucessfullMessage();
         },
-        error: (error) => {
+        error: () => {
           this.isLoading = false;
           this.commonMessageService.showErrorDeleteMessage();
         }
@@ -179,6 +175,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
     if (error.message.startsWith('VERSION_CONFLICT:')) {
       this.showOCCErrorModalContract = true;
     } else {
+      console.log(error);
       this.commonMessageService.showErrorEditMessage();
     }
   }
@@ -206,7 +203,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       maxHoursPerMonth: formValues.maxHoursPerMonth,
       maxHoursPerDay: formValues.maxHoursPerDay,
       hourlyRate: formValues.hourlyRate,
-      hourlyRealRate: formValues.hourlyRealRate,
+      hourlyRealRate: formValues.hourlyRealRate ?? 0,
       createdAt: "",
       updatedAt: ""
     };
@@ -230,10 +227,9 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
 
   updateEmploymentContract() {
     if (!this.validateContractForUpdate()) return;
-    this.loading = true;
+    this.isLoading = true;
     const updatedContract = this.buildEmploymentContract(this.employmentContract?.customer, this.employmentContract?.employee);
 
-    console.log('Updating employment contract');
     this.subscription.add(this.employmentContractUtils.updateEmploymentContract(updatedContract)
       .subscribe({
         next: (updated) =>{
@@ -243,8 +239,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
         error: (err) => {
           this.isLoading = false;
           this.handleUpdateError(err)
-        },
-        complete: () => this.loading = false
+        }
       }));
   }
 }
