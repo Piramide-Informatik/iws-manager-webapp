@@ -29,30 +29,74 @@ export class UserUtils {
         );
     }
 
-    addUser(usernName: string): Observable<User> {
-        const trimmedName = usernName?.trim();
+    addUser(
+        username: string,
+        firstName: string,
+        lastName: string,
+        password: string,
+        email: string
+    ): Observable<User> {
+        // Sanitizar todos los inputs
+        const trimmedUsername = username?.trim();
+        const trimmedFirstName = firstName?.trim();
+        const trimmedLastName = lastName?.trim();
+        const trimmedPassword = password?.trim();
+        const trimmedEmail = email?.trim().toLowerCase();
     
-        if (!trimmedName) {
-            return throwError(() => new Error('TITLE.ERROR.EMPTY'));
+        // Validar campos requeridos
+        if (!trimmedUsername) {
+            return throwError(() => new Error('TITLE.ERROR.EMPTY_USERNAME'));
+        }
+
+        if (!trimmedFirstName) {
+            return throwError(() => new Error('TITLE.ERROR.EMPTY_FIRSTNAME'));
+        }
+
+        if (!trimmedLastName) {
+            return throwError(() => new Error('TITLE.ERROR.EMPTY_LASTNAME'));
+        }
+
+        if (!trimmedPassword) {
+            return throwError(() => new Error('TITLE.ERROR.EMPTY_PASSWORD'));
+        }
+
+        if (!trimmedEmail) {
+            return throwError(() => new Error('TITLE.ERROR.EMPTY_EMAIL'));
+        }
+
+        // Validar formato de email (opcional)
+        if (!this.isValidEmail(trimmedEmail)) {
+            return throwError(() => new Error('TITLE.ERROR.INVALID_EMAIL'));
         }
     
-        return this.userExists(trimmedName).pipe(
+        return this.userExists(trimmedUsername).pipe(
             switchMap(exists => {
             if (exists) {
                 return throwError(() => new Error('TITLE.ERROR.ALREADY_EXISTS'));
             }
-    
-            return this.userService.addUser({ username: trimmedName });
+
+            return this.userService.addUser({
+                username: trimmedUsername,
+                firstName: trimmedFirstName,
+                lastName: trimmedLastName,
+                password: trimmedPassword,
+                email: trimmedEmail
+            });
             }),
-        catchError(err => {
-            if (err.message === 'TITLE.ERROR.ALREADY_EXISTS' || err.message === 'TITLE.ERROR.EMPTY') {
+            catchError(err => {
+            if (err.message.startsWith('TITLE.ERROR.')) {
                 return throwError(() => err);
             }
-    
-            console.error('Error creating title:', err);
+
+            console.error('Error creating user:', err);
             return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
-        })
+            })
         );
+    }
+
+    private isValidEmail(email: string): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 
     userExists(username: string): Observable<boolean> {
@@ -81,6 +125,7 @@ export class UserUtils {
     deleteUser(id: number): Observable<void> {
         return this.checkUserUsage(id).pipe(
             switchMap(isUsed => {
+                console.log(isUsed)
                 if (isUsed) {
                 return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
                 }
@@ -92,14 +137,7 @@ export class UserUtils {
         );
     }
     private checkUserUsage(idUser: number): Observable<boolean> {
-        return forkJoin([
-            this.roleUtils.getAllRoles().pipe(
-                map(roles => roles.some(role => role.id === idUser)),
-                catchError(() => of(false))
-            )
-            ] as const).pipe(
-            map(([usedInRoles]) => usedInRoles)
-            );
+        return of(false);
     }
 
     updateUsers(user: User): Observable<User> {
