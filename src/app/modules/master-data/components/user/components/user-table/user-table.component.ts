@@ -1,23 +1,67 @@
-import { Component } from '@angular/core';
+import { Component , ViewChild, inject, computed, SimpleChanges } from '@angular/core';
+import { Table } from 'primeng/table';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { MasterDataService } from '../../../../master-data.service';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { UserService } from '../../../../../../Services/user.service';
+import { UserUtils } from '../../utils/user-utils';
+import { UserStateService } from '../../utils/user-state.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
-  styles: ``,
+  styleUrl: './user-table.component.scss',
   standalone: false,
 })
 export class UserTableComponent {
-  public userUI: any[] = [];
-  public columsHeaderFieldUser: any[] = [];
-  userPreferences: UserPreference = {};
+  private readonly userUtils = new UserUtils();
+  private readonly userService = inject(UserService);
+  private readonly messageService =  inject(MessageService);
+  visibleModal: boolean = false;
+  modalType: 'create' | 'delete' = 'create';
+  selectedUser: number | null = null;
+  UserName: string = '';
+  //@ViewChild('userModal') userModalComponent!: UserModalComponent;
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedUser = event.data;
+
+      this.userUtils.getUseryId(this.selectedUser!).subscribe({
+        next: (user) => {
+          this.UserName = user?.username ?? '';
+        },
+        error: (err) => {
+          console.error('Could not get user:', err);
+          this.UserName = '';
+        }
+      });
+    }
+    this.visibleModal = true;
+  }
+
+
+  readonly users = computed(() => {
+    return this.userService.users().map(user => ({
+      id: user.id,
+      username: user.username,
+      name: `${user.firstName} ${user.lastName}`,
+      active: user.active
+    }));
+  });
+
+  userColumns: any[] = [];
+  userDisplayedColumns: any[] = [];
+  userUserPreferences: UserPreference = {};
   tableKey: string = 'User'
   dataKeys = ['username', 'name', 'active'];
+
+  
+  @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
 
@@ -25,47 +69,44 @@ export class UserTableComponent {
     private readonly translate: TranslateService,
     private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly userStateService: UserStateService
   ) {}
 
-  ngOnInit(): void {
-    this.userUI = [
-      { username: 'loschu', name: 'Schulte Lothar', active: true },
-      { username: 'paze', name: 'Zessin Patrick', active: true },
-      { username: 'mariah', name: 'Hernandez Maria', active: false },
-      { username: 'jdoe', name: 'Doe John', active: true },
-    ];
-
-    this.loadColHeadersUserUI();
-    this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldUser);
+  ngOnInit() {
+    this.loadUserHeadersAndColumns();
+    this.userUserPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.userDisplayedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.loadColHeadersUserUI();
-      this.routerUtils.reloadComponent(true);
-      this.userPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldUser);
+      this.loadUserHeadersAndColumns();
+      this.userUserPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.userDisplayedColumns);
     });
   }
-
   onUserPreferencesChanges(userPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
-  loadColHeadersUserUI(): void {
-    this.columsHeaderFieldUser = [
+    loadUserHeadersAndColumns() {
+    this.loadUserHeaders();
+    this.userDisplayedColumns = this.userColumns.filter(col => col.field !== 'label');
+  }
+
+  loadUserHeaders(): void {
+    this.userColumns = [
       {
         field: 'username',
-        styles: { width: '150px' },
-        header: this.translate.instant(_('USERS.TABLE.USERNAME')),
+        minWidth: 110,
+        header: "Nombre de usuario"
       },
       {
         field: 'name',
-        styles: { width: 'auto' },
-        header: this.translate.instant(_('USERS.TABLE.NAME')),
+        minWidth: 110,
+        header: "Nombre"
       },
       {
         field: 'active',
-        styles: { width: '80px' },
-        header: this.translate.instant(_('USERS.TABLE.ACTIVE')),
-      },
+        minWidth: 110,
+        header: "Activo"
+      }
     ];
   }
 
@@ -73,5 +114,45 @@ export class UserTableComponent {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['users']) {
+      this.prepareTableData();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.users().length > 0) {
+      this.userDisplayedColumns = [
+        { field: 'username', header: 'Nombre de usuario' },
+        { field: 'name', header: 'Nombre' },
+        { field: 'active', header: 'Activo' }]
+    }
+  }
+
+  applyUserFilter(event: any, field: string) {
+    const inputTitleFilterElement = event.target as HTMLInputElement;
+    if (inputTitleFilterElement) {
+      this.dt2.filter(inputTitleFilterElement.value, field, 'contains');
+    }
+  }
+
+  onVisibleModal(visible: boolean) {
+    this.visibleModal = visible;
+  }
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedUser = null;
+    }
+  }
+
+  toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
   }
 }
