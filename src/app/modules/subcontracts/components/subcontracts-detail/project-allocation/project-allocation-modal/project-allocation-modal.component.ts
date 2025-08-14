@@ -37,6 +37,7 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
   private currentSubcontract!: Subcontract;
   isSubcontractProjectPerformigAction: boolean = false
   public allocationForm!: FormGroup;
+   public showOCCErrorSubcontractProject = false;
   private readonly customerId: number = this.route.snapshot.params['id'];
   private projects: Project[] = [];
   public projectLabels = toSignal(
@@ -190,9 +191,13 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
           this.commonMessageService.showEditSucessfullMessage();
           this.isProjectAllocationVisibleModal.emit(false);
         },
-        error: () => {
+        error: (err) => {
           this.isSubcontractProjectPerformigAction = false;
-          this.commonMessageService.showErrorEditMessage();
+          if (err.message === 'Conflict detected: subcontract project version mismatch') {
+            this.showOCCErrorSubcontractProject = true;
+          } else {
+            this.commonMessageService.showErrorEditMessage();
+          }
         }
       })
     );
