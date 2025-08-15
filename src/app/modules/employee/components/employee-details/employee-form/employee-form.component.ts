@@ -240,9 +240,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.subscriptions.add(
       this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
-        next: () => {
+        next: (editeEmployee) => {
           this.isLoading = false;
-          this.commonMessageService.showEditSucessfullMessage()
+          this.commonMessageService.showEditSucessfullMessage();
+          this.currentEmployee = editeEmployee;
+          this.buildUpdatedEmployee();
         },
         error: (err) => {
           this.isLoading = false;
