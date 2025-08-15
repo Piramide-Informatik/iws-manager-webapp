@@ -1,4 +1,5 @@
 import { Customer } from "./customer";
+import { FundingProgram } from "./fundingProgram";
 import { Order } from "./order";
 import { Project } from "./project";
 import { Promoter } from "./promoter";
@@ -13,10 +14,11 @@ export interface Debt {
   order: Order | null;
   project: Project | null;
   promoter: Promoter | null;
+  fundingProgram: FundingProgram | null; 
 
-  billingend?: string; //date
+  billingEnd?: string; //date
   billingmonths?: number;
-  billingstart?: string; //date
+  billingStart?: string; //date
   comment?: string;
   confdatelevel1?: string; //date
   confdatelevel2?: string; //date
@@ -25,10 +27,10 @@ export interface Debt {
   debttitle?: string;
   donation?: number; 
   fundinglabel?: string;
-  grossamount?: number;
+  grossAmount?: number;
   iwsdeptamount1?: number;
   iwsdeptamount2?: number;
-  iwspercent?: number;
+  iwsPercent?: number;
   kmui0838?: number;
   kmui0848?: number;
   kmui0847?: number;
@@ -36,9 +38,9 @@ export interface Debt {
   kmui0856?: number;
   kmui0860?: number;
   lastpaymentdate?: string; // date
-  netamount?: number; 
-  openamount?: number;
-  payedamount?: number;
+  netAmount?: number; 
+  openAmount?: number;
+  payedAmount?: number;
   projectcosts?: number;
   projectend?: string;  // date
   projectstart?: string;  // date
