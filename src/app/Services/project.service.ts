@@ -49,6 +49,23 @@ export class ProjectService {
     );
   }
 
+  // ==================== READ OPERATIONS ====================
+  /**
+   * Retrieves all projects
+   * @returns Observable with Project array
+   * @throws Error when server request fails
+   */
+  getAllProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch projects');
+        console.error('Error fetching projects:', err);
+        return of([]);
+      })
+    );
+  }
+
   /**
    * Retrieves a single project by ID
    * @param id Project identifier

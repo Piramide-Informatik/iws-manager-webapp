@@ -10,6 +10,16 @@ import { Project } from '../../../Entities/project';
  */
 export class ProjectUtils {
   private readonly projectService = inject(ProjectService);
+
+  /**
+  * Gets all projects without any transformation
+  * @returns Observable emitting the raw list of projects
+  */
+  getAllProjects(): Observable<Project[]> {
+    return this.projectService.getAllProjects().pipe(
+      catchError(() => throwError(() => new Error('Failed to load projects')))
+    );
+  }
  
   /**
   * Gets a project by ID with proper error handling
