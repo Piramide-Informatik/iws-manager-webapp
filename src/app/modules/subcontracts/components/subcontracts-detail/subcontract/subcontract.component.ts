@@ -193,6 +193,8 @@ export class SubcontractComponent implements OnInit, OnDestroy {
           this.onLoadingOperation.emit(this.isLoading);
           this.subcontractStateService.notifySubcontractUpdate(updated);
           this.commonMessageService.showEditSucessfullMessage();
+          this.subcontractToEdit = updated;
+          this.loadSubcontractDataForm(updated);
         },
         error: (error) => {
           this.isLoading = false;
