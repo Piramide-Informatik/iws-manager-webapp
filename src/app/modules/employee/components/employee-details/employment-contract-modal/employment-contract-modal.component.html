@@ -119,7 +119,7 @@
 
     </div>
     <div class="flex justify-content-center gap-4 mt-4">
-      <p-button class="save" type="submit" (onClick)="onSubmit()" [disabled]="!employmentContractForm.valid" size="small" [label]="'BUTTONS.SAVE' | translate"
+      <p-button class="save" type="submit" (onClick)="onSubmit()" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check" iconPos="left" />
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="closeModal()" />
