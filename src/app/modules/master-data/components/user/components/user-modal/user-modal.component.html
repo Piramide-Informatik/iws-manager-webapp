@@ -1,0 +1,98 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2 mt-4">
+            <div class="create-form flex align-items-center mb-6">
+                <label for="userName" class="block">
+                    {{ 'Username' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="userName" formControlName="username" autocomplete="off"
+                    [attr.aria-invalid]="createUserForm.get('username')?.invalid"
+                    [attr.aria-describedby]="createUserForm.get('username')?.invalid ? 'userError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createUserForm.get('username')?.invalid && createUserForm.get('username')?.touched"
+                    id="userError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="create-form flex align-items-center mb-6">
+                <label for="firstName" class="block">
+                    {{ 'firstName' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="firstName" formControlName="firstName" autocomplete="off"
+                    [attr.aria-invalid]="createUserForm.get('firstName')?.invalid"
+                    [attr.aria-describedby]="createUserForm.get('firstName')?.invalid ? 'userError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createUserForm.get('firstName')?.invalid && createUserForm.get('firstName')?.touched"
+                    id="userError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="create-form flex align-items-center mb-6">
+                <label for="lastName" class="block">
+                    {{ 'lastName' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="lastName" formControlName="lastName" autocomplete="off"
+                    [attr.aria-invalid]="createUserForm.get('lastName')?.invalid"
+                    [attr.aria-describedby]="createUserForm.get('lastName')?.invalid ? 'userError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createUserForm.get('lastName')?.invalid && createUserForm.get('lastName')?.touched"
+                    id="userError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="create-form flex align-items-center mb-6">
+                <label for="password" class="block">
+                    {{ 'password' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="password" formControlName="password" autocomplete="off"
+                    [attr.aria-invalid]="createUserForm.get('password')?.invalid"
+                    [attr.aria-describedby]="createUserForm.get('password')?.invalid ? 'userError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched"
+                    id="userError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="create-form flex align-items-center mb-6">
+                <label for="email" class="block">
+                    {{ 'email' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="email" formControlName="email" autocomplete="off"
+                    [attr.aria-invalid]="createUserForm.get('email')?.invalid"
+                    [attr.aria-describedby]="createUserForm.get('email')?.invalid ? 'userError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createUserForm.get('email')?.invalid && createUserForm.get('email')?.touched"
+                    id="userError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+
+            <div class="flex justify-content-center gap-2 mt-4">
+                <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+                    icon="pi pi-check" iconPos="left" [loading]="isLoading"
+                    [disabled]="createUserForm.invalid || isLoading" />
+
+                <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />
+            </div>
+        </div>
+    </form>
+</ng-container>
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'TITLE.DELETE.CONFIRM_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ userName }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />
+
+        </div>
+    </div>
+</ng-template>
