@@ -252,8 +252,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
         this.closeModal();
         this.commonMessageService.showEditSucessfullMessage();
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
+        console.log(error);
         this.commonMessageService.showErrorEditMessage();
       }
     });
