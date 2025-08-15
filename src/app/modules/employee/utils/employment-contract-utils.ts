@@ -144,7 +144,7 @@ export class EmploymentContractUtils {
       return throwError(() => new Error('INVALID_DATA: Contract ID is required'));
     }
 
-    if (!contract.employee?.id || !contract.customer?.id) {
+    if (!contract.customer?.id) {
       return throwError(() => new Error('INVALID_DATA: Required contract fields are missing'));
     }
 
