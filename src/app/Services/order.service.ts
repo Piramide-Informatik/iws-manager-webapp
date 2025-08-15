@@ -49,6 +49,23 @@ export class OrderService {
     );
   }
 
+  // ==================== READ OPERATIONS ====================
+  /**
+   * Retrieves all orders
+   * @returns Observable with Order array
+   * @throws Error when server request fails
+   */
+  getAllOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch orders');
+        console.error('Error fetching orders:', err);
+        return of([]);
+      })
+    );
+  }
+
   /**
    * Retrieves a single order by ID
    * @param id Order identifier

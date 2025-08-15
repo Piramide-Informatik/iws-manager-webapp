@@ -10,6 +10,16 @@ import { Order } from '../../../Entities/order';
  */
 export class OrderUtils {
   private readonly orderService = inject(OrderService);
+
+  /**
+  * Gets all orders without any transformation
+  * @returns Observable emitting the raw list of orders
+  */
+  getAllOrders(): Observable<Order[]> {
+    return this.orderService.getAllOrders().pipe(
+      catchError(() => throwError(() => new Error('Failed to load orders')))
+    );
+  }
  
   /**
   * Gets a order by ID with proper error handling
