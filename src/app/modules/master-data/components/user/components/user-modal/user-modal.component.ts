@@ -26,31 +26,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   readonly createUserForm = new FormGroup({
-    username: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50)
-    ]),
-    firstName: new FormControl('',[
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50)
-    ]),
-    lastName: new FormControl('',[
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50)
-    ]),
-    password: new FormControl('',[
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50)
-    ]),
-    email: new FormControl('',[
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(100)
-    ])
+    username: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    firstName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    lastName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    email: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100)])
   });
 
   ngOnInit(): void {
@@ -71,70 +51,28 @@ export class UserModalComponent implements OnInit, OnDestroy {
     return this.modalType === 'create';
   }
 
-  onDeleteConfirm(): void {
-    this.isLoading = true;
 
-    if (this.userToDelete) {
-      const sub = this.userUtils.deleteUser(this.userToDelete).pipe(
-        finalize(() => this.isLoading = false)
-      ).subscribe({
-        next: () => {
-          this.toastMessage.emit({
-            severity: 'success',
-            summary: 'MESSAGE.SUCCESS',
-            detail: 'MESSAGE.DELETE_SUCCESS'
-          });
-          this.closeModal();
-        },
-        error: (error) => {
-          this.errorMessage = error.message ?? 'Failed to delete user';
-          this.toastMessage.emit({
-            severity: 'error',
-            summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities')
-              ? 'MESSAGE.DELETE_ERROR_IN_USE'
-              : 'MESSAGE.DELETE_FAILED'
-          });
-          console.error('Delete error:', error);
-          this.closeModal();
-        }
-      });
-
-      this.subscriptions.add(sub);
-    }
+  closeAndReset(): void {
+    this.isLoading = false;
+    this.isVisibleModal.emit(false);
+    this.resetForm();
   }
 
-  onSubmit(): void {
-    if (this.shouldPreventSubmission()) return;
-
-    this.prepareForSubmission();
-    const userName = this.getSanitizedUserValues();
-    console.log(userName)
-
-    const sub = this.userUtils.addUser(userName.username, userName.firstName, userName.lastName, userName.password, userName.email).pipe(
-      finalize(() => this.isLoading = false)
-    ).subscribe({
-      next: () => this.handleSuccess(),
-      error: (error) => this.handleError(error)
-    });
-
-    this.subscriptions.add(sub);
-  }
-
-  private handleSuccess(): void {
+  private showToastAndClose(severity: string, detail: string): void {
     this.toastMessage.emit({
-      severity: 'success',
-      summary: 'MESSAGE.SUCCESS',
-      detail: 'MESSAGE.CREATE_SUCCESS'
+      severity,
+      summary: severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR',
+      detail
     });
-    this.userCreated.emit();
-    this.handleClose();
+    this.closeAndReset();
   }
 
-  private handleError(error: any): void {
-    this.errorMessage = error?.message ?? 'TITLE.ERROR.CREATION_FAILED';
+  private handleOperationError(error: any, defaultDetail: string, inUseDetail?: string): void {
+    this.errorMessage = error?.message ?? defaultDetail;
 
-    const detail = this.getErrorDetail(error.message);
+    const detail = this.errorMessage?.includes('it is in use by other entities')
+      ? inUseDetail ?? defaultDetail
+      : this.getErrorDetail(this.errorMessage ?? '');
 
     this.toastMessage.emit({
       severity: 'error',
@@ -142,8 +80,52 @@ export class UserModalComponent implements OnInit, OnDestroy {
       detail
     });
 
-    console.error('Creation error:', error);
+    console.error('Operation error:', error);
+    this.closeAndReset();
   }
+
+  onDeleteConfirm(): void {
+    if (!this.userToDelete) return;
+    this.isLoading = true;
+
+    const sub = this.userUtils.deleteUser(this.userToDelete).pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe({
+      next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
+      error: (error) => this.handleOperationError(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE')
+    });
+
+    this.subscriptions.add(sub);
+  }
+
+
+  onSubmit(): void {
+    if (this.createUserForm.invalid || this.isLoading) return;
+
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    const userData = this.getSanitizedUserValues();
+
+    const sub = this.userUtils.addUser(
+      userData.username,
+      userData.firstName,
+      userData.lastName,
+      userData.password,
+      userData.email
+    ).pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe({
+      next: () => {
+        this.userCreated.emit();
+        this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
+      },
+      error: (error) => this.handleOperationError(error, 'MESSAGE.CREATE_FAILED')
+    });
+
+    this.subscriptions.add(sub);
+  }
+
 
   private getErrorDetail(errorCode: string): string {
     switch (errorCode) {
@@ -156,22 +138,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private shouldPreventSubmission(): boolean {
-    return this.createUserForm.invalid || this.isLoading;
-  }
-
-  private prepareForSubmission(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
-  }
-
-  private getSanitizedUserValues(): {
-    username: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    email: string;
-  } {
+  private getSanitizedUserValues() {
     return {
       username: this.createUserForm.value.username?.trim() ?? '',
       firstName: this.createUserForm.value.firstName?.trim() ?? '',
@@ -179,34 +146,20 @@ export class UserModalComponent implements OnInit, OnDestroy {
       password: this.createUserForm.value.password?.trim() ?? '',
       email: this.createUserForm.value.email?.trim() ?? ''
     };
-
   }
 
   private resetForm(): void {
     this.createUserForm.reset();
   }
 
-  handleClose(): void {
-    this.isLoading = false;
-    this.isVisibleModal.emit(false);
-    this.resetForm();
-  }
-
-  closeModal(): void {
-    this.isVisibleModal.emit(false);
-    this.createUserForm.reset();
-  }
-
   onCancel(): void {
-    this.handleClose();
+    this.closeAndReset();
   }
 
   public focusInputIfNeeded() {
     if (this.isCreateMode && this.userInput) {
       setTimeout(() => {
-        if (this.userInput?.nativeElement) {
-          this.userInput.nativeElement.focus();
-        }
+        this.userInput?.nativeElement?.focus();
       }, 150);
     }
   }

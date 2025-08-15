@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, map, take, throwError, switchMap, forkJoin, of} from "rxjs";
+import { Observable, catchError, map, take, throwError, switchMap, of} from "rxjs";
 import { User } from "../../../../../Entities/user";
 import { RoleUtils } from "../../roles/utils/role-utils";
 import { UserService } from "../../../../../Services/user.service";
@@ -36,14 +36,13 @@ export class UserUtils {
         password: string,
         email: string
     ): Observable<User> {
-        // Sanitizar todos los inputs
+
         const trimmedUsername = username?.trim();
         const trimmedFirstName = firstName?.trim();
         const trimmedLastName = lastName?.trim();
         const trimmedPassword = password?.trim();
         const trimmedEmail = email?.trim().toLowerCase();
     
-        // Validar campos requeridos
         if (!trimmedUsername) {
             return throwError(() => new Error('TITLE.ERROR.EMPTY_USERNAME'));
         }
@@ -64,7 +63,6 @@ export class UserUtils {
             return throwError(() => new Error('TITLE.ERROR.EMPTY_EMAIL'));
         }
 
-        // Validar formato de email (opcional)
         if (!this.isValidEmail(trimmedEmail)) {
             return throwError(() => new Error('TITLE.ERROR.INVALID_EMAIL'));
         }
@@ -95,9 +93,11 @@ export class UserUtils {
     }
 
     private isValidEmail(email: string): boolean {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+    // Local part max 64 characters, domain max 255
+    const safeEmailRegex = /^[^\s@]{1,64}@[^\s@]{1,255}$/;
+    return safeEmailRegex.test(email);
+}
+
 
     userExists(username: string): Observable<boolean> {
     return this.userService.getAllUser().pipe(
