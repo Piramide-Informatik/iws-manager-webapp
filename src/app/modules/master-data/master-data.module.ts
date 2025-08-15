@@ -125,6 +125,8 @@ import { ModelProjectStatusComponent } from './components/project-status/compone
 import { TableProjectStatusComponent } from './components/project-status/components/table-project-status/table-project-status.component';
 import { ModalApprovalStatusComponent } from './components/approval-status/components/approval-status-project/modal-approval-status/modal-approval-status.component';
 import { RolModalComponent } from './components/roles/components/rol-modal/rol-modal.component';
+import { UserModalComponent } from './components/user/components/user-modal/user-modal.component';
+import { CdkDragPlaceholder } from "@angular/cdk/drag-drop";
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -215,7 +217,8 @@ registerLocaleData(localeDe, 'de-DE');
     ModelProjectStatusComponent,
     TableProjectStatusComponent,
     ModalApprovalStatusComponent,
-    RolModalComponent
+    RolModalComponent,
+    UserModalComponent
   ],
   imports: [
     ButtonModule,
@@ -246,8 +249,9 @@ registerLocaleData(localeDe, 'de-DE');
     TextareaModule,
     PasswordModule,
     PickListModule,
-    SharedModule
-  ],
+    SharedModule,
+    CdkDragPlaceholder
+],
   exports: [
     GenaralTableComponent
   ],

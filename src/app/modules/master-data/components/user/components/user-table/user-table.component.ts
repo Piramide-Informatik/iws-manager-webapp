@@ -10,6 +10,8 @@ import { UserService } from '../../../../../../Services/user.service';
 import { UserUtils } from '../../utils/user-utils';
 import { UserStateService } from '../../utils/user-state.service';
 import { MessageService } from 'primeng/api';
+import { UserModalComponent } from '../user-modal/user-modal.component';
+
 
 @Component({
   selector: 'app-user-table',
@@ -25,7 +27,7 @@ export class UserTableComponent {
   modalType: 'create' | 'delete' = 'create';
   selectedUser: number | null = null;
   UserName: string = '';
-  //@ViewChild('userModal') userModalComponent!: UserModalComponent;
+  @ViewChild('userModal') userModalComponent!: UserModalComponent;
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
@@ -145,6 +147,11 @@ export class UserTableComponent {
     this.visibleModal = visible;
     if (!visible) {
       this.selectedUser = null;
+    }
+  }
+  onDialogShow() {
+    if (this.modalType === 'create' && this.userModalComponent) {
+      this.userModalComponent.focusInputIfNeeded();
     }
   }
 
