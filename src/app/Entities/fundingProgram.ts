@@ -4,9 +4,9 @@ export interface FundingProgram {
   updatedAt: string;
   version: number;
 
-  defaultfundingrate?: number;
-  defaulthoursperyear?: number;
-  defaultresearchshare?: number;
-  defaultstuffflat?: number;
-  fundingprogram?: string;
+  defaultFundingRate?: number;
+  defaultHoursPerYear?: number;
+  defaultResearchShare?: number;
+  defaultStuffFlat?: number;
+  name?: string;
 }

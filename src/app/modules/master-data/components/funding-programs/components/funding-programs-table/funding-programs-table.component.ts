@@ -1,9 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { ModalFundingProgramComponent } from '../modal-funding-program/modal-funding-program.component';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 
 @Component({
   selector: 'app-funding-programs-table',
@@ -12,6 +15,10 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   standalone: false,
 })
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
+  private readonly commonMessageService = inject(CommonMessagesService);
+  @ViewChild('fundingProgramModal') fundingProgramModalComponent!: ModalFundingProgramComponent;
+  public modalType: 'create' | 'delete' = 'create';
+  public visibleModal: boolean = false;
   fundingProgramsUI: any[] = [];
   columnsHeaderFieldFundingProgram: any[] = [];
   userFundingProgramsPreferences: UserPreference = {};
@@ -75,6 +82,32 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  onDialogShow() {
+    if (this.modalType === 'create' && this.fundingProgramModalComponent) {
+      this.fundingProgramModalComponent.focusInputIfNeeded();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      console.log('dentro delete',event.data)
+    }
+    this.visibleModal = true;
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+  }
+
+  onCreateFundingProgram(event: { created?: FundingProgram, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }

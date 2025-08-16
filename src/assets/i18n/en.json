@@ -683,7 +683,10 @@
       "PRODUCTIVE_HOURS": "Productive hours / year"
     },
     "HEADER": {
-      "EDIT_FUNDING": "Edit funding program"
+      "EDIT_FUNDING": "Edit funding program",
+      "NEW_FUNDING": "New funding program",
+      "DELETE_FUNDING": "Delete funding program",
+      "DELETE_CONFIRM_QUESTION": "Are you sure you want to delete the funding program: "
     }
   },
   "DUNNING_LEVELS": {
