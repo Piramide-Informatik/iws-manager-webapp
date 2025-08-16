@@ -75,7 +75,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
           acc.push({
             projectLabel: curr.projectLabel,
             projectName: curr.projectName,
-            fundingProgram: curr.fundingProgram?.fundingprogram ?? '',
+            fundingProgram: curr.fundingProgram?.name ?? '',
             promoter: curr.promoter?.promoter ?? '',
             fundingLabel: curr.fundingLabel,
             startDate: curr.startDate,
