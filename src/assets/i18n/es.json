@@ -681,7 +681,10 @@
       "PRODUCTIVE_HOURS": "Horas productivas / año"
     },
     "HEADER": {
-      "EDIT_FUNDING": "Editar programa de financiación"
+      "EDIT_FUNDING": "Editar programa de financiación",
+      "NEW_FUNDING": "Nuevo programa de financiación",
+      "DELETE_FUNDING": "Eliminar programa de financiación",
+      "DELETE_CONFIRM_QUESTION": "¿Está seguro que desea eliminar el programa de financiación: "
     }
   },
   "DUNNING_LEVELS": {

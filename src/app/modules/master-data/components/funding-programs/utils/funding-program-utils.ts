@@ -55,7 +55,7 @@ export class FundingProgramUtils {
   fundingProgramExists(name: string): Observable<boolean> {
     return this.fundingProgramService.getAllFundingPrograms().pipe(
       map(fundingPrograms => fundingPrograms.some(
-        f => f.fundingprogram?.toLowerCase() === name.toLowerCase()
+        f => f.name?.toLowerCase() === name.toLowerCase()
       )),
       catchError(err => {
         console.error('Error checking funding program existence:', err);

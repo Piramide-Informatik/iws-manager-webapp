@@ -7,6 +7,23 @@
       [userPreferences]="userFundingProgramsPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserFundingProgramsPreferencesChanges($event)"
+      (onCreateRegister)="handleTableEvents({ type: 'create' })"
     ></master-data-genaral-table>
+    <p-dialog 
+        [header]="modalType === 'create' 
+          ? ('FUNDING.HEADER.NEW_FUNDING' | translate) 
+          : ('FUNDING.HEADER.DELETE_FUNDING' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleModal" 
+        (onShow)="onDialogShow()"
+      >
+        <app-modal-funding-program
+          [modalType]="modalType"
+          (isVisibleModal)="onModalVisibilityChange($event)"
+          (onCreateFundingProgram)="onCreateFundingProgram($event)"
+          #fundingProgramModal
+        ></app-modal-funding-program>
+      </p-dialog>
   </div>
 </div>
+<p-toast/>
