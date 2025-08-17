@@ -127,6 +127,7 @@ import { ModalApprovalStatusComponent } from './components/approval-status/compo
 import { RolModalComponent } from './components/roles/components/rol-modal/rol-modal.component';
 import { UserModalComponent } from './components/user/components/user-modal/user-modal.component';
 import { CdkDragPlaceholder } from "@angular/cdk/drag-drop";
+import { ModalFundingProgramComponent } from './components/funding-programs/components/modal-funding-program/modal-funding-program.component';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -218,7 +219,8 @@ registerLocaleData(localeDe, 'de-DE');
     TableProjectStatusComponent,
     ModalApprovalStatusComponent,
     RolModalComponent,
-    UserModalComponent
+    UserModalComponent,
+    ModalFundingProgramComponent
   ],
   imports: [
     ButtonModule,

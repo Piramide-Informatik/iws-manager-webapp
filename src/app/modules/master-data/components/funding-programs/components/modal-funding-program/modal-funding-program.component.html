@@ -1,0 +1,80 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+  <form [formGroup]="fundingProgramForm" (ngSubmit)="onSubmit()">
+    <div class="create-form my-4">
+      <div class="funding-form">
+        <label for="name">{{ "FUNDING.LABEL.PROGRAM" | translate }}</label>
+        <input #firstInput
+          pInputText
+          type="text"
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form">
+        <label for="rate">{{ "FUNDING.LABEL.RATE" | translate }}</label>
+        <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          id="rate"
+          formControlName="defaultFundingRate"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form">
+        <label for="personnelRate">{{ "FUNDING.LABEL.PERSONNEL_RATE" | translate }}</label>
+        <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          id="personnelRate"
+          formControlName="defaultStuffFlat"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form">
+        <label for="researchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
+        <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          id="researchShare"
+          formControlName="defaultResearchShare"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form">
+        <label for="productiveHours">{{ "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate }}</label>
+        <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          id="productiveHours"
+          formControlName="defaultHoursPerYear"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="flex justify-content-center gap-2 mt-4">
+        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+            icon="pi pi-check" iconPos="left" [loading]="isLoading"
+            [disabled]="fundingProgramForm.invalid || isLoading" />
+
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #deleteTemplate>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'FUNDING.HEADER.DELETE_CONFIRM_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ 'nombre funding p' }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash" iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading"
+        [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</ng-template>

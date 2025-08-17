@@ -1,9 +1,11 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, computed } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { ModalFundingProgramComponent } from '../modal-funding-program/modal-funding-program.component';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramService } from '../../../../../../Services/funding-program.service';
 
@@ -14,9 +16,13 @@ import { FundingProgramService } from '../../../../../../Services/funding-progra
   standalone: false,
 })
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
+  private readonly commonMessageService = inject(CommonMessagesService);
   private readonly fundingProgramService = inject(FundingProgramService);
-  userFundingProgramsPreferences: UserPreference = {};
+  @ViewChild('fundingProgramModal') fundingProgramModalComponent!: ModalFundingProgramComponent;
+  public modalType: 'create' | 'delete' = 'create';
+  public visibleModal: boolean = false;
   columnsHeaderFieldFundingProgram: any[] = [];
+  userFundingProgramsPreferences: UserPreference = {};
   tableKey: string = 'FundingPrograms'
   dataKeys = ['name', 'defaultFundingRate'];
   private langSubscription!: Subscription;
@@ -28,8 +34,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly fundingProgramUtils: FundingProgramUtils,
     private readonly translate: TranslateService,
-    private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly userPreferenceService: UserPreferenceService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +70,32 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  onDialogShow() {
+    if (this.modalType === 'create' && this.fundingProgramModalComponent) {
+      this.fundingProgramModalComponent.focusInputIfNeeded();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      console.log('dentro delete',event.data)
+    }
+    this.visibleModal = true;
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+  }
+
+  onCreateFundingProgram(event: { created?: FundingProgram, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }

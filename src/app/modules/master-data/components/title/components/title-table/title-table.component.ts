@@ -146,10 +146,6 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  onVisibleModal(visible: boolean) {
-    this.visibleModal = visible;
-  }
-
   onModalVisibilityChange(visible: boolean): void {
     this.visibleModal = visible;
     if (!visible) {
