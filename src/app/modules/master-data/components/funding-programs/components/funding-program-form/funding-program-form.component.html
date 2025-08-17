@@ -2,9 +2,9 @@
   [style]="{ background: 'var(--light-cyan)' }"
   [header]="'FUNDING.HEADER.EDIT_FUNDING' | translate"
 >
-  <form [formGroup]="fundingForm" (ngSubmit)="saveFundingProgram()">
-    <div class="align-items-center mb-2">
-      <div class="funding-form mb-2">
+  <form [formGroup]="fundingForm" (ngSubmit)="onSubmit()">
+    <div class="mb-2">
+      <div class="funding-form">
         <label for="name">{{ "FUNDING.LABEL.PROGRAM" | translate }}</label>
         <input
           pInputText
@@ -15,52 +15,38 @@
         />
       </div>
 
-      <div class="funding-form mb-2">
+      <div class="funding-form">
         <label for="rate">{{ "FUNDING.LABEL.RATE" | translate }}</label>
-        <input
-          pInputText
-          type="number"
-          id="rate"
-          formControlName="rate"
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="rate"
+          formControlName="defaultFundingRate"
           autocomplete="off"
         />
       </div>
 
-      <div class="funding-form mb-2">
-        <label for="personnelRate">{{
-          "FUNDING.LABEL.PERSONNEL_RATE" | translate
-        }}</label>
-        <input
-          pInputText
-          type="number"
-          id="personnelRate"
-          formControlName="personnelRate"
+      <div class="funding-form">
+        <label for="personnelRate">{{ "FUNDING.LABEL.PERSONNEL_RATE" | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="personnelRate"
+          formControlName="defaultStuffFlat"
           autocomplete="off"
         />
       </div>
 
-      <div class="funding-form mb-2">
-        <label for="researchShare">{{
-          "FUNDING.LABEL.RESEARCH_SHARE" | translate
-        }}</label>
-        <input
-          pInputText
-          type="number"
-          id="researchShare"
-          formControlName="researchShare"
+      <div class="funding-form">
+        <label for="researchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="researchShare"
+          formControlName="defaultResearchShare"
           autocomplete="off"
         />
       </div>
 
-      <div class="funding-form mb-2">
-        <label for="productiveHours">{{
-          "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate
-        }}</label>
-        <input
-          pInputText
-          type="number"
-          id="productiveHours"
-          formControlName="productiveHours"
+      <div class="funding-form">
+        <label for="productiveHours">{{ "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="productiveHours"
+          formControlName="defaultHoursPerYear"
           autocomplete="off"
         />
       </div>
@@ -73,6 +59,8 @@
           icon="pi pi-check"
           iconPos="left"
           type="submit"
+          [loading]="isLoading"
+          [disabled]="fundingForm.invalid || !fundingForm.dirty || isLoading"
         ></p-button>
 
         <p-button
@@ -81,11 +69,18 @@
           [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times"
           iconPos="left"
-          (click)="cancelEdit()"
+          (click)="clearForm()"
           type="button"
-          (keydown)="cancelEdit()"
+          (keydown)="clearForm()"
         ></p-button>
       </div>
     </div>
   </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaFunding"
+  (close)="showOCCErrorModaFunding = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast/>

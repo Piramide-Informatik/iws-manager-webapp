@@ -8,6 +8,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramService } from '../../../../../../Services/funding-program.service';
+import { FundingProgramStateService } from '../../utils/funding-program-state.service';
 
 @Component({
   selector: 'app-funding-programs-table',
@@ -18,6 +19,7 @@ import { FundingProgramService } from '../../../../../../Services/funding-progra
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly fundingProgramService = inject(FundingProgramService);
+  private readonly fundingStateService = inject(FundingProgramStateService);
   @ViewChild('fundingProgramModal') fundingProgramModalComponent!: ModalFundingProgramComponent;
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
@@ -97,5 +99,9 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
     }
+  }
+
+  editFundingProgram(fundingProgram: FundingProgram): void {
+    this.fundingStateService.setFundingProgramToEdit(fundingProgram);
   }
 }
