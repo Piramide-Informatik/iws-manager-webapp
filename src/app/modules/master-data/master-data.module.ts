@@ -54,7 +54,7 @@ import { HolidaysComponent } from './components/holidays/holidays.component';
 import { HolidaysTableComponent } from './components/holidays/components/holidays-table/holidays-table.component';
 import { EditHolidayComponent } from './components/holidays/components/edit-holiday/edit-holiday.component';
 import { FundingProgramsTableComponent } from './components/funding-programs/components/funding-programs-table/funding-programs-table.component';
-import { EditFundingProgramComponent } from './components/funding-programs/components/edit-funding-program/edit-funding-program.component';
+import { FundingProgramFormComponent } from './components/funding-programs/components/funding-program-form/funding-program-form.component';
 import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { GenaralTableComponent } from './genaral-table/genaral-table.component';
@@ -155,7 +155,7 @@ registerLocaleData(localeDe, 'de-DE');
     HolidaysTableComponent,
     EditHolidayComponent,
     FundingProgramsTableComponent,
-    EditFundingProgramComponent,
+    FundingProgramFormComponent,
     FundingProgramsComponent,
     DunningLevelsComponent,
     GenaralTableComponent,

@@ -4,10 +4,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-edit-funding-program',
   standalone: false,
-  templateUrl: './edit-funding-program.component.html',
-  styleUrls: ['./edit-funding-program.component.scss'],
+  templateUrl: './funding-program-form.component.html',
+  styleUrls: ['./funding-program-form.component.scss'],
 })
-export class EditFundingProgramComponent {
+export class FundingProgramFormComponent {
   fundingForm: FormGroup;
 
   constructor(private readonly fb: FormBuilder) {
