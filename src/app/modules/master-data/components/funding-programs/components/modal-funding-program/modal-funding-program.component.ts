@@ -11,10 +11,11 @@ import { FundingProgramUtils } from '../../utils/funding-program-utils';
 })
 export class ModalFundingProgramComponent {
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
-
+  @Input() selectedFunding!: FundingProgram | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() onCreateFundingProgram = new EventEmitter<{created?: FundingProgram, status: 'success' | 'error'}>();
+  @Output() onDeleteFundingProgram = new EventEmitter<{status: 'success' | 'error'}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
@@ -53,7 +54,21 @@ export class ModalFundingProgramComponent {
   }
 
   public onDeleteConfirm(): void {
-    //logica eliminar
+    if (this.selectedFunding) {
+      this.fundingProgramUtils.deleteFundingProgram(this.selectedFunding.id).subscribe({
+        next: () => {
+          this.onDeleteFundingProgram.emit({status: 'success'});
+        },
+        error: () => {
+          this.onDeleteFundingProgram.emit({status: 'error'});
+        },
+        complete: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.selectedFunding = undefined;
+        }
+      })
+    }
   }
 
   public closeModal(): void {
