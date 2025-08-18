@@ -9,6 +9,7 @@
       (onColumnChanges)="onUserFundingProgramsPreferencesChanges($event)"
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
       (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+      (onEditRegister)="editFundingProgram($event)"
     ></master-data-genaral-table>
     <p-dialog 
         [header]="modalType === 'create' 

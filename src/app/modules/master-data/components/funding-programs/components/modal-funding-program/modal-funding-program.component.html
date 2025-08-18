@@ -14,8 +14,8 @@
 
       <div class="funding-form">
         <label for="rate">{{ "FUNDING.LABEL.RATE" | translate }}</label>
-        <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          id="rate"
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="rate"
           formControlName="defaultFundingRate"
           autocomplete="off"
         />
@@ -24,7 +24,7 @@
       <div class="funding-form">
         <label for="personnelRate">{{ "FUNDING.LABEL.PERSONNEL_RATE" | translate }}</label>
         <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          id="personnelRate"
+          inputId="personnelRate"
           formControlName="defaultStuffFlat"
           autocomplete="off"
         />
@@ -33,7 +33,7 @@
       <div class="funding-form">
         <label for="researchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
         <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          id="researchShare"
+          inputId="researchShare"
           formControlName="defaultResearchShare"
           autocomplete="off"
         />
@@ -42,7 +42,7 @@
       <div class="funding-form">
         <label for="productiveHours">{{ "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate }}</label>
         <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          id="productiveHours"
+          inputId="productiveHours"
           formControlName="defaultHoursPerYear"
           autocomplete="off"
         />

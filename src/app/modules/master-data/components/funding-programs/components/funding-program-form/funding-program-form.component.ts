@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { FundingProgram } from '../../../../../../Entities/fundingProgram';
+import { FundingProgramUtils } from '../../utils/funding-program-utils';
+import { FundingProgramStateService } from '../../utils/funding-program-state.service';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-funding-program',
@@ -7,32 +12,115 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './funding-program-form.component.html',
   styleUrls: ['./funding-program-form.component.scss'],
 })
-export class FundingProgramFormComponent {
-  fundingForm: FormGroup;
+export class FundingProgramFormComponent implements OnInit, OnDestroy {
+  private readonly fundingUtils = inject(FundingProgramUtils);
+  private readonly fundingStateService = inject(FundingProgramStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly subscriptions = new Subscription();
+  private fundingToEdit: FundingProgram | null = null;
+  public showOCCErrorModaFunding = false;
+  public isLoading: boolean = false;
+  public fundingForm: FormGroup;
 
   constructor(private readonly fb: FormBuilder) {
     this.fundingForm = this.fb.group({
       name: [''],
-      rate: [0],
-      personnelRate: [0],
-      researchShare: [0],
-      productiveHours: [2080],
+      defaultFundingRate: [null],
+      defaultStuffFlat: [null],
+      defaultResearchShare: [null],
+      defaultHoursPerYear: [null],
     });
   }
 
-  saveFundingProgram() {
-    const formData = this.fundingForm.value;
-    console.log('Saving Funding Program:', formData);
+  ngOnInit(): void {
+    this.setupFundingSubscription();
+    // Check if we need to load a funding after page refresh for OCC
+    const savedFundingId = localStorage.getItem('selectedFundingId');
+    if (savedFundingId) {
+      this.loadFundingAfterRefresh(savedFundingId);
+      localStorage.removeItem('selectedFundingId');
+    }
   }
 
-  cancelEdit() {
-    console.log('Editing cancelled');
-    this.fundingForm.reset({
-      name: '',
-      rate: 0,
-      personnelRate: 0,
-      researchShare: 0,
-      productiveHours: 2080,
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  private setupFundingSubscription(): void {
+    this.subscriptions.add(
+      this.fundingStateService.currentFundingProgram$.subscribe(funding => {
+        if(funding){
+          this.fundingToEdit = funding;
+          this.fundingForm.patchValue({
+            name: this.fundingToEdit.name,
+            defaultFundingRate: this.fundingToEdit.defaultFundingRate,
+            defaultStuffFlat: this.fundingToEdit.defaultStuffFlat,
+            defaultResearchShare: this.fundingToEdit.defaultResearchShare,
+            defaultHoursPerYear: this.fundingToEdit.defaultHoursPerYear
+          });
+        }
+      })
+    )
+  }
+
+  public onSubmit(): void {
+    if(this.fundingForm.invalid || !this.fundingToEdit) return
+
+    this.isLoading = true;
+    const formData: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = this.fundingForm.value;
+    const editedFunding: FundingProgram = {
+      ...this.fundingToEdit,
+      name: formData.name ?? '',
+      defaultFundingRate: formData.defaultFundingRate ?? 0,
+      defaultStuffFlat: formData.defaultStuffFlat ?? 0,
+      defaultResearchShare: formData.defaultResearchShare ?? 0,
+      defaultHoursPerYear: formData.defaultHoursPerYear ?? 0
+    }
+
+    this.fundingUtils.updateFundingProgram(editedFunding).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.clearForm();
+        this.commonMessageService.showEditSucessfullMessage()
+      },
+      error: (error) => {
+        this.isLoading = false;
+        if(error.message === 'Version conflict: Funding Program has been updated by another user'){
+          this.showOCCErrorModaFunding = true;
+        }else{
+          this.commonMessageService.showErrorEditMessage();
+        }
+      }
     });
+  }
+
+  public onRefresh(): void {
+    if (this.fundingToEdit?.id) {
+      localStorage.setItem('selectedFundingId', this.fundingToEdit.id.toString());
+      window.location.reload();
+    }
+  }
+
+  public clearForm(): void {
+    this.fundingForm.reset();
+    this.fundingStateService.clearFundingProgram();
+    this.fundingToEdit = null;
+  }
+
+  private loadFundingAfterRefresh(fundingId: string): void {
+    this.isLoading = true;
+    this.subscriptions.add(
+      this.fundingUtils.getFundingProgramById(Number(fundingId)).subscribe({
+        next: (funding) => {
+          if (funding) {
+            this.fundingStateService.setFundingProgramToEdit(funding);
+          }
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+        }
+      })
+    );
   }
 }
