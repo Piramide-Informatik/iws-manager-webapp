@@ -8,6 +8,7 @@
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserFundingProgramsPreferencesChanges($event)"
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onEditRegister)="editFundingProgram($event)"
     ></master-data-genaral-table>
     <p-dialog 
         [header]="modalType === 'create' 
