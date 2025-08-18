@@ -28,6 +28,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   tableKey: string = 'FundingPrograms'
   dataKeys = ['name', 'defaultFundingRate'];
   private langSubscription!: Subscription;
+  selectedFunding!: FundingProgram | undefined;
 
   readonly fundingPrograms = computed(() => {
     return this.fundingProgramService.fundingPrograms()
@@ -84,7 +85,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
-      console.log('dentro delete',event.data)
+      this.selectedFunding = this.fundingProgramService.fundingPrograms().find(fp => fp.id == event.data);
     }
     this.visibleModal = true;
   }
@@ -101,6 +102,14 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  onDeleteFundingProgram(deleteEvent: {status: 'success' | 'error'}): void {
+    if(deleteEvent.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(deleteEvent.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
+    }
+  }
+  
   editFundingProgram(fundingProgram: FundingProgram): void {
     this.fundingStateService.setFundingProgramToEdit(fundingProgram);
   }
