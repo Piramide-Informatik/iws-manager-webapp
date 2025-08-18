@@ -8,6 +8,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramService } from '../../../../../../Services/funding-program.service';
+import { FundingProgramStateService } from '../../utils/funding-program-state.service';
 
 @Component({
   selector: 'app-funding-programs-table',
@@ -18,6 +19,7 @@ import { FundingProgramService } from '../../../../../../Services/funding-progra
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly fundingProgramService = inject(FundingProgramService);
+  private readonly fundingStateService = inject(FundingProgramStateService);
   @ViewChild('fundingProgramModal') fundingProgramModalComponent!: ModalFundingProgramComponent;
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
@@ -26,6 +28,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   tableKey: string = 'FundingPrograms'
   dataKeys = ['name', 'defaultFundingRate'];
   private langSubscription!: Subscription;
+  selectedFunding!: FundingProgram | undefined;
 
   readonly fundingPrograms = computed(() => {
     return this.fundingProgramService.fundingPrograms()
@@ -82,7 +85,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
-      console.log('dentro delete',event.data)
+      this.selectedFunding = this.fundingProgramService.fundingPrograms().find(fp => fp.id == event.data);
     }
     this.visibleModal = true;
   }
@@ -97,5 +100,17 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
     }
+  }
+
+  onDeleteFundingProgram(deleteEvent: {status: 'success' | 'error'}): void {
+    if(deleteEvent.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(deleteEvent.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
+    }
+  }
+  
+  editFundingProgram(fundingProgram: FundingProgram): void {
+    this.fundingStateService.setFundingProgramToEdit(fundingProgram);
   }
 }

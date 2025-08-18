@@ -8,6 +8,8 @@
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserFundingProgramsPreferencesChanges($event)"
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+      (onEditRegister)="editFundingProgram($event)"
     ></master-data-genaral-table>
     <p-dialog 
         [header]="modalType === 'create' 
@@ -19,8 +21,10 @@
       >
         <app-modal-funding-program
           [modalType]="modalType"
+          [selectedFunding]="selectedFunding"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (onCreateFundingProgram)="onCreateFundingProgram($event)"
+          (onDeleteFundingProgram)="onDeleteFundingProgram($event)"
           #fundingProgramModal
         ></app-modal-funding-program>
       </p-dialog>

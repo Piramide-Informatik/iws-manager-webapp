@@ -140,7 +140,7 @@ export class FundingProgramUtils {
           throw new Error('Funding Program not found');
         }
         if (currentFundingProgram.version !== fundingProgram.version) {
-          throw new Error('Version conflict: FundingProgram has been updated by another user');
+          throw new Error('Version conflict: Funding Program has been updated by another user');
         }
         return fundingProgram;
       }),
