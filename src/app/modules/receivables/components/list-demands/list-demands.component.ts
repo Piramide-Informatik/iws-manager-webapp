@@ -63,7 +63,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
           acc.push({
             idClaim: curr.debtno,
             idOrder: curr.order?.orderno,
-            orderTitle: curr.order?.orderlabel,
+            orderTitle: curr.order?.orderLabel,
             fundingProgram: curr.fundingProgram?.name,
             projectSponsor: curr.promoter?.promoter,
             fundingConcentration: curr.fundinglabel, 

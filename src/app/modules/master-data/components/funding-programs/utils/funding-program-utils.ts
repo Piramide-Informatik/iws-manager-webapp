@@ -115,7 +115,7 @@ export class FundingProgramUtils {
         catchError(() => of(false))
       ),
       this.orderUtils.getAllOrders().pipe(
-        map(orders => orders.some(order => order.fundingprogram?.id === idFunProgram)),
+        map(orders => orders.some(order => order.fundingProgram?.id === idFunProgram)),
         catchError(() => of(false))
       )
     ] as const).pipe(
