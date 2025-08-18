@@ -18,11 +18,11 @@ export interface Order {
   approvalstatus: ApprovalStatus | null;
   basiccontract: BasicContract | null;
   contractor: Contractor | null;
-  contractstatus: ContractStatus | null;
+  contractStatus: ContractStatus | null;
   customer: Customer | null;
   employeeiws: EmployeeIws | null; 
-  fundingprogram: FundingProgram | null;
-  ordertype: CostType | null; // reference costtype
+  fundingProgram: FundingProgram | null;
+  orderType: CostType | null; // reference costtype
   project: Project | null;
   promoter: Promoter | null;
 
@@ -37,10 +37,10 @@ export interface Order {
   maxcommission?: number;
   nextdeptdate?: string;  //date
   noofdepts?: number;  //smallint
-  orderdate?: string; //date
-  orderlabel?: string; 
+  orderDate?: string; //date
+  orderLabel?: string; 
   orderno?: number;
   ordertitle?: string;
-  ordervalue?: number;
+  orderValue?: number;
   signaturedate?: string; //date
 }
