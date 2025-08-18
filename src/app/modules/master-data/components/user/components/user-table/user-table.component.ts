@@ -11,7 +11,7 @@ import { UserUtils } from '../../utils/user-utils';
 import { UserStateService } from '../../utils/user-state.service';
 import { MessageService } from 'primeng/api';
 import { UserModalComponent } from '../user-modal/user-modal.component';
-
+import { User } from '../../../../../../Entities/user';
 
 @Component({
   selector: 'app-user-table',
@@ -161,5 +161,33 @@ export class UserTableComponent {
       summary: this.translate.instant(_(message.summary)),
       detail: this.translate.instant(_(message.detail)),
     });
+  }
+
+  editUser(user: User) {
+    
+    const userToEdit: User = {
+      id: user.id,
+      username: user.username,
+      password: user.password,
+      active: user.active ?? true,
+      email: user.email ?? '',
+      firstName: user.firstName ?? '', 
+      lastName: user.lastName ?? '',
+      createdAt: '',
+      updatedAt: '',
+      version: 0
+    };
+    console.log("Edit User id: ", userToEdit.id)
+    this.userUtils.getUseryId(userToEdit.id).subscribe({
+      next: (fullUser) => {
+        console.log(fullUser)
+        if(fullUser) {
+          this.userStateService.setUserToEdit(fullUser);
+        }
+      },
+      error: (err) => {
+        console.error('Error Id user', err);
+      }
+    })
   }
 }
