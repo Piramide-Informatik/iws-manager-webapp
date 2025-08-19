@@ -593,6 +593,7 @@
       "ACTIVE": "Active"
     },
     "FORM": {
+      "USER_FORM":"New User",
       "EDIT_TITLE": "Edit User",
       "USERNAME": "Username",
       "FIRSTNAME": "First Name",
@@ -602,6 +603,10 @@
       "ACTIVE": "Active",
       "ASSIGNED_ROLES": "Assigned Roles",
       "AVAILABLE_ROLES": "Available Roles"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Delete User",
+      "CONFIRM_QUESTION" : "Are you sure you want to delete "
     }
   },
   "ROLES": {
