@@ -343,7 +343,9 @@
     "ESTIMATED_IWS_COMMISSION": "Geschätzte IWS-Provision",
     "TITLE_DIALOG_NEW": "IWS Commission neu",
     "TITLE_DIALOG_EDIT": "IWS Commission bearbeiten"
-  }
+    },
+    "ORDER_DIALOG_REMOVE": "Bestellung löschen",
+    "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen"
   },
   "RECEIVABLES": {
     "TABLE": {

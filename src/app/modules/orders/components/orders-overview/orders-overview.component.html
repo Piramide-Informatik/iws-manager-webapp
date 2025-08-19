@@ -5,8 +5,32 @@
     [columns]="selectedColumns"
     [userPreferences]="userOrdersOverviewPreferences"
     [dataKeys]="dataKeys"
+    removeKey="orderNr"
     (onColumnChanges)="onUserOrdersOverviewPreferencesChanges($event)"
     (onEditRegister)="goToEditOrderDetails($event)"
     (onCreateRegister)="goToOrderDetails($event)"
+    (onDeleteRegister)="openDeleteModal($event)"
   ></master-data-genaral-table>
+  <p-dialog 
+    [header]="('ORDERS.ORDER_DIALOG_REMOVE' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleOrderModal" 
+  >
+    <div class="confirmation-content mb-2 mt-4">
+      <p class="mb-4">
+        {{ 'ORDERS.REMOVE_ORDERS_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ selectedOrder?.orderLabel }}"</strong>?
+      </p>
+
+      <div class="flex justify-content-center gap-2">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+            icon="pi pi-trash" iconPos="left" (onClick)="onOrderDelete()" severity="danger" [loading]="isOrderLoading"
+            [disabled]="isOrderLoading" />
+
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" (onClick)="this.visibleOrderModal = false;" [disabled]="isOrderLoading" />
+
+      </div>
+    </div>
+  </p-dialog>
 </div>

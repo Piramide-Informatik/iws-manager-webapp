@@ -341,7 +341,9 @@
     "NEW": "Nuevo",
     "TITLE_DIALOG_NEW": "Nueva comisión IWS",
     "TITLE_DIALOG_EDIT": "Editar comisión IWS"
-    }
+    },
+    "ORDER_DIALOG_REMOVE": "Eliminar Orden",
+    "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden"
   },
   "RECEIVABLES": {
     "TABLE": {
