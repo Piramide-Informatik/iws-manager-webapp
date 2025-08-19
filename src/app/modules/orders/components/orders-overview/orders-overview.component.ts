@@ -83,8 +83,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
             contractStatus: curr.contractStatus?.contractStatus,
             contractNr: '',
             contractTitle: '',
-            iwsPercent: '',
-            iwsPercentValue: '',
+            iwsPercent: curr.iwsProvision,
+            iwsPercentValue: curr.orderValue ?? 0 * (curr.iwsProvision ?? 0),
           });
           return acc;
         }, [])
@@ -141,8 +141,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
       { field: 'contractStatus',  header:  this.translate.instant(_('ORDERS.TABLE.CONTRACT_STATUS'))},
       { field: 'contractNr', header:  this.translate.instant(_('ORDERS.TABLE.CONTRACT_NRO'))},
       { field: 'contractTitle', header:  this.translate.instant(_('ORDERS.TABLE.CONTRACT_TITLE'))},
-      { field: 'iwsPercent', header:  this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT'))},
-      { field: 'iwsPercentValue', header:  this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT_VALUE'))},
+      { field: 'iwsPercent', customClasses: ['align-right'], type: 'double', header:  this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT'))},
+      { field: 'iwsPercentValue', customClasses: ['align-right'], type: 'double', header:  this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT_VALUE'))},
     ];
   }
 
