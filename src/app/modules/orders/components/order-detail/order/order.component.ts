@@ -104,4 +104,8 @@ export class OrderComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+  public clearOrderForm(): void {
+    this.orderForm.reset();
+  }
 }

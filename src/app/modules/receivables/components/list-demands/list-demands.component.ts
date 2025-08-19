@@ -64,7 +64,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
             idClaim: curr.debtNo,
             idOrder: curr.order?.orderNo,
             orderTitle: curr.order?.orderLabel,
-            fundingProgram: curr.fundingProgram?.name,
+            fundingProgram: curr.order?.fundingProgram?.name,
             projectSponsor: curr.promoter?.projectPromoter,
             fundingConcentration: curr.fundinglabel, 
             projectStart: curr.project?.startDate, 

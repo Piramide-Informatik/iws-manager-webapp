@@ -68,4 +68,8 @@ export class ProjectComponent implements OnInit, OnDestroy{
     if (this.projectForm.invalid) return
     this.onCreateOrderProject.emit(this.selectedProject);
   }
+
+  public clearOrderProjectForm(): void {
+    this.projectForm.reset();
+  }
 }

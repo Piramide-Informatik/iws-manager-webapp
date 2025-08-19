@@ -1,5 +1,4 @@
 import { Customer } from "./customer";
-import { FundingProgram } from "./fundingProgram";
 import { Order } from "./order";
 import { Project } from "./project";
 import { Promoter } from "./promoter";
@@ -14,7 +13,6 @@ export interface Debt {
   order: Order | null;
   project: Project | null;
   promoter: Promoter | null;
-  fundingProgram: FundingProgram | null; 
 
   billingEnd?: string; //date
   billingmonths?: number;
