@@ -298,22 +298,22 @@
   },
   "ORDERS": {
     "FORM": {
-    "ORDER_ID": "Order No.",
-    "ORDER_LABEL": "Order",
-    "ORDER_TYPE": "Order Type",
-    "CUSTOMER": "Customer",
-    "NR": "No.",
-    "NAME": "Name",
-    "ACRONYM": "Acronym",
-    "ORDER_TITLE": "Description",
-    "ORDER_DATE": "Order Date",
-    "FUNDING_PROGRAM": "Funding Program",
-    "CONTRACT_STATUS": "Contract Status",
-    "SIGNATURE_DATE": "Signature Date",
-    "CONTRACT_TITLE": "Master Agreement",
-    "IWS_EMPLOYEE": "IWS Employee",
-    "ORDER_VALUE": "Estimated Order Value"
-  },
+      "ORDER_ID": "Order No.",
+      "ORDER_LABEL": "Order",
+      "ORDER_TYPE": "Order Type",
+      "CUSTOMER": "Customer",
+      "NR": "No.",
+      "NAME": "Name",
+      "ACRONYM": "Acronym",
+      "ORDER_TITLE": "Description",
+      "ORDER_DATE": "Order Date",
+      "FUNDING_PROGRAM": "Funding Program",
+      "CONTRACT_STATUS": "Contract Status",
+      "SIGNATURE_DATE": "Signature Date",
+      "CONTRACT_TITLE": "Master Agreement",
+      "IWS_EMPLOYEE": "IWS Employee",
+      "ORDER_VALUE": "Estimated Order Value"
+    },
     "TABLE": {
       "ORDER_ID": "Order ID",
       "ORDER_LABEL": "Label",
@@ -344,7 +344,9 @@
     "ESTIMATED_IWS_COMMISSION": "Estimated IWS Commission",
     "TITLE_DIALOG_NEW": "New IWS Commission",
     "TITLE_DIALOG_EDIT": "Edit IWS Commission"
-    }
+    },
+    "ORDER_DIALOG_REMOVE": "Delete Order",
+    "REMOVE_ORDERS_QUESTION":"Are you sure you want to delete the order"
   },
   "RECEIVABLES": {
     "TABLE": {
