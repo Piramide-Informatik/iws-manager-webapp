@@ -49,8 +49,8 @@ export class CountryService {
    * @returns Observable with the created Country object
    * @throws Error when validation fails or server error occurs
    */
-  addCountry(country: Omit<Country, 'id' | 'createdAt' | 'updatedAt'>): void {
-    this.http.post<Country>(this.apiUrl, country, this.httpOptions).pipe(
+  addCountry(country: Omit<Country, 'id' | 'createdAt' | 'updatedAt'>): Observable<Country> {
+    return this.http.post<Country>(this.apiUrl, country, this.httpOptions).pipe(
       tap({
         next: (newCountry) => {
           this._countries.update(countries => [...countries, newCountry]);
@@ -61,7 +61,7 @@ export class CountryService {
           console.error('Error adding country:', err);
         }
       })
-    ).subscribe();
+    )
   }
 
   // ==================== READ OPERATIONS ====================

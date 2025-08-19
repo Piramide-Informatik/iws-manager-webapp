@@ -30,9 +30,9 @@ export class CompanyTypeService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): void {
+  private loadInitialData(): Observable<CompanyType[]> {
     this._loading.set(true);
-    this.http.get<CompanyType[]>(this.apiUrl).pipe(
+    return this.http.get<CompanyType[]>(this.apiUrl).pipe(
       tap({
         next: (types) => {
           this._companyTypes.set(types);
@@ -45,12 +45,12 @@ export class CompanyTypeService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    )
   }
 
   // CREATE
-  addCompanyType(companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt'>): void {
-    this.http.post<CompanyType>(this.apiUrl, companyType, this.httpOptions).pipe(
+  addCompanyType(companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt'>): Observable<CompanyType> {
+    return this.http.post<CompanyType>(this.apiUrl, companyType, this.httpOptions).pipe(
       tap({
         next: (newCompanyType) => {
           this._companyTypes.update(companyTypes => [...companyTypes, newCompanyType]);
@@ -61,7 +61,7 @@ export class CompanyTypeService {
           console.error('Error adding CompanyType:', err);
         }
       })
-    ).subscribe();
+    )
   }
 
   // UPDATE
