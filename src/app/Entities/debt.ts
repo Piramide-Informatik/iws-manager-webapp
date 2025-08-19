@@ -23,7 +23,7 @@ export interface Debt {
   confdatelevel1?: string; //date
   confdatelevel2?: string; //date
   date?: string; //date
-  debtno?: number; 
+  debtNo?: number; 
   debttitle?: string;
   donation?: number; 
   fundinglabel?: string;

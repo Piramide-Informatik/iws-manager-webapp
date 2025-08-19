@@ -1,13 +1,15 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, map, take, throwError, switchMap, of} from "rxjs";
+import { Observable, catchError, map, take, throwError, switchMap, of, tap} from "rxjs";
 import { User } from "../../../../../Entities/user";
 import { RoleUtils } from "../../roles/utils/role-utils";
 import { UserService } from "../../../../../Services/user.service";
+import { Role } from "../../../../../Entities/role";
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserUtils {
+    private _error: string | null = null;
     private readonly userService = inject(UserService);
     private readonly roleUtils = inject(RoleUtils);
 
@@ -142,7 +144,7 @@ export class UserUtils {
 
     updateUsers(user: User): Observable<User> {
         if (!user?.id) {
-            return throwError(() => new Error('Invalid title data'));
+            return throwError(() => new Error('Invalid user data'));
         }
     
         return this.userService.getUserById(user.id).pipe(
@@ -161,6 +163,30 @@ export class UserUtils {
             console.error('Error updating user:', err);
             return throwError(() => err);
             })
+        );
+    }
+
+    assignRole(userId: number, rolesIds: number[]): Observable<User> {
+        if(!userId || userId <= 0) {
+            return throwError(() => new Error('Invalid user Id'));
+        }
+            return this.userService.assignRole(userId, rolesIds);
+    }
+
+    getRolesByUser(userId: number): Observable<Role[]> {
+        if (!userId || userId <= 0) {
+        return throwError(() => new Error('Invalid user Id'));
+    }
+
+    return this.userService.getRolesByUser(userId).pipe(
+        tap({
+            next: () => this._error = null,
+            error: (err) => {
+            this._error = 'Failed to fetch roles by user';
+            console.error('Error fetching roles for user:', err);
+            }
+        }),
+        catchError(() => of([]))
         );
     }
 }

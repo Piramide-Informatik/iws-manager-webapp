@@ -61,11 +61,11 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
       this.receivableUtils.getAllReceivableByCustomerId(params['id']).subscribe(debts => {
         this.demands = debts.reduce((acc: any[], curr) => {
           acc.push({
-            idClaim: curr.debtno,
+            idClaim: curr.debtNo,
             idOrder: curr.order?.orderNo,
             orderTitle: curr.order?.orderLabel,
             fundingProgram: curr.fundingProgram?.name,
-            projectSponsor: curr.promoter?.promoter,
+            projectSponsor: curr.promoter?.projectPromoter,
             fundingConcentration: curr.fundinglabel, 
             projectStart: curr.project?.startDate, 
             projectEnd: curr.project?.endDate,

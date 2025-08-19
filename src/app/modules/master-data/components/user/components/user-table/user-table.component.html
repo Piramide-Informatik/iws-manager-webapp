@@ -10,11 +10,12 @@
         (onColumnChanges)="onUserPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="editUser($event)"
       ></master-data-genaral-table>
       <p-dialog 
         [header]="modalType === 'create' 
-          ? ('TITLE.FORM.TITLE_FORM' | translate) 
-          : ('TITLE.DELETE.CONFIRMATION' | translate)" 
+          ? ('USERS.FORM.USER_FORM' | translate) 
+          : ('USERS.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
         [(visible)]="visibleModal" 
         (onShow)="onDialogShow()"
@@ -32,5 +33,3 @@
   </div>
 </div>
 <p-toast/>
-
-<p>Data: {{ users() | json }}</p>
