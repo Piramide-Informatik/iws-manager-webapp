@@ -96,8 +96,14 @@
           (click)="clearForm()" 
           (keydown.enter)="clearForm()"
         />
-
       </div>
     </div>
   </form>
 </p-card>
+<app-occ-error-modal
+    *ngIf="showOCCErrorModaUser"
+    [useEmitter]="true"
+    (close)="showOCCErrorModaUser = false"
+    (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>

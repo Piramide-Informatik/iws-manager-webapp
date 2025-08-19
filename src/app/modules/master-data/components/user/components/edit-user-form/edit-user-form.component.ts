@@ -204,6 +204,7 @@ export class EditUserFormComponent implements OnInit {
 
   private handleError(err: any): void {
       if (err.message === 'Version conflict: User has been updated by another user') {
+        console.log(" show OCC error modal");
         this.showOCCErrorModaUser = true;
       } else {
         this.handleSaveError(err);
