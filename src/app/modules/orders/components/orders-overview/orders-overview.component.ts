@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { OrderUtils } from '../../utils/order-utils';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 
 interface Column {
@@ -45,12 +46,18 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   
   dataKeys = ['orderNr', 'orderLabel', 'orderType', 'orderDate', 'acronym', 'fundingProgram', 'value', 'contractStatus', 'contractNr', 'contractTitle', 'iwsPercent', 'iwsPercentValue'];
 
+  visibleOrderModal = false;
+
+  isOrderLoading = false;
+
+  selectedOrder!: any;
 
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly commonMessage: CommonMessagesService
   ) { }
 
   ngOnInit():void {
@@ -83,6 +90,34 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
         }, [])
       })
     })
+  }
+
+  openDeleteModal(id: any) {
+    this.visibleOrderModal = true;
+    const order = this.orders.find( order => order.orderNr == id);
+    if (order) {
+      this.selectedOrder = order;
+    }
+  }
+
+  onOrderDelete() {
+    if (this.selectedOrder) {
+      this.isOrderLoading = true;
+      this.orderUtils.deleteOrder(this.selectedOrder.orderNr).subscribe({
+        next: () => {
+          this.commonMessage.showDeleteSucessfullMessage();
+          this.orders = this.orders.filter( order => order.orderNr != this.selectedOrder.orderNr);
+        },
+        error: () => {
+          this.commonMessage.showErrorDeleteMessage();
+        },
+        complete: () => {
+          this.visibleOrderModal = false;
+          this.selectedOrder = undefined;
+          this.isOrderLoading = false; 
+        }
+      })
+    }
   }
 
   onUserOrdersOverviewPreferencesChanges(userOrdersOverviewPreferences: any) {
