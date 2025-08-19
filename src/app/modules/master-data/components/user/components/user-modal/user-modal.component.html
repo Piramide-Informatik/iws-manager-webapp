@@ -3,7 +3,7 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center mb-6">
                 <label for="userName" class="block">
-                    {{ 'Username' | translate }}
+                    {{ 'USERS.FORM.USERNAME' | translate }}
                 </label>
                 <input #titleInput pInputText type="text" id="userName" formControlName="username" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('username')?.invalid"
@@ -16,7 +16,7 @@
             </div>
             <div class="create-form flex align-items-center mb-6">
                 <label for="firstName" class="block">
-                    {{ 'firstName' | translate }}
+                    {{ 'USERS.FORM.FIRSTNAME' | translate }}
                 </label>
                 <input #titleInput pInputText type="text" id="firstName" formControlName="firstName" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('firstName')?.invalid"
@@ -29,7 +29,7 @@
             </div>
             <div class="create-form flex align-items-center mb-6">
                 <label for="lastName" class="block">
-                    {{ 'lastName' | translate }}
+                    {{ 'USERS.FORM.LASTNAME' | translate }}
                 </label>
                 <input #titleInput pInputText type="text" id="lastName" formControlName="lastName" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('lastName')?.invalid"
@@ -42,12 +42,11 @@
             </div>
             <div class="create-form flex align-items-center mb-6">
                 <label for="password" class="block">
-                    {{ 'password' | translate }}
+                    {{ 'USERS.FORM.PASSWORD' | translate }}
                 </label>
-                <input #titleInput pInputText type="text" id="password" formControlName="password" autocomplete="off"
-                    [attr.aria-invalid]="createUserForm.get('password')?.invalid"
-                    [attr.aria-describedby]="createUserForm.get('password')?.invalid ? 'userError' : null"
-                    class="w-full" />
+                    <p-password formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':createUserForm.get('password')?.invalid && 
+                    createUserForm.get('password')?.touched}" autocomplete="off">
+                    </p-password>
 
                 <small *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched"
                     id="userError" class="text-red-500 block mt-1">
@@ -55,7 +54,7 @@
             </div>
             <div class="create-form flex align-items-center mb-6">
                 <label for="email" class="block">
-                    {{ 'email' | translate }}
+                    {{ 'USERS.FORM.EMAIL' | translate }}
                 </label>
                 <input #titleInput pInputText type="text" id="email" formControlName="email" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('email')?.invalid"
@@ -81,7 +80,7 @@
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
-            {{ 'TITLE.DELETE.CONFIRM_QUESTION' | translate }}
+            {{ 'USERS.DELETE.CONFIRM_QUESTION' | translate }}
             <strong class="stronglock mt-1">"{{ userName }}"</strong>?
         </p>
 

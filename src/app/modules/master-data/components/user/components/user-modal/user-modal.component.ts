@@ -30,7 +30,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     firstName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     lastName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     password: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    email: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100)])
+    email: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100),Validators.email])
   });
 
   ngOnInit(): void {

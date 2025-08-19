@@ -594,6 +594,7 @@
       "ACTIVE": "Aktiv"
     },
     "FORM": {
+      "USER_FORM":"Neuer Benutzer",
       "EDIT_TITLE": "Benutzer bearbeiten",
       "USERNAME": "Benutzername",
       "FIRSTNAME": "Vorname",
@@ -603,6 +604,10 @@
       "ACTIVE": "Aktiv",
       "ASSIGNED_ROLES": "Zugewiesene Rollen",
       "AVAILABLE_ROLES": "Verfügbare Rollen"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Benutzer löschen",
+      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
     }
   },
   "ROLES": {
