@@ -39,7 +39,7 @@ export interface Order {
   noofdepts?: number;  //smallint
   orderDate?: string; //date
   orderLabel?: string; 
-  orderno?: number;
+  orderNo?: number;
   ordertitle?: string;
   orderValue?: number;
   signaturedate?: string; //date

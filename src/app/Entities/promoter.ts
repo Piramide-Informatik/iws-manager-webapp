@@ -10,6 +10,7 @@ export interface Promoter {
 
   city?: string;
   promoter?: string;
+  projectPromoter? : string;
   promotername1?: string;
   promotername2?: string;
   promoterno?: string;
