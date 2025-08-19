@@ -33,7 +33,7 @@ export interface Order {
   contractdata2?: string;
   contractpdf?: string;  // Base64-encoded PDF
   fixcommission?: number; 
-  iwsprovision?: number;
+  iwsProvision?: number;
   maxcommission?: number;
   nextdeptdate?: string;  //date
   noofdepts?: number;  //smallint
