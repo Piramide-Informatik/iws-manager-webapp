@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../../../../Entities/user';
-import { BehaviorSubject, map, Observable, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, Subscription, switchMap } from 'rxjs';
 import { UserStateService } from '../../utils/user-state.service';
 import { UserUtils } from '../../utils/user-utils';
 import { TranslateService } from '@ngx-translate/core';
@@ -91,21 +91,23 @@ export class EditUserFormComponent implements OnInit {
     role: user.roles || []
   });
 
+  const roles$: Observable<{ allRoles: Role[]; userRoles: Role[] }> = forkJoin({
+    allRoles: this.roleService.getAllRoles(),
+    userRoles: this.userUtils.getRolesByUser(user.id)
+  });
+
   this.addSubscription(
-    this.roleService.getAllRoles().pipe(
-      switchMap(allRoles => {
-        this.allRoles = allRoles;
-        return this.userUtils.getRolesByUser(user.id).pipe(
-          map(userRoles => {
-            this.userRoles = userRoles;
-            this.availableRoless = allRoles.filter(
-              role => !userRoles.some(ur => ur.id === role.id)
-            );
-          })
-        );
-      })
-    ),
-    () => {}
+    roles$,
+    (result: { allRoles: Role[]; userRoles: Role[] }) => {
+      const { allRoles, userRoles } = result;
+
+      this.allRoles = allRoles;
+      this.userRoles = userRoles;
+
+      this.availableRoless = allRoles.filter((role: Role) =>
+        !userRoles.some((ur: Role) => ur.id === role.id)
+      );
+    }
   );
 }
 
