@@ -12,19 +12,22 @@
     }
   
     input,
-    p-select {
-      width: 20vw !important;
+    p-select,
+    p-inputnumber {
+      width: 20vw;
     }
   
-  /* Campos especiales del cliente */
-    #customerId {
-      width: 8em !important;
+    /* Campos especiales del cliente */
+    ::ng-deep p-inputnumber.p-inputnumber.p-component.p-inputwrapper > input#customerId {
+      width: 50% !important;
+      flex-shrink: 0;
     }
   
     #customerName {
-      width: 100% !important;
+      width: 50% !important;
+      flex-shrink: 0;
     }
-  }
+  } 
   
   /* Estilo del calendario */
   ::ng-deep .p-datepicker {

@@ -62,8 +62,8 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         this.demands = debts.reduce((acc: any[], curr) => {
           acc.push({
             idClaim: curr.debtno,
-            idOrder: curr.order?.orderno,
-            orderTitle: curr.order?.orderlabel,
+            idOrder: curr.order?.orderNo,
+            orderTitle: curr.order?.orderLabel,
             fundingProgram: curr.fundingProgram?.name,
             projectSponsor: curr.promoter?.promoter,
             fundingConcentration: curr.fundinglabel, 

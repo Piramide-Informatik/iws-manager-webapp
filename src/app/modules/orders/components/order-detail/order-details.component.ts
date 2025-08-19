@@ -1,5 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { OrderUtils } from '../../utils/order-utils';
+import { OrderComponent } from './order/order.component';
+import { ProjectComponent } from './project/project.component';
+import { IwsProvisionComponent } from './iws-provision/iws-provision.component';
+import { Project } from '../../../../Entities/project';
+import { Order } from '../../../../Entities/order';
 
 @Component({
   selector: 'app-order-details',
@@ -8,11 +15,59 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './order-details.component.scss'
 })
 export class OrderDetailsComponent {
+  private readonly orderUtils = inject(OrderUtils);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
-  constructor(
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
-  ){}
+  @ViewChild(OrderComponent) orderComponent!: OrderComponent;
+  @ViewChild(ProjectComponent) projectComponent!: ProjectComponent;
+  @ViewChild(IwsProvisionComponent) iwsProvisionComponent!: IwsProvisionComponent;
+
+  public isLoading: boolean = false;
+  private project: Project | null = null;
+  private orderCommission!: {fixCommission: number, maxCommission: number, iwsProvision: number};
+  private newOrder!: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
+
+  public onSubmit(): void {
+    this.iwsProvisionComponent.onSubmit();
+    this.projectComponent.onSubmit();
+    this.orderComponent.onSubmit();
+
+    this.isLoading = true;
+    this.newOrder = {
+      ...this.newOrder,
+      project: this.project,
+      promoter: this.project?.promoter ?? null,
+      fixCommission: this.orderCommission.fixCommission,
+      maxCommission: this.orderCommission.maxCommission,
+      iwsProvision: this.orderCommission.iwsProvision
+    }
+
+    this.orderUtils.createOrder(this.newOrder).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.commonMessageService.showCreatedSuccesfullMessage();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.log(error);
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    });
+  }
+
+  public onOrderCommission(event: {fixCommission: number, maxCommission: number, iwsProvision: number}) {
+    this.orderCommission = event;
+  }
+
+  public onOrderProject(selectedProject: Project | null): void {
+    this.project = selectedProject;
+  }
+
+  public onOrder(newOrderIncomplete: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
+    this.newOrder = newOrderIncomplete;
+  }
 
   goBackListOrders() {
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
