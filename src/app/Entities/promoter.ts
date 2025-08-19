@@ -9,7 +9,6 @@ export interface Promoter {
   country: Country | null;
 
   city?: string;
-  promoter?: string;
   projectPromoter? : string;
   promotername1?: string;
   promotername2?: string;

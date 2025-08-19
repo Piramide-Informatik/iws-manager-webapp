@@ -54,7 +54,7 @@ export class ProjectComponent implements OnInit, OnDestroy{
         this.selectedProject = this.projects().find(p => p.id === projectIdSelected) ?? null;
         if ( projectIdSelected && this.selectedProject ){
           this.projectForm.get('promoterNo')?.setValue(this.selectedProject.promoter?.promoterno, { emitEvent: false });
-          this.projectForm.get('promoter')?.setValue(this.selectedProject.promoter?.promoter, { emitEvent: false });
+          this.projectForm.get('promoter')?.setValue(this.selectedProject.promoter?.projectPromoter, { emitEvent: false });
           this.projectForm.get('startDate')?.setValue(momentCreateDate(this.selectedProject.startDate), { emitEvent: false });
           this.projectForm.get('endDate')?.setValue(momentCreateDate(this.selectedProject.endDate), { emitEvent: false });
         } else {
