@@ -134,7 +134,8 @@
     </div>
     <div class="order_input order_name mb-2">
       <label for="orderValue">{{ 'ORDERS.FORM.ORDER_VALUE' | translate }}</label>
-      <p-inputnumber [useGrouping]="false" 
+      <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
         id="orderValue"
         formControlName="orderValue"
         autocomplete="off"
