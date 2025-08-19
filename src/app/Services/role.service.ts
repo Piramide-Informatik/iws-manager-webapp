@@ -28,7 +28,7 @@ export class RoleService {
     public error = this._error.asReadonly();
 
     constructor() {
-        this.loadInitialData().subscribe();
+        this.loadInitialData()
     }
 
     public loadInitialData(): Observable <Role[]> {
@@ -50,8 +50,8 @@ export class RoleService {
     }
 
     // CREATE
-    addRole(status: Omit<Role, 'id' | 'version' | 'createdAt' | 'updatedAt'>): void {
-        this.http.post<Role>(this.apiUrl, status, this.httpOptions).pipe(
+    addRole(status: Omit<Role, 'id' | 'version' | 'createdAt' | 'updatedAt'>): Observable<Role> {
+        return this.http.post<Role>(this.apiUrl, status, this.httpOptions).pipe(
             tap({
                 next: (newStatus) => {
                     this._roles.update(roles => [...roles, newStatus]);
@@ -62,7 +62,7 @@ export class RoleService {
                     console.error('Error adding roles:', err);
                 }
             })
-        ).subscribe();
+        )
     }
 
     //UPDATE
