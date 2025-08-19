@@ -28,7 +28,7 @@ export class ProjectStatusService {
     public error = this._error.asReadonly();
 
     constructor() {
-        this.loadInitialData().subscribe();
+        this.loadInitialData()
     }
 
     public loadInitialData(): Observable<ProjectStatus[]> {
