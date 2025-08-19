@@ -97,9 +97,11 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
           this.orderForm.get('maxCommission')?.disable();
           this.disabledButtonsTable = true;
           this.orderForm.get('iwsProvision')?.setValue(valueFixCommission, { emitEvent: false });
+          this.orderForm.get('maxCommission')?.setValue(null, { emitEvent: false })
         } else {
           this.orderForm.get('maxCommission')?.enable();
           this.disabledButtonsTable = false;
+          this.orderForm.get('iwsProvision')?.setValue(null, { emitEvent: false });
         }
       })
     );
@@ -136,10 +138,14 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     this.orderCommissionForm = {
       fixCommission: this.orderForm.value.fixCommission ?? 0,
       maxCommission: this.orderForm.value.maxCommission ?? 0,
-      iwsProvision: this.orderForm.value.iwsProvision ?? 0
+      iwsProvision: this.orderForm.getRawValue().iwsProvision ?? 0
     }
 
     this.onCreateOrderCommission.emit(this.orderCommissionForm);
+  }
+
+  public clearIwsCommissionForm(): void {
+    this.orderForm.reset();
   }
 
   addIwsCommission(){

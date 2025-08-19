@@ -45,9 +45,15 @@ export class OrderDetailsComponent {
     }
 
     this.orderUtils.createOrder(this.newOrder).subscribe({
-      next: () => {
+      next: (createdOrder) => {
         this.isLoading = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
+        this.orderComponent.clearOrderForm();
+        this.projectComponent.clearOrderProjectForm();
+        this.iwsProvisionComponent.clearIwsCommissionForm();
+        setTimeout(()=>{
+          this.resetFormAndNavigation(createdOrder.id);
+        },2000)
       },
       error: (error) => {
         this.isLoading = false;
@@ -71,5 +77,10 @@ export class OrderDetailsComponent {
 
   goBackListOrders() {
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+  }
+
+  private resetFormAndNavigation(id: number): void {
+    
+    this.router.navigate(['.', id], { relativeTo: this.activatedRoute });
   }
 }
