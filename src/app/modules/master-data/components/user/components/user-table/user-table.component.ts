@@ -177,10 +177,8 @@ export class UserTableComponent {
       updatedAt: '',
       version: 0
     };
-    console.log("Edit User id: ", userToEdit.id)
     this.userUtils.getUseryId(userToEdit.id).subscribe({
       next: (fullUser) => {
-        console.log(fullUser)
         if(fullUser) {
           this.userStateService.setUserToEdit(fullUser);
         }

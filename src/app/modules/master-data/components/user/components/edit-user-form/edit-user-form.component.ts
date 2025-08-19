@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../../../../Entities/user';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subscription, switchMap } from 'rxjs';
 import { UserStateService } from '../../utils/user-state.service';
 import { UserUtils } from '../../utils/user-utils';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,26 +25,11 @@ export class EditUserFormComponent implements OnInit {
   private readonly editUserSource = new BehaviorSubject<User | null>(null);
   private readonly roleService = inject(RoleService);
 
-
-  // @Output() userSaved = new EventEmitter<any>();
-
-  
-  // allRoles: { name: string }[] = [
-  //   { name: 'Projekte' },
-  //   { name: 'Rolle 3' },
-  //   { name: 'Zeiterfassung' },
-  //   { name: 'Administrator' },
-  //   { name: 'Finanzen' }
-  // ];
-  allRoles: Role [] = []; //****/
+  allRoles: Role [] = [];
 
   userRoles: Role[] = [];
 
   availableRoless: Role[] = [];
-  userId: number = 1; // ejemplo
-
-  // assignedRoles: { name: string }[] = [];
-  // availableRoles: { name: string }[] = [];
 
   selectedAssignedRoles: string[] = [];
   selectedAvailableRoles: string[] = [];
@@ -55,22 +40,9 @@ export class EditUserFormComponent implements OnInit {
     private readonly userStateService: UserStateService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
-  ) {
-    // this.userForm = this.fb.group({
-    //   username: [''],
-    //   firstName: [''],
-    //   lastName: [''],
-    //   email: [''],
-    //   password: [''],
-    //   active: [true],
-    // });
-
-    // this.resetRoles();
-  }
+  ) {}
 
   ngOnInit(): void {
-
-    //this.userUtils.getRolesByUser(this.userId).subscribe(data => this.userRoles = data);
 
     this.initForm();
     this.setupUserSubscription();
@@ -79,36 +51,25 @@ export class EditUserFormComponent implements OnInit {
       this.loadTitleAfterRefresh(savedProjectStatusId);
       localStorage.removeItem('selectedUserId');
     }
-
-    // const initialAssigned = ['Projekte', 'Rolle 3', 'Zeiterfassung'];
-    // this.assignedRoles = this.allRoles.filter(role =>
-    //   initialAssigned.includes(role.name)
-    // );
-    // this.availableRoles = this.allRoles.filter(role =>
-    //   !initialAssigned.includes(role.name)
-    // );
-
-    // this.userForm.patchValue({
-    //   username: 'paze',
-    //   firstName: 'Patrick',
-    //   lastName: 'Zessin',
-    //   email: 'p.zessin@ws-nord.de',
-    //   active: true,
-    // });
   }
   
   private initForm(): void {
     this.editUserForm = new FormGroup({
-      username: new FormControl('', Validators.required),
+      username: new FormControl(''),
       nameUser: new FormControl(''),
       firstName: new FormControl('' ),
       lastName: new FormControl('' ),
-      email: new FormControl('', Validators.email ),
+      email: new FormControl('', [Validators.email]),
       password: new FormControl(''),
       active: new FormControl(true),
       role: new FormControl([]),
     });
   }
+
+  onRolesChange(): void {
+  this.editUserForm.get('role')?.setValue(this.userRoles);
+  this.editUserForm.get('role')?.markAsDirty();
+}
 
   private setupUserSubscription(): void {
     this.subscriptions.add(
@@ -120,26 +81,33 @@ export class EditUserFormComponent implements OnInit {
   }
 
   private loadUserData(user: User): void {
-      this.editUserForm.patchValue({
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        password: 'test',
-        active: user.active
-      });
-      this.roleService.getAllRoles().subscribe(allRoles => {
-      this.allRoles = allRoles;
+  this.editUserForm.patchValue({
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    password: '',
+    active: user.active,
+    role: user.roles || []
+  });
 
-      this.userUtils.getRolesByUser(user.id).subscribe(userRoles =>{
-        this.userRoles = userRoles
-
-        this.availableRoless = this.allRoles.filter(
-          role => !userRoles.some(ur => ur.id === role.id)
+  this.addSubscription(
+    this.roleService.getAllRoles().pipe(
+      switchMap(allRoles => {
+        this.allRoles = allRoles;
+        return this.userUtils.getRolesByUser(user.id).pipe(
+          map(userRoles => {
+            this.userRoles = userRoles;
+            this.availableRoless = allRoles.filter(
+              role => !userRoles.some(ur => ur.id === role.id)
+            );
+          })
         );
-      });
-    });
-  }
+      })
+    ),
+    () => {}
+  );
+}
 
 
   private loadTitleAfterRefresh(userId: string): void {
@@ -163,40 +131,67 @@ export class EditUserFormComponent implements OnInit {
       this.editUserForm.reset();
       this.currentUser = null;
       this.isSaving = false;
+      this.availableRoless = [];
+      this.userRoles = [];
     }
 
     onSubmit(): void {
       console.log(this.userRoles)
-      if (this.editUserForm.invalid || !this.currentUser || this.isSaving) {
+      if (this.shouldAbortSubmission()) {
         this.markAllAsTouched();
         return;
         
       }
       this.isSaving = true;
-      const updatedUser: User = {
-        ...this.currentUser,
-        username: this.editUserForm.value.username,
-        firstName: this.editUserForm.value.firstName,
-        lastName: this.editUserForm.value.lastName,
-        email: this.editUserForm.value.email,
-        active: this.editUserForm.value.active,
-        roles: this.userRoles
-      };
+      const updatedUser = this.createUpdatedUser();
   
-      this.subscriptions.add(
-        this.userUtils.updateUsers(updatedUser).subscribe({
-          next: (savedUser) => this.handleSaveSuccess(savedUser),
-          error: (err) => this.handleError(err)
-        })
-      );
-      this.subscriptions.add(
-        this.userUtils.assignRole(updatedUser.id,this.userRoles.map(
-          role => role.id)).subscribe({
-            next: (savedUser) => this.handleSaveSuccess(savedUser),
-            error: (err) => this.handleError(err)
-          })
-      );
+      this.updateUserData(updatedUser);
     }
+
+  private shouldAbortSubmission(): boolean {
+    return this.editUserForm.invalid || !this.currentUser || this.isSaving;
+  }
+
+  private createUpdatedUser(): User {
+  return {
+    ...this.currentUser!,
+    username: this.editUserForm.value.username,
+    firstName: this.editUserForm.value.firstName,
+    lastName: this.editUserForm.value.lastName,
+    email: this.editUserForm.value.email,
+    active: this.editUserForm.value.active,
+    roles: this.editUserForm.value.role || []
+    };
+  }
+
+  private updateUserData(user: User): void {
+    this.addSubscription(
+      this.userUtils.updateUsers(user).pipe(
+        switchMap((savedUser: User) => {
+        const roleIds = this.userRoles.map(role => role.id);
+        return this.userUtils.assignRole(savedUser.id, roleIds);
+    })
+      ),
+      (savedUser) => this.handleSaveSuccess(savedUser)
+    );
+  }
+
+  private assignUserRoles(user: User): void {
+  const roleIds = this.userRoles.map(role => role.id);
+  this.addSubscription(
+    this.userUtils.assignRole(user.id, roleIds),
+    (savedUser) => this.handleSaveSuccess(savedUser)
+  );
+}
+
+  private addSubscription(observable: Observable<any>, nextHandler: (value: any) => void): void {
+    this.subscriptions.add(
+      observable.subscribe({
+        next: nextHandler,
+        error: (err) => this.handleError(err)
+      })
+    );
+  }
 
     private markAllAsTouched(): void {
     Object.values(this.editUserForm.controls).forEach(control => {
@@ -217,69 +212,27 @@ export class EditUserFormComponent implements OnInit {
   private handleSaveSuccess(savedUser: User): void {
       this.messageService.add({
         severity: 'success',
-        summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
-        detail: this.translate.instant('TITLE.MESSAGE.UPDATE_SUCCESS')
+        summary: this.translate.instant('MESSAGE.SUCCESS'),
+        detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
       });
       this.userStateService.setUserToEdit(null);
       this.clearForm();
     }
   
   private handleSaveError(error: any): void {
-      console.error('Error saving title:', error);
+      console.error('Error saving user:', error);
       this.messageService.add({
         severity: 'error',
-        summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
-        detail: this.translate.instant('TITLE.MESSAGE.UPDATE_FAILED')
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('MESSAGE.UPDATE_FAILED')
       });
       this.isSaving = false;
     }
-
-  // private resetRoles(): void {
-  //   //this.assignedRoles = [];
-  //   //this.availableRoles = [...this.allRoles];
-  //   this.selectedAssignedRoles = [];
-  //   this.selectedAvailableRoles = [];
-  // }
-  
-  
-  // ngOnDestroy(): void {
-  //   this.subscriptions.unsubscribe();
-  // }
 
   setUserToEdit(user: User | null) {
     this.editUserSource.next(user);
   }
 
-  // public editUser(user: any): void {
-  //   this.editUserForm.patchValue({
-  //     username: user.username,
-  //     firstName: user.firstName,
-  //     lastName: user.lastName,
-  //     email: user.email,
-  //     password: '',
-  //     active: user.active,
-  //   });
-
-  //   this.assignedRoles = user.assignedRoles ?? [];
-  //   this.availableRoles = this.allRoles.filter(
-  //     (role) => !this.assignedRoles.includes(role)
-  //   );
-  // }
-
-  // public saveUser(): void {
-  //   const formValue = this.editUserForm.value;
-  //   const name = `${formValue.firstName} ${formValue.lastName}`;
-  //   const updatedUser = {
-  //     ...formValue,
-  //     name,
-  //     assignedRoles: this.assignedRoles.map(role => role.name),
-  //   };
-
-  //   // this.userSaved.emit(updatedUser);
-  //   this.editUserForm.reset({ active: true });
-  //   this.resetRoles();
-  // }
-  
   onRefresh(): void {
     if (this.currentUser?.id) {
       localStorage.setItem('selectedUserId', this.currentUser.id.toString());

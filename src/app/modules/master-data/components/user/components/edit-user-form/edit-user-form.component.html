@@ -70,7 +70,9 @@
             [showSourceControls]="false"
             [showTargetControls]="false"
             [metaKeySelection]="false"
-            [style]="{ height: '170px' }">
+            [style]="{ height: '170px' }"
+            (onMoveToTarget)="onRolesChange()"
+            (onMoveToSource)="onRolesChange()">
           </p-pickList>
         </div>
       </div>
