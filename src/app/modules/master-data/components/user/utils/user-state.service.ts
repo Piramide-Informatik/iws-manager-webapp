@@ -7,8 +7,8 @@ export class UserStateService {
     private readonly editUserSource = new BehaviorSubject<User | null>(null);
     currentUser$ = this.editUserSource.asObservable();
 
-    setUserToEdit(title: User | null): void {
-        this.editUserSource.next(title);
+    setUserToEdit(user: User | null): void {
+        this.editUserSource.next(user);
     }
 
     clearTitle() {
