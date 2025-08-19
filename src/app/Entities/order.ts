@@ -15,32 +15,32 @@ export interface Order {
   updatedAt: string;
   version: number;
 
-  approvalstatus: ApprovalStatus | null;
-  basiccontract: BasicContract | null;
-  contractor: Contractor | null;
-  contractStatus: ContractStatus | null;
-  customer: Customer | null;
-  employeeiws: EmployeeIws | null; 
-  fundingProgram: FundingProgram | null;
-  orderType: CostType | null; // reference costtype
-  project: Project | null;
-  promoter: Promoter | null;
+  approvalStatus: ApprovalStatus | null;  //----???
+  basiccontract: BasicContract | null;   //------------form Master Agreement  contractNo + contractTitle 
+  contractor: Contractor | null;        //----???
+  contractStatus: ContractStatus | null;    //------------form 
+  customer: Customer | null;                //------------form ??
+  employeeIws: EmployeeIws | null;        //------------form  FirstName+LastName
+  fundingProgram: FundingProgram | null;   //------------form  name
+  orderType: CostType | null; // reference costtype //------------form NO HAY AUN
+  project: Project | null; //------------form
+  promoter: Promoter | null; //----???
 
-  acronym?: string;
-  approvaldate?: string; //date
-  approvalpdf?: string; // Base64-encoded PDF
-  contractdata1?: string;
-  contractdata2?: string;
-  contractpdf?: string;  // Base64-encoded PDF
-  fixcommission?: number; 
-  iwsProvision?: number;
-  maxcommission?: number;
-  nextdeptdate?: string;  //date
-  noofdepts?: number;  //smallint
-  orderDate?: string; //date
-  orderLabel?: string; 
-  orderNo?: number;
-  ordertitle?: string;
-  orderValue?: number;
-  signaturedate?: string; //date
+  acronym?: string;       //------------form
+  approvalDate?: string; //date //----???
+  approvalPdf?: string; // Base64-encoded PDF
+  contractData1?: string;  //----???
+  contractData2?: string;  //----???
+  contractPdf?: string;  // Base64-encoded PDF
+  fixCommission?: number;  //------------form
+  iwsProvision?: number;  //------------form Estimated
+  maxCommission?: number;  //------------form
+  nextDeptDate?: string;  //date //----???
+  noOfDepts?: number;  //smallint  //----???
+  orderDate?: string; //date  //------------form
+  orderLabel?: string; //------------form  Order
+  orderNo?: number; //------------form
+  orderTitle?: string;  //------------form  Description
+  orderValue?: number;  //------------form Estimated Order Value
+  signatureDate?: string; //date //------------form
 }

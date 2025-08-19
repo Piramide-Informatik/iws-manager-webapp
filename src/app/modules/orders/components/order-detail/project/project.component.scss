@@ -1,26 +1,24 @@
-input{
-    height: 25px; 
-    font-size: 0.85rem; 
-    padding: 2px 6px;
-}
-
 .proj_input{
     width: 100% !important;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    font-weight: normal;
+    margin-bottom: 0.5rem;
+
     label {
-        width: 102px;
+        width: 140px;
+        flex-shrink: 0;
     }
 
     input,
-    p-select{
+    p-select {
         width: 400px;
     }
 
-    span {
-        width: 170px;
+    ::ng-deep p-datepicker {
+        width: 400px !important;
+    }
+
+    ::ng-deep .p-datepicker {
+        width: 100% !important;
     }
 }

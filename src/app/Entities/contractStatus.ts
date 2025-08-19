@@ -5,5 +5,5 @@ export interface ContractStatus {
   version: number;
 
   chance?: number; 
-  contractStatus?: string;
+  status?: string;
 }

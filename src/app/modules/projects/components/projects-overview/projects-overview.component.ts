@@ -76,7 +76,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
             projectLabel: curr.projectLabel,
             projectName: curr.projectName,
             fundingProgram: curr.fundingProgram?.name ?? '',
-            promoter: curr.promoter?.promoter ?? '',
+            promoter: curr.promoter?.projectPromoter ?? '',
             fundingLabel: curr.fundingLabel,
             startDate: curr.startDate,
             endDate: curr.endDate,

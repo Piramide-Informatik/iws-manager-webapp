@@ -4,40 +4,14 @@
     width: 100% !important;
 
     label {
-        width: 102px;
+        width: 140px;
     }
 
-    input{
+    ::ng-deep p-inputnumber .p-inputnumber-input {
         width: 170px;
     }
 }
 
-#estimated{
-    width: 120px;
+::ng-deep p-inputnumber input#estimated.p-inputnumber-input {
+    width: 100px !important;
 }
-
-.thead {
-    background: $primary-color;
-    color: #fff;
-    min-width: 6.25rem; 
-
-    &:hover {
-        background: #abcbeb;
-        color: #1E293B
-    }
-}
-
-.thead-bg-blue {
-    background: $primary-color;
-}
-
-.thead-input-id {
-    width: 4.4rem; //=70px
-}
-
-.thead-input-width {
-    width: 100%;
-}
-.align-right {
-    text-align: right;
-  }

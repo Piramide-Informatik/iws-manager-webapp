@@ -2,11 +2,9 @@
   <div class="align-items-center mb-2">
     <div class="order_input order_id mb-2">
       <label for="orderId">{{ 'ORDERS.FORM.ORDER_ID' | translate }}</label>
-      <input
-        pInputText
-        type="text"
-        id="orderId"
-        formControlName="orderId"
+      <p-inputnumber [useGrouping]="false"
+        inputId="orderId"
+        formControlName="orderNo"
         autocomplete="off"
       />
     </div>
@@ -23,37 +21,29 @@
     <div class="order_input order_type mb-2">
       <label for="orderType">{{ 'ORDERS.FORM.ORDER_TYPE' | translate }}</label>
       <p-select
-        [style]="{ width: '15em' }"
         formControlName="orderType"
-        [editable]="true"
         [showClear]="true"
         optionLabel="name"
         autocomplete="off"
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />
     </div>
-    <div class="order_input order_customer me-0 mb-2 d-flex">
-      <span>{{ 'ORDERS.FORM.CUSTOMER' | translate }}</span>
-      <div class="flex gap-2" style="width: 20vw;">
-        <div class="customerId">
-          <input
-            pInputText
-            type="text"
-            placeholder="{{ 'ORDERS.FORM.NR' | translate }}"
-            id="customerId"
-            formControlName="customerId"
-            autocomplete="off"
-          />
-        </div>
-        <div class="customerName">
-          <input
-            pInputText
-            id="customerName"
-            placeholder="{{ 'ORDERS.FORM.NAME' | translate }}"
-            formControlName="customerName"
-            autocomplete="off"
-          />
-        </div>
+    <div class="order_input me-0 mb-2">
+      <label for="customerId">{{ 'ORDERS.FORM.CUSTOMER' | translate }}</label>
+      <div class="flex gap-2" [style]="{width: '20vw'}">
+        <p-inputnumber [useGrouping]="false" 
+          placeholder="{{ 'ORDERS.FORM.NR' | translate }}"
+          inputId="customerId"
+          formControlName="customerNo"
+          autocomplete="off"
+        />
+        <input
+          pInputText
+          id="customerName"
+          placeholder="{{ 'ORDERS.FORM.NAME' | translate }}"
+          formControlName="customerName"
+          autocomplete="off"
+        />
       </div>
     </div>
     <div class="order_input order_name mb-2">
@@ -79,7 +69,6 @@
     <div class="order_input order_name mb-2">
       <label for="orderDate">{{ 'ORDERS.FORM.ORDER_DATE' | translate }}</label>
       <p-datepicker
-        class="w-13em"
         id="orderDate"
         [showIcon]="true"
         [showClear]="true"
@@ -90,23 +79,20 @@
     <div class="order_input order_name mb-2">
       <label for="fundingProgram">{{ 'ORDERS.FORM.FUNDING_PROGRAM' | translate }}</label>
       <p-select
-        [style]="{ width: '15em' }"
         id="fundingProgram"
         formControlName="fundingProgram"
-        [editable]="true"
         [showClear]="true"
+        [options]="fundingPrograms()"
         optionLabel="name"
-        autocomplete="off"
+        optionValue="id"
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />
     </div>
     <div class="order_input order_name mb-2">
       <label for="contractStatus">{{ 'ORDERS.FORM.CONTRACT_STATUS' | translate }}</label>
       <p-select
-        [style]="{ width: '15em' }"
         id="contractStatus"
         formControlName="contractStatus"
-        [editable]="true"
         [showClear]="true"
         optionLabel="name"
         autocomplete="off"
@@ -127,10 +113,8 @@
     <div class="order_input order_name mb-2">
       <label for="contractTitle">{{ 'ORDERS.FORM.CONTRACT_TITLE' | translate }}</label>
       <p-select
-        [style]="{ width: '15em' }"
         id="contractTitle"
         formControlName="contractTitle"
-        [editable]="true"
         [showClear]="true"
         optionLabel="name"
         autocomplete="off"
@@ -140,10 +124,8 @@
     <div class="order_input order_name mb-2">
       <label for="employeeiws">{{ 'ORDERS.FORM.IWS_EMPLOYEE' | translate }}</label>
       <p-select
-        [style]="{ width: '15em' }"
         id="employeeiws"
-        formControlName="employeeiws"
-        [editable]="true"
+        formControlName="employeeIws"
         [showClear]="true"
         optionLabel="name"
         autocomplete="off"
@@ -152,9 +134,8 @@
     </div>
     <div class="order_input order_name mb-2">
       <label for="orderValue">{{ 'ORDERS.FORM.ORDER_VALUE' | translate }}</label>
-      <input
-        pInputText
-        type="text"
+      <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
         id="orderValue"
         formControlName="orderValue"
         autocomplete="off"

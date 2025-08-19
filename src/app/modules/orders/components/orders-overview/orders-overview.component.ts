@@ -80,7 +80,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
             acronym: curr.acronym,
             fundingProgram: curr.fundingProgram?.name,
             value: curr.orderValue,
-            contractStatus: curr.contractStatus?.contractStatus,
+            contractStatus: curr.contractStatus?.status,
             contractNr: '',
             contractTitle: '',
             iwsPercent: curr.iwsProvision,
