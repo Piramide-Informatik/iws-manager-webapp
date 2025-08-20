@@ -40,6 +40,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   
   @ViewChild('dt2') dt2!: Table;
   visibleFrameworkAgreementModal = false;
+  isFrameworkAgreementLoading = false;
   selectedFrameworkAgreement: any = undefined;
 
   constructor(private readonly commonMessageService: CommonMessagesService) { }
@@ -101,6 +102,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   }
 
   onFrameworkAgreementDeleteConfirm() {
+    this.isFrameworkAgreementLoading = true;
     if (this.selectedFrameworkAgreement) {
       this.frameworkAgreementUtils.deleteFrameworkAgreement(this.selectedFrameworkAgreement.id).subscribe({
         next: () => {
@@ -113,6 +115,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
         complete: () => {
           this.selectedFrameworkAgreement = undefined;
           this.visibleFrameworkAgreementModal = false;
+          this.isFrameworkAgreementLoading = false;
         }
       })
     }
