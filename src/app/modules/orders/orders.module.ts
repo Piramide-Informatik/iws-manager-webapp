@@ -25,6 +25,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { ToastModule } from 'primeng/toast';
 
 //Components
+import { SharedModule } from '../shared/shared.module';
 import { OrderDetailsComponent } from './components/order-detail/order-details.component';
 import { OrderComponent } from './components/order-detail/order/order.component';
 import { ProjectComponent } from './components/order-detail/project/project.component';
@@ -66,7 +67,8 @@ import { MasterDataModule } from '../master-data/master-data.module';
     TranslateDirective,
     MasterDataModule,
     InputNumberModule,
-    ToastModule
+    ToastModule,
+    SharedModule
   ],
 })
 export class OrdersModule { }

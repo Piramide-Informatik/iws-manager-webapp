@@ -16,7 +16,7 @@ export interface Order {
   version: number;
 
   approvalStatus: ApprovalStatus | null;  //----???
-  basiccontract: BasicContract | null;   //------------form Master Agreement  contractNo + contractTitle 
+  basicContract: BasicContract | null;   //------------form Master Agreement  contractNo + contractTitle 
   contractor: Contractor | null;        //----???
   contractStatus: ContractStatus | null;    //------------form 
   customer: Customer | null;                //------------form ??

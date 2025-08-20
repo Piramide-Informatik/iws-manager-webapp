@@ -9,14 +9,14 @@ export interface BasicContract {
   updatedAt: string;
   version: number;
 
-  contractstatus: ContractStatus | null;
+  contractStatus: ContractStatus | null;
   customer: Customer | null;
-  fundingprogram: FundingProgram | null;
-  iwsemployee: EmployeeIws | null;
+  fundingProgram: FundingProgram | null;
+  employeeIws: EmployeeIws | null;
 
-  confirmationdate?: string; // date
-  contractlabel?: string;
-  contractno?: number;
-  contracttitle?: string;
+  confirmationDate?: string; // date
+  contractLabel?: string;
+  contractNo?: number;
+  contractTitle?: string;
   date?: string;
 }
