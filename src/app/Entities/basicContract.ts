@@ -16,7 +16,7 @@ export interface BasicContract {
 
   confirmationdate?: string; // date
   contractlabel?: string;
-  contractno?: number;
-  contracttitle?: string;
+  contractNo?: number;
+  contractTitle?: string;
   date?: string;
 }
