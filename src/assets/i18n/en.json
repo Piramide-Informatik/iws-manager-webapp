@@ -412,7 +412,9 @@
         "COMMISSION": "Commission",
         "MIN_COMMISSION": "Minimum Commission"
       }
-    }
+    },
+    "TITLE_DIALOG_REMOVE": "Delete Framework Agreement",
+    "REMOVE_QUESTION":"Are you sure you want to delete the framework agreement"
   },
   "CONTRACTS": {
     "FORM": {

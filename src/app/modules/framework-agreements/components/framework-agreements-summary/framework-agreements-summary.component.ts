@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 
 interface Column {
@@ -37,11 +38,15 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   dataKeys = ['contractno', 'frameworkContract', 'date', 'fundingProgram', 'contractStatus', 'iwsEmployee'];
   
   @ViewChild('dt2') dt2!: Table;
+  visibleFrameworkAgreementModal = false;
+  isFrameworkAgreementLoading = false;
+  selectedFrameworkAgreement: any = undefined;
 
-  constructor() { }
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     this.loadFrameworkAgreementsColHeaders();
+    this.frameworkAgreements = [];
     this.selectedColumns = this.cols;
     this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -108,7 +113,28 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   }
 
   deleteFrameworkAgreement(id: number) {
-    this.frameworkAgreements = this.frameworkAgreements.filter(agreement => agreement.id !== id);
+    this.selectedFrameworkAgreement = this.frameworkAgreements.find(fa => fa.id == id);
+    this.visibleFrameworkAgreementModal = true;
+  }
+
+  onFrameworkAgreementDeleteConfirm() {
+    this.isFrameworkAgreementLoading = true;
+    if (this.selectedFrameworkAgreement) {
+      this.frameworkAgreementUtils.deleteFrameworkAgreement(this.selectedFrameworkAgreement.id).subscribe({
+        next: () => {
+          this.frameworkAgreements = this.frameworkAgreements.filter( fa => fa.id != this.selectedFrameworkAgreement.id);
+          this.commonMessageService.showDeleteSucessfullMessage()
+        },
+        error: () => {
+          this.commonMessageService.showErrorDeleteMessage();
+        },
+        complete: () => {
+          this.selectedFrameworkAgreement = undefined;
+          this.visibleFrameworkAgreementModal = false;
+          this.isFrameworkAgreementLoading = false;
+        }
+      })
+    }
   }
 
   createFrameworkAgreementDetail() {

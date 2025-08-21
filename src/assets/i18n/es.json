@@ -408,7 +408,9 @@
         "FROM_VALUE": "Del Valor",
         "COMMISSION": "Comisión",
         "MIN_COMMISSION": "Comisión mínima"
-      }
+      },
+      "TITLE_DIALOG_REMOVE": "Eliminar Marco de Acuerdo",
+      "REMOVE_QUESTION":"¿Está seguro que desea eliminar el Marco de Acuerdo"
     }
   },
   "CONTRACTS": {
