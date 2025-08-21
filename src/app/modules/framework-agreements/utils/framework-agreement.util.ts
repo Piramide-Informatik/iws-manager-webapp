@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { FrameworkAgreementService } from '../../../Services/framework-agreenent.service';
-import { FrameworkAgreements } from '../../../Entities/Framework-agreements';
+import { BasicContract } from '../../../Entities/basicContract';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -14,7 +14,7 @@ export class FrameworkAgreementsUtils {
   * Gets all framework agreements without any transformation
   * @returns Observable emitting the raw list of framework agreements
   */
-  getAllFrameworkAgreements(): Observable<FrameworkAgreements[]> {
+  getAllFrameworkAgreements(): Observable<BasicContract[]> {
     return this.frameworkAgreementService.getAllFrameworkAgreements().pipe(
       catchError(() => throwError(() => new Error('Failed to load framework Agreements')))
     );
@@ -25,7 +25,7 @@ export class FrameworkAgreementsUtils {
   * @param id - ID of the framework agreement to retrieve
   * @returns Observable emitting the framework agreement or undefined if not found
   */
-  getFrameworkAgreementById(id: number): Observable<FrameworkAgreements | undefined> {
+  getFrameworkAgreementById(id: number): Observable<BasicContract | undefined> {
     if (!id || id <= 0) {
       return throwError(() => new Error('Invalid framework agreement ID'));
     }
@@ -42,7 +42,7 @@ export class FrameworkAgreementsUtils {
   * @param customerId - Customer to get his framework agreements
   * @returns Observable emitting the raw list of framework agreemetns
   */
-  getAllFrameworkAgreementsByCustomerId(customerId: number): Observable<FrameworkAgreements[]> {
+  getAllFrameworkAgreementsByCustomerId(customerId: number): Observable<BasicContract[]> {
     return this.frameworkAgreementService.getAllFrameworkAgreementsByCustomerId(customerId).pipe(
       catchError(() => throwError(() => new Error('Failed to load framework agreements')))
     );
@@ -53,7 +53,7 @@ export class FrameworkAgreementsUtils {
   * @param frameworkAgreement - Framework Agreement object to create (without id)
   * @returns Observable that completes when framework agreement is created
   */
-  createNewFrameworkAgreement(frameworkAgreement: Omit<FrameworkAgreements, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<FrameworkAgreements> {
+  createNewFrameworkAgreement(frameworkAgreement: Omit<BasicContract, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<BasicContract> {
     return this.frameworkAgreementService.addFrameworkAgreement(frameworkAgreement);
   }
 
@@ -71,7 +71,7 @@ export class FrameworkAgreementsUtils {
   * @param frameworkAgreement - FrameworkAgreements object with updated data
   * @returns Observable that completes when the update is done
   */
-  updateFrameworkAgreements(frameworkAgreement: FrameworkAgreements): Observable<FrameworkAgreements> {
+  updateFrameworkAgreements(frameworkAgreement: BasicContract): Observable<BasicContract> {
     if (!frameworkAgreement.id) {
       return throwError(() => new Error('Invalid framework Agreement data'));
     }

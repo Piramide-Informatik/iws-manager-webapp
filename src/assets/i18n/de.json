@@ -410,7 +410,9 @@
         "FROM_VALUE": "ab Wert",
         "COMMISSION": "Provision",
         "MIN_COMMISSION": "Mindestprovision"
-      }
+      },
+      "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
+      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen"
     }
   },
   "CONTRACTS": {
