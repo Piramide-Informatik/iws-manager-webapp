@@ -78,7 +78,9 @@
         id="contractStatus"
         formControlName="contractStatus"
         [showClear]="true"
-        optionLabel="name"
+        [options]="contractStatus()"
+        optionLabel="status"
+        optionValue="id"
         autocomplete="off"
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />
@@ -100,7 +102,9 @@
         id="contractTitle"
         formControlName="basicContract"
         [showClear]="true"
-        optionLabel="name"
+        [options]="basicContractsSelect()"
+        optionLabel="label"
+        optionValue="id"
         autocomplete="off"
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />

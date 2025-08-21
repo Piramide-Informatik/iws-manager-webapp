@@ -8,9 +8,13 @@ import { FundingProgram } from '../../../../../Entities/fundingProgram';
 import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../../Entities/customer';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { CostTypeUtils } from '../../../../master-data/components/cost/utils/cost-type-utils';
 import { CostType } from '../../../../../Entities/costType';
+import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
+import { BasicContract } from '../../../../../Entities/basicContract';
+import { ContractStatusUtils } from '../../../../master-data/components/contract-status/utils/contract-status-utils';
+import { ContractStatus } from '../../../../../Entities/contractStatus';
 
 @Component({
   selector: 'app-order',
@@ -21,6 +25,8 @@ import { CostType } from '../../../../../Entities/costType';
 export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly orderTypeUtils = inject(CostTypeUtils);
+  private readonly contractStatusUtils = inject(ContractStatusUtils);
+  private readonly framworkUtils = inject(FrameworkAgreementsUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly subscriptions = new Subscription();
@@ -37,7 +43,25 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   public readonly orderTypes = toSignal(
     this.orderTypeUtils.getAllCostTypes(), { initialValue: [] }
-  )
+  );
+
+  private basicContracts!: BasicContract[];
+  public readonly basicContractsSelect = toSignal(
+    this.framworkUtils.getAllFrameworkAgreementsByCustomerId(this.customerId).pipe(
+    map(contracts => {
+      this.basicContracts = contracts;
+      
+      return contracts.map(contract => ({
+        id: contract.id,
+        label: contract.contractNo + ' ' + contract.contractTitle,
+      }));
+    })
+  ), { initialValue: [] }
+  );
+
+  public readonly contractStatus = toSignal(
+    this.contractStatusUtils.getAllcontractStatuses(), { initialValue: [] }
+  );
 
   ngOnInit(): void {
     this.getCurrentCustomer();
@@ -85,9 +109,9 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
     const newOrderIncomplete: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       approvalStatus: null,
-      basiccontract: null,
+      basiccontract: this.getBasicContract(this.orderForm.value.basicContract ?? 0),
       contractor: null,
-      contractStatus: null,
+      contractStatus: this.getContractStatus(this.orderForm.value.contractStatus ?? 0),
       customer: this.currentCustomer,
       employeeIws: null,
       fundingProgram: this.getFundingProgram(this.orderForm.value.fundingProgram ?? 0),
@@ -122,6 +146,14 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   private getOrderType(idOrderType: number): CostType | null {
     return this.orderTypes().find( o => o.id === idOrderType) ?? null;
+  }
+
+  private getBasicContract(idBasicContract: number): BasicContract | null {
+    return this.basicContracts.find( b => b.id === idBasicContract) ?? null;
+  }
+
+  private getContractStatus(idContractStatus: number): ContractStatus | null {
+    return this.contractStatus().find( c => c.id === idContractStatus) ?? null;
   }
 
   private getCurrentCustomer(): void {
