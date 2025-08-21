@@ -5,7 +5,7 @@
       <div class="iws-employeeInput project_name mb-2">
         <label for="fixCommission">{{ 'ORDERS.COMMISSIONS.FIXED_COMMISSION' | translate }}</label>
         <p-inputnumber mode="decimal" [max]="999.99" [min]="0" [useGrouping]="true" 
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
           inputId="fixCommission"
           formControlName="fixCommission"
           autocomplete="off"
@@ -15,7 +15,7 @@
       <div class="iws-employeeInput order_maxCommission mb-2">
         <label for="maxCommission">{{ 'ORDERS.COMMISSIONS.MAX_COMMISSION' | translate }}</label>
         <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
           id="maxCommission"
           formControlName="maxCommission"
           autocomplete="off"
@@ -42,7 +42,7 @@
         <div class="project_name flex justify-content-end align-items-center">
           <label class="me-2" for="estimated">{{ 'ORDERS.COMMISSIONS.ESTIMATED_IWS_COMMISSION' | translate }}</label>
           <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
-            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
             inputId="estimated"
             formControlName="iwsProvision"
             autocomplete="off"
@@ -68,8 +68,8 @@
     <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmit()">
       <div class="form-item-container  flex gap-4 mb-3">
         <label for="fromValue" class="w-3">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
-        <input
-          pInputText
+        <p-inputnumber mode="decimal" [max]="999.99" [min]="0" [useGrouping]="true" 
+          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
           id="fromValue"
           class="flex-auto"
           formControlName="fromOrderValue"
@@ -78,8 +78,8 @@
       </div>
       <div class="form-item-container  flex gap-4 mb-3">
         <label for="provision" class="w-3">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
-        <input
-          pInputText
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
           id="provision"
           class="flex-auto"
           formControlName="provision"
@@ -88,8 +88,8 @@
       </div>
       <div class="form-item-container  flex gap-4 mb-3">
         <label for="minCommission" class="w-3">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
-        <input
-          pInputText
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
           id="minCommission"
           class="flex-auto"
           formControlName="minCommission"

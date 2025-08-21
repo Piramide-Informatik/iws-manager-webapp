@@ -47,9 +47,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   });
 
   public iwsCommissionForm: FormGroup = new FormGroup({
-    fromOrderValue: new FormControl(''),
-    provision: new FormControl(''),
-    minCommission: new FormControl('')
+    fromOrderValue: new FormControl(null),
+    provision: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
+    minCommission: new FormControl(null)
   });
 
   public disabledButtonsTable: boolean = false;
