@@ -12,7 +12,7 @@ import { ProjectUtils } from '../../projects/utils/project.utils';
 import { OrderUtils } from '../../orders/utils/order-utils';
 import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 import { InvoiceUtils } from '../../invoices/utils/invoice.utils';
-import { FrameworkAgreementsUtils } from '../../framework-agreements/utils/framework-agreement.service';
+import { FrameworkAgreementsUtils } from '../../framework-agreements/utils/framework-agreement.util';
 
 @Injectable({ providedIn: 'root' })
 /**
