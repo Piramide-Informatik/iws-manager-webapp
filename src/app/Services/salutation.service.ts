@@ -32,7 +32,7 @@ export class SalutationService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): Observable<Salutation[]> {
+  loadInitialData(): Observable<Salutation[]> {
     this._loading.set(true);
     return this.http.get<Salutation[]>(this.apiUrl, this.httpOptions).pipe(
       tap({

@@ -51,6 +51,7 @@ export class StatesTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.stateUtils.loadInitialData().subscribe();
     this.updateHeadersAndColumns();
     this.userStatesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {

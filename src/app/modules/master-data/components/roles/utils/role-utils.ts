@@ -24,16 +24,12 @@ export class RoleUtils {
     }
 
     //Creates a new role with validation
-    createNewRole(name: string): Observable<void> {
+    createNewRole(name: string): Observable<Role> {
         if (!name?.trim()) {
             return throwError(() => new Error('ProjectStatus name cannot be empty'));
         }
-        return new Observable<void>(subscriber => {
-            this.roleService.addRole({
+        return this.roleService.addRole({
                 name: name?.trim()
-            });
-            subscriber.next();
-            subscriber.complete();
         });
     }
 

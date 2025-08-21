@@ -13,6 +13,10 @@ export class StateUtils {
   private readonly stateService = inject(StateService);
   private readonly customerUtils = inject(CustomerUtils)
 
+  loadInitialData(): Observable<State[]> {
+    return this.stateService.loadInitialData();
+  }
+
   /**
    * Gets a state by ID with proper error handling
    * @param id - ID of the state to retrieve
@@ -36,19 +40,13 @@ export class StateUtils {
    * @param nameState - Name for the new state
    * @returns Observable that completes when state is created
    */
-  createNewState(nameState: string): Observable<void> {
+  createNewState(nameState: string): Observable<State> {
     if (!nameState?.trim()) {
       return throwError(() => new Error('State name cannot be empty'));
     }
 
-    return new Observable<void>(subscriber => {
-      this.stateService.addState({
+    return this.stateService.addState({
         name: nameState.trim()
-      });
-
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
     });
   }
 
