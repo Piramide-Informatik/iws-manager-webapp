@@ -90,7 +90,7 @@ export class OrderUtils {
         }
 
         if (currentOrder.version !== order.version) {
-          return throwError(() => new Error('Conflict detected: order person version mismatch'));
+          return throwError(() => new Error('Conflict detected: order version mismatch'));
         }
 
         return this.orderService.updateOrder(order);
