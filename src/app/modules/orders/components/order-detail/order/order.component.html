@@ -28,24 +28,6 @@
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />
     </div>
-    <div class="order_input me-0 mb-2">
-      <label for="customerId">{{ 'ORDERS.FORM.CUSTOMER' | translate }}</label>
-      <div class="flex gap-2" [style]="{width: '20vw'}">
-        <p-inputnumber [useGrouping]="false" 
-          placeholder="{{ 'ORDERS.FORM.NR' | translate }}"
-          inputId="customerId"
-          formControlName="customerNo"
-          autocomplete="off"
-        />
-        <input
-          pInputText
-          id="customerName"
-          placeholder="{{ 'ORDERS.FORM.NAME' | translate }}"
-          formControlName="customerName"
-          autocomplete="off"
-        />
-      </div>
-    </div>
     <div class="order_input order_name mb-2">
       <label for="acronym">{{ 'ORDERS.FORM.ACRONYM' | translate }}</label>
       <input

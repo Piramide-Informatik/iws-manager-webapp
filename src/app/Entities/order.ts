@@ -16,7 +16,7 @@ export interface Order {
   version: number;
 
   approvalStatus: ApprovalStatus | null;  //----???
-  basicContract: BasicContract | null;   //------------form Master Agreement  contractNo + contractTitle 
+  basiccontract: BasicContract | null;   //------------form Master Agreement  contractNo + contractTitle 
   contractor: Contractor | null;        //----???
   contractStatus: ContractStatus | null;    //------------form 
   customer: Customer | null;                //------------form ??
@@ -27,7 +27,7 @@ export interface Order {
   promoter: Promoter | null; //----???
 
   acronym?: string;       //------------form
-  approvalDate?: string; //date //----???
+  approvalDate?: string; //date //----form
   approvalPdf?: string; // Base64-encoded PDF
   contractData1?: string;  //----???
   contractData2?: string;  //----???
@@ -42,5 +42,5 @@ export interface Order {
   orderNo?: number; //------------form
   orderTitle?: string;  //------------form  Description
   orderValue?: number;  //------------form Estimated Order Value
-  signatureDate?: string; //date //------------form
+  signatureDate?: string; //date //--------???
 }

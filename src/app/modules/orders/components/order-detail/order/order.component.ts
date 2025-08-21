@@ -38,8 +38,6 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
       orderNo: new FormControl(null),
       orderLabel: new FormControl(''),
       orderType: new FormControl(''),
-      customerNo: new FormControl(null),
-      customerName: new FormControl(''),
       acronym: new FormControl(''),
       orderTitle: new FormControl(''),
       orderDate: new FormControl(''),
@@ -58,15 +56,13 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
         orderNo: this.orderToEdit.orderNo,
         orderLabel: this.orderToEdit.orderLabel,
         orderType: this.orderToEdit.orderType?.costtype,
-        customerNo: this.orderToEdit.customer?.customerno, //borrar?
-        customerName: this.orderToEdit.customer?.customername1,//borrar?
         acronym: this.orderToEdit.acronym,
         orderTitle: this.orderToEdit.orderTitle,
         orderDate: momentCreateDate(this.orderToEdit.orderDate),
         fundingProgram: this.orderToEdit.fundingProgram?.id,
         contractStatus: this.orderToEdit.contractStatus?.id,
         approvalDate: momentCreateDate(this.orderToEdit.approvalDate),
-        basicContract: this.orderToEdit.basicContract?.id,
+        basicContract: this.orderToEdit.basiccontract?.id,
         employeeIws: this.orderToEdit.employeeIws?.id,
         orderValue: this.orderToEdit.orderValue
       });
@@ -82,7 +78,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
     const newOrderIncomplete: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       approvalStatus: null,
-      basicContract: null,
+      basiccontract: null,
       contractor: null,
       contractStatus: null,
       customer: this.currentCustomer,
@@ -93,10 +89,10 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
       promoter: null,//get de project
       acronym: this.orderForm.value.acronym ?? '',
       approvalDate: momentFormatDate(this.orderForm.value.approvalDate) ?? '',
-      approvalPdf: '',
+      approvalPdf: '', 
       contractData1: '',
       contractData2: '',
-      contractPdf: '',
+      contractPdf: '', 
       fixCommission: 0, //otro
       iwsProvision: 0, //otro
       maxCommission: 0, //otro
@@ -107,7 +103,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
       orderNo: this.orderForm.value.orderNo, 
       orderTitle: this.orderForm.value.orderTitle ?? '', 
       orderValue: this.orderForm.value.orderValue ?? 0,
-      signatureDate: momentFormatDate(this.orderForm.value.signatureDate) ?? ''
+      signatureDate: ''
     }
 
     this.onCreateOrder.emit(newOrderIncomplete);
