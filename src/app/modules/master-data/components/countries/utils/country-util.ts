@@ -34,22 +34,16 @@ export class CountryUtils {
    * @param name - Name for the new country
    * @returns Observable that completes when country is created
    */
-  createNewCountry(nameC: string, labelC: string, isDefaultC: boolean): Observable<void> {
+  createNewCountry(nameC: string, labelC: string, isDefaultC: boolean): Observable<Country> {
     if (!nameC?.trim()) {
       return throwError(() => new Error('Country name cannot be empty'));
     }
 
-    return new Observable<void>(subscriber => {
-      this.countryService.addCountry({
+    return this.countryService.addCountry({
         name: nameC.trim(),
         label: labelC.trim(),
         isDefault: isDefaultC
       });
-
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
-    });
   }
 
   /**

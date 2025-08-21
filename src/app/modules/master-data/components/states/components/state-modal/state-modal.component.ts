@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StateUtils } from '../../utils/state-utils';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { emptyValidator } from '../../../types-of-companies/utils/empty.validator';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-state-modal',
@@ -33,7 +33,8 @@ export class StateModalComponent implements OnInit {
   });
 
   constructor(private readonly messageService: MessageService,
-              private readonly translateService: TranslateService
+              private readonly translateService: TranslateService,
+              private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
@@ -78,19 +79,10 @@ export class StateModalComponent implements OnInit {
     this.prepareForStateSubmission();
     const stateName = this.stateForm.value.name ?? '';
 
-    this.stateUtils.stateExists(stateName).pipe(
-      switchMap(exists => this.handleStateExistence(exists, stateName)),
-      catchError(err => this.handleStateError('STATES.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.isStateLoading = false)
-    ).subscribe({
-      next: (data) => {
-        if (data !== null) {
-          this.onCreateStateSuccessfully()
-        }
-      }
+    this.stateUtils.stateExists(stateName).subscribe({
+      next: (exists) => this.handleStateExistence(exists, stateName),
+      error: (err) => this.handleStateError('STATES.ERROR.CHECKING_DUPLICATE', err)
     });
-
-    this.handleStateClose();
   }
 
   private shouldStatePreventSubmission(): boolean {
@@ -110,12 +102,18 @@ export class StateModalComponent implements OnInit {
         summary: this.translateService.instant('MESSAGE.ERROR'),
         detail: this.translateService.instant(this.errorStateMessage)
       });
-      return of(null);
-    }
-
-    return this.stateUtils.createNewState(stateName).pipe(
-      catchError(err => this.handleStateError('STATES.ERROR.CREATION_FAILED', err))
-    )
+      this.isStateLoading = false
+      this.handleStateClose();
+      return;
+    } 
+    this.stateUtils.createNewState(stateName).subscribe({
+      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
+      error: () => this.commonMessageService.showErrorCreatedMessage(),
+      complete: () => {
+        this.isStateLoading = false
+        this.handleStateClose();
+      }
+    })
   }
 
   private handleStateError(messageKey: string, error: any) {

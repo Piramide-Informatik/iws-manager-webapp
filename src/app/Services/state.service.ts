@@ -31,7 +31,7 @@ export class StateService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): Observable<State[]> {
+  loadInitialData(): Observable<State[]> {
     this._loading.set(true);
     return this.http.get<State[]>(this.apiUrl, this.httpOptions).pipe(
        tap({
