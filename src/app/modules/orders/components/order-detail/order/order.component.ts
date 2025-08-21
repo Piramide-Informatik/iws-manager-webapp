@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../../Entities/customer';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { Subscription } from 'rxjs';
+import { CostTypeUtils } from '../../../../master-data/components/cost/utils/cost-type-utils';
+import { CostType } from '../../../../../Entities/costType';
 
 @Component({
   selector: 'app-order',
@@ -18,6 +20,7 @@ import { Subscription } from 'rxjs';
 })
 export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
+  private readonly orderTypeUtils = inject(CostTypeUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly subscriptions = new Subscription();
@@ -31,6 +34,10 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   public readonly fundingPrograms = toSignal(
     this.fundingProgramUtils.getAllFundingPrograms(), { initialValue: [] }
   );
+
+  public readonly orderTypes = toSignal(
+    this.orderTypeUtils.getAllCostTypes(), { initialValue: [] }
+  )
 
   ngOnInit(): void {
     this.getCurrentCustomer();
@@ -55,7 +62,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
       this.orderForm.patchValue({
         orderNo: this.orderToEdit.orderNo,
         orderLabel: this.orderToEdit.orderLabel,
-        orderType: this.orderToEdit.orderType?.costtype,
+        orderType: this.orderToEdit.orderType?.id,
         acronym: this.orderToEdit.acronym,
         orderTitle: this.orderToEdit.orderTitle,
         orderDate: momentCreateDate(this.orderToEdit.orderDate),
@@ -84,18 +91,18 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
       customer: this.currentCustomer,
       employeeIws: null,
       fundingProgram: this.getFundingProgram(this.orderForm.value.fundingProgram ?? 0),
-      orderType: null,
+      orderType: this.getOrderType(this.orderForm.value.orderType ?? 0),
       project: null, //get other component
-      promoter: null,//get de project
+      promoter: null,//get of project
       acronym: this.orderForm.value.acronym ?? '',
       approvalDate: momentFormatDate(this.orderForm.value.approvalDate) ?? '',
       approvalPdf: '', 
       contractData1: '',
       contractData2: '',
       contractPdf: '', 
-      fixCommission: 0, //otro
-      iwsProvision: 0, //otro
-      maxCommission: 0, //otro
+      fixCommission: 0, //other component
+      iwsProvision: 0, //other component
+      maxCommission: 0, //other component
       nextDeptDate: '',
       noOfDepts: 0,
       orderDate: momentFormatDate(this.orderForm.value.orderDate) ?? '', 
@@ -111,6 +118,10 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   private getFundingProgram(idFunding: number): FundingProgram | null {
     return this.fundingPrograms().find( f => f.id === idFunding) ?? null;
+  }
+
+  private getOrderType(idOrderType: number): CostType | null {
+    return this.orderTypes().find( o => o.id === idOrderType) ?? null;
   }
 
   private getCurrentCustomer(): void {
