@@ -2,16 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { catchError, Observable, of, tap } from 'rxjs';
-import { FrameworkAgreements } from '../Entities/Framework-agreements';
+import { BasicContract } from '../Entities/basicContract';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FrameworkAgreementService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/framework-agreements`;
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/basiccontracts`;
   //Signals
-  private readonly _frameworkAgreements = signal<FrameworkAgreements[]>([]);
+  private readonly _frameworkAgreements = signal<BasicContract[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
 
@@ -28,13 +28,13 @@ export class FrameworkAgreementService {
 
   // ==================== CREATE OPERATIONS ====================
   /**
-   * Creates a new framework agreement record
-   * @param frameworkAgreement Framework Agreement data (without id, timestamps and version)
-   * @returns Observable with the created Framework Agreement object
+   * Creates a new basic contract record
+   * @param frameworkAgreement basic contractdata (without id, timestamps and version)
+   * @returns Observable with the created basic contractobject
    * @throws Error when validation fails or server error occurs
    */
-  addFrameworkAgreement(frameworkAgreement: Omit<FrameworkAgreements, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<FrameworkAgreements> {
-    return this.http.post<FrameworkAgreements>(this.apiUrl, frameworkAgreement, this.httpOptions).pipe(
+  addFrameworkAgreement(frameworkAgreement: Omit<BasicContract, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<BasicContract> {
+    return this.http.post<BasicContract>(this.apiUrl, frameworkAgreement, this.httpOptions).pipe(
       tap({
         next: (newFrameworkAgreement) => {
           this._frameworkAgreements.update(frameworkAgreements => [...frameworkAgreements, newFrameworkAgreement]);
@@ -51,50 +51,50 @@ export class FrameworkAgreementService {
 
   // ==================== READ OPERATIONS ====================
   /**
-   * Retrieves all frameworkAgreements
-   * @returns Observable with FrameworkAgreements array
+   * Retrieves all basic contracts
+   * @returns Observable with BasicContract array
    * @throws Error when server request fails
    */
-  getAllFrameworkAgreements(): Observable<FrameworkAgreements[]> {
-    return this.http.get<FrameworkAgreements[]>(this.apiUrl, this.httpOptions).pipe(
+  getAllFrameworkAgreements(): Observable<BasicContract[]> {
+    return this.http.get<BasicContract[]>(this.apiUrl, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
-        this._error.set('Failed to fetch framework agreements');
-        console.error('Error fetching framework agreements:', err);
+        this._error.set('Failed to fetch basic contracts');
+        console.error('Error fetching basic contracts:', err);
         return of([]);
       })
     );
   }
 
   /**
-   * Retrieves a single framework agreement by ID
-   * @param id Framework Agreement identifier
-   * @returns Observable with Framework Agreement object
-   * @throws Error when framework agreements not found or server error occurs
+   * Retrieves a single basic contract by ID
+   * @param id basic contractidentifier
+   * @returns Observable with basic contractobject
+   * @throws Error when basic contracts not found or server error occurs
    */
-  getFrameworkAgreementById(id: number): Observable<FrameworkAgreements | undefined> {
-    return this.http.get<FrameworkAgreements>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+  getFrameworkAgreementById(id: number): Observable<BasicContract | undefined> {
+    return this.http.get<BasicContract>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
-        this._error.set('Failed to fetch framework agreements by id');
+        this._error.set('Failed to fetch basic contracts by id');
         console.error(err);
-        return of(undefined as unknown as FrameworkAgreements);
+        return of(undefined as unknown as BasicContract);
       })
     );
   }
 
   /**
-   * Retrieves all framework agreements given a customer
-   * @param customerId Customer to get his framework agreements
-   * @returns Observable with Framework Agreement array
+   * Retrieves all basic contracts given a customer
+   * @param customerId Customer to get his basic contracts
+   * @returns Observable with basic contractarray
    * @throws Error when server request fails
    */
-  getAllFrameworkAgreementsByCustomerId(customerId: number): Observable<FrameworkAgreements[]> {
-    return this.http.get<FrameworkAgreements[]>(`${this.apiUrl}/customer/${customerId}`, this.httpOptions).pipe(
+  getAllFrameworkAgreementsByCustomerId(customerId: number): Observable<BasicContract[]> {
+    return this.http.get<BasicContract[]>(`${this.apiUrl}/by-customer/${customerId}`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
-        this._error.set('Failed to fetch framework agreements');
-        console.error('Error fetching framework agreements:', err);
+        this._error.set('Failed to fetch basic contracts');
+        console.error('Error fetching basic contracts:', err);
         return of([]);
       })
     );
@@ -102,15 +102,15 @@ export class FrameworkAgreementService {
 
   // ==================== UPDATE OPERATIONS ====================
   /**
-   * Updates an existing Framework Agreement
-   * @param id Framework Agreement identifier to update
-   * @param frameworkAgreement Partial framework agreements data with updates
-   * @returns Observable with updated Framework Agreement object
-   * @throws Error when framework agreement not found or validation fails
+   * Updates an existing Basic Contracts
+   * @param id basic contractidentifier to update
+   * @param frameworkAgreement Partial basic contracts data with updates
+   * @returns Observable with updated basic contractobject
+   * @throws Error when basic contract not found or validation fails
    */
-  updateFrameworkAgreements(updatedFrameworkAgreements: FrameworkAgreements): Observable<FrameworkAgreements> {
+  updateFrameworkAgreements(updatedFrameworkAgreements: BasicContract): Observable<BasicContract> {
     const url = `${this.apiUrl}/${updatedFrameworkAgreements.id}`;
-    return this.http.put<FrameworkAgreements>(url, updatedFrameworkAgreements, this.httpOptions).pipe(
+    return this.http.put<BasicContract>(url, updatedFrameworkAgreements, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._frameworkAgreements.update(frameworkAgreements =>
@@ -119,8 +119,8 @@ export class FrameworkAgreementService {
           this._error.set(null);
         },
         error: (err) => {
-          this._error.set('Failed to update framework agreements');
-          console.error('Error updating framework agreements:', err);
+          this._error.set('Failed to update basic contracts');
+          console.error('Error updating basic contracts:', err);
         }
       })
     )
@@ -128,10 +128,10 @@ export class FrameworkAgreementService {
 
   // ==================== DELETE OPERATIONS ====================
   /**
-   * Deletes a framework agreement record
-   * @param id Framework Agreement identifier to delete
+   * Deletes a basic contract record
+   * @param id basic contractidentifier to delete
    * @returns Empty Observable
-   * @throws Error when framework agreements not found or server error occurs
+   * @throws Error when basic contracts not found or server error occurs
    */
   deleteFrameworkAgreements(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
@@ -144,21 +144,21 @@ export class FrameworkAgreementService {
           this._error.set(null);
         },
         error: (err) => {
-          this._error.set('Failed to delete framework agreement');
+          this._error.set('Failed to delete basic contract');
         }
       })
     )
   }
 
   /**
-  * Cleans the state of the framework agreements
+  * Cleans the state of the basic contracts
   */
   clearFrameworkAgreements(): void {
     this._frameworkAgreements.set([]);
     this._error.set(null);
   }
 
-  updateFrameworkAgreementsData(frameworkAgreements: FrameworkAgreements[]) {
+  updateFrameworkAgreementsData(frameworkAgreements: BasicContract[]) {
     this._frameworkAgreements.set(frameworkAgreements)
   }
 }
