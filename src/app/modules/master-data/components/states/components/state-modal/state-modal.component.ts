@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StateUtils } from '../../utils/state-utils';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { emptyValidator } from '../../../types-of-companies/utils/empty.validator';
 import { MessageService } from 'primeng/api';
@@ -105,16 +104,16 @@ export class StateModalComponent implements OnInit {
       });
       this.isStateLoading = false
       this.handleStateClose();
-    } else {
-      this.stateUtils.createNewState(stateName).subscribe({
-        next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
-        error: () => this.commonMessageService.showErrorCreatedMessage(),
-        complete: () => {
-          this.isStateLoading = false
-          this.handleStateClose();
-        }
-      })
-    }
+      return;
+    } 
+    this.stateUtils.createNewState(stateName).subscribe({
+      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
+      error: () => this.commonMessageService.showErrorCreatedMessage(),
+      complete: () => {
+        this.isStateLoading = false
+        this.handleStateClose();
+      }
+    })
   }
 
   private handleStateError(messageKey: string, error: any) {

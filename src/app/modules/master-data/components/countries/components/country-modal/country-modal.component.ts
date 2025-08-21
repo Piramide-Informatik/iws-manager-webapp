@@ -96,21 +96,22 @@ export class CountryModalComponent implements OnInit {
       this.countryCreated.emit();
       this.handleClose();
       this.isLoading = false;
-    } else {
-      this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
-        next: () => {
-          this.commonMessageService.showCreatedSuccesfullMessage();
-        },
-        error: () => {
-          this.commonMessageService.showErrorCreatedMessage();
-        },
-        complete: () => {
-          this.countryCreated.emit();
-          this.handleClose();
-          this.isLoading = false;
-        }
-      })
+      return;
     }
+    this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
+      next: () => {
+        this.commonMessageService.showCreatedSuccesfullMessage();
+      },
+      error: () => {
+        this.commonMessageService.showErrorCreatedMessage();
+      },
+      complete: () => {
+        this.countryCreated.emit();
+        this.handleClose();
+        this.isLoading = false;
+      }
+    })
+    
   }
   private shouldPreventSubmission(): boolean {
     return this.createCountryForm.invalid || this.isLoading;

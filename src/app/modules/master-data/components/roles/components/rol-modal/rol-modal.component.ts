@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output, Input, inject, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RoleUtils } from '../../utils/role-utils'; 
-import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 

@@ -10,7 +10,6 @@ import { MessageService } from 'primeng/api';
 import { RoleUtils } from '../../utils/role-utils';
 import { RoleStateService } from '../../utils/role-state.service';
 import { RolModalComponent } from '../rol-modal/rol-modal.component';
-import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-rol-table',

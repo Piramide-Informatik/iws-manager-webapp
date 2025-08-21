@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalutationUtils } from '../../utils/salutation.utils';
-import { catchError, finalize, of, switchMap } from 'rxjs';
+import { of } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
@@ -110,16 +110,16 @@ export class SalutationModalComponent implements OnInit {
       this.errorMessage = 'SALUTATION.ERROR.ALREADY_EXISTS';
       this.isLoading = false;
       this.handleClose();
-    } else {
-      this.salutationUtils.createNewSalutation(salutationName).subscribe({
-        next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
-        error: (err) => this.commonMessageService.showErrorCreatedMessage(),
-        complete: () => {
-          this.isLoading = false;
-          this.handleClose();
-        }
-      })
+      return;
     }
+    this.salutationUtils.createNewSalutation(salutationName).subscribe({
+      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
+      error: (err) => this.commonMessageService.showErrorCreatedMessage(),
+      complete: () => {
+        this.isLoading = false;
+        this.handleClose();
+      }
+    })
   }
 
   private handleError(messageKey: string, error: any) {
