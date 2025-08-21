@@ -39,7 +39,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
-  employeeOptions: {label: number, value: number}[] = [];
+  public employeeSelectOptions: {employeeNo: number, employeeId: number}[] = [];
 
   public isLoading: boolean = false;
   private readonly employeesMap: Map<number, Employee> = new Map();
@@ -106,7 +106,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.subscription.add(
       this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe({
         next: (employees: Employee[]) => {
-          this.employeeOptions = employees.map((emp: Employee) => ({ label: emp.employeeno ?? 0 , value: emp.id }));
+          this.employeeSelectOptions = employees.map((emp: Employee) => ({ employeeNo: emp.employeeno ?? 0 , employeeId: emp.id }));
           // Guardar empleados en un mapa para acceso rápido
           this.employeesMap.clear();
           employees.forEach((emp: Employee) => {
@@ -114,7 +114,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
           });
         },
         error: () => {
-          this.employeeOptions = [];
+          this.employeeSelectOptions = [];
           this.employeesMap.clear();
         }
       })
@@ -240,6 +240,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     const updatedEmployment: EmploymentContract = {
       ...this.currentEmploymentContract,
+      employee: this.employeesMap.get(this.ContractDetailsForm.value.employeNro),
       startDate: this.ContractDetailsForm.value.startDate,
       salaryPerMonth: this.ContractDetailsForm.value.salaryPerMonth,
       hoursPerWeek: this.ContractDetailsForm.value.hoursPerWeek,

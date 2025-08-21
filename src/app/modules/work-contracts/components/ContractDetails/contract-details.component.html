@@ -5,9 +5,9 @@
         <label for="employeNro">{{ 'EMPLOYEE-CONTRACTS.FORM.EMPLOYEE_ID' | translate }}</label>
         <p-select inputId="employeNro" 
           formControlName="employeNro" 
-          [options]="employeeOptions"
-          optionLabel="label"
-          optionValue="value"
+          [options]="employeeSelectOptions"
+          optionLabel="employeeNo"
+          optionValue="employeeId"
           showClear
           [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
         ></p-select>
