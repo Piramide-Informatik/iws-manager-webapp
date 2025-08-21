@@ -51,8 +51,8 @@ export class ApprovalStatusService {
     }
 
     // CREATE
-    addApprovalStatus(status: Omit<ApprovalStatus, 'id' | 'version' | 'createdAt' | 'updatedAt'>): void {
-        this.http.post<ApprovalStatus>(this.apiUrl, status, this.httpOptions).pipe(
+    addApprovalStatus(status: Omit<ApprovalStatus, 'id' | 'version' | 'createdAt' | 'updatedAt'>): Observable<ApprovalStatus> {
+        return this.http.post<ApprovalStatus>(this.apiUrl, status, this.httpOptions).pipe(
             tap({
                 next: (newStatus) => {
                     this._approvalStatuses.update(statuses => [...statuses, newStatus]);
@@ -63,7 +63,7 @@ export class ApprovalStatusService {
                     console.error('Error adding approval status:', err);
                 }
             })
-        ).subscribe();
+        )
     }
 
     //UPDATE
