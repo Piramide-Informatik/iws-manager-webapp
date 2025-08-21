@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
-import { FrameworkAgreements } from '../../../../Entities/Framework-agreements';
-import { FrameworkAgreementsService } from '../../services/framework-agreements.service';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 
 interface Column {
   field: string,
@@ -23,7 +23,7 @@ interface Column {
 })
 export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
-  private readonly FrameworkAgreementsService = inject(FrameworkAgreementsService);
+  private readonly frameworkAgreementUtils = inject(FrameworkAgreementsUtils);
   private readonly translate = inject(TranslateService); 
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly router = inject(Router);
@@ -31,19 +31,22 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   
   public cols!: Column[];
   private langSubscription!: Subscription;
-  public frameworkAgreements!: FrameworkAgreements[];
+  public frameworkAgreements!: any[];
   public selectedColumns!: Column[];
   userFrameworkAgreementsPreferences: UserPreference = {};
   tableKey: string = 'FrameworkAgreements'
-  dataKeys = ['id', 'frameworkContract', 'date', 'fundingProgram', 'contractStatus', 'iwsEmployee'];
+  dataKeys = ['contractno', 'frameworkContract', 'date', 'fundingProgram', 'contractStatus', 'iwsEmployee'];
   
   @ViewChild('dt2') dt2!: Table;
+  visibleFrameworkAgreementModal = false;
+  isFrameworkAgreementLoading = false;
+  selectedFrameworkAgreement: any = undefined;
 
-  constructor() { }
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     this.loadFrameworkAgreementsColHeaders();
-    this.frameworkAgreements = this.FrameworkAgreementsService.list();
+    this.frameworkAgreements = [];
     this.selectedColumns = this.cols;
     this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -51,12 +54,29 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
       this.reloadComponent(true);
       this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
+    this.route.params.subscribe(params => {
+      this.frameworkAgreementUtils.getAllFrameworkAgreementsByCustomerId(params['id']).subscribe(fas => {
+        this.frameworkAgreements = fas.reduce((acc: any[], curr) => {
+           acc.push({
+             id: curr.id,
+             contractno: curr.contractNo,
+             frameworkContract: curr.contractLabel,
+             date: curr.date,
+             fundingProgram: curr.fundingProgram?.name,
+             contractStatus: curr.contractstatus?.status,
+             iwsEmployee: curr.iwsemployee?.employeelabel
+           });
+           return acc 
+        }, []) 
+      });
+    })
+
   }
 
   loadFrameworkAgreementsColHeaders(): void {
     this.cols = [
       { 
-        field: 'id', 
+        field: 'contractno', 
         customClasses: ['align-right'], 
         routerLink: (row: any) => `./framework-agreement-details/${row.id}`,
         header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER')) },
@@ -93,7 +113,28 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   }
 
   deleteFrameworkAgreement(id: number) {
-    this.frameworkAgreements = this.frameworkAgreements.filter(agreement => agreement.id !== id);
+    this.selectedFrameworkAgreement = this.frameworkAgreements.find(fa => fa.id == id);
+    this.visibleFrameworkAgreementModal = true;
+  }
+
+  onFrameworkAgreementDeleteConfirm() {
+    this.isFrameworkAgreementLoading = true;
+    if (this.selectedFrameworkAgreement) {
+      this.frameworkAgreementUtils.deleteFrameworkAgreement(this.selectedFrameworkAgreement.id).subscribe({
+        next: () => {
+          this.frameworkAgreements = this.frameworkAgreements.filter( fa => fa.id != this.selectedFrameworkAgreement.id);
+          this.commonMessageService.showDeleteSucessfullMessage()
+        },
+        error: () => {
+          this.commonMessageService.showErrorDeleteMessage();
+        },
+        complete: () => {
+          this.selectedFrameworkAgreement = undefined;
+          this.visibleFrameworkAgreementModal = false;
+          this.isFrameworkAgreementLoading = false;
+        }
+      })
+    }
   }
 
   createFrameworkAgreementDetail() {
