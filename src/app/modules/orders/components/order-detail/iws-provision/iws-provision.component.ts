@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
 import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
@@ -41,7 +41,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   // Forms
   public orderForm: FormGroup = new FormGroup({
-    fixCommission: new FormControl(null),
+    fixCommission: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
     maxCommission: new FormControl(null),
     iwsProvision: new FormControl(null),
   });
