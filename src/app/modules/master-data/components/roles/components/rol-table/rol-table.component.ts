@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { RoleUtils } from '../../utils/role-utils';
 import { RoleStateService } from '../../utils/role-state.service';
 import { RolModalComponent } from '../rol-modal/rol-modal.component';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-rol-table',
@@ -68,7 +69,7 @@ export class RolTableComponent implements OnInit, OnDestroy {
               private readonly translate: TranslateService ) { }
 
   ngOnInit() {
-    this.loadRoles();
+    this.roleUtils.loadInitialData().subscribe();
     this.updateHeadersAndColumns();
     this.userRolPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -77,17 +78,6 @@ export class RolTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadRoles(): void {
-      this.roleService.getAllRoles().subscribe({
-            next: (data: Role[]) => {
-              this.roleDatas = data;
-            },
-            error: (error) => {
-              console.error('Error loading role data:', error);
-              this.roleDatas = [];
-            }
-          });
-    }
 
   onUserRolPreferencesChanges(userRolPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userRolPreferences));

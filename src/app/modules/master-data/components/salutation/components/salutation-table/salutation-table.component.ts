@@ -73,6 +73,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.salutationUtils.loadInitialData().subscribe();
     this.loadSalutationHeadersAndColumns();
     this.userSalutationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salutationDisplayedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {

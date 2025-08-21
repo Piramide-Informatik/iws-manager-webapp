@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RoleUtils } from '../../utils/role-utils'; 
 import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-rol-modal',
@@ -35,6 +36,8 @@ export class RolModalComponent {
     ])
   });
 
+  constructor( private readonly commonMessageService: CommonMessagesService) {}
+
   ngOnInit(): void {
     this.resetForm();
   }
@@ -49,15 +52,9 @@ export class RolModalComponent {
     this.startLoading();
     const { name } = this.getRoleFormValues();
 
-    this.roleUtils.roleExists(name).pipe(
-      switchMap(exists => this.handleRoleExistence(exists, name)),
-      catchError(err => this.handleError('ROLES.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.stopLoading())
-    ).subscribe(result => {
-      if (result !== null) {
-        this.roleCreated.emit();
-        this.closeAndReset();
-      }
+    this.roleUtils.roleExists(name).subscribe({
+      next: (exists) => this.handleRoleExistence(exists, name),
+      error: (err) => this.handleError('ROLES.ERROR.CHECKING_DUPLICATE', err)
     });
   }
 
@@ -116,11 +113,19 @@ export class RolModalComponent {
   private handleRoleExistence(exists: boolean, name: string) {
     if (exists) {
       this.errorMessage = 'MESSAGE.RECORD_ALREADY_EXISTS';
-      return of(null);
+      this.roleCreated.emit();
+      this.closeAndReset();
+      this.stopLoading()
     }
-    return this.roleUtils.createNewRole(name).pipe(
-      catchError(err => this.handleError('ROLES.ERROR.CREATION_FAILED', err))
-    );
+    this.roleUtils.createNewRole(name).subscribe({
+      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
+      error: () => this.commonMessageService.showErrorCreatedMessage(),
+      complete: () => {
+        this.roleCreated.emit();
+        this.closeAndReset();
+        this.stopLoading()
+      }
+    });
   }
 
   private handleError(messageKey: string, error: any) {
