@@ -267,7 +267,8 @@
       "SPECIAL_PAYMENT": "Pago Especial",
       "MAX_HOURS_PER_MONTH": "Max. Horas/Mes",
       "MAX_HOURS_PER_DAY": "Max. Horas/Día",
-      "HOURLY_RATE": "Tafira por Hora"
+      "HOURLY_RATE": "Tafira por Hora",
+      "HOURLY_REAL_RATE": "Tafira real por Hora"
     },
     "LABEL": {
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "¿Está seguro que desea eliminar el contrato de empleado",

@@ -89,6 +89,14 @@
           {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
         </p-message>
       </div>
+      <div class="contract_input">
+        <label for="hourlyRealRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_REAL_RATE' | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRealRate" formControlName="hourlyRealRate" autocomplete="off"
+          [ngClass]="{'ng-invalid': ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')?.touched}" />
+        <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')!.hasError('pattern')">
+          {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+        </p-message>
+      </div>
     </div>
     <div class="buttons-container flex justify-content-center gap-3 mt-4">
       <p-button class="save" type="submit" [loading]="isLoading" [disabled]="!ContractDetailsForm.valid || !currentCustomer" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
