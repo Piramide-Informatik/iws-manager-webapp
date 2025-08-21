@@ -75,6 +75,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       maxHoursPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
       maxHoursPerDay: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
       hourlyRate: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      hourlyRealRate: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
     });
   }
 
@@ -96,7 +97,8 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       specialPayment: this.employmentContract?.specialPayment,
       maxHoursPerMonth: this.employmentContract?.maxHoursPerMonth,
       maxHoursPerDay: this.employmentContract?.maxHoursPerDay,
-      hourlyRate: this.employmentContract?.hourlyRate
+      hourlyRate: this.employmentContract?.hourlyRate,
+      hourlyRealRate: this.employmentContract?.hourlyRealRate,
     });
   }
 
@@ -116,14 +118,14 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
 
     const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       startDate: momentFormatDate(this.employmentContractForm.value.startDate),
-      salaryPerMonth: this.employmentContractForm.value.salaryPerMonth ?? '',
-      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek?? '',
-      workShortTime: this.employmentContractForm.value.workShortTime?? '',
-      specialPayment: this.employmentContractForm.value.specialPayment?? '',
-      maxHoursPerMonth: this.employmentContractForm.value.maxHoursPerMonth?? '',
-      maxHoursPerDay: this.employmentContractForm.value.maxHoursPerDay?? '',
-      hourlyRate: this.employmentContractForm.value.hourlyRate?? '',
-      hourlyRealRate: 0,
+      salaryPerMonth: this.employmentContractForm.value.salaryPerMonth ?? 0,
+      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek?? 0,
+      workShortTime: this.employmentContractForm.value.workShortTime?? 0,
+      specialPayment: this.employmentContractForm.value.specialPayment?? 0,
+      maxHoursPerMonth: this.employmentContractForm.value.maxHoursPerMonth?? 0,
+      maxHoursPerDay: this.employmentContractForm.value.maxHoursPerDay?? 0,
+      hourlyRate: this.employmentContractForm.value.hourlyRate?? 0,
+      hourlyRealRate: this.employmentContractForm.value.hourlyRealRate?? 0,
       employee: this.currentEmployee,
       customer: this.currentEmployee.customer ?? null
     };

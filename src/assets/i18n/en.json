@@ -274,7 +274,8 @@
       "SPECIAL_PAYMENT": "Special Payment",
       "MAX_HOURS_PER_MONTH": "Max. Hours/Month",
       "MAX_HOURS_PER_DAY": "Max. Hours/Day",
-      "HOURLY_RATE": "Hourly Rate"
+      "HOURLY_RATE": "Hourly Rate",
+      "HOURLY_REAL_RATE": "Hourly Real Rate"
     },
     "LABEL": {
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Are you sure you want to delete the Employee Contract",

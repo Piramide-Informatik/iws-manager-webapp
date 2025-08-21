@@ -117,6 +117,22 @@
         </div>
       </div>
 
+      <div class="contract_input">
+        <label for="hourlyRealRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_REAL_RATE' | translate }}</label>
+        <div>
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRealRate" formControlName="hourlyRealRate" autocomplete="off" [ngClass]="{
+          'ng-invalid': employmentContractForm.get('hourlyRealRate')?.invalid 
+            && employmentContractForm.get('hourlyRealRate')?.dirty 
+            && employmentContractForm.get('hourlyRealRate')?.touched}"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            employmentContractForm.get('hourlyRealRate')?.invalid && 
+            employmentContractForm.get('hourlyRealRate')?.dirty && 
+            employmentContractForm.get('hourlyRealRate')!.hasError('pattern')
+            ">
+            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+        </div>
+      </div>
+
     </div>
     <div class="flex justify-content-center gap-4 mt-4">
       <p-button class="save" type="submit" (onClick)="onSubmit()" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate"
