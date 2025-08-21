@@ -11,11 +11,11 @@ export interface BasicContract {
 
   contractstatus: ContractStatus | null;
   customer: Customer | null;
-  fundingprogram: FundingProgram | null;
+  fundingProgram: FundingProgram | null;
   iwsemployee: EmployeeIws | null;
 
-  confirmationdate?: string; // date
-  contractlabel?: string;
+  confirmationDate?: string; // date
+  contractLabel?: string;
   contractNo?: number;
   contractTitle?: string;
   date?: string;
