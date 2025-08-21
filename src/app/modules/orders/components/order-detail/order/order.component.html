@@ -23,7 +23,9 @@
       <p-select
         formControlName="orderType"
         [showClear]="true"
-        optionLabel="name"
+        [options]="orderTypes()"
+        optionLabel="type"
+        optionValue="id"
         autocomplete="off"
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />
