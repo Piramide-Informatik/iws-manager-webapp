@@ -16,17 +16,7 @@
     p-inputnumber {
       width: 20vw;
     }
-  
-    /* Campos especiales del cliente */
-    ::ng-deep p-inputnumber.p-inputnumber.p-component.p-inputwrapper > input#customerId {
-      width: 50% !important;
-      flex-shrink: 0;
-    }
-  
-    #customerName {
-      width: 50% !important;
-      flex-shrink: 0;
-    }
+
   } 
   
   /* Estilo del calendario */

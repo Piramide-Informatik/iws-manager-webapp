@@ -2,7 +2,7 @@
   <div class="align-items-center mb-2">
     <div class="order_input order_id mb-2">
       <label for="orderId">{{ 'ORDERS.FORM.ORDER_ID' | translate }}</label>
-      <p-inputnumber [useGrouping]="false"
+      <p-inputnumber [useGrouping]="false" [inputStyle]="{'text-align': 'right'}"
         inputId="orderId"
         formControlName="orderNo"
         autocomplete="off"
@@ -27,24 +27,6 @@
         autocomplete="off"
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />
-    </div>
-    <div class="order_input me-0 mb-2">
-      <label for="customerId">{{ 'ORDERS.FORM.CUSTOMER' | translate }}</label>
-      <div class="flex gap-2" [style]="{width: '20vw'}">
-        <p-inputnumber [useGrouping]="false" 
-          placeholder="{{ 'ORDERS.FORM.NR' | translate }}"
-          inputId="customerId"
-          formControlName="customerNo"
-          autocomplete="off"
-        />
-        <input
-          pInputText
-          id="customerName"
-          placeholder="{{ 'ORDERS.FORM.NAME' | translate }}"
-          formControlName="customerName"
-          autocomplete="off"
-        />
-      </div>
     </div>
     <div class="order_input order_name mb-2">
       <label for="acronym">{{ 'ORDERS.FORM.ACRONYM' | translate }}</label>
@@ -114,7 +96,7 @@
       <label for="contractTitle">{{ 'ORDERS.FORM.CONTRACT_TITLE' | translate }}</label>
       <p-select
         id="contractTitle"
-        formControlName="contractTitle"
+        formControlName="basicContract"
         [showClear]="true"
         optionLabel="name"
         autocomplete="off"
@@ -135,7 +117,7 @@
     <div class="order_input order_name mb-2">
       <label for="orderValue">{{ 'ORDERS.FORM.ORDER_VALUE' | translate }}</label>
       <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
-        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
         id="orderValue"
         formControlName="orderValue"
         autocomplete="off"
