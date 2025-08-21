@@ -9,10 +9,10 @@ export interface BasicContract {
   updatedAt: string;
   version: number;
 
-  contractstatus: ContractStatus | null;
+  contractStatus: ContractStatus | null;
   customer: Customer | null;
   fundingProgram: FundingProgram | null;
-  iwsemployee: EmployeeIws | null;
+  employeeIws: EmployeeIws | null;
 
   confirmationDate?: string; // date
   contractLabel?: string;

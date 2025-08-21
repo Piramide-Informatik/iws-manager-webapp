@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { momentCreateDate } from '../../../../shared/utils/moment-date-utils';
 import { Project } from '../../../../../Entities/project';
+import { Order } from '../../../../../Entities/order';
 
 @Component({
   selector: 'app-project',
@@ -13,13 +14,14 @@ import { Project } from '../../../../../Entities/project';
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })
-export class ProjectComponent implements OnInit, OnDestroy{
+export class ProjectComponent implements OnInit, OnDestroy, OnDestroy {
   private readonly projectUtils = inject(ProjectUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly subscription = new Subscription();
   private readonly customerId: number = this.route.snapshot.params['id'];
   public readonly projects = toSignal( this.projectUtils.getAllProjectByCustomerId(this.customerId), { initialValue: []} );
 
+  @Input() orderToEdit!: Order;
   @Output() onCreateOrderProject = new EventEmitter<Project | null>();
 
   public projectForm!: FormGroup;
@@ -28,6 +30,14 @@ export class ProjectComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.initForm();
     this.changeProjectSelected();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['orderToEdit'] && this.orderToEdit) {
+      this.projectForm.patchValue({
+        projectLabel: this.orderToEdit.project?.id
+      });
+    }
   }
 
   ngOnDestroy(): void {
