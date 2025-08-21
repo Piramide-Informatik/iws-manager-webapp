@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CountryUtils } from '../../utils/country-util';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-country-modal',
@@ -23,6 +23,8 @@ export class CountryModalComponent implements OnInit {
   
   isLoading = false;
   errorMessage: string | null = null;
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   readonly createCountryForm = new FormGroup({
     name: new FormControl('', [
@@ -51,16 +53,10 @@ export class CountryModalComponent implements OnInit {
     this.prepareForSubmission();
     const { name, label, isDefault } = this.getCountryFormValues();
 
-    this.countryUtils.countryExists(name).pipe(
-      switchMap(exists => this.handleCountryExistence(exists, name, label, isDefault)),
-      catchError(err => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.isLoading = false)
-    ).subscribe(result => {
-      if (result !== null) {
-        this.countryCreated.emit();
-        this.handleClose();
-      }
-    });
+    this.countryUtils.countryExists(name).subscribe({
+      next: (exists) => this.handleCountryExistence(exists, name, label, isDefault),
+      error: (err) => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err),
+    })
   }
   onDeleteConfirm(): void {
     this.isLoading = true;
@@ -97,11 +93,25 @@ export class CountryModalComponent implements OnInit {
   ) {
     if (exists) {
       this.errorMessage = 'COUNTRY.ERROR.ALREADY_EXISTS';
-      return of(null);
+      this.countryCreated.emit();
+      this.handleClose();
+      this.isLoading = false;
+      return;
     }
-    return this.countryUtils.createNewCountry(name, label, isDefault).pipe(
-      catchError(err => this.handleError('COUNTRY.ERROR.CREATION_FAILED', err))
-    );
+    this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
+      next: () => {
+        this.commonMessageService.showCreatedSuccesfullMessage();
+      },
+      error: () => {
+        this.commonMessageService.showErrorCreatedMessage();
+      },
+      complete: () => {
+        this.countryCreated.emit();
+        this.handleClose();
+        this.isLoading = false;
+      }
+    })
+    
   }
   private shouldPreventSubmission(): boolean {
     return this.createCountryForm.invalid || this.isLoading;
