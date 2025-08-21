@@ -30,9 +30,9 @@ export class EmploymentContractService {
     this.loadInitialData();
   }
 
-  public loadInitialData(): void {
+  public loadInitialData(): Observable<EmploymentContract[]> {
     this._loading.set(true);
-    this.http.get<EmploymentContract[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<EmploymentContract[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (contracts) => {
           this._contracts.set(contracts);
@@ -44,7 +44,7 @@ export class EmploymentContractService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    )
   }
 
   // ==================== CREATE OPERATIONS ====================

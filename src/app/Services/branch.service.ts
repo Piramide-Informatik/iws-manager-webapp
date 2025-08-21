@@ -29,12 +29,12 @@ export class BranchService {
   public error = this._error.asReadonly();
 
   constructor() {
-    this.loadInitialData();
+    this.loadInitialData().subscribe();
   }
 
-  private loadInitialData(): void {
+  private loadInitialData(): Observable<Branch[]> {
     this._loading.set(true);
-    this.http.get<Branch[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<Branch[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (branches) => {
           this._branches.set(branches);
@@ -47,12 +47,12 @@ export class BranchService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    )
   }
 
   // CREATE
-  addBranch(branch: Omit<Branch, 'id' | 'version' | 'createdAt' | 'updatedAt'>): void {
-    this.http.post<Branch>(this.apiUrl, branch, this.httpOptions).pipe(
+  addBranch(branch: Omit<Branch, 'id' | 'version' | 'createdAt' | 'updatedAt'>): Observable<Branch> {
+    return this.http.post<Branch>(this.apiUrl, branch, this.httpOptions).pipe(
       tap({
         next: (newBranch) => {
           this._branches.update(branches => [...branches, newBranch]);
@@ -63,13 +63,13 @@ export class BranchService {
           console.error('Error adding branch:', err);
         }
       })
-    ).subscribe();
+    )
   }
 
   // UPDATE
-  updateBranch(updatedBranch: Branch): void {
+  updateBranch(updatedBranch: Branch): Observable<Branch> {
     const url = `${this.apiUrl}/${updatedBranch.id}`;
-    this.http.put<Branch>(url, updatedBranch, this.httpOptions).pipe(
+    return this.http.put<Branch>(url, updatedBranch, this.httpOptions).pipe(
       tap({
         next: (res) => {
           this._branches.update(branches =>
@@ -82,13 +82,13 @@ export class BranchService {
           console.error('Error updating branch:', err);
         }
       })
-    ).subscribe();
+    )
   }
 
   // DELETE
-  deleteBranch(id: number): void {
+  deleteBranch(id: number): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
-    this.http.delete<void>(url, this.httpOptions).pipe(
+    return this.http.delete<void>(url, this.httpOptions).pipe(
       tap({
         next: () => {
           this._branches.update(branches =>
@@ -101,7 +101,7 @@ export class BranchService {
           console.error('Error deleting branch:', err);
         }
       })
-    ).subscribe();
+    )
   }
 
   // READ
