@@ -28,6 +28,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   private readonly translate = inject(TranslateService);
   private langSubscription!: Subscription;
   public iwsCommissionFAForm!: FormGroup; // IWS Commission Fremework Agreements Form
+  public orderCommissionForm!: FormGroup;
   selectedOrderCommission!: null;
   orderCommissions: OrderCommission[] = [];
 
@@ -52,10 +53,15 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   constructor(){ }
 
   ngOnInit(): void {
+    this.orderCommissionForm = new FormGroup({
+      fixCommission: new FormControl(null, Validators.min(999.99)),
+      maxCommission: new FormControl(null, Validators.min(99999999.99))
+    });
+
     this.iwsCommissionFAForm = new FormGroup({
-      fromOrderValue: new FormControl('', [Validators.required]),
-      provision: new FormControl('', [Validators.required]),
-      minCommission: new FormControl('', [Validators.required]),
+      fromOrderValue: new FormControl(null, [Validators.required]),
+      provision: new FormControl(null, [Validators.required]),
+      minCommission: new FormControl(null, [Validators.required]),
     });
     
     this.updateHeadersAndColumns();

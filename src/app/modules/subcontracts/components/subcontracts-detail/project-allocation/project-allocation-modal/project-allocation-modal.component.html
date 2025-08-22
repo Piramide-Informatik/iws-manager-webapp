@@ -15,11 +15,15 @@
       </div>
       <div class="form-item-container flex gap-4 mb-3">
           <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
-          <p-inputnumber id="percentage" class="flex-auto" formControlName="percentage" mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
+          <p-inputnumber inputId="percentage" class="flex-auto" formControlName="percentage" 
+            mode="decimal" [max]="100.00" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
       </div>
       <div class="form-item-container flex gap-4 mb-3">
           <label for="amount" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>
-          <p-inputnumber id="amount" class="flex-auto" formControlName="amount" mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
+          <p-inputnumber inputId="amount" class="flex-auto" formControlName="amount" mode="decimal" 
+          [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
       </div>
       <div class="flex justify-content-center gap-2">
           <p-button type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" 
