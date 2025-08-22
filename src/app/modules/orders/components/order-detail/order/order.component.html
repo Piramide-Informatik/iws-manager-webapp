@@ -115,7 +115,9 @@
         id="employeeiws"
         formControlName="employeeIws"
         [showClear]="true"
-        optionLabel="name"
+        [options]="employeeIwsSelect()"
+        optionLabel="fullname"
+        optionValue="id"
         autocomplete="off"
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       />
