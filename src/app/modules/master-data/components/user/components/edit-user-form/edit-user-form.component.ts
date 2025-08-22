@@ -99,7 +99,11 @@ export class EditUserFormComponent implements OnInit {
   this.addSubscription(
     roles$,
     (result: { allRoles: Role[]; userRoles: Role[] }) => {
-      const { allRoles, userRoles } = result;
+      let { allRoles, userRoles } = result;
+
+      //Sort list of “Available roles” and “Assigned roles” in Users view
+      allRoles = allRoles.sort((a, b) => a.name.localeCompare(b.name));
+      userRoles = userRoles.sort((a, b) => a.name.localeCompare(b.name));
 
       this.allRoles = allRoles;
       this.userRoles = userRoles;
