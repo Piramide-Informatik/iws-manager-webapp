@@ -59,6 +59,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
         this.frameworkAgreements = fas.reduce((acc: any[], curr) => {
            acc.push({
              id: curr.id,
+             contractLabel: curr.contractLabel,
              contractno: curr.contractNo,
              frameworkContract: curr.contractLabel,
              date: curr.date,
@@ -127,14 +128,19 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.commonMessageService.showErrorDeleteMessage();
+          this.handleFinishRequest();
         },
         complete: () => {
-          this.selectedFrameworkAgreement = undefined;
-          this.visibleFrameworkAgreementModal = false;
-          this.isFrameworkAgreementLoading = false;
+          this.handleFinishRequest();
         }
       })
     }
+  }
+
+  handleFinishRequest() {
+    this.selectedFrameworkAgreement = undefined;
+    this.visibleFrameworkAgreementModal = false;
+    this.isFrameworkAgreementLoading = false;
   }
 
   createFrameworkAgreementDetail() {
