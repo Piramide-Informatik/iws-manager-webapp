@@ -5,9 +5,9 @@
         <label for="employeNro">{{ 'EMPLOYEE-CONTRACTS.FORM.EMPLOYEE_ID' | translate }}</label>
         <p-select inputId="employeNro" 
           formControlName="employeNro" 
-          [options]="employeeOptions"
-          optionLabel="label"
-          optionValue="value"
+          [options]="employeeSelectOptions"
+          optionLabel="employeeNo"
+          optionValue="employeeId"
           showClear
           [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
         ></p-select>
@@ -86,6 +86,14 @@
         <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRate" formControlName="hourlyRate" autocomplete="off"
           [ngClass]="{'ng-invalid': ContractDetailsForm.get('hourlyRate')?.invalid && ContractDetailsForm.get('hourlyRate')?.dirty && ContractDetailsForm.get('hourlyRate')?.touched}" />
         <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hourlyRate')?.invalid && ContractDetailsForm.get('hourlyRate')?.dirty && ContractDetailsForm.get('hourlyRate')!.hasError('pattern')">
+          {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+        </p-message>
+      </div>
+      <div class="contract_input">
+        <label for="hourlyRealRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_REAL_RATE' | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRealRate" formControlName="hourlyRealRate" autocomplete="off"
+          [ngClass]="{'ng-invalid': ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')?.touched}" />
+        <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')!.hasError('pattern')">
           {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
         </p-message>
       </div>

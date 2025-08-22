@@ -1,5 +1,5 @@
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, signal, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
 import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
@@ -7,6 +7,7 @@ import { UserPreferenceService } from '../../../../../Services/user-preferences.
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
+import { Order } from '../../../../../Entities/order';
 
 interface Column {
   field: string;
@@ -28,26 +29,27 @@ interface OrderCommissionForm {
   templateUrl: './iws-provision.component.html',
   styleUrl: './iws-provision.component.scss'
 })
-export class IwsProvisionComponent implements OnInit, OnDestroy{
+export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   private readonly orderCommissionService = inject(OrderCommissionService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private readonly subscriptions = new Subscription();
 
   orderCommissionForm!: OrderCommissionForm;
+  @Input() orderToEdit!: Order;
   @Output() onCreateOrderCommission = new EventEmitter<OrderCommissionForm>();
 
   // Forms
   public orderForm: FormGroup = new FormGroup({
-    fixCommission: new FormControl(null),
+    fixCommission: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
     maxCommission: new FormControl(null),
     iwsProvision: new FormControl(null),
   });
 
   public iwsCommissionForm: FormGroup = new FormGroup({
-    fromOrderValue: new FormControl(''),
-    provision: new FormControl(''),
-    minCommission: new FormControl('')
+    fromOrderValue: new FormControl(null),
+    provision: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
+    minCommission: new FormControl(null)
   });
 
   public disabledButtonsTable: boolean = false;
@@ -83,6 +85,16 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     });
 
     this.orderCommissions = this.orderCommissionService.getOrderCommission();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['orderToEdit'] && this.orderToEdit) {
+      this.orderForm.patchValue({
+        fixCommission: this.orderToEdit.fixCommission,
+        maxCommission: this.orderToEdit.maxCommission,
+        iwsProvision: this.orderToEdit.iwsProvision
+      });
+    }
   }
 
   ngOnDestroy(): void {

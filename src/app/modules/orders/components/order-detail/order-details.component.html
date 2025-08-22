@@ -1,14 +1,14 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <app-order (onCreateOrder)="onOrder($event)"></app-order>
+      <app-order (onCreateOrder)="onOrder($event)" [orderToEdit]="currentOrder"></app-order>
     </div>
     <div class="col-md-6">
       <div class="mb-2">
-        <app-project (onCreateOrderProject)="onOrderProject($event)"></app-project>
+        <app-project (onCreateOrderProject)="onOrderProject($event)" [orderToEdit]="currentOrder"></app-project>
       </div>
       <div class="mb-2">
-        <app-iws-provision (onCreateOrderCommission)="onOrderCommission($event)"></app-iws-provision>
+        <app-iws-provision (onCreateOrderCommission)="onOrderCommission($event)" [orderToEdit]="currentOrder"></app-iws-provision>
       </div>
     </div>
   </div>
@@ -55,4 +55,6 @@
     </div>
   </div>
 </div>
+<app-occ-error-modal *ngIf="showOCCErrorModaOrder" (onClose)="showOCCErrorModaOrder = false">
+</app-occ-error-modal>
 <p-toast/>

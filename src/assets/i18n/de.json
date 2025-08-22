@@ -256,10 +256,10 @@
       "SALARY_PER_MONTH": "Gehalt",
       "WEEKLY_HOURS": "WoStd",
       "WORK_SHORT_TIME": "Kurz",
-      "SPECIAL_PAYMENT": "Max.Std Mon",
-      "MAX_HOURS_PER_MONTH": "Max Std Tag",
-      "MAX_HOURS_PER_DAY": "Std.Satz",
-      "HOURLY_RATE": "JaSoZa"
+      "SPECIAL_PAYMENT": "JaSoZa",
+      "MAX_HOURS_PER_MONTH": "Max.Std Mon",
+      "MAX_HOURS_PER_DAY": "Max Std Tag",
+      "HOURLY_RATE": "Std.Satz"
     },
     "FORM": {
       "CUSTOMER": "kunde",
@@ -273,7 +273,8 @@
       "SPECIAL_PAYMENT": "Jahresonderzahlung",
       "MAX_HOURS_PER_MONTH": "Max Stunden / Monat",
       "MAX_HOURS_PER_DAY": "Max Stunden / Tag",
-      "HOURLY_RATE": "Stundensatz"
+      "HOURLY_RATE": "Stundensatz",
+      "HOURLY_REAL_RATE": "Realer Stundensatz"
     },
     "LABEL": {
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Möchten Sie den Arbeitsvertrag wirklich löschen",

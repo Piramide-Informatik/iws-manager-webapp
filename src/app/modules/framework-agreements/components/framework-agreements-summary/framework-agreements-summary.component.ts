@@ -63,8 +63,8 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
              frameworkContract: curr.contractLabel,
              date: curr.date,
              fundingProgram: curr.fundingProgram?.name,
-             contractStatus: curr.contractstatus?.status,
-             iwsEmployee: curr.iwsemployee?.employeelabel
+             contractStatus: curr.contractStatus?.status,
+             iwsEmployee: curr.employeeIws?.employeelabel
            });
            return acc 
         }, []) 

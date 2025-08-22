@@ -4,6 +4,6 @@ export interface CostType {
   updatedAt: string;
   version: number;
 
-  costtype?: string;
-  sequencemo?: number; //smallint
+  type?: string;
+  sequenceNo?: number; //smallint
 }
