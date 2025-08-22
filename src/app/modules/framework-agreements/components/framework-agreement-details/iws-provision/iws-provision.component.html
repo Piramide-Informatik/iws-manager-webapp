@@ -1,19 +1,30 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
     <ng-template #title>{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.TITLE_TABLE' | translate}}</ng-template>
 
-    <!-- Consultar funcionalidad de Inputs -->
-    <div class="align-items-center mb-2">
-        <div class="iws-commissionInput project_name mb-2">
-            <label for="fixCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.FIXED_COMMISSION' | translate}}</label>
-            <input pInputText type="text" id="fixCommission" autocomplete="off" />
-            {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
-        </div>
-        <div class="iws-commissionInput order_maxCommission mb-2">
-            <label for="maxCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.MAX_COMMISSION' | translate}}</label>
-            <input pInputText type="text" id="maxCommission" autocomplete="off" />
-            {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
-        </div>
-    </div>
+    <form [formGroup]="orderCommissionForm">
+      <div class="align-items-center mb-2">
+          <div class="iws-commissionInput project_name mb-2">
+              <label for="fixCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.FIXED_COMMISSION' | translate}}</label>
+              <p-inputnumber mode="decimal" [max]="999.99" [min]="0" [useGrouping]="true" 
+                [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
+                inputId="fixCommission" 
+                autocomplete="off" 
+                formControlName="fixCommission"
+              />
+              {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
+          </div>
+          <div class="iws-commissionInput order_maxCommission mb-2">
+              <label for="maxCommission">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.MAX_COMMISSION' | translate}}</label>
+              <p-inputnumber mode="decimal" [max]="99999999.99" [min]="0" [useGrouping]="true" 
+                [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
+                inputId="maxCommission" 
+                autocomplete="off" 
+                formControlName="maxCommission"
+              />
+              {{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.EURO' | translate}}
+          </div>
+      </div>
+    </form>
  
     <master-data-genaral-table
       [tableId]="tableKey"
@@ -39,9 +50,9 @@
   <form [formGroup]="iwsCommissionFAForm" (ngSubmit)="onSubmit()">
     <div class="flex gap-4 mb-3 mt-4">
       <label for="fromValue" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
-      <input
-        pInputText
-        id="fromValue"
+      <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
+        inputId="fromValue"
         class="flex-auto"
         formControlName="fromOrderValue"
         autocomplete="off"
@@ -49,9 +60,9 @@
     </div>
     <div class="flex gap-4 mb-3">
       <label for="provision" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
-      <input
-        pInputText
-        id="provision"
+      <p-inputnumber mode="decimal" [max]="999.99" [min]="0" [useGrouping]="true" 
+        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
+        inputId="provision"
         class="flex-auto"
         formControlName="provision"
         autocomplete="off"
@@ -59,9 +70,9 @@
     </div>
     <div class="flex gap-4 mb-3">
       <label for="minCommission" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
-      <input
-        pInputText
-        id="minCommission"
+      <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
+        inputId="minCommission"
         class="flex-auto"
         formControlName="minCommission"
         autocomplete="off"
