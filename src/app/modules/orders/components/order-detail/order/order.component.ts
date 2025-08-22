@@ -15,6 +15,8 @@ import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils
 import { BasicContract } from '../../../../../Entities/basicContract';
 import { ContractStatusUtils } from '../../../../master-data/components/contract-status/utils/contract-status-utils';
 import { ContractStatus } from '../../../../../Entities/contractStatus';
+import { EmployeeIwsUtils } from '../../../../master-data/components/iws-staff/utils/employee-iws-utils';
+import { EmployeeIws } from '../../../../../Entities/employeeIws';
 
 @Component({
   selector: 'app-order',
@@ -27,6 +29,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   private readonly orderTypeUtils = inject(CostTypeUtils);
   private readonly contractStatusUtils = inject(ContractStatusUtils);
   private readonly framworkUtils = inject(FrameworkAgreementsUtils);
+  private readonly employeeIwsUtils = inject(EmployeeIwsUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly subscriptions = new Subscription();
@@ -48,15 +51,29 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   private basicContracts!: BasicContract[];
   public readonly basicContractsSelect = toSignal(
     this.framworkUtils.getAllFrameworkAgreementsByCustomerId(this.customerId).pipe(
-    map(contracts => {
-      this.basicContracts = contracts;
-      
-      return contracts.map(contract => ({
-        id: contract.id,
-        label: contract.contractNo + ' ' + contract.contractTitle,
-      }));
-    })
-  ), { initialValue: [] }
+      map(contracts => {
+        this.basicContracts = contracts;
+        
+        return contracts.map(contract => ({
+          id: contract.id,
+          label: contract.contractNo + ' ' + contract.contractTitle,
+        }));
+      })
+    ), { initialValue: [] }
+  );
+
+  private employeeIws!: EmployeeIws[];
+  public readonly employeeIwsSelect = toSignal(
+    this.employeeIwsUtils.getAllEmployeeIwsSortedByFirstName().pipe(
+      map(employees => {
+        this.employeeIws = employees;
+
+        return employees.map(employee => ({
+          id: employee.id,
+          fullname: employee.firstname + ' ' + employee.lastname
+        }));
+      })
+    ), { initialValue: [] }
   );
 
   public readonly contractStatus = toSignal(
@@ -113,7 +130,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
       contractor: null,
       contractStatus: this.getContractStatus(this.orderForm.value.contractStatus ?? 0),
       customer: this.currentCustomer,
-      employeeIws: null,
+      employeeIws: this.getEmployeeIws(this.orderForm.value.employeeIws ?? 0),
       fundingProgram: this.getFundingProgram(this.orderForm.value.fundingProgram ?? 0),
       orderType: this.getOrderType(this.orderForm.value.orderType ?? 0),
       project: null, //get other component
@@ -154,6 +171,10 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   private getContractStatus(idContractStatus: number): ContractStatus | null {
     return this.contractStatus().find( c => c.id === idContractStatus) ?? null;
+  }
+
+  private getEmployeeIws(idEmployeeIws: number): EmployeeIws | null {
+    return this.employeeIws.find( e => e.id === idEmployeeIws) ?? null;
   }
 
   private getCurrentCustomer(): void {
