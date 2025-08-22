@@ -6,7 +6,7 @@
 
         <div class="field">
           <label for="customerNo">{{ 'CUSTOMERS.FORM.CUSTOMER_ID' | translate }}</label>
-          <input type="text" pInputText id="customerNo" formControlName="customerNo"/>
+          <p-inputnumber inputId="customerNo" [useGrouping]="false" formControlName="customerNo" [inputStyle]="{'text-align': 'right'}"/>
         </div>
 
         <div class="field align-items-start">
@@ -117,7 +117,8 @@
 
         <div class="field">
           <label for="weekWorkingHours">{{ 'CUSTOMERS.FORM.ENTREPRENEURIAL_WEEKLY_WORKING_HOURS' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" id="weekWorkingHours" formControlName="weekWorkingHours" mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          <p-inputNumber class="p-inputnumber-input" inputId="weekWorkingHours" formControlName="weekWorkingHours" [inputStyle]="{'text-align': 'right'}"
+          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <div class="field">
@@ -132,12 +133,14 @@
 
         <div class="field">
           <label for="maxHoursMonth">{{ 'CUSTOMERS.FORM.MAX_HOURS_MONTH' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursMonth" formControlName="maxHoursMonth" mode="decimal"[max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          <p-inputNumber class="p-inputnumber-input" inputId="maxHoursMonth" formControlName="maxHoursMonth" [inputStyle]="{'text-align': 'right'}"
+          mode="decimal"[max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <div class="field">
           <label for="maxHoursYear">{{ 'CUSTOMERS.FORM.MAX_HOURS_YEAR' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" size="large" id="maxHoursYear" formControlName="maxHoursYear" mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          <p-inputNumber class="p-inputnumber-input" inputId="maxHoursYear" formControlName="maxHoursYear" [inputStyle]="{'text-align': 'right'}"
+          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <p-floatlabel variant="on">
