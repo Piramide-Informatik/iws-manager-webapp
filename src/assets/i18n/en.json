@@ -295,7 +295,9 @@
       "END_DATE": "End Date",
       "AUTH_DATE": "Auth. Date",
       "FUNDING_RATE": "Funding Rate"
-    }
+    },
+    "PROJECTS_DIALOG_REMOVE": "Delete Project",
+    "REMOVE_PROJECTS_QUESTION":"Are you sure you want to delete the project"
   },
   "ORDERS": {
     "FORM": {
