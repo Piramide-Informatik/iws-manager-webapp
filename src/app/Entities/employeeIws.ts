@@ -1,4 +1,5 @@
 import { TeamIws } from "./teamIWS";
+import { User } from "./user";
 
 export interface EmployeeIws {
   id: number;
@@ -6,15 +7,15 @@ export interface EmployeeIws {
   updatedAt: string;
   version: number;
 
-  teamiws: TeamIws | null;
-  user: null; //falta
+  teamIws: TeamIws | null;
+  user: User | null;
 
   active?: number; //smallint
-  employeelabel?: string;
-  employeeno?: number;
-  enddate?: string; //date
+  employeeLabel?: string;
+  employeeNo?: number;
+  endDate?: string; //date
   firstname?: string;
   lastname?: string;
   mail?: string;
-  startdate?: string; //date
+  startDate?: string; //date
 }
