@@ -294,7 +294,9 @@
       "END_DATE": "Ende",
       "AUTH_DATE": "Förderkennzeichen",
       "FUNDING_RATE": "Fördersatz"
-    }
+    },
+    "PROJECTS_DIALOG_REMOVE": "Projekt löschen",
+    "REMOVE_PROJECTS_QUESTION":"Möchten Sie das Projekt wirklich löschen"
   },
   "ORDERS": {
     "FORM":{
