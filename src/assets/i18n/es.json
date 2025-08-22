@@ -287,7 +287,9 @@
       "END_DATE": "Fecha Fin",
       "AUTH_DATE": "Fecha de Autorización",
       "FUNDING_RATE": "Tasa de Financiación"
-    }
+    },
+    "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto",
+    "REMOVE_PROJECTS_QUESTION":"¿Está seguro que desea eliminar el proyecto"
   },
   "ORDERS": {
     "FORM": {
