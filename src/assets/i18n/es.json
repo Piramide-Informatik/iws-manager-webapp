@@ -457,6 +457,9 @@
       "AFA_MONTHS": "Periodo de Depreciación (meses)",
       "DESCRIPTION":"Descripción"
     },
+    "FORM_COMMISSION": {
+      "DURATION_OF_USE": "Duración de uso (meses)"
+    },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "¿Está seguro que desea eliminar el Subcontratista",
       "DELETE_SUBCONTRACT": "Eliminar Subcontratista",
