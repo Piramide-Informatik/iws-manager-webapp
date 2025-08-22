@@ -250,7 +250,7 @@
   },
   "EMPLOYEE-CONTRACTS": {
     "TABLE": {
-      "EMPLOYEE_ID": "Employee ID",
+      "EMPLOYEE_ID": "Employee No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "START_DATE": "Start Date",
@@ -264,7 +264,7 @@
     },
     "FORM": {
       "CUSTOMER": "Customer",
-      "EMPLOYEE_ID": "Employee ID",
+      "EMPLOYEE_ID": "Employee No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "START_DATE": "Start Date",
