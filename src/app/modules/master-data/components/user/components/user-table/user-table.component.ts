@@ -97,17 +97,17 @@ export class UserTableComponent {
       {
         field: 'username',
         minWidth: 110,
-        header: "Nombre de usuario"
+        header: this.translate.instant(_('USERS.HEADER.USERNAME')),
       },
       {
         field: 'name',
         minWidth: 110,
-        header: "Nombre"
+        header: this.translate.instant(_('USERS.HEADER.NAME')),
       },
       {
         field: 'active',
         minWidth: 110,
-        header: "Activo"
+        header: this.translate.instant(_('USERS.HEADER.ACTIVE')),
       }
     ];
   }
@@ -127,9 +127,9 @@ export class UserTableComponent {
   private prepareTableData() {
     if (this.users().length > 0) {
       this.userDisplayedColumns = [
-        { field: 'username', header: 'Nombre de usuario' },
-        { field: 'name', header: 'Nombre' },
-        { field: 'active', header: 'Activo' }]
+        { field: 'username', header: this.translate.instant(_('USERS.HEADER.USERNAME')) },
+        { field: 'name', header: this.translate.instant(_('USERS.HEADER.NAME')) },
+        { field: 'active', header: this.translate.instant(_('USERS.HEADER.ACTIVE')) }]
     }
   }
 

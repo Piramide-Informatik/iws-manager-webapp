@@ -612,6 +612,11 @@
     "DELETE": {
       "CONFIRMATION":"Delete User",
       "CONFIRM_QUESTION" : "Are you sure you want to delete "
+    },
+    "HEADER":{
+      "USERNAME":"Username",
+      "NAME": "Name",
+      "ACTIVE": "Active"
     }
   },
   "ROLES": {
