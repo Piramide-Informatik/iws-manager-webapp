@@ -611,6 +611,11 @@
     "DELETE": {
       "CONFIRMATION":"Eliminar Usuario",
       "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
+    },
+    "HEADER":{
+      "USERNAME":"Nombre de usuario",
+      "NAME": "Nombre",
+      "ACTIVE": "Activo"
     }
   },
   "ROLES": {

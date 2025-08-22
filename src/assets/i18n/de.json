@@ -613,6 +613,11 @@
     "DELETE": {
       "CONFIRMATION":"Benutzer löschen",
       "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+    },
+    "HEADER":{
+      "USERNAME":"Benutzername",
+      "NAME": "Name",
+      "ACTIVE": "Aktiv"
     }
   },
   "ROLES": {
