@@ -17,7 +17,7 @@ export class OrderComponent implements OnInit{
 
   private initOrderForm(): void {
     this.orderForm = new FormGroup({
-      orderId: new FormControl('', [Validators.required]),
+      orderId: new FormControl(null, [Validators.required]),
       orderLabel: new FormControl('', [Validators.required]),
       orderDate: new FormControl('', [Validators.required]),
       orderTitle: new FormControl('', [Validators.required]),
