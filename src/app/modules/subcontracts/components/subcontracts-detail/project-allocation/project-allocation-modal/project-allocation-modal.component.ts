@@ -141,9 +141,7 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
       project: this.allocationForm.value.projectLabel ? this.getProjectSelected(this.allocationForm.value.projectLabel) : null,
       subcontract: this.currentSubcontract,
       amount: (this.allocationForm.value.percentage * this.currentSubcontract.invoiceGross),
-      share: this.allocationForm.value.percentage,
-      months: 0,
-      year: ''
+      share: this.allocationForm.value.percentage
     }
 
     this.isSubcontractProjectPerformigAction = true;

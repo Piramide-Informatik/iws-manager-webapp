@@ -15,8 +15,6 @@ export function buildSubcontractProject(source: any): SubcontractProject {
         subcontract: buildSubcontract(source?.subcontract),
 
         amount: source?.amount ?? 0,
-        months: source?.months ?? 0,
-        share: source?.share ?? 0,
-        year: source?.year ?? ''
+        share: source?.share ?? 0
     };
 }
