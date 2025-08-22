@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ProjectUtils } from '../../utils/project.utils';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 interface Column {
   field: string,
@@ -50,12 +51,19 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   
   dataKeys = ['projectLabel', 'projectName', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
 
+  visibleProjectModal = false;
+
+  isProjectLoading = false;
+
+  selectedProject!: any;
+
   constructor(
   
     private readonly activatedRoute: ActivatedRoute,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly router:Router
+    private readonly router:Router,
+    private readonly commonMessage: CommonMessagesService
   ) {
   }
 
@@ -73,6 +81,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
       this.projectUtils.getAllProjectByCustomerId(this.customer).subscribe(projects => {
         this.projects = projects.reduce( (acc: any[], curr) => {
           acc.push({
+            id: curr.id,
             projectLabel: curr.projectLabel,
             projectName: curr.projectName,
             fundingProgram: curr.fundingProgram?.name ?? '',
@@ -88,6 +97,36 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
       })
     })
   }
+
+  openDeleteModal(id: any) {
+    this.visibleProjectModal = true;
+    const project = this.projects.find( project => project.id == id);
+    if (project) {
+      console.log (project)
+      this.selectedProject = project;
+    }
+  }
+
+  onProjectDelete() {
+    if (this.selectedProject) {
+      this.isProjectLoading = true;
+      this.projectUtils.deleteProject(this.selectedProject.id).subscribe({
+        next: () => {
+          this.commonMessage.showDeleteSucessfullMessage();
+          this.projects = this.projects.filter( project => project.id != this.selectedProject.id);
+        },
+        error: () => {
+          this.commonMessage.showErrorDeleteMessage();
+        },
+        complete: () => {
+          this.visibleProjectModal = false;
+          this.selectedProject = undefined;
+          this.isProjectLoading = false; 
+        }
+      })
+    }
+  }
+
 
   onUserProjectPreferencesChanges(userProjectPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userProjectPreferences));
