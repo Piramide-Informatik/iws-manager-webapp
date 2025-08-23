@@ -8,7 +8,7 @@ const routes: Routes = [
     {path: 'framework-agreements-summary', component: FrameworkAgreementsSummaryComponent},
     {path: '', component: FrameworkAgreementsDetailsComponent},
     { path: 'framework-agreement-details', component: FrameworkAgreementsDetailsComponent },
-    { path: 'framework-agreement-details/:id', component: FrameworkAgreementsDetailsComponent },
+    { path: 'framework-agreement-details/:idContract', component: FrameworkAgreementsDetailsComponent },
 ]
 
 @NgModule({

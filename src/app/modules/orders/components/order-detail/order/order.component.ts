@@ -158,23 +158,23 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getFundingProgram(idFunding: number): FundingProgram | null {
-    return this.fundingPrograms().find( f => f.id === idFunding) ?? null;
+    return idFunding === 0? null : this.fundingPrograms().find( f => f.id === idFunding) ?? null;
   }
 
   private getOrderType(idOrderType: number): CostType | null {
-    return this.orderTypes().find( o => o.id === idOrderType) ?? null;
+    return idOrderType === 0? null : this.orderTypes().find( o => o.id === idOrderType) ?? null;
   }
 
   private getBasicContract(idBasicContract: number): BasicContract | null {
-    return this.basicContracts.find( b => b.id === idBasicContract) ?? null;
+    return idBasicContract === 0? null : this.basicContracts.find( b => b.id === idBasicContract) ?? null;
   }
 
   private getContractStatus(idContractStatus: number): ContractStatus | null {
-    return this.contractStatus().find( c => c.id === idContractStatus) ?? null;
+    return idContractStatus === 0? null : this.contractStatus().find( c => c.id === idContractStatus) ?? null;
   }
 
   private getEmployeeIws(idEmployeeIws: number): EmployeeIws | null {
-    return this.employeeIws.find( e => e.id === idEmployeeIws) ?? null;
+    return idEmployeeIws === 0? null : this.employeeIws.find( e => e.id === idEmployeeIws) ?? null;
   }
 
   private getCurrentCustomer(): void {
