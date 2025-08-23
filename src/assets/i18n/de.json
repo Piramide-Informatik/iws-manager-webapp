@@ -459,6 +459,9 @@
       "AFA_MONTHS": "AfA Dauer (Monate)",
       "DESCRIPTION":"Beschreibung"
     },
+    "FORM_COMMISSION": {
+      "DURATION_OF_USE": "Nutzungsdauer (Monate)"
+    },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "Möchten Sie den Untervertrag wirklich löschen",
       "DELETE_SUBCONTRACT": "Untervertrag löschen",
