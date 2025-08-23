@@ -1,6 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderComponent } from './order/order.component';
+import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
+import { BasicContract } from '../../../../Entities/basicContract';
 
 @Component({
   selector: 'app-framework-agreement-details',
@@ -8,15 +10,25 @@ import { OrderComponent } from './order/order.component';
   styleUrls: ['./framework-agreement-details.component.scss'],
   standalone: false
 })
-export class FrameworkAgreementsDetailsComponent {
+export class FrameworkAgreementsDetailsComponent implements OnInit {
+  private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
+  private readonly contractId = this.route.snapshot.params['idContract'];
+  currentBasicContract!: BasicContract;
   @ViewChild(OrderComponent) orderComponent!: OrderComponent;
   isLoading: boolean = false;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-
-  ) {}
+  ngOnInit(): void {
+    if(this.contractId){
+      this.frameworkUtils.getFrameworkAgreementById(Number(this.contractId)).subscribe(contract => {
+        if(contract){
+          this.currentBasicContract = contract;
+        }
+      })
+    }
+  }
 
   onSubmit(): void {
     this.orderComponent.onSubmit();
