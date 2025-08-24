@@ -28,7 +28,7 @@ export class OrderDetailsComponent implements OnInit {
   private project: Project | null = null;
   private orderCommission!: {fixCommission: number, maxCommission: number, iwsProvision: number};
   private newOrder!: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
-  public showOCCErrorModaOrder = false;
+  public showOCCErrorModalOrder = false;
 
   private readonly orderId = this.activatedRoute.snapshot.params['orderId'];
   currentOrder!: Order;
@@ -109,7 +109,7 @@ export class OrderDetailsComponent implements OnInit {
         this.isLoading = false;
         console.log(error)
         if (error.message === 'Conflict detected: order version mismatch') {
-          this.showOCCErrorModaOrder = true;
+          this.showOCCErrorModalOrder = true;
         }else{
           this.commonMessageService.showErrorEditMessage();
         }
