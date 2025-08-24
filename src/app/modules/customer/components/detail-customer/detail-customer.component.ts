@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomerService } from '../../../../Services/customer.service';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -69,7 +68,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public currentContactPerson!: ContactPerson | null; // Para editarlo o eliminarlo 
 
   private readonly companyTypeUtils = inject(CompanyTypeUtils);
-  private readonly contactPersonService = inject(ContactPersonService);
   private readonly stateUtils = inject(StateUtils);
 
   public contactPersons = signal<ContactPerson[]>([]);
@@ -120,13 +118,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   constructor(
     private readonly fb: FormBuilder,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly customerService: CustomerService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
     private readonly translate: TranslateService,
     private readonly contactStateService: ContactStateService,
     private readonly customerUtils: CustomerUtils,
-    private readonly messageService: MessageService,
     private readonly titleService: Title,
     private readonly commonMessageService: CommonMessagesService
   ) {
@@ -464,14 +460,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   deletePerson(contactId: number) {
     this.modalType = 'delete';
     this.visible = true;
-    this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === contactId) ?? null;
+    this.currentContactPerson = this.contactPersons().find(contact => contact.id === contactId) ?? null;
     this.contactStateService.setContactToEdit(this.currentContactPerson);
   }
 
   editPerson(person: ContactPerson) {
     this.modalType = 'edit';
     this.visible = true;
-    this.currentContactPerson = this.contactPersonService.contactPersons().find(contact => contact.id === person.id) ?? null;
+    this.currentContactPerson = this.contactPersons().find(contact => contact.id === person.id) ?? null;
     this.contactStateService.setContactToEdit(this.currentContactPerson);
   }
 
