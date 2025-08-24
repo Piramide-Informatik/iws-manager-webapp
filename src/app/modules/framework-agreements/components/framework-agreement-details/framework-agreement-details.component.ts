@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { OrderComponent } from './order/order.component';
 
 @Component({
   selector: 'app-framework-agreement-details',
@@ -7,8 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./framework-agreement-details.component.scss'],
   standalone: false
 })
-export class FrameworkAgreementsDetailsComponent implements OnInit {
-  agreementId: string | null = null;
+export class FrameworkAgreementsDetailsComponent {
+  @ViewChild(OrderComponent) orderComponent!: OrderComponent;
+  isLoading: boolean = false;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -16,8 +18,12 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
 
   ) {}
 
-  ngOnInit(): void {
-    this.agreementId = this.route.snapshot.paramMap.get('id');
+  onSubmit(): void {
+    this.orderComponent.onSubmit();
+  }
+
+  setLoading(value: boolean): void {
+    this.isLoading = value;
   }
 
   goBackFrameworksAgreement() {
