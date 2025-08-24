@@ -25,6 +25,8 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Input() isFileUploadButtonVisible: boolean = false;
   @Input() acceptFilesFormats: string = '.pdf,.xml,.csv'
   @Input() userPreferences: any = [];
+  @Input() customerUploadButtonText = '';
+  @Input() disableButtons: boolean = false;
   selectedColumns: any[] = [];
   displayedColumns: any[] = [];
   booleanHeaders: any[] = [];

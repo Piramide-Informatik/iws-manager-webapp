@@ -1,22 +1,11 @@
-.order_input input{
+.order_input input, p-inputnumber{
     width: 20vw;
 }
-
-p-floatlabel{
-    margin-left: 5px;
-
-    #customerId{
-        width: 6vw;
-    }
-
-    #customerName{
-        width: 13.1vw;
-    }
-}
-
 .order_input{
     width: 100% !important;   
     display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
 
     label {
         width: 33%;

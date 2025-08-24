@@ -8,6 +8,7 @@ import { ProjectRoutingModule } from './project-routing.module';
 
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -31,6 +32,7 @@ import { MasterDataModule } from '../master-data/master-data.module';
     imports: [
         ButtonModule,
         CommonModule,
+        DialogModule, 
         FormsModule,
         IconFieldModule,
         InputIconModule,

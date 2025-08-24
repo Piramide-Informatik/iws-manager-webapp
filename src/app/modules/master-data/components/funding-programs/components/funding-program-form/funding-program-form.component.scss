@@ -1,0 +1,16 @@
+.funding-form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  label {
+    width: 140px;
+    font-weight: 500;
+  }
+
+  input,
+  p-inputnumber {
+    flex: 1;
+    max-width: 300px;
+  }
+}

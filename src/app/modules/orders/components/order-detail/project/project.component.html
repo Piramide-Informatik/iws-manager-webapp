@@ -1,26 +1,28 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
+    <ng-template #title>{{ 'ORDERS.PROJECT.PROJECT' | translate}}</ng-template>
     <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-        <div class="align-items-center mb-2">
-            <div class="proj_input project_name mb-2">
-                <label for="projectLabel">{{ 'ORDERS.PROJECT.PROJECT' | translate }}</label>
-                <p-select formControlName="projectLabel" [editable]="true" [showClear]="true" optionLabel="name" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
-            </div>
-            <div class="proj_input project_id mb-2">
-                <label for="projectId">{{ 'ORDERS.PROJECT.SPONSOR_ID' | translate }}</label>
-                <input pInputText type="text" id="projectId" formControlName="projectId" autocomplete="off" />
-            </div>
-            <div class="proj_input promoter_id mb-2">
-                <label for="promoterId">{{ 'ORDERS.PROJECT.SPONSOR' | translate }}</label>
-                <input pInputText type="text" id="promoterId" formControlName="promoterId" autocomplete="off" />
-            </div>
-            <div class="proj_input project_startDate mb-2">
-                <label for="startDate">{{ 'ORDERS.PROJECT.START_DATE' | translate }}</label>
-                <input pInputText type="text" id="startDate" formControlName="startDate" autocomplete="off" />
-            </div>
-            <div class="proj_input project_endDate mb-2">
-                <label for="endDate">{{ 'ORDERS.PROJECT.END_DATE' | translate }}</label>
-                <input pInputText type="text" id="endDate" formControlName="endDate" autocomplete="off" />
-            </div>
+        <div class="proj_input">
+            <label for="projectLabel">{{ 'ORDERS.PROJECT.PROJECT' | translate }}</label>
+            <p-select formControlName="projectLabel" inputId="projectLabel" 
+                [showClear]="true" [options]="projects()" 
+                optionLabel="projectLabel" optionValue="id"
+                [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
+        </div>
+        <div class="proj_input">
+            <label for="promoterNo">{{ 'ORDERS.PROJECT.SPONSOR_ID' | translate }}</label>
+            <input pInputText type="text" id="promoterNo" formControlName="promoterNo" autocomplete="off" readonly [disabled]="true"/>
+        </div>
+        <div class="proj_input">
+            <label for="promoter">{{ 'ORDERS.PROJECT.SPONSOR' | translate }}</label>
+            <input pInputText type="text" id="promoter" formControlName="promoter" autocomplete="off" readonly [disabled]="true"/>
+        </div>
+        <div class="proj_input">
+            <label for="startDate">{{ 'ORDERS.PROJECT.START_DATE' | translate }}</label>
+            <p-datepicker dateFormat="dd.mm.yy" id="startDate" formControlName="startDate" autocomplete="off" readonlyInput [disabled]="true"/>
+        </div>
+        <div class="proj_input">
+            <label for="endDate">{{ 'ORDERS.PROJECT.END_DATE' | translate }}</label>
+            <p-datepicker dateFormat="dd.mm.yy" id="endDate" formControlName="endDate" autocomplete="off" readonlyInput [disabled]="true"/>
         </div>
     </form>
 </p-card>

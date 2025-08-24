@@ -16,6 +16,10 @@ export class SalutationUtils {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly employeeUtils = inject(EmployeeUtils);
 
+  loadInitialData(): Observable<Salutation[]> {
+      return this.salutationService.loadInitialData();
+  }
+
   /**
    * Gets a salutation by ID with proper error handling
    * @param id - ID of the salutation to retrieve
@@ -39,19 +43,13 @@ export class SalutationUtils {
    * @param nameSalutation - Name for the new salutation
    * @returns Observable that completes when salutation is created
    */
-  createNewSalutation(nameSalutation: string): Observable<void> {
+  createNewSalutation(nameSalutation: string): Observable<Salutation> {
     if (!nameSalutation?.trim()) {
       return throwError(() => new Error('Salutation name cannot be empty'));
     }
 
-    return new Observable<void>(subscriber => {
-      this.salutationService.addSalutation({
+    return this.salutationService.addSalutation({
         name: nameSalutation.trim(),
-      });
-
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
     });
   }
 

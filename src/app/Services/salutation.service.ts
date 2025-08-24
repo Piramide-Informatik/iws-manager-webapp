@@ -32,9 +32,9 @@ export class SalutationService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): void {
+  loadInitialData(): Observable<Salutation[]> {
     this._loading.set(true);
-    this.http.get<Salutation[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<Salutation[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (salutations) => {
           this._salutations.set(salutations);
@@ -47,12 +47,12 @@ export class SalutationService {
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
-    ).subscribe();
+    )
   }
 
   // CREATE
-  addSalutation(salutation: Omit<Salutation, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
-    this.http.post<Salutation>(this.apiUrl, salutation, this.httpOptions).pipe(
+  addSalutation(salutation: Omit<Salutation, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Salutation> {
+    return this.http.post<Salutation>(this.apiUrl, salutation, this.httpOptions).pipe(
       tap({
         next: (newSalutation) => {
           this._salutations.update(salutations => [...salutations, newSalutation]);
@@ -63,7 +63,7 @@ export class SalutationService {
           console.error('Error adding salutation:', err);
         }
       })
-    ).subscribe();
+    )
   }
 
   // UPDATE

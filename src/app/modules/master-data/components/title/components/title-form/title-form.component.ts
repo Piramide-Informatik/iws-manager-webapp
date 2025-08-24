@@ -43,10 +43,6 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  setTitleToEdit(title: Title | null) {
-    this.editTitleSource.next(title);
-  }
-
   private initForm(): void {
     this.editTitleForm = new FormGroup({
       title: new FormControl('', [Validators.required])

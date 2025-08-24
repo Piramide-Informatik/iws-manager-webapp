@@ -1,0 +1,80 @@
+<p-card
+  [style]="{ background: 'var(--light-cyan)' }"
+  [header]="'FUNDING.HEADER.EDIT_FUNDING' | translate"
+>
+  <form [formGroup]="fundingForm" (ngSubmit)="onSubmit()">
+    <div class="mb-2">
+      <div class="funding-form">
+        <label for="name">{{ "FUNDING.LABEL.PROGRAM" | translate }}</label>
+        <input pInputText id="name" formControlName="name" autocomplete="off"/>
+      </div>
+
+      <div class="funding-form">
+        <label for="defaultFundingRate">{{ "FUNDING.LABEL.RATE" | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="defaultFundingRate"
+          formControlName="defaultFundingRate"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form">
+        <label for="defaultStuffFlat">{{ "FUNDING.LABEL.PERSONNEL_RATE" | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="defaultStuffFlat"
+          formControlName="defaultStuffFlat"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form">
+        <label for="defaultResearchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="defaultResearchShare"
+          formControlName="defaultResearchShare"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="funding-form">
+        <label for="defaultHoursPerYear">{{ "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate }}</label>
+        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="defaultHoursPerYear"
+          formControlName="defaultHoursPerYear"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="flex justify-content-center gap-2 mt-4">
+        <p-button
+          class="save me-2"
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          type="submit"
+          [loading]="isLoading"
+          [disabled]="fundingForm.invalid || !fundingForm.dirty || isLoading"
+        ></p-button>
+
+        <p-button
+          class="cancel me-2"
+          size="small"
+          [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times"
+          iconPos="left"
+          (click)="clearForm()"
+          type="button"
+          (keydown)="clearForm()"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaFunding"
+  (close)="showOCCErrorModaFunding = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast/>

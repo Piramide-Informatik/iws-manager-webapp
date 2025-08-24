@@ -1,14 +1,14 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <app-order></app-order>
+      <app-order (onCreateOrder)="onOrder($event)" [orderToEdit]="currentOrder"></app-order>
     </div>
     <div class="col-md-6">
       <div class="mb-2">
-        <app-project></app-project>
+        <app-project (onCreateOrderProject)="onOrderProject($event)" [orderToEdit]="currentOrder"></app-project>
       </div>
       <div class="mb-2">
-        <app-iws-provision></app-iws-provision>
+        <app-iws-provision (onCreateOrderCommission)="onOrderCommission($event)" [orderToEdit]="currentOrder"></app-iws-provision>
       </div>
     </div>
   </div>
@@ -32,6 +32,8 @@
           [label]="'BUTTONS.SAVE' | translate" 
           icon="pi pi-check"
           iconPos="left"
+          [loading]="isLoading"
+          (onClick)="onSubmit()"
         />
         <p-button
           class="Delete me-2"
@@ -53,3 +55,6 @@
     </div>
   </div>
 </div>
+<app-occ-error-modal *ngIf="showOCCErrorModalOrder" (onClose)="showOCCErrorModalOrder = false">
+</app-occ-error-modal>
+<p-toast/>

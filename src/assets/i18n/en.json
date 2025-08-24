@@ -250,7 +250,7 @@
   },
   "EMPLOYEE-CONTRACTS": {
     "TABLE": {
-      "EMPLOYEE_ID": "Employee ID",
+      "EMPLOYEE_ID": "Employee No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "START_DATE": "Start Date",
@@ -264,7 +264,7 @@
     },
     "FORM": {
       "CUSTOMER": "Customer",
-      "EMPLOYEE_ID": "Employee ID",
+      "EMPLOYEE_ID": "Employee No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "START_DATE": "Start Date",
@@ -274,7 +274,8 @@
       "SPECIAL_PAYMENT": "Special Payment",
       "MAX_HOURS_PER_MONTH": "Max. Hours/Month",
       "MAX_HOURS_PER_DAY": "Max. Hours/Day",
-      "HOURLY_RATE": "Hourly Rate"
+      "HOURLY_RATE": "Hourly Rate",
+      "HOURLY_REAL_RATE": "Hourly Real Rate"
     },
     "LABEL": {
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Are you sure you want to delete the Employee Contract",
@@ -294,26 +295,28 @@
       "END_DATE": "End Date",
       "AUTH_DATE": "Auth. Date",
       "FUNDING_RATE": "Funding Rate"
-    }
+    },
+    "PROJECTS_DIALOG_REMOVE": "Delete Project",
+    "REMOVE_PROJECTS_QUESTION":"Are you sure you want to delete the project"
   },
   "ORDERS": {
     "FORM": {
-    "ORDER_ID": "Order No.",
-    "ORDER_LABEL": "Order",
-    "ORDER_TYPE": "Order Type",
-    "CUSTOMER": "Customer",
-    "NR": "No.",
-    "NAME": "Name",
-    "ACRONYM": "Acronym",
-    "ORDER_TITLE": "Description",
-    "ORDER_DATE": "Order Date",
-    "FUNDING_PROGRAM": "Funding Program",
-    "CONTRACT_STATUS": "Contract Status",
-    "SIGNATURE_DATE": "Signature Date",
-    "CONTRACT_TITLE": "Master Agreement",
-    "IWS_EMPLOYEE": "IWS Employee",
-    "ORDER_VALUE": "Estimated Order Value"
-  },
+      "ORDER_ID": "Order No.",
+      "ORDER_LABEL": "Order",
+      "ORDER_TYPE": "Order Type",
+      "CUSTOMER": "Customer",
+      "NR": "No.",
+      "NAME": "Name",
+      "ACRONYM": "Acronym",
+      "ORDER_TITLE": "Description",
+      "ORDER_DATE": "Order Date",
+      "FUNDING_PROGRAM": "Funding Program",
+      "CONTRACT_STATUS": "Contract Status",
+      "SIGNATURE_DATE": "Signature Date",
+      "CONTRACT_TITLE": "Master Agreement",
+      "IWS_EMPLOYEE": "IWS Employee",
+      "ORDER_VALUE": "Estimated Order Value"
+    },
     "TABLE": {
       "ORDER_ID": "Order ID",
       "ORDER_LABEL": "Label",
@@ -344,7 +347,9 @@
     "ESTIMATED_IWS_COMMISSION": "Estimated IWS Commission",
     "TITLE_DIALOG_NEW": "New IWS Commission",
     "TITLE_DIALOG_EDIT": "Edit IWS Commission"
-    }
+    },
+    "ORDER_DIALOG_REMOVE": "Delete Order",
+    "REMOVE_ORDERS_QUESTION":"Are you sure you want to delete the order"
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -410,7 +415,9 @@
         "COMMISSION": "Commission",
         "MIN_COMMISSION": "Minimum Commission"
       }
-    }
+    },
+    "TITLE_DIALOG_REMOVE": "Delete Framework Agreement",
+    "REMOVE_QUESTION":"Are you sure you want to delete the framework agreement"
   },
   "CONTRACTS": {
     "FORM": {
@@ -452,6 +459,9 @@
       "IS_AFA": "Depreciation",
       "AFA_MONTHS": "Depreciation period (months)",
       "DESCRIPTION":"Description"
+    },
+    "FORM_COMMISSION": {
+      "DURATION_OF_USE": "Duration of use (months)"
     },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "Are you sure you want to delete the Subcontract",
@@ -593,6 +603,7 @@
       "ACTIVE": "Active"
     },
     "FORM": {
+      "USER_FORM":"New User",
       "EDIT_TITLE": "Edit User",
       "USERNAME": "Username",
       "FIRSTNAME": "First Name",
@@ -602,6 +613,15 @@
       "ACTIVE": "Active",
       "ASSIGNED_ROLES": "Assigned Roles",
       "AVAILABLE_ROLES": "Available Roles"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Delete User",
+      "CONFIRM_QUESTION" : "Are you sure you want to delete "
+    },
+    "HEADER":{
+      "USERNAME":"Username",
+      "NAME": "Name",
+      "ACTIVE": "Active"
     }
   },
   "ROLES": {
@@ -617,9 +637,28 @@
       "EXECUTE": "Execute"
     },
     "LABEL": {
-      "EDIT_ROL": "Edit Rol",
-      "ROL": "Rol",
+      "EDIT_ROL": "Edit Role",
+      "ROL": "Role",
       "MODULE": "Module"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "New Role"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Delete Role",
+      "CONFIRM_QUESTION":"Are you sure you want to delete "
+    },
+    "MESSAGE":{
+      "SUCCESS":"SUCCESS",
+      "DELETE_SUCCESS":"Record successfully deleted.",
+      "ERROR":"ERROR",
+      "DELETE_ERROR_IN_USE":"The record cannot be deleted because it is in use by other entities.",
+      "DELETE_FAILED":"The record could not be deleted."
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Required role",
+      "CHECKING_DUPLICATE": "Checking duplicate",
+      "CREATION_FAILED":"There was an error during role creation"
     }
   },
   "HOLIDAYS": {
@@ -664,7 +703,10 @@
       "PRODUCTIVE_HOURS": "Productive hours / year"
     },
     "HEADER": {
-      "EDIT_FUNDING": "Edit funding program"
+      "EDIT_FUNDING": "Edit funding program",
+      "NEW_FUNDING": "New funding program",
+      "DELETE_FUNDING": "Delete funding program",
+      "DELETE_CONFIRM_QUESTION": "Are you sure you want to delete the funding program: "
     }
   },
   "DUNNING_LEVELS": {

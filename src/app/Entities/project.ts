@@ -1,5 +1,9 @@
-import { Country } from "./country";
 import { Customer } from "./customer";
+import { EmployeeIws } from "./employeeIws";
+import { FundingProgram } from "./fundingProgram";
+import { Network } from "./network";
+import { ProjectStatus } from "./projectStatus";
+import { Promoter } from "./promoter";
 
 export interface Project {
   id: number;
@@ -8,60 +12,48 @@ export interface Project {
   version: number;
 
   customer: Customer | null;
-  
-  approvalDate?: String;
-  authorizationDate?: String;
-  chance?: Number;
-  comment?: String;
-  date1?: String;
-  date2?: String;
-  date3?: String;
-  date4?: String;
-  date5?: String;
-  endApproval?: String;
-  endDate?: String;
-  financeAuthority?: String;
-  fundingLabel?: String;
-  fundingRate?: Number;
-  hourlyRateMueu?: Number;
-  income1?: Number;
-  income2?: Number;
-  income3?: Number;
-  income4?: Number;
-  income5?: Number;
-  maxHoursPerMonth?: Number;
-  maxHoursPerYear?: Number;
-  orderIdFue?: Number;
-  orderIdAdmin?: Number;
-  stuffFlat?: Number;
-  productiveHoursPerYear?: Number;
-  projectLabel?: String;
-  projectName?: string;
-  note?: String;
-  shareResearch?: Number;
-  startApproval?: String;
-  startDate?: String;
-  title?: String;
+  empiws20: EmployeeIws | null;
+  empiws30: EmployeeIws | null;
+  empiws50: EmployeeIws | null;
   fundingProgram: FundingProgram | null;
-  promoter: Promoter | null;  
-}
-
-export interface FundingProgram {
-  defaultFundingRate: number;
-  defaultHoursPerYear: number;
-  defaultResearchShare: number;
-  defaultStuffFlat: number;
-  name: string;
-}
-
-export interface Promoter {
-  city: string;
-  country: Country;
-  projectPromoter: string;
-  promoterName1: string;
-  promoterName2: string;
-  promoterNo: string;
-  street: string;
-  zipCode: string;
-}
+  network: Network | null;
+  promoter: Promoter | null;
+  status: ProjectStatus | null;
   
+  approvalDate?: string;
+  authorizationDate?: string;
+  chance?: number;
+  comment?: string;
+  date1?: string;
+  date2?: string;
+  date3?: string;
+  date4?: string;
+  date5?: string;
+  datelevel1?: string;
+  datelevel2?: string;
+  donation?: string;
+  endApproval?: string;
+  endDate?: string;
+  financeAuthority?: string;
+  fundingLabel?: string;
+  fundingRate?: number;
+  hourlyRateMueu?: number;
+  income1?: number;
+  income2?: number;
+  income3?: number;
+  income4?: number;
+  income5?: number;
+  maxHoursPerMonth?: number;
+  maxHoursPerYear?: number;
+  orderIdFue?: number;
+  orderIdAdmin?: number;
+  stuffFlat?: number;
+  productiveHoursPerYear?: number;
+  projectLabel?: string;
+  projectName?: string;
+  note?: string;
+  shareResearch?: number;
+  startApproval?: string;
+  startDate?: string;
+  title?: string; 
+}

@@ -15,6 +15,10 @@
   p-datepicker {
     width: 100% !important;
   }
+
+  ::ng-deep .custom-dropdown-panel li.p-select-option {
+    justify-content: end !important;
+  }
 }
 
 ::ng-deep .p-datepicker {

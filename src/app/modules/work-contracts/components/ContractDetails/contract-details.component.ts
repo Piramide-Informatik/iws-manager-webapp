@@ -39,7 +39,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
-  employeeOptions: {label: string, value: number}[] = [];
+  public employeeSelectOptions: {employeeNo: number, employeeId: number}[] = [];
 
   public isLoading: boolean = false;
   public visibleContractModal: boolean = false;
@@ -83,7 +83,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       specialPayment: this.currentEmploymentContract?.specialPayment,
       maxHoursPerMonth: this.currentEmploymentContract?.maxHoursPerMonth,
       maxHoursPerDay: this.currentEmploymentContract?.maxHoursPerDay,
-      hourlyRate: this.currentEmploymentContract?.hourlyRate
+      hourlyRate: this.currentEmploymentContract?.hourlyRate,
+      hourlyRealRate: this.currentEmploymentContract?.hourlyRealRate,
     });
   }
 
@@ -106,7 +107,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.subscription.add(
       this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe({
         next: (employees: Employee[]) => {
-          this.employeeOptions = employees.map((emp: Employee) => ({ label: emp.firstname + ' ' + emp.lastname, value: emp.id }));
+          this.employeeSelectOptions = employees.map((emp: Employee) => ({ employeeNo: emp.employeeno ?? 0 , employeeId: emp.id }));
           // Guardar empleados en un mapa para acceso rápido
           this.employeesMap.clear();
           employees.forEach((emp: Employee) => {
@@ -114,7 +115,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
           });
         },
         error: () => {
-          this.employeeOptions = [];
+          this.employeeSelectOptions = [];
           this.employeesMap.clear();
         }
       })
@@ -123,6 +124,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   
   private initContractDetailsForm(): void {
     this.ContractDetailsForm = new FormGroup({
+      employeNro: new FormControl('', []),
+      firstName: new FormControl('', []),
+      lastName: new FormControl('', []),
       startDate: new FormControl('', []),
       salaryPerMonth: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
       hoursPerWeek: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
@@ -131,13 +135,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       maxHoursPerMonth: new FormControl(null, []),
       maxHoursPerDay: new FormControl(null, []),
       hourlyRate: new FormControl(null, []),
-      lastName: new FormControl('', []),
-      firstName: new FormControl('', []),
-      employeNro: new FormControl('', []),
+      hourlyRealRate: new FormControl(null)
     });
     this.ContractDetailsForm.get("firstName")?.disable();
     this.ContractDetailsForm.get("lastName")?.disable();
     this.ContractDetailsForm.get("hourlyRate")?.disable();
+    this.ContractDetailsForm.get("hourlyRealRate")?.disable();
     this.ContractDetailsForm.get("maxHoursPerDay")?.disable();
     this.ContractDetailsForm.get("maxHoursPerMonth")?.disable();
 
@@ -146,11 +149,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       this.ContractDetailsForm.get('employeNro')!.valueChanges.subscribe((employeeId: number) => {
         const emp = this.employeesMap.get(employeeId);
         if (emp) {
-          this.ContractDetailsForm.get('firstName')?.setValue(emp.firstname ?? '');
-          this.ContractDetailsForm.get('lastName')?.setValue(emp.lastname ?? '');
+          this.ContractDetailsForm.get('firstName')?.setValue(emp.firstname ?? '', { emitEvent: false});
+          this.ContractDetailsForm.get('lastName')?.setValue(emp.lastname ?? '', { emitEvent: false});
         } else {
-          this.ContractDetailsForm.get('firstName')?.setValue('');
-          this.ContractDetailsForm.get('lastName')?.setValue('');
+          this.ContractDetailsForm.get('firstName')?.setValue('', { emitEvent: false});
+          this.ContractDetailsForm.get('lastName')?.setValue('', { emitEvent: false});
         }
       })
     );
@@ -196,7 +199,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     const maxHoursPerMonth = Number(raw.maxHoursPerMonth ?? 0);
     const maxHoursPerDay = Number(raw.maxHoursPerDay ?? 0);
     const hourlyRate = Number(raw.hourlyRate ?? 0);
-    const hourlyRealRate = 0;
+    const hourlyRealRate = Number(raw.hourlyRealRate ?? 0);
     const emp = this.employeesMap.get(raw.employeNro);
     const employeeObj = emp ? buildEmployee(emp, { includeEmptyDates: true }) : null;
     const customerObj = this.currentCustomer ? buildCustomer(this.currentCustomer, { includeEmptyDates: true }) : null;
@@ -238,6 +241,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     const updatedEmployment: EmploymentContract = {
       ...this.currentEmploymentContract,
+      employee: this.employeesMap.get(this.ContractDetailsForm.value.employeNro),
       startDate: this.ContractDetailsForm.value.startDate,
       salaryPerMonth: this.ContractDetailsForm.value.salaryPerMonth,
       hoursPerWeek: this.ContractDetailsForm.value.hoursPerWeek,
@@ -253,8 +257,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
         this.closeModal();
         this.commonMessageService.showEditSucessfullMessage();
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
+        console.log(error);
         this.commonMessageService.showErrorEditMessage();
       }
     });

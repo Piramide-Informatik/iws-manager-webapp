@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
@@ -7,6 +7,7 @@ import { UserPreferenceService } from '../../../../../Services/user-preferences.
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
+import { Order } from '../../../../../Entities/order';
 
 interface Column {
   field: string;
@@ -16,11 +17,11 @@ interface Column {
   useSameAsEdit?: boolean;
 }
 
-interface ExportColumn {
-  title: string;
-  dataKey: string;
+interface OrderCommissionForm {
+  fixCommission: number;
+  maxCommission: number;
+  iwsProvision: number;
 }
-
 
 @Component({
   selector: 'app-iws-provision',
@@ -28,55 +29,95 @@ interface ExportColumn {
   templateUrl: './iws-provision.component.html',
   styleUrl: './iws-provision.component.scss'
 })
-export class IwsProvisionComponent implements OnInit{
-  iwsEmployeeForm!: FormGroup;
-  iwsCommissionForm!: FormGroup;
+export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
+  private readonly orderCommissionService = inject(OrderCommissionService);
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly translate = inject(TranslateService);
+  private readonly subscriptions = new Subscription();
+
+  orderCommissionForm!: OrderCommissionForm;
+  @Input() orderToEdit!: Order;
+  @Output() onCreateOrderCommission = new EventEmitter<OrderCommissionForm>();
+
+  // Forms
+  public orderForm: FormGroup = new FormGroup({
+    fixCommission: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
+    maxCommission: new FormControl(null),
+    iwsProvision: new FormControl(null),
+  });
+
+  public iwsCommissionForm: FormGroup = new FormGroup({
+    fromOrderValue: new FormControl(null),
+    provision: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
+    minCommission: new FormControl(null)
+  });
+
+  public disabledButtonsTable: boolean = false;
   selectedOrderCommission!: null;
   orderCommissions: OrderCommission[] = [];
   
-  @ViewChild('dt') dt!: Table;
-  loading: boolean = true;
-  cols!: Column[];
+  // Configuration Modal
   visibleModalIWSCommission = signal(false);
   optionIwsCommission = {
     new: 'new',
     edit: 'edit'
   };
   optionSelected: string = '';
+
+  // Configuration Table IWS commission
+  @ViewChild('dt') dt!: Table;
+  cols!: Column[];
   userIwsProvisionPreferences: UserPreference = {};
   tableKey: string = 'IwsProvision'
   dataKeys = ['fromOrderValue', 'commission', 'minCommission'];
   private langSubscription!: Subscription;
 
-  constructor( 
-    private readonly orderCommissionService: OrderCommissionService,
-    private readonly userPreferenceService: UserPreferenceService,
-    private readonly translate: TranslateService){ }
-
   ngOnInit(): void {
-  this.loadColumns();
-  this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
-  this.loading = false;
+    this.orderForm.get('iwsProvision')?.disable();
+    this.changeInputOrderForm();
 
-  this.langSubscription = this.translate.onLangChange.subscribe(() => {
     this.loadColumns();
     this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
-  });
 
-  this.iwsEmployeeForm = new FormGroup({
-    fixCommission: new FormControl('', [Validators.required]),
-    maxCommission: new FormControl('', [Validators.required]),
-    estimated: new FormControl('', [Validators.required]),
-  });
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColumns();
+      this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
+    });
 
-  this.iwsCommissionForm = new FormGroup({
-    fromOrderValue: new FormControl('', [Validators.required]),
-    provision: new FormControl('', [Validators.required]),
-    minCommission: new FormControl('', [Validators.required])
-  });
+    this.orderCommissions = this.orderCommissionService.getOrderCommission();
+  }
 
-  this.orderCommissions = this.orderCommissionService.getOrderCommission();
-}    
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['orderToEdit'] && this.orderToEdit) {
+      this.orderForm.patchValue({
+        fixCommission: this.orderToEdit.fixCommission,
+        maxCommission: this.orderToEdit.maxCommission,
+        iwsProvision: this.orderToEdit.iwsProvision
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.langSubscription.unsubscribe();
+    this.subscriptions.unsubscribe();
+  }
+
+  private changeInputOrderForm(): void {
+    this.subscriptions.add(
+      this.orderForm.get('fixCommission')?.valueChanges.subscribe((valueFixCommission: number | null) => {
+        if (valueFixCommission && valueFixCommission > 0){
+          this.orderForm.get('maxCommission')?.disable();
+          this.disabledButtonsTable = true;
+          this.orderForm.get('iwsProvision')?.setValue(valueFixCommission, { emitEvent: false });
+          this.orderForm.get('maxCommission')?.setValue(null, { emitEvent: false })
+        } else {
+          this.orderForm.get('maxCommission')?.enable();
+          this.disabledButtonsTable = false;
+          this.orderForm.get('iwsProvision')?.setValue(null, { emitEvent: false });
+        }
+      })
+    );
+  }
 
   onUserIwsProvisionPreferencesChanges(userIwsProvisionPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userIwsProvisionPreferences));
@@ -103,12 +144,20 @@ export class IwsProvisionComponent implements OnInit{
   ];
   }
 
-  onSubmit(): void {
-    if (this.iwsEmployeeForm.valid) {
-      console.log(this.iwsEmployeeForm.value);
-    } else {
-      console.log("Formulario no válido");
+  public onSubmit(): void {
+    if (this.orderForm.invalid) return
+    
+    this.orderCommissionForm = {
+      fixCommission: this.orderForm.value.fixCommission ?? 0,
+      maxCommission: this.orderForm.value.maxCommission ?? 0,
+      iwsProvision: this.orderForm.getRawValue().iwsProvision ?? 0
     }
+
+    this.onCreateOrderCommission.emit(this.orderCommissionForm);
+  }
+
+  public clearIwsCommissionForm(): void {
+    this.orderForm.reset();
   }
 
   addIwsCommission(){

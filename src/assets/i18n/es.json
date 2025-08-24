@@ -243,7 +243,7 @@
   },
   "EMPLOYEE-CONTRACTS": {
     "TABLE": {
-      "EMPLOYEE_ID": "ID Empleado",
+      "EMPLOYEE_ID": "Nr. Empleado",
       "FIRST_NAME": "Nombre",
       "LAST_NAME": "Apellidos",
       "START_DATE": "Fecha Incio",
@@ -257,7 +257,7 @@
     },
     "FORM": {
       "CUSTOMER": "Cliente",
-      "EMPLOYEE_ID": "ID Empleado",
+      "EMPLOYEE_ID": "Nr. Empleado",
       "FIRST_NAME": "Nombre",
       "LAST_NAME": "Apellidos",
       "START_DATE": "Fecha Incio",
@@ -267,7 +267,8 @@
       "SPECIAL_PAYMENT": "Pago Especial",
       "MAX_HOURS_PER_MONTH": "Max. Horas/Mes",
       "MAX_HOURS_PER_DAY": "Max. Horas/Día",
-      "HOURLY_RATE": "Tafira por Hora"
+      "HOURLY_RATE": "Tafira por Hora",
+      "HOURLY_REAL_RATE": "Tafira real por Hora"
     },
     "LABEL": {
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "¿Está seguro que desea eliminar el contrato de empleado",
@@ -287,7 +288,9 @@
       "END_DATE": "Fecha Fin",
       "AUTH_DATE": "Fecha de Autorización",
       "FUNDING_RATE": "Tasa de Financiación"
-    }
+    },
+    "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto",
+    "REMOVE_PROJECTS_QUESTION":"¿Está seguro que desea eliminar el proyecto"
   },
   "ORDERS": {
     "FORM": {
@@ -341,7 +344,9 @@
     "NEW": "Nuevo",
     "TITLE_DIALOG_NEW": "Nueva comisión IWS",
     "TITLE_DIALOG_EDIT": "Editar comisión IWS"
-    }
+    },
+    "ORDER_DIALOG_REMOVE": "Eliminar Orden",
+    "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden"
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -406,7 +411,9 @@
         "FROM_VALUE": "Del Valor",
         "COMMISSION": "Comisión",
         "MIN_COMMISSION": "Comisión mínima"
-      }
+      },
+      "TITLE_DIALOG_REMOVE": "Eliminar Marco de Acuerdo",
+      "REMOVE_QUESTION":"¿Está seguro que desea eliminar el Marco de Acuerdo"
     }
   },
   "CONTRACTS": {
@@ -449,6 +456,9 @@
       "IS_AFA": "Tiene Depreciación",
       "AFA_MONTHS": "Periodo de Depreciación (meses)",
       "DESCRIPTION":"Descripción"
+    },
+    "FORM_COMMISSION": {
+      "DURATION_OF_USE": "Duración de uso (meses)"
     },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "¿Está seguro que desea eliminar el Subcontratista",
@@ -590,6 +600,7 @@
       "ACTIVE": "Activo"
     },
     "FORM": {
+      "USER_FORM":"Nuevo Usuario",
       "EDIT_TITLE": "Editar Usuario",
       "USERNAME": "Nombre de usuario",
       "FIRSTNAME": "Nombre",
@@ -599,6 +610,15 @@
       "ACTIVE": "Activo",
       "ASSIGNED_ROLES": "Roles asignados",
       "AVAILABLE_ROLES": "Roles disponibles"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Eliminar Usuario",
+      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
+    },
+    "HEADER":{
+      "USERNAME":"Nombre de usuario",
+      "NAME": "Nombre",
+      "ACTIVE": "Activo"
     }
   },
   "ROLES": {
@@ -617,6 +637,26 @@
       "EDIT_ROL": "Editar Rol",
       "ROL": "Rol",
       "MODULE": "Módulo"
+    },
+    "DELETE": {
+      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar ",
+      "CONFIRMATION": "Eliminar Rol de Usuario"
+
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM" : "Nuevo Rol de Usuario"
+    },
+    "MESSAGE":{
+      "SUCCESS":"ÉXITO",
+      "DELETE_SUCCESS":"Registro eliminado exitosamente.",
+      "ERROR":"ERROR",
+      "DELETE_ERROR_IN_USE":"No se puede eliminar el registro porque está en uso por otras entidades.",
+      "DELETE_FAILED":"No se pudo eliminar el registro."
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Rol requerido",
+      "CHECKING_DUPLICATE": "Verificando duplicado",
+      "CREATION_FAILED":"Hubo un error durante la creacion de Rol"
     }
   },
   "HOLIDAYS": {
@@ -661,7 +701,10 @@
       "PRODUCTIVE_HOURS": "Horas productivas / año"
     },
     "HEADER": {
-      "EDIT_FUNDING": "Editar programa de financiación"
+      "EDIT_FUNDING": "Editar programa de financiación",
+      "NEW_FUNDING": "Nuevo programa de financiación",
+      "DELETE_FUNDING": "Eliminar programa de financiación",
+      "DELETE_CONFIRM_QUESTION": "¿Está seguro que desea eliminar el programa de financiación: "
     }
   },
   "DUNNING_LEVELS": {

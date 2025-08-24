@@ -3,12 +3,33 @@
     <div class>
       <master-data-genaral-table
         [tableId]="tableKey"
-        [tableValues]="userUI"
-        [columns]="columsHeaderFieldUser"
-        [userPreferences]="userPreferences"
+        [tableValues]="users()"
+        [columns]="userDisplayedColumns"
+        [userPreferences]="userUserPreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="editUser($event)"
       ></master-data-genaral-table>
+      <p-dialog 
+        [header]="modalType === 'create' 
+          ? ('USERS.FORM.USER_FORM' | translate) 
+          : ('USERS.DELETE.CONFIRMATION' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleModal" 
+        (onShow)="onDialogShow()"
+      >
+        <app-user-modal
+          [modalType]="modalType"
+          [userName]="UserName"
+          [userToDelete]="selectedUser"
+          (isVisibleModal)="onModalVisibilityChange($event)"
+          (toastMessage)="toastMessageDisplay($event)"
+          #titleModal
+        ></app-user-modal>
+      </p-dialog>
     </div>
   </div>
 </div>
+<p-toast/>

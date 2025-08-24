@@ -38,8 +38,8 @@
           />
         </div>
         <div class="form-item-container flex gap-4 mb-3">
-          <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE' | translate }} %</label>
-          <p-inputnumber
+          <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.FORM_COMMISSION.DURATION_OF_USE' | translate }}</label>
+          <p-inputnumber [inputStyle]="{'text-align': 'right'}"
             inputId="months"
             formControlName="months"
             autocomplete="off"
@@ -51,8 +51,12 @@
             inputId="depreciationAmount"
             formControlName="depreciationAmount"
             autocomplete="off"
+            mode="decimal" [max]="99999.99" [min]="0"
+            locale="de-DE"
+            [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2"
             [maxFractionDigits]="2"
+            [useGrouping]="true"
             [disabled]="true"
             readonly
           />
@@ -96,6 +100,8 @@
         </div>
       </div>
     </ng-template>
-    
+    <app-occ-error-modal *ngIf="showOCCErrorModalDepreciation" (onClose)="showOCCErrorModalDepreciation = false">
+    </app-occ-error-modal>
   </p-dialog>
 </div>
+

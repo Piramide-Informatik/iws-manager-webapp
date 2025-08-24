@@ -256,10 +256,10 @@
       "SALARY_PER_MONTH": "Gehalt",
       "WEEKLY_HOURS": "WoStd",
       "WORK_SHORT_TIME": "Kurz",
-      "SPECIAL_PAYMENT": "Max.Std Mon",
-      "MAX_HOURS_PER_MONTH": "Max Std Tag",
-      "MAX_HOURS_PER_DAY": "Std.Satz",
-      "HOURLY_RATE": "JaSoZa"
+      "SPECIAL_PAYMENT": "JaSoZa",
+      "MAX_HOURS_PER_MONTH": "Max.Std Mon",
+      "MAX_HOURS_PER_DAY": "Max Std Tag",
+      "HOURLY_RATE": "Std.Satz"
     },
     "FORM": {
       "CUSTOMER": "kunde",
@@ -273,7 +273,8 @@
       "SPECIAL_PAYMENT": "Jahresonderzahlung",
       "MAX_HOURS_PER_MONTH": "Max Stunden / Monat",
       "MAX_HOURS_PER_DAY": "Max Stunden / Tag",
-      "HOURLY_RATE": "Stundensatz"
+      "HOURLY_RATE": "Stundensatz",
+      "HOURLY_REAL_RATE": "Realer Stundensatz"
     },
     "LABEL": {
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Möchten Sie den Arbeitsvertrag wirklich löschen",
@@ -293,7 +294,9 @@
       "END_DATE": "Ende",
       "AUTH_DATE": "Förderkennzeichen",
       "FUNDING_RATE": "Fördersatz"
-    }
+    },
+    "PROJECTS_DIALOG_REMOVE": "Projekt löschen",
+    "REMOVE_PROJECTS_QUESTION":"Möchten Sie das Projekt wirklich löschen"
   },
   "ORDERS": {
     "FORM":{
@@ -343,7 +346,9 @@
     "ESTIMATED_IWS_COMMISSION": "Geschätzte IWS-Provision",
     "TITLE_DIALOG_NEW": "IWS Commission neu",
     "TITLE_DIALOG_EDIT": "IWS Commission bearbeiten"
-  }
+    },
+    "ORDER_DIALOG_REMOVE": "Bestellung löschen",
+    "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen"
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -408,7 +413,9 @@
         "FROM_VALUE": "ab Wert",
         "COMMISSION": "Provision",
         "MIN_COMMISSION": "Mindestprovision"
-      }
+      },
+      "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
+      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen"
     }
   },
   "CONTRACTS": {
@@ -451,6 +458,9 @@
       "IS_AFA": "AfA",
       "AFA_MONTHS": "AfA Dauer (Monate)",
       "DESCRIPTION":"Beschreibung"
+    },
+    "FORM_COMMISSION": {
+      "DURATION_OF_USE": "Nutzungsdauer (Monate)"
     },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "Möchten Sie den Untervertrag wirklich löschen",
@@ -592,6 +602,7 @@
       "ACTIVE": "Aktiv"
     },
     "FORM": {
+      "USER_FORM":"Neuer Benutzer",
       "EDIT_TITLE": "Benutzer bearbeiten",
       "USERNAME": "Benutzername",
       "FIRSTNAME": "Vorname",
@@ -601,6 +612,15 @@
       "ACTIVE": "Aktiv",
       "ASSIGNED_ROLES": "Zugewiesene Rollen",
       "AVAILABLE_ROLES": "Verfügbare Rollen"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Benutzer löschen",
+      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+    },
+    "HEADER":{
+      "USERNAME":"Benutzername",
+      "NAME": "Name",
+      "ACTIVE": "Aktiv"
     }
   },
   "ROLES": {
@@ -619,6 +639,25 @@
       "EDIT_ROL": "Rollen bearbeiten",
       "ROL": "Benutzerrolle",
       "MODULE": "Modul"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "Neue Rolle"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Rolle löschen",
+      "CONFIRM_QUESTION":"Sind Sie sicher, dass Sie löschen möchten "
+    },
+    "MESSAGE":{
+      "SUCCESS":"ERFOLG",
+      "DELETE_SUCCESS":"Datensatz erfolgreich gelöscht.",
+      "ERROR":"FEHLER",
+      "DELETE_ERROR_IN_USE":"Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
+      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden."
+    },
+    "ERROR" : {
+      "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",
+      "CHECKING_DUPLICATE": "Duplikatprüfung",
+      "CREATION_FAILED":"Beim Erstellen der Rolle ist ein Fehler aufgetreten"
     }
   },
   "HOLIDAYS": {
@@ -663,7 +702,10 @@
       "PRODUCTIVE_HOURS": "Produktive Std. / Jahr"
     },
     "HEADER": {
-      "EDIT_FUNDING": "Förderprogramm bearbeiten"
+      "EDIT_FUNDING": "Förderprogramm bearbeiten",
+      "NEW_FUNDING": "Neue Förderprogramm",
+      "DELETE_FUNDING": "Förderprogramm löschen",
+      "DELETE_CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Förderprogramm löschen möchten: "
     }
   },
   "DUNNING_LEVELS": {

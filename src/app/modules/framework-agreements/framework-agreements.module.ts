@@ -1,8 +1,7 @@
 // Angular
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
-import { ReactiveFormsModule } from '@angular/forms';
 
 //Modulos
 
@@ -35,7 +34,7 @@ import { FrameworkAgreementsSummaryComponent } from './components/framework-agre
 import { FrameworkAgreementsDetailsComponent } from './components/framework-agreement-details/framework-agreement-details.component';
 import { OrderComponent } from './components/framework-agreement-details/order/order.component';
 import { IwsProvisionComponent } from './components/framework-agreement-details/iws-provision/iws-provision.component';
-
+import { SharedModule } from '../shared/shared.module';
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
 
@@ -73,7 +72,8 @@ import { MasterDataModule } from '../master-data/master-data.module';
         TranslateModule,
         TranslatePipe,
         TranslateDirective,
-        MasterDataModule    
+        MasterDataModule,
+        SharedModule  
     ]
 
 })

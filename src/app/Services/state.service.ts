@@ -31,9 +31,9 @@ export class StateService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): void {
+  loadInitialData(): Observable<State[]> {
     this._loading.set(true);
-     this.http.get<State[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<State[]>(this.apiUrl, this.httpOptions).pipe(
        tap({
          next: (states) => {
            this._states.set(states);
@@ -46,7 +46,7 @@ export class StateService {
        }),
        catchError(() => of([])),
        tap(() => this._loading.set(false))
-     ).subscribe();
+     )
   }
 
   // ==================== CREATE OPERATIONS ====================
@@ -56,8 +56,8 @@ export class StateService {
    * @returns Observable with the created State object
    * @throws Error when validation fails or server error occurs
    */
-  addState(state: Omit<State, 'id' | 'createdAt' | 'updatedAt'>): void {
-    this.http.post<State>(this.apiUrl, state, this.httpOptions).pipe(
+  addState(state: Omit<State, 'id' | 'createdAt' | 'updatedAt'>): Observable<State> {
+    return this.http.post<State>(this.apiUrl, state, this.httpOptions).pipe(
       tap({
         next: (newState) => {
           this._states.update(states => [...states, newState]);
@@ -68,7 +68,7 @@ export class StateService {
           console.error('Error adding state:', err);
         }
       })
-    ).subscribe();
+    )
   }
 
  // ==================== READ OPERATIONS ====================

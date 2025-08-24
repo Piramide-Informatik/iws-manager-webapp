@@ -1,7 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalutationUtils } from '../../utils/salutation.utils';
-import { catchError, finalize, of, switchMap } from 'rxjs';
+import { of } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-salutation-modal',
@@ -30,6 +31,8 @@ export class SalutationModalComponent implements OnInit {
       Validators.maxLength(50)
     ])
   });
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
     this.resetForm();
@@ -83,13 +86,10 @@ export class SalutationModalComponent implements OnInit {
     this.prepareForSubmission();
     const salutationName = this.getSanitizedSalutationName();
 
-    this.salutationUtils.salutationExists(salutationName).pipe(
-      switchMap(exists => this.handleSalutationExistence(exists, salutationName)),
-      catchError(err => this.handleError('SALUTATION.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.isLoading = false)
-    ).subscribe();
-
-    this.handleClose();
+    this.salutationUtils.salutationExists(salutationName).subscribe({
+      next: (exists => this.handleSalutationExistence(exists, salutationName)),
+      error: (err => this.handleError('SALUTATION.ERROR.CHECKING_DUPLICATE', err))
+    })
   }
 
   private shouldPreventSubmission(): boolean {
@@ -108,12 +108,18 @@ export class SalutationModalComponent implements OnInit {
   private handleSalutationExistence(exists: boolean, salutationName: string) {
     if (exists) {
       this.errorMessage = 'SALUTATION.ERROR.ALREADY_EXISTS';
-      return of(null);
+      this.isLoading = false;
+      this.handleClose();
+      return;
     }
-
-    return this.salutationUtils.createNewSalutation(salutationName).pipe(
-      catchError(err => this.handleError('SALUTATION.ERROR.CREATION_FAILED', err))
-    );
+    this.salutationUtils.createNewSalutation(salutationName).subscribe({
+      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
+      error: (err) => this.commonMessageService.showErrorCreatedMessage(),
+      complete: () => {
+        this.isLoading = false;
+        this.handleClose();
+      }
+    })
   }
 
   private handleError(messageKey: string, error: any) {

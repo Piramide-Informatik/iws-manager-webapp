@@ -1,8 +1,7 @@
 //Angular
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //Modulos
 import { OrderRountingModule } from './order-routing.module';
@@ -22,9 +21,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { MessageModule } from 'primeng/message';
-
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ToastModule } from 'primeng/toast';
 
 //Components
+import { SharedModule } from '../shared/shared.module';
 import { OrderDetailsComponent } from './components/order-detail/order-details.component';
 import { OrderComponent } from './components/order-detail/order/order.component';
 import { ProjectComponent } from './components/order-detail/project/project.component';
@@ -64,7 +65,10 @@ import { MasterDataModule } from '../master-data/master-data.module';
     TranslateModule,
     TranslatePipe,
     TranslateDirective,
-    MasterDataModule
+    MasterDataModule,
+    InputNumberModule,
+    ToastModule,
+    SharedModule
   ],
 })
 export class OrdersModule { }

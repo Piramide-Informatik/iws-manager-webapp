@@ -1,32 +1,36 @@
 <p-card [style]="{ background: 'var(--light-cyan)', height: '550px' }" [header]="'USERS.FORM.EDIT_TITLE' | translate">
-  <form [formGroup]="userForm">
+  <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
       <div class="user-form mb-2">
         <label for="username">{{ "USERS.FORM.USERNAME" | translate }}</label>
-        <input pInputText id="username" formControlName="username" />
+        <input pInputText id="username" formControlName="username" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('username')?.invalid && 
+        editUserForm.get('username')?.touched}" autocomplete="off" />
       </div>
 
       <div class="user-form mb-2">
         <label for="firstName">{{ "USERS.FORM.FIRSTNAME" | translate }}</label>
-        <input pInputText id="firstName" formControlName="firstName" />
+        <input pInputText id="firstName" formControlName="firstName" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('firstName')?.invalid && 
+        editUserForm.get('firstName')?.touched}" autocomplete="off"/>
       </div>
 
       <div class="user-form mb-2">
         <label for="lastName">{{ "USERS.FORM.LASTNAME" | translate }}</label>
-        <input pInputText id="lastName" formControlName="lastName" />
+        <input pInputText id="lastName" formControlName="lastName" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('lastName')?.invalid && 
+        editUserForm.get('lastName')?.touched}" autocomplete="off" />
       </div>
 
       <div class="user-form mb-2">
         <label for="email">{{ "USERS.FORM.EMAIL" | translate }}</label>
-        <input pInputText id="email" formControlName="email" />
+        <input pInputText id="email" formControlName="email" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('email')?.invalid && 
+        editUserForm.get('email')?.touched}" autocomplete="off"/>
       </div>
 
       <div class="user-form mb-2">
         <label for="password">{{ "USERS.FORM.PASSWORD" | translate }}</label>
-        <p-password formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'">
+        <p-password formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('password')?.invalid && 
+        editUserForm.get('password')?.touched}" autocomplete="off">
         </p-password>
       </div>
-
       <div class="user-form-check mb-2">
         <label for="canBeBookedChecked">{{
           "USERS.FORM.ACTIVE" | translate
@@ -55,28 +59,35 @@
 
         <div class="col-12">
           <p-pickList 
-            [source]="availableRoles" 
-            [target]="assignedRoles" 
+            [source]="availableRoless" 
+            [target]="userRoles" 
             sourceHeader="Disponibles"
             targetHeader="Asignados" 
-            [showSourceFilter]="false" 
-            [showTargetFilter]="false" 
-            [metaKeySelection]="false"
-            [showSourceControls]="false"
-            [showTargetControls]="false"
             dragdrop="true" 
             [responsive]="true" 
-            [style]="{ height: '170px' }">
+            [showSourceFilter]="false" 
+            [showTargetFilter]="false" 
+            [showSourceControls]="false"
+            [showTargetControls]="false"
+            [metaKeySelection]="false"
+            [style]="{ height: '170px' }"
+            (onMoveToTarget)="onRolesChange()"
+            (onMoveToSource)="onRolesChange()"
+            (onMoveAllToSource)="onRolesChange()"
+            (onMoveAllToTarget)="onRolesChange()"
+            >
           </p-pickList>
         </div>
       </div>
 
       <div class="flex justify-content-center gap-2 mt-2">
         <p-button
+          type="submit"
           size="small"
           [label]="'BUTTONS.SAVE' | translate"
           icon="pi pi-check"
           iconPos="left"
+          [disabled]="editUserForm.invalid || !editUserForm.dirty || isSaving"
         />
 
         <p-button
@@ -85,9 +96,17 @@
           [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times"
           iconPos="left"
+          (click)="clearForm()" 
+          (keydown.enter)="clearForm()"
         />
-
       </div>
     </div>
   </form>
 </p-card>
+<app-occ-error-modal
+    *ngIf="showOCCErrorModaUser"
+    [useEmitter]="true"
+    (close)="showOCCErrorModaUser = false"
+    (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>

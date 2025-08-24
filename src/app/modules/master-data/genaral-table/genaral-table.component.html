@@ -60,9 +60,9 @@
         <td>
           <div class="flex justify-content-center gap-2">
             <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
-              (click)="editRegister(row)"></button>
+              (click)="editRegister(row)" [disabled]="disableButtons"></button>
             <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
-              (click)="deleteRegister(row[removeKey])"></button>
+              (click)="deleteRegister(row[removeKey])" [disabled]="disableButtons"></button>
           </div>
         </td>
         <td *ngFor="let col of columns; let i = index" [ngClass]="col.customClasses ? col.customClasses : ''">
@@ -72,7 +72,7 @@
             style="color: inherit; text-decoration: none;" tabindex="-1">
             {{ getNestedValue(row, col.field) }}
           </a>
-          } @else if(col.useSameAsEdit) {
+          } @else if(col.useSameAsEdit && !disableButtons) {
           <p class="clickable-title without-margin" (click)="editRegister(row)" (keydown.enter)="editRegister(row)">
             {{ getNestedValue(row, col.field) }}
           </p>
@@ -123,12 +123,12 @@
   <p-toolbar>
     <ng-template #start>
       <div class="flex gap-2">
-        <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus"
+        <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus" [disabled]="disableButtons"
           (click)="createRegister('new register')" (keydown.enter)="createRegister('new register')" />
 
         @if(isFileUploadButtonVisible) {
         <p-fileUpload mode="basic" [accept]="acceptFilesFormats" [maxFileSize]="5000000"
-          [chooseLabel]="'BUTTONS.IMPORT' | translate" auto customUpload class="mr-2 inline-block" />
+          [chooseLabel]="customerUploadButtonText.length > 0 ? customerUploadButtonText : 'BUTTONS.IMPORT' | translate" auto customUpload class="mr-2 inline-block" />
         }
       </div>
     </ng-template>

@@ -37,6 +37,7 @@ export class DepreciationScheduleComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
   private langSubscription = new Subscription();
+  public showOCCErrorModalDepreciation = false;
   
   @Input() currentSubcontract!: Subcontract;
 
@@ -84,8 +85,8 @@ export class DepreciationScheduleComponent implements OnInit {
   private initForm(): void {
     this.depreciationForm = new FormGroup({
       year: new FormControl(''),
-      months: new FormControl(''),
-      depreciationAmount: new FormControl(''),
+      months: new FormControl(null),
+      depreciationAmount: new FormControl(null),
     });
     this.depreciationForm.get('depreciationAmount')?.disable();
   }
@@ -96,7 +97,7 @@ export class DepreciationScheduleComponent implements OnInit {
       const invoiceNet = this.currentSubcontract?.invoiceNet ?? 0;
       const afamonths = this.currentSubcontract?.afamonths ?? 0;
       const depreciationAmount = this.calculateDepreciationAmount(invoiceNet, afamonths, months);
-      this.depreciationForm.get('depreciationAmount')?.setValue(depreciationAmount);
+      this.depreciationForm.get('depreciationAmount')?.setValue(depreciationAmount, { emitEvent: false });
     });
   }
 
@@ -168,9 +169,13 @@ export class DepreciationScheduleComponent implements OnInit {
         this.commonMessageService.showEditSucessfullMessage();
         this.loadSubcontractYears(this.subcontractId);
       },
-      error: () => {
+      error: (err) => {
         this.isLoading = false;
-        this.commonMessageService.showErrorEditMessage();
+        if (err.message === 'Conflict detected: subcontract year version mismatch') {
+          this.showOCCErrorModalDepreciation = true;
+        } else {
+          this.commonMessageService.showErrorEditMessage();
+        }
       }
     });
   }

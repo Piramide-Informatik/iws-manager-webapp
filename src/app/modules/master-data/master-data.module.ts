@@ -54,7 +54,7 @@ import { HolidaysComponent } from './components/holidays/holidays.component';
 import { HolidaysTableComponent } from './components/holidays/components/holidays-table/holidays-table.component';
 import { EditHolidayComponent } from './components/holidays/components/edit-holiday/edit-holiday.component';
 import { FundingProgramsTableComponent } from './components/funding-programs/components/funding-programs-table/funding-programs-table.component';
-import { EditFundingProgramComponent } from './components/funding-programs/components/edit-funding-program/edit-funding-program.component';
+import { FundingProgramFormComponent } from './components/funding-programs/components/funding-program-form/funding-program-form.component';
 import { FundingProgramsComponent } from './components/funding-programs/funding-programs.component';
 import { DunningLevelsComponent } from './components/dunning-levels/dunning-levels.component';
 import { GenaralTableComponent } from './genaral-table/genaral-table.component';
@@ -124,6 +124,10 @@ import localeDe from '@angular/common/locales/de';
 import { ModelProjectStatusComponent } from './components/project-status/components/model-project-status/model-project-status.component';
 import { TableProjectStatusComponent } from './components/project-status/components/table-project-status/table-project-status.component';
 import { ModalApprovalStatusComponent } from './components/approval-status/components/approval-status-project/modal-approval-status/modal-approval-status.component';
+import { RolModalComponent } from './components/roles/components/rol-modal/rol-modal.component';
+import { UserModalComponent } from './components/user/components/user-modal/user-modal.component';
+import { CdkDragPlaceholder } from "@angular/cdk/drag-drop";
+import { ModalFundingProgramComponent } from './components/funding-programs/components/modal-funding-program/modal-funding-program.component';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -151,7 +155,7 @@ registerLocaleData(localeDe, 'de-DE');
     HolidaysTableComponent,
     EditHolidayComponent,
     FundingProgramsTableComponent,
-    EditFundingProgramComponent,
+    FundingProgramFormComponent,
     FundingProgramsComponent,
     DunningLevelsComponent,
     GenaralTableComponent,
@@ -213,7 +217,10 @@ registerLocaleData(localeDe, 'de-DE');
     StateModalComponent,
     ModelProjectStatusComponent,
     TableProjectStatusComponent,
-    ModalApprovalStatusComponent
+    ModalApprovalStatusComponent,
+    RolModalComponent,
+    UserModalComponent,
+    ModalFundingProgramComponent
   ],
   imports: [
     ButtonModule,
@@ -244,8 +251,9 @@ registerLocaleData(localeDe, 'de-DE');
     TextareaModule,
     PasswordModule,
     PickListModule,
-    SharedModule
-  ],
+    SharedModule,
+    CdkDragPlaceholder
+],
   exports: [
     GenaralTableComponent
   ],

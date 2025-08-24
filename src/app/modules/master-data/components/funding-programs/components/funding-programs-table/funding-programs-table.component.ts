@@ -1,9 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, computed } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { ModalFundingProgramComponent } from '../modal-funding-program/modal-funding-program.component';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { FundingProgram } from '../../../../../../Entities/fundingProgram';
+import { FundingProgramUtils } from '../../utils/funding-program-utils';
+import { FundingProgramService } from '../../../../../../Services/funding-program.service';
+import { FundingProgramStateService } from '../../utils/funding-program-state.service';
 
 @Component({
   selector: 'app-funding-programs-table',
@@ -12,42 +17,35 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   standalone: false,
 })
 export class FundingProgramsTableComponent implements OnInit, OnDestroy {
-  fundingProgramsUI: any[] = [];
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly fundingProgramService = inject(FundingProgramService);
+  private readonly fundingStateService = inject(FundingProgramStateService);
+  @ViewChild('fundingProgramModal') fundingProgramModalComponent!: ModalFundingProgramComponent;
+  public modalType: 'create' | 'delete' = 'create';
+  public visibleModal: boolean = false;
   columnsHeaderFieldFundingProgram: any[] = [];
   userFundingProgramsPreferences: UserPreference = {};
   tableKey: string = 'FundingPrograms'
-  dataKeys = ['program', 'rate'];
+  dataKeys = ['name', 'defaultFundingRate'];
   private langSubscription!: Subscription;
+  selectedFunding!: FundingProgram | undefined;
+
+  readonly fundingPrograms = computed(() => {
+    return this.fundingProgramService.fundingPrograms()
+  });
 
   constructor(
+    private readonly fundingProgramUtils: FundingProgramUtils,
     private readonly translate: TranslateService,
-    private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly userPreferenceService: UserPreferenceService
   ) {}
 
   ngOnInit(): void {
-    this.fundingProgramsUI = [
-      { id: 1, program: 'BMWi', rate: 25 },
-      { id: 2, program: 'ZIM', rate: 45 },
-      { id: 3, program: 'Eurostars', rate: 30 },
-      { id: 4, program: 'Marketing', rate: 20 },
-      { id: 5, program: 'FUE-Verw', rate: 40 },
-      { id: 6, program: 'FZ', rate: 35 },
-      { id: 7, program: 'Go-Inno', rate: 28 },
-      { id: 8, program: 'GreenEconomy.IN.NRW', rate: 50 },
-      { id: 9, program: 'KMU-Innovativ', rate: 38 },
-      { id: 10, program: 'LuFo', rate: 32 },
-      { id: 11, program: 'Messe', rate: 22 },
-      { id: 12, program: 'NEXT.IN.NRW', rate: 27 },
-      { id: 13, program: 'Sonstiges', rate: 33 },
-      { id: 14, program: 'Studie', rate: 18 },
-    ];
-
+    this.fundingProgramUtils.loadInitialData().subscribe();
     this.loadColHeadersFundingProgram();
     this.userFundingProgramsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeadersFundingProgram();
-      this.routerUtils.reloadComponent(true);
       this.userFundingProgramsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldFundingProgram);
     });
   }
@@ -59,12 +57,12 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   loadColHeadersFundingProgram(): void {
     this.columnsHeaderFieldFundingProgram = [
       {
-        field: 'program',
+        field: 'name',
         styles: { width: 'auto' },
         header: this.translate.instant(_('FUNDING.TABLE.PROGRAM')),
       },
       {
-        field: 'rate',
+        field: 'defaultFundingRate',
         styles: { width: '100px' },
         header: this.translate.instant(_('FUNDING.TABLE.RATE')),
         customClasses: ['align-right']
@@ -76,5 +74,43 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+  }
+
+  onDialogShow() {
+    if (this.modalType === 'create' && this.fundingProgramModalComponent) {
+      this.fundingProgramModalComponent.focusInputIfNeeded();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedFunding = this.fundingProgramService.fundingPrograms().find(fp => fp.id == event.data);
+    }
+    this.visibleModal = true;
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+  }
+
+  onCreateFundingProgram(event: { created?: FundingProgram, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteFundingProgram(deleteEvent: {status: 'success' | 'error'}): void {
+    if(deleteEvent.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(deleteEvent.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
+    }
+  }
+  
+  editFundingProgram(fundingProgram: FundingProgram): void {
+    this.fundingStateService.setFundingProgramToEdit(fundingProgram);
   }
 }
