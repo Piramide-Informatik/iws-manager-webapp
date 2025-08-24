@@ -100,7 +100,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
       netOrGross: new FormControl(this.optionsNetOrGross[0].value), // default: 'net'
       invoiceAmount: new FormControl(''),
       afa: new FormControl(false), // checkbox
-      afaDurationMonths: new FormControl({ value: '', disabled: true }), // solo si afa = true
+      afaDurationMonths: new FormControl({ value: null, disabled: true }), // solo si afa = true
       description: new FormControl(''),
     });
     this.subcontractForm.reset();
@@ -113,7 +113,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
         afaDurationControl?.enable();
       } else {
         afaDurationControl?.disable();
-        afaDurationControl?.setValue('');
+        afaDurationControl?.setValue(null, { emitEvent: false });
       }
     });
   }

@@ -250,7 +250,7 @@
   },
   "EMPLOYEE-CONTRACTS": {
     "TABLE": {
-      "EMPLOYEE_ID": "Employee ID",
+      "EMPLOYEE_ID": "Employee No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "START_DATE": "Start Date",
@@ -264,7 +264,7 @@
     },
     "FORM": {
       "CUSTOMER": "Customer",
-      "EMPLOYEE_ID": "Employee ID",
+      "EMPLOYEE_ID": "Employee No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "START_DATE": "Start Date",
@@ -459,6 +459,9 @@
       "IS_AFA": "Depreciation",
       "AFA_MONTHS": "Depreciation period (months)",
       "DESCRIPTION":"Description"
+    },
+    "FORM_COMMISSION": {
+      "DURATION_OF_USE": "Duration of use (months)"
     },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "Are you sure you want to delete the Subcontract",
