@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ContactPersonService } from '../../../../Services/contact-person.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ContactPerson } from '../../../../Entities/contactPerson';
