@@ -460,6 +460,9 @@
       "AFA_MONTHS": "Depreciation period (months)",
       "DESCRIPTION":"Description"
     },
+    "FORM_COMMISSION": {
+      "DURATION_OF_USE": "Duration of use (months)"
+    },
     "LABEL": {
       "REMOVE_SUBCONTRACT_QUESTION": "Are you sure you want to delete the Subcontract",
       "DELETE_SUBCONTRACT": "Delete Subcontract",
