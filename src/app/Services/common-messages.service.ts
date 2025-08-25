@@ -75,6 +75,14 @@ export class CommonMessagesService {
       detail: this.translateService.instant('MESSAGE.DELETE_ERROR_WITH_RECORDS')
     });
   }
+
+  showErrorDeleteMessageUsedByOtherEntities() {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('MESSAGE.DELETE_ERROR_IN_USE')
+    })
+  }
   
   showSuccessMessage(messageDetail: string){
     this.messageService.add({

@@ -55,7 +55,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
       this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.route.params.subscribe(params => {
-      this.frameworkAgreementUtils.getAllFrameworkAgreementsByCustomerId(params['id']).subscribe(fas => {
+      this.frameworkAgreementUtils.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(params['id']).subscribe(fas => {
         this.frameworkAgreements = fas.reduce((acc: any[], curr) => {
            acc.push({
              id: curr.id,

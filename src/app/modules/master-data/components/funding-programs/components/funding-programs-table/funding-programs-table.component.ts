@@ -102,11 +102,15 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteFundingProgram(deleteEvent: {status: 'success' | 'error'}): void {
+  onDeleteFundingProgram(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
     if(deleteEvent.status === 'success'){
       this.commonMessageService.showDeleteSucessfullMessage();
-    }else if(deleteEvent.status === 'error'){
-      this.commonMessageService.showErrorDeleteMessage();
+    }else if(deleteEvent.status === 'error' && deleteEvent.error){
+      if(deleteEvent.error.message === 'Cannot delete register: it is in use by other entities'){
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      }else{
+        this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
   

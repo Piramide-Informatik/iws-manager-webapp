@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, switchMap, take, throwError, map, forkJoin } from 'rxjs';
+import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { FrameworkAgreementService } from '../../../Services/framework-agreenent.service';
 import { BasicContract } from '../../../Entities/basicContract';
 import { OrderUtils } from '../../orders/utils/order-utils';
@@ -51,6 +51,17 @@ export class FrameworkAgreementsUtils {
   }
 
   /**
+  * Gets all framework agreements given a customer sorted by contractNo
+  * @param customerId - Customer to get his framework agreements sorted
+  * @returns Observable emitting the raw list of framework agreemetns sorted
+  */
+  getAllFrameworkAgreementsByCustomerIdSortedByContractNo(customerId: number): Observable<BasicContract[]> {
+    return this.frameworkAgreementService.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(customerId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load framework agreements sorted')))
+    );
+  }
+
+  /**
   * Creates a new framework agreement with validation
   * @param frameworkAgreement - Framework Agreement object to create (without id)
   * @returns Observable that completes when framework agreement is created
@@ -65,24 +76,15 @@ export class FrameworkAgreementsUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteFrameworkAgreement(id: number): Observable<void> {
-    const checks = [
-      this.orderUtils.getAllOrdersByBasicContract(id).pipe(
-        take(1),
-        map(orders => ({
-          valid: orders.length === 0,
-          error: 'Cannot be deleted because have associated orders'
-        }))
-      )
-    ]
-    return forkJoin(checks).pipe(
-      switchMap(results => {
-        const isThereInvalid = results.find(r => !r.valid);
-        if (isThereInvalid) {
-          return throwError(() => new Error(isThereInvalid.error))
+  return this.orderUtils.getAllOrdersByBasicContract(id).pipe(
+      take(1),
+      switchMap(orders => {
+        if (orders.length > 0) {
+          return throwError(() => new Error('Cannot delete framework agreement with associated orders'));
         }
         return this.frameworkAgreementService.deleteFrameworkAgreements(id);
       })
-    )
+    );
   }
 
   /**
