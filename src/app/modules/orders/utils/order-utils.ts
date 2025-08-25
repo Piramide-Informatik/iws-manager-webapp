@@ -52,6 +52,17 @@ export class OrderUtils {
   }
 
   /**
+  * Gets all orders given a basicContract
+  * @param basicContractId - Basic Contract to get his orders
+  * @returns Observable emitting the raw list of orders
+  */
+  getAllOrdersByBasicContract(basicContractId: number): Observable<Order[]> {
+    return this.orderService.getAllOrdersByBasicContractId(basicContractId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load orders')))
+    );
+  }
+
+  /**
   * Creates a new order with validation
   * @param order - Order object to create (without id)
   * @returns Observable that completes when order is created
