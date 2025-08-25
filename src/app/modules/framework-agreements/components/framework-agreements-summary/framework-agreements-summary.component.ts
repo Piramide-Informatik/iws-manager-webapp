@@ -126,8 +126,12 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
           this.frameworkAgreements = this.frameworkAgreements.filter( fa => fa.id != this.selectedFrameworkAgreement.id);
           this.commonMessageService.showDeleteSucessfullMessage()
         },
-        error: () => {
-          this.commonMessageService.showErrorDeleteMessage();
+        error: (error) => {
+          if (error.message.includes('have associated orders')) {
+            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
           this.handleFinishRequest();
         },
         complete: () => {

@@ -100,6 +100,23 @@ export class OrderService {
     );
   }
 
+  /**
+   * Retrieves all orders given a basic contract
+   * @param basicContractId Basic Contract to get his orders
+   * @returns Observable with Order array
+   * @throws Error when server request fails
+   */
+  getAllOrdersByBasicContractId(basicContractId: number): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/by-basiccontract/${basicContractId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch orders');
+        console.error('Error fetching orders:', err);
+        return of([]);
+      })
+    );
+  }
+
   // ==================== UPDATE OPERATIONS ====================
   /**
    * Updates an existing order
