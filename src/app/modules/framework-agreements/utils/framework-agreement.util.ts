@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, take, throwError, map, forkJoin } from 'rxjs';
 import { FrameworkAgreementService } from '../../../Services/framework-agreenent.service';
 import { BasicContract } from '../../../Entities/basicContract';
+import { OrderUtils } from '../../orders/utils/order-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -10,6 +11,7 @@ import { BasicContract } from '../../../Entities/basicContract';
  */
 export class FrameworkAgreementsUtils {
   private readonly frameworkAgreementService = inject(FrameworkAgreementService);
+  private readonly orderUtils = inject(OrderUtils);
   /**
   * Gets all framework agreements without any transformation
   * @returns Observable emitting the raw list of framework agreements
@@ -63,7 +65,24 @@ export class FrameworkAgreementsUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteFrameworkAgreement(id: number): Observable<void> {
-    return this.frameworkAgreementService.deleteFrameworkAgreements(id);
+    const checks = [
+      this.orderUtils.getAllOrdersByBasicContract(id).pipe(
+        take(1),
+        map(orders => ({
+          valid: orders.length === 0,
+          error: 'Cannot be deleted because have associated orders'
+        }))
+      )
+    ]
+    return forkJoin(checks).pipe(
+      switchMap(results => {
+        const isThereInvalid = results.find(r => !r.valid);
+        if (isThereInvalid) {
+          return throwError(() => new Error(isThereInvalid.error))
+        }
+        return this.frameworkAgreementService.deleteFrameworkAgreements(id);
+      })
+    )
   }
 
   /**
