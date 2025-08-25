@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { CostTypeUtils } from '../../utils/cost-type-utils';
+import { CostTypeService } from '../../../../../../Services/cost-type.service';
 
 @Component({
   selector: 'app-costs-table',
@@ -12,12 +14,21 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styleUrl: './costs-table.component.scss',
 })
 export class CostsTableComponent implements OnInit, OnDestroy {
-  costsUI: any[] = [];
+  private readonly costTypeUtils = new CostTypeUtils();
+  private readonly costTypeService = inject(CostTypeService)
   columnsHeaderFieldCosts: any[] = [];
   userCostTablePreferences: UserPreference = {};
   tableKey: string = 'CostTable'
   dataKeys = ['name', 'sort'];
   private langSubscription!: Subscription;
+
+  readonly costsUI = computed(() => {
+    return this.costTypeService.costTypes().map(cost => ({
+      id: cost.id,
+      name: cost.type,
+      sort: cost.sequenceNo
+    }));
+  });
 
   constructor(
     private readonly translate: TranslateService,
@@ -26,19 +37,7 @@ export class CostsTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.costsUI = [
-      { id: 1, name: 'Personalkosten', sort: 1 },
-      { id: 2, name: 'Personalpauschale', sort: 2 },
-      { id: 3, name: 'Reisekosten', sort: 3 },
-      { id: 4, name: 'Projektkosten', sort: 4 },
-      { id: 5, name: 'Förderung extern', sort: 5 },
-      { id: 6, name: 'Zuwendung Bund', sort: 6 },
-      { id: 7, name: 'Kostenstelle A', sort: 7 },
-      { id: 8, name: 'Kostenstelle B', sort: 8 },
-      { id: 9, name: 'Sonstige Kosten', sort: 9 },
-      { id: 10, name: 'QM Kosten', sort: 10 },
-    ];
-
+    this.costTypeUtils.loadInitialData().subscribe()
     this.loadColHeadersCost();
     this.userCostTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {

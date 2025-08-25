@@ -99,8 +99,15 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
           this.commonMessage.showDeleteSucessfullMessage();
           this.orders = this.orders.filter( order => order.id != this.selectedOrder?.id);
         },
-        error: () => {
-          this.commonMessage.showErrorDeleteMessage();
+        error: (odersError) => {
+          this.isOrderLoading = false;
+          if (odersError.message.includes('have associated debts')) {
+            this.commonMessage.showErrorDeleteMessageContainsOtherEntities();
+          } else {
+            this.commonMessage.showErrorDeleteMessage();
+          }
+          this.visibleOrderModal = false;
+          this.selectedOrder = undefined;
         },
         complete: () => {
           this.visibleOrderModal = false;

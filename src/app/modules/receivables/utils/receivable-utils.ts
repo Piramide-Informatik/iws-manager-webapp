@@ -40,6 +40,17 @@ export class ReceivableUtils {
   }
 
   /**
+  * Gets all receivables given a order
+  * @param orderId - ORder to get his receivables
+  * @returns Observable emitting the raw list of receivables
+  */
+  getAllReceivableByOrderId(orderId: number): Observable<Debt[]> {
+    return this.receivableService.getAllReceivableByOrderId(orderId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load receivables')))
+    );
+  }
+
+  /**
   * Creates a new receivable with validation
   * @param receivable - Receivable object to create (without id)
   * @returns Observable that completes when receivable is created
