@@ -4,6 +4,7 @@ import { FundingProgramService } from '../../../../../Services/funding-program.s
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FundingProgram } from '../../../../../Entities/fundingProgram';
+import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 
 /**
  * Utility class for fundingProgram-related business logic and operations.
@@ -14,7 +15,7 @@ export class FundingProgramUtils {
   private readonly fundingProgramService = inject(FundingProgramService);
   private readonly projectUtils = inject(ProjectUtils);
   private readonly orderUtils = inject(OrderUtils);
-  // add basic contract utils
+  private readonly basicContractUtils = inject(FrameworkAgreementsUtils);
 
   loadInitialData(): Observable<FundingProgram[]> {
     return this.fundingProgramService.loadInitialData();
@@ -117,9 +118,13 @@ export class FundingProgramUtils {
       this.orderUtils.getAllOrders().pipe(
         map(orders => orders.some(order => order.fundingProgram?.id === idFunProgram)),
         catchError(() => of(false))
+      ),
+      this.basicContractUtils.getAllFrameworkAgreements().pipe(
+        map(basicContracts => basicContracts.some(basicContract => basicContract.fundingProgram?.id === idFunProgram)),
+        catchError(() => of(false))
       )
     ] as const).pipe(
-      map(([usedInProjects, usedInOrders]) => usedInProjects || usedInOrders)
+      map(([usedInProjects, usedInOrders, usedInBasicContracts]) => usedInProjects || usedInOrders || usedInBasicContracts)
     );
   }
 

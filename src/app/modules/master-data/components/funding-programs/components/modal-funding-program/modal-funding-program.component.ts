@@ -15,7 +15,7 @@ export class ModalFundingProgramComponent {
   @Input() modalType: 'create' | 'delete' = 'create';
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() onCreateFundingProgram = new EventEmitter<{created?: FundingProgram, status: 'success' | 'error'}>();
-  @Output() onDeleteFundingProgram = new EventEmitter<{status: 'success' | 'error'}>();
+  @Output() onDeleteFundingProgram = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
@@ -54,13 +54,15 @@ export class ModalFundingProgramComponent {
   }
 
   public onDeleteConfirm(): void {
+    this.isLoading = true;
     if (this.selectedFunding) {
       this.fundingProgramUtils.deleteFundingProgram(this.selectedFunding.id).subscribe({
         next: () => {
           this.onDeleteFundingProgram.emit({status: 'success'});
         },
-        error: () => {
-          this.onDeleteFundingProgram.emit({status: 'error'});
+        error: (error: Error) => {
+          this.isLoading = false;
+          this.onDeleteFundingProgram.emit({status: 'error', error});
         },
         complete: () => {
           this.isLoading = false;
