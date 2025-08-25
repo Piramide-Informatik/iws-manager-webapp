@@ -111,8 +111,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
         taxno: this.contractor.taxNumber
       });
     }
-    if (changes['modalContractType'] && this.modalContractType === 'create'){
-      this.contractorForm.reset();
+    if (changes['isVisibleModal'] && !changes['isVisibleModal'].currentValue) {
+    this.contractorForm.reset();
     }
   }
 
