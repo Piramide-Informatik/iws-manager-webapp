@@ -58,6 +58,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       this.initContractDetailsForm();
       this.ContractDetailsForm.reset();
     }
+    if (changes['visibleModal'] && !changes['visibleModal'].currentValue) {
+    this.ContractDetailsForm.reset();
+    }
   }
 
   ngOnDestroy(): void {
