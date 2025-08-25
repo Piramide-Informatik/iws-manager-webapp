@@ -50,13 +50,13 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       if (!this.employmentContract) {
         this.initFormEmploymentContract();
         this.employmentContractForm.reset();
-        if(this.firstInputForm){
-          setTimeout(()=>{
-            this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
-          },300)
-        }
       } else {
         this.fillEmploymentContractForm();
+      }
+      if(this.firstInputForm){
+        setTimeout(()=>{
+          this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
+        },300)
       }
     }
   }

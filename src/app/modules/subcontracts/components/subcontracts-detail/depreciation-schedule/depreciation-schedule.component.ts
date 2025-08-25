@@ -12,6 +12,7 @@ import { SubcontractYear } from '../../../../../Entities/subcontract-year';
 import { Subcontract } from '../../../../../Entities/subcontract';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { SubcontractStateService } from '../../../utils/subcontract-state.service';
+import { DatePicker } from 'primeng/datepicker';
 
 interface DepreciationEntry {
   id: number;
@@ -46,6 +47,7 @@ export class DepreciationScheduleComponent implements OnInit {
 
   visibleModal = signal(false);
   modalType: 'new' | 'edit' | 'delete' = 'new';
+  @ViewChild('datePicker') firstInput!: DatePicker;
 
   public selectedSubcontractYear!: DepreciationEntry | undefined;
   subcontractId!: number;
@@ -114,6 +116,7 @@ export class DepreciationScheduleComponent implements OnInit {
   }
 
   showModal(option: 'new' | 'edit' | 'delete', idSubcontracYear?: number) {
+    this.firstInputFocus();
     this.modalType = option;
     if( option === 'delete' || option === 'edit' ) {
       this.selectedSubcontractYear = this.subcontractsYear.find(e => e.id === idSubcontracYear);
@@ -242,5 +245,13 @@ export class DepreciationScheduleComponent implements OnInit {
           return acc;  
       }, [])
     });
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.inputfieldViewChild){
+        this.firstInput.inputfieldViewChild.nativeElement.focus();
+      }
+    },300)
   }
 }
