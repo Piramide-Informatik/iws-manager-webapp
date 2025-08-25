@@ -51,7 +51,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(
       this.route.params.subscribe(params => {
-        this.employmentContractUtils.getAllContractsByCustomerId(params['id']).subscribe(employeeContracts => {
+        this.employmentContractUtils.getAllContractsByCustomerIdSortedByEmployeeNo(params['id']).subscribe(employeeContracts => {
           this.employmentContracts = employeeContracts;
           });
       })

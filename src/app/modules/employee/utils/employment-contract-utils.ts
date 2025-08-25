@@ -50,6 +50,17 @@ export class EmploymentContractUtils {
   }
 
   /**
+  * Gets all employment contracts for a given customer sorted by employeeNo
+  * @param customerId - Customer ID to get his employment contracts sorted
+  * @returns Observable emitting the raw list of employment contracts sorted
+  */
+  getAllContractsByCustomerIdSortedByEmployeeNo(customerId: number): Observable<EmploymentContract[]> {
+    return this.employmentContractService.getContractsByCustomerIdSortedByEmployeeNo(customerId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load employment contracts sorted')))
+    );
+  }
+
+  /**
   * Gets all employment contracts for a given employee
   * @param employeeId - Employee ID to get his employment contracts
   * @returns Observable emitting the raw list of employment contracts
