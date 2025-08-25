@@ -101,6 +101,23 @@ export class OrderService {
   }
 
   /**
+   * Retrieves all orders given a customer sorted by orderNo
+   * @param customerId Customer to get his orders sorted
+   * @returns Observable with Order array sorted
+   * @throws Error when server request fails
+   */
+  getAllOrdersByCustomerIdSortedByOrderNo(customerId: number): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/customer/${customerId}/sort-by-orderno`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch orders sorted');
+        console.error('Error fetching orders sorted:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
    * Retrieves all orders given a basic contract
    * @param basicContractId Basic Contract to get his orders
    * @returns Observable with Order array
