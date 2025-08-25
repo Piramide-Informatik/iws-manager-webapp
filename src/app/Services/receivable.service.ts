@@ -84,6 +84,23 @@ export class ReceivableService {
     );
   }
 
+  /**
+   * Retrieves all receivables given a order
+   * @param orderId Order to get his receivables
+   * @returns Observable with Receivable array
+   * @throws Error when server request fails
+   */
+  getAllReceivableByOrderId(orderId: number): Observable<Debt[]> {
+    return this.http.get<Debt[]>(`${this.apiUrl}/by-orderid/${orderId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch receivables');
+        console.error('Error fetching receivables:', err);
+        return of([]);
+      })
+    );
+  }
+  
   // ==================== UPDATE OPERATIONS ====================
   /**
    * Updates an existing receivable

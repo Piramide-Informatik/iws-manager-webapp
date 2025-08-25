@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
+import { catchError, forkJoin, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { OrderService } from '../../../Services/order.service';
 import { Order } from '../../../Entities/order';
+import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -10,6 +11,7 @@ import { Order } from '../../../Entities/order';
  */
 export class OrderUtils {
   private readonly orderService = inject(OrderService);
+  private readonly debtUtils = inject(ReceivableUtils);
 
   /**
   * Gets all orders without any transformation
@@ -64,12 +66,30 @@ export class OrderUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteOrder(id: number): Observable<void> {
-    return this.orderService.deleteOrder(id).pipe(
-      catchError(error => {
-        console.log('Error delete order', error)
-        return throwError(() => error);
+    const checks = [
+      this.debtUtils.getAllReceivableByOrderId(id).pipe(
+        take(1),
+        map(debts => ({
+          valid: debts.length === 0,
+          error: 'Cannot be deleted because have associated debts'
+        }))
+      )
+    ]
+    return forkJoin(checks).pipe(
+      switchMap(results => {
+        const isThereDebts = results.find(r => !r.valid);
+        if (isThereDebts) {
+          return throwError(() => new Error(isThereDebts.error))
+        }
+        return this.orderService.deleteOrder(id).pipe(
+          catchError(error => {
+            console.log('Error delete order', error)
+            return throwError(() => error);
+          })
+        );
       })
-    );
+    )
+    
   }
 
   /**
