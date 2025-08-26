@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +10,7 @@ import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-employee-form',
@@ -55,11 +56,13 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
+  @ViewChild('inputNumber') firstInput!: InputNumber;
+
   constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     this.initForm();
-
+    this.firstInputFocus();
     this.activatedRoute.params.subscribe(params => {
       const employeeId = params['employeeId'];
       if (!employeeId) {
@@ -96,6 +99,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.input.nativeElement){
+        this.firstInput.input.nativeElement.focus();
+      }
+    },300)
   }
 
   private initForm(): void {

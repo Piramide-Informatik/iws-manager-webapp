@@ -52,6 +52,28 @@ export class OrderUtils {
   }
 
   /**
+  * Gets all orders given a project
+  * @param projectId - Project to get his orders
+  * @returns Observable emitting the raw list of orders
+  */
+  getAllOrdersByProjectId(projectId: number): Observable<Order[]> {
+    return this.orderService.getAllOrdersByProjectId(projectId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load orders')))
+    );
+  }
+
+  /**
+  * Gets all orders given a customer sorted by orderNo
+  * @param customerId - Customer to get his orders sorted
+  * @returns Observable emitting the raw list of orders sorted
+  */
+  getAllOrdersByCustomerIdSortedByOrderNo(customerId: number): Observable<Order[]> {
+    return this.orderService.getAllOrdersByCustomerIdSortedByOrderNo(customerId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load orders sorted')))
+    );
+  }
+
+  /**
   * Gets all orders given a basicContract
   * @param basicContractId - Basic Contract to get his orders
   * @returns Observable emitting the raw list of orders

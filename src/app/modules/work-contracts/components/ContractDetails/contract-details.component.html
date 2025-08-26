@@ -4,6 +4,7 @@
       <div class="contract_input">
         <label for="employeNro">{{ 'EMPLOYEE-CONTRACTS.FORM.EMPLOYEE_ID' | translate }}</label>
         <p-select inputId="employeNro" 
+          #pSelect
           formControlName="employeNro" 
           [options]="employeeSelectOptions"
           optionLabel="employeeNo"

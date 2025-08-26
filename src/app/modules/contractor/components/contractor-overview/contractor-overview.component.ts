@@ -77,7 +77,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
         this.customer = customer;
       });
 
-      this.contractorUtils.getAllContractorsByCustomerId(customerId).subscribe(contractors => {
+      this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(customerId).subscribe(contractors => {
         this.contractors = contractors;
       });
     });
@@ -85,10 +85,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      {
-        field: 'label',
-        header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))
-      },
+      { field: 'label', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))},
       { field: 'name', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
       { field: 'country.label', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL')) },
       { field: 'street', header: this.translate.instant(_('CONTRACTS.TABLE.STREET')) },

@@ -7,6 +7,7 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Order } from '../../../../../Entities/order';
+import { InputNumber } from 'primeng/inputnumber';
 
 interface Column {
   field: string;
@@ -61,6 +62,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     edit: 'edit'
   };
   optionSelected: string = '';
+  @ViewChild('inputNumber') firstInput!: InputNumber;
 
   // Configuration Table IWS commission
   @ViewChild('dt') dt!: Table;
@@ -169,6 +171,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showModalIwsCommission(option: string, data?: any){
+    this.firstInputFocus();
     this.optionSelected = option;
     
     if(data && this.optionSelected == this.optionIwsCommission.edit){
@@ -188,5 +191,13 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   deleteCommission(fromOrderValue: number){
     this.orderCommissions = this.orderCommissions.filter( orderCommission => orderCommission.fromOrderValue != fromOrderValue);
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.input.nativeElement){
+        this.firstInput.input.nativeElement.focus();
+      }
+    },300)
   }
 }

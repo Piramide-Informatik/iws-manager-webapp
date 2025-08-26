@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
+import { catchError, forkJoin, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { ProjectService } from '../../../Services/project.service';
 import { Project } from '../../../Entities/project';
+import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
+import { OrderUtils } from '../../orders/utils/order-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -10,6 +12,8 @@ import { Project } from '../../../Entities/project';
  */
 export class ProjectUtils {
   private readonly projectService = inject(ProjectService);
+  private readonly debtUtils = inject(ReceivableUtils);
+  private readonly orderUtils = inject(OrderUtils);
 
   /**
   * Gets all projects without any transformation
@@ -64,12 +68,32 @@ export class ProjectUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteProject(id: number): Observable<void> {
-    return this.projectService.deleteProject(id).pipe(
-      catchError(error => {
-        console.log('Error delete project', error)
-        return throwError(() => error);
+    const checks = [
+      this.debtUtils.getAllReceivableByProjectId(id).pipe(
+        take(1),
+        map(debts => ({
+          valid: debts.length === 0,
+          error: 'Cannot be deleted because have associated receivables'
+        }))
+      ),
+      this.orderUtils.getAllOrdersByProjectId(id).pipe(
+        take(1),
+        map(orders => ({
+          valid: orders.length === 0,
+          error: 'Cannot be deleted because have associated orders'
+        }))
+      )
+    ];
+    return forkJoin(checks).pipe(
+      switchMap(results => {
+        const isThereAssociatedEntities = results.find(r => !r.valid);
+        if (isThereAssociatedEntities) {
+            return throwError(() => new Error(isThereAssociatedEntities.error));
+        }
+
+        return this.projectService.deleteProject(id)
       })
-    );
+    )
   }
 
   /**
