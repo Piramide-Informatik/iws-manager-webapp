@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FundingProgramUtils } from '../../../../master-data/components/funding-programs/utils/funding-program-utils';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -17,6 +17,7 @@ import { ContractStatusUtils } from '../../../../master-data/components/contract
 import { ContractStatus } from '../../../../../Entities/contractStatus';
 import { EmployeeIwsUtils } from '../../../../master-data/components/iws-staff/utils/employee-iws-utils';
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-order',
@@ -80,8 +81,11 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
     this.contractStatusUtils.getAllcontractStatuses(), { initialValue: [] }
   );
 
+  @ViewChild('inputNumber') firstInput!: InputNumber;
+
   ngOnInit(): void {
     this.getCurrentCustomer();
+    this.firstInputFocus();
     this.orderForm = new FormGroup({
       orderNo: new FormControl(null),
       orderLabel: new FormControl(''),
@@ -189,5 +193,13 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   public clearOrderForm(): void {
     this.orderForm.reset();
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.input.nativeElement){
+        this.firstInput.input.nativeElement.focus();
+      }
+    },300)
   }
 }
