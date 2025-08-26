@@ -6,6 +6,7 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { CostTypeUtils } from '../../utils/cost-type-utils';
 import { CostTypeService } from '../../../../../../Services/cost-type.service';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-costs-table',
@@ -20,6 +21,9 @@ export class CostsTableComponent implements OnInit, OnDestroy {
   userCostTablePreferences: UserPreference = {};
   tableKey: string = 'CostTable'
   dataKeys = ['name', 'sort'];
+  isLoadingCostType = false;
+  visibleCostTypeModal = false;
+  selectedCostType!: any;
   private langSubscription!: Subscription;
 
   readonly costsUI = computed(() => {
@@ -33,7 +37,8 @@ export class CostsTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +70,31 @@ export class CostsTableComponent implements OnInit, OnDestroy {
         customClasses: ['align-right']
       },
     ];
+  }
+
+  openDeleteCostTypeModal(costTypeId: number) {
+    this.selectedCostType = this.costsUI().find(c => c.id === costTypeId);
+    this.visibleCostTypeModal = true;
+  }
+
+  onCostTypeDelete() {
+    this.isLoadingCostType = true;
+    this.costTypeUtils.deleteCostType(this.selectedCostType.id).subscribe({
+      next: () => {
+        this.commonMessageService.showDeleteSucessfullMessage();
+        this.isLoadingCostType = false;
+        this.visibleCostTypeModal = false;
+      },
+      error: (errorResponse) => {
+        if (errorResponse.toString().includes('it is in use by other entities')) {
+          this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+        } else {
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+        this.isLoadingCostType = false;
+        this.visibleCostTypeModal = false;
+      }
+    })
   }
 
   ngOnDestroy(): void {
