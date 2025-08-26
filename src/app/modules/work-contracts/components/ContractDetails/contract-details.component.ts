@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -12,6 +12,7 @@ import { buildCustomer } from '../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../shared/utils/builders/employee';
 import { momentFormatDate, momentCreateDate } from '../../../shared/utils/moment-date-utils';
 import { Employee } from '../../../../Entities/employee';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-contract-details',
@@ -37,6 +38,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   @Output() onContractCreated = new EventEmitter<EmploymentContract>();
   @Output() onContractUpdated = new EventEmitter<EmploymentContract>();
 
+  @ViewChild('pSelect') firstInputForm!: Select;
+
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
   public employeeSelectOptions: {employeeNo: number, employeeId: number}[] = [];
@@ -60,6 +63,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     }
     if (changes['visibleModal'] && !changes['visibleModal'].currentValue) {
     this.ContractDetailsForm.reset();
+    }
+    if(changes['visibleModal'] && this.visibleModal){
+      if(this.firstInputForm){
+          setTimeout(()=>{
+            this.firstInputForm.focus();
+            this.firstInputForm.show();
+          },300)
+        }
     }
   }
 
