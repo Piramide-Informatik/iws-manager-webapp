@@ -27,7 +27,7 @@
       <form [formGroup]="depreciationForm" (ngSubmit)="onSubmit()">
         <div class="form-item-container flex gap-4 mb-3">
           <label for="year" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
-          <p-datepicker 
+          <p-datepicker #datePicker
             formControlName="year"
             inputId="year"
             view="year"

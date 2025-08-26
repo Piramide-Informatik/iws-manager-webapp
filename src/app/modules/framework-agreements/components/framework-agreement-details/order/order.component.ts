@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FundingProgramUtils } from '../../../../master-data/components/funding-programs/utils/funding-program-utils';
 import { ContractStatusUtils } from '../../../../master-data/components/contract-status/utils/contract-status-utils';
@@ -50,12 +50,13 @@ export class OrderComponent implements OnInit, OnChanges {
   @Input() contractToEdit!: BasicContract;
   @Output() onIsLoading = new EventEmitter<boolean>();
   public showOCCErrorModalBasicContract: boolean = false;
-
+  @ViewChild('inputText') firstInput!: ElementRef;
   public basicContractForm!: FormGroup;
 
   ngOnInit(): void {
     this.getCurrentCustomer();
     this.initOrderForm();
+    this.firstInputFocus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -186,5 +187,13 @@ export class OrderComponent implements OnInit, OnChanges {
 
   private navigationToEdit(id: number): void {
     this.router.navigate(['.', id], { relativeTo: this.route });
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.nativeElement){
+        this.firstInput.nativeElement.focus();
+      }
+    },300)
   }
 }
