@@ -2,7 +2,6 @@ import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, O
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
-import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
@@ -31,7 +30,6 @@ interface OrderCommissionForm {
   styleUrl: './iws-provision.component.scss'
 })
 export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
-  private readonly orderCommissionService = inject(OrderCommissionService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private readonly subscriptions = new Subscription();
@@ -86,7 +84,6 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
       this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
 
-    this.orderCommissions = this.orderCommissionService.getOrderCommission();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
