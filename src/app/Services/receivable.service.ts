@@ -100,6 +100,23 @@ export class ReceivableService {
       })
     );
   }
+
+  /**
+   * Retrieves all receivables given a project
+   * @param projectId Project to get his receivables
+   * @returns Observable with Receivable array
+   * @throws Error when server request fails
+   */
+  getAllReceivableByProjectId(projectId: number): Observable<Debt[]> {
+    return this.http.get<Debt[]>(`${this.apiUrl}/by-projectid/${projectId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch receivables');
+        console.error('Error fetching receivables:', err);
+        return of([]);
+      })
+    );
+  }
   
   // ==================== UPDATE OPERATIONS ====================
   /**

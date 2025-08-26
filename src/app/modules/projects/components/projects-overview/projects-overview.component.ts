@@ -115,8 +115,16 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
           this.commonMessage.showDeleteSucessfullMessage();
           this.projects = this.projects.filter( project => project.id != this.selectedProject.id);
         },
-        error: () => {
-          this.commonMessage.showErrorDeleteMessage();
+        error: (errorDelete) => {
+          this.isProjectLoading = false;
+          if (errorDelete.message.includes('have associated receivables') 
+            || errorDelete.message.includes('have associated orders')) {
+            this.commonMessage.showErrorDeleteMessageContainsOtherEntities(); 
+          } else {
+            this.commonMessage.showErrorDeleteMessage();
+          }
+          this.visibleProjectModal = false;
+          this.selectedProject = undefined;
         },
         complete: () => {
           this.visibleProjectModal = false;
