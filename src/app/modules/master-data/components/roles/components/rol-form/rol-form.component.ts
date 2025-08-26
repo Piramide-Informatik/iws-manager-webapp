@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Role } from '../../../../../../Entities/role';
 import { Subscription } from 'rxjs';
 import { RoleUtils } from '../../utils/role-utils';
@@ -10,6 +10,8 @@ import { RoleStateService } from '../../utils/role-state.service';
 
 import { Rol } from '../../../../../../Entities/rol';
 import { RolesService } from '../../services/roles.service';
+import { SystemModule } from '../../../../../../Entities/systemModule';
+import { SystemModuleService } from '../../../../../../Services/system-module.service';
 
 interface Column {
   field: string;
@@ -31,6 +33,8 @@ export class RolFormComponent implements OnInit, OnDestroy{
   private readonly subscriptions = new Subscription();
   public showOCCErrorModalRole = false;
 
+  modules: SystemModule[] = [];
+
   selectedOrderCommission!: null;
   roles: Rol[] = [];
 
@@ -39,11 +43,11 @@ export class RolFormComponent implements OnInit, OnDestroy{
   cols!: Column[];
 
 
-  public modules: any[] = [
-    { name: 'Modul 1', code: 'M1' },
-    { name: 'Modul 2', code: 'M2' },
-    { name: 'Modul 3', code: 'M3' }
-  ]
+  // public modules: any[] = [
+  //   { name: 'Modul 1', code: 'M1' },
+  //   { name: 'Modul 2', code: 'M2' },
+  //   { name: 'Modul 3', code: 'M3' }
+  // ]
 
   //public editRolForm!: FormGroup;
 
@@ -52,7 +56,9 @@ export class RolFormComponent implements OnInit, OnDestroy{
     private readonly roleUtils: RoleUtils,
     private readonly roleStateService: RoleStateService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly moduleService: SystemModuleService,
+    private readonly fb: FormBuilder,
   ){ }
 
   ngOnInit(): void {
@@ -70,6 +76,18 @@ export class RolFormComponent implements OnInit, OnDestroy{
     });
 
     this.roles = this.rolService.list();
+    this.loadModules();
+  }
+
+  loadModules(): void {
+    this.moduleService.getAllSystemModules().subscribe({
+      next: (data) => {
+        this.modules = data;
+      },
+      error: (err) => {
+        console.error('Error loading modules', err);
+      }
+    });
   }
 
   ngOnDestroy(): void {
