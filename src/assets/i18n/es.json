@@ -845,6 +845,10 @@
       "NAME": "Tipo de Costo",
       "SORT": "Orden",
       "NO_DATA": "No se encontraron tipos de costo"
+    },
+    "MODAL": {
+      "DELETE_COST_TYPE": "Eliminar tipo de costo",
+      "DELETE_COST_TYPE_QUESTION": "¿Está seguro que desea eliminar el tipo de costo "
     }
   },
   "PAGINATION": {
