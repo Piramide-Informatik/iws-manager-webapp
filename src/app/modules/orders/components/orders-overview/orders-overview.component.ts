@@ -59,7 +59,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
       this.userOrdersOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.route.params.subscribe(params => {
-      this.orderUtils.getAllOrdersByCustomerId(params['id']).subscribe(orders => {
+      this.orderUtils.getAllOrdersByCustomerIdSortedByOrderNo(params['id']).subscribe(orders => {
         this.orders = orders.reduce((acc: any[], curr) => {
           acc.push({
             id: curr.id,
