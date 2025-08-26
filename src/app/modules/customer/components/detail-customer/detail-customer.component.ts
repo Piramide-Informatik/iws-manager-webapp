@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, computed, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed, signal, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, map } from 'rxjs';
@@ -114,6 +114,8 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     }));
   });
 
+  @ViewChild('inputText') firstInput!: ElementRef;
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly activatedRoute: ActivatedRoute,
@@ -161,7 +163,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
-
+    this.firstInputFocus();
     this.setupCustomerSubscription();
 
     this.activatedRoute.params.subscribe(params => {
@@ -218,6 +220,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.nativeElement){
+        this.firstInput.nativeElement.focus();
+      }
+    },300)
   }
 
   private updateTitle(name: string): void {

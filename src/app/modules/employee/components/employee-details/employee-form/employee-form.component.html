@@ -3,7 +3,7 @@
     <div class="form-column pl-6">
       <div class="field">
         <label for="employeeNumber">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
-        <p-inputnumber class="col-md-6" [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off" formControlName="employeeNumber" id="employeeNumber" />
+        <p-inputnumber #inputNumber class="col-md-6" [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off" formControlName="employeeNumber" id="employeeNumber" />
       </div>
 
       <div class="field">
