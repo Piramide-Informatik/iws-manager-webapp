@@ -15,7 +15,7 @@
             : 'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT') | translate"
     (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
     <hr class="mt-0" />
-    <app-project-allocation-modal [modalType]="modalType"
+    <app-project-allocation-modal [modalType]="modalType" [isVisibleModal]="visibleModal"
       [subcontractProject]="currentSubcontractProject"
       (isProjectAllocationVisibleModal)="onModalVisibilityChange($event)"
       (onSubcontractProjectDeleted)="onSubcontractProjectDeleted($event)" 

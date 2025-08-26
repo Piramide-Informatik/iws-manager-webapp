@@ -3,6 +3,7 @@
     <div class="order_input order_id mb-2">
       <label for="orderId">{{ 'ORDERS.FORM.ORDER_ID' | translate }}</label>
       <p-inputnumber [useGrouping]="false" [inputStyle]="{'text-align': 'right'}"
+        #inputNumber
         inputId="orderId"
         formControlName="orderNo"
         autocomplete="off"
