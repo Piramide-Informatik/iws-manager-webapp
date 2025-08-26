@@ -121,6 +121,23 @@ export class ContractorService {
     );
   }
 
+  /**
+   * Retrieves all contractors given a customer sorted by label
+   * @param customerId Customer to get his contractors sorted
+   * @returns Observable with Contractor array sorted
+   * @throws Error when server request fails
+   */
+  getAllContractorsByCustomerIdSortedByLabel(customerId: number): Observable<Contractor[]> {
+    return this.http.get<Contractor[]>(`${this.apiUrl}/customer/${customerId}/ordered-by-label`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch contractors sorted');
+        console.error('Error fetching contractors sorted:', err);
+        return of([]);
+      })
+    );
+  }
+
   // ==================== UPDATE OPERATIONS ====================
   /**
    * Updates an existing contractor

@@ -50,6 +50,17 @@ export class ContractorUtils {
   }
 
   /**
+  * Gets all contractors given a customer sorted by label
+  * @param customerId - Customer to get his contractors sorted
+  * @returns Observable emitting the raw list of contractors sorted
+  */
+  getAllContractorsByCustomerIdSortedByLabel(customerId: number): Observable<Contractor[]> {
+    return this.contractorService.getAllContractorsByCustomerIdSortedByLabel(customerId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load contractors sorted')))
+    );
+  }
+
+  /**
   * Creates a new contractor with validation
   * @param contractor - Contractor object to create (without id)
   * @returns Observable that completes when contractor is created

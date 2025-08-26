@@ -77,7 +77,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
         this.customer = customer;
       });
 
-      this.contractorUtils.getAllContractorsByCustomerId(customerId).subscribe(contractors => {
+      this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(customerId).subscribe(contractors => {
         this.contractors = contractors;
       });
     });
