@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Subscription } from 'rxjs';
@@ -34,7 +34,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
   public subcontractForm!: FormGroup;
   public showOCCErrorModalSubcontract = false;
   public optionsNetOrGross!: { label: string, value: string }[];
-
+  @ViewChild('inputText') firstInput!: ElementRef;
   isLoading = false;
   @Output() public onLoadingOperation = new EventEmitter<boolean>();
 
@@ -62,6 +62,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
 
     this.initForm();
     this.checkboxAfaChange();
+    this.firstInputFocus();
     
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
@@ -276,5 +277,13 @@ export class SubcontractComponent implements OnInit, OnDestroy {
     } else {
       this.commonMessageService.showErrorEditMessage();
     }
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.nativeElement){
+        this.firstInput.nativeElement.focus()
+      }
+    },300)
   }
 }

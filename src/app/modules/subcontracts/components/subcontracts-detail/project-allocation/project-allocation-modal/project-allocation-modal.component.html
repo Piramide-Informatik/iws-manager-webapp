@@ -2,7 +2,7 @@
   <form [formGroup]="allocationForm" (ngSubmit)="onSubmit()">
       <div class="form-item-container flex gap-4 mb-3">
           <label for="projectLabel" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
-          <p-select 
+          <p-select #pSelect
             formControlName="projectLabel" 
             inputId="country" 
             [options]="projectLabels()" 

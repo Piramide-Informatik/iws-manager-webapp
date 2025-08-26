@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Project } from '../../../../../../Entities/project';
 import { SubcontractUtils } from '../../../../utils/subcontracts-utils';
 import { Subcontract } from '../../../../../../Entities/subcontract';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-project-allocation-modal',
@@ -21,11 +22,14 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
 
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() subcontractProject!: SubcontractProject | undefined;
+  @Input() isVisibleModal: boolean = false;
 
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
   @Output() SubcontractProjectUpdated = new EventEmitter<SubcontractProject>();
   @Output() onSubcontractProjectCreated = new EventEmitter<SubcontractProject>();
   @Output() onSubcontractProjectDeleted = new EventEmitter<SubcontractProject>();
+
+  @ViewChild('pSelect') firstInput!: Select;
 
   private readonly subcontractProjectUtils = inject(SubcontractProjectUtils);
   private readonly projectUtils = inject(ProjectUtils);
@@ -117,6 +121,10 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
 
     if (this.modalType === 'create') {
       this.allocationForm.reset();
+    }
+
+    if(changes['isVisibleModal'] && this.isVisibleModal){
+      this.firstInputFocus();
     }
   }
 
@@ -228,4 +236,12 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
     }
   }
 
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput){
+        this.firstInput.focus();
+        this.firstInput.show();
+      }
+    },300)
+  }
 }
