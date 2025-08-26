@@ -52,6 +52,17 @@ export class OrderUtils {
   }
 
   /**
+  * Gets all orders given a project
+  * @param projectId - Project to get his orders
+  * @returns Observable emitting the raw list of orders
+  */
+  getAllOrdersByProjectId(projectId: number): Observable<Order[]> {
+    return this.orderService.getAllOrdersByProjectId(projectId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load orders')))
+    );
+  }
+
+  /**
   * Gets all orders given a basicContract
   * @param basicContractId - Basic Contract to get his orders
   * @returns Observable emitting the raw list of orders
