@@ -3,7 +3,7 @@
     <div class="create-employee-contract-form mt-4">
       <div class="contract_input">
         <label for="startDate">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
-        <p-datepicker inputId="startDate" formControlName="startDate" [showIcon]="true" [showClear]="true"
+        <p-datepicker #datePicker inputId="startDate" formControlName="startDate" [showIcon]="true" [showClear]="true"
           dateFormat="dd.mm.yy">
         </p-datepicker>
       </div>
@@ -11,7 +11,7 @@
       <div class="contract_input">
         <label for="salaryPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
         <div>
-          <p-inputnumber #salaryPerMonth mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off" />
           <p-message severity="error" variant="simple" size="small" *ngIf="
             employmentContractForm.get('salaryPerMonth')?.invalid && 
