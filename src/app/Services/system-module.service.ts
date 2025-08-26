@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class SystemModuleService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_LOCALHOST_DEV}/systemmodules`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/systemmodules`;
 
     private readonly httpOptions = {
         headers: new HttpHeaders({
