@@ -6,7 +6,6 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { CostTypeUtils } from '../../utils/cost-type-utils';
 import { CostTypeService } from '../../../../../../Services/cost-type.service';
-import { CostType } from '../../../../../../Entities/costType';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
