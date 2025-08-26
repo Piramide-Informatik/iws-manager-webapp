@@ -2,7 +2,6 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
-import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,8 +22,7 @@ interface Column {
   styleUrl: './iws-provision.component.scss'
 })
 export class IwsProvisionComponent implements OnInit, OnDestroy{
-  
-  private readonly orderCommissionService = inject(OrderCommissionService); 
+   
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private langSubscription!: Subscription;
@@ -72,7 +70,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
       this.updateHeadersAndColumns();
       this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     })
-    this.orderCommissions = this.orderCommissionService.getOrderCommission();
+
   }
 
   ngOnDestroy(): void {
