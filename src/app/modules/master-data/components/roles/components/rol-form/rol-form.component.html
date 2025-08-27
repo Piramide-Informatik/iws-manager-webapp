@@ -19,7 +19,13 @@
             <!-- Módulo -->
             <div class="rol-form mb-2">
                 <label for="selectedModule">{{ 'ROLES.LABEL.MODULE' | translate }}</label>
-                <p-select formControlName="selectedModule" id="selectedModule" [options]="modules" optionLabel="name" />
+                <p-select
+                    formControlName="selectedModule"
+                    id="selectedModule"
+                    [options]="modules"
+                    optionLabel="name"
+                    placeholder="Seleccione un módulo"
+                    />
             </div>
         </div>
 

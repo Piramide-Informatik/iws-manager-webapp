@@ -852,6 +852,10 @@
       "NAME": "Kostenart",
       "SORT": "Sortierung",
       "NO_DATA": "Keine Kostenarten gefunden"
+    },
+    "MODAL": {
+      "DELETE_COST_TYPE": "Kostenart löschen",
+      "DELETE_COST_TYPE_QUESTION": "Sind Sie sicher, dass Sie den Kostenart löschen möchten "
     }
   },
   "PAGINATION": {

@@ -854,6 +854,10 @@
       "NAME": "Cost Type",
       "SORT": "Sort",
       "NO_DATA": "No cost types found"
+    },
+    "MODAL": {
+      "DELETE_COST_TYPE": "Delete Cost Type",
+      "DELETE_COST_TYPE_QUESTION": "Are you sure you want to delete the Cost Type "
     }
   },
   "PAGINATION": {

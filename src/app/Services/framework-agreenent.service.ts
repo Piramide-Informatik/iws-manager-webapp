@@ -86,7 +86,7 @@ export class FrameworkAgreementService {
   /**
    * Retrieves all basic contracts given a customer
    * @param customerId Customer to get his basic contracts
-   * @returns Observable with basic contractarray
+   * @returns Observable with basic contract array
    * @throws Error when server request fails
    */
   getAllFrameworkAgreementsByCustomerId(customerId: number): Observable<BasicContract[]> {
@@ -95,6 +95,23 @@ export class FrameworkAgreementService {
       catchError(err => {
         this._error.set('Failed to fetch basic contracts');
         console.error('Error fetching basic contracts:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
+   * Retrieves all basic contracts given a customer sorted by contractNo
+   * @param customerId Customer to get his basic contracts sorted
+   * @returns Observable with basic contract array sorted
+   * @throws Error when server request fails
+   */
+  getAllFrameworkAgreementsByCustomerIdSortedByContractNo(customerId: number): Observable<BasicContract[]> {
+    return this.http.get<BasicContract[]>(`${this.apiUrl}/by-customer/${customerId}/ordered-by-contractno`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch basic contracts sorted');
+        console.error('Error fetching basic contracts sorted:', err);
         return of([]);
       })
     );

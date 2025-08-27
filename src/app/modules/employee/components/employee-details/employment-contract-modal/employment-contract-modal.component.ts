@@ -10,7 +10,7 @@ import { buildCustomer } from '../../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../../shared/utils/builders/employee';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
-import { InputNumber } from 'primeng/inputnumber';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-employment-contract-modal',
@@ -34,7 +34,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
   @Output() onOperationEmploymentContract = new EventEmitter<number>(); // Create
   @Output() onEmployeeContractUpdated = new EventEmitter<EmploymentContract>();
   @Output() onEmployeeContractDeleted = new EventEmitter<number>();
-  @ViewChild('salaryPerMonth') firstInputNumber!: InputNumber;
+  @ViewChild('datePicker') firstInputForm!: DatePicker;
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -50,13 +50,13 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       if (!this.employmentContract) {
         this.initFormEmploymentContract();
         this.employmentContractForm.reset();
-        if(this.firstInputNumber){
-          setTimeout(()=>{
-            this.firstInputNumber.input.nativeElement.focus()
-          },300)
-        }
       } else {
         this.fillEmploymentContractForm();
+      }
+      if(this.firstInputForm){
+        setTimeout(()=>{
+          this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
+        },300)
       }
     }
   }

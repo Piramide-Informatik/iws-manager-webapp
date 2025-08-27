@@ -122,6 +122,23 @@ export class EmploymentContractService {
   }
 
   /**
+   * Retrieves all employment contracts given a customer sorted by employeeNo
+   * @param customerId Customer to get his employment contracts
+   * @returns Observable with EmploymentContract array sorted
+   * @throws Error when server request fails
+   */
+  getContractsByCustomerIdSortedByEmployeeNo(customerId: number): Observable<EmploymentContract[]> {
+    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/customer/${customerId}/ordered-by-employeeno-asc`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch employment contracts sorted');
+        console.error('Error fetching employment contracts sorted:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
    * Retrieves all employment contracts for a specific employee
    * @param employeeId Employee ID to get his employment contracts
    * @returns Observable with EmploymentContract array

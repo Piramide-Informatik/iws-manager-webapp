@@ -2,12 +2,12 @@ import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, O
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
-import { OrderCommissionService } from '../../../../customer/services/order-commission/order-commission.service';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Order } from '../../../../../Entities/order';
+import { InputNumber } from 'primeng/inputnumber';
 
 interface Column {
   field: string;
@@ -30,7 +30,6 @@ interface OrderCommissionForm {
   styleUrl: './iws-provision.component.scss'
 })
 export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
-  private readonly orderCommissionService = inject(OrderCommissionService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private readonly subscriptions = new Subscription();
@@ -63,6 +62,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     edit: 'edit'
   };
   optionSelected: string = '';
+  @ViewChild('inputNumber') firstInput!: InputNumber;
 
   // Configuration Table IWS commission
   @ViewChild('dt') dt!: Table;
@@ -84,7 +84,6 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
       this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
 
-    this.orderCommissions = this.orderCommissionService.getOrderCommission();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -172,6 +171,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showModalIwsCommission(option: string, data?: any){
+    this.firstInputFocus();
     this.optionSelected = option;
     
     if(data && this.optionSelected == this.optionIwsCommission.edit){
@@ -191,5 +191,13 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   deleteCommission(fromOrderValue: number){
     this.orderCommissions = this.orderCommissions.filter( orderCommission => orderCommission.fromOrderValue != fromOrderValue);
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(()=>{
+      if(this.firstInput.input.nativeElement){
+        this.firstInput.input.nativeElement.focus();
+      }
+    },300)
   }
 }
