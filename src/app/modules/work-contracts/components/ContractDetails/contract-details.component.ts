@@ -194,8 +194,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private calculateAllFields(): void {
-    const salary = this.ContractDetailsForm.get('salaryPerMonth')?.value;
-    const specialPayment = this.ContractDetailsForm.get('specialPayment')?.value;
+    const salary = this.ContractDetailsForm.get('salaryPerMonth')?.value ?? 0;
+    const specialPayment = this.ContractDetailsForm.get('specialPayment')?.value ?? 0;
     const hoursPerWeek = this.ContractDetailsForm.get('hoursPerWeek')?.value;
     const workShortTime = this.ContractDetailsForm.get('workShortTime')?.value || 0;
 
