@@ -90,17 +90,19 @@
                  "></i>
             </ng-container>
             <ng-template #normalText>
-              {{
-                col.type === 'date'
-                  ? col.format
-                    ? (getNestedValue(row, col.field) | date:col.format)
-                    : (getNestedValue(row, col.field) | date:defaultDateFormat)
-                  : col.type === 'dateYear'
-                    ? (getNestedValue(row, col.field) | date:'yyyy')
-                  : col.type === 'double'
-                    ? (getNestedValue(row, col.field) | number:'1.2-2':'de-DE')
-                    : getNestedValue(row, col.field)
-              }}
+              <span [ngClass]="col.type === 'date' ? 'date-font-family': ''">
+                {{
+                  col.type === 'date'
+                    ? col.format
+                      ? (getNestedValue(row, col.field) | date:col.format)
+                      : (getNestedValue(row, col.field) | date:defaultDateFormat)
+                    : col.type === 'dateYear'
+                      ? (getNestedValue(row, col.field) | date:'yyyy')
+                    : col.type === 'double'
+                      ? (getNestedValue(row, col.field) | number:'1.2-2':'de-DE')
+                      : getNestedValue(row, col.field)
+                }}
+              </span>
             </ng-template>
           </ng-template>
           }
