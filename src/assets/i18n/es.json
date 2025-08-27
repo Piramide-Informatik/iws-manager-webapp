@@ -367,7 +367,10 @@
       "RECEIVED_AMOUNT": "Importe Recibido",
       "OPEN_AMOUNT": "Saldo Pendiente",
       "IWS_PERCENT": "IWS-%"
-    }
+    },
+    "RECEIVABLES_DIALOG_REMOVE": "Eliminar Cuenta por Cobrar",
+    "REMOVE_RECEIVABLES_QUESTION": "¿Está seguro que desea eliminar la cuenta por cobrar"
+
   },
   "INVOICES": {
     "TABLE": {
