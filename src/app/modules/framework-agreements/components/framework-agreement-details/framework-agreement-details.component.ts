@@ -16,12 +16,14 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
   private readonly router = inject(Router);
 
   private readonly contractId = this.route.snapshot.params['idContract'];
+  public modeForm: 'create' | 'edit' = 'create';
   currentBasicContract!: BasicContract;
   @ViewChild(OrderComponent) orderComponent!: OrderComponent;
   isLoading: boolean = false;
 
   ngOnInit(): void {
     if(this.contractId){
+      this.modeForm = 'edit';
       this.frameworkUtils.getFrameworkAgreementById(Number(this.contractId)).subscribe(contract => {
         if(contract){
           this.currentBasicContract = contract;
@@ -39,6 +41,7 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
   }
 
   goBackFrameworksAgreement() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    const path = this.modeForm === 'edit' ? '../../' : '../'
+    this.router.navigate([path], { relativeTo: this.route });
   }
 }
