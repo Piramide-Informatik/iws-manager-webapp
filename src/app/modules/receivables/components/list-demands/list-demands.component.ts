@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ReceivableUtils } from '../../utils/receivable-utils';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 interface Column {
   field: string,
@@ -43,10 +44,18 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
   
   dataKeys = ['idClaim', 'idOrder', 'orderTitle', 'fundingProgram', 'projectSponsor', 'fundingConcentration', 'projectStart', 'projectEnd', 'abrStart', 'abrEnd', 'forNet', 'ofSt', 'zaGross', 'zaReceived', 'zaOffen', 'iwsPercent']
 
+  visibleReceivablesModal = false;
+
+  isReceivablesLoading = false;
+
+  selectedReceivables!: any;
+
   constructor(private readonly translate: TranslateService, 
               private readonly userPreferenceService: UserPreferenceService,
               private readonly router: Router,
-              private readonly route: ActivatedRoute) { }
+              private readonly route: ActivatedRoute,
+              private readonly commonMessage: CommonMessagesService
+          ) { }
 
   ngOnInit(): void {
     this.loadReceivableColHeaders();
@@ -61,6 +70,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
       this.receivableUtils.getAllReceivableByCustomerId(params['id']).subscribe(debts => {
         this.demands = debts.reduce((acc: any[], curr) => {
           acc.push({
+            id: curr.id,
             idClaim: curr.debtNo,
             idOrder: curr.order?.orderNo,
             orderTitle: curr.order?.orderLabel,
@@ -82,6 +92,34 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         }, [])
       })
     })
+  }
+
+  openDeleteModal(id: any) {
+    this.visibleReceivablesModal = true;
+    const receivables = this.demands.find( debts => debts.id == id);
+    if (receivables) {
+      this.selectedReceivables = receivables;
+    }
+  }
+
+  onReceivablesDelete() {
+    if (this.selectedReceivables) {
+      this.isReceivablesLoading = true;
+      this.receivableUtils.deleteReceivable(this.selectedReceivables.id).subscribe({
+        next: () => {
+          this.commonMessage.showDeleteSucessfullMessage();
+          this.demands = this.demands.filter( debts => debts.id != this.selectedReceivables.id);
+        },
+        error: () => {
+          this.commonMessage.showErrorDeleteMessage();
+        },
+        complete: () => {
+          this.visibleReceivablesModal = false;
+          this.selectedReceivables = undefined;
+          this.isReceivablesLoading = false; 
+        }
+      })
+    }
   }
 
   onUserReceivablePreferencesChanges(userReceivablePreferences: any) {
@@ -143,7 +181,4 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteDemand(idClaim: any) {
-    this.demands = this.demands.filter(demand => demand.idClaim !== idClaim);
-  }
 }

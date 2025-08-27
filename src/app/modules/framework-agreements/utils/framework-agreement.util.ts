@@ -62,6 +62,17 @@ export class FrameworkAgreementsUtils {
   }
 
   /**
+   * Retrieves the next contract number
+   * @returns Observable with the next contract number
+   * @throws Error when server request fails
+   */
+  getNextContractNumber(): Observable<number> {
+    return this.frameworkAgreementService.getNextContractNumber().pipe(
+      catchError(() => throwError(() => new Error('Failed to get contract number')))
+    )
+  }
+
+  /**
   * Creates a new framework agreement with validation
   * @param frameworkAgreement - Framework Agreement object to create (without id)
   * @returns Observable that completes when framework agreement is created

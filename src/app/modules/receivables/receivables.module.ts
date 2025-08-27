@@ -8,6 +8,7 @@ import { ReceivablesRoutingModule } from './receivables-routing.module';
 
 //PrimeNG
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -28,6 +29,7 @@ import { MasterDataModule } from '../master-data/master-data.module';
   ],
   imports: [
     ButtonModule,
+    DialogModule,
     IconFieldModule,
     InputIconModule,
     CommonModule,

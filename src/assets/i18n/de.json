@@ -369,7 +369,9 @@
       "RECEIVED_AMOUNT": "ZA brutto.",
       "OPEN_AMOUNT": "ZA erhalten.",
       "IWS_PERCENT": "IWS-%"
-    }
+    },
+    "RECEIVABLES_DIALOG_REMOVE": "Forderung löschen",
+    "REMOVE_RECEIVABLES_QUESTION": "Möchten Sie die Forderung wirklich löschen"
   },
   "INVOICES": {
     "TABLE": {
