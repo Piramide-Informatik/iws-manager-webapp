@@ -117,6 +117,22 @@ export class FrameworkAgreementService {
     );
   }
 
+  /**
+   * Retrieves the next contract number
+   * @returns Observable with the next contract number
+   * @throws Error when server request fails
+   */
+  getNextContractNumber(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/next-contractno`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch next contract number');
+        console.error('Error fetching next contract number:', err);
+        return of(0);
+      })
+    );
+  }
+
   // ==================== UPDATE OPERATIONS ====================
   /**
    * Updates an existing Basic Contracts
