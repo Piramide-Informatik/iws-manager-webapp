@@ -1,0 +1,126 @@
+import { Injectable, inject, signal } from '@angular/core';
+import { PublicHoliday } from '../Entities/publicholiday';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class PublicHolidayService {
+    private readonly http = inject(HttpClient);
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/projectstatus`;
+
+    private readonly httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        }),
+    };
+
+    private readonly _publicHolidays = signal<PublicHoliday[]>([]);
+    private readonly _loading = signal<boolean>(false);
+    private readonly _error = signal<string | null>(null);
+
+    public publicHolidayes = this._publicHolidays.asReadonly();
+    public loading = this._loading.asReadonly();
+    public error = this._error.asReadonly();
+
+    constructor() {
+        this.loadInitialData();
+    }
+
+    public loadInitialData(): Observable<PublicHoliday[]> {
+        this._loading.set(true);
+        return this.http.get<PublicHoliday[]>(this.apiUrl, this.httpOptions).pipe(
+        tap({
+            next: (publicHolidayes) => {
+            this._publicHolidays.set(publicHolidayes);
+            this._error.set(null);
+            },
+            error: (err) => {
+            this._error.set('Failed to load publicHolidays');
+            console.error('Error loading publicHolidays:', err);
+            },
+        }),
+        catchError(() => of([])),
+        tap(() => this._loading.set(false))
+        );
+    }
+
+    // CREATE 
+    addPublicHoliday(projectStatus: Omit<PublicHoliday, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<PublicHoliday> {
+        return this.http.post<PublicHoliday>(this.apiUrl, projectStatus, this.httpOptions).pipe(
+            tap({
+                next: (newPublicHoliday) => {
+                    this._publicHolidays.update(publicHolidays => [...publicHolidays, newPublicHoliday]);
+                    this._error.set(null);
+                },
+                error: (err) => {
+                    this._error.set('Failed to add publicHolidays');
+                    console.error('Error adding publicHolidays:', err);
+                },
+                finalize: () => this._loading.set(false)
+            })
+        );
+    }
+
+    // UPDATE
+    updatePublicHoliday(updatedPublicHoliday: PublicHoliday): Observable<PublicHoliday> {
+        const url = `${this.apiUrl}/${updatedPublicHoliday.id}`;
+        return this.http.put<PublicHoliday>(url, updatedPublicHoliday, this.httpOptions).pipe(
+            tap({
+                next: (res) => {
+                    this._publicHolidays.update(publicHolidays =>
+                        publicHolidays.map(p=> p.id === res.id ? res : p)
+                    );
+                    this._error.set(null);
+                },
+                error: (err) => {
+                    this._error.set('Failed to update publicHoliday');
+                    console.error('Error updating publicHolidays:', err);
+                }
+            })
+        );
+    }
+
+    // DELETE
+    deletePublicHoliday(id: number): Observable<void> {
+        const url = `${this.apiUrl}/${id}`;
+        return this.http.delete<void>(url, this.httpOptions).pipe(
+            tap({
+                next: () => {
+                    this._publicHolidays.update(publicHolidays =>
+                        publicHolidays.filter(p => p.id !== id)
+                    );
+                    this._error.set(null);
+                },
+                error: (err) => {
+                    this._error.set('Failed to delete publicHoliday');
+                    console.error('Error deleting publicHoliday:', err);
+                }
+            })
+        );
+    }
+    //READ
+    getAllPublicHolidays(): Observable<PublicHoliday[]> {
+        return this.http.get<PublicHoliday[]>(this.apiUrl, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch publicHoliday');
+                console.error('Error fetching publicHoliday:', err);
+                return of([]);
+            })
+        );
+    }
+
+    getPublicHolidayById(id: number): Observable<PublicHoliday | undefined> {
+            return this.getAllPublicHolidays().pipe(
+                map(publicHolidays => publicHolidays.find(p => p.id === id))
+            );
+        }
+    
+        public refreshProjectStatuses(): void {
+            this.loadInitialData();
+        }
+}
