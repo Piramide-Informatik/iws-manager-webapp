@@ -15,7 +15,8 @@
       "TEXT": "Entschuldigung, es scheint, dass jemand anderes diesen Datensatz bearbeitet hat, während Sie ihn geändert haben. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut, um mit den neuesten Daten zu arbeiten.",
       "BUTTON": "Aktualisieren"
     },
-    "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet."
+    "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet.",
+    "NUMBER_MAX": "Maximalwert 100 erwartet"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -344,8 +345,9 @@
     "COMMISSION": "Provision",
     "MIN_COMMISSION": "Mindestprovision",
     "ESTIMATED_IWS_COMMISSION": "Geschätzte IWS-Provision",
-    "TITLE_DIALOG_NEW": "IWS Commission neu",
-    "TITLE_DIALOG_EDIT": "IWS Commission bearbeiten"
+    "TITLE_DIALOG_CREATE": "IWS Commission neu",
+    "TITLE_DIALOG_EDIT": "IWS Commission bearbeiten",
+    "TITLE_DIALOG_DELETE": "IWS Commission löschen"
     },
     "ORDER_DIALOG_REMOVE": "Bestellung löschen",
     "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen"

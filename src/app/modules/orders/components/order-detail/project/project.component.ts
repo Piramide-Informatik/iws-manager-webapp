@@ -29,7 +29,6 @@ export class ProjectComponent implements OnInit, OnDestroy, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
-    this.changeProjectSelected();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -56,6 +55,7 @@ export class ProjectComponent implements OnInit, OnDestroy, OnDestroy {
     this.projectForm.get('promoter')?.disable();
     this.projectForm.get('startDate')?.disable();
     this.projectForm.get('endDate')?.disable();
+    this.changeProjectSelected();
   }
 
   private changeProjectSelected(): void {
