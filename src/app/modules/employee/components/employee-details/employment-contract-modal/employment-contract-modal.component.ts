@@ -14,7 +14,6 @@ import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-employment-contract-modal',
-  standalone: false,
   templateUrl: './employment-contract-modal.component.html',
   styleUrl: './employment-contract-modal.component.scss'
 })
