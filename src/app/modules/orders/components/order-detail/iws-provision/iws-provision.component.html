@@ -32,14 +32,14 @@
     removeKey="fromOrderValue"
     [disableButtons]="disabledButtonsTable"
     (onColumnChanges)="onUserIwsProvisionPreferencesChanges($event)"
-    (onEditRegister)="showModalIwsCommission(optionIwsCommission.edit, $event)"
+    (onEditRegister)="showModalIwsCommission('edit', $event)"
     (onDeleteRegister)="deleteCommission($event)"
-    (onCreateRegister)="showModalIwsCommission(optionIwsCommission.new)"
+    (onCreateRegister)="showModalIwsCommission('create')"
     ></master-data-genaral-table>
     
     <div class="row">
       <div class="col-12">
-        <div class="project_name flex justify-content-end align-items-center">
+        <div class="flex justify-content-end align-items-center">
           <label class="me-2" for="estimated">{{ 'ORDERS.COMMISSIONS.ESTIMATED_IWS_COMMISSION' | translate }}</label>
           <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
@@ -58,39 +58,46 @@
 <!-- Modal IWS Commission -->
 <div class="card">
   <p-dialog
-    [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + optionSelected.toUpperCase() | translate"
+    [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + typeModal.toUpperCase() | translate"
     (onHide)="closeModalIwsCommission()"
     [modal]="true"
     [(visible)]="visibleModalIWSCommission"
     [style]="{ width: '40rem' }"
   >
-    <hr class="mt-0" />
-    <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmit()">
-      <div class="form-item-container  flex gap-4 mb-3">
-        <label for="fromValue" class="w-3">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
-        <p-inputnumber #inputNumber mode="decimal" [max]="999.99" [min]="0" [useGrouping]="true" 
+    <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmitIwsCommission()">
+      <div class="form-item-commission mt-4">
+        <label for="fromValue">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
+        <p-inputnumber #inputNumber mode="decimal" [max]="99999999.99" [min]="0" [useGrouping]="true" 
           [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
-          id="fromValue"
+          inputId="fromValue"
           class="flex-auto"
           formControlName="fromOrderValue"
           autocomplete="off"
         />
       </div>
-      <div class="form-item-container  flex gap-4 mb-3">
-        <label for="provision" class="w-3">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
-        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+      <div class="form-item-commission">
+        <label for="commission">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }} (%)</label>
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" 
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
-          id="provision"
+          inputId="commission"
           class="flex-auto"
-          formControlName="provision"
-          autocomplete="off"
-        />
+          formControlName="commission"
+          autocomplete="off" invalid="
+           iwsCommissionForm.get('commission')?.invalid  
+            && iwsCommissionForm.get('commission')?.dirty 
+            || iwsCommissionForm.get('commission')?.touched"/> 
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            iwsCommissionForm.get('commission')?.invalid && 
+            iwsCommissionForm.get('commission')?.dirty
+            ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+        </div>
       </div>
-      <div class="form-item-container  flex gap-4 mb-3">
-        <label for="minCommission" class="w-3">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
+      <div class="form-item-commission">
+        <label for="minCommission">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
         <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
-          id="minCommission"
+          inputId="minCommission"
           class="flex-auto"
           formControlName="minCommission"
           autocomplete="off"
@@ -102,8 +109,8 @@
           icon="pi pi-check"
           size="small"
           iconPos="left"
-          (click)="addIwsCommission()"
-          (keydown.enter)="addIwsCommission()"
+          type="submit"
+          [loading]="isLoading"
         ></p-button>
 
         <p-button
@@ -112,6 +119,7 @@
           iconPos="left"
           size="small"
           class="cancel"
+          [disabled]="isLoading"
           (click)="closeModalIwsCommission()"
           (keydown.enter)="closeModalIwsCommission()"
         ></p-button>
@@ -119,3 +127,4 @@
     </form>
   </p-dialog>
 </div>
+<p-toast/>
