@@ -4,8 +4,8 @@ export interface PublicHoliday{
     updatedAt: string;
     version: number;
 
-    name: string;
-    isFixedDate?: boolean;
+    name?: string;
+    isFixedDate: boolean;
     sequenceNo?: number;
     date?: string; // ISO: "2025-06-17"
     

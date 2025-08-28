@@ -71,7 +71,10 @@
             [loading]="isLoading"
             [disabled]="isLoading"
           ></p-button>
-  
+          @if(selectedSubcontractYear) {
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" (onClick)="visibleSubcontractYearModal = true;" />
+          }
           <p-button
             [label]="'BUTTONS.CANCEL' | translate"
             class="cancel"
@@ -100,8 +103,29 @@
         </div>
       </div>
     </ng-template>
-    <app-occ-error-modal *ngIf="showOCCErrorModalDepreciation" (onClose)="showOCCErrorModalDepreciation = false">
-    </app-occ-error-modal>
   </p-dialog>
 </div>
+<app-occ-error-modal *ngIf="showOCCErrorModalDepreciation" (onClose)="showOCCErrorModalDepreciation = false">
+</app-occ-error-modal>
+<p-dialog
+    [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_YEAR' | translate"
+    [modal]="true"
+    [(visible)]="visibleSubcontractYearModal"
+    [style]="{ width: 'auto' }"
+  >
+    <div class="confirmation-content mb-2 mt-4 subcontractYearModalContainer">
+      <p class="mb-4 subcontractYearModalQuestionContainer">
+        {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_YEAR_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ selectedSubcontractYear?.year  | date:'yyyy'  }}"</strong>?
+      </p>
+  
+      <div class="flex justify-content-center gap-2 subcontractYearModalButtonContainer">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" (onClick)="removeSubcontractYear()" />
+  
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+          iconPos="left" (onClick)="visibleSubcontractYearModal = false;" />
+      </div>
+    </div>
+  </p-dialog>
 

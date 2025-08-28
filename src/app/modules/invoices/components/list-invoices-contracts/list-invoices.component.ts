@@ -1,13 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Invoice } from '../../../../Entities/invoices';
 import { InvoicesService } from '../../services/invoices.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import {TranslateService, _} from "@ngx-translate/core";
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { InvoiceUtils } from '../../utils/invoice.utils';
 
 interface Column {
   field: string;
@@ -31,7 +32,7 @@ interface ExportColumn {
 })
 export class ListInvoicesComponent implements OnInit, OnDestroy{
   public cols!: Column[];
-
+  private readonly invoiceUtils = inject(InvoiceUtils);
   private langSubscription!: Subscription;
 
   public selectedColumns!: Column[];
@@ -39,7 +40,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
   public customer!: string;
   productDialog: boolean = false;
   currentInvoice!: Invoice;
-  public invoices: Invoice[] = [];
+  public invoices: any[] = [];
   selectedProducts: Invoice[] | null | undefined;
 
   submitted: boolean = true;
@@ -56,29 +57,43 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
 
   exportColumns!: ExportColumn[];
   constructor(
-    private readonly invoicesService: InvoicesService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly cd: ChangeDetectorRef,
     private readonly translate: TranslateService, 
-    private readonly router:Router
+    private readonly router:Router,
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit():void {
     this.loadInvoiceColHeaders();
     this.selectedColumns = this.cols;
-    this.customer = 'Joe Doe';
-
-    this.invoices = this.invoicesService.list();
     this.userInvoicePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadInvoiceColHeaders();
       this.reloadComponent(true);
       this.userInvoicePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
-
-    this.selectedColumns = this.cols;
+    this.route.params.subscribe(params => {
+      this.invoiceUtils.getAllInvoicesByCustomerId(params['id']).subscribe(invoices => {
+        this.invoices = invoices.reduce((acc: any[], curr) => {
+          acc.push({
+            invoiceNumber: curr.invoiceNo, 
+            date: curr.invoiceDate, 
+            description: curr.note, 
+            type: curr.invoiceType?.name, 
+            iwsNumber: curr.network?.networkName, 
+            orderNumber: curr.order?.orderNo, 
+            orderName: curr.order?.orderLabel, 
+            netAmount: curr.amountNet, 
+            value: curr.amountTax, 
+            totalAmount: curr.amountGross
+          });
+          return acc;
+        },[]);
+      })
+    })
   }
 
   onUserInvoicePreferencesChanges(userInvoicePreferences: any) {
@@ -176,7 +191,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.invoicesService.deleteInvoice(invoiceNumber);
+        this.invoiceUtils.deleteInvoice(invoiceNumber);
         this.invoices = this.invoices.filter(
           (val) => val.id !== invoiceNumber
         );
@@ -223,20 +238,20 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
   saveProduct() {
     this.submitted = true;
 
-    if (this.currentInvoice.description?.trim()) {
-      const productAction = this.currentInvoice.invoiceNumber
-        ? this.invoicesService.updateProduct(this.currentInvoice)
-        : this.invoicesService.addProduct({
+    if (this.currentInvoice.note?.trim()) {
+      const productAction = this.currentInvoice.invoiceNo
+        ? this.invoiceUtils.updateInvoice(this.currentInvoice)
+        : this.invoiceUtils.createNewInvoice({
             ...this.currentInvoice,
-            invoiceNumber:
-              this.currentInvoice.invoiceNumber ||
+            invoiceNo:
+              this.currentInvoice.invoiceNo ||
               this.createUniqueId().toString(),
           });
 
-      productAction.then(() => {
+      productAction.subscribe(() => {
         this.cd.detectChanges();
 
-        const actionMessage = this.currentInvoice.invoiceNumber
+        const actionMessage = this.currentInvoice.invoiceNo
           ? 'Product Updated'
           : 'Product Created';
 

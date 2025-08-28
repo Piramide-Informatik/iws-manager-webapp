@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
 import { Customer } from '../../../../Entities/customer';
@@ -75,9 +75,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -151,26 +149,117 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       hourlyRate: new FormControl(null, []),
       hourlyRealRate: new FormControl(null)
     });
+    
+    this.disableFormControls();
+    this.setupFormSubscriptions();
+  }
+
+  private disableFormControls(): void {
     this.ContractDetailsForm.get("firstName")?.disable();
     this.ContractDetailsForm.get("lastName")?.disable();
     this.ContractDetailsForm.get("hourlyRate")?.disable();
     this.ContractDetailsForm.get("hourlyRealRate")?.disable();
     this.ContractDetailsForm.get("maxHoursPerDay")?.disable();
     this.ContractDetailsForm.get("maxHoursPerMonth")?.disable();
+  }
 
-    // Suscribirse a cambios en el campo employeNro
+  private setupFormSubscriptions(): void {
+    // Suscribcion a cambios en el campo employeNro
     this.subscription.add(
-      this.ContractDetailsForm.get('employeNro')!.valueChanges.subscribe((employeeId: number) => {
-        const emp = this.employeesMap.get(employeeId);
-        if (emp) {
-          this.ContractDetailsForm.get('firstName')?.setValue(emp.firstname ?? '', { emitEvent: false});
-          this.ContractDetailsForm.get('lastName')?.setValue(emp.lastname ?? '', { emitEvent: false});
-        } else {
-          this.ContractDetailsForm.get('firstName')?.setValue('', { emitEvent: false});
-          this.ContractDetailsForm.get('lastName')?.setValue('', { emitEvent: false});
-        }
-      })
+      this.ContractDetailsForm.get('employeNro')!.valueChanges.subscribe(
+        (employeeId: number) => this.onEmployeeIdChange(employeeId)
+      )
     );
+
+    const calculationFields = ['salaryPerMonth', 'specialPayment', 'hoursPerWeek', 'workShortTime'];
+  
+    calculationFields.forEach(field => {
+      this.subscription.add(
+        this.ContractDetailsForm.get(field)!.valueChanges.pipe(
+          debounceTime(300) // Esperar 300ms después de la última tecla
+        ).subscribe(() => this.calculateAllFields())
+      );
+    });
+  }
+
+  private onEmployeeIdChange(employeeId: number): void {
+    const emp = this.employeesMap.get(employeeId);
+    if (emp) {
+      this.ContractDetailsForm.get('firstName')?.setValue(emp.firstname ?? '', { emitEvent: false});
+      this.ContractDetailsForm.get('lastName')?.setValue(emp.lastname ?? '', { emitEvent: false});
+    } else {
+      this.ContractDetailsForm.get('firstName')?.setValue('', { emitEvent: false});
+      this.ContractDetailsForm.get('lastName')?.setValue('', { emitEvent: false});
+    }
+  }
+
+  private calculateAllFields(): void {
+    const salary = this.ContractDetailsForm.get('salaryPerMonth')?.value ?? 0;
+    const specialPayment = this.ContractDetailsForm.get('specialPayment')?.value ?? 0;
+    const hoursPerWeek = this.ContractDetailsForm.get('hoursPerWeek')?.value;
+    const workShortTime = this.ContractDetailsForm.get('workShortTime')?.value || 0;
+
+    // Validar que los campos requeridos tengan valores válidos
+    const hasValidHours = hoursPerWeek !== null && hoursPerWeek !== undefined && hoursPerWeek > 0;
+    const hasValidSalary = salary !== null && salary !== undefined && salary >= 0;
+    const hasValidSpecialPayment = specialPayment !== null && specialPayment !== undefined && specialPayment >= 0;
+
+    try {
+      // Solo calcular maxHours si tenemos horas válidas
+      if (hasValidHours) {
+        this.calculateMaxHours(hoursPerWeek, workShortTime);
+      } else {
+        this.ContractDetailsForm.get('maxHoursPerDay')?.setValue(null, { emitEvent: false });
+        this.ContractDetailsForm.get('maxHoursPerMonth')?.setValue(null, { emitEvent: false });
+      }
+
+      // Solo calcular hourly rates si tenemos todos los datos necesarios
+      if (hasValidHours && hasValidSalary && hasValidSpecialPayment) {
+        this.calculateHourlyRates(salary, specialPayment, hoursPerWeek);
+      } else {
+        this.ContractDetailsForm.get('hourlyRate')?.setValue(null, { emitEvent: false });
+        this.ContractDetailsForm.get('hourlyRealRate')?.setValue(null, { emitEvent: false });
+      }
+
+    } catch (error) {
+      console.error('Error en cálculos:', error);
+    }
+  }
+
+  private calculateMaxHours(hoursPerWeek: number, workShortTime: number): void {
+    const maxHoursPerDay = hoursPerWeek / 5;
+    
+    // maxHoursPerMonth: weekly hours * 52 / 12 * (1 – hour reduction)
+    const hourReduction = workShortTime / 100; // Convertir porcentaje a decimal
+    const maxHoursPerMonth = (hoursPerWeek * 52 / 12) * (1 - hourReduction);
+    
+    this.ContractDetailsForm.get('maxHoursPerDay')?.setValue(
+      this.roundToTwoDecimals(maxHoursPerDay), 
+      { emitEvent: false }
+    );
+    
+    this.ContractDetailsForm.get('maxHoursPerMonth')?.setValue(
+      this.roundToTwoDecimals(maxHoursPerMonth), 
+      { emitEvent: false }
+    );
+  }
+
+  private calculateHourlyRates(salary: number, specialPayment: number, hoursPerWeek: number): void {
+    // Fórmula: (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12)
+    const monthlySpecialPayment = specialPayment / 12;
+    const totalMonthlyCompensation = salary + monthlySpecialPayment;
+    const monthlyHours = (hoursPerWeek * 52) / 12;
+    
+    const hourlyRate = totalMonthlyCompensation / monthlyHours;
+    
+    this.ContractDetailsForm.get('hourlyRate')?.setValue(
+      this.roundToTwoDecimals(hourlyRate), 
+      { emitEvent: false }
+    );
+  }
+
+  private roundToTwoDecimals(value: number): number {
+    return Math.round(value * 100) / 100;
   }
 
   onSubmit() {
@@ -261,6 +350,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       hoursPerWeek: this.ContractDetailsForm.value.hoursPerWeek,
       workShortTime: this.ContractDetailsForm.value.workShortTime,
       specialPayment: this.ContractDetailsForm.value.specialPayment,
+      maxHoursPerMonth: this.ContractDetailsForm.getRawValue().maxHoursPerMonth,
+      maxHoursPerDay: this.ContractDetailsForm.getRawValue().maxHoursPerDay,
+      hourlyRate: this.ContractDetailsForm.getRawValue().hourlyRate,
+      hourlyRealRate: this.ContractDetailsForm.getRawValue().hourlyRealRate
     }
 
     this.isEmployeeContractLoading = true;
