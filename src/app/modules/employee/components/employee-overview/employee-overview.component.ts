@@ -11,16 +11,7 @@ import { EmployeeUtils } from '../../utils/employee.utils';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { Customer } from '../../../../Entities/customer';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
-
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  routerLink?: (row: any) => string;
-  type?: string;
-  customClasses?: string[];
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-employee-overview',
@@ -90,7 +81,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         field: 'employeeno',
         routerLink: (row: any) => `./employee-details/${row.id}`,
         header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')),
-        customClasses: ['align-right']
+        customClasses: ['align-right','date-font-style']
       },
       { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
       { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
