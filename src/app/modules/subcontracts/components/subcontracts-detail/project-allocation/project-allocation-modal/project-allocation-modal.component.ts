@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
@@ -18,7 +18,7 @@ import { Select } from 'primeng/select';
   templateUrl: './project-allocation-modal.component.html',
   styleUrl: './project-allocation-modal.component.scss'
 })
-export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
+export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() subcontractProject!: SubcontractProject | undefined;
@@ -26,8 +26,8 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
 
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
   @Output() SubcontractProjectUpdated = new EventEmitter<SubcontractProject>();
-  @Output() onSubcontractProjectCreated = new EventEmitter<SubcontractProject>();
-  @Output() onSubcontractProjectDeleted = new EventEmitter<SubcontractProject>();
+  @Output() subcontractProjectCreated = new EventEmitter<SubcontractProject>();
+  @Output() subcontractProjectDeleted = new EventEmitter<SubcontractProject>();
 
   @ViewChild('pSelect') firstInput!: Select;
 
@@ -41,7 +41,8 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
   private currentSubcontract!: Subcontract;
   isSubcontractProjectPerformigAction: boolean = false
   public allocationForm!: FormGroup;
-   public showOCCErrorSubcontractProject = false;
+  public showOCCErrorSubcontractProject = false;
+  visibleSubcontractProjectModal = false;
   private readonly customerId: number = this.route.snapshot.params['id'];
   private projects: Project[] = [];
   public projectLabels = toSignal(
@@ -157,7 +158,7 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
       this.subcontractProjectUtils.createNewSubcontractProject(newSubcontractProject).subscribe({
         next: (created: SubcontractProject) => {
           this.isSubcontractProjectPerformigAction = false;
-          this.onSubcontractProjectCreated.emit(created);
+          this.subcontractProjectCreated.emit(created);
           this.commonMessageService.showCreatedSuccesfullMessage();
           this.isProjectAllocationVisibleModal.emit(false);
         },
@@ -209,6 +210,10 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
     );
   }
 
+  openSubcontractProjectModal() {
+    this.visibleSubcontractProjectModal = true;
+  }
+
   closeModal(): void {
     this.isProjectAllocationVisibleModal.emit(false);
   }
@@ -222,15 +227,17 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
       this.isSubcontractProjectPerformigAction = true;
       this.subcontractProjectUtils.deleteSubcontractProject(this.subcontractProject.id).subscribe({
         next: () => {
-          this.onSubcontractProjectDeleted.emit(this.subcontractProject);
+          this.subcontractProjectDeleted.emit(this.subcontractProject);
           this.isProjectAllocationVisibleModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.isSubcontractProjectPerformigAction = false;
+          this.visibleSubcontractProjectModal = false;
         },
         error: () => {
           this.commonMessageService.showErrorDeleteMessage();
           this.isSubcontractProjectPerformigAction = false;
           this.isProjectAllocationVisibleModal.emit(false);
+          this.visibleSubcontractProjectModal = false;
         }
       });
     }

@@ -39,6 +39,7 @@ export class DepreciationScheduleComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private langSubscription = new Subscription();
   public showOCCErrorModalDepreciation = false;
+  visibleSubcontractYearModal = false;
   
   @Input() currentSubcontract!: Subcontract;
 
@@ -140,6 +141,7 @@ export class DepreciationScheduleComponent implements OnInit {
     this.isLoading = false;
     this.visibleModal.set(false);
     this.depreciationForm.reset();
+    this.visibleSubcontractYearModal = false;
   }
 
   private calculateDepreciationAmount(invoiceNet: number, afamonths: number, months: number): number {

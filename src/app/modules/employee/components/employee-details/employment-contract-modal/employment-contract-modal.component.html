@@ -76,7 +76,7 @@
       <div class="contract_input">
         <label for="maxHoursPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" readonly [disabled]="true"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxHoursPerMonth" formControlName="maxHoursPerMonth" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('maxHoursPerMonth')?.invalid 
             && employmentContractForm.get('maxHoursPerMonth')?.dirty 
@@ -93,7 +93,7 @@
       <div class="contract_input">
         <label for="maxHoursPerDay">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" readonly [disabled]="true"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxHoursPerDay" formControlName="maxHoursPerDay" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('maxHoursPerDay')?.invalid 
             && employmentContractForm.get('maxHoursPerDay')?.dirty 
@@ -110,7 +110,7 @@
       <div class="contract_input">
         <label for="hourlyRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" readonly [disabled]="true"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRate" formControlName="hourlyRate" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('hourlyRate')?.invalid 
             && employmentContractForm.get('hourlyRate')?.dirty 
@@ -127,7 +127,7 @@
       <div class="contract_input">
         <label for="hourlyRealRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_REAL_RATE' | translate }}</label>
         <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" readonly [disabled]="true"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRealRate" formControlName="hourlyRealRate" autocomplete="off" [ngClass]="{
           'ng-invalid': employmentContractForm.get('hourlyRealRate')?.invalid 
             && employmentContractForm.get('hourlyRealRate')?.dirty 
