@@ -1,9 +1,9 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmploymentContract } from '../../../../../Entities/employment-contract';
 import { EmploymentContractUtils } from '../../../utils/employment-contract-utils';
 import { Employee } from '../../../../../Entities/employee';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { buildCustomer } from '../../../../shared/utils/builders/customer';
@@ -18,7 +18,7 @@ import { DatePicker } from 'primeng/datepicker';
   templateUrl: './employment-contract-modal.component.html',
   styleUrl: './employment-contract-modal.component.scss'
 })
-export class EmploymentContractModalComponent implements OnInit, OnChanges {
+export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDestroy {
 
   private readonly subscription = new Subscription();
   private readonly translate = inject(TranslateService);
@@ -53,7 +53,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       } else {
         this.fillEmploymentContractForm();
       }
-      if(this.firstInputForm){
+      if(this.firstInputForm && this.isCreateMode){
         setTimeout(()=>{
           this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
         },300)
@@ -63,6 +63,10 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initFormEmploymentContract();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private initFormEmploymentContract(): void {
@@ -77,6 +81,97 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       hourlyRate: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
       hourlyRealRate: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
     });
+
+    this.disableFormControls();
+    this.setupFormSubscriptions();
+  }
+
+  private disableFormControls(): void {
+    this.employmentContractForm.get('maxHoursPerMonth')!.disable();
+    this.employmentContractForm.get('maxHoursPerDay')!.disable();
+    this.employmentContractForm.get('hourlyRate')!.disable();
+    this.employmentContractForm.get('hourlyRealRate')!.disable();
+  }
+
+  private setupFormSubscriptions(): void {  
+    const calculationFields = ['salaryPerMonth', 'specialPayment', 'hoursPerWeek', 'workShortTime'];
+  
+    calculationFields.forEach(field => {
+      this.subscription.add(
+        this.employmentContractForm.get(field)!.valueChanges.pipe(
+          debounceTime(300) // Esperar 300ms después de la última tecla
+        ).subscribe(() => this.calculateAllFields())
+      );
+    });
+  }
+
+  private calculateAllFields(): void {
+    const salary = this.employmentContractForm.get('salaryPerMonth')?.value ?? 0;
+    const specialPayment = this.employmentContractForm.get('specialPayment')?.value ?? 0;
+    const hoursPerWeek = this.employmentContractForm.get('hoursPerWeek')?.value;
+    const workShortTime = this.employmentContractForm.get('workShortTime')?.value || 0;
+
+    // Validar que los campos requeridos tengan valores válidos
+    const hasValidHours = hoursPerWeek !== null && hoursPerWeek !== undefined && hoursPerWeek > 0;
+    const hasValidSalary = salary !== null && salary !== undefined && salary >= 0;
+    const hasValidSpecialPayment = specialPayment !== null && specialPayment !== undefined && specialPayment >= 0;
+
+    try {
+      // Solo calcular maxHours si tenemos horas válidas
+      if (hasValidHours) {
+        this.calculateMaxHours(hoursPerWeek, workShortTime);
+      } else {
+        this.employmentContractForm.get('maxHoursPerDay')?.setValue(null, { emitEvent: false });
+        this.employmentContractForm.get('maxHoursPerMonth')?.setValue(null, { emitEvent: false });
+      }
+
+      // Solo calcular hourly rates si tenemos todos los datos necesarios
+      if (hasValidHours && hasValidSalary && hasValidSpecialPayment) {
+        this.calculateHourlyRates(salary, specialPayment, hoursPerWeek);
+      } else {
+        this.employmentContractForm.get('hourlyRate')?.setValue(null, { emitEvent: false });
+        this.employmentContractForm.get('hourlyRealRate')?.setValue(null, { emitEvent: false });
+      }
+
+    } catch (error) {
+      console.error('Error en cálculos:', error);
+    }
+  }
+
+  private calculateMaxHours(hoursPerWeek: number, workShortTime: number): void {
+    const maxHoursPerDay = hoursPerWeek / 5;
+    
+    // maxHoursPerMonth: weekly hours * 52 / 12 * (1 – hour reduction)
+    const hourReduction = workShortTime / 100; // Convertir porcentaje a decimal
+    const maxHoursPerMonth = (hoursPerWeek * 52 / 12) * (1 - hourReduction);
+    
+    this.employmentContractForm.get('maxHoursPerDay')?.setValue(
+      this.roundToTwoDecimals(maxHoursPerDay), 
+      { emitEvent: false }
+    );
+    
+    this.employmentContractForm.get('maxHoursPerMonth')?.setValue(
+      this.roundToTwoDecimals(maxHoursPerMonth), 
+      { emitEvent: false }
+    );
+  }
+
+  private calculateHourlyRates(salary: number, specialPayment: number, hoursPerWeek: number): void {
+    // Fórmula: (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12)
+    const monthlySpecialPayment = specialPayment / 12;
+    const totalMonthlyCompensation = salary + monthlySpecialPayment;
+    const monthlyHours = (hoursPerWeek * 52) / 12;
+    
+    const hourlyRate = totalMonthlyCompensation / monthlyHours;
+    
+    this.employmentContractForm.get('hourlyRate')?.setValue(
+      this.roundToTwoDecimals(hourlyRate), 
+      { emitEvent: false }
+    );
+  }
+
+  private roundToTwoDecimals(value: number): number {
+    return Math.round(value * 100) / 100;
   }
 
   get isCreateMode(): boolean {
@@ -122,10 +217,10 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
       hoursPerWeek: this.employmentContractForm.value.hoursPerWeek?? 0,
       workShortTime: this.employmentContractForm.value.workShortTime?? 0,
       specialPayment: this.employmentContractForm.value.specialPayment?? 0,
-      maxHoursPerMonth: this.employmentContractForm.value.maxHoursPerMonth?? 0,
-      maxHoursPerDay: this.employmentContractForm.value.maxHoursPerDay?? 0,
-      hourlyRate: this.employmentContractForm.value.hourlyRate?? 0,
-      hourlyRealRate: this.employmentContractForm.value.hourlyRealRate?? 0,
+      maxHoursPerMonth: this.employmentContractForm.getRawValue().maxHoursPerMonth?? 0,
+      maxHoursPerDay: this.employmentContractForm.getRawValue().maxHoursPerDay?? 0,
+      hourlyRate: this.employmentContractForm.getRawValue().hourlyRate?? 0,
+      hourlyRealRate: this.employmentContractForm.getRawValue().hourlyRealRate?? 0,
       employee: this.currentEmployee,
       customer: this.currentEmployee.customer ?? null
     };
@@ -156,7 +251,6 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
           this.isLoading = false;
           this.isVisibleModal.emit(false);
           this.onEmployeeContractDeleted.emit(this.employmentContract);
-          console.log('Delete employment contract successfull');
           this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: () => {
@@ -191,7 +285,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges {
   }
 
   private buildEmploymentContract(customerSource: any, employeeSource: any): EmploymentContract {
-    const formValues = this.employmentContractForm.value;
+    const formValues = this.employmentContractForm.getRawValue();
     return {
       id: this.employmentContract?.id ?? 0,
       version: this.employmentContract?.version ?? 0,
