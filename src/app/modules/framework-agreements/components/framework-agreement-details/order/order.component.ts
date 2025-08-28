@@ -48,6 +48,7 @@ export class OrderComponent implements OnInit, OnChanges {
   private readonly customerId: number = this.route.snapshot.params['id'];
   private currentCustomer!: Customer;
   @Input() contractToEdit!: BasicContract;
+  @Input() typeForm: 'create' | 'edit' = 'create';
   @Output() onIsLoading = new EventEmitter<boolean>();
   public showOCCErrorModalBasicContract: boolean = false;
   @ViewChild('inputText') firstInput!: ElementRef;
@@ -71,6 +72,15 @@ export class OrderComponent implements OnInit, OnChanges {
         contractStatus: this.contractToEdit.contractStatus?.id,
         employeeIws: this.contractToEdit.employeeIws?.id
       });
+    }
+    if(changes['typeForm'] && this.typeForm === 'create'){
+      this.frameworkUtils.getNextContractNumber().subscribe(lastContractNo => {
+        if(lastContractNo){
+          this.basicContractForm.patchValue({
+            contractNo: lastContractNo
+          })
+        }
+      })
     }
   }
 

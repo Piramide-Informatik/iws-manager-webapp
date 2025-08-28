@@ -370,7 +370,10 @@
       "RECEIVED_AMOUNT": "Received Amount",
       "OPEN_AMOUNT": "Outstanding Balance",
       "IWS_PERCENT": "IWS-%"
-    }
+    },
+    "RECEIVABLES_DIALOG_REMOVE": "Delete Receivable",
+    "REMOVE_RECEIVABLES_QUESTION": "Are you sure you want to delete the receivable"
+
   },
   "INVOICES": {
     "TABLE": {
