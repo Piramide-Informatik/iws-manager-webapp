@@ -73,7 +73,7 @@ export class InvoiceService {
    * @throws Error when server request fails
    */
   getAllInvoicesByCustomerId(customerId: number): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(`${this.apiUrl}/customer/${customerId}`, this.httpOptions).pipe(
+    return this.http.get<Invoice[]>(`${this.apiUrl}/by-customer/${customerId}/sort-by-invoiceno`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch invoices');
