@@ -15,7 +15,8 @@
       "TEXT": "Lo sentimos, parece que alguien más ha realizado cambios en este registro mientras lo estabas editando. Por favor, actualiza la página y vuelve a intentarlo.",
       "BUTTON": "Actualizar"
     },
-    "NUMBER_FORMAT_ERROR": "Se espera un número con el siguiente formato 1.234,56."
+    "NUMBER_FORMAT_ERROR": "Se espera un número con el siguiente formato 1.234,56.",
+    "NUMBER_MAX": "Se espera un valor máximo de 100"
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -342,8 +343,9 @@
     "MIN_COMMISSION": "Comisión mínima",
     "ESTIMATED_IWS_COMMISSION": "Comisión IWS estimada",
     "NEW": "Nuevo",
-    "TITLE_DIALOG_NEW": "Nueva comisión IWS",
-    "TITLE_DIALOG_EDIT": "Editar comisión IWS"
+    "TITLE_DIALOG_CREATE": "Nueva comisión IWS",
+    "TITLE_DIALOG_EDIT": "Editar comisión IWS",
+    "TITLE_DIALOG_DELETE": "Eliminar comisión IWS"
     },
     "ORDER_DIALOG_REMOVE": "Eliminar Orden",
     "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden"

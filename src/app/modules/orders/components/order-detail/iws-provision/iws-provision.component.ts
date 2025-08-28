@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Order } from '../../../../../Entities/order';
 import { InputNumber } from 'primeng/inputnumber';
+import { OrderCommissionUtils } from '../../../utils/order-commission-utils';
+import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 
 interface Column {
   field: string;
@@ -30,10 +32,13 @@ interface OrderCommissionForm {
   styleUrl: './iws-provision.component.scss'
 })
 export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
+  private readonly orderCommissionUtils = inject(OrderCommissionUtils);
   private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   private readonly translate = inject(TranslateService);
   private readonly subscriptions = new Subscription();
 
+  // Order 
   orderCommissionForm!: OrderCommissionForm;
   @Input() orderToEdit!: Order;
   @Output() onCreateOrderCommission = new EventEmitter<OrderCommissionForm>();
@@ -47,7 +52,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   public iwsCommissionForm: FormGroup = new FormGroup({
     fromOrderValue: new FormControl(null),
-    provision: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
+    commission: new FormControl(null, [Validators.min(0), Validators.max(100.00)]),
     minCommission: new FormControl(null)
   });
 
@@ -56,12 +61,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   orderCommissions: OrderCommission[] = [];
   
   // Configuration Modal
-  visibleModalIWSCommission = signal(false);
-  optionIwsCommission = {
-    new: 'new',
-    edit: 'edit'
-  };
-  optionSelected: string = '';
+  visibleModalIWSCommission = false;
+  isLoading: boolean = false;
+  typeModal: 'create' | 'edit' | 'delete' = 'create';
   @ViewChild('inputNumber') firstInput!: InputNumber;
 
   // Configuration Table IWS commission
@@ -159,34 +161,57 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     this.orderForm.reset();
   }
 
-  addIwsCommission(){
-  
-    if(this.optionSelected == this.optionIwsCommission.new){//Add new commission
-      console.log('add new commission');
-
-    }else {//Edit commission
+  onSubmitIwsCommission(){
+    if(this.iwsCommissionForm.invalid) return;
+    
+    if(this.typeModal === 'create'){
+      this.createOrderCommission();
+    }else if(this.typeModal === 'edit') {
       console.log('edit commission');
-      
+    } else {
+      console.log('eliminar commission')
     }
   }
 
-  showModalIwsCommission(option: string, data?: any){
-    this.firstInputFocus();
-    this.optionSelected = option;
+  private createOrderCommission(): void {
+    const newOrderCommission: Omit<OrderCommission, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      fromOrderValue: this.iwsCommissionForm.value.fromOrderValue ?? 0,
+      commission: this.iwsCommissionForm.value.commission ?? 0,
+      minCommission: this.iwsCommissionForm.value.minCommission ?? 0,
+      order: this.orderToEdit
+    }
     
-    if(data && this.optionSelected == this.optionIwsCommission.edit){
+    this.isLoading = true;
+    this.orderCommissionUtils.createOrderCommission(newOrderCommission).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.closeModalIwsCommission();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.log(error);
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    })
+  }
+
+  showModalIwsCommission(type: 'create' | 'edit' | 'delete', data?: any){
+    this.firstInputFocus();
+    this.typeModal = type;
+    
+    if(data && this.typeModal === 'edit'){
       this.iwsCommissionForm.get('fromOrderValue')?.setValue(data?.fromOrderValue);
       this.iwsCommissionForm.get('provision')?.setValue(data?.commission);
       this.iwsCommissionForm.get('minCommission')?.setValue(data?.minCommission);
     }
 
-    this.visibleModalIWSCommission.set(true);
+    this.visibleModalIWSCommission = true;
   }
 
   closeModalIwsCommission(){
-    this.visibleModalIWSCommission.set(false);
+    this.visibleModalIWSCommission = false;
     this.iwsCommissionForm.reset();
-    this.optionSelected = '';
   }
 
   deleteCommission(fromOrderValue: number){

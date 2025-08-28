@@ -130,7 +130,8 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   goBackListOrders() {
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+    const path = this.orderId ? '../../' : '../';
+    this.router.navigate([path], { relativeTo: this.activatedRoute });
   }
 
   private resetFormAndNavigation(id: number): void {

@@ -102,7 +102,6 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.visibleProjectModal = true;
     const project = this.projects.find( project => project.id == id);
     if (project) {
-      console.log (project)
       this.selectedProject = project;
     }
   }
