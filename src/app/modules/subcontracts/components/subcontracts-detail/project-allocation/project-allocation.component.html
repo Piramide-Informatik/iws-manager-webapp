@@ -18,9 +18,9 @@
     <app-project-allocation-modal [modalType]="modalType" [isVisibleModal]="visibleModal"
       [subcontractProject]="currentSubcontractProject"
       (isProjectAllocationVisibleModal)="onModalVisibilityChange($event)"
-      (onSubcontractProjectDeleted)="onSubcontractProjectDeleted($event)" 
+      (subcontractProjectDeleted)="onSubcontractProjectDeleted($event)" 
       (SubcontractProjectUpdated)="onSubcontractProjectUpdated($event)"
-      (onSubcontractProjectCreated)="onSubcontractProjectCreated($event)">
+      (subcontractProjectCreated)="onSubcontractProjectCreated($event)">
     </app-project-allocation-modal>
   </p-dialog>
 </div>
