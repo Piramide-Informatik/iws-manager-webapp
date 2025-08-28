@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class PublicHolidayService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/projectstatus`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/holidays`;
 
     private readonly httpOptions = {
         headers: new HttpHeaders({
@@ -22,20 +22,20 @@ export class PublicHolidayService {
     private readonly _loading = signal<boolean>(false);
     private readonly _error = signal<string | null>(null);
 
-    public publicHolidayes = this._publicHolidays.asReadonly();
+    public publicHolidays = this._publicHolidays.asReadonly();
     public loading = this._loading.asReadonly();
     public error = this._error.asReadonly();
 
     constructor() {
-        this.loadInitialData();
+        this.loadInitialData().subscribe();
     }
 
     public loadInitialData(): Observable<PublicHoliday[]> {
         this._loading.set(true);
         return this.http.get<PublicHoliday[]>(this.apiUrl, this.httpOptions).pipe(
         tap({
-            next: (publicHolidayes) => {
-            this._publicHolidays.set(publicHolidayes);
+            next: (publicHolidays) => {
+            this._publicHolidays.set(publicHolidays);
             this._error.set(null);
             },
             error: (err) => {
