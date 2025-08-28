@@ -41,7 +41,8 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
   private currentSubcontract!: Subcontract;
   isSubcontractProjectPerformigAction: boolean = false
   public allocationForm!: FormGroup;
-   public showOCCErrorSubcontractProject = false;
+  public showOCCErrorSubcontractProject = false;
+  visibleSubcontractProjectModal = false;
   private readonly customerId: number = this.route.snapshot.params['id'];
   private projects: Project[] = [];
   public projectLabels = toSignal(
@@ -209,6 +210,10 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
     );
   }
 
+  openSubcontractProjectModal() {
+    this.visibleSubcontractProjectModal = true;
+  }
+
   closeModal(): void {
     this.isProjectAllocationVisibleModal.emit(false);
   }
@@ -226,11 +231,13 @@ export class ProjectAllocationModalComponent implements OnChanges, OnDestroy {
           this.isProjectAllocationVisibleModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.isSubcontractProjectPerformigAction = false;
+          this.visibleSubcontractProjectModal = false;
         },
         error: () => {
           this.commonMessageService.showErrorDeleteMessage();
           this.isSubcontractProjectPerformigAction = false;
           this.isProjectAllocationVisibleModal.emit(false);
+          this.visibleSubcontractProjectModal = false;
         }
       });
     }
