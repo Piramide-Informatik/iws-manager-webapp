@@ -39,6 +39,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   isLoading = false;
   errorMessage: string | null = null;
   employmentContractForm!: FormGroup;
+  visibleEmployeeContractEntityModal = false;
   public showOCCErrorModalContract = false;
 
   constructor(
@@ -246,15 +247,18 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   removeEmploymentContract() {
     if (this.employmentContract) {
       this.isLoading = true;
-      this.employmentContractUtils.deleteEmploymentContract(this.employmentContract).subscribe({
+      const id = this.employmentContract.id || this.employmentContract
+      this.employmentContractUtils.deleteEmploymentContract(id).subscribe({
         next: () => {
           this.isLoading = false;
           this.isVisibleModal.emit(false);
-          this.onEmployeeContractDeleted.emit(this.employmentContract);
+          this.onEmployeeContractDeleted.emit(id);
           this.commonMessageService.showDeleteSucessfullMessage();
+          this.visibleEmployeeContractEntityModal = false;
         },
         error: () => {
           this.isLoading = false;
+          this.visibleEmployeeContractEntityModal = false;
           this.commonMessageService.showErrorDeleteMessage();
         }
       });
