@@ -96,6 +96,20 @@
                 [disabled]="contactForm.invalid || !contactForm.dirty || isLoading || isSaving"
                 [loading]="isLoading || isSaving"
               ></p-button>
+              @if (modalType==='edit') {
+                <p-button
+                  type="button"
+                  class="delete"
+                  size="small"
+                  [label]="'BUTTONS.DELETE' | translate"
+                  icon="pi pi-trash"
+                  iconPos="left"
+                  (click)="onDeleteContactPersonEntity()"
+                  (keypress)="onDeleteContactPersonEntity()"
+                  [loading]="isLoading"
+                  [disabled]="isLoading"
+                />
+              }
               <p-button 
                 type="button"
                 class="cancel"
@@ -142,6 +156,41 @@
         </div>
   </div>
 }
+
+<p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_DELETE` | translate" id="delete-contact-person"  [modal]="true" [(visible)]="visibleDeleteContactPersonEntity" [style]="{ width: '40rem' }">
+  <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'CONTACT.LABELS.CONFIRM_QUESTION_DELETE' | translate }}
+            <strong class="stronglock mt-1">"{{ `${currentContact?.firstName} ${currentContact?.lastName}` }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button
+                type="button"
+                class="delete"
+                size="small"
+                [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash"
+                iconPos="left"
+                (click)="deleteContactPersonConfirm()"
+                (keypress)="deleteContactPersonConfirm()"
+                [loading]="isLoading"
+                [disabled]="isLoading"
+            />
+            <p-button
+                type="button"
+                class="cancel"
+                size="small"
+                [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times"
+                iconPos="left"
+                (click)="this.visibleDeleteContactPersonEntity = false;"
+                (keypress)="this.visibleDeleteContactPersonEntity = false;"
+                [disabled]="isLoading"
+            />
+        </div>
+  </div>
+</p-dialog>
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModal"

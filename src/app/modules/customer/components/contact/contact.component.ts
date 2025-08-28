@@ -49,6 +49,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   isSaving = false;
   isLoading = false;
   errorMessage: string | null = null;
+  visibleDeleteContactPersonEntity = false;
 
   constructor(
     private readonly commonMessageService: CommonMessagesService
@@ -201,6 +202,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     this.onVisibility.emit(false);
     this.contactForm.markAsUntouched();
     this.contactForm.markAsPristine();
+    this.visibleDeleteContactPersonEntity = false;
   }
 
   deleteConfirm() {
@@ -222,6 +224,14 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
     }
+  }
+
+  onDeleteContactPersonEntity() {
+    this.visibleDeleteContactPersonEntity = true;
+  }
+
+  deleteContactPersonConfirm() {
+    this.deleteConfirm();
   }
 
   private setupContactPersonSubscription(): void {
