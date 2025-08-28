@@ -64,7 +64,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     if (changes['visibleModal'] && !changes['visibleModal'].currentValue) {
     this.ContractDetailsForm.reset();
     }
-    if(changes['visibleModal'] && this.visibleModal){
+    if(changes['visibleModal'] && this.visibleModal && this.isCreateMode){
       if(this.firstInputForm){
           setTimeout(()=>{
             this.firstInputForm.focus();

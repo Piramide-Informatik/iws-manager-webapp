@@ -116,7 +116,9 @@ export class DepreciationScheduleComponent implements OnInit {
   }
 
   showModal(option: 'new' | 'edit' | 'delete', idSubcontracYear?: number) {
-    this.firstInputFocus();
+    if(option !== 'delete'){
+      this.firstInputFocus();
+    }
     this.modalType = option;
     if( option === 'delete' || option === 'edit' ) {
       this.selectedSubcontractYear = this.subcontractsYear.find(e => e.id === idSubcontracYear);

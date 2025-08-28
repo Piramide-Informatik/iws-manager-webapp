@@ -15,7 +15,8 @@
       "TEXT": "We're sorry, it seems someone else has made changes to this record while you were editing it. Please refresh the page and try again to ensure you're working with the latest information.",
       "BUTTON": "Refresh"
     },
-    "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected."
+    "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
+    "NUMBER_MAX": "Max value 100 expected"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -345,8 +346,9 @@
     "COMMISSION": "Commission",
     "MIN_COMMISSION": "Minimum Commission",
     "ESTIMATED_IWS_COMMISSION": "Estimated IWS Commission",
-    "TITLE_DIALOG_NEW": "New IWS Commission",
-    "TITLE_DIALOG_EDIT": "Edit IWS Commission"
+    "TITLE_DIALOG_CREATE": "New IWS Commission",
+    "TITLE_DIALOG_EDIT": "Edit IWS Commission",
+    "TITLE_DIALOG_DELETE": "Delete IWS Commission"
     },
     "ORDER_DIALOG_REMOVE": "Delete Order",
     "REMOVE_ORDERS_QUESTION":"Are you sure you want to delete the order"
@@ -370,7 +372,10 @@
       "RECEIVED_AMOUNT": "Received Amount",
       "OPEN_AMOUNT": "Outstanding Balance",
       "IWS_PERCENT": "IWS-%"
-    }
+    },
+    "RECEIVABLES_DIALOG_REMOVE": "Delete Receivable",
+    "REMOVE_RECEIVABLES_QUESTION": "Are you sure you want to delete the receivable"
+
   },
   "INVOICES": {
     "TABLE": {
