@@ -4,6 +4,7 @@ import {
   EventEmitter,
   inject,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -12,14 +13,16 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import {
+  momentCreateDate,
+  momentFormatDate,
+} from '../../../../../shared/utils/moment-date-utils';
 @Component({
   selector: 'app-holiday-modal',
-  standalone: false,
   templateUrl: './holiday-modal.component.html',
-  styleUrl: './holiday-modal.component.scss',
+  styleUrls: ['./holiday-modal.component.scss'],
 })
-export class HolidayModalComponent {
+export class HolidayModalComponent implements OnInit, OnDestroy {
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
   private readonly subscriptions = new Subscription();
   @ViewChild('publicHolidayInput')
@@ -44,12 +47,8 @@ export class HolidayModalComponent {
       Validators.minLength(2),
       Validators.maxLength(50),
     ]),
-    date: new FormControl('', [
-      Validators.required
-    ]),
-    sequenceNo: new FormControl('', [
-      Validators.required
-    ])
+    date: new FormControl('', [Validators.required]),
+    sequenceNo: new FormControl('', [Validators.required]),
   });
 
   ngOnInit(): void {
@@ -65,6 +64,11 @@ export class HolidayModalComponent {
     const sub = this.publicHolidayUtils.loadInitialData().subscribe();
     this.subscriptions.add(sub);
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   onDeleteConfirm(): void {
     this.isLoading = true;
     if (this.publicHolidayToDelete) {
@@ -107,12 +111,14 @@ export class HolidayModalComponent {
     this.prepareForSubmission();
     const publicHoliday = this.getSanitizedPublicHolidayValues();
 
-    const sub = this.publicHolidayUtils.addPublicHoliday(
+    const sub = this.publicHolidayUtils
+      .addPublicHoliday(
         publicHoliday.name,
         publicHoliday.date ?? '',
         publicHoliday.sequenceNo,
         publicHoliday.isFixedDate
-      ).pipe(finalize(() => (this.isLoading = false)))
+      )
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => this.handleSuccess(),
         error: (error) => {
@@ -169,10 +175,12 @@ export class HolidayModalComponent {
     return {
       name: this.createdPublicHolidayForm.value.name?.trim() ?? '',
       date: this.createdPublicHolidayForm.value.date
-      ? momentFormatDate(momentCreateDate(this.createdPublicHolidayForm.value.date as string))
-      : '',
+        ? momentFormatDate(
+            momentCreateDate(this.createdPublicHolidayForm.value.date)
+          )
+        : '',
       sequenceNo: Number(this.createdPublicHolidayForm.value.sequenceNo) || 0,
-      isFixedDate: true
+      isFixedDate: true,
     };
   }
 

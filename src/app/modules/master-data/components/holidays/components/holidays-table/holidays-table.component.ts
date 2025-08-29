@@ -11,7 +11,6 @@ import {
 import { TranslateService, _ } from '@ngx-translate/core';
 import { MasterDataService } from '../../../../master-data.service';
 import { Subscription } from 'rxjs';
-import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { PublicHoliday } from '../../../../../../Entities/publicholiday';
@@ -101,38 +100,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
           this.tableKey,
           this.publicHolidayDisplayedColumns
         );
-        
     });
-    // this.holidayUI = [
-    //   { id: 1, sort: 1, name: 'Neujahr' },
-    //   { id: 2, sort: 2, name: 'Heilige Drei Könige' },
-    //   { id: 3, sort: 3, name: 'Rosenmontag' },
-    //   { id: 4, sort: 4, name: 'Internationaler Frauentag' },
-    //   { id: 5, sort: 5, name: 'Gründonnerstag' },
-    //   { id: 6, sort: 6, name: 'Karfreitag' },
-    //   { id: 7, sort: 7, name: 'Ostersonntag' },
-    //   { id: 8, sort: 8, name: 'Ostermontag' },
-    //   { id: 9, sort: 9, name: 'Tag der Arbeit' },
-    //   { id: 10, sort: 10, name: 'Christi Himmelfahrt' },
-    //   { id: 11, sort: 11, name: 'Pfingstmontag' },
-    //   { id: 12, sort: 12, name: 'Fronleichnam' },
-    // ];
-
-    // this.loadColHeadersHoliday();
-    // this.userHolidaysPreferences =
-    //   this.userPreferenceService.getUserPreferences(
-    //     this.tableKey,
-    //     this.columnsHeaderFieldHoliday
-    //   );
-    // this.langSubscription = this.translate.onLangChange.subscribe(() => {
-    //   this.loadColHeadersHoliday();
-    //   this.routerUtils.reloadComponent(true);
-    //   this.userHolidaysPreferences =
-    //     this.userPreferenceService.getUserPreferences(
-    //       this.tableKey,
-    //       this.columnsHeaderFieldHoliday
-    //     );
-    // });
   }
 
   loadHolidayData(): void {
@@ -198,7 +166,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  toastMessageDisplay(message: {
+  private showToast(message: {
     severity: string;
     summary: string;
     detail: string;
@@ -210,8 +178,16 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  toastMessageDisplay(message: {
+    severity: string;
+    summary: string;
+    detail: string;
+  }): void {
+      this.showToast(message);
+  }
+
   onDialogShow() {
-    if( this.modalType === 'create' && this.publicHolidayModelComponent) {
+    if (this.modalType === 'create' && this.publicHolidayModelComponent) {
       this.publicHolidayModelComponent.focusInputIfNeeded();
     }
   }
@@ -227,11 +203,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
     summary: string;
     detail: string;
   }): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
+      this.showToast(message);
   }
 
   editPublicHoliday(publicHoliday: PublicHoliday) {
@@ -245,15 +217,19 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
       updatedAt: '',
       version: 0,
     };
-    this.publicHolidayUtils.getPublicHolidayById(publicHolidayToEdit.id).subscribe({
-      next: (fullPublicHoliday) => {
-        if (fullPublicHoliday) {
-          this.publicHolidayStateService.setPublicHolidayToEdit(fullPublicHoliday);
-        }
-      },
-      error: (err) => {
-        console.error('Error Id PublicHoliday',err);
-      }
-    });
+    this.publicHolidayUtils
+      .getPublicHolidayById(publicHolidayToEdit.id)
+      .subscribe({
+        next: (fullPublicHoliday) => {
+          if (fullPublicHoliday) {
+            this.publicHolidayStateService.setPublicHolidayToEdit(
+              fullPublicHoliday
+            );
+          }
+        },
+        error: (err) => {
+          console.error('Error Id PublicHoliday', err);
+        },
+      });
   }
 }

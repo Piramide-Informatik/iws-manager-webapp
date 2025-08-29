@@ -20,7 +20,7 @@ export class PublicHolidayUtils {
             ): Observable<PublicHoliday> {
             const trimmedName = namePublicHoliday?.trim();
             const trimmedDate = date ? momentFormatDate(momentCreateDate(date)) : '';
-            const trimmedSequenceNo = sequenceNo ? sequenceNo : 0;
+            const trimmedSequenceNo = sequenceNo ?? 0;
 
             if (!trimmedName) {
                 return throwError(() => new Error('PublicHoliday name cannot be empty'));
