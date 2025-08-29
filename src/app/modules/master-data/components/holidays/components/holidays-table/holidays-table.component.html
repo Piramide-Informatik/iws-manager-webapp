@@ -3,12 +3,34 @@
     <div class>
       <master-data-genaral-table
         [tableId]="tableKey"
-        [tableValues]="holidayUI"
+        [tableValues]="publicHolidays()"
         [columns]="columnsHeaderFieldHoliday"
         [userPreferences]="userHolidaysPreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserHolidaysPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="editPublicHoliday($event)"
       ></master-data-genaral-table>
     </div>
   </div>
 </div>
+
+<p-dialog
+    [header]="modalType === 'create'
+    ? ('PROJECT_STATUS.FORM.PROJECT_STATUS_FORM' | translate)
+    : ('PROJECT_STATUS.DELETE.CONFIRMATION' | translate)"
+    [modal]="true"
+    [(visible)]="visibleModal"
+    (onShow)="onDialogShow()"
+    >
+    <app-holiday-modal
+        [modalType]="modalType"
+        [publicHolidayName]="publicHolidayName"
+        [publicHolidayToDelete]="selectedPublicHoliday"
+        (isVisibleModel)="onModalVisibilityChange($event)"
+        (toastMessage)="toastMessageDisplay($event)"
+        #projectStatusModel>
+    </app-holiday-modal>
+</p-dialog>
+<p-toast/>
