@@ -33,15 +33,15 @@
       [userPreferences]="userIwsProvisionPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserIwsProvisionPreferencesChanges($event)"
-      (onCreateRegister)="showModalIwsCommission(optionIwsCommission.new)"
-      (onEditRegister)="showModalIwsCommission(optionIwsCommission.edit, $event)"
+      (onCreateRegister)="showModalIwsCommission('create')"
+      (onEditRegister)="showModalIwsCommission('edit', $event)"
     ></master-data-genaral-table>
 
 </p-card>
 
 <!-- Modal IWS Commission Framework Agreements FA -->
 <p-dialog
-  [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + optionSelected | translate"
+  [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + typeModal.toUpperCase()| translate"
   (onHide)="closeModalIwsCommission()"
   [modal]="true"
   [(visible)]="visibleModalIWSCommission"
@@ -93,6 +93,9 @@
         icon="pi pi-check"
         size="small"
         iconPos="left"
+        type="submit"
+        [loading]="isLoading"
+        [disabled]="isLoading"
       ></p-button>
 
       <p-button
@@ -101,6 +104,7 @@
         iconPos="left"
         size="small"
         class="cancel"
+        [disabled]="isLoading"
         (click)="closeModalIwsCommission()"
         (keydown.enter)="closeModalIwsCommission()"
       ></p-button>

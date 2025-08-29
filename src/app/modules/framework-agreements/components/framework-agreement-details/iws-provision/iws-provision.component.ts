@@ -1,12 +1,14 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { OrderCommission } from '../../../../../Entities/orderCommission';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { InputNumber } from 'primeng/inputnumber';
+import { ContractOrderCommissionUtils } from '../../../utils/contract-order-commission-utils';
+import { ContractOrderCommission } from '../../../../../Entities/contractOrderCommission';
+import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 
 interface Column {
   field: string;
@@ -22,22 +24,19 @@ interface Column {
   styleUrl: './iws-provision.component.scss'
 })
 export class IwsProvisionComponent implements OnInit, OnDestroy{
-   
+  private readonly contractCommissionUtils = inject(ContractOrderCommissionUtils);
+  private readonly commonMessageService = inject(CommonMessagesService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private langSubscription!: Subscription;
   public iwsCommissionFAForm!: FormGroup; // IWS Commission Fremework Agreements Form
   public orderCommissionForm!: FormGroup;
   selectedOrderCommission!: null;
-  orderCommissions: OrderCommission[] = [];
+  orderCommissions: ContractOrderCommission[] = [];
 
   // Modal configuration
   public visibleModalIWSCommission: boolean = false;
-  public readonly optionIwsCommission = {
-    new: 'NEW',
-    edit: 'EDIT'
-  };
-  optionSelected: string = '';
+  public typeModal: 'create' | 'edit' | 'delete' = 'create';
   @ViewChild('inputNumber') firstInput!: InputNumber;
 
   public isLoading: boolean = false;
@@ -97,24 +96,50 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   }
 
   onSubmit(): void {
-    if (this.iwsCommissionFAForm.valid) {
-      console.log(this.iwsCommissionFAForm.value);
-    } else {
-      console.log("Formulario no válido");
+    if (this.iwsCommissionFAForm.invalid) return
+
+    this.isLoading = true;
+    if(this.typeModal === 'create'){
+      this.createContractOrderCommission();
+    }else if(this.typeModal === 'edit'){
+      console.log('edit')
     }
+  }
+
+  private createContractOrderCommission(): void {
+    const newContractOrderCommission: Omit<ContractOrderCommission, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      employmentContact: null,
+      fromOrderValue: this.iwsCommissionFAForm.get('fromOrderValue')?.value ?? 0,
+      commission: this.iwsCommissionFAForm.get('provision')?.value ?? 0,
+      minCommission: this.iwsCommissionFAForm.get('minCommission')?.value ?? 0
+    };
+
+    this.contractCommissionUtils.addContractOrderCommission(newContractOrderCommission).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.closeModalIwsCommission();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.log(error);
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    })
   }
 
   closeModalIwsCommission(){
     this.visibleModalIWSCommission = false;
     this.iwsCommissionFAForm.reset();
-    this.optionSelected = '';
   }
 
-  showModalIwsCommission(option: string, data?: any){
-    this.firstInputFocus();
-    this.optionSelected = option;
+  showModalIwsCommission(option: 'create' | 'edit' | 'delete', data?: any){
+    this.typeModal = option;
+    if(this.typeModal !== 'delete'){
+      this.firstInputFocus();
+    }
     
-    if(data && this.optionSelected == this.optionIwsCommission.edit){
+    if(data && this.typeModal === 'edit'){
       this.iwsCommissionFAForm.get('fromOrderValue')?.setValue(data?.fromOrderValue);
       this.iwsCommissionFAForm.get('provision')?.setValue(data?.commission);
       this.iwsCommissionFAForm.get('minCommission')?.setValue(data?.minCommission);
