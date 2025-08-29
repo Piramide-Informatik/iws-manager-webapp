@@ -14,10 +14,19 @@
           ></p-select>
       </div>
       <div class="form-item-container flex gap-4 mb-3">
-          <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
+        <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
+        <div class="input-message">
           <p-inputnumber inputId="percentage" class="flex-auto" formControlName="percentage" 
-            mode="decimal" [max]="100.00" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
+            mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" invalid="
+          allocationForm.get('percentage')?.invalid  
+            && allocationForm.get('percentage')?.dirty 
+            || allocationForm.get('percentage')?.touched"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            allocationForm.get('percentage')?.invalid && 
+            allocationForm.get('percentage')?.dirty
+          ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+        </div>
       </div>
       <div class="form-item-container flex gap-4 mb-3">
           <label for="amount" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>

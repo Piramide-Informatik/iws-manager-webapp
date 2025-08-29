@@ -60,7 +60,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
 
     this.iwsCommissionFAForm = new FormGroup({
       fromOrderValue: new FormControl(null, [Validators.required]),
-      provision: new FormControl(null, [Validators.required]),
+      provision: new FormControl(null, [Validators.required, Validators.max(100.00)]),
       minCommission: new FormControl(null, [Validators.required]),
     });
     
