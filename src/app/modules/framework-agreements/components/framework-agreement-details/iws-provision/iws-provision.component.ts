@@ -40,15 +40,15 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   optionSelected: string = '';
   @ViewChild('inputNumber') firstInput!: InputNumber;
 
+  public isLoading: boolean = false;
+
   // Table IWS Commission configuration
   @ViewChild('dt') dt!: Table;
-  public loading: boolean = false;
   public cols!: Column[];
   public selectedColumns!: Column[];
   userIwsProvisionPreferences: UserPreference = {};
   tableKey: string = 'IwsProvision'
   dataKeys = ['fromOrderValue', 'commission', 'minCommission'];
-  
 
   constructor(){ }
 
