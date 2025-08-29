@@ -21,7 +21,7 @@ export class InvoicesService {
 
   updateProduct(updatedInvoice: Invoice): Promise<Invoice[]> {
     const index = this.invoices.findIndex(
-      (invoice) => invoice.invoiceNumber === updatedInvoice.invoiceNumber
+      (invoice) => invoice.invoiceNo === updatedInvoice.invoiceNo
     );
     if (index !== -1) {
       this.invoices[index] = updatedInvoice;

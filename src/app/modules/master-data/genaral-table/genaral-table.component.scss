@@ -87,6 +87,7 @@ td {
   padding-bottom: 10px;
 }
 
-::ng-deep .date-font-family {
-  font-family: monospace !important;
+::ng-deep .date-font-style {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
 }

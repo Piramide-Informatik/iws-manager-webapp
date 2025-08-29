@@ -90,7 +90,7 @@
                  "></i>
             </ng-container>
             <ng-template #normalText>
-              <span [ngClass]="col.type === 'date' ? 'date-font-family': ''">
+              <span [ngClass]="{'date-font-style' : col.type === 'date' || col.type === 'dateYear' || col.type === 'double'}">
                 {{
                   col.type === 'date'
                     ? col.format

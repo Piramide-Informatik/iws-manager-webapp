@@ -10,6 +10,7 @@ import { ContactPerson } from '../../../../Entities/contactPerson';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { Country } from '../../../../Entities/country';
 import { CompanyType } from '../../../../Entities/companyType';
+import { Column } from '../../../../Entities/column';
 
 // Services
 import { CustomerService } from '../../../../Services/customer.service';
@@ -21,15 +22,6 @@ import { PageTitleService } from '../../../../shared/services/page-title.service
 import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
-
-interface Column {
-  field: string;
-  header: string;
-  minWidth: number;
-  filter?: any;
-  customClasses?: string[];
-  routerLink?: (row: any) => string;
-}
 
 @Component({
   selector: 'app-list-customers',
@@ -224,7 +216,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       {
         field: 'id',
         minWidth: 110,
-        customClasses: ['align-right'],
+        customClasses: ['align-right','date-font-style'],
         header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')),
       },
       {

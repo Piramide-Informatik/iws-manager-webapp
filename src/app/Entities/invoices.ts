@@ -1,14 +1,24 @@
+import { Order } from "./order";
+
 export interface Invoice {
   id: number
-  invoiceNumber: string;
-  date: string;
-  description: string;
-  type: string;
-  iwsNumber: string;
-  orderNumber: string;
-  orderName: string;
+  invoiceNo: string;
+  invoiceDate: string;
+  note: string;
+  invoiceType: InvoiceType;
+  network: Network;
+  order: Order
   value: number;
-  netAmount: number;
-  totalAmount: number;
+  amountNet: number;
+  amountTax: number;
+  amountGross: number;
   version?: number;
+}
+
+export interface InvoiceType {
+  name: string
+}
+
+export interface Network {
+  networkName: string
 }

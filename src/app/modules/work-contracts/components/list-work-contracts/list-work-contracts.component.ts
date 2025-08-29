@@ -7,16 +7,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
 import { EmploymentContract } from '../../../../Entities/employment-contract';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  customClasses?: string[];
-  routerLink?: (row: any) => string;
-  type?: string;
-  useSameAsEdit?: boolean;
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-list-work-contracts',
@@ -78,7 +69,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.cols = [
       { 
         field: 'employee.employeeno', 
-        customClasses: ['align-right'],
+        customClasses: ['align-right','date-font-style'],
         useSameAsEdit: true,
         header:  this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))
       },
