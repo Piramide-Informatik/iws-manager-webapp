@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -79,7 +79,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
       projectLabel: [''],
-      percentage: [''],
+      percentage: ['', [Validators.max(100.00)]],
       amount: [{ value: '', disabled: true }]
     });
 
