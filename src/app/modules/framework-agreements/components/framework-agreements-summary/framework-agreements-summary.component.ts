@@ -7,13 +7,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
-
-interface Column {
-  field: string,
-  header: string,
-  customClasses?: string[],
-  routerLink?: (row: any) => string
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-framework-agreements-summary',
@@ -78,7 +72,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
     this.cols = [
       { 
         field: 'contractno', 
-        customClasses: ['align-right'], 
+        customClasses: ['align-right','date-font-style'], 
         routerLink: (row: any) => `./framework-agreement-details/${row.id}`,
         header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER')) },
       { field: 'frameworkContract', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_LABEL')) },

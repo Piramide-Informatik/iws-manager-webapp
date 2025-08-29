@@ -9,14 +9,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { OrderUtils } from '../../utils/order-utils';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Order } from '../../../../Entities/order';
-
-interface Column {
-  field: string,
-  header: string,
-  routerLink?: (row: any) => string
-  customClasses?: string[]
-  type?: string
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-orders-overview',
@@ -126,7 +119,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     this.cols = [
       { 
         field: 'orderNr', 
-        customClasses: ['align-right'],
+        customClasses: ['align-right','date-font-style'],
         routerLink: (row: any) => `./order-details/${row.id}`,
         header:  this.translate.instant(_('ORDERS.TABLE.ORDER_ID'))
       },
