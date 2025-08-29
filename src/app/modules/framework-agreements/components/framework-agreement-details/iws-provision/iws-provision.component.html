@@ -49,7 +49,7 @@
 >
   <form [formGroup]="iwsCommissionFAForm" (ngSubmit)="onSubmit()">
     <div class="flex gap-4 mb-3 mt-4">
-      <label for="fromValue" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
+      <label for="fromValue" class="label-modal">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
       <p-inputnumber #inputNumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
         [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
         inputId="fromValue"
@@ -59,17 +59,26 @@
       />
     </div>
     <div class="flex gap-4 mb-3">
-      <label for="provision" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
-      <p-inputnumber mode="decimal" [max]="999.99" [min]="0" [useGrouping]="true" 
-        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
-        inputId="provision"
-        class="flex-auto"
-        formControlName="provision"
-        autocomplete="off"
-      />
+      <label for="provision" class="label-modal">{{ 'ORDERS.COMMISSIONS.COMMISSION' | translate }}</label>
+      <div class="input-message">
+        <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" 
+          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
+          inputId="provision"
+          class="flex-auto"
+          formControlName="provision"
+          autocomplete="off" invalid="
+            iwsCommissionFAForm.get('provision')?.invalid  
+            && iwsCommissionFAForm.get('provision')?.dirty 
+            || iwsCommissionFAForm.get('provision')?.touched"
+        /> 
+        <p-message severity="error" variant="simple" size="small" *ngIf="
+          iwsCommissionFAForm.get('provision')?.invalid && 
+          iwsCommissionFAForm.get('provision')?.dirty
+        ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+      </div>
     </div>
     <div class="flex gap-4 mb-3">
-      <label for="minCommission" class="w-3 label-modal">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
+      <label for="minCommission" class="label-modal">{{ 'ORDERS.COMMISSIONS.MIN_COMMISSION' | translate }}</label>
       <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
         [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
         inputId="minCommission"
