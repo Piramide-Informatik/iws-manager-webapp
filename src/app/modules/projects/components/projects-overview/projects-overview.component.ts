@@ -9,14 +9,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ProjectUtils } from '../../utils/project.utils';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
-
-interface Column {
-  field: string,
-  header: string,
-  routerLink?: (row: any) => string,
-  type?: string
-  customClasses?: string[]
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-projects-overview',
