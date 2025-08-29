@@ -19,8 +19,9 @@ import {
 } from '../../../../../shared/utils/moment-date-utils';
 @Component({
   selector: 'app-holiday-modal',
+  standalone: false,
   templateUrl: './holiday-modal.component.html',
-  styleUrls: ['./holiday-modal.component.scss'],
+  styleUrl: './holiday-modal.component.scss',
 })
 export class HolidayModalComponent implements OnInit, OnDestroy {
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
