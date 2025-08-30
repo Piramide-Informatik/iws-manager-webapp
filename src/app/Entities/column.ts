@@ -4,9 +4,9 @@ export interface Column {
   minWidth?: number;
   filter?: { 
     type: 'multiple' | 'boolean', 
-    data: any 
+    data?: any 
   };
-  customExportHeader?: string;
+  styles?: {},
   routerLink?: (row: any) => string;
   type?: 'double' | 'date' | 'dateYear';
   customClasses?: string[];

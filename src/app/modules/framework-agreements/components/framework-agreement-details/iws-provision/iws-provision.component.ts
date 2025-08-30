@@ -7,13 +7,7 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { InputNumber } from 'primeng/inputnumber';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  customClasses?: string[]
-}
+import { Column } from '../../../../../Entities/column';
 
 @Component({
   selector: 'app-iws-provision',

@@ -12,12 +12,7 @@ import { Rol } from '../../../../../../Entities/rol';
 import { RolesService } from '../../services/roles.service';
 import { SystemModule } from '../../../../../../Entities/systemModule';
 import { SystemModuleService } from '../../../../../../Services/system-module.service';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-}
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-rol-form',
@@ -41,15 +36,6 @@ export class RolFormComponent implements OnInit, OnDestroy{
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
   cols!: Column[];
-
-
-  // public modules: any[] = [
-  //   { name: 'Modul 1', code: 'M1' },
-  //   { name: 'Modul 2', code: 'M2' },
-  //   { name: 'Modul 3', code: 'M3' }
-  // ]
-
-  //public editRolForm!: FormGroup;
 
   constructor( 
     private readonly rolService: RolesService,

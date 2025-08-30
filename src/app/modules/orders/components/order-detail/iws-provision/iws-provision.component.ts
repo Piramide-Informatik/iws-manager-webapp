@@ -10,14 +10,7 @@ import { Order } from '../../../../../Entities/order';
 import { InputNumber } from 'primeng/inputnumber';
 import { OrderCommissionUtils } from '../../../utils/order-commission-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  customClasses?: string[];
-  useSameAsEdit?: boolean;
-}
+import { Column } from '../../../../../Entities/column';
 
 interface OrderCommissionForm {
   fixCommission: number;

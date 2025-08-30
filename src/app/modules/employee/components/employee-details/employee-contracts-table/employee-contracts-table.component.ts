@@ -9,13 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
-
-interface Column {
-  field: string,
-  header: string,
-  type?: string;
-  customClasses?: string[];
-}
+import { Column } from '../../../../../Entities/column';
 
 @Component({
   selector: 'app-employee-contracts-table',
