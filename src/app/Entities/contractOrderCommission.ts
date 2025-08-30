@@ -1,0 +1,14 @@
+import { EmploymentContract } from "./employment-contract";
+
+export interface ContractOrderCommission {
+  id: number;
+  createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
+  updatedAt: string;
+  version: number;
+
+  employmentContact: EmploymentContract | null;
+
+  fromOrderValue: number;
+  commission: number;
+  minCommission: number;
+}
