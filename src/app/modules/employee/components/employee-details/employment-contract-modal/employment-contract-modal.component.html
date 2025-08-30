@@ -41,18 +41,16 @@
 
       <div class="contract_input">
         <label for="workShortTime">{{ 'EMPLOYEE-CONTRACTS.FORM.WORK_SHORT_TIME' | translate }}</label>
-        <div>
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="workShortTime" formControlName="workShortTime" autocomplete="off" [ngClass]="{
-          'ng-invalid': employmentContractForm.get('workShortTime')?.invalid 
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="workShortTime" formControlName="workShortTime" autocomplete="off" invalid="
+           employmentContractForm.get('workShortTime')?.invalid  
             && employmentContractForm.get('workShortTime')?.dirty 
-            && employmentContractForm.get('workShortTime')?.touched}"/>
+            || employmentContractForm.get('workShortTime')?.touched"/>
           <p-message severity="error" variant="simple" size="small" *ngIf="
             employmentContractForm.get('workShortTime')?.invalid && 
-            employmentContractForm.get('workShortTime')?.dirty && 
-            employmentContractForm.get('workShortTime')!.hasError('pattern')
-            ">
-            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}</p-message>
+            employmentContractForm.get('workShortTime')?.dirty">
+            {{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
         </div>
       </div>
 
