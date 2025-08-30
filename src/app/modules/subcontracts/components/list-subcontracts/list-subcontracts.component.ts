@@ -10,14 +10,7 @@ import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { Customer } from '../../../../Entities/customer';
 import { Subcontract } from '../../../../Entities/subcontract';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
-
-interface Column {
-  field: string,
-  header: string,
-  customClasses?: string[],
-  routerLink?: (row: any) => string,
-  type?: any
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-list-subcontracts',

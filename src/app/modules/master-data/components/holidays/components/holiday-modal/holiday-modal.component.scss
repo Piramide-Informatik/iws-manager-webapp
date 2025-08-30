@@ -1,0 +1,26 @@
+.create-form {
+    display: flex;
+    align-items: center;
+    label {
+        width: auto;
+        font-weight: 500;
+    }
+
+    input {
+        flex: 1;
+        max-width: 300px;
+        margin-left: 3rem;
+
+    }
+    .datepicker-container {
+        flex: 1;
+        max-width: 200px;
+        margin-left: 3.6rem;
+    }
+}
+
+strong {
+    display: inline;
+}
+
+

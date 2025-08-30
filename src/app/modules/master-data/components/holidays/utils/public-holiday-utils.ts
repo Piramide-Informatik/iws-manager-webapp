@@ -2,6 +2,8 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
 import { PublicHoliday } from '../../../../../Entities/publicholiday';
 import { PublicHolidayService } from '../../../../../Services/public-holiday.service';
+import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
+
 
 @Injectable({ providedIn: 'root' })
 export class PublicHolidayUtils {
@@ -10,30 +12,55 @@ export class PublicHolidayUtils {
             return this.publicHolidayService.loadInitialData();
         }
     
-        addPublicHoliday(namePublicHoliday: string): Observable<PublicHoliday>{
+        addPublicHoliday(
+            namePublicHoliday: string,
+            date: string,
+            sequenceNo: number,
+            isFixedDate: boolean
+            ): Observable<PublicHoliday> {
             const trimmedName = namePublicHoliday?.trim();
+            const trimmedDate = date ? momentFormatDate(momentCreateDate(date)) : '';
+            const trimmedSequenceNo = sequenceNo ?? 0;
+
             if (!trimmedName) {
                 return throwError(() => new Error('PublicHoliday name cannot be empty'));
             }
-    
+
+            if (!trimmedDate) {
+                return throwError(() => new Error('PublicHoliday date cannot be empty'));
+            }
+
+            if (!trimmedSequenceNo) {
+                return throwError(() => new Error('PublicHoliday sequenceNo cannot be empty'));
+            }
+
             return this.publicHolidayExists(trimmedName).pipe(
-            switchMap(exists => {
+                switchMap(exists => {
                 if (exists) {
-                return throwError(() => new Error('PROJECT_STATUS.ERROR.ALREADY_EXISTS'));
+                    return throwError(() => new Error('PROJECT_STATUS.ERROR.ALREADY_EXISTS'));
                 }
-    
-                return this.publicHolidayService.addPublicHoliday({ name: trimmedName });
-            }),
-            catchError(err => {
-                if (err.message === 'PROJECT_STATUS.ERROR.ALREADY_EXISTS' || err.message === 'PROJECT_STATUS.ERROR.EMPTY') {
-                return throwError(() => err);
+
+                return this.publicHolidayService.addPublicHoliday({
+                    name: trimmedName,
+                    date: trimmedDate,
+                    sequenceNo: trimmedSequenceNo,
+                    isFixedDate: isFixedDate
+                });
+                }),
+                catchError(err => {
+                if (
+                    err.message === 'PROJECT_STATUS.ERROR.ALREADY_EXISTS' ||
+                    err.message === 'PROJECT_STATUS.ERROR.EMPTY'
+                ) {
+                    return throwError(() => err);
                 }
-    
-                console.error('Error creating title:', err);
+
+                console.error('Error creating publicHoliday:', err);
                 return throwError(() => new Error('PROJECT_STATUS.ERROR.CREATION_FAILED'));
-            })
+                })
             );
-        }
+            }
+
     
         //Get a publicHoliday by ID
         getPublicHolidayById(id: number): Observable< PublicHoliday | undefined> {

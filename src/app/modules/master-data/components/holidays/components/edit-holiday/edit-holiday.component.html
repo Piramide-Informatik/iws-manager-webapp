@@ -2,7 +2,7 @@
   [style]="{ background: 'var(--light-cyan)' }"
   [header]="'HOLIDAYS.HEADER.EDIT_HOLIDAY' | translate"
 >
-  <form [formGroup]="holidayForm">
+  <form [formGroup]="editPublicHolidayForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
       <div class="holiday-form mb-2">
         <label for="name">{{
@@ -11,23 +11,31 @@
         <input
           pInputText
           type="text"
-          id="name"
-          formControlName="name"
+          id="publicHoliday"
+          formControlName="publicHoliday"
+          [ngClass]="{'ng-invalid ng-dirty': editPublicHolidayForm.get('publicHoliday')?.invalid && editPublicHolidayForm.get('projectStatus')?.touched}"
           autocomplete="off"
         />
+        <p-message severity="error" variant="simple" size="small" *ngIf="
+                        editPublicHolidayForm.get('publicHoliday')?.invalid &&
+                        editPublicHolidayForm.get('publicHoliday')?.touched &&
+                        editPublicHolidayForm.get('publicHoliday')!.hasError('required')
+                    ">
+                        {{ 'PROJECT_STATUS.ERROR.PROJECT_STATUS_LABEL_REQUIRED' | translate }}
+                    </p-message>
       </div>
 
       <div class="holiday-form mb-2">
-        <label for="sort">{{ "HOLIDAYS.LABEL.SORT" | translate }}</label>
-        <input pInputText type="number" id="sort" formControlName="sort" />
+        <label for="sequenceNo">{{ "HOLIDAYS.LABEL.SORT" | translate }}</label>
+        <input pInputText type="number" id="sequenceNo" formControlName="sequenceNo" />
       </div>
 
       <div class="holiday-form mb-2 flex align-items-center gap-2">
         <div class="holiday-form-check">
-          <label for="fixed">{{
+          <label for="isFixedDate">{{
             "HOLIDAYS.LABEL.FIXED_DATE" | translate
           }}</label>
-          <p-toggleswitch formControlName="fixed" class="flex">
+          <p-toggleswitch formControlName="isFixedDate" class="flex">
             <ng-template #handle let-checked="checked">
               <i
                 [ngClass]="[
@@ -41,18 +49,17 @@
         </div>
 
         <p-datepicker
-          formControlName="fixedDate"
+          formControlName="date"
           showIcon="true"
           dateFormat="dd.mm.yy"
           [showButtonBar]="true"
           [placeholder]="'dd.mm.yy'"
         ></p-datepicker>
         <p-button
+          type="submit"
           [label]="'BUTTONS.SAVE' | translate"
           icon="pi pi-check"
           class="p-button-sm"
-          (click)="saveHoliday()"
-          (keydown.enter)="saveHoliday()"
         ></p-button>
       </div>
     </div>
@@ -86,7 +93,7 @@
             <td class="align-center">
               <p-toggleswitch
                 [(ngModel)]="bl.selected"
-                [ngModelOptions]="{ standalone: true }"
+                
               >
                 <ng-template #handle let-checked="checked">
                   <i
@@ -156,3 +163,11 @@
     ></p-button>
   </div>
 </p-card>
+
+<app-occ-error-modal
+    *ngIf="showOCCErrorModalPublicHoliday"
+    [useEmitter]="true"
+    (close)="showOCCErrorModalPublicHoliday = false"
+    (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>

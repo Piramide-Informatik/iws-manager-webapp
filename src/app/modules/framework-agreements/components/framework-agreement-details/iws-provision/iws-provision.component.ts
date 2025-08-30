@@ -9,13 +9,7 @@ import { InputNumber } from 'primeng/inputnumber';
 import { ContractOrderCommissionUtils } from '../../../utils/contract-order-commission-utils';
 import { ContractOrderCommission } from '../../../../../Entities/contractOrderCommission';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  customClasses?: string[]
-}
+import { Column } from '../../../../../Entities/column';
 
 @Component({
   selector: 'app-iws-provision',
