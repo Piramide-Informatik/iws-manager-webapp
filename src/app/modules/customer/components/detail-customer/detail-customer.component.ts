@@ -18,15 +18,7 @@ import { Customer } from '../../../../Entities/customer';
 import { MessageService } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
-
-interface Column {
-  field: string,
-  header: string
-  customClasses?: string[]
-  styles?: {},
-  filter?: { type: 'boolean' | 'multiple' },
-  useSameAsEdit?: boolean
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-detail-customer',

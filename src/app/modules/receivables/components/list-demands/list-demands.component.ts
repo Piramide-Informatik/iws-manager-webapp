@@ -7,14 +7,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ReceivableUtils } from '../../utils/receivable-utils';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
-
-interface Column {
-  field: string,
-  header: string,
-  customClasses?: string[],
-  routerLink?: (row: any) => string,
-  type?: string
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-list-demands',

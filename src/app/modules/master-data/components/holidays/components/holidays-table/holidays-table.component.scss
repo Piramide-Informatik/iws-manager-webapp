@@ -31,3 +31,10 @@ p-button {
 .align-right {
   text-align: right;
 }
+:host ::ng-deep th[ng-reflect-field="sort"],
+:host ::ng-deep td[ng-reflect-field="sort"] {
+  width: 50px !important;
+  max-width: 60px !important;
+  min-width: 40px !important;
+  text-align: right;
+}

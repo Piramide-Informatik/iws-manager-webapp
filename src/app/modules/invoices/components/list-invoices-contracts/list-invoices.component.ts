@@ -9,19 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { InvoiceUtils } from '../../utils/invoice.utils';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  customClasses?: string[];
-  routerLink?: (row: any) => string
-}
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-list-invoices',
@@ -55,7 +43,6 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
 
   loading: boolean = true;
 
-  exportColumns!: ExportColumn[];
   constructor(
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
