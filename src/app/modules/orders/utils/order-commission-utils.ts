@@ -50,6 +50,17 @@ export class OrderCommissionUtils {
   }
 
   /**
+  * Gets all order commissions given a order
+  * @param orderId - Order to get his order commissions
+  * @returns Observable emitting the raw list of order commissions
+  */
+  getAllOrderCommissionByOrderId(orderId: number): Observable<OrderCommission[]> {
+    return this.orderCommissionService.getAllOrderCommissionsByOrderId(orderId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load order commissions')))
+    );
+  }
+
+  /**
   * Creates a new orderCommission with validation
   * @param orderCommission - OrderCommission object to create (without id)
   * @returns Observable that completes when orderCommission is created
