@@ -1,5 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  FormControl,
+  Validators,
+} from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
+import { PublicHoliday } from '../../../../../../Entities/publicholiday';
+import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
+import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import {
+  momentCreateDate,
+  momentFormatDate,
+} from '../../../../../shared/utils/moment-date-utils';
+import moment from 'moment';
 
 @Component({
   selector: 'app-edit-holiday',
@@ -8,10 +25,18 @@ import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
   styleUrls: ['./edit-holiday.component.scss'],
 })
 export class EditHolidayComponent implements OnInit {
+  public showOCCErrorModalPublicHoliday = false;
+  currentPublicHoliday: PublicHoliday | null = null;
+  editPublicHolidayForm!: FormGroup;
+  isSaving = false;
+  private readonly subscriptions = new Subscription();
+  private readonly editProjectStatusSource =
+    new BehaviorSubject<PublicHoliday | null>(null);
+
   holidayForm!: FormGroup;
 
   bundeslands = [
-    { name: 'Baden-Württemberg', selected: true },
+    { name: 'Baden-Württemberg', selected: false },
     { name: 'Bayern', selected: false },
     { name: 'Berlin', selected: false },
     { name: 'Brandenburg', selected: false },
@@ -33,18 +58,148 @@ export class EditHolidayComponent implements OnInit {
     { year: 2021, date: new Date(2021, 0, 6) },
   ];
 
-  constructor(private readonly fb: FormBuilder) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly publicHolidayUtils: PublicHolidayUtils,
+    private readonly publicHolidayStateService: PublicHolidayStateService,
+    private readonly messageService: MessageService,
+    private readonly translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
-    this.holidayForm = this.fb.group({
-      name: ['Heilige Drei Könige'],
-      sort: [2],
-      fixed: [true],
-      fixedDate: [new Date()],
-      bundeslands: this.fb.array(
-        this.bundeslands.map(() => this.fb.control(false))
-      ),
+    this.initForm();
+    this.setupPublicHolidaySubscription();
+    const savedPublicHolidayId = localStorage.getItem(
+      'selectedPublicHolidayId'
+    );
+    if (savedPublicHolidayId) {
+      this.loadPublicHolidayAfterRefresh(savedPublicHolidayId);
+      localStorage.removeItem('selectedProjectStatusId');
+    }
+  }
+  private initForm(): void {
+    this.editPublicHolidayForm = new FormGroup({
+      publicHoliday: new FormControl('', [Validators.required]),
+      date: new FormControl('', [Validators.required]),
+      sequenceNo: new FormControl('', [Validators.required]),
+      isFixedDate: new FormControl(true)
     });
+  }
+  private setupPublicHolidaySubscription(): void {
+    this.subscriptions.add(
+      this.publicHolidayStateService.currentPublicHoliday$.subscribe(
+        (publicHoliday) => {
+          this.currentPublicHoliday = publicHoliday;
+          publicHoliday
+            ? this.loadPublicHolidayData(publicHoliday)
+            : this.clearForm();
+        }
+      )
+    );
+  }
+  private loadPublicHolidayData(publicHoliday: PublicHoliday): void {
+    this.editPublicHolidayForm.patchValue({
+      publicHoliday: publicHoliday.name,
+      date: publicHoliday.date
+        ? moment(publicHoliday.date, 'YYYY-MM-DD').toDate()
+        : null,
+      sequenceNo: publicHoliday.sequenceNo,
+      isFixedDate: publicHoliday.isFixedDate
+    });
+  }
+
+  private loadPublicHolidayAfterRefresh(publicHolidayId: string): void {
+    this.isSaving = true;
+    this.subscriptions.add(
+      this.publicHolidayUtils
+        .getPublicHolidayById(Number(publicHolidayId))
+        .subscribe({
+          next: (publicHoliday) => {
+            if (publicHoliday) {
+              this.publicHolidayStateService.setPublicHolidayToEdit(
+                publicHoliday
+              );
+            }
+            this.isSaving = false;
+          },
+          error: () => {
+            this.isSaving = false;
+          },
+        })
+    );
+  }
+
+  onSubmit(): void {
+    if (
+      this.editPublicHolidayForm.invalid ||
+      !this.currentPublicHoliday ||
+      this.isSaving
+    ) {
+      this.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true;
+    const updatePublicHoliday: PublicHoliday = {
+      ...this.currentPublicHoliday,
+      name: this.editPublicHolidayForm.value.publicHoliday,
+      date: this.editPublicHolidayForm.value.date
+        ? momentFormatDate(
+            momentCreateDate(this.editPublicHolidayForm.value.date as string)
+          )
+        : '',
+      sequenceNo: this.editPublicHolidayForm.value.sequenceNo,
+      isFixedDate: this.editPublicHolidayForm.value.isFixedDate
+    };
+
+    this.subscriptions.add(
+      this.publicHolidayUtils
+        .updatePublicHoliday(updatePublicHoliday)
+        .subscribe({
+          next: (savedPublicHoliday) =>
+            this.handleSaveSuccess(savedPublicHoliday),
+          error: (err) => this.handleError(err),
+        })
+    );
+  }
+
+  private markAllAsTouched(): void {
+    Object.values(this.editPublicHolidayForm.controls).forEach((control) => {
+      control.markAsTouched();
+      control.markAsDirty();
+    });
+  }
+
+  private handleSaveSuccess(savedPublicHoliday: PublicHoliday): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.SUCCESS'),
+      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_SUCCESS'),
+    });
+    this.publicHolidayStateService.setPublicHolidayToEdit(null);
+    this.clearForm();
+  }
+
+  private handleError(err: any): void {
+    if (
+      err.message ===
+      'Version conflict: PublicHoliday has been updated by another user'
+    ) {
+      this.showOCCErrorModalPublicHoliday = true;
+    } else {
+      this.handleSaveError(err);
+    }
+    this.isSaving = false;
+  }
+
+  private handleSaveError(error: any): void {
+    console.error('Error saving title:', error);
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.ERROR'),
+      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_FAILED'),
+    });
+    this.isSaving = false;
   }
 
   get bundeslandsArray(): FormArray {
@@ -93,5 +248,21 @@ export class EditHolidayComponent implements OnInit {
   }
   getControl(index: number): FormControl {
     return this.bundeslandsArray.at(index) as FormControl;
+  }
+
+  clearForm(): void {
+    this.editPublicHolidayForm.reset();
+    this.currentPublicHoliday = null;
+    this.isSaving = false;
+  }
+
+  onRefresh(): void {
+    if (this.currentPublicHoliday?.id) {
+      localStorage.setItem(
+        'selectedPublicHolidayId',
+        this.currentPublicHoliday.id.toString()
+      );
+      window.location.reload();
+    }
   }
 }
