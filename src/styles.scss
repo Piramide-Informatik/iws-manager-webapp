@@ -370,3 +370,21 @@ input[type='number']::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+// Inputs with errors 
+.input-message {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  p-inputnumber.ng-invalid.ng-dirty > .p-inputtext:enabled:focus {
+    border-color: #dc2626 !important;
+    box-shadow: none !important;
+  }
+
+  p-message .p-message-text {
+    position: absolute;
+    top: 22px;
+  }
+}

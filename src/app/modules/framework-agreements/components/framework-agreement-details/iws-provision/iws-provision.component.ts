@@ -7,13 +7,7 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { InputNumber } from 'primeng/inputnumber';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  customClasses?: string[]
-}
+import { Column } from '../../../../../Entities/column';
 
 @Component({
   selector: 'app-iws-provision',
@@ -60,7 +54,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
 
     this.iwsCommissionFAForm = new FormGroup({
       fromOrderValue: new FormControl(null, [Validators.required]),
-      provision: new FormControl(null, [Validators.required]),
+      provision: new FormControl(null, [Validators.required, Validators.max(100.00)]),
       minCommission: new FormControl(null, [Validators.required]),
     });
     
