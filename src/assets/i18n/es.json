@@ -779,7 +779,13 @@
       "COLUMNS_SELECTED": "{0} columnas seleccionadas",
       "CHOOSE_COLUMNS": "Elegir columnas",
       "NO_DATA": "No se encontraron empleados"
-    }
+    },
+    "FORM":{
+      "IWS_STAFF_FORM": "Nuevo Empleado"
+    },
+    "DELETE":{
+      "CONFIRMATION":"Eliminar Empleado",
+      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar el empleado "}
   },
   "SYSTEM_CONSTANT": {
     "TABLE_SYSTEM_CONSTANT": {

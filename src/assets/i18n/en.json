@@ -780,7 +780,13 @@
       "COLUMNS_SELECTED": "{0} columns selected",
       "CHOOSE_COLUMNS": "Choose columns",
       "NO_DATA": "No staff found"
-    }
+    },
+    "FORM":{
+      "IWS_STAFF_FORM": "New Employee"
+    },
+    "DELETE":{
+      "CONFIRMATION":"Delete Employee",
+      "CONFIRM_QUESTION":"Are you sure you want to delete "}
   },
   "SYSTEM_CONSTANT": {
     "TABLE_SYSTEM_CONSTANT": {

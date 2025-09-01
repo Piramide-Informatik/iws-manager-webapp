@@ -1,14 +1,16 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+
 import { EmployeeIwsStateService } from '../../utils/employee-iws-state.service';
 import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { MessageService } from 'primeng/api';
-
+import { Table } from 'primeng/table';
+import { IwsStaffModalComponent } from '../iws-staff-modal/iws-staff-modal.component';
 @Component({
   selector: 'app-iws-staff-table',
   templateUrl: './iws-staff-table.component.html',
@@ -21,17 +23,17 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   private readonly messageService = inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
-  selectedUser: number | null = null;
+  selectedEmployeeIws: number | null = null;
   NameEmployeeIws: string = '';
-
+  @ViewChild('iwsEmployeeModal') iwsStaffModalComponent!: IwsStaffModalComponent;
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
-      this.selectedUser = event.data;
+      this.selectedEmployeeIws = event.data;
 
-      this.employeeIwsUtils.getEmployeeIwsById(this.selectedUser!).subscribe({
+      this.employeeIwsUtils.getEmployeeIwsById(this.selectedEmployeeIws!).subscribe({
         next: (employeeIws) => {
-          this.NameEmployeeIws = employeeIws?.firstname ?? '';
+          this.NameEmployeeIws = employeeIws?.employeeLabel ?? '';
         },
         error: (err) => {
           console.error('Could not get employeeIws:', err);
@@ -59,6 +61,8 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   tableKey: string = 'IwsStaffT'
   dataKeys = ['type', 'abbreviation', 'firstName', 'lastName', 'email'];
 
+
+  @ViewChild('dt2') dt2!: Table;
   private langSubscription!: Subscription;
 
   constructor(
@@ -74,8 +78,6 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
-    
-
     this.loadColHeadersIwsStaff();
     this.userIwsStaffTPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -112,5 +114,26 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
     ];
+  }
+
+    onDialogShow() {
+    if (this.modalType === 'create' && this.iwsStaffModalComponent) {
+      this.iwsStaffModalComponent.focusInputIfNeeded();
+    }
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedEmployeeIws = null;
+    }
+  }
+
+  toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
   }
 }
