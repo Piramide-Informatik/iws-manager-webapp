@@ -10,14 +10,7 @@ import { Order } from '../../../../../Entities/order';
 import { InputNumber } from 'primeng/inputnumber';
 import { OrderCommissionUtils } from '../../../utils/order-commission-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-  customClasses?: string[];
-  useSameAsEdit?: boolean;
-}
+import { Column } from '../../../../../Entities/column';
 
 interface OrderCommissionForm {
   fixCommission: number;
@@ -86,6 +79,12 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
       this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
 
+    if (this.orderToEdit) {
+     this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+      this.orderCommissions = orderComissions;
+     })
+    }
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -95,6 +94,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         maxCommission: this.orderToEdit.maxCommission,
         iwsProvision: this.orderToEdit.iwsProvision
       });
+      this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+       this.orderCommissions = orderComissions;
+      })
     }
   }
 

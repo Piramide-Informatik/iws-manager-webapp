@@ -142,7 +142,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       startDate: new FormControl('', []),
       salaryPerMonth: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
       hoursPerWeek: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      workShortTime: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      workShortTime: new FormControl(null, [Validators.min(0), Validators.max(100.00)]),
       specialPayment: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
       maxHoursPerMonth: new FormControl(null, []),
       maxHoursPerDay: new FormControl(null, []),
