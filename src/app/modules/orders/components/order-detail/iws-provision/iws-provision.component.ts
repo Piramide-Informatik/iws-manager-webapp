@@ -50,7 +50,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   });
 
   public disabledButtonsTable: boolean = false;
-  selectedOrderCommission!: null;
+  selectedOrderCommission!: any;
   orderCommissions: OrderCommission[] = [];
   
   // Configuration Modal
@@ -216,8 +216,29 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     this.iwsCommissionForm.reset();
   }
 
-  deleteCommission(fromOrderValue: number){
-    this.orderCommissions = this.orderCommissions.filter( orderCommission => orderCommission.fromOrderValue != fromOrderValue);
+  deleteCommission(id: any){
+    this.typeModal = 'delete';
+    this.selectedOrderCommission = this.orderCommissions.find(oc => oc.id == id);
+    this.visibleModalIWSCommission = true;
+  }
+
+  onIwsCommissionDeleteConfirm() {
+    this.isLoading = true;
+
+    if (this.selectedOrderCommission) {
+      this.orderCommissionUtils.deleteOrderCommission(this.selectedOrderCommission.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.visibleModalIWSCommission = false;
+          this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission.id);
+          this.commonMessageService.showDeleteSucessfullMessage();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+      });
+    }
   }
 
   private firstInputFocus(): void {

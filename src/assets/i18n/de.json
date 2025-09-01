@@ -350,7 +350,8 @@
     "TITLE_DIALOG_DELETE": "IWS Commission löschen"
     },
     "ORDER_DIALOG_REMOVE": "Bestellung löschen",
-    "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen"
+    "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen",
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen "
   },
   "RECEIVABLES": {
     "TABLE": {
