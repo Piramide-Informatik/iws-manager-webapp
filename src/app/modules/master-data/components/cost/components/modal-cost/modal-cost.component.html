@@ -1,0 +1,54 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+  <form [formGroup]="costTypeForm" (ngSubmit)="onSubmit()">
+    <div class="create-form my-4">
+      <div class="cost-form">
+        <label for="type">{{ "COSTS.LABEL.NAME" | translate }}</label>
+        <input #firstInput
+          pInputText
+          type="text"
+          id="type"
+          formControlName="type"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="cost-form">
+        <label for="sequenceNo">{{ "COSTS.LABEL.SORT" | translate }}</label>
+        <p-inputnumber [useGrouping]="true" locale="de-DE"
+          inputId="sequenceNo"
+          formControlName="sequenceNo"
+          autocomplete="off"
+        />
+      </div>
+
+    </div>
+
+    <div class="flex justify-content-center gap-2 mt-4">
+        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+            icon="pi pi-check" iconPos="left" [loading]="isLoading"
+            [disabled]="costTypeForm.invalid || isLoading" />
+
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #deleteTemplate>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'COSTS.MODAL.DELETE_COST_TYPE_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedCostType?.type }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash" iconPos="left" (onClick)="onDeleteCostTypeConfirm()" severity="danger" [loading]="isLoading"
+        [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</ng-template>
