@@ -5,6 +5,7 @@
 
     label {
         width: 33%;
+        flex-shrink: 0;
     }
 
 }
@@ -16,4 +17,6 @@
 .label-modal {
     display: flex;
     align-items: center;
+    width: 140px;
+    flex-shrink: 0;
 }

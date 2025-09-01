@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
+import { Column } from '../../../Entities/column';
 
 @Component({
   selector: 'master-data-genaral-table',
@@ -17,7 +18,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Input() tableTitle: string = 'Table title';
   @Input() removeKey: string = 'id';
   @Input() tableValues: any[] = [];
-  @Input() columns: any[] = [];
+  @Input() columns: Column[] = [];
   @Input() dataKeys: any[] = [];
   @Input() hideColumns: boolean = true;
   @Input() filterByColumns: boolean = true;

@@ -10,12 +10,7 @@ import { ContractorUtils } from '../../utils/contractor-utils';
 import { Customer } from '../../../../Entities/customer';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { MessageService } from 'primeng/api';
-
-interface Column {
-  field: string,
-  header: string,
-  customClasses?: string[]
-}
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-contractor-overview',

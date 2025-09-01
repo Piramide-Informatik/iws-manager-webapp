@@ -21,22 +21,6 @@
         width: 140px;
         flex-shrink: 0;
     }
-    .input-message {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-
-        ::ng-deep p-inputnumber.ng-invalid.ng-dirty > .p-inputtext:enabled:focus {
-            border-color: #dc2626 !important;
-            box-shadow: none !important;
-        }
-
-        ::ng-deep p-message .p-message-text {
-            position: absolute;
-            top: 23px;
-        }
-    }
 }
 
 ::ng-deep p-inputnumber input#estimated.p-inputnumber-input {
