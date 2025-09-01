@@ -101,6 +101,23 @@ export class OrderCommissionService {
   }
 
   /**
+   * Retrieves all order commissions given a order
+   * @param orderId Order to get his order commissions
+   * @returns Observable with OrderCommission array
+   * @throws Error when server request fails
+   */
+  getAllOrderCommissionsByOrderId(orderId: number): Observable<OrderCommission[]> {
+    return this.http.get<OrderCommission[]>(`${this.apiUrl}/by-order/${orderId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch order commissions');
+        console.error('Error fetching order commissions:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
    * Retrieves all order commissions given a basic contract
    * @param basicContractId Basic Contract to get his order commissions
    * @returns Observable with Order Commission array

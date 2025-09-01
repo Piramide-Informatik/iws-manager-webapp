@@ -79,6 +79,12 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
       this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
     });
 
+    if (this.orderToEdit) {
+     this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+      this.orderCommissions = orderComissions;
+     })
+    }
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -88,6 +94,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         maxCommission: this.orderToEdit.maxCommission,
         iwsProvision: this.orderToEdit.iwsProvision
       });
+      this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+       this.orderCommissions = orderComissions;
+      })
     }
   }
 
