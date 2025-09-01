@@ -29,7 +29,7 @@ export class EmployeeIwsService {
   public error = this._error.asReadonly();
 
   constructor() {
-    this.loadInitialData();
+    this.loadInitialData().subscribe();
   }
 
   public loadInitialData(): Observable<EmployeeIws[]> {

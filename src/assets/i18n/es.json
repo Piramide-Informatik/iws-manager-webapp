@@ -348,7 +348,8 @@
     "TITLE_DIALOG_DELETE": "Eliminar comisión IWS"
     },
     "ORDER_DIALOG_REMOVE": "Eliminar Orden",
-    "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden"
+    "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden",
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION":"¿Está seguro que desea eliminar la comisión IWS "
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -684,7 +685,27 @@
       "SELECT": "Seleccionar",
       "YEAR": "Año",
       "DATE": "Fecha"
+    },
+    "FORM":{
+      "HOLIDAY_NAME": "Nuevo festivo"
+    },
+    "DELETE":{
+      "CONFIRMATION":"Eliminar Festivo",
+      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar el festivo "
+    },
+    "ERROR": {
+      "ALREADY_EXIST": "ya existe el registro",
+      "CREATION_FAILED": "Hubo un error durante la creacion del festivo.",
+      "UPDATE_FAILED": "Hubo un error durante la actualización del festivo.",
+      "EMPTY": "Vacío",
+      "HOLIDAY_LABEL_REQUIRED": "El nombre del festivo es obligatorio."
+    },
+    "MODAL":{
+      "NAME":"Nombre del Festivo",
+      "DATE":"Fecha",
+      "ORDEN":"Orden"
     }
+    
   },
   "FUNDING": {
     "TABLE": {

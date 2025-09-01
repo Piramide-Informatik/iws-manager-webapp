@@ -350,7 +350,8 @@
     "TITLE_DIALOG_DELETE": "IWS Commission löschen"
     },
     "ORDER_DIALOG_REMOVE": "Bestellung löschen",
-    "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen"
+    "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen",
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen "
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -684,6 +685,25 @@
       "SELECT": "Auswählen",
       "YEAR": "Jahr",
       "DATE": "Datum"
+    },
+    "FORM":{
+      "HOLIDAY_NAME": "Neuer Feiertag"
+    },
+    "DELETE":{
+      "CONFIRMATION":"Feiertag löschen",
+      "CONFIRM_QUESTION":"Möchten Sie den Feiertag wirklich löschen? "
+    },
+    "ERROR": {
+      "ALREADY_EXIST": "Der Datensatz existiert bereits",
+      "CREATION_FAILED": "Beim Anlegen des Feiertags ist ein Fehler aufgetreten.",
+      "UPDATE_FAILED": "Beim Feiertags-Update ist ein Fehler aufgetreten.",
+      "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten",
+      "HOLIDAY_LABEL_REQUIRED": "Der Name des Feiertags ist erforderlich."
+    },
+    "MODAL":{
+      "NAME":"Name des Feiertags",
+      "DATE":"Datum",
+      "ORDEN":"Befehl"
     }
   },
   "FUNDING": {

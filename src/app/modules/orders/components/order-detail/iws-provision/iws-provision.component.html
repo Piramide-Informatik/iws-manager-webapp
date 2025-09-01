@@ -29,7 +29,6 @@
     [columns]="cols"
     [userPreferences]="userIwsProvisionPreferences"
     [dataKeys]="dataKeys"
-    removeKey="fromOrderValue"
     [disableButtons]="disabledButtonsTable"
     (onColumnChanges)="onUserIwsProvisionPreferencesChanges($event)"
     (onEditRegister)="showModalIwsCommission('edit', $event)"
@@ -64,7 +63,8 @@
     [(visible)]="visibleModalIWSCommission"
     [style]="{ width: '40rem' }"
   >
-    <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmitIwsCommission()">
+   @if (typeModal !== 'delete') {
+     <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmitIwsCommission()">
       <div class="form-item-commission mt-4">
         <label for="fromValue">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
         <p-inputnumber #inputNumber mode="decimal" [max]="99999999.99" [min]="0" [useGrouping]="true" 
@@ -125,6 +125,23 @@
         ></p-button>
       </div>
     </form>
+   } @else {
+     <div class="delete-confirmation-component mb-2 mt-4 justify-content-center ">
+      <p class="mb-4">
+        {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ selectedOrderCommission?.id }} "</strong>
+      </p>
+
+      <div class="flex justify-content-center gap-2">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" (onClick)="onIwsCommissionDeleteConfirm()" severity="danger" [loading]="isLoading"
+          [disabled]="isLoading" />
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+          iconPos="left" (onClick)="this.visibleModalIWSCommission = false;" [disabled]="isLoading" />
+      </div>
+    </div>
+   }
+    
   </p-dialog>
 </div>
 <p-toast/>

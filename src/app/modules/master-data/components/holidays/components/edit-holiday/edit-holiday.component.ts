@@ -74,7 +74,7 @@ export class EditHolidayComponent implements OnInit {
     );
     if (savedPublicHolidayId) {
       this.loadPublicHolidayAfterRefresh(savedPublicHolidayId);
-      localStorage.removeItem('selectedProjectStatusId');
+      localStorage.removeItem('selectedPublicHolidayId');
     }
   }
   private initForm(): void {
@@ -173,8 +173,8 @@ export class EditHolidayComponent implements OnInit {
   private handleSaveSuccess(savedPublicHoliday: PublicHoliday): void {
     this.messageService.add({
       severity: 'success',
-      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_SUCCESS'),
+      summary: this.translate.instant('MESSAGE.SUCCESS'),
+      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
     this.publicHolidayStateService.setPublicHolidayToEdit(null);
     this.clearForm();
@@ -196,8 +196,8 @@ export class EditHolidayComponent implements OnInit {
     console.error('Error saving title:', error);
     this.messageService.add({
       severity: 'error',
-      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.ERROR'),
-      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_FAILED'),
+      summary: this.translate.instant('MESSAGE.ERROR'),
+      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
     });
     this.isSaving = false;
   }

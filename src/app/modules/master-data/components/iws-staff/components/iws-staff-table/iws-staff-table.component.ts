@@ -1,9 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { EmployeeIwsStateService } from '../../utils/employee-iws-state.service';
+import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
+import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-iws-staff-table',
@@ -12,6 +16,43 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styles: ``,
 })
 export class IwsStaffTableComponent implements OnInit, OnDestroy {
+  private readonly employeeIwsUtils = new EmployeeIwsUtils();
+  private readonly employeeIwsService = inject(EmployeeIwsService);
+  private readonly messageService = inject(MessageService);
+  visibleModal: boolean = false;
+  modalType: 'create' | 'delete' = 'create';
+  selectedUser: number | null = null;
+  NameEmployeeIws: string = '';
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedUser = event.data;
+
+      this.employeeIwsUtils.getEmployeeIwsById(this.selectedUser!).subscribe({
+        next: (employeeIws) => {
+          this.NameEmployeeIws = employeeIws?.firstname ?? '';
+        },
+        error: (err) => {
+          console.error('Could not get employeeIws:', err);
+          this.NameEmployeeIws = '';
+        }
+      });
+    }
+    this.visibleModal = true;
+  }
+
+    readonly employeeIwss = computed(() => {
+    return this.employeeIwsService.employeeIws().map(employeeIws => ({
+      id: employeeIws.id,
+      abbreviation: employeeIws.employeeLabel,
+      firstName: employeeIws.firstname,
+      lastName: employeeIws.lastname,
+      email: employeeIws.mail,
+    }));
+  });
+
+
   iwsStaff: any[] = [];
   columnsHeaderFieldIwsStaff: any[] = [];
   userIwsStaffTPreferences: UserPreference = {};
@@ -23,7 +64,8 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly employeeIwsStateService: EmployeeIwsStateService,
   ) {}
 
   ngOnDestroy(): void {
@@ -32,50 +74,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {
-    this.iwsStaff = [
-      {
-        id: 1,
-        abbreviation: 'PaZe',
-        firstName: 'Patrick',
-        lastName: 'Zessin',
-        email: 'p.zessin@iws-nord.de',
-      },
-      {
-        id: 2,
-        abbreviation: 'PhiG',
-        firstName: 'Philipp',
-        lastName: 'Glöckner',
-        email: 'p.glockner@iws-nord.de',
-      },
-      {
-        id: 3,
-        abbreviation: 'MilZ',
-        firstName: 'Miljan',
-        lastName: 'Zekovic',
-        email: 'm.zekovic@iws-nord.de',
-      },
-      {
-        id: 4,
-        abbreviation: 'LoSc',
-        firstName: 'Lothar',
-        lastName: 'Schulte',
-        email: 'l.schulte@iws-nord.de',
-      },
-      {
-        id: 5,
-        abbreviation: 'KWe',
-        firstName: 'Kai',
-        lastName: 'Wellmann',
-        email: 'k.wellmann@iws-nord.de',
-      },
-      {
-        id: 6,
-        abbreviation: 'GeKa',
-        firstName: 'Gernot',
-        lastName: 'Karten',
-        email: 'g.karten@iws-nord.de',
-      },
-    ];
+    
 
     this.loadColHeadersIwsStaff();
     this.userIwsStaffTPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
