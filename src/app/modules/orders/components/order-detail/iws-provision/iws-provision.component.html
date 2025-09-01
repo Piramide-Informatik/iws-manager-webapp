@@ -129,7 +129,7 @@
      <div class="delete-confirmation-component mb-2 mt-4 justify-content-center ">
       <p class="mb-4">
         {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ selectedOrderCommission?.id }} "</strong>
+        <strong class="stronglock mt-1">"{{ selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }}"?</strong>
       </p>
 
       <div class="flex justify-content-center gap-2">
@@ -144,4 +144,6 @@
     
   </p-dialog>
 </div>
+<app-occ-error-modal *ngIf="showOCCErrorModalOrderCommission" (onClose)="showOCCErrorModalOrderCommission = false">
+</app-occ-error-modal>
 <p-toast/>
