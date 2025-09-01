@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { CONTRACT_STATUS } from './contract-status.data';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { ContractStatusUtils } from '../../utils/contract-status-utils';
+import { ContractStatusService } from '../../../../../../Services/contract-status.service';
 
 
 @Component({
@@ -16,7 +18,11 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 })
 export class ContractStatusTableComponent implements OnInit, OnDestroy {
 
-  contractStatusValues = [...CONTRACT_STATUS];
+  contractStatusUtils = new ContractStatusUtils();
+  contractStatusService = inject(ContractStatusService);
+  contractStatusValues = computed(() => {
+    return this.contractStatusService.contractStatuses();
+  });
   contractStatusColumns: any[] = [];
   userContractStatusPreferences: UserPreference = {};
   tableKey: string = 'ContractStatus'
@@ -31,6 +37,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
               private readonly translate: TranslateService ) { }
 
   ngOnInit() {
+    this.contractStatusUtils.loadInitialData().subscribe();
     this.loadContractStatusHeadersAndColumns();
     this.userContractStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.contractStatusColumns);
     this.langContractStatusSubscription = this.translate.onLangChange.subscribe(() => {
@@ -50,7 +57,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   loadContractStatusHeaders(): any[] {
     return [
       {
-        field: 'contractStatus',
+        field: 'status',
         minWidth: 110,
         header: this.translate.instant(_('CONTRACT_STATUS.TABLE_CONTRACT_STATUS.CONTRACT_STATUS'))
       }
