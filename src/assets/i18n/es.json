@@ -348,7 +348,8 @@
     "TITLE_DIALOG_DELETE": "Eliminar comisión IWS"
     },
     "ORDER_DIALOG_REMOVE": "Eliminar Orden",
-    "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden"
+    "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden",
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION":"¿Está seguro que desea eliminar la comisión IWS "
   },
   "RECEIVABLES": {
     "TABLE": {
