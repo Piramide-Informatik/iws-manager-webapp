@@ -50,9 +50,8 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   });
 
   public disabledButtonsTable: boolean = false;
-  selectedOrderCommission!: any;
+  selectedOrderCommission!: OrderCommission | undefined;
   orderCommissions: OrderCommission[] = [];
-  orderCommissionToEdit!: OrderCommission;
   public showOCCErrorModalOrderCommission: boolean = false;
   
   // Configuration Modal
@@ -173,7 +172,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     
     if(this.typeModal === 'create'){
       this.createOrderCommission();
-    }else if(this.typeModal === 'edit'){
+    }else if(this.typeModal === 'edit' && this.selectedOrderCommission){
       this.updateOrderCommission();
     }
   }
@@ -188,9 +187,10 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     
     this.isLoading = true;
     this.orderCommissionUtils.createOrderCommission(newOrderCommission).subscribe({
-      next: () => {
+      next: (created) => {
         this.isLoading = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
+        this.orderCommissions.push(created);
         this.closeModalIwsCommission();
       },
       error: (error) => {
@@ -203,7 +203,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   private updateOrderCommission(): void {
     const updateOrderCommission: OrderCommission = {
-      ...this.orderCommissionToEdit,
+      ...this.selectedOrderCommission!,
       fromOrderValue: this.iwsCommissionForm.value.fromOrderValue ?? 0,
       commission: this.iwsCommissionForm.value.commission ?? 0,
       minCommission: this.iwsCommissionForm.value.minCommission ?? 0,
@@ -235,7 +235,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     this.typeModal = type;
     
     if(data && this.typeModal === 'edit'){
-      this.orderCommissionToEdit = data;
+      this.selectedOrderCommission = data;
       this.iwsCommissionForm.get('fromOrderValue')?.setValue(data?.fromOrderValue);
       this.iwsCommissionForm.get('commission')?.setValue(data?.commission);
       this.iwsCommissionForm.get('minCommission')?.setValue(data?.minCommission);
@@ -249,7 +249,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     this.iwsCommissionForm.reset();
   }
 
-  deleteCommission(id: any){
+  deleteCommission(id: number){
     this.typeModal = 'delete';
     this.selectedOrderCommission = this.orderCommissions.find(oc => oc.id == id);
     this.visibleModalIWSCommission = true;
@@ -263,7 +263,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         next: () => {
           this.isLoading = false;
           this.visibleModalIWSCommission = false;
-          this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission.id);
+          this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
           this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (error) => {
