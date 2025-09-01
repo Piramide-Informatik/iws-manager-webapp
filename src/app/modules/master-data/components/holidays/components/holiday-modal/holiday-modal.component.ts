@@ -141,7 +141,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
 
   private handleError(error: any): void {
     this.errorMessage =
-      error?.message ?? 'PROJECT_STATUS.ERROR.CREATION_FAILED';
+      error?.message ?? 'HOLIDAYS.ERROR.CREATION_FAILED';
 
     const detail = this.getErrorDetail(error.message);
 
@@ -154,9 +154,9 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
 
   private getErrorDetail(errorCode: string): string {
     switch (errorCode) {
-      case 'PROJECT_STATUS.ERROR.EMPTY':
+      case 'HOLIDAYS.ERROR.EMPTY':
         return 'MESSAGE.EMPTY_ERROR';
-      case 'PROJECT_STATUS.ERROR.ALREADY_EXISTS':
+      case 'HOLIDAYS.ERROR.ALREADY_EXISTS':
         return 'MESSAGE.RECORD_ALREADY_EXISTS';
       default:
         return 'MESSAGE.CREATE_FAILED';
