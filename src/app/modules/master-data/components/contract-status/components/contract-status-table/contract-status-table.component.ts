@@ -3,7 +3,6 @@ import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { CONTRACT_STATUS } from './contract-status.data';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { ContractStatusUtils } from '../../utils/contract-status-utils';
