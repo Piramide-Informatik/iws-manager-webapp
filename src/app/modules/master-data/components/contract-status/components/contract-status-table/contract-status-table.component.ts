@@ -75,7 +75,20 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   }
 
   onContractStatusDeleted(contractStatus: any) {
-    console.log(contractStatus)
+    this.contractStatusUtils.deleteContractStatus(contractStatus.id).subscribe({
+      next: () => {
+        this.commonMessageService.showDeleteSucessfullMessage()
+        this.visibleContractStatusModal = false;
+      },
+      error: (err) => {
+        if (err.message === 'Cannot delete register: it is in use by other entities') {
+          this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+        } else {
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+        this.visibleContractStatusModal = false;
+      }
+    })
   }
 
   selectContractStatusToEdit(contractStatus: any) {
