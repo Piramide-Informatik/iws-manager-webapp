@@ -11,6 +11,7 @@ import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { IwsStaffModalComponent } from '../iws-staff-modal/iws-staff-modal.component';
+import { EmployeeIws } from '../../../../../../Entities/employeeIws';
 @Component({
   selector: 'app-iws-staff-table',
   templateUrl: './iws-staff-table.component.html',
@@ -136,4 +137,36 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       detail: this.translate.instant(_(message.detail)),
     });
   }
+
+  editEmployeeIws(employeeIws: EmployeeIws) {
+      const EmployeeIwsToEdit: EmployeeIws = {
+        id: employeeIws.id,
+        firstname: employeeIws.firstname,
+        lastname: employeeIws.lastname,
+        employeeLabel: employeeIws.employeeLabel,
+        mail: employeeIws.mail,
+        startDate: employeeIws.startDate,
+        endDate: employeeIws.endDate,
+        employeeNo: employeeIws.employeeNo,
+        teamIws: null,
+        user: employeeIws.user ?? null,
+        createdAt: '',
+        updatedAt: '',
+        version: 0,
+      };
+      this.employeeIwsUtils
+        .getEmployeeIwsById(EmployeeIwsToEdit.id)
+        .subscribe({
+          next: (fullEmployeeIws) => {
+            if (fullEmployeeIws) {
+              this.employeeIwsStateService.setEmployeeIwsToEdit(
+                fullEmployeeIws
+              );
+            }
+          },
+          error: (err) => {
+            console.error('Error Id EmployeeIws', err);
+          },
+        });
+    }
 }
