@@ -9,6 +9,6 @@ export interface OrderCommission {
   order: Order | null;
 
   fromOrderValue?: number;
-  commission?: string;
-  minCommission?: string;
+  commission?: number;
+  minCommission?: number;
 }

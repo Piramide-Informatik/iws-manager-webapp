@@ -18,6 +18,7 @@ import { ContractStatus } from '../../../../../Entities/contractStatus';
 import { EmployeeIwsUtils } from '../../../../master-data/components/iws-staff/utils/employee-iws-utils';
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
 import { InputNumber } from 'primeng/inputnumber';
+import { FormStateService } from '../../../utils/form-state.service';
 
 @Component({
   selector: 'app-order',
@@ -26,6 +27,7 @@ import { InputNumber } from 'primeng/inputnumber';
   styleUrl: './order.component.scss'
 })
 export class OrderComponent implements OnInit, OnDestroy, OnChanges {
+  private readonly formStateService = inject(FormStateService);
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly orderTypeUtils = inject(CostTypeUtils);
   private readonly contractStatusUtils = inject(ContractStatusUtils);
@@ -51,7 +53,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   private basicContracts!: BasicContract[];
   public readonly basicContractsSelect = toSignal(
-    this.framworkUtils.getAllFrameworkAgreementsByCustomerId(this.customerId).pipe(
+    this.framworkUtils.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(this.customerId).pipe(
       map(contracts => {
         this.basicContracts = contracts;
         
@@ -86,20 +88,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.getCurrentCustomer();
     this.firstInputFocus();
-    this.orderForm = new FormGroup({
-      orderNo: new FormControl(null),
-      orderLabel: new FormControl(''),
-      orderType: new FormControl(''),
-      acronym: new FormControl(''),
-      orderTitle: new FormControl(''),
-      orderDate: new FormControl(''),
-      fundingProgram: new FormControl(''),
-      contractStatus: new FormControl(''),
-      approvalDate: new FormControl(''),
-      basicContract: new FormControl(''),
-      employeeIws: new FormControl(''),
-      orderValue: new FormControl(null),
-    });
+    this.initForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -123,6 +112,28 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  private initForm(): void {
+    this.orderForm = new FormGroup({
+      orderNo: new FormControl(null),
+      orderLabel: new FormControl(''),
+      orderType: new FormControl(''),
+      acronym: new FormControl(''),
+      orderTitle: new FormControl(''),
+      orderDate: new FormControl(''),
+      fundingProgram: new FormControl(''),
+      contractStatus: new FormControl(''),
+      approvalDate: new FormControl(''),
+      basicContract: new FormControl(''),
+      employeeIws: new FormControl(''),
+      orderValue: new FormControl(null),
+    });
+    this.subscriptions.add(
+      this.orderForm.get('orderValue')?.valueChanges.subscribe(value => {
+        this.formStateService.updateOrderValue(value);
+      })
+    );
   }
 
   onSubmit(): void {
