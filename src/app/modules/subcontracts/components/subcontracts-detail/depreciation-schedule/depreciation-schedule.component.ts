@@ -237,7 +237,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   }
 
   private loadSubcontractYears(subcontractId: number): void {
-    this.subcontractYearUtils.getAllSubcontractsYear(subcontractId).subscribe( sc => {
+    this.subcontractYearUtils.getAllSubcontractsYearSortedByYear(subcontractId).subscribe( sc => {
       this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
         const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
         const afamonths = curr.subcontract?.afamonths ?? 0;
