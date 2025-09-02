@@ -158,18 +158,18 @@ export class SubcontractService {
     const url = `${this.apiUrl}/${updatedSubcontract.id}/recalculate-subcontractproject`;
     return this.http.put<Subcontract>(url, updatedSubcontract, this.httpOptions).pipe(
       tap({
-        next: (res) => {
-          this._subcontracts.update(subcontracts =>
-            subcontracts.map(s => s.id === res.id ? res : s)
-          );
+        next: (response) => {
           this._error.set(null);
+          this._subcontracts.update(subcontracts =>
+            subcontracts.map(sp => sp.id === response.id ? response : sp)
+          );
         },
-        error: (err) => {
+        error: (error) => {
           this._error.set('Failed to update subcontract with subcontract projects');
-          console.error('Error updating subcontract with subcontract projects:', err);
+          console.error('Error updating subcontract with subcontract projects:', error);
         }
       })
-    )
+    );
   }
 
   // ==================== DELETE OPERATIONS ====================
