@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
@@ -30,7 +30,7 @@ interface DepreciationEntry {
   templateUrl: './depreciation-schedule.component.html',
   styleUrl: './depreciation-schedule.component.scss',
 })
-export class DepreciationScheduleComponent implements OnInit {
+export class DepreciationScheduleComponent implements OnInit, OnChanges {
   private readonly subcontractYearUtils = inject(SubcontractYearUtils);
   private readonly subcontractStateService = inject(SubcontractStateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
@@ -64,12 +64,6 @@ export class DepreciationScheduleComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
-      if(updatedSubcontract && (updatedSubcontract?.invoiceNet !== this.currentSubcontract.invoiceNet || 
-        updatedSubcontract.afamonths !== this.currentSubcontract.afamonths )){
-        this.loadSubcontractYears(updatedSubcontract.id)
-      }
-    });
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
       this.loadSubcontractYears(this.subcontractId);  
@@ -83,6 +77,17 @@ export class DepreciationScheduleComponent implements OnInit {
       this.loadColumns();
       this.userDepreciationPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.depreciationColumns);
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['currentSubcontract'] && this.currentSubcontract){
+      this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
+        if(updatedSubcontract && (updatedSubcontract?.netOrGross !== this.currentSubcontract.netOrGross || 
+          updatedSubcontract.afamonths !== this.currentSubcontract.afamonths )){
+          this.loadSubcontractYears(updatedSubcontract.id)
+        }
+      });
+    }
   }
 
   private initForm(): void {
@@ -232,7 +237,7 @@ export class DepreciationScheduleComponent implements OnInit {
   }
 
   private loadSubcontractYears(subcontractId: number): void {
-    this.subcontractYearUtils.getAllSubcontractsYear(subcontractId).subscribe( sc => {
+    this.subcontractYearUtils.getAllSubcontractsYearSortedByYear(subcontractId).subscribe( sc => {
       this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
         const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
         const afamonths = curr.subcontract?.afamonths ?? 0;

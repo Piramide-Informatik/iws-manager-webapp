@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table'; 
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
@@ -16,7 +16,7 @@ import { Subcontract } from '../../../../../Entities/subcontract';
   templateUrl: './project-allocation.component.html',
   styleUrl: './project-allocation.component.scss'
 })
-export class ProjectAllocationComponent implements OnInit, OnDestroy {
+export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges {
 
   private readonly subcontractsProjectUtils = inject(SubcontractProjectUtils);
   private readonly subcontractStateService = inject(SubcontractStateService);
@@ -45,11 +45,6 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
-      if(updatedSubcontract && updatedSubcontract.invoiceGross !== this.currentSubcontract.invoiceGross){
-        this.loadSubcontractProjects();
-      }
-    });
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
       this.loadSubcontractProjects();
@@ -62,6 +57,16 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy {
       this.loadColumns();
       this.userAllocationsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.allocationsColumns);
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['currentSubcontract'] && this.currentSubcontract){
+      this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
+        if(updatedSubcontract && updatedSubcontract.netOrGross !== this.currentSubcontract.netOrGross){
+          this.loadSubcontractProjects();
+        }
+      });
+    }
   }
 
   loadColumns() {
