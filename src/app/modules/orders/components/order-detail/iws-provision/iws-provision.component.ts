@@ -89,7 +89,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     if (this.orderToEdit) {
-     this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+     this.orderCommissionUtils.getAllOrderCommissionsByOrderIdSortedByFromOrderValue(this.orderToEdit.id).subscribe( orderComissions => {
       this.orderCommissions = orderComissions;
      })
     }
@@ -103,7 +103,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         maxCommission: this.orderToEdit.maxCommission,
         iwsProvision: this.orderToEdit.iwsProvision
       });
-      this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+      this.orderCommissionUtils.getAllOrderCommissionsByOrderIdSortedByFromOrderValue(this.orderToEdit.id).subscribe( orderComissions => {
        this.orderCommissions = orderComissions;
        this.calculateIwsProvision();
       })
