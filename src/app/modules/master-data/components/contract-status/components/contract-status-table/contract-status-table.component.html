@@ -8,7 +8,25 @@
         [userPreferences]="userContractStatusPreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserContractStatusPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="editTitle($event)"
       ></master-data-genaral-table>
     </div>
+    <p-dialog 
+      [header]="modalContractStatusType === 'create' 
+        ? ('CONTRACT_STATUS.MODAL.TITLE_CREATE' | translate) 
+        : ('CONTRACT_STATUS.MODAL.TITLE_DELETE' | translate)" 
+      [modal]="true" 
+      [(visible)]="visibleContractStatusModal"
+    >
+      <app-contract-status-modal
+        [modalType]="modalContractStatusType"
+        [selectedContractStatus]="selectedContractStatus"
+        (isVisibleModal)="onModalVisibilityChange($event)"
+        (contractStatusCreated)="onContractStatusCreated($event)"
+        (contractStatusDeleted)="onContractStatusDeleted($event)"
+      ></app-contract-status-modal>
+    </p-dialog>
   </div>
 </div>

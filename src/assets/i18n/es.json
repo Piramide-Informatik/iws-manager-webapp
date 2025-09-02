@@ -1074,6 +1074,11 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido"
+    },
+    "MODAL": {
+      "TITLE_CREATE": "Nuevo Estado del Contrato",
+      "TITLE_DELETE": "Eliminar Estado del Contrato",
+      "DELETE_QUESTION": "¿Está seguro que desea eliminar el Estado del Contrato "
     }
   },
   "FILTER": {
