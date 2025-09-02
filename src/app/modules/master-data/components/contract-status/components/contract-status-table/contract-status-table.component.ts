@@ -7,6 +7,7 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { ContractStatusUtils } from '../../utils/contract-status-utils';
 import { ContractStatusService } from '../../../../../../Services/contract-status.service';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 
 @Component({
@@ -26,6 +27,9 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   userContractStatusPreferences: UserPreference = {};
   tableKey: string = 'ContractStatus'
   dataKeys = ['contractStatus'];
+  visibleContractStatusModal: boolean = false;
+  modalContractStatusType: 'create' | 'delete' = 'create';
+  selectedContractStatus!: any;
 
   @ViewChild('dt') dt!: Table;
 
@@ -33,7 +37,8 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
 
   constructor(private readonly router: Router,
               private readonly userPreferenceService: UserPreferenceService, 
-              private readonly translate: TranslateService ) { }
+              private readonly translate: TranslateService,
+              private readonly commonMessageService: CommonMessagesService ) { }
 
   ngOnInit() {
     this.contractStatusUtils.loadInitialData().subscribe();
@@ -43,6 +48,36 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       this.loadContractStatusHeadersAndColumns();
       this.userContractStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.contractStatusColumns);
     });
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalContractStatusType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedContractStatus = this.contractStatusValues().find(cs => cs.id == event.data);
+    }
+    this.visibleContractStatusModal = true;
+  }
+
+  onModalVisibilityChange(isVisible: any) {
+    this.visibleContractStatusModal = isVisible;
+  }
+
+  onContractStatusCreated(contractStatus: any) {
+    this.contractStatusUtils.addContractStatus(contractStatus).subscribe({
+      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
+      error: (err) => {
+        console.log(err);
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    })
+  }
+
+  onContractStatusDeleted(contractStatus: any) {
+    console.log(contractStatus)
+  }
+
+  editTitle(contractStatus: any) {
+    console.log(contractStatus);
   }
 
   onUserContractStatusPreferencesChanges(userContractStatusPreferences: any) {

@@ -1081,6 +1081,11 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
+    },
+    "MODAL": {
+      "TITLE_CREATE": "New Contract Status",
+      "TITLE_DELETE": "Delete Contract Status",
+      "DELETE_QUESTION": "Are you sure you want to delete the Contract Status "
     }
   },
   "FILTER": {

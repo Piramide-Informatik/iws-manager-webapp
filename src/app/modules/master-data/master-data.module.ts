@@ -131,6 +131,7 @@ import { ModalFundingProgramComponent } from './components/funding-programs/comp
 import { HolidayModalComponent } from './components/holidays/components/holiday-modal/holiday-modal.component';
 import { ModalCostComponent } from './components/cost/components/modal-cost/modal-cost.component';
 import { IwsStaffModalComponent } from './components/iws-staff/components/iws-staff-modal/iws-staff-modal.component';
+import { ContractStatusModalComponent } from './components/contract-status/components/contract-status-modal/contract-status-modalcomponent';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -211,6 +212,7 @@ registerLocaleData(localeDe, 'de-DE');
     BillingMethodsFormComponent,
     BillingMethodsTableComponent,
     ContractStatusComponent,
+    ContractStatusModalComponent,
     ContractStatusFormComponent,
     ContractStatusTableComponent,
     TitleModalComponent,
