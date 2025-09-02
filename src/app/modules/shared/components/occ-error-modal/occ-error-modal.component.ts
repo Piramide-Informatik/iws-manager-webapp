@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+export type OccErrorType = 'UPDATE_UPDATED' | 'UPDATE_UNEXISTED' | 'DELETE_UNEXISTED';
+
 @Component({
   selector: 'app-occ-error-modal',
   standalone: false,
@@ -11,10 +13,11 @@ export class OccErrorModalComponent {
   @Output() close = new EventEmitter<void>();
   @Output() refresh = new EventEmitter<void>();
   @Input() useEmitter = false;
+  @Input() errorType: OccErrorType = 'UPDATE_UPDATED';
 
-  constructor(private readonly translate: TranslateService) {}
+  constructor(private readonly translate: TranslateService) { }
 
-   onClose() {
+  onClose() {
     console.log("close")
     this.close.emit();
   }
@@ -24,6 +27,19 @@ export class OccErrorModalComponent {
       this.refresh.emit();
     } else {
       window.location.reload();
+    }
+  }
+
+  getErrorMessage(): string {
+    switch (this.errorType) {
+      case 'UPDATE_UPDATED':
+        return this.translate.instant('ERROR.OCC.TEXT.UPDATE_UPDATED');
+      case 'UPDATE_UNEXISTED':
+        return this.translate.instant('ERROR.OCC.TEXT.UPDATE_UNEXISTED');
+      case 'DELETE_UNEXISTED':
+        return this.translate.instant('ERROR.OCC.TEXT.DELETE_UNEXISTED');
+      default:
+        return this.translate.instant('ERROR.OCC.TEXT.UPDATE_UPDATED');
     }
   }
 }
