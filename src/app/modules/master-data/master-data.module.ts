@@ -129,6 +129,7 @@ import { UserModalComponent } from './components/user/components/user-modal/user
 import { CdkDragPlaceholder } from "@angular/cdk/drag-drop";
 import { ModalFundingProgramComponent } from './components/funding-programs/components/modal-funding-program/modal-funding-program.component';
 import { HolidayModalComponent } from './components/holidays/components/holiday-modal/holiday-modal.component';
+import { ModalCostComponent } from './components/cost/components/modal-cost/modal-cost.component';
 import { IwsStaffModalComponent } from './components/iws-staff/components/iws-staff-modal/iws-staff-modal.component';
 
 registerLocaleData(localeDe, 'de-DE');
@@ -224,6 +225,7 @@ registerLocaleData(localeDe, 'de-DE');
     UserModalComponent,
     ModalFundingProgramComponent,
     HolidayModalComponent,
+    ModalCostComponent,
     IwsStaffModalComponent
   ],
   imports: [

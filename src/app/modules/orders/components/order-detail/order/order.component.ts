@@ -51,7 +51,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
 
   private basicContracts!: BasicContract[];
   public readonly basicContractsSelect = toSignal(
-    this.framworkUtils.getAllFrameworkAgreementsByCustomerId(this.customerId).pipe(
+    this.framworkUtils.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(this.customerId).pipe(
       map(contracts => {
         this.basicContracts = contracts;
         
