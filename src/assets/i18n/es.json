@@ -870,15 +870,16 @@
       "EDIT_COST": "Editar Tipo de Costo"
     },
     "LABEL": {
-      "NAME": "Nombre del Tipo de Costo",
-      "SORT": "Orden"
+      "NAME": "Tipo de Costo",
+      "SORT": "Secuencia"
     },
     "TABLE": {
       "NAME": "Tipo de Costo",
-      "SORT": "Orden",
+      "SORT": "Secuencia",
       "NO_DATA": "No se encontraron tipos de costo"
     },
     "MODAL": {
+      "CREATE_COST_TYPE": "Nuevo tipo de costo",
       "DELETE_COST_TYPE": "Eliminar tipo de costo",
       "DELETE_COST_TYPE_QUESTION": "¿Está seguro que desea eliminar el tipo de costo "
     }
