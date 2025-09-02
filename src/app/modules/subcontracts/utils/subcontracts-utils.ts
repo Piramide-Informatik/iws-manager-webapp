@@ -141,4 +141,30 @@ export class SubcontractUtils {
       })
     );
   }
+
+  /**
+  * Updates a subcontract by ID and updates the internal subcontracts signal and subcontract projects.
+  * @param subcontract - Subcontract object with updated data
+  * @returns Observable that completes when the update is done
+  */
+  updateSubcontractWithSubcontractProjects(subcontract: Subcontract): Observable<Subcontract> {
+    if (!subcontract.id) {
+      return throwError(() => new Error('Invalid subcontract data'));
+    }
+
+    return this.subcontractService.getSubcontractById(subcontract.id).pipe(
+      take(1),
+      switchMap((currentSubcontract) => {
+        if (!currentSubcontract) {
+          return throwError(() => new Error('Subcontract not found'));
+        }
+
+        if (currentSubcontract.version !== subcontract.version) {
+          return throwError(() => new Error('Conflict detected: subcontract version mismatch'));
+        }
+
+        return this.subcontractService.updateSubcontractWithSubcontractProjects(subcontract);
+      })
+    );
+  }
 }
