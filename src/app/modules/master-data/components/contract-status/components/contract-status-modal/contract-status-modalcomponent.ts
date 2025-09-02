@@ -36,7 +36,6 @@ export class ContractStatusModalComponent implements OnInit {
     this.isContractStatusLoading = true;
     if (this.selectedContractStatus) {
       this.contractStatusDeleted.emit(this.selectedContractStatus);
-      this.isVisibleModal.emit(false);
       this.isContractStatusLoading = false;
     }
   }
