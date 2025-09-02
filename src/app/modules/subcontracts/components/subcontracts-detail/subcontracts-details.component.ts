@@ -5,6 +5,7 @@ import { SubcontractUtils } from '../../utils/subcontracts-utils';
 import { Subcontract } from '../../../../Entities/subcontract';
 import { Subscription, switchMap } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { SubcontractStateService } from '../../utils/subcontract-state.service';
 
 @Component({
   selector: 'app-subcontracts-details',
@@ -14,6 +15,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 })
 export class SubcontractsDetailsComponent implements OnInit {
   private readonly subcontractUtils = inject(SubcontractUtils);
+  private readonly subcontractStateService = inject(SubcontractStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
   @ViewChild(SubcontractComponent) subcontractComponent!: SubcontractComponent;
@@ -38,7 +40,11 @@ export class SubcontractsDetailsComponent implements OnInit {
     ).subscribe({
       next: (subcontract) => {
         if (subcontract) {
-          this.currentSubcontract = subcontract;
+          this.subcontractStateService.notifySubcontractUpdate(subcontract);
+          this.subcontractStateService.currentSubcontract$.subscribe(updatedSubcontract => {
+            if(updatedSubcontract)
+              this.currentSubcontract = updatedSubcontract;
+          });
         }
       },
       error: (err) => console.error('Error al cargar subcontrato:', err)
