@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject, computed, Output, EventEmitter } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -28,8 +28,10 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   tableKey: string = 'ContractStatus'
   dataKeys = ['contractStatus'];
   visibleContractStatusModal: boolean = false;
+  showOCCErrorModalContractStatus = false;
   modalContractStatusType: 'create' | 'delete' = 'create';
   selectedContractStatus!: any;
+  @Output() contractStatusToEdit = new EventEmitter<any>();
 
   @ViewChild('dt') dt!: Table;
 
@@ -76,8 +78,28 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
     console.log(contractStatus)
   }
 
-  editTitle(contractStatus: any) {
-    console.log(contractStatus);
+  selectContractStatusToEdit(contractStatus: any) {
+    this.contractStatusToEdit.emit(contractStatus);
+    localStorage.setItem('currentContractStatusToEdit', contractStatus.id);
+  }
+
+  editContractStatus(contractStatus: any) {
+    this.contractStatusUtils.updateContractStatus(contractStatus).subscribe({
+      next: () => {
+        this.contractStatusToEdit.emit(null);
+        this.commonMessageService.showEditSucessfullMessage();
+      },
+      error: (err) => {
+        if (err.message === 'Version conflict: ContractStatus has been updated by another user') {
+          this.showOCCErrorModalContractStatus = true;
+        }
+        this.commonMessageService.showErrorEditMessage();
+      }
+    })
+  }
+
+  onContractStatusRefresh() {
+    window.location.reload();
   }
 
   onUserContractStatusPreferencesChanges(userContractStatusPreferences: any) {
