@@ -123,3 +123,11 @@
     </div>
   </form>
 </p-card>
+
+<app-occ-error-modal
+    *ngIf="showOCCErrorModaEmployeeIws"
+    [useEmitter]="true"
+    (close)="showOCCErrorModaEmployeeIws = false"
+    (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>
