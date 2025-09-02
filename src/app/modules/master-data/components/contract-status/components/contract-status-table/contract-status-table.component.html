@@ -10,7 +10,7 @@
         (onColumnChanges)="onUserContractStatusPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
-        (onEditRegister)="editTitle($event)"
+        (onEditRegister)="selectContractStatusToEdit($event)"
       ></master-data-genaral-table>
     </div>
     <p-dialog 
@@ -30,3 +30,9 @@
     </p-dialog>
   </div>
 </div>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalContractStatus"
+  [useEmitter]="true"
+  (close)="showOCCErrorModalContractStatus = false"
+  (refresh)="onContractStatusRefresh()">
+</app-occ-error-modal>
