@@ -67,6 +67,23 @@ export class SubcontractYearService {
   }
 
   /**
+   * Retrieves all subcontracts years given subcontracts id sorted by year
+   * @param subcontractId Id of the subcontract
+   * @returns Observable with subcontract year array sorted by year
+   * @throws Error when server request fails
+   */
+  getAllSubcontractsYearSortedByYear(subcontractId: number): Observable<SubcontractYear[]> {
+    return this.http.get<SubcontractYear[]>(`${this.apiUrl}/subcontract/${subcontractId}/sort-by-year`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch subcontracts year sorted by year');
+        console.error('Error fetching subcontracts years sorted by year:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
    * Retrieves a single subcontract year by ID
    * @param id Subcontract year identifier
    * @returns Observable with Subcontract year object
