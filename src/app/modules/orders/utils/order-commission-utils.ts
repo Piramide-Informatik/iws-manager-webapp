@@ -101,7 +101,7 @@ export class OrderCommissionUtils {
         }
 
         if (currentOrderCommission.version !== orderCommission.version) {
-          return throwError(() => new Error('Conflict detected: orderCommission person version mismatch'));
+          return throwError(() => new Error('Conflict detected: order commission version mismatch'));
         }
 
         return this.orderCommissionService.updateOrderCommission(orderCommission);

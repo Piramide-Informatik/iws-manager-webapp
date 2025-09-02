@@ -73,8 +73,11 @@
             {{ getNestedValue(row, col.field) }}
           </a>
           } @else if(col.useSameAsEdit && !disableButtons) {
-          <p class="clickable-title without-margin" (click)="editRegister(row)" (keydown.enter)="editRegister(row)">
-            {{ getNestedValue(row, col.field) }}
+          <p class="clickable-title without-margin" (click)="editRegister(row)" (keydown.enter)="editRegister(row)" [ngClass]="{'date-font-style' : col.type === 'double'}">
+            {{ col.type === 'double'? 
+                (getNestedValue(row, col.field) | number:'1.2-2':'de-DE') :
+                getNestedValue(row, col.field) 
+            }}
           </p>
           } @else {
           <ng-container *ngIf="col.routerLink; else plainText">
