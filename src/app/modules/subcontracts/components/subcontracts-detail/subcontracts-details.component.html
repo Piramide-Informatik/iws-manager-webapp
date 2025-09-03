@@ -4,7 +4,7 @@
     @if(subcontractId){
       <!-- Sección izquierda: Datos del subcontrato -->
       <div class="col-md-6">
-        <app-subcontract (onLoadingOperation)="setLoadingOperation($event)"></app-subcontract>
+        <app-subcontract (onLoadingOperation)="setLoadingOperation($event)" [subcontractToEdit]="currentSubcontract"></app-subcontract>
       </div>
       <!-- Sección derecha: Asignaciones -->
       <div class="col-md-6">

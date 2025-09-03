@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { SubcontractStateService } from '../../../utils/subcontract-state.servic
   templateUrl: './subcontract.component.html',
   styleUrls: ['./subcontract.component.scss'],
 })
-export class SubcontractComponent implements OnInit, OnDestroy {
+export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   private readonly subcontractUtils = inject(SubcontractUtils);
   private readonly subcontractStateService = inject(SubcontractStateService);
   private readonly contractorUtils = inject(ContractorUtils);
@@ -39,9 +39,9 @@ export class SubcontractComponent implements OnInit, OnDestroy {
   @Output() public onLoadingOperation = new EventEmitter<boolean>();
 
   mode: 'create' | 'edit' = 'create';
-  public subcontractToEdit!: Subcontract | null;
+  @Input() subcontractToEdit!: Subcontract | null;
   private readonly customerId: number = this.route.snapshot.params['id'];
-  subcontractId!: number;
+  // subcontractId!: number;
   private contractors: Contractor[] = [];
   public contractorsName = toSignal(
     this.contractorUtils.getAllContractorsByCustomerId(this.customerId).pipe(
@@ -63,27 +63,16 @@ export class SubcontractComponent implements OnInit, OnDestroy {
     this.initForm();
     this.checkboxAfaChange();
     this.firstInputFocus();
-    
-    this.route.params.subscribe(params => {
-      this.subcontractId = params['subContractId'];
-      if (this.subcontractId) {
-        this.mode = 'edit';
-        this.subscriptions.add(
-          this.subcontractUtils.getSubcontractById(this.subcontractId).subscribe({
-            next: (subcontract) => {
-              if(subcontract) {
-                this.subcontractToEdit = subcontract;
-                this.loadSubcontractDataForm(subcontract);
-              }
-            },
-            error: (error) => console.error('Error fetching subcontract:', error)
-          })
-        );
-      } else {
-        this.mode = 'create';
-        this.getCurrentCustomer();
-      }
-    })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['subcontractToEdit'] && this.subcontractToEdit){
+      this.mode = 'edit';
+      this.loadSubcontractDataForm(this.subcontractToEdit);
+    }else{
+      this.mode = 'create';
+      this.getCurrentCustomer();
+    }
   }
 
   ngOnDestroy(): void {
@@ -187,23 +176,30 @@ export class SubcontractComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.onLoadingOperation.emit(this.isLoading);
     const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
+
+    if(subcontractUpdated.netOrGross === this.subcontractToEdit?.netOrGross){
+      this.updateOnlySubcontract(subcontractUpdated);
+    }else{
+      console.log('pasa 2: before',this.subcontractToEdit)
+      console.log('pasa 2: after',subcontractUpdated)
+      this.updateSubcontractWithProjects(subcontractUpdated);
+    }
+  }
+
+  private updateOnlySubcontract(subcontractUpdated: Subcontract): void {
     this.subscriptions.add(
       this.subcontractUtils.updateSubcontract(subcontractUpdated).subscribe({
-        next: (updated: Subcontract) => {
-          this.isLoading = false;
-          this.onLoadingOperation.emit(this.isLoading);
-          this.subcontractStateService.notifySubcontractUpdate(updated);
-          this.commonMessageService.showEditSucessfullMessage();
-          this.subcontractToEdit = updated;
-          this.loadSubcontractDataForm(updated);
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.onLoadingOperation.emit(this.isLoading);
-          console.error('Error updating subcontract:', error);
-          this.handleUpdateSubcontractError(error);
-          this.commonMessageService.showErrorEditMessage();
-        }
+        next: (updated: Subcontract) => this.handleUpdateSubcontractSuccess(updated),
+        error: (error) => this.handleUpdateSubcontractError(error)
+      })
+    );
+  }
+
+  private updateSubcontractWithProjects(subcontractUpdated: Subcontract): void {
+    this.subscriptions.add(
+      this.subcontractUtils.updateSubcontractWithSubcontractProjects(subcontractUpdated).subscribe({
+        next: (updated: Subcontract) => this.handleUpdateSubcontractSuccess(updated),
+        error: (error) => this.handleUpdateSubcontractError(error)
       })
     );
   }
@@ -226,7 +222,7 @@ export class SubcontractComponent implements OnInit, OnDestroy {
     // controlNetOrGross == true -> invoiceNet, false -> invoiceGross
     const controlNetOrGross: boolean =  this.subcontractForm.value.netOrGross === 'net';
     return {
-      id: this.subcontractId,
+      id: subcontractSource.id,
       createdAt: subcontractSource.createdAt ?? new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       version: subcontractSource?.version ?? 0,
@@ -271,12 +267,24 @@ export class SubcontractComponent implements OnInit, OnDestroy {
     this.commonMessageService.showErrorCreatedMessage();
   }
 
-  private handleUpdateSubcontractError(err: any): void {
+  private handleUpdateSubcontractError(err: Error): void {
+    this.isLoading = false;
+    this.onLoadingOperation.emit(this.isLoading);
+    console.error('Error updating subcontract:', err);
     if (err.message === 'Conflict detected: subcontract version mismatch') {
       this.showOCCErrorModalSubcontract = true;
     } else {
       this.commonMessageService.showErrorEditMessage();
     }
+  }
+
+  private handleUpdateSubcontractSuccess(updated: Subcontract): void {
+    this.isLoading = false;
+    this.onLoadingOperation.emit(this.isLoading);
+    this.subcontractStateService.notifySubcontractUpdate(updated);
+    this.commonMessageService.showEditSucessfullMessage();
+    this.subcontractToEdit = updated;
+    this.loadSubcontractDataForm(updated);
   }
 
   private firstInputFocus(): void {

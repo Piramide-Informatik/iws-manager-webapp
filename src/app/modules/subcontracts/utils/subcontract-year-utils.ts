@@ -22,6 +22,17 @@ export class SubcontractYearUtils {
   }
 
   /**
+  * Gets all subcontracts years given an id without any transformation sorted by year
+  * @param subcontractId Subcontract it where we retrieve years
+  * @returns Observable emitting the raw list of subcontracts years sorted by year
+  */
+  getAllSubcontractsYearSortedByYear(subcontractId: number): Observable<SubcontractYear[]> {
+    return this.subcontractYearService.getAllSubcontractsYearSortedByYear(subcontractId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load subcontracts sorted by year')))
+    );
+  }
+
+  /**
   * Gets a subcontract year by ID with proper error handling
   * @param id - ID of the subcontract year to retrieve
   * @returns Observable emitting the subcontract year or undefined if not found
