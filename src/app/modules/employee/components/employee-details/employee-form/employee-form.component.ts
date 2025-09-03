@@ -11,6 +11,7 @@ import { EmployeeUtils } from '../../../utils/employee.utils';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-employee-form',
@@ -31,6 +32,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   public formType: 'create' | 'update' = 'create';
   public currentEmployee: Employee | undefined;
   public showOCCErrorModaEmployee = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public occRoute = "";
   // Modal delete
   public visibleEmployeeModalDelete: boolean = false;
   public isLoading = false;
@@ -102,11 +105,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput.input.nativeElement){
+    setTimeout(() => {
+      if (this.firstInput.input.nativeElement) {
         this.firstInput.input.nativeElement.focus();
       }
-    },300)
+    }, 300)
   }
 
   private initForm(): void {
@@ -143,7 +146,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private buildEmployeeData(customerSource: any): Omit<Employee, 'id' | 'createdAt' | 'updatedAt'| 'version'> {
+  private buildEmployeeData(customerSource: any): Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
     const formValues = this.employeeForm.value;
 
     return {
@@ -234,9 +237,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         next: (createdEmployee) => {
           this.isLoading = false;
           this.commonMessageService.showCreatedSuccesfullMessage();
-          setTimeout(()=>{
+          setTimeout(() => {
             this.resetFormAndNavigation(createdEmployee.id);
-          },2000)
+          }, 2000)
         },
         error: (err) => {
           this.isLoading = false;
@@ -267,22 +270,27 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   onEmployeeDeleteConfirm() {
     this.isLoading = true;
-    if(this.currentEmployee?.id){
+    if (this.currentEmployee?.id) {
       this.employeeUtils.deleteEmployee(this.currentEmployee.id).subscribe({
         next: () => {
           this.isLoading = false;
           this.visibleEmployeeModalDelete = false;
           this.commonMessageService.showDeleteSucessfullMessage();
-          setTimeout(()=>{
+          setTimeout(() => {
             this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
-          },2000);
+          }, 2000);
         },
         error: (error) => {
           this.isLoading = false;
           console.error('Failed to delete employee:', error.message);
-          if(error.message.includes('Cannot be deleted because have associated employment contracts')){
+          if (error.message.includes('Cannot be deleted because have associated employment contracts')) {
             this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          }else{
+          }else if (error instanceof OccError  || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+            this.showOCCErrorModaEmployee = true;
+            this.occErrorType = 'DELETE_UNEXISTED';
+            this.visibleEmployeeModalDelete = false;
+            return;
+          } else {
             this.commonMessageService.showErrorDeleteMessage();
           }
         }
@@ -290,11 +298,15 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private handleUpdateEmployeeError(err: any): void {
-    if (err.message === 'Conflict detected: employee person version mismatch') {
+  private handleUpdateEmployeeError(error: any): void {
+
+    if (error instanceof OccError) {
       this.showOCCErrorModaEmployee = true;
-    } else {
-      this.commonMessageService.showErrorEditMessage();
+      this.occErrorType = error.errorType;
+      if(this.occErrorType === 'UPDATE_UNEXISTED'){
+        this.occRoute = "/customers/employees/" + this.currentEmployee?.customer?.id;
+      }
+      return;
     }
   }
 
