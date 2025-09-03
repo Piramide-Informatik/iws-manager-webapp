@@ -1,4 +1,3 @@
-import { EmploymentContract } from "./employment-contract";
 import { BasicContract } from "./basicContract"; 
 
 export interface ContractOrderCommission {
@@ -8,7 +7,6 @@ export interface ContractOrderCommission {
   version: number;
 
   basicContract: BasicContract | null; 
-  employmentContact: EmploymentContract | null; 
 
   fromOrderValue: number;
   commission: number;
