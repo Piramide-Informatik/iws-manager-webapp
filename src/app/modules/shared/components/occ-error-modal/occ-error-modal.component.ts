@@ -15,7 +15,7 @@ export class OccErrorModalComponent {
   @Output() refresh = new EventEmitter<void>();
   @Input() useEmitter = false;
   @Input() errorType: OccErrorType = 'UPDATE_UPDATED';
-  @Input() redirectRoute: string = '/customers';
+  @Input() redirectRoute: string = '/dashboard';
 
   constructor(private readonly translate: TranslateService, private readonly router: Router) { }
 

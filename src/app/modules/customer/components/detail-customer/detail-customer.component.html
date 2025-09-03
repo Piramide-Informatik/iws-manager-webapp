@@ -214,6 +214,7 @@
 <app-occ-error-modal
   *ngIf="showOCCErrorModalCustomer"
   [errorType]="occErrorType"
+  [redirectRoute]="'/customers'"
   (onClose)="showOCCErrorModalCustomer = false">
 </app-occ-error-modal>
 <p-toast></p-toast>
