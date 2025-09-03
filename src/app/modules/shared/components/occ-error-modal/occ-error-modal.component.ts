@@ -15,6 +15,7 @@ export class OccErrorModalComponent {
   @Output() refresh = new EventEmitter<void>();
   @Input() useEmitter = false;
   @Input() errorType: OccErrorType = 'UPDATE_UPDATED';
+  @Input() redirectRoute: string = '/customers';
 
   constructor(private readonly translate: TranslateService, private readonly router: Router) { }
 
@@ -28,7 +29,7 @@ export class OccErrorModalComponent {
       this.refresh.emit();
     } else {
       if (this.errorType === 'UPDATE_UNEXISTED' || this.errorType === 'DELETE_UNEXISTED') {
-        this.router.navigate(['/customers']);
+        this.router.navigate([this.redirectRoute]);
       } else {
         window.location.reload();
       }
@@ -37,8 +38,6 @@ export class OccErrorModalComponent {
 
   getErrorMessage(): string {
     switch (this.errorType) {
-      // case 'UPDATE_UPDATED':
-      //   return this.translate.instant('ERROR.OCC.TEXT.UPDATE_UPDATED');
       case 'UPDATE_UNEXISTED':
         return this.translate.instant('ERROR.OCC.TEXT.UPDATE_UNEXISTED');
       case 'DELETE_UNEXISTED':
