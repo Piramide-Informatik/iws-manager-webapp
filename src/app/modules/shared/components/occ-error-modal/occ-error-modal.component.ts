@@ -27,12 +27,10 @@ export class OccErrorModalComponent {
   refreshPage(): void {
     if (this.useEmitter) {
       this.refresh.emit();
+    } else if (this.errorType === 'UPDATE_UNEXISTED' || this.errorType === 'DELETE_UNEXISTED') {
+      this.router.navigate([this.redirectRoute]);
     } else {
-      if (this.errorType === 'UPDATE_UNEXISTED' || this.errorType === 'DELETE_UNEXISTED') {
-        this.router.navigate([this.redirectRoute]);
-      } else {
-        window.location.reload();
-      }
+      window.location.reload();
     }
   }
 
