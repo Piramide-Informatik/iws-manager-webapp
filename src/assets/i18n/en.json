@@ -878,15 +878,16 @@
       "EDIT_COST": "Edit Cost Type"
     },
     "LABEL": {
-      "NAME": "Cost Type Name",
-      "SORT": "Sort Order"
+      "NAME": "Cost Type",
+      "SORT": "Sequence"
     },
     "TABLE": {
       "NAME": "Cost Type",
-      "SORT": "Sort",
+      "SORT": "Sequence",
       "NO_DATA": "No cost types found"
     },
     "MODAL": {
+      "CREATE_COST_TYPE": "New Cost Type",
       "DELETE_COST_TYPE": "Delete Cost Type",
       "DELETE_COST_TYPE_QUESTION": "Are you sure you want to delete the Cost Type "
     }
@@ -1083,6 +1084,11 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
+    },
+    "MODAL": {
+      "TITLE_CREATE": "New Contract Status",
+      "TITLE_DELETE": "Delete Contract Status",
+      "DELETE_QUESTION": "Are you sure you want to delete the Contract Status "
     }
   },
   "FILTER": {

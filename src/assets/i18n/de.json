@@ -876,15 +876,16 @@
       "EDIT_COST": "Kostenart bearbeiten"
     },
     "LABEL": {
-      "NAME": "Bezeichnung der Kostenart",
-      "SORT": "Sortierung"
+      "NAME": "Kostensart",
+      "SORT": "Reihenfolge"
     },
     "TABLE": {
-      "NAME": "Kostenart",
-      "SORT": "Sortierung",
+      "NAME": "Kostenarten",
+      "SORT": "Reihenfolge",
       "NO_DATA": "Keine Kostenarten gefunden"
     },
     "MODAL": {
+      "CREATE_COST_TYPE": "Kostenart neu",
       "DELETE_COST_TYPE": "Kostenart löschen",
       "DELETE_COST_TYPE_QUESTION": "Sind Sie sicher, dass Sie den Kostenart löschen möchten "
     }
@@ -1082,6 +1083,11 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
+    },
+    "MODAL": {
+      "TITLE_CREATE": "Neu Vertragsstatus",
+      "TITLE_DELETE": "Vertragsstatus löschen",
+      "DELETE_QUESTION": "Möchten Sie den Vertragsstatus wirklich löschen "
     }
   },
   "FILTER": {

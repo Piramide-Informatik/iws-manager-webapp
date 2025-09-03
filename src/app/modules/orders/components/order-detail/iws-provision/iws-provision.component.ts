@@ -11,6 +11,7 @@ import { InputNumber } from 'primeng/inputnumber';
 import { OrderCommissionUtils } from '../../../utils/order-commission-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { Column } from '../../../../../Entities/column';
+import { FormStateService } from '../../../utils/form-state.service';
 
 interface OrderCommissionForm {
   fixCommission: number;
@@ -26,6 +27,7 @@ interface OrderCommissionForm {
 })
 export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   private readonly orderCommissionUtils = inject(OrderCommissionUtils);
+  private readonly formStateService = inject(FormStateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly translate = inject(TranslateService);
@@ -33,6 +35,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   // Order 
   orderCommissionForm!: OrderCommissionForm;
+  currentOrderValueForm: number | null = null;
   @Input() orderToEdit!: Order;
   @Output() onCreateOrderCommission = new EventEmitter<OrderCommissionForm>();
 
@@ -71,7 +74,12 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.orderForm.get('iwsProvision')?.disable();
     this.changeInputOrderForm();
-
+    this.subscriptions.add(
+      this.formStateService.orderValue$.subscribe((value) => {
+        this.currentOrderValueForm = value;
+        this.calculateIwsProvision();
+      })
+    );
     this.loadColumns();
     this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.cols);
 
@@ -81,7 +89,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     if (this.orderToEdit) {
-     this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+     this.orderCommissionUtils.getAllOrderCommissionsByOrderIdSortedByFromOrderValue(this.orderToEdit.id).subscribe( orderComissions => {
       this.orderCommissions = orderComissions;
      })
     }
@@ -95,8 +103,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         maxCommission: this.orderToEdit.maxCommission,
         iwsProvision: this.orderToEdit.iwsProvision
       });
-      this.orderCommissionUtils.getAllOrderCommissionByOrderId(this.orderToEdit.id).subscribe( orderComissions => {
+      this.orderCommissionUtils.getAllOrderCommissionsByOrderIdSortedByFromOrderValue(this.orderToEdit.id).subscribe( orderComissions => {
        this.orderCommissions = orderComissions;
+       this.calculateIwsProvision();
       })
     }
   }
@@ -104,9 +113,11 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {
     this.langSubscription.unsubscribe();
     this.subscriptions.unsubscribe();
+    this.formStateService.clearOrderValue();
   }
 
   private changeInputOrderForm(): void {
+    // Cambiar el estado del formulario según la comisión fija
     this.subscriptions.add(
       this.orderForm.get('fixCommission')?.valueChanges.subscribe((valueFixCommission: number | null) => {
         if (valueFixCommission && valueFixCommission > 0){
@@ -117,10 +128,64 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         } else {
           this.orderForm.get('maxCommission')?.enable();
           this.disabledButtonsTable = false;
-          this.orderForm.get('iwsProvision')?.setValue(null, { emitEvent: false });
+          this.calculateIwsProvision();
         }
       })
     );
+
+    // Cambiar el estado del formulario según la comisión maxima
+    this.subscriptions.add(
+      this.orderForm.get('maxCommission')?.valueChanges.subscribe((valueMaxCommission: number | null) => {
+        if (valueMaxCommission && valueMaxCommission > 0){
+          this.calculateIwsProvision();
+        }
+      })
+    );
+  }
+
+  private calculateIwsProvision(): void {
+    const currentValue = this.currentOrderValueForm;
+
+    const fixCommission = this.orderForm.get('fixCommission')?.value;
+    if (fixCommission && fixCommission > 0)  return;
+
+    if (!currentValue || currentValue <= 0 || !this.orderCommissions?.length) {
+      this.orderForm.get('iwsProvision')?.setValue(0 , { emitEvent: false });
+      return;
+    }
+
+    // Buscar el rango adecuado
+    let selectedCommission: OrderCommission | null = null;
+    
+    for (let i = this.orderCommissions.length - 1; i >= 0; i--) {
+      const commission = this.orderCommissions[i];
+      if (commission.fromOrderValue !== undefined && 
+          currentValue >= commission.fromOrderValue) {
+        selectedCommission = commission;
+        break;
+      }
+    }
+
+    // Si no se encontró, usar el primero
+    selectedCommission = selectedCommission ?? this.orderCommissions[0];
+
+    // Calcular y aplicar comisión mínima
+    let provision = 0;
+    if (selectedCommission.commission !== undefined) {
+      provision = currentValue * (selectedCommission.commission / 100);
+    }
+
+    if (selectedCommission.minCommission !== undefined && 
+        provision < selectedCommission.minCommission) {
+      provision = selectedCommission.minCommission;
+    }
+
+    // Aplicar comisión máxima si existe
+    const maxCommission = this.orderForm.get('maxCommission')?.value;
+    if (maxCommission && maxCommission > 0 && provision > maxCommission) {
+      provision = maxCommission;
+    }
+    this.orderForm.get('iwsProvision')?.setValue(Number(provision.toFixed(2)), { emitEvent: false }); 
   }
 
   onUserIwsProvisionPreferencesChanges(userIwsProvisionPreferences: any) {
@@ -132,6 +197,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     {
       field: 'fromOrderValue',
       customClasses: ['align-right'],
+      styles: { width: 'auto' },
       type: 'double',
       useSameAsEdit: true,
       header: this.translate.instant(_('ORDERS.COMMISSIONS.FROM_VALUE')),
@@ -139,12 +205,14 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     {
       field: 'commission',
       customClasses: ['align-right'],
+      styles: { width: 'auto' },
       type: 'double',
       header: this.translate.instant(_('ORDERS.COMMISSIONS.COMMISSION')),
     },
     {
       field: 'minCommission',
       customClasses: ['align-right'],
+      styles: { width: 'auto' },
       type: 'double',
       header: this.translate.instant(_('ORDERS.COMMISSIONS.MIN_COMMISSION')),
     },
@@ -192,6 +260,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.orderCommissions.push(created);
         this.closeModalIwsCommission();
+        this.calculateIwsProvision();
       },
       error: (error) => {
         this.isLoading = false;
@@ -216,6 +285,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         this.commonMessageService.showEditSucessfullMessage();
         this.orderCommissions = this.orderCommissions.map(c => c.id === updated.id ? updated : c);
         this.closeModalIwsCommission();
+        this.calculateIwsProvision();
       },
       error: (error: Error) => {
         this.isLoading = false;
@@ -265,6 +335,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
           this.visibleModalIWSCommission = false;
           this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
           this.commonMessageService.showDeleteSucessfullMessage();
+          this.calculateIwsProvision();
         },
         error: (error) => {
           this.isLoading = false;
