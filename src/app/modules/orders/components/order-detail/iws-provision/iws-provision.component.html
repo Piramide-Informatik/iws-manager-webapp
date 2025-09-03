@@ -61,7 +61,7 @@
     (onHide)="closeModalIwsCommission()"
     [modal]="true"
     [(visible)]="visibleModalIWSCommission"
-    [style]="{ width: '40rem' }"
+    [style]="{ width: '35rem' }"
   >
    @if (typeModal !== 'delete') {
      <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmitIwsCommission()">
@@ -111,7 +111,14 @@
           iconPos="left"
           type="submit"
           [loading]="isLoading"
+          [disabled]="iwsCommissionForm.invalid"
         ></p-button>
+
+        @if(selectedOrderCommission) {
+          <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" (onClick)="this.visibleModalIWSCommissionEntity = true;" severity="danger" [loading]="isLoading"
+          [disabled]="isLoading" />
+        }
 
         <p-button
           [label]="'BUTTONS.CANCEL' | translate"
@@ -142,6 +149,30 @@
     </div>
    }
     
+  </p-dialog>
+</div>
+<div class="card">
+  <p-dialog
+    [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_DELETE' | translate"
+    (onHide)="this.visibleModalIWSCommissionEntity = false;"
+    [modal]="true"
+    [(visible)]="visibleModalIWSCommissionEntity"
+    [style]="{ width: '35rem' }"
+  >
+    <div class="delete-confirmation-component-entity mb-2 mt-4 justify-content-center ">
+      <p class="mb-4 delete-confirmation-component-entity-title">
+        {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }}"?</strong>
+      </p>
+
+      <div class="flex justify-content-center gap-2 delete-confirmation-component-entity-buttons">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" (onClick)="onIwsCommissionDeleteConfirm()" severity="danger" [loading]="isLoading"
+          [disabled]="isLoading" />
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+          iconPos="left" (onClick)="this.visibleModalIWSCommissionEntity = false;" [disabled]="isLoading" />
+      </div>
+    </div>
   </p-dialog>
 </div>
 <app-occ-error-modal *ngIf="showOCCErrorModalOrderCommission" (onClose)="showOCCErrorModalOrderCommission = false">

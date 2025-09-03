@@ -7,6 +7,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { CostTypeUtils } from '../../utils/cost-type-utils';
 import { CostTypeService } from '../../../../../../Services/cost-type.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { CostType } from '../../../../../../Entities/costType';
 
 @Component({
   selector: 'app-costs-table',
@@ -23,11 +24,15 @@ export class CostsTableComponent implements OnInit, OnDestroy {
   dataKeys = ['name', 'sort'];
   isLoadingCostType = false;
   visibleCostTypeModal = false;
-  selectedCostType!: any;
+  modalType: 'create' | 'delete' = 'create';
+  selectedCostType!: CostType | undefined;
+  private readonly costTypesMap: Map<number, CostType> = new Map();
   private langSubscription!: Subscription;
 
   readonly costsUI = computed(() => {
-    return this.costTypeService.costTypes().map(cost => ({
+    const costTypes = this.costTypeService.costTypes();
+    costTypes.forEach(cost => this.costTypesMap.set(cost.id, cost));
+    return costTypes.map(cost => ({
       id: cost.id,
       name: cost.type,
       sort: cost.sequenceNo
@@ -72,34 +77,43 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     ];
   }
 
-  openDeleteCostTypeModal(costTypeId: number) {
-    this.selectedCostType = this.costsUI().find(c => c.id === costTypeId);
+  openCostTypeModal(event: { type: 'create' | 'delete', data?: number }) {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      const costTypeId = event.data;
+      this.selectedCostType = this.costTypesMap.get(costTypeId);
+    }
     this.visibleCostTypeModal = true;
   }
 
-  onCostTypeDelete() {
-    this.isLoadingCostType = true;
-    this.costTypeUtils.deleteCostType(this.selectedCostType.id).subscribe({
-      next: () => {
-        this.commonMessageService.showDeleteSucessfullMessage();
-        this.isLoadingCostType = false;
-        this.visibleCostTypeModal = false;
-      },
-      error: (errorResponse) => {
-        if (errorResponse.toString().includes('it is in use by other entities')) {
-          this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
-        } else {
-          this.commonMessageService.showErrorDeleteMessage();
-        }
-        this.isLoadingCostType = false;
-        this.visibleCostTypeModal = false;
+  onCostTypeDelete(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+    if (deleteEvent.status === 'success') {
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else if (deleteEvent.status === 'error' && deleteEvent.error) {
+      if (deleteEvent.error?.toString().includes('it is in use by other entities')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      } else {
+        this.commonMessageService.showErrorDeleteMessage();
       }
-    })
+    }
+    this.visibleCostTypeModal = false;
+  }
+
+  onCostTypeCreate(event: { created?: CostType, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
   }
 
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleCostTypeModal = visible;
   }
 }

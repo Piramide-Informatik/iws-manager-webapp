@@ -108,4 +108,11 @@ export class OrderCommissionUtils {
       })
     );
   }
+
+  /**Get all by Order Id sorted by fromOrderValue */
+  getAllOrderCommissionsByOrderIdSortedByFromOrderValue(orderId: number): Observable<OrderCommission[]> {
+    return this.orderCommissionService.getAllOrderCommissionsByOrderIdSortedByFromOrderValue(orderId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load order commissions')))
+    );
+  }
 }
