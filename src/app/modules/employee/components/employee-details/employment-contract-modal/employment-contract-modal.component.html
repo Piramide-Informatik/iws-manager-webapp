@@ -145,7 +145,7 @@
         icon="pi pi-check" iconPos="left" />
       @if(employmentContract) {
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeEmploymentContract()" />
+        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="this.visibleEmployeeContractEntityModal = true;" />
       }  
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="closeModal()" />
