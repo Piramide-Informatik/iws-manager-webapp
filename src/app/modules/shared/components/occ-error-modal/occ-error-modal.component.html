@@ -6,11 +6,12 @@
   </div>
   <div class="modal-body">
     <p>
-       <!-- {{ 'ERROR.OCC.TEXT' | translate }} -->
          {{ getErrorMessage() }}
     </p>
   </div>
   <div class="modal-footer">
-    <button (click)="refreshPage()">{{ 'ERROR.OCC.BUTTON' | translate }}</button>
+    <button (click)="refreshPage()">
+        {{ getButtonText() }}
+    </button>
   </div>
 </div>
