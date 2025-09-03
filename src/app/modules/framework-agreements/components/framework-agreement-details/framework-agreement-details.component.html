@@ -5,7 +5,8 @@
         </div>
         <div class="col-md-6">
             <div class="mb-2">
-                <app-iws-provision></app-iws-provision>
+                <!-- Pasar el contrato actual al componente IWS Provision -->
+                <app-iws-provision [basicContract]="currentBasicContract"></app-iws-provision>
             </div>
         </div>
     </div>

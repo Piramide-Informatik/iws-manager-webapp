@@ -1,12 +1,14 @@
 import { EmploymentContract } from "./employment-contract";
+import { BasicContract } from "./basicContract"; // Añadir import
 
 export interface ContractOrderCommission {
   id: number;
-  createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
+  createdAt: string;
   updatedAt: string;
   version: number;
 
-  employmentContact: EmploymentContract | null;
+  basicContract: BasicContract | null; // Cambiar de employmentContact a basicContract
+  employmentContact: EmploymentContract | null; // Mantener si existe, o eliminar si no se usa
 
   fromOrderValue: number;
   commission: number;
