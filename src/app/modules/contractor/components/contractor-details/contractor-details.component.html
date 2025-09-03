@@ -49,6 +49,10 @@
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
         iconPos="left" [loading]="isLoading"/>
+      @if(modalContractType === 'edit') {
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="this.visibleContractorDeleteEntityModal = true;"/>
+      }  
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="closeModal()" />
     </div>
@@ -71,6 +75,28 @@
     </div>
   </div>
 </ng-template>
+
+<p-dialog 
+  [header]="('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" 
+  [modal]="true" 
+  [(visible)]="visibleContractorDeleteEntityModal"
+>
+  <div class="confirmation-content mb-2 mt-4 delete-contractor-entity">
+    <p class="mb-4 delete-contractor-entity-title">
+      {{ 'CONTRACTS.LABEL.REMOVE_CONTRACTOR_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ contractor?.name }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2 delete-contractor-entity-buttons">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeContractor()"/>
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="this.visibleContractorDeleteEntityModal = false;" />
+
+    </div>
+  </div>
+</p-dialog>
 
 <app-occ-error-modal *ngIf="showOCCErrorModalContractor" (onClose)="showOCCErrorModalContractor = false">
 </app-occ-error-modal>
