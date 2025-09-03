@@ -701,9 +701,12 @@
       "HOLIDAY_LABEL_REQUIRED": "Der Name des Feiertags ist erforderlich."
     },
     "MODAL":{
-      "NAME":"Name des Feiertags",
+      "NAME":"Feiertags",
       "DATE":"Datum",
       "ORDEN":"Befehl"
+    },
+    "MESSAGE": {
+      "NO_BUNDESLANDS": "Keine Staaten verfügbar"
     }
   },
   "FUNDING": {
