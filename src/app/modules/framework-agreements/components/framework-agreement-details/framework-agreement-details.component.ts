@@ -31,7 +31,6 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
       this.frameworkUtils.getFrameworkAgreementById(Number(this.contractId)).subscribe(contract => {
         if(contract){
           this.currentBasicContract = contract;
-          // Pasar el contrato al componente de provisiones IWS
           if (this.iwsProvisionComponent) {
             this.iwsProvisionComponent.setBasicContract(contract);
           }

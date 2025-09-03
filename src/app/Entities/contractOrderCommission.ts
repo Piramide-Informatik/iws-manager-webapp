@@ -1,5 +1,5 @@
 import { EmploymentContract } from "./employment-contract";
-import { BasicContract } from "./basicContract"; // Añadir import
+import { BasicContract } from "./basicContract"; 
 
 export interface ContractOrderCommission {
   id: number;
@@ -7,8 +7,8 @@ export interface ContractOrderCommission {
   updatedAt: string;
   version: number;
 
-  basicContract: BasicContract | null; // Cambiar de employmentContact a basicContract
-  employmentContact: EmploymentContract | null; // Mantener si existe, o eliminar si no se usa
+  basicContract: BasicContract | null; 
+  employmentContact: EmploymentContract | null; 
 
   fromOrderValue: number;
   commission: number;

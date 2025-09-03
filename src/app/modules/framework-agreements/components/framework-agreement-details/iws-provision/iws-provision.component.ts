@@ -25,7 +25,6 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   private readonly translate = inject(TranslateService);
   private langSubscription!: Subscription;
   
-  // Añadir input para recibir el contrato básico
   @Input() basicContract!: BasicContract;
   
   public iwsCommissionFAForm!: FormGroup;
@@ -69,27 +68,23 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
       this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
-    // Cargar comisiones si ya hay un contrato
-    if (this.basicContract && this.basicContract.id) {
-      this.loadContractOrderCommissions();
+    if (this.basicContract?.id) {
+    this.loadContractOrderCommissions();
     }
   }
 
-  // Método para establecer el contrato básico desde el padre
   setBasicContract(contract: BasicContract): void {
     this.basicContract = contract;
-    if (contract && contract.id) {
+    if (contract?.id) {
       this.loadContractOrderCommissions();
     }
   }
 
-  // Método para cargar las comisiones del contrato
   private loadContractOrderCommissions(): void {
     if (!this.basicContract?.id) return;
 
     this.contractCommissionUtils.getAllContractOrderCommissions().subscribe({
       next: (commissions) => {
-        // Filtrar las comisiones que pertenecen a este contrato básico
         this.orderCommissions = commissions.filter(commission => 
           commission.basicContract?.id === this.basicContract.id
         );
@@ -137,7 +132,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
 
   private createContractOrderCommission(): void {
     const newContractOrderCommission: Omit<ContractOrderCommission, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      basicContract: this.basicContract, // Asignar el contrato básico
+      basicContract: this.basicContract, 
       employmentContact: null,
       fromOrderValue: this.iwsCommissionFAForm.get('fromOrderValue')?.value ?? 0,
       commission: this.iwsCommissionFAForm.get('provision')?.value ?? 0,
@@ -149,7 +144,6 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
         this.isLoading = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.closeModalIwsCommission();
-        // Actualizar la lista de comisiones
         this.orderCommissions = [...this.orderCommissions, createdCommission];
       },
       error: (error) => {
