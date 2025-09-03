@@ -59,6 +59,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   
   // Configuration Modal
   visibleModalIWSCommission = false;
+  visibleModalIWSCommissionEntity = false;
   isLoading: boolean = false;
   typeModal: 'create' | 'edit' | 'delete' = 'create';
   @ViewChild('inputNumber') firstInput!: InputNumber;
@@ -317,6 +318,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   closeModalIwsCommission(){
     this.visibleModalIWSCommission = false;
     this.iwsCommissionForm.reset();
+    this.selectedOrderCommission = undefined;
   }
 
   deleteCommission(id: number){
@@ -333,6 +335,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         next: () => {
           this.isLoading = false;
           this.visibleModalIWSCommission = false;
+          this.visibleModalIWSCommissionEntity = false;
           this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.calculateIwsProvision();
