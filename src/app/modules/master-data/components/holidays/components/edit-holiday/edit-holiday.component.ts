@@ -9,6 +9,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { PublicHoliday } from '../../../../../../Entities/publicholiday';
+import { State } from '../../../../../../Entities/state';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -17,6 +18,7 @@ import {
   momentFormatDate,
 } from '../../../../../shared/utils/moment-date-utils';
 import moment from 'moment';
+import { PublicHolidayService } from '../../../../../../Services/public-holiday.service';
 
 @Component({
   selector: 'app-edit-holiday',
@@ -34,21 +36,7 @@ export class EditHolidayComponent implements OnInit {
     new BehaviorSubject<PublicHoliday | null>(null);
 
   holidayForm!: FormGroup;
-
-  bundeslands = [
-    { name: 'Baden-Württemberg', selected: false },
-    { name: 'Bayern', selected: false },
-    { name: 'Berlin', selected: false },
-    { name: 'Brandenburg', selected: false },
-    { name: 'Bremen', selected: false },
-    { name: 'Hamburg', selected: false },
-    { name: 'Hessen', selected: false },
-    { name: 'Mecklenburg-Vorpommern', selected: false },
-    { name: 'Niedersachsen', selected: false },
-    { name: 'Nordrhein-Westfalen', selected: false },
-    { name: 'Rheinland-Pfalz', selected: false },
-    { name: 'Saarland', selected: false },
-  ];
+  bundeslands: State[] = [];
 
   years = [
     { year: 2025, date: new Date(2025, 0, 6) },
@@ -63,7 +51,8 @@ export class EditHolidayComponent implements OnInit {
     private readonly publicHolidayUtils: PublicHolidayUtils,
     private readonly publicHolidayStateService: PublicHolidayStateService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly publicHolidayService: PublicHolidayService
   ) {}
 
   ngOnInit(): void {
@@ -77,12 +66,33 @@ export class EditHolidayComponent implements OnInit {
       localStorage.removeItem('selectedPublicHolidayId');
     }
   }
+
+  loadStates(publicHolidayId: number): void {
+    this.publicHolidayService.getStatesByHolidayId(publicHolidayId).subscribe(states => {
+      this.bundeslands = states;
+    });
+  }
+
+  saveSelections(publicHolidayId: number): void {
+    const selectedStateIds = this.bundeslands
+      .filter((bl) => bl.selected) // we only use "selected"
+      .map((bl) => bl.id); // we only send the ids
+    console.log('Selected State IDs:', selectedStateIds);
+    console.log('Id holiday', publicHolidayId);
+    this.publicHolidayService
+      .saveSelectedStates(publicHolidayId, selectedStateIds)
+      .subscribe({
+        next: () => console.log('States saved successfully'),
+        error: (err) => console.error('Error saving states:', err),
+      });
+  }
+
   private initForm(): void {
     this.editPublicHolidayForm = new FormGroup({
       publicHoliday: new FormControl('', [Validators.required]),
       date: new FormControl('', [Validators.required]),
       sequenceNo: new FormControl('', [Validators.required]),
-      isFixedDate: new FormControl(true)
+      isFixedDate: new FormControl(true),
     });
   }
   private setupPublicHolidaySubscription(): void {
@@ -104,8 +114,10 @@ export class EditHolidayComponent implements OnInit {
         ? moment(publicHoliday.date, 'YYYY-MM-DD').toDate()
         : null,
       sequenceNo: publicHoliday.sequenceNo,
-      isFixedDate: publicHoliday.isFixedDate
+      isFixedDate: publicHoliday.isFixedDate,
     });
+    console.log('Loaded PublicHoliday ID:', publicHoliday.id);
+    this.loadStates(publicHoliday.id);
   }
 
   private loadPublicHolidayAfterRefresh(publicHolidayId: string): void {
@@ -149,15 +161,17 @@ export class EditHolidayComponent implements OnInit {
           )
         : '',
       sequenceNo: this.editPublicHolidayForm.value.sequenceNo,
-      isFixedDate: this.editPublicHolidayForm.value.isFixedDate
+      isFixedDate: this.editPublicHolidayForm.value.isFixedDate,
     };
-
     this.subscriptions.add(
       this.publicHolidayUtils
         .updatePublicHoliday(updatePublicHoliday)
         .subscribe({
-          next: (savedPublicHoliday) =>
-            this.handleSaveSuccess(savedPublicHoliday),
+          next: (savedPublicHoliday) => {
+            console.log('Id holiday after save', savedPublicHoliday.id);
+            this.saveSelections(savedPublicHoliday.id);
+            this.handleSaveSuccess(savedPublicHoliday);
+          },
           error: (err) => this.handleError(err),
         })
     );
@@ -206,17 +220,6 @@ export class EditHolidayComponent implements OnInit {
     return this.holidayForm.get('bundeslands') as FormArray;
   }
 
-  saveHoliday(): void {
-    const formData = this.holidayForm.value;
-    const selectedBundeslands = this.bundeslands.filter(
-      (_, index) => this.bundeslandsArray.at(index).value
-    );
-
-    console.log('Holiday Data:', formData);
-    console.log('Selected Bundesländer:', selectedBundeslands);
-    console.log('Years:', this.years);
-  }
-
   addYear(): void {
     const nextYear = this.getNextYear();
     const fixedDate = this.holidayForm.get('fixedDate')?.value;
@@ -254,6 +257,7 @@ export class EditHolidayComponent implements OnInit {
     this.editPublicHolidayForm.reset();
     this.currentPublicHoliday = null;
     this.isSaving = false;
+    this.bundeslands = [];
   }
 
   onRefresh(): void {

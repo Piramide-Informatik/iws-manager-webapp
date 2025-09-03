@@ -1,8 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { PublicHoliday } from '../Entities/publicholiday';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { State } from '../Entities/state';
 
 @Injectable({
     providedIn: 'root',
@@ -120,7 +121,31 @@ export class PublicHolidayService {
             );
         }
     
-        public refreshProjectStatuses(): void {
-            this.loadInitialData();
-        }
+    public refreshProjectStatuses(): void {
+        this.loadInitialData();
+    }
+
+    getStatesByHolidayId(holidayId: number): Observable<State[]> {
+        const url = `${this.apiUrl}/${holidayId}/states`;
+        return this.http.get<State[]>(url, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch states for publicHoliday');
+                console.error('Error fetching states for publicHoliday:', err);
+                return of([]);
+            })
+        );
+    }
+
+    saveSelectedStates(holidayId: number, stateIds: number[]): Observable<void> {
+    const url = `${this.apiUrl}/${holidayId}/states`;
+    return this.http.post<void>(url, stateIds, this.httpOptions).pipe( 
+        tap(() => this._error.set(null)),
+        catchError(err => {
+            this._error.set('Failed to save states for publicHoliday');
+            console.error('Error saving states for publicHoliday:', err);
+            return throwError(() => err); 
+        })
+    );
+}
 }

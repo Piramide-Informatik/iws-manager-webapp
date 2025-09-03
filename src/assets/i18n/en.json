@@ -710,9 +710,12 @@
       "HOLIDAY_LABEL_REQUIRED": "The name of the holiday is required."
     },
     "MODAL":{
-      "NAME":"Nombre del Festivo",
-      "DATE":"Fecha",
-      "ORDEN":"Orden"
+      "NAME":"Holiday",
+      "DATE":"Date",
+      "ORDEN":"Sort"
+    },
+    "MESSAGE": {
+      "NO_BUNDESLANDS": "No states available"
     }
   },
   "FUNDING": {

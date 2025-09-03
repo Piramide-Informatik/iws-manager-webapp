@@ -708,9 +708,12 @@
       "HOLIDAY_LABEL_REQUIRED": "El nombre del festivo es obligatorio."
     },
     "MODAL":{
-      "NAME":"Nombre del Festivo",
+      "NAME":"Festivo",
       "DATE":"Fecha",
       "ORDEN":"Orden"
+    },
+    "MESSAGE": {
+      "NO_BUNDESLANDS": "No hay estados disponibles"
     }
     
   },

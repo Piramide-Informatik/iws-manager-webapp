@@ -4,4 +4,5 @@ export interface State {
     createdAt: string;  
     updatedAt: string;  
     version?: number;
+    selected?: boolean;
 }
