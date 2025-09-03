@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrderComponent } from './order/order.component';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 import { BasicContract } from '../../../../Entities/basicContract';
-import { IwsProvisionComponent } from './iws-provision/iws-provision.component'; // Añadir import
+import { IwsProvisionComponent } from './iws-provision/iws-provision.component'; 
 
 @Component({
   selector: 'app-framework-agreement-details',
@@ -21,7 +21,7 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
   currentBasicContract!: BasicContract;
   
   @ViewChild(OrderComponent) orderComponent!: OrderComponent;
-  @ViewChild(IwsProvisionComponent) iwsProvisionComponent!: IwsProvisionComponent; // Añadir ViewChild
+  @ViewChild(IwsProvisionComponent) iwsProvisionComponent!: IwsProvisionComponent; 
   
   isLoading: boolean = false;
 

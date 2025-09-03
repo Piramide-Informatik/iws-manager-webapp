@@ -10,7 +10,7 @@ import { ContractOrderCommissionUtils } from '../../../utils/contract-order-comm
 import { ContractOrderCommission } from '../../../../../Entities/contractOrderCommission';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { Column } from '../../../../../Entities/column';
-import { BasicContract } from '../../../../../Entities/basicContract'; // Añadir import
+import { BasicContract } from '../../../../../Entities/basicContract'; 
 
 @Component({
   selector: 'app-iws-provision',
