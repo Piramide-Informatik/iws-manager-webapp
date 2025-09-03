@@ -19,6 +19,7 @@ import { MessageService } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Column } from '../../../../Entities/column';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-detail-customer',
@@ -56,6 +57,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   tableKey: string = 'ContactPerson'
   dataKeys = ['name', 'function', 'right'];
   public modalType: 'create' | 'delete' | 'edit' = 'create';
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public currentContactPerson!: ContactPerson | null; // Para editarlo o eliminarlo 
 
   private readonly companyTypeUtils = inject(CompanyTypeUtils);
@@ -215,11 +217,11 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput.nativeElement){
+    setTimeout(() => {
+      if (this.firstInput.nativeElement) {
         this.firstInput.nativeElement.focus();
       }
-    },300)
+    }, 300)
   }
 
   private updateTitle(name: string): void {
@@ -434,8 +436,13 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private handleSaveError(error: any): void {
     console.error('Error saving customer:', error);
-    if (error instanceof Error && error.message?.includes('version mismatch')) {
+    // if (error instanceof Error && error.message?.includes('version mismatch')) {
+    //   this.showOCCErrorModalCustomer = true;
+    //   return;
+    // }
+    if (error instanceof OccError) {
       this.showOCCErrorModalCustomer = true;
+      this.occErrorType = error.errorType;
       return;
     }
 
@@ -562,16 +569,23 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isLoadingCustomer = false;
-          if(error.message.includes('have associated employees') || 
-             error.message.includes('have associated contractors') ||
-             error.message.includes('have associated subcontracts') ||
-             error.message.includes('have associated employment contracts') ||
-             error.message.includes('have associated projects') ||
-             error.message.includes('have associated orders') ||
-             error.message.includes('have associated receivables') ||
-             error.message.includes('have associated invoices') ||
-             error.message.includes('have associated framework agreements')) {
-              this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          if (error instanceof OccError  || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+            this.showOCCErrorModalCustomer = true;
+            this.occErrorType = 'DELETE_UNEXISTED';
+            this.showDeleteCustomerModal = false;
+            return;
+          }
+
+          if (error.message.includes('have associated employees') ||
+            error.message.includes('have associated contractors') ||
+            error.message.includes('have associated subcontracts') ||
+            error.message.includes('have associated employment contracts') ||
+            error.message.includes('have associated projects') ||
+            error.message.includes('have associated orders') ||
+            error.message.includes('have associated receivables') ||
+            error.message.includes('have associated invoices') ||
+            error.message.includes('have associated framework agreements')) {
+            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
           } else {
             this.commonMessageService.showErrorDeleteMessage();
           }

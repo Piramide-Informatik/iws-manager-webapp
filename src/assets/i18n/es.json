@@ -12,8 +12,15 @@
   "ERROR": {
     "OCC": {
       "TITLE": "Error de concurrencia",
-      "TEXT": "Lo sentimos, parece que alguien más ha realizado cambios en este registro mientras lo estabas editando. Por favor, actualiza la página y vuelve a intentarlo.",
-      "BUTTON": "Actualizar"
+      "TEXT": {
+        "UPDATE_UPDATED": "Lo sentimos, parece que otra persona ha realizado cambios en este registro mientras lo editabas. Por favor, actualiza la página e intenta nuevamente para asegurarte de estar trabajando con la información más reciente.",
+        "UPDATE_UNEXISTED": "Lo sentimos, el registro que intentas actualizar ya no existe. Puede que haya sido eliminado por otro usuario. Serás redirigido a la lista principal para continuar trabajando con los registros disponibles.",
+        "DELETE_UNEXISTED": "Lo sentimos, el registro que intentas eliminar ya no existe. Parece que ya fue removido por otro usuario. Serás redirigido a la lista principal donde puedes continuar gestionando tus registros."
+      },
+      "BUTTON": {
+        "REFRESH": "Actualizar página",
+        "REDIRECT": "Ir a lista principal"
+      }
     },
     "NUMBER_FORMAT_ERROR": "Se espera un número con el siguiente formato 1.234,56.",
     "NUMBER_MAX": "Se espera un valor máximo de 100"

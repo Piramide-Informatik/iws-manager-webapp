@@ -12,8 +12,15 @@
   "ERROR": {
     "OCC": {
       "TITLE": "Parallelitätsfehler",
-      "TEXT": "Entschuldigung, es scheint, dass jemand anderes diesen Datensatz bearbeitet hat, während Sie ihn geändert haben. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut, um mit den neuesten Daten zu arbeiten.",
-      "BUTTON": "Aktualisieren"
+      "TEXT": {
+        "UPDATE_UPDATED": "Es tut uns leid, aber es scheint, dass jemand anderÄ Changes an diesem Datensatz vorgenommen hat, während Sie ihn bearbeitet haben. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut, um sicherzustellen, dass Sie mit den neuesten Informationen arbeiten.",
+        "UPDATE_UNEXISTED": "Es tut uns leid, der Datensatz, den Sie aktualisieren möchten, existiert nicht mehr. Möglicherweise wurde er von einem anderen Benutzer gelöscht. Sie werden zur Hauptliste weitergeleitet, um mit den verfügbaren Datensätzen weiterzuarbeiten.",
+        "DELETE_UNEXISTED": "Es tut uns leid, der Datensatz, den Sie löschen möchten, existiert nicht mehr. Es scheint, dass er bereits von einem anderen Benutzer entfernt wurde. Sie werden zur Hauptliste weitergeleitet, wo Sie Ihre Datensätze weiter verwalten können."
+      },
+      "BUTTON": {
+        "REFRESH": "Seite aktualisieren",
+        "REDIRECT": "Zur Hauptliste gehen"
+      }
     },
     "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet.",
     "NUMBER_MAX": "Maximalwert 100 erwartet"
