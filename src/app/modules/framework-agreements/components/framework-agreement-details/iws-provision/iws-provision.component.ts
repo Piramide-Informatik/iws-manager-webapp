@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
@@ -10,6 +10,7 @@ import { ContractOrderCommissionUtils } from '../../../utils/contract-order-comm
 import { ContractOrderCommission } from '../../../../../Entities/contractOrderCommission';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { Column } from '../../../../../Entities/column';
+import { BasicContract } from '../../../../../Entities/basicContract'; 
 
 @Component({
   selector: 'app-iws-provision',
@@ -23,7 +24,10 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   private langSubscription!: Subscription;
-  public iwsCommissionFAForm!: FormGroup; // IWS Commission Fremework Agreements Form
+  
+  @Input() basicContract!: BasicContract;
+  
+  public iwsCommissionFAForm!: FormGroup;
   public orderCommissionForm!: FormGroup;
   selectedOrderCommission!: null;
   orderCommissions: ContractOrderCommission[] = [];
@@ -62,8 +66,34 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateHeadersAndColumns();
       this.userIwsProvisionPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
-    })
+    });
 
+    if (this.basicContract?.id) {
+    this.loadContractOrderCommissions();
+    }
+  }
+
+  setBasicContract(contract: BasicContract): void {
+    this.basicContract = contract;
+    if (contract?.id) {
+      this.loadContractOrderCommissions();
+    }
+  }
+
+  private loadContractOrderCommissions(): void {
+    if (!this.basicContract?.id) return;
+
+    this.contractCommissionUtils.getAllContractOrderCommissions().subscribe({
+      next: (commissions) => {
+        this.orderCommissions = commissions.filter(commission => 
+          commission.basicContract?.id === this.basicContract.id
+        );
+      },
+      error: (error) => {
+        console.error('Error loading contract order commissions:', error);
+        this.orderCommissions = [];
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -102,6 +132,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
 
   private createContractOrderCommission(): void {
     const newContractOrderCommission: Omit<ContractOrderCommission, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      basicContract: this.basicContract, 
       employmentContact: null,
       fromOrderValue: this.iwsCommissionFAForm.get('fromOrderValue')?.value ?? 0,
       commission: this.iwsCommissionFAForm.get('provision')?.value ?? 0,
@@ -109,10 +140,11 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     };
 
     this.contractCommissionUtils.addContractOrderCommission(newContractOrderCommission).subscribe({
-      next: () => {
+      next: (createdCommission) => {
         this.isLoading = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.closeModalIwsCommission();
+        this.orderCommissions = [...this.orderCommissions, createdCommission];
       },
       error: (error) => {
         this.isLoading = false;
