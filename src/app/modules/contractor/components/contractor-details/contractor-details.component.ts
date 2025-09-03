@@ -263,7 +263,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
           this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (err) => {
-          if (err?.error?.message && err.error.message.includes('foreign key constraint fails')) {
+          if (err?.error?.message.includes('foreign key constraint fails')) {
             this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
           } else {
             this.commonMessageService.showErrorDeleteMessage();
