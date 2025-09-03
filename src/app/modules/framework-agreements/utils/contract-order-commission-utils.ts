@@ -89,10 +89,10 @@ export class ContractOrderCommissionUtils {
       take(1),
       map((currentContractOrderCommission) => {
         if (!currentContractOrderCommission) {
-          throw new Error('Funding Program not found');
+          throw new Error('Contract Order Commission not found');
         }
         if (currentContractOrderCommission.version !== contractOrderCommission.version) {
-          throw new Error('Version conflict: Funding Program has been updated by another user');
+          throw new Error('Version conflict: Contract Order Commission has been updated by another user');
         }
         return contractOrderCommission;
       }),
