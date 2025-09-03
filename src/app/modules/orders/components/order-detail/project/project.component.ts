@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,7 +14,7 @@ import { Order } from '../../../../../Entities/order';
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })
-export class ProjectComponent implements OnInit, OnDestroy, OnDestroy {
+export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
   private readonly projectUtils = inject(ProjectUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly subscription = new Subscription();
