@@ -36,7 +36,7 @@
       </div>
       <div class="flex justify-content-center gap-2">
           <p-button type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" 
-            [loading]="isSubcontractProjectPerformigAction" iconPos="left" size="small"></p-button>
+            [loading]="isSubcontractProjectPerformigAction" [disabled]="allocationForm.invalid" iconPos="left" size="small"></p-button>
           @if(subcontractProject) {
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
               iconPos="left" severity="danger" [loading]="isSubcontractProjectPerformigAction" (onClick)="openSubcontractProjectModal()" />  

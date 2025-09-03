@@ -141,7 +141,7 @@
 
     </div>
     <div class="flex justify-content-center gap-4 mt-4">
-      <p-button class="save" type="submit" (onClick)="onSubmit()" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate"
+      <p-button class="save" type="submit" (onClick)="onSubmit()" [loading]="isLoading" [disabled]="employmentContractForm.invalid" size="small" [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check" iconPos="left" />
       @if(employmentContract) {
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"

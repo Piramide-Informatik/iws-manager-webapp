@@ -147,6 +147,31 @@ export class SubcontractService {
     )
   }
 
+  /**
+   * Updates an existing subcontract with subcontract projects
+   * @param id Subcontract identifier to update
+   * @param subcontract Partial subcontract data with updates
+   * @returns Observable with updated Subcontract object and updated subcontract projects
+   * @throws Error when subcontract not found or validation fails
+   */
+  updateSubcontractWithSubcontractProjects(updatedSubcontract: Subcontract): Observable<Subcontract> {
+    const url = `${this.apiUrl}/${updatedSubcontract.id}/recalculate-subcontractproject`;
+    return this.http.put<Subcontract>(url, updatedSubcontract, this.httpOptions).pipe(
+      tap({
+        next: (response) => {
+          this._error.set(null);
+          this._subcontracts.update(subcontracts =>
+            subcontracts.map(sp => sp.id === response.id ? response : sp)
+          );
+        },
+        error: (error) => {
+          this._error.set('Failed to update subcontract with subcontract projects');
+          console.error('Error updating subcontract with subcontract projects:', error);
+        }
+      })
+    );
+  }
+
   // ==================== DELETE OPERATIONS ====================
   /**
    * Deletes a subcontract record
