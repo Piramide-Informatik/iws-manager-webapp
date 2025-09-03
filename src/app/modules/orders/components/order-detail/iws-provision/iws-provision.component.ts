@@ -197,6 +197,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     {
       field: 'fromOrderValue',
       customClasses: ['align-right'],
+      styles: { width: 'auto' },
       type: 'double',
       useSameAsEdit: true,
       header: this.translate.instant(_('ORDERS.COMMISSIONS.FROM_VALUE')),
@@ -204,12 +205,14 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     {
       field: 'commission',
       customClasses: ['align-right'],
+      styles: { width: 'auto' },
       type: 'double',
       header: this.translate.instant(_('ORDERS.COMMISSIONS.COMMISSION')),
     },
     {
       field: 'minCommission',
       customClasses: ['align-right'],
+      styles: { width: 'auto' },
       type: 'double',
       header: this.translate.instant(_('ORDERS.COMMISSIONS.MIN_COMMISSION')),
     },
