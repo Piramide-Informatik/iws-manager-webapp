@@ -195,4 +195,16 @@ export class OrderCommissionService {
   updateOrderCommissionData(orderCommissions: OrderCommission[]) {
     this._orderCommissions.set(orderCommissions)
   }
+
+  /** GET BY ORDER ID SORT BY FROM-ORDER-VALUE */
+  getAllOrderCommissionsByOrderIdSortedByFromOrderValue(orderId: number): Observable<OrderCommission[]> {
+    return this.http.get<OrderCommission[]>(`${this.apiUrl}/by-order/${orderId}/sort-by-from-order-value`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch order commissions');
+        console.error('Error fetching order commissions:', err);
+        return of([]);
+      })
+    );
+  }
 } 
