@@ -17,8 +17,11 @@
         "UPDATE_UNEXISTED": "The record you are trying to update no longer exists. It may have been deleted by another user.",
         "DELETE_UNEXISTED": "The record you are trying to delete no longer exists. It may have been deleted by another user."
       },
-      "BUTTON": "Refresh"
-    },
+      "BUTTON": {
+        "REFRESH": "Refresh",
+        "REDIRECT": "Go to customers table"
+      }
+    },  
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
     "NUMBER_MAX": "Max value 100 expected"
   },
