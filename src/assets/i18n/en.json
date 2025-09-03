@@ -14,12 +14,12 @@
       "TITLE": "Concurrency Error",
       "TEXT": {
         "UPDATE_UPDATED": "We're sorry, it seems someone else has made changes to this record while you were editing it. Please refresh the page and try again to ensure you're working with the latest information.",
-        "UPDATE_UNEXISTED": "The record you are trying to update no longer exists. It may have been deleted by another user.",
-        "DELETE_UNEXISTED": "The record you are trying to delete no longer exists. It may have been deleted by another user."
+        "UPDATE_UNEXISTED": "We're sorry, the record you're trying to update no longer exists. It may have been deleted by another user. You'll be redirected to the main list to continue working with available records.",
+        "DELETE_UNEXISTED": "We're sorry, the record you're trying to delete no longer exists. It appears it was already removed by another user. You'll be redirected to the main list where you can continue managing your records"
       },
       "BUTTON": {
         "REFRESH": "Refresh",
-        "REDIRECT": "Go to customers table"
+        "REDIRECT": "Go to Main List"
       }
     },  
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
