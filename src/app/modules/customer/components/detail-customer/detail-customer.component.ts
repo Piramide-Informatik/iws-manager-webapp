@@ -436,10 +436,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private handleSaveError(error: any): void {
     console.error('Error saving customer:', error);
-    // if (error instanceof Error && error.message?.includes('version mismatch')) {
-    //   this.showOCCErrorModalCustomer = true;
-    //   return;
-    // }
+ 
     if (error instanceof OccError) {
       this.showOCCErrorModalCustomer = true;
       this.occErrorType = error.errorType;
