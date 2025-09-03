@@ -28,6 +28,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   public contractorForm!: FormGroup;
   public showOCCErrorModalContractor = false;
   public isLoading = false;
+  visibleContractorDeleteEntityModal = false;
 
   @Input() currentCustomer!: Customer | undefined;
   @Input() contractor: Contractor | null = null;
@@ -258,11 +259,16 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
           this.isLoading = false;
           this.isContractVisibleModal.emit(false);
           this.onContractorDeleted.emit(this.contractor?.id);
+          this.visibleContractorDeleteEntityModal = false;
           this.commonMessageService.showDeleteSucessfullMessage();
         },
-        error: () => {
+        error: (err) => {
+          if (err?.error?.message.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
           this.isLoading = false;
-          this.commonMessageService.showErrorDeleteMessage();
         }
       })
     }
