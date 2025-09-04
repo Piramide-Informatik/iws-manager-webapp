@@ -390,7 +390,9 @@
       "NET_AMOUNT": "Net Amount",
       "TAX_AMOUNT": "Tax Amount",
       "AMOUNT_GROSS": "Gross Amount"
-    }
+    },
+    "INVOICES_DIALOG_REMOVE": "Delete Invoice",
+    "REMOVE_INVOICES_QUESTION": "Are you sure you want to delete the invoice"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {

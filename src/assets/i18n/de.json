@@ -388,7 +388,9 @@
       "NET_AMOUNT": "Netto",
       "TAX_AMOUNT": "MwSt.",
       "AMOUNT_GROSS": "Summe"
-    }
+    },
+    "INVOICES_DIALOG_REMOVE": "Rechnung löschen",
+    "REMOVE_INVOICES_QUESTION": "Möchten Sie die Rechnung wirklich löschen"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
