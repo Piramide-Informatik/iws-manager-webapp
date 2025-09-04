@@ -73,6 +73,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
       { 
         field: 'contractno', 
         customClasses: ['align-right','date-font-style'], 
+        classesTHead: ['fix-width'],
         routerLink: (row: any) => `./framework-agreement-details/${row.id}`,
         header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER')) },
       { field: 'frameworkContract', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_LABEL')) },
