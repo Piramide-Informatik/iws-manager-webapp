@@ -19,6 +19,8 @@ import {
 } from '../../../../../shared/utils/moment-date-utils';
 import moment from 'moment';
 import { PublicHolidayService } from '../../../../../../Services/public-holiday.service';
+import { HolidayYearService } from '../../../../../../Services/holiday-year.service';
+import { HolidayYear } from '../../../../../../Entities/holidayYear';
 
 @Component({
   selector: 'app-edit-holiday',
@@ -27,6 +29,9 @@ import { PublicHolidayService } from '../../../../../../Services/public-holiday.
   styleUrls: ['./edit-holiday.component.scss'],
 })
 export class EditHolidayComponent implements OnInit {
+  years: HolidayYear[] = [];
+  selectedPublicHolidayId!: number;
+
   public showOCCErrorModalPublicHoliday = false;
   currentPublicHoliday: PublicHoliday | null = null;
   editPublicHolidayForm!: FormGroup;
@@ -38,21 +43,14 @@ export class EditHolidayComponent implements OnInit {
   holidayForm!: FormGroup;
   bundeslands: State[] = [];
 
-  years = [
-    { year: 2025, date: new Date(2025, 0, 6) },
-    { year: 2024, date: new Date(2024, 0, 6) },
-    { year: 2023, date: new Date(2023, 0, 6) },
-    { year: 2022, date: new Date(2022, 0, 6) },
-    { year: 2021, date: new Date(2021, 0, 6) },
-  ];
-
   constructor(
     private readonly fb: FormBuilder,
     private readonly publicHolidayUtils: PublicHolidayUtils,
     private readonly publicHolidayStateService: PublicHolidayStateService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
-    private readonly publicHolidayService: PublicHolidayService
+    private readonly publicHolidayService: PublicHolidayService,
+    private readonly holidayYearService: HolidayYearService
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +65,38 @@ export class EditHolidayComponent implements OnInit {
     }
   }
 
+  loadYears(publicHolidayId: number): void {
+    
+    this.holidayYearService.getByPublicHoliday(publicHolidayId).subscribe({
+      next: (years) => {
+        this.years = years;
+      },
+      error: (err) => {
+        console.error('Error loading years:', err);
+      }
+    });
+    
+  }
+
+  addYear(publicHolidayId: number | undefined): void {
+    if (!publicHolidayId) return;
+
+    this.holidayYearService.createNextYear(publicHolidayId).subscribe({
+      next: (newYear) => {
+        this.years = [...this.years, newYear].sort((a, b) => a.year.localeCompare(b.year));
+      },
+      error: (err) => {
+        console.error('Error adding new year:', err);
+        this.showOCCErrorModalPublicHoliday = true;
+      },
+    });
+  }
+
+  formatDate(date: string): string {
+    if (!date) return '';
+    return new Date(date).toLocaleDateString('de-DE'); // dd.MM.yyyy
+  }
+
   loadStates(publicHolidayId: number): void {
     this.publicHolidayService.getStatesByHolidayId(publicHolidayId).subscribe(states => {
       this.bundeslands = states;
@@ -77,8 +107,6 @@ export class EditHolidayComponent implements OnInit {
     const selectedStateIds = this.bundeslands
       .filter((bl) => bl.selected) // we only use "selected"
       .map((bl) => bl.id); // we only send the ids
-    console.log('Selected State IDs:', selectedStateIds);
-    console.log('Id holiday', publicHolidayId);
     this.publicHolidayService
       .saveSelectedStates(publicHolidayId, selectedStateIds)
       .subscribe({
@@ -116,8 +144,9 @@ export class EditHolidayComponent implements OnInit {
       sequenceNo: publicHoliday.sequenceNo,
       isFixedDate: publicHoliday.isFixedDate,
     });
-    console.log('Loaded PublicHoliday ID:', publicHoliday.id);
+    this.selectedPublicHolidayId = publicHoliday.id;
     this.loadStates(publicHoliday.id);
+    this.loadYears(publicHoliday.id);
   }
 
   private loadPublicHolidayAfterRefresh(publicHolidayId: string): void {
@@ -168,7 +197,6 @@ export class EditHolidayComponent implements OnInit {
         .updatePublicHoliday(updatePublicHoliday)
         .subscribe({
           next: (savedPublicHoliday) => {
-            console.log('Id holiday after save', savedPublicHoliday.id);
             this.saveSelections(savedPublicHoliday.id);
             this.handleSaveSuccess(savedPublicHoliday);
           },
@@ -219,36 +247,6 @@ export class EditHolidayComponent implements OnInit {
   get bundeslandsArray(): FormArray {
     return this.holidayForm.get('bundeslands') as FormArray;
   }
-
-  addYear(): void {
-    const nextYear = this.getNextYear();
-    const fixedDate = this.holidayForm.get('fixedDate')?.value;
-
-    if (fixedDate) {
-      const newDate = new Date(fixedDate);
-      newDate.setFullYear(nextYear);
-
-      this.years.push({
-        year: nextYear,
-        date: newDate,
-      });
-    }
-  }
-
-  private getNextYear(): number {
-    if (this.years.length === 0) {
-      return new Date().getFullYear();
-    }
-    const maxYear = Math.max(...this.years.map((y) => y.year));
-    return maxYear + 1;
-  }
-
-  formatDate(date: Date): string {
-    const day = ('0' + date.getDate()).slice(-2);
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-  }
   getControl(index: number): FormControl {
     return this.bundeslandsArray.at(index) as FormControl;
   }
@@ -258,6 +256,7 @@ export class EditHolidayComponent implements OnInit {
     this.currentPublicHoliday = null;
     this.isSaving = false;
     this.bundeslands = [];
+    this.years = [];
   }
 
   onRefresh(): void {
@@ -267,6 +266,10 @@ export class EditHolidayComponent implements OnInit {
         this.currentPublicHoliday.id.toString()
       );
       window.location.reload();
+    }
+    
+    if (this.selectedPublicHolidayId) {
+      this.loadYears(this.selectedPublicHolidayId);
     }
   }
 }
