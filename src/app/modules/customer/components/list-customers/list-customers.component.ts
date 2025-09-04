@@ -215,7 +215,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     this.cols = [
       {
         field: 'id',
-        minWidth: 110,
+        classesTHead: ['fix-width'],
         customClasses: ['align-right','date-font-style'],
         header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')),
       },

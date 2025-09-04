@@ -80,7 +80,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'label', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))},
+      { field: 'label', classesTHead: ['fix-width'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))},
       { field: 'name', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
       { field: 'country.label', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL')) },
       { field: 'street', header: this.translate.instant(_('CONTRACTS.TABLE.STREET')) },
