@@ -10,7 +10,7 @@ import { InvoicesRoutingModule } from './invoices-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { DatePickerModule } from 'primeng/datepicker';
-import { Dialog } from 'primeng/dialog';
+import { DialogModule } from 'primeng/dialog';
 import { FileUpload } from 'primeng/fileupload';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -35,7 +35,7 @@ import { MasterDataModule } from '../master-data/master-data.module';
     CommonModule,
     ConfirmDialog,
     DatePickerModule,
-    Dialog,
+    DialogModule,
     FileUpload,
     FormsModule,
     IconFieldModule,
