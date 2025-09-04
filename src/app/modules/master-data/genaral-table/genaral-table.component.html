@@ -12,7 +12,7 @@
             [ngModel]="this.userPreferences[this.tableId]?.displayedColumns" (onChange)="changeSelect($event)"
             optionLabel="header" [maxSelectedLabels]="0" [appendTo]="'body'" dropdownIcon="pi pi-eye" />
         </th>
-        <th id="data-column" scope="col" *ngFor="let col of columns; let i = index" [ngStyle]="col.styles"
+        <th id="data-column" scope="col" *ngFor="let col of columns; let i = index" [ngStyle]="col.styles" [ngClass]="col.classesTHead"
           [pSortableColumn]="col.field" pResizableColumn class="thead">
           <div class="flex justify-content-between">
             {{ col.header }} <p-sortIcon [field]="col.field" />

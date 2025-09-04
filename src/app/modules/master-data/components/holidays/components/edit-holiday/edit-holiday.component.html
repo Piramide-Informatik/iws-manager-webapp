@@ -144,7 +144,7 @@
 
         <ng-template #body let-year let-i="rowIndex">
           <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-            <td>{{ year.year }}</td>
+            <td>{{ year.year | date:'yyyy' }}</td>
             <td>{{ formatDate(year.date) }}</td>
           </tr>
         </ng-template>
@@ -158,8 +158,9 @@
       size="small"
       [label]="'BUTTONS.NEW_YEAR' | translate"
       icon="pi pi-plus"
-      (click)="addYear()"
-      (keydown.enter)="addYear()"
+      (click)="addYear(selectedPublicHolidayId)"
+      (keydown.enter)="addYear(selectedPublicHolidayId)"
+      (keydown.space)="addYear(selectedPublicHolidayId)"
     ></p-button>
   </div>
 </p-card>

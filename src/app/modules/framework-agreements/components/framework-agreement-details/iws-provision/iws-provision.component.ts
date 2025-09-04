@@ -29,7 +29,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   
   public iwsCommissionFAForm!: FormGroup;
   public orderCommissionForm!: FormGroup;
-  selectedOrderCommission!: null;
+  selectedOrderCommission: ContractOrderCommission | null = null;
   orderCommissions: ContractOrderCommission[] = [];
   contractOrderCommissionToEdit!: ContractOrderCommission;
   showOCCErrorModalContractOrderCommission: boolean = false;
@@ -189,13 +189,11 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   closeModalIwsCommission(){
     this.visibleModalIWSCommission = false;
     this.iwsCommissionFAForm.reset();
+    this.selectedOrderCommission = null;
   }
 
   showModalIwsCommission(option: 'create' | 'edit' | 'delete', data?: ContractOrderCommission): void {
     this.typeModal = option;
-    if(this.typeModal !== 'delete'){
-      this.firstInputFocus();
-    }
     
     if(data && this.typeModal === 'edit'){
       this.contractOrderCommissionToEdit = data;
@@ -204,12 +202,51 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
       this.iwsCommissionFAForm.get('minCommission')?.setValue(data?.minCommission);
     }
 
+    if(this.typeModal !== 'delete'){
+      this.firstInputFocus();
+    }
+
     this.visibleModalIWSCommission = true;
   }
 
+ 
+  deleteCommission(commissionId: number){
+  this.typeModal = 'delete';
+  this.selectedOrderCommission = this.orderCommissions.find(oc => oc.id === commissionId) || null;
+  
+  if (this.selectedOrderCommission) {
+    console.log('Comisión a eliminar:', this.selectedOrderCommission);
+    this.visibleModalIWSCommission = true;
+  } else {
+    console.error('No se encontró la comisión con ID:', commissionId);
+  }
+}
+
+  onIwsCommissionDeleteConfirm() {
+  if (!this.selectedOrderCommission?.id) {
+    return;
+  }
+
+  this.isLoading = true;
+  this.contractCommissionUtils.deleteContractOrderCommission(this.selectedOrderCommission.id).subscribe({
+    next: () => {
+      this.isLoading = false;
+      this.visibleModalIWSCommission = false;
+      this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
+      this.commonMessageService.showDeleteSucessfullMessage();
+      this.selectedOrderCommission = null;
+    },
+    error: (error) => {
+      this.isLoading = false;
+      console.error('Error deleting commission:', error);
+      this.commonMessageService.showErrorDeleteMessage();
+    }
+  });
+}
+
   private firstInputFocus(): void {
     setTimeout(()=>{
-      if(this.firstInput.input.nativeElement){
+      if(this.firstInput?.input?.nativeElement){
         this.firstInput.input.nativeElement.focus();
       }
     },300)

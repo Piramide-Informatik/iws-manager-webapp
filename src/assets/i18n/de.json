@@ -395,7 +395,9 @@
       "NET_AMOUNT": "Netto",
       "TAX_AMOUNT": "MwSt.",
       "AMOUNT_GROSS": "Summe"
-    }
+    },
+    "INVOICES_DIALOG_REMOVE": "Rechnung löschen",
+    "REMOVE_INVOICES_QUESTION": "Möchten Sie die Rechnung wirklich löschen"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
@@ -427,7 +429,8 @@
         "MIN_COMMISSION": "Mindestprovision"
       },
       "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
-      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen"
+      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen",
+      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen"
     }
   },
   "CONTRACTS": {
