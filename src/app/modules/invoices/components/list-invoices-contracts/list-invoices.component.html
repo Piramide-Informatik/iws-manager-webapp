@@ -6,9 +6,30 @@
     [userPreferences]="userInvoicePreferences"
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserInvoicePreferencesChanges($event)"
-    (onDeleteRegister)="deleteInvoice($event)"
+    (onDeleteRegister)="openDeleteModal($event)"
     [isFileUploadButtonVisible]="true"
   ></master-data-genaral-table>
+  <p-dialog 
+    [header]="('INVOICES.INVOICES_DIALOG_REMOVE' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleInvoicesModal"
+  >
+    <div class="confirmation-content mb-2 mt-4">
+      <p class="mb-4">
+        {{ 'INVOICES.REMOVE_INVOICES_QUESTION' | translate }}
+        <strong class="stronglock mt-1">"{{ selectedInvoices?.invoiceNumber }}"</strong>?
+      </p>
 
+      <div class="flex justify-content-center gap-2">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+            icon="pi pi-trash" iconPos="left" (onClick)="onInvoicesDelete()" severity="danger" [loading]="isInvoicesLoading"
+            [disabled]="isInvoicesLoading" />
+
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" (onClick)="this.visibleInvoicesModal = false;" [disabled]="isInvoicesLoading" />
+
+      </div>
+    </div>
+  </p-dialog>
   <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

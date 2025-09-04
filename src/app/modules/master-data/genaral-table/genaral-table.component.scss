@@ -53,19 +53,24 @@ p-button {
   }
 
   .p-inputtext {
-    min-width: 80px;
+    min-width: 75px;
     width: 100% !important;
   }
 
-    .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
-        width: 100% !important;
-    }
+  .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
+    width: 100% !important;
+  }
+
+  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.fix-width:not(.p-datatable-frozen-column) {
+    width: 100px !important;
+    max-width: 130px !important;
+  }
 
 
-    thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
-        width:75px !important;
-        max-width: 75px !important;    
-    }
+  thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
+    width:75px !important;
+    max-width: 75px !important;    
+  }
 }
 
 .clickable-title:hover {

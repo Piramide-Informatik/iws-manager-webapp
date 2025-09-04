@@ -316,7 +316,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+    const path = this.formType === 'update' ? ['../../'] : ['../'];
+    this.router.navigate(path, { relativeTo: this.activatedRoute });
   }
 
   clearForm(): void {

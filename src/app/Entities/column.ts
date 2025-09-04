@@ -10,5 +10,6 @@ export interface Column {
   routerLink?: (row: any) => string;
   type?: 'double' | 'date' | 'dateYear';
   customClasses?: string[];
+  classesTHead?: string[];
   useSameAsEdit?: boolean;
 }
