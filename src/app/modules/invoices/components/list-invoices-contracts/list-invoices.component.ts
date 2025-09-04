@@ -10,6 +10,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { InvoiceUtils } from '../../utils/invoice.utils';
 import { Column } from '../../../../Entities/column';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-list-invoices',
@@ -38,6 +39,11 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
   tableKey: string = 'Invoice'
   dataKeys = ['invoiceNumber', 'date', 'description', 'type', 'iwsNumber', 'orderNumber', 'orderName', 'netAmount', 'value', 'totalAmount'];
 
+  visibleInvoicesModal = false;
+
+  isInvoicesLoading = false;
+
+  selectedInvoices!: any;
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -50,7 +56,8 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     private readonly cd: ChangeDetectorRef,
     private readonly translate: TranslateService, 
     private readonly router:Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly commonMessage: CommonMessagesService
   ) {}
 
   ngOnInit():void {
@@ -66,6 +73,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
       this.invoiceUtils.getAllInvoicesByCustomerId(params['id']).subscribe(invoices => {
         this.invoices = invoices.reduce((acc: any[], curr) => {
           acc.push({
+            id: curr.id,
             invoiceNumber: curr.invoiceNo, 
             date: curr.invoiceDate, 
             description: curr.note, 
@@ -81,6 +89,34 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
         },[]);
       })
     })
+  }
+
+    openDeleteModal(id: any) {
+    this.visibleInvoicesModal = true;
+    const invoices = this.invoices.find( invoices => invoices.id == id);
+    if (invoices) {
+      this.selectedInvoices = invoices;
+    }
+  }
+
+  onInvoicesDelete() {
+    if (this.selectedInvoices) {
+      this.isInvoicesLoading = true;
+      this.invoiceUtils.deleteInvoice(this.selectedInvoices.id).subscribe({
+        next: () => {
+          this.commonMessage.showDeleteSucessfullMessage();
+          this.invoices = this.invoices.filter( invoices => invoices.id != this.selectedInvoices.id);
+        },
+        error: () => {
+          this.commonMessage.showErrorDeleteMessage();
+        },
+        complete: () => {
+          this.visibleInvoicesModal = false;
+          this.selectedInvoices = undefined;
+          this.isInvoicesLoading = false; 
+        }
+      })
+    }
   }
 
   onUserInvoicePreferencesChanges(userInvoicePreferences: any) {

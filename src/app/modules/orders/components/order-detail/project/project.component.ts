@@ -34,8 +34,16 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['orderToEdit'] && this.orderToEdit) {
       this.projectForm.patchValue({
-        projectLabel: this.orderToEdit.project?.id
+        projectLabel: this.orderToEdit.project?.id,
+        promoterNo: this.orderToEdit.project?.promoter?.promoterno,
+        promoter: this.orderToEdit.project?.promoter?.projectPromoter,
+        startDate: momentCreateDate(this.orderToEdit.project?.startDate),
+        endDate: momentCreateDate(this.orderToEdit.project?.endDate)
       });
+    }
+    if(!this.orderToEdit) {
+      this.initForm();
+      this.changeProjectSelected();
     }
   }
 
@@ -55,7 +63,6 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
     this.projectForm.get('promoter')?.disable();
     this.projectForm.get('startDate')?.disable();
     this.projectForm.get('endDate')?.disable();
-    this.changeProjectSelected();
   }
 
   private changeProjectSelected(): void {
