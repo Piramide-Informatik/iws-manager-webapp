@@ -420,7 +420,8 @@
         "MIN_COMMISSION": "Mindestprovision"
       },
       "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
-      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen"
+      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen",
+      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen"
     }
   },
   "CONTRACTS": {

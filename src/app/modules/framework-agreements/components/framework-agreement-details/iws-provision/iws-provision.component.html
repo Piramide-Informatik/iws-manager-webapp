@@ -35,19 +35,20 @@
       (onColumnChanges)="onUserIwsProvisionPreferencesChanges($event)"
       (onCreateRegister)="showModalIwsCommission('create')"
       (onEditRegister)="showModalIwsCommission('edit', $event)"
+      (onDeleteRegister)="deleteCommission($event)"
     ></master-data-genaral-table>
 
 </p-card>
 
-<!-- Modal IWS Commission Framework Agreements FA -->
 <p-dialog
   [header]="'ORDERS.COMMISSIONS.TITLE_DIALOG_' + typeModal.toUpperCase()| translate"
   (onHide)="closeModalIwsCommission()"
   [modal]="true"
   [(visible)]="visibleModalIWSCommission"
-  [style]="{ width: '40rem' }"
+  [style]="{ width: typeModal === 'delete' ? '30rem' : '40rem' }"
 >
-  <form [formGroup]="iwsCommissionFAForm" (ngSubmit)="onSubmit()">
+  @if (typeModal !== 'delete') {
+     <form [formGroup]="iwsCommissionFAForm" (ngSubmit)="onSubmit()">
     <div class="flex gap-4 mb-3 mt-4">
       <label for="fromValue" class="label-modal">{{ 'ORDERS.COMMISSIONS.FROM_VALUE' | translate }}</label>
       <p-inputnumber #inputNumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
@@ -66,10 +67,7 @@
           inputId="provision"
           class="flex-auto"
           formControlName="provision"
-          autocomplete="off" invalid="
-            iwsCommissionFAForm.get('provision')?.invalid  
-            && iwsCommissionFAForm.get('provision')?.dirty 
-            || iwsCommissionFAForm.get('provision')?.touched"
+          autocomplete="off"
         /> 
         <p-message severity="error" variant="simple" size="small" *ngIf="
           iwsCommissionFAForm.get('provision')?.invalid && 
@@ -106,12 +104,24 @@
         class="cancel"
         [disabled]="isLoading"
         (click)="closeModalIwsCommission()"
-        (keydown.enter)="closeModalIwsCommission()"
       ></p-button>
     </div>
   </form>
+ } @else {
+  <div class="delete-confirmation-component mb-2 mt-4 justify-content-center ">
+    <p class="mb-4 text-center">
+      {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
+      <strong>"{{ selectedOrderCommission?.fromOrderValue}}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onIwsCommissionDeleteConfirm()" severity="danger" [loading]="isLoading"
+        [disabled]="isLoading" />
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="this.visibleModalIWSCommission = false;" [disabled]="isLoading" />
+    </div>
+  </div>
+}
+    
 </p-dialog>
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModalContractOrderCommission" 
-  (onClose)="showOCCErrorModalContractOrderCommission = false"
-></app-occ-error-modal>
