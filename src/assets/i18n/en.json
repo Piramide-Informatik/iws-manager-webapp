@@ -425,7 +425,8 @@
       }
     },
     "TITLE_DIALOG_REMOVE": "Delete Framework Agreement",
-    "REMOVE_QUESTION":"Are you sure you want to delete the framework agreement"
+    "REMOVE_QUESTION":"Are you sure you want to delete the framework agreement",
+    "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Are you sure you want to delete the IWS Commission "
   },
   "CONTRACTS": {
     "FORM": {
