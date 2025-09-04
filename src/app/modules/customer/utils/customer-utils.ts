@@ -13,6 +13,7 @@ import { OrderUtils } from '../../orders/utils/order-utils';
 import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 import { InvoiceUtils } from '../../invoices/utils/invoice.utils';
 import { FrameworkAgreementsUtils } from '../../framework-agreements/utils/framework-agreement.util';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -235,11 +236,11 @@ export class CustomerUtils {
             take(1),
             switchMap((currentCustomer) => {
                 if (!currentCustomer) {
-                    return throwError(() => new Error('Contact person not found'));
+                    return throwError(() => createNotFoundUpdateError('Customer'));
                 }
 
                 if (currentCustomer.version !== customer.version) {
-                    return throwError(() => new Error('Conflict detected: customer person version mismatch'));
+                    return throwError(() => createUpdateConflictError('Customer'));
                 }
 
                 return this.customerService.updateCustomer(customer);
