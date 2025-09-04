@@ -387,7 +387,9 @@
       "NET_AMOUNT": "Importe Neto",
       "TAX_AMOUNT": "Importe al Impuesto",
       "AMOUNT_GROSS": "Importe Bruto"
-    }
+    },
+    "INVOICES_DIALOG_REMOVE": "Eliminar factura",
+"REMOVE_INVOICES_QUESTION": "¿Está seguro que desea eliminar la factura"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
