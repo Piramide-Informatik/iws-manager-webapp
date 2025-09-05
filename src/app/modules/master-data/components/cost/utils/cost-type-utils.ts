@@ -107,10 +107,10 @@ export class CostTypeUtils {
       take(1),
       map((currentCostType) => {
         if (!currentCostType) {
-          throw new Error('CostType not found');
+          throw new Error('Cost Type not found');
         }
         if (currentCostType.version !== costType.version) {
-          throw new Error('Version conflict: CostType has been updated by another user');
+          throw new Error('Version conflict: Cost Type has been updated by another user');
         }
         return costType;
       }),

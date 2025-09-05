@@ -3,6 +3,7 @@ import { EmployeeService } from '../../../Services/employee.service';
 import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { Employee } from '../../../Entities/employee';
 import { EmploymentContractUtils } from './employment-contract-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -137,11 +138,11 @@ export class EmployeeUtils {
       take(1),
       switchMap((currentEmployee) => {
         if (!currentEmployee) {
-          return throwError(() => new Error('Employee not found'));
+           return throwError(() => createNotFoundUpdateError('Employee'));
         }
 
         if (currentEmployee.version !== employee.version) {
-          return throwError(() => new Error('Conflict detected: employee person version mismatch'));
+          return throwError(() => createUpdateConflictError('Employee'));
         }
 
         return this.employeeService.updateEmployee(employee);

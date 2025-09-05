@@ -8,6 +8,7 @@ import { CostTypeUtils } from '../../utils/cost-type-utils';
 import { CostTypeService } from '../../../../../../Services/cost-type.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { CostType } from '../../../../../../Entities/costType';
+import { CostTypeStateService } from '../../utils/cost-type-state.service';
 
 @Component({
   selector: 'app-costs-table',
@@ -17,7 +18,8 @@ import { CostType } from '../../../../../../Entities/costType';
 })
 export class CostsTableComponent implements OnInit, OnDestroy {
   private readonly costTypeUtils = new CostTypeUtils();
-  private readonly costTypeService = inject(CostTypeService)
+  private readonly costTypeService = inject(CostTypeService);
+  private readonly costTypeStateService = inject(CostTypeStateService);
   columnsHeaderFieldCosts: any[] = [];
   userCostTablePreferences: UserPreference = {};
   tableKey: string = 'CostTable'
@@ -115,5 +117,10 @@ export class CostsTableComponent implements OnInit, OnDestroy {
 
   onModalVisibilityChange(visible: boolean): void {
     this.visibleCostTypeModal = visible;
+  }
+
+  editCostType(costType: {id: number, type: string, sequenceNo: number}): void {
+    const costTypeToEdit = this.costTypesMap.get(costType.id) ?? null;
+    this.costTypeStateService.setCostTypeToEdit(costTypeToEdit);
   }
 }
