@@ -33,6 +33,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   orderCommissions: ContractOrderCommission[] = [];
   contractOrderCommissionToEdit!: ContractOrderCommission;
   showOCCErrorModalContractOrderCommission: boolean = false;
+  visibleModalIWSCommissionEntity = false;
 
   // Modal configuration
   public visibleModalIWSCommission: boolean = false;
@@ -197,6 +198,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     
     if(data && this.typeModal === 'edit'){
       this.contractOrderCommissionToEdit = data;
+      this.selectedOrderCommission = data;
       this.iwsCommissionFAForm.get('fromOrderValue')?.setValue(data?.fromOrderValue);
       this.iwsCommissionFAForm.get('provision')?.setValue(data?.commission);
       this.iwsCommissionFAForm.get('minCommission')?.setValue(data?.minCommission);
@@ -232,6 +234,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     next: () => {
       this.isLoading = false;
       this.visibleModalIWSCommission = false;
+      this.visibleModalIWSCommissionEntity = false;
       this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
       this.commonMessageService.showDeleteSucessfullMessage();
       this.selectedOrderCommission = null;
