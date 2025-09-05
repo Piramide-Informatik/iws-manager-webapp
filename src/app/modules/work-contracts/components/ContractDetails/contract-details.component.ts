@@ -367,17 +367,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
         this.commonMessageService.showEditSucessfullMessage();
       },
       error: (error) => this.handleSaveError(error)
-      // {
-      //   this.isEmployeeContractLoading = false;
-      //   this.commonMessageService.showErrorEditMessage();
-      // }
     });
   }
 
   private handleSaveError(error: any): void {
-    alert(error)
     if (error instanceof OccError) {
-      alert(error.errorType)
       this.showOCCErrorModalContract = true;
       this.occErrorType = error.errorType;
       return;
@@ -410,6 +404,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
         error: (error) => {
           this.isEmployeeContractLoading = false;
           this.commonMessageService.showErrorDeleteMessage();
+          if (error instanceof OccError  || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+            this.visiblEmployeeContractModal = false;
+            this.showOCCErrorModalContract = true;
+            this.occErrorType = 'DELETE_UNEXISTED';
+            
+            return;
+          }
         }
       });
     }
