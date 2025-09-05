@@ -305,7 +305,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       if(this.occErrorType === 'UPDATE_UNEXISTED'){
         this.occRoute = "/customers/employees/" + this.currentEmployee?.customer?.id;
       }
-      return;
     }
   }
 
