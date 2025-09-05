@@ -268,7 +268,6 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
             this.showOCCErrorModalContract = true;
             this.occErrorType = 'DELETE_UNEXISTED';
             this.redirectRoute = "/customers/employees/" + this.currentEmployee.customer?.id + "/employee-details/" + this.currentEmployee.id;
-            return;
           }
         }
       });
