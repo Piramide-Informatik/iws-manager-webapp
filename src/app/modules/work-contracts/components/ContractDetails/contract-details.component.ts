@@ -13,6 +13,7 @@ import { buildEmployee } from '../../../shared/utils/builders/employee';
 import { momentFormatDate, momentCreateDate } from '../../../shared/utils/moment-date-utils';
 import { Employee } from '../../../../Entities/employee';
 import { Select } from 'primeng/select';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-contract-details',
@@ -42,35 +43,36 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
-  public employeeSelectOptions: {employeeNo: number, employeeId: number}[] = [];
+  public employeeSelectOptions: { employeeNo: number, employeeId: number }[] = [];
 
   public isEmployeeContractLoading: boolean = false;
   public visiblEmployeeContractModal: boolean = false;
   private readonly employeesMap: Map<number, Employee> = new Map();
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   errorMsg: string | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if((changes['currentEmploymentContractEntity'] || changes['visibleModal']) && (this.modalType === 'edit' && this.currentEmploymentContractEntity)){
+    if ((changes['currentEmploymentContractEntity'] || changes['visibleModal']) && (this.modalType === 'edit' && this.currentEmploymentContractEntity)) {
       this.initContractDetailsForm();
-      if(this.currentEmploymentContractEntity.customer){
+      if (this.currentEmploymentContractEntity.customer) {
         this.loadEmployeesByCustomer(this.currentEmploymentContractEntity.customer?.id)
       }
       this.laodDataToForm();
     }
-    if(changes['modalType'] && this.modalType === 'create'){
+    if (changes['modalType'] && this.modalType === 'create') {
       this.initContractDetailsForm();
       this.ContractDetailsForm.reset();
     }
     if (changes['visibleModal'] && !changes['visibleModal'].currentValue) {
-    this.ContractDetailsForm.reset();
+      this.ContractDetailsForm.reset();
     }
-    if(changes['visibleModal'] && this.visibleModal && this.isCreateMode){
-      if(this.firstInputForm){
-          setTimeout(()=>{
-            this.firstInputForm.focus();
-            this.firstInputForm.show();
-          },300)
-        }
+    if (changes['visibleModal'] && this.visibleModal && this.isCreateMode) {
+      if (this.firstInputForm) {
+        setTimeout(() => {
+          this.firstInputForm.focus();
+          this.firstInputForm.show();
+        }, 300)
+      }
     }
   }
 
@@ -103,14 +105,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   private getCurrentCustomer(): void {
     this.route.params.subscribe(params => {
       const customerId = params['id'];
-    if (customerId) {
-      this.subscription.add(
-        this.customerUtils.getCustomerById(customerId).subscribe(customer => {
-          this.currentCustomer = customer;
-          customer?.id && this.loadEmployeesByCustomer(customer.id);
-        })
-      );
-    }
+      if (customerId) {
+        this.subscription.add(
+          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+            this.currentCustomer = customer;
+            customer?.id && this.loadEmployeesByCustomer(customer.id);
+          })
+        );
+      }
     });
 
   }
@@ -119,7 +121,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.subscription.add(
       this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe({
         next: (employees: Employee[]) => {
-          this.employeeSelectOptions = employees.map((emp: Employee) => ({ employeeNo: emp.employeeno ?? 0 , employeeId: emp.id }));
+          this.employeeSelectOptions = employees.map((emp: Employee) => ({ employeeNo: emp.employeeno ?? 0, employeeId: emp.id }));
           // Guardar empleados en un mapa para acceso rápido
           this.employeesMap.clear();
           employees.forEach((emp: Employee) => {
@@ -133,7 +135,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       })
     );
   }
-  
+
   private initContractDetailsForm(): void {
     this.ContractDetailsForm = new FormGroup({
       employeNro: new FormControl('', []),
@@ -149,7 +151,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       hourlyRate: new FormControl(null, []),
       hourlyRealRate: new FormControl(null)
     });
-    
+
     this.disableFormControls();
     this.setupFormSubscriptions();
   }
@@ -172,7 +174,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     );
 
     const calculationFields = ['salaryPerMonth', 'specialPayment', 'hoursPerWeek', 'workShortTime'];
-  
+
     calculationFields.forEach(field => {
       this.subscription.add(
         this.ContractDetailsForm.get(field)!.valueChanges.pipe(
@@ -185,11 +187,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   private onEmployeeIdChange(employeeId: number): void {
     const emp = this.employeesMap.get(employeeId);
     if (emp) {
-      this.ContractDetailsForm.get('firstName')?.setValue(emp.firstname ?? '', { emitEvent: false});
-      this.ContractDetailsForm.get('lastName')?.setValue(emp.lastname ?? '', { emitEvent: false});
+      this.ContractDetailsForm.get('firstName')?.setValue(emp.firstname ?? '', { emitEvent: false });
+      this.ContractDetailsForm.get('lastName')?.setValue(emp.lastname ?? '', { emitEvent: false });
     } else {
-      this.ContractDetailsForm.get('firstName')?.setValue('', { emitEvent: false});
-      this.ContractDetailsForm.get('lastName')?.setValue('', { emitEvent: false});
+      this.ContractDetailsForm.get('firstName')?.setValue('', { emitEvent: false });
+      this.ContractDetailsForm.get('lastName')?.setValue('', { emitEvent: false });
     }
   }
 
@@ -228,18 +230,18 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   private calculateMaxHours(hoursPerWeek: number, workShortTime: number): void {
     const maxHoursPerDay = hoursPerWeek / 5;
-    
+
     // maxHoursPerMonth: weekly hours * 52 / 12 * (1 – hour reduction)
     const hourReduction = workShortTime / 100; // Convertir porcentaje a decimal
     const maxHoursPerMonth = (hoursPerWeek * 52 / 12) * (1 - hourReduction);
-    
+
     this.ContractDetailsForm.get('maxHoursPerDay')?.setValue(
-      this.roundToTwoDecimals(maxHoursPerDay), 
+      this.roundToTwoDecimals(maxHoursPerDay),
       { emitEvent: false }
     );
-    
+
     this.ContractDetailsForm.get('maxHoursPerMonth')?.setValue(
-      this.roundToTwoDecimals(maxHoursPerMonth), 
+      this.roundToTwoDecimals(maxHoursPerMonth),
       { emitEvent: false }
     );
   }
@@ -249,11 +251,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     const monthlySpecialPayment = specialPayment / 12;
     const totalMonthlyCompensation = salary + monthlySpecialPayment;
     const monthlyHours = (hoursPerWeek * 52) / 12;
-    
+
     const hourlyRate = totalMonthlyCompensation / monthlyHours;
-    
+
     this.ContractDetailsForm.get('hourlyRate')?.setValue(
-      this.roundToTwoDecimals(hourlyRate), 
+      this.roundToTwoDecimals(hourlyRate),
       { emitEvent: false }
     );
   }
@@ -340,7 +342,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateWorkContract() {
-    if(this.ContractDetailsForm.invalid || !this.currentEmploymentContractEntity) return
+    if (this.ContractDetailsForm.invalid || !this.currentEmploymentContractEntity) return
 
     const updatedEmployment: EmploymentContract = {
       ...this.currentEmploymentContractEntity,
@@ -364,12 +366,25 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
         this.closeModal();
         this.commonMessageService.showEditSucessfullMessage();
       },
-      error: (error) => {
-        this.isEmployeeContractLoading = false;
-        console.log(error);
-        this.commonMessageService.showErrorEditMessage();
-      }
+      error: (error) => this.handleSaveError(error)
+      // {
+      //   this.isEmployeeContractLoading = false;
+      //   this.commonMessageService.showErrorEditMessage();
+      // }
     });
+  }
+
+  private handleSaveError(error: any): void {
+    alert(error)
+    if (error instanceof OccError) {
+      alert(error.errorType)
+      this.showOCCErrorModalContract = true;
+      this.occErrorType = error.errorType;
+      return;
+    }
+
+    this.commonMessageService.showErrorEditMessage();
+    this.isEmployeeContractLoading = false;
   }
 
   get isCreateMode(): boolean {
