@@ -260,10 +260,16 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
           this.commonMessageService.showDeleteSucessfullMessage();
           this.visibleEmployeeContractEntityModal = false;
         },
-        error: () => {
+        error: (error) => {
           this.isLoading = false;
           this.visibleEmployeeContractEntityModal = false;
           this.commonMessageService.showErrorDeleteMessage();
+          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+            this.showOCCErrorModalContract = true;
+            this.occErrorType = 'DELETE_UNEXISTED';
+            this.redirectRoute = "/customers/employees/" + this.currentEmployee.customer?.id + "/employee-details/" + this.currentEmployee.id;
+            return;
+          }
         }
       });
     }
