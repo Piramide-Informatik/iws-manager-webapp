@@ -11,6 +11,7 @@ import { buildEmployee } from '../../../../shared/utils/builders/employee';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { DatePicker } from 'primeng/datepicker';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-employment-contract-modal',
@@ -41,6 +42,9 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   employmentContractForm!: FormGroup;
   visibleEmployeeContractEntityModal = false;
   public showOCCErrorModalContract = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public isSaving = false;
+  public redirectRoute = "";
 
   constructor(
     private readonly commonMessageService: CommonMessagesService
@@ -54,10 +58,10 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
       } else {
         this.fillEmploymentContractForm();
       }
-      if(this.firstInputForm && this.isCreateMode){
-        setTimeout(()=>{
+      if (this.firstInputForm && this.isCreateMode) {
+        setTimeout(() => {
           this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
-        },300)
+        }, 300)
       }
     }
   }
@@ -94,9 +98,9 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
     this.employmentContractForm.get('hourlyRealRate')!.disable();
   }
 
-  private setupFormSubscriptions(): void {  
+  private setupFormSubscriptions(): void {
     const calculationFields = ['salaryPerMonth', 'specialPayment', 'hoursPerWeek', 'workShortTime'];
-  
+
     calculationFields.forEach(field => {
       this.subscription.add(
         this.employmentContractForm.get(field)!.valueChanges.pipe(
@@ -141,18 +145,18 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
   private calculateMaxHours(hoursPerWeek: number, workShortTime: number): void {
     const maxHoursPerDay = hoursPerWeek / 5;
-    
+
     // maxHoursPerMonth: weekly hours * 52 / 12 * (1 – hour reduction)
     const hourReduction = workShortTime / 100; // Convertir porcentaje a decimal
     const maxHoursPerMonth = (hoursPerWeek * 52 / 12) * (1 - hourReduction);
-    
+
     this.employmentContractForm.get('maxHoursPerDay')?.setValue(
-      this.roundToTwoDecimals(maxHoursPerDay), 
+      this.roundToTwoDecimals(maxHoursPerDay),
       { emitEvent: false }
     );
-    
+
     this.employmentContractForm.get('maxHoursPerMonth')?.setValue(
-      this.roundToTwoDecimals(maxHoursPerMonth), 
+      this.roundToTwoDecimals(maxHoursPerMonth),
       { emitEvent: false }
     );
   }
@@ -162,11 +166,11 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
     const monthlySpecialPayment = specialPayment / 12;
     const totalMonthlyCompensation = salary + monthlySpecialPayment;
     const monthlyHours = (hoursPerWeek * 52) / 12;
-    
+
     const hourlyRate = totalMonthlyCompensation / monthlyHours;
-    
+
     this.employmentContractForm.get('hourlyRate')?.setValue(
-      this.roundToTwoDecimals(hourlyRate), 
+      this.roundToTwoDecimals(hourlyRate),
       { emitEvent: false }
     );
   }
@@ -215,13 +219,13 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
     const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       startDate: momentFormatDate(this.employmentContractForm.value.startDate),
       salaryPerMonth: this.employmentContractForm.value.salaryPerMonth ?? 0,
-      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek?? 0,
-      workShortTime: this.employmentContractForm.value.workShortTime?? 0,
-      specialPayment: this.employmentContractForm.value.specialPayment?? 0,
-      maxHoursPerMonth: this.employmentContractForm.getRawValue().maxHoursPerMonth?? 0,
-      maxHoursPerDay: this.employmentContractForm.getRawValue().maxHoursPerDay?? 0,
-      hourlyRate: this.employmentContractForm.getRawValue().hourlyRate?? 0,
-      hourlyRealRate: this.employmentContractForm.getRawValue().hourlyRealRate?? 0,
+      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek ?? 0,
+      workShortTime: this.employmentContractForm.value.workShortTime ?? 0,
+      specialPayment: this.employmentContractForm.value.specialPayment ?? 0,
+      maxHoursPerMonth: this.employmentContractForm.getRawValue().maxHoursPerMonth ?? 0,
+      maxHoursPerDay: this.employmentContractForm.getRawValue().maxHoursPerDay ?? 0,
+      hourlyRate: this.employmentContractForm.getRawValue().hourlyRate ?? 0,
+      hourlyRealRate: this.employmentContractForm.getRawValue().hourlyRealRate ?? 0,
       employee: this.currentEmployee,
       customer: this.currentEmployee.customer ?? null
     };
@@ -272,12 +276,15 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   }
 
   private handleUpdateError(error: Error): void {
-    if (error.message.startsWith('VERSION_CONFLICT:')) {
+    if (error instanceof OccError) {
       this.showOCCErrorModalContract = true;
-    } else {
-      console.log(error);
-      this.commonMessageService.showErrorEditMessage();
+      this.redirectRoute = "/customers/employees/" + this.currentEmployee.customer?.id + "/employee-details/" + this.currentEmployee.id;
+      this.occErrorType = error.errorType;
+      return;
     }
+
+    this.commonMessageService.showErrorEditMessage();
+    this.isSaving = false;
   }
 
   private buildCustomerFromSource(source: any): any {
@@ -332,7 +339,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
     this.subscription.add(this.employmentContractUtils.updateEmploymentContract(updatedContract)
       .subscribe({
-        next: (updated) =>{
+        next: (updated) => {
           this.isLoading = false;
           this.handleUpdateSuccess(updated)
         },

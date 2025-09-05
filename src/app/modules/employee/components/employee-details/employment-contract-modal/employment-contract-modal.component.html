@@ -185,5 +185,10 @@
   </div>
 </p-dialog>
 
-<app-occ-error-modal *ngIf="showOCCErrorModalContract" (onClose)="showOCCErrorModalContract = false">
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalContract" 
+  [errorType]="occErrorType"
+  [redirectRoute]="redirectRoute"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalContract = false">
 </app-occ-error-modal>
