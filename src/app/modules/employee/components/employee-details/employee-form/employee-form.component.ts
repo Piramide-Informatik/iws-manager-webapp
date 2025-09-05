@@ -276,9 +276,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.visibleEmployeeModalDelete = false;
           this.commonMessageService.showDeleteSucessfullMessage();
-          setTimeout(() => {
-            this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
-          }, 2000);
+          this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
         },
         error: (error) => {
           this.isLoading = false;
@@ -289,6 +287,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
             this.showOCCErrorModaEmployee = true;
             this.occErrorType = 'DELETE_UNEXISTED';
             this.visibleEmployeeModalDelete = false;
+            this.occRoute = "/customers/employees/" + this.currentEmployee?.customer?.id;
             return;
           } else {
             this.commonMessageService.showErrorDeleteMessage();
