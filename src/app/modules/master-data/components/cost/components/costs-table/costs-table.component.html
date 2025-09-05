@@ -9,6 +9,7 @@
       (onColumnChanges)="onUserCostTablePreferencesChanges($event)"
       (onDeleteRegister)="openCostTypeModal({type: 'delete', data: $event})"
       (onCreateRegister)="openCostTypeModal({type: 'create'})"
+      (onEditRegister)="editCostType($event)"
     ></master-data-genaral-table>
   </div>
   <p-dialog 
