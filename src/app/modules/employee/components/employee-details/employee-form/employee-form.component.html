@@ -111,5 +111,9 @@
   </div>
 </p-dialog>
 <p-toast />
-<app-occ-error-modal *ngIf="showOCCErrorModaEmployee" (onClose)="showOCCErrorModaEmployee = false">
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModaEmployee" 
+  [errorType]="occErrorType"
+  [redirectRoute]="occRoute"
+  (onClose)="showOCCErrorModaEmployee = false">
 </app-occ-error-modal>
