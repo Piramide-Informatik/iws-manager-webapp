@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
-import {
-  BehaviorSubject,
-  Subscription
-} from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { EmployeeIwsStateService } from '../../utils/employee-iws-state.service';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { TranslateService } from '@ngx-translate/core';
@@ -55,12 +52,12 @@ export class EditIwsStaffComponent implements OnInit {
 
   private initForm(): void {
     this.editIwsStaffForm = new FormGroup({
-      staffId: new FormControl('', [Validators.required]),
-      shortName: new FormControl('', [Validators.required]),
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      team: new FormControl('', [Validators.required]),
+      staffId: new FormControl('', []),
+      shortName: new FormControl('', []),
+      firstName: new FormControl('', []),
+      lastName: new FormControl('', []),
+      email: new FormControl('', [Validators.email]),
+      team: new FormControl('', []),
       staffSince: new FormControl(null),
       staffUntil: new FormControl(null),
     });
