@@ -2,26 +2,24 @@
   [style]="{ background: 'var(--light-cyan)' }"
   [header]="'COSTS.HEADER.EDIT_COST' | translate"
 >
-  <form [formGroup]="costForm">
+  <form [formGroup]="costForm" (ngSubmit)="updateCost()">
     <div class="align-items-center mb-2">
       <div class="cost-form mb-2">
-        <label for="name">{{ "COSTS.LABEL.NAME" | translate }}</label>
+        <label for="type">{{ "COSTS.LABEL.NAME" | translate }}</label>
         <input
           pInputText
           type="text"
-          id="name"
-          formControlName="name"
+          id="type"
+          formControlName="type"
           autocomplete="off"
         />
       </div>
 
       <div class="cost-form mb-2">
-        <label for="sort">{{ "COSTS.LABEL.SORT" | translate }}</label>
-        <input
-          pInputText
-          type="number"
-          id="sort"
-          formControlName="sort"
+        <label for="sequenceNo">{{ "COSTS.LABEL.SORT" | translate }}</label>
+        <p-inputnumber [inputStyle]="{'text-align': 'right'}"
+          inputId="sequenceNo"
+          formControlName="sequenceNo"
           autocomplete="off"
         />
       </div>
@@ -32,17 +30,27 @@
         size="small"
         [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check"
-        (click)="saveCost()"
-        (keydown)="saveCost()"
+        type="submit"
+        [loading]="isLoading"
+        [disabled]="costForm.invalid || !costForm.dirty || isLoading"
       ></p-button>
       <p-button
         class="cancel"
         size="small"
+        [disabled]="isLoading"
         [label]="'BUTTONS.CANCEL' | translate"
         icon="pi pi-times"
         severity="secondary"
-        (keydown)="cancelEdit()"
+        (keydown)="clearForm()"
+        (click)="clearForm()"
       ></p-button>
     </div>
   </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaCost"
+  (close)="showOCCErrorModaCost = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast/>
