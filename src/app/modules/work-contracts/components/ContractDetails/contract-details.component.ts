@@ -404,12 +404,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
         error: (error) => {
           this.isEmployeeContractLoading = false;
           this.commonMessageService.showErrorDeleteMessage();
-          if (error instanceof OccError  || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
             this.visiblEmployeeContractModal = false;
             this.showOCCErrorModalContract = true;
             this.occErrorType = 'DELETE_UNEXISTED';
-            
-            return;
           }
         }
       });
