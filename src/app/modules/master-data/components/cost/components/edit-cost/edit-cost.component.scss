@@ -1,18 +1,17 @@
 .cost-form {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
   label {
-    width: 111px;
+    width: 120px;
   }
 
   input {
-    width: 13em;
+    width: 100%;
   }
-}
 
-.cost-form-check {
-  display: flex;
-  align-items: center;
-
-  label {
-    width: 150px;
+  ::ng-deep .p-inputnumber {
+    width: 100%;
   }
 }
