@@ -16,6 +16,7 @@ export class OccErrorModalComponent {
   @Input() useEmitter = false;
   @Input() errorType: OccErrorType = 'UPDATE_UPDATED';
   @Input() redirectRoute: string = '/dashboard';
+  @Input() reloadCurrentPage?: boolean = false;
 
   constructor(private readonly translate: TranslateService, private readonly router: Router) { }
 
@@ -28,7 +29,11 @@ export class OccErrorModalComponent {
     if (this.useEmitter) {
       this.refresh.emit();
     } else if (this.errorType === 'UPDATE_UNEXISTED' || this.errorType === 'DELETE_UNEXISTED') {
-      this.router.navigate([this.redirectRoute]);
+      if (this.reloadCurrentPage) {
+          window.location.reload();
+        } else {
+          this.router.navigate([this.redirectRoute]);
+        }
     } else {
       window.location.reload();
     }
