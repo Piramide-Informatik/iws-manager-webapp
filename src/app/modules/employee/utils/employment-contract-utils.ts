@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { EmploymentContractService } from '../../../Services/employment-contract.service';
 import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { EmploymentContract } from '../../../Entities/employment-contract';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -164,28 +165,16 @@ export class EmploymentContractUtils {
       switchMap((currentContract) => {
         // Case 1: Contract not found
         if (!currentContract) {
-          return throwError(() => new Error('NOT_FOUND: The employment contract has been deleted or does not exist'));
+          return throwError(() => createNotFoundUpdateError('Employment Contract'));
         }
 
         // Case 2: Version conflict
         if (currentContract.version !== contract.version) {
-          return throwError(() => new Error(
-            `VERSION_CONFLICT: The contract was modified by another user. ` +
-            `Current version: ${currentContract.version}, Your version: ${contract.version}`
-          ));
+          return throwError(() => createUpdateConflictError("Employment Contract"));
         }
 
         // Update the contract
         return this.employmentContractService.updateEmploymentContract(contract);
-      }),
-      catchError((error: Error) => {
-        if (error.message.startsWith('INVALID_DATA:') ||
-          error.message.startsWith('NOT_FOUND:') ||
-          error.message.startsWith('VERSION_CONFLICT:')) {
-          return throwError(() => error);
-        }
-
-        return throwError(() => new Error(`UPDATE_FAILED: ${error.message}`));
       })
     );
   }

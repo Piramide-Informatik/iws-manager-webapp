@@ -142,6 +142,8 @@
 </ng-template>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalContract"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
   (onClose)="showOCCErrorModalContract = false">
 </app-occ-error-modal>
 <p-dialog 
