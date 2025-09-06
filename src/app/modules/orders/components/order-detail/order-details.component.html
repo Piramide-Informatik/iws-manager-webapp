@@ -8,7 +8,8 @@
         <app-project (onCreateOrderProject)="onOrderProject($event)" [orderToEdit]="currentOrder"></app-project>
       </div>
       <div class="mb-2">
-        <app-iws-provision (onCreateOrderCommission)="onOrderCommission($event)" [orderToEdit]="currentOrder"></app-iws-provision>
+        <app-iws-provision (onCreateOrderCommission)="onOrderCommission($event)"
+          [orderToEdit]="currentOrder"></app-iws-provision>
       </div>
     </div>
   </div>
@@ -16,45 +17,24 @@
   <div class="buttons">
     <div class="row">
       <div class="col-4">
-        <p-button
-          class="order_PDF"
-          size="small"
-          [label]="'BUTTONS.GENERATE_PDF_ORDER' | translate" 
-          icon="pi pi-file-pdf"
-          iconPos="right"
-          [style]="{ background: '#656565' }"
-        />
+        <p-button class="order_PDF" size="small" [label]="'BUTTONS.GENERATE_PDF_ORDER' | translate"
+          icon="pi pi-file-pdf" iconPos="right" [style]="{ background: '#656565' }" />
       </div>
       <div class="col-8">
-        <p-button
-          class="Save me-2"
-          size="small"
-          [label]="'BUTTONS.SAVE' | translate" 
-          icon="pi pi-check"
-          iconPos="left"
-          [loading]="isLoading"
-          (onClick)="onSubmit()"
-        />
-        <p-button
-          class="Delete me-2"
-          size="small"
-          [label]="'BUTTONS.DELETE' | translate"
-          icon="pi pi-trash"
-          iconPos="left"
-          [style]="{ background: '#ef4444' }"
-        />
-        <p-button
-          class="cancel me-2"
-          size="small"
-          [label]="'BUTTONS.CANCEL' | translate"
-          icon="pi pi-times"
-          iconPos="left"
-          (onClick)="goBackListOrders()"
-        />
+        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
+          [loading]="isLoading" (onClick)="onSubmit()" />
+        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" [style]="{ background: '#ef4444' }" />
+        <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+          iconPos="left" (onClick)="goBackListOrders()" />
       </div>
     </div>
   </div>
 </div>
-<app-occ-error-modal *ngIf="showOCCErrorModalOrder" (onClose)="showOCCErrorModalOrder = false">
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalOrder" 
+  [errorType]="occErrorType"
+  [redirectRoute]="redirectRoute"
+  (onClose)="showOCCErrorModalOrder = false">
 </app-occ-error-modal>
-<p-toast/>
+<p-toast />

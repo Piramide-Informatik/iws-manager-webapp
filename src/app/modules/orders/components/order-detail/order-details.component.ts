@@ -7,6 +7,7 @@ import { ProjectComponent } from './project/project.component';
 import { IwsProvisionComponent } from './iws-provision/iws-provision.component';
 import { Project } from '../../../../Entities/project';
 import { Order } from '../../../../Entities/order';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-order-details',
@@ -26,17 +27,19 @@ export class OrderDetailsComponent implements OnInit {
 
   public isLoading: boolean = false;
   private project: Project | null = null;
-  private orderCommission!: {fixCommission: number, maxCommission: number, iwsProvision: number};
+  private orderCommission!: { fixCommission: number, maxCommission: number, iwsProvision: number };
   private newOrder!: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalOrder = false;
+  public redirectRoute = "";
 
   private readonly orderId = this.activatedRoute.snapshot.params['orderId'];
   currentOrder!: Order;
 
   ngOnInit(): void {
-    if(this.orderId){
+    if (this.orderId) {
       this.orderUtils.getOrderById(Number(this.orderId)).subscribe(order => {
-        if(order){
+        if (order) {
           this.currentOrder = order;
         }
       })
@@ -49,7 +52,7 @@ export class OrderDetailsComponent implements OnInit {
     this.orderComponent.onSubmit();
 
     this.isLoading = true;
-    if(this.currentOrder) {
+    if (this.currentOrder) {
       this.updateOrder();
     } else {
       this.createNewOrder();
@@ -73,9 +76,9 @@ export class OrderDetailsComponent implements OnInit {
         this.orderComponent.clearOrderForm();
         this.projectComponent.clearOrderProjectForm();
         this.iwsProvisionComponent.clearIwsCommissionForm();
-        setTimeout(()=>{
+        setTimeout(() => {
           this.resetFormAndNavigation(createdOrder.id);
-        },2000)
+        }, 2000)
       },
       error: (error) => {
         this.isLoading = false;
@@ -105,19 +108,23 @@ export class OrderDetailsComponent implements OnInit {
         this.commonMessageService.showEditSucessfullMessage();
         this.currentOrder = updateded;
       },
-      error: (error) => {
-        this.isLoading = false;
-        console.log(error)
-        if (error.message === 'Conflict detected: order version mismatch') {
-          this.showOCCErrorModalOrder = true;
-        }else{
-          this.commonMessageService.showErrorEditMessage();
-        }
-      }
+      error: (error) => this.handleSaveError(error)
     });
   }
 
-  public onOrderCommission(event: {fixCommission: number, maxCommission: number, iwsProvision: number}) {
+  private handleSaveError(error: any): void {
+    if (error instanceof OccError) {
+      this.showOCCErrorModalOrder = true;
+      this.occErrorType = error.errorType;
+      this.redirectRoute = '/customers/orders/' + this.currentOrder.customer?.id;
+      return;
+    }
+
+    this.commonMessageService.showErrorEditMessage();
+    this.isLoading = false;
+  }
+
+  public onOrderCommission(event: { fixCommission: number, maxCommission: number, iwsProvision: number }) {
     this.orderCommission = event;
   }
 
