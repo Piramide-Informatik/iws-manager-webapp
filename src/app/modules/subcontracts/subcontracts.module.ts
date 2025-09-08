@@ -34,6 +34,7 @@ import { MasterDataModule } from '../master-data/master-data.module';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SharedModule } from '../shared/shared.module';
 import { ProjectAllocationModalComponent } from './components/subcontracts-detail/project-allocation/project-allocation-modal/project-allocation-modal.component';
+import { SubContractModalComponent } from './components/subcontract-modal/subcontract-modal.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { ProjectAllocationModalComponent } from './components/subcontracts-detai
     ProjectAllocationComponent,
     DepreciationScheduleComponent,
     ProjectAllocationModalComponent,
+    SubContractModalComponent
   ],
   imports: [
     CommonModule,
