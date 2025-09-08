@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, Output, EventEmitter, Input, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, inject, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 import { FundingProgramUtils } from '../../../master-data/components/funding-programs/utils/funding-program-utils';
 import { ContractStatusUtils } from '../../../master-data/components/contract-status/utils/contract-status-utils';
