@@ -273,14 +273,23 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
           this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (err) => {
-          if (err?.error?.message.includes('foreign key constraint fails')) {
-            this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
+          this.handleDeleteError(err);
           this.isLoading = false;
         }
       })
+    }
+  }
+
+  private handleDeleteError(error: any) {
+    if (error.message.includes('foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+    } else if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+      this.visibleContractorDeleteEntityModal = false;
+      this.showOCCErrorModalContractor = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+      return;
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
