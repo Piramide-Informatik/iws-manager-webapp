@@ -4,7 +4,8 @@
       <div class="form-container flex align-items-center mb-6">
         <div class="contract_input mb-2">
           <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
-          <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off" [appAutoFocusOnVisible]="isVisibleModal" />
+          <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
+            [appAutoFocusOnVisible]="isVisibleModal" />
         </div>
         <div class="contract_input mb-2">
           <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
@@ -34,10 +35,11 @@
           <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
         </div>
         <div class="contract_input mb-2">
-          <label for="zipcode">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate }}</label>
+          <label for="zipcode">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate
+            }}</label>
           <div class="postal-city">
-            <input type="text" id="zipcode" class="postal" pInputText formControlName="zipcode" autocomplete="off"/>
-            <input type="text" id="city" class="city" pInputText formControlName="city" autocomplete="off"/>
+            <input type="text" id="zipcode" class="postal" pInputText formControlName="zipcode" autocomplete="off" />
+            <input type="text" id="city" class="city" pInputText formControlName="city" autocomplete="off" />
           </div>
         </div>
         <div class="contract_input mb-2">
@@ -48,11 +50,12 @@
     </div>
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left" [loading]="isLoading"/>
+        iconPos="left" [loading]="isLoading" />
       @if(modalContractType === 'edit') {
-        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="this.visibleContractorDeleteEntityModal = true;"/>
-      }  
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [loading]="isLoading"
+        (onClick)="this.visibleContractorDeleteEntityModal = true;" />
+      }
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="closeModal()" />
     </div>
@@ -67,7 +70,7 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeContractor()"/>
+        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeContractor()" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
         iconPos="left" (onClick)="closeModal()" />
@@ -76,11 +79,8 @@
   </div>
 </ng-template>
 
-<p-dialog 
-  [header]="('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" 
-  [modal]="true" 
-  [(visible)]="visibleContractorDeleteEntityModal"
->
+<p-dialog [header]="('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" [modal]="true"
+  [(visible)]="visibleContractorDeleteEntityModal">
   <div class="confirmation-content mb-2 mt-4 delete-contractor-entity">
     <p class="mb-4 delete-contractor-entity-title">
       {{ 'CONTRACTS.LABEL.REMOVE_CONTRACTOR_QUESTION' | translate }}
@@ -89,7 +89,7 @@
 
     <div class="flex justify-content-center gap-2 delete-contractor-entity-buttons">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeContractor()"/>
+        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeContractor()" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
         iconPos="left" (onClick)="this.visibleContractorDeleteEntityModal = false;" />
@@ -98,5 +98,9 @@
   </div>
 </p-dialog>
 
-<app-occ-error-modal *ngIf="showOCCErrorModalContractor" (onClose)="showOCCErrorModalContractor = false">
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalContractor" 
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalContractor = false">
 </app-occ-error-modal>
