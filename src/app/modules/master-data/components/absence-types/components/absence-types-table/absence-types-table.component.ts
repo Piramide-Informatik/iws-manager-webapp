@@ -43,7 +43,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
-  public selectedAbsenceType!: any  | undefined;
+  public selectedAbsenceType!: any;
 
   constructor(private readonly translate: TranslateService, private readonly userPreferenceService: UserPreferenceService, private readonly router: Router) { }
 
