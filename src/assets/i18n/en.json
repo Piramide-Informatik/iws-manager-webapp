@@ -523,6 +523,10 @@
       "FRACTION_OF_DAY": "Fraction of Day",
       "IS_VACATION": "Is Vacation",
       "CAN_BE_BOOKED": "Can be Booked"
+    },
+    "HEADER": {
+      "NEW_ABSENCE_TYPE": "New Absence Type",
+      "DELETE_ABSENCE_TYPE": "Delete Absence Type"
     }
   },
   "SALUTATION": {

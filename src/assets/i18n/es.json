@@ -520,6 +520,10 @@
       "FRACTION_OF_DAY": "Fracción del Día",
       "IS_VACATION": "Es Vacación",
       "CAN_BE_BOOKED": "Se Puede Reservar"
+    },
+    "HEADER": {
+      "NEW_ABSENCE_TYPE": "Nuevo Tipo de Ausencia",
+      "DELETE_ABSENCE_TYPE": "Eliminar Tipo de Ausencia"
     }
   },
   "SALUTATION": {
