@@ -1,0 +1,57 @@
+.sub-contractor-form {
+  margin-left: 5% !important;
+  margin-right: 5% !important;
+}
+
+.form-container {
+  display: block !important;
+}
+
+.sub_contract_input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  font-weight: normal;
+
+  label {
+    width: 150px;
+    font-weight: normal;
+  }
+
+  input,
+  p-select,
+  p-datepicker {
+    width: 70% !important;
+  }
+
+  div {
+    width: 70% !important;
+  }
+
+  div input,
+  div p-inputnumber {
+    width: 100% !important;
+  }
+}
+
+.sub_contract_input p-calendar,
+.sub_contract_input p-calendar .p-inputtext {
+  width: 70%;
+}
+
+::ng-deep .p-datepicker {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 ;
+}
+
+::ng-deep .p-datepicker table,
+::ng-deep .p-datepicker .p-monthpicker,
+::ng-deep .p-datepicker .p-yearpicker,
+::ng-deep .p-datepicker .p-datepicker-group {
+  width: 100%;
+  table-layout: fixed;
+}

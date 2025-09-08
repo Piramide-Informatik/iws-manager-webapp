@@ -48,6 +48,8 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   isDeletingSubcontract: boolean = false;
 
+  subContractModalType: string = '';
+
   constructor( private readonly translate: TranslateService,
                private readonly userPreferenceService: UserPreferenceService, 
                private readonly router:Router,
@@ -115,12 +117,18 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
    })
  }
 
-  deleteSubcontract(orderTitle: any){
-    this.subcontracts = this.subcontracts.filter( subcontract => subcontract.contractTitle !== orderTitle);
+  deleteSubcontract(id: any) {
+    this.subContractModalType = 'delete';
+    const sub = this.subcontracts.find( subcontract => subcontract.id !== id);
+    if (sub) {
+      this.selectedSubcontract = sub;
+    }
+    this.visibleSubcontractModal = true;
   }
 
   goToSubContractDetails() {
-    this.router.navigate(['subcontracts-details'], { relativeTo: this.route })
+    this.subContractModalType = 'create';
+    this.visibleSubcontractModal = true;
   }
 
   goToEditSubContractDetails(subcontract: Subcontract) {
@@ -136,26 +144,51 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     this.visibleSubcontractModal = true;
   }
 
-  onSubcontractDeleteConfirm() {
-    this.isDeletingSubcontract = true;
-    if (this.selectedSubcontract) {
-      this.subcontractsUtils.deleteSubcontract(this.selectedSubcontract.id).subscribe({
-        next: () => {
-          this.isDeletingSubcontract = false;
+  onCreateFrameworkAgreement(data: any) {
+    this.subcontractsUtils.createNewSubcontract(data).subscribe({
+      next: (createdSubContract) => {
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        setTimeout(()=>{
           this.visibleSubcontractModal = false;
-          this.subcontracts = this.subcontracts.filter(sc => sc.id !== this.selectedSubcontract.id);
-          this.commonMessageService.showDeleteSucessfullMessage();
-        },
-        error: (error) => {
-          this.isDeletingSubcontract = false;
-          if(error.message.includes('have associated subcontract projects') || 
-             error.message.includes('have associated subcontract years')){
-            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
+          this.navigationToEdit(createdSubContract.id);
+        },2000)
+      },
+      error: (error) => {
+        console.log(error);
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    });
+  }
+
+  private navigationToEdit(id: number): void {
+    this.router.navigate(['./subcontracts-details', id], { relativeTo: this.route });
+  }
+
+  onDeleteFrameworkAgreement(data: any) {
+    this.subcontractsUtils.deleteSubcontract(data.id).subscribe({
+      next: () => {
+        this.isDeletingSubcontract = false;
+        this.visibleSubcontractModal = false;
+        this.subcontracts = this.subcontracts.filter(sc => sc.id !== data.id);
+        this.commonMessageService.showDeleteSucessfullMessage();
+      },
+      error: (error) => {
+        this.isDeletingSubcontract = false;
+        if(error.message.includes('have associated subcontract projects') || 
+           error.message.includes('have associated subcontract years')){
+          this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+        } else {
+          this.commonMessageService.showErrorDeleteMessage();
         }
-      });
-    }
+      }
+    });
+  }
+
+  onModalVisible(value: boolean) {
+    this.visibleSubcontractModal = value;
+  }
+
+  onModalHide() {
+    this.subContractModalType = '';
   }
 }
