@@ -1,6 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { IwsCommission } from '../../../../../../Entities/iws-commission ';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
+import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
+import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
 @Component({
   selector: 'app-edit-iws-commissions',
   standalone: false,
@@ -8,44 +13,170 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrl: './edit-iws-commissions.component.scss',
 })
 export class EditIwsCommissionsComponent implements OnInit {
+  public showOCCErrorModaEmployeeIws = false;
+  currentIwsCommission: IwsCommission | null = null;
   editCommissionForm!: FormGroup;
 
-  @Input() selectedCommission: any = {
-    threshold: 0,
-    percentage: 0,
-    minCommission: 0,
-  };
+  isSaving = false;
+  private readonly subscriptions = new Subscription();
+  private readonly editIwsCommissionSource =
+    new BehaviorSubject<IwsCommission | null>(null);
 
-  @Output() save = new EventEmitter<any>();
-  @Output() cancel = new EventEmitter<void>();
+  constructor(
+    private readonly iwsCommissionUtils: IwsCommissionUtils,
+    private readonly iwsCommissionStateService: IwsCommissionStateService,
+    private readonly messageService: MessageService,
+    private readonly translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
-    this.editCommissionForm = new FormGroup({
-      threshold: new FormControl(this.selectedCommission.threshold, [
-        Validators.required,
-      ]),
-      percentage: new FormControl(this.selectedCommission.percentage, [
-        Validators.required,
-      ]),
-      minCommission: new FormControl(this.selectedCommission.minCommission, [
-        Validators.required,
-      ]),
-    });
-  }
-
-  onSubmit(): void {
-    if (this.editCommissionForm.valid) {
-      const updatedCommission = {
-        ...this.selectedCommission,
-        ...this.editCommissionForm.value,
-      };
-      this.save.emit(updatedCommission);
-    } else {
-      console.log('Formular ungültig');
+    this.initForm();
+    this.setupIwsCommissionSubscription();
+    const savedIwsCommissionId = localStorage.getItem(
+      'selectedIwsCommissionId'
+    );
+    if (savedIwsCommissionId) {
+      this.loadIwsCommissionAfterRefresh(savedIwsCommissionId);
+      localStorage.removeItem('selectedEmployeeIwsId');
     }
   }
 
-  onCancel(): void {
-    this.cancel.emit();
+  private initForm(): void {
+    this.editCommissionForm = new FormGroup({
+      threshold: new FormControl('', []),
+      percentage: new FormControl('', []),
+      minCommission: new FormControl('', []),
+    });
+  }
+
+  private setupIwsCommissionSubscription(): void {
+    this.subscriptions.add(
+      this.iwsCommissionStateService.currentIwsCommission$.subscribe(
+        (IwsCommission) => {
+          this.currentIwsCommission = IwsCommission;
+          IwsCommission
+            ? this.loadIwsCommissionData(IwsCommission)
+            : this.clearForm();
+        }
+      )
+    );
+  }
+
+  private loadIwsCommissionData(iwsCommission: IwsCommission): void {
+    this.editCommissionForm.patchValue({
+      threshold: iwsCommission.fromOrderValue,
+      percentage: iwsCommission.commission,
+      minCommission: iwsCommission.minCommission,
+    });
+  }
+
+  private loadIwsCommissionAfterRefresh(iwsCommissionId: string): void {
+    this.isSaving = true;
+    this.subscriptions.add(
+      this.iwsCommissionUtils
+        .getIwsCommissionById(Number(iwsCommissionId))
+        .subscribe({
+          next: (iwsCommission) => {
+            if (iwsCommission) {
+              this.iwsCommissionStateService.setIwsCommissionToEdit(
+                iwsCommission
+              );
+            }
+            this.isSaving = false;
+          },
+          error: () => {
+            this.isSaving = false;
+          },
+        })
+    );
+  }
+
+  onSubmit(): void {
+    if (
+      this.editCommissionForm.invalid ||
+      !this.currentIwsCommission ||
+      this.isSaving
+    ) {
+      this.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true;
+    const updateIwsCommission: IwsCommission = {
+      ...this.currentIwsCommission,
+      fromOrderValue: this.editCommissionForm.value.threshold,
+      commission: this.editCommissionForm.value.percentage,
+      minCommission: this.editCommissionForm.value.minCommission,
+    };
+
+    this.subscriptions.add(
+      this.iwsCommissionUtils.updateIwsCommission(updateIwsCommission).subscribe({
+        next: (savedEmployeeIws) => this.handleSaveSuccess(savedEmployeeIws),
+        error: (err) => this.handleError(err),
+      })
+    );
+    if (this.editCommissionForm.valid) {
+      console.log(this.editCommissionForm.value);
+    } else {
+      console.log('Formulario inválido');
+    }
+  }
+
+  private markAllAsTouched(): void {
+    Object.values(this.editCommissionForm.controls).forEach((control) => {
+      control.markAsTouched();
+      control.markAsDirty();
+    });
+  }
+
+  private handleSaveSuccess(savedIwsCommission: IwsCommission): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant('MESSAGE.SUCCESS'),
+      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
+    });
+    this.iwsCommissionStateService.setIwsCommissionToEdit(null);
+    this.clearForm();
+  }
+
+  private handleError(err: any): void {
+    if (
+      err.message ===
+      'Version conflict: IwsCommission has been updated by another user'
+    ) {
+      this.showOCCErrorModaEmployeeIws = true;
+    } else {
+      this.handleSaveError(err);
+    }
+    this.isSaving = false;
+  }
+
+  private handleSaveError(error: any): void {
+    console.error('Error saving iwsCommission:', error);
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translate.instant('MESSAGE.ERROR'),
+      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
+    });
+    this.isSaving = false;
+  }
+
+  cancelEdit(): void {
+    console.log('Edición cancelada');
+    this.editCommissionForm.reset();
+  }
+  clearForm(): void {
+    this.editCommissionForm.reset();
+    this.currentIwsCommission = null;
+    this.isSaving = false;
+  }
+  onRefresh(): void {
+    if (this.currentIwsCommission?.id) {
+      localStorage.setItem(
+        'selectedPublicHolidayId',
+        this.currentIwsCommission.id.toString()
+      );
+      window.location.reload();
+    }
   }
 }

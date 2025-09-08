@@ -133,6 +133,7 @@ import { ModalCostComponent } from './components/cost/components/modal-cost/moda
 import { IwsStaffModalComponent } from './components/iws-staff/components/iws-staff-modal/iws-staff-modal.component';
 import { ContractStatusModalComponent } from './components/contract-status/components/contract-status-modal/contract-status-modalcomponent';
 import { ModalAbsenceTypesComponent } from './components/absence-types/components/modal-absence-types/modal-absence-types.component';
+import { IwsCommissionsModalComponent } from './components/iws-commissions/components/iws-commissions-modal/iws-commissions-modal.component';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -231,6 +232,7 @@ registerLocaleData(localeDe, 'de-DE');
     ModalCostComponent,
     IwsStaffModalComponent,
     ModalAbsenceTypesComponent,
+    IwsCommissionsModalComponent,
   ],
   imports: [
     ButtonModule,
