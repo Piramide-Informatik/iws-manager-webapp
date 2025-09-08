@@ -1,9 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed, ViewChild} from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+
+import { IwsCommissionService } from '../../../../../../Services/iws-commission.service';
+import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
+import { IwsCommission } from '../../../../../../Entities/iws-commission ';
+import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
+import { IwsCommissionsModalComponent } from '../iws-commissions-modal/iws-commissions-modal.component';
 
 @Component({
   selector: 'app-iws-commissions-table',
@@ -12,26 +20,57 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styles: ``,
 })
 export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
-  commissions: any[] = [];
+  private readonly iwsCommissionService = inject(IwsCommissionService);
+  private readonly iwsCommissionUtils = new IwsCommissionUtils();
+  private readonly messageService = inject(MessageService);
+  visibleModal: boolean = false;
+  modalType: 'create' | 'delete' = 'create';
+  selectedIwsCommission: number | null = null;
+  OrderValueIwsCommission: string = '';
+  @ViewChild('iwsCommissionsModal') iwsCommissionsModalComponent!: IwsCommissionsModalComponent;
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedIwsCommission = event.data;
+      this.iwsCommissionUtils.getIwsCommissionById(this.selectedIwsCommission!).subscribe({
+        next: (iwsCommission) => {
+          this.OrderValueIwsCommission = iwsCommission?.fromOrderValue?.toString() ?? '';
+        },
+        error: (err) => {
+          console.error('Could not get iwsCommission:', err);
+          this.OrderValueIwsCommission = '';
+        }
+      });
+    }
+    this.visibleModal = true;
+  }
+
+  readonly commissions = computed(() => {
+    return this.iwsCommissionService.iwsCommissions().map(iwsCommission => ({
+      id: iwsCommission.id,
+      threshold: iwsCommission.fromOrderValue,
+      percentage: iwsCommission.commission,
+      minCommission: iwsCommission.minCommission,
+    }));
+  });
+
+  datascommissions: any[] = [];
   columnsHeaderFieldCommissions: any[] = [];
   userIwsCommissionsPreferences: UserPreference = {};
   tableKey: string = 'IwsCommissions'
   dataKeys = ['threshold', 'percentage', 'minCommission'];
+
+  @ViewChild('dt2') dt2!: Table;
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly iwsCommissionStateService: IwsCommissionStateService
   ) {}
 
   ngOnInit(): void {
-    this.commissions = [
-      { id: 1, threshold: 0, percentage: 12.0, minCommission: 0 },
-      { id: 2, threshold: 50000, percentage: 10.0, minCommission: 6000 },
-      { id: 3, threshold: 1000000, percentage: 8.0, minCommission: 10000 },
-    ];
-
     this.loadColHeadersCommissions();
     this.userIwsCommissionsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCommissions);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -39,6 +78,16 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
       this.routerUtils.reloadComponent(true);
       this.userIwsCommissionsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCommissions);
     });
+
+    this.iwsCommissionService.getAllIwsCommissions().subscribe({
+    next: (data) => {
+      this.datascommissions = data;
+    },
+    error: (err) => {
+      console.error('Error loading commissions:', err);
+      this.datascommissions = [];
+    }
+  });
   }
 
   onUserIwsCommissionsPreferencesChanges(userIwsCommissionsPreferences: any) {
@@ -75,4 +124,51 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
       this.langSubscription.unsubscribe();
     }
   }
+
+  onDialogShow() {
+    if (this.modalType === 'create' && this.iwsCommissionsModalComponent) {
+      this.iwsCommissionsModalComponent.focusInputIfNeeded();
+    }
+  }
+
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedIwsCommission = null;
+    }
+  }
+
+  toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
+    this.messageService.add({
+      severity: message.severity,
+      summary: this.translate.instant(_(message.summary)),
+      detail: this.translate.instant(_(message.detail)),
+    });
+  }
+
+  editIwsCommissions(iwsCommission: IwsCommission) {
+        const IwsCommissionToEdit: IwsCommission = {
+          id: iwsCommission.id,
+          fromOrderValue: iwsCommission.fromOrderValue,
+          commission: iwsCommission.commission,
+          minCommission: iwsCommission.minCommission,
+          createdAt: '',
+          updatedAt: '',
+          version: 0,
+        };
+        this.iwsCommissionUtils
+          .getIwsCommissionById(IwsCommissionToEdit.id)
+          .subscribe({
+            next: (fullIwsCommission) => {
+              if (fullIwsCommission) {
+                this.iwsCommissionStateService.setIwsCommissionToEdit(
+                  fullIwsCommission
+                );
+              }
+            },
+            error: (err) => {
+              console.error('Error Id IwsCommission', err);
+            },
+          });
+      }
 }
