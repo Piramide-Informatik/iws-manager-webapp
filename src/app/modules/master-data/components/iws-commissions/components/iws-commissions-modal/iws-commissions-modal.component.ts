@@ -9,7 +9,6 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
 import { finalize } from 'rxjs/operators';
@@ -25,11 +24,14 @@ import { IwsCommission } from '../../../../../../Entities/iws-commission ';
 export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
   private readonly iwsCommissionUtils = inject(IwsCommissionUtils);
   private readonly subscriptions = new Subscription();
+
   @ViewChild('iwsCommissionInput')
   iwsCommissionInput!: ElementRef<HTMLInputElement>;
+
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() iwsCommissionToDelete: number | null = null;
   @Input() iwsCommissionName: string | null = null;
+
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() iwsCommissionCreated = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{
@@ -47,10 +49,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
       Validators.min(0),
       Validators.max(1000000),
     ]),
-    commission: new FormControl('', [
-      Validators.min(0),
-      Validators.max(100),
-    ]),
+    commission: new FormControl('', [Validators.min(0), Validators.max(100)]),
     minCommission: new FormControl('', [
       Validators.min(0),
       Validators.max(100000),
@@ -62,10 +61,6 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
     this.resetForm();
   }
 
-  private loadInitialData() {
-    const sub = this.iwsCommissionUtils.loadInitialData().subscribe();
-    this.subscriptions.add(sub);
-  }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -74,10 +69,20 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
     return this.modalType === 'create';
   }
 
-  closeAndReset(): void {
+  private loadInitialData() {
+    const sub = this.iwsCommissionUtils.loadInitialData().subscribe();
+    this.subscriptions.add(sub);
+  }
+
+  // 🔹 unificado: cerrar modal + reset
+  private closeModal(): void {
     this.isLoading = false;
     this.isVisibleModal.emit(false);
     this.resetForm();
+  }
+
+  onCancel(): void {
+    this.closeModal();
   }
 
   onDeleteConfirm(): void {
@@ -90,11 +95,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
         error: (error) =>
-          this.handleOperationError(
-            error,
-            'MESSAGE.DELETE_FAILED',
-            'MESSAGE.DELETE_ERROR_IN_USE'
-          ),
+          this.handleErrorWithToast(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE'),
       });
 
     this.subscriptions.add(sub);
@@ -116,8 +117,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
           this.iwsCommissionCreated.emit();
           this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
         },
-        error: (error) =>
-          this.handleOperationError(error, 'MESSAGE.CREATE_FAILED'),
+        error: (error) => this.handleErrorWithToast(error, 'MESSAGE.CREATE_FAILED'),
       });
 
     this.subscriptions.add(sub);
@@ -129,10 +129,11 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
       summary: severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR',
       detail,
     });
-    this.closeAndReset();
+    this.closeModal();
   }
 
-  private handleOperationError(
+  // 🔹 unificado: errores + toast
+  private handleErrorWithToast(
     error: any,
     defaultDetail: string,
     inUseDetail?: string
@@ -150,7 +151,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
     });
 
     console.error('Operation error:', error);
-    this.closeAndReset();
+    this.closeModal();
   }
 
   private getErrorDetail(errorCode: string): string {
@@ -174,15 +175,12 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
       minCommission: Number(this.createIwsCommissionForm.value.minCommission),
     };
   }
+
   private resetForm(): void {
     this.createIwsCommissionForm.reset();
   }
 
-  onCancel(): void {
-    this.closeAndReset();
-  }
-
-  public focusInputIfNeeded() {
+  public focusInputIfNeeded(): void {
     if (this.isCreateMode && this.iwsCommissionInput) {
       setTimeout(() => {
         this.iwsCommissionInput?.nativeElement?.focus();

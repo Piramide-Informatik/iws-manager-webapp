@@ -46,7 +46,7 @@
                     [disabled]="createIwsCommissionForm.invalid || isLoading" />
 
                 <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                    icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />
+                    icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />
             </div>
             
         </div>
@@ -67,7 +67,7 @@
                 [disabled]="isLoading" />
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />
+                icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />
 
         </div>
     </div>

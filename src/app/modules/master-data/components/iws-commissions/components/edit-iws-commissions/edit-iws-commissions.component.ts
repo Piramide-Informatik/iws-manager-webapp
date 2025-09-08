@@ -6,6 +6,7 @@ import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
+
 @Component({
   selector: 'app-edit-iws-commissions',
   standalone: false,
@@ -32,9 +33,8 @@ export class EditIwsCommissionsComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.setupIwsCommissionSubscription();
-    const savedIwsCommissionId = localStorage.getItem(
-      'selectedIwsCommissionId'
-    );
+
+    const savedIwsCommissionId = localStorage.getItem('selectedIwsCommissionId');
     if (savedIwsCommissionId) {
       this.loadIwsCommissionAfterRefresh(savedIwsCommissionId);
       localStorage.removeItem('selectedEmployeeIwsId');
@@ -52,11 +52,11 @@ export class EditIwsCommissionsComponent implements OnInit {
   private setupIwsCommissionSubscription(): void {
     this.subscriptions.add(
       this.iwsCommissionStateService.currentIwsCommission$.subscribe(
-        (IwsCommission) => {
-          this.currentIwsCommission = IwsCommission;
-          IwsCommission
-            ? this.loadIwsCommissionData(IwsCommission)
-            : this.clearForm();
+        (iwsCommission) => {
+          this.currentIwsCommission = iwsCommission;
+          iwsCommission
+            ? this.loadIwsCommissionData(iwsCommission)
+            : this.resetForm(true);
         }
       )
     );
@@ -73,21 +73,17 @@ export class EditIwsCommissionsComponent implements OnInit {
   private loadIwsCommissionAfterRefresh(iwsCommissionId: string): void {
     this.isSaving = true;
     this.subscriptions.add(
-      this.iwsCommissionUtils
-        .getIwsCommissionById(Number(iwsCommissionId))
-        .subscribe({
-          next: (iwsCommission) => {
-            if (iwsCommission) {
-              this.iwsCommissionStateService.setIwsCommissionToEdit(
-                iwsCommission
-              );
-            }
-            this.isSaving = false;
-          },
-          error: () => {
-            this.isSaving = false;
-          },
-        })
+      this.iwsCommissionUtils.getIwsCommissionById(Number(iwsCommissionId)).subscribe({
+        next: (iwsCommission) => {
+          if (iwsCommission) {
+            this.iwsCommissionStateService.setIwsCommissionToEdit(iwsCommission);
+          }
+          this.isSaving = false;
+        },
+        error: () => {
+          this.isSaving = false;
+        },
+      })
     );
   }
 
@@ -111,15 +107,16 @@ export class EditIwsCommissionsComponent implements OnInit {
 
     this.subscriptions.add(
       this.iwsCommissionUtils.updateIwsCommission(updateIwsCommission).subscribe({
-        next: (savedEmployeeIws) => this.handleSaveSuccess(savedEmployeeIws),
+        next: (savedCommission) => this.handleSaveSuccess(savedCommission),
         error: (err) => this.handleError(err),
       })
     );
-    if (this.editCommissionForm.valid) {
-      console.log(this.editCommissionForm.value);
-    } else {
-      console.log('Formulario inválido');
-    }
+
+    console.log(
+      this.editCommissionForm.valid
+        ? this.editCommissionForm.value
+        : 'Formulario inválido'
+    );
   }
 
   private markAllAsTouched(): void {
@@ -136,7 +133,7 @@ export class EditIwsCommissionsComponent implements OnInit {
       detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
     this.iwsCommissionStateService.setIwsCommissionToEdit(null);
-    this.clearForm();
+    this.resetForm(true);
   }
 
   private handleError(err: any): void {
@@ -146,30 +143,29 @@ export class EditIwsCommissionsComponent implements OnInit {
     ) {
       this.showOCCErrorModaEmployeeIws = true;
     } else {
-      this.handleSaveError(err);
+      console.error('Error saving iwsCommission:', err);
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
+      });
     }
-    this.isSaving = false;
-  }
-
-  private handleSaveError(error: any): void {
-    console.error('Error saving iwsCommission:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
-    });
     this.isSaving = false;
   }
 
   cancelEdit(): void {
     console.log('Edición cancelada');
-    this.editCommissionForm.reset();
+    this.resetForm();
   }
-  clearForm(): void {
+
+  private resetForm(clearCommission = false): void {
     this.editCommissionForm.reset();
-    this.currentIwsCommission = null;
-    this.isSaving = false;
+    if (clearCommission) {
+      this.currentIwsCommission = null;
+      this.isSaving = false;
+    }
   }
+
   onRefresh(): void {
     if (this.currentIwsCommission?.id) {
       localStorage.setItem(
