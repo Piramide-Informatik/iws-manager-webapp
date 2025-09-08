@@ -6,9 +6,6 @@ import { EmployeeIwsUtils } from '../../../master-data/components/iws-staff/util
 import { FormControl, FormGroup } from '@angular/forms';
 import { BasicContract } from '../../../../Entities/basicContract';
 import { momentFormatDate } from '../../../shared/utils/moment-date-utils';
-import { FundingProgram } from '../../../../Entities/fundingProgram';
-import { ContractStatus } from '../../../../Entities/contractStatus';
-import { EmployeeIws } from '../../../../Entities/employeeIws';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -24,10 +21,12 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
   @Output() deletedFrameworkAgreement = new EventEmitter();
   @Output() createdFrameworkAgreement = new EventEmitter();
   @Output() visibleModal = new EventEmitter();
+  
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly contractStatusUtils = inject(ContractStatusUtils);
   private readonly employeeIwsUtils = inject(EmployeeIwsUtils);
   private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
+  
   public basicContractCreateForm!: FormGroup;
   public readonly fundingPrograms = toSignal(
     this.fundingProgramUtils.getAllFundingPrograms(), { initialValue: [] }
@@ -49,7 +48,7 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
       }
     })
   }
-
+  
   ngOnChanges(changes: SimpleChanges): void {
     let modalTypeChanges = changes['modalType'];
     if (modalTypeChanges && !modalTypeChanges.firstChange) {
@@ -59,11 +58,11 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
       }
     }
   }
-
+  
   get isCreateFrameworkAgreementMode() {
     return this.modalType === 'create'
   }
-
+  
   private initOrderForm(): void {
     this.basicContractCreateForm = new FormGroup({
       contractNo: new FormControl(null),
@@ -77,7 +76,7 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
     });
     this.basicContractCreateForm.get('contractNo')?.disable();
   }
-
+  
   onSubmit() {
     if (this.basicContractCreateForm.invalid) return
     
@@ -88,32 +87,24 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
         date: momentFormatDate(this.basicContractCreateForm.value.date),
         contractTitle: this.basicContractCreateForm.value.contractTitle,
         confirmationDate: this.basicContractCreateForm.value.confirmationDate,
-        fundingProgram: this.getFundingProgram(this.basicContractCreateForm.value.fundingProgram ?? 0),
-        contractStatus: this.getContractStatus(this.basicContractCreateForm.value.contractStatus ?? 0),
-        employeeIws: this.getEmployeeIws(this.basicContractCreateForm.value.employeeIws),
+        fundingProgram: this.findById(this.fundingPrograms(), this.basicContractCreateForm.value.fundingProgram ?? 0),
+        contractStatus: this.findById(this.contractStatus(), this.basicContractCreateForm.value.contractStatus ?? 0),
+        employeeIws: this.findById(this.employeeIws(), this.basicContractCreateForm.value.employeeIws),
         customer: this.customer
       }
       this.createdFrameworkAgreement.emit(newBasicContract);
     }
   }
-
+  
   onFrameworkAgreementDeleteConfirm() {
     this.deletedFrameworkAgreement.emit(this.selectedFrameworkAgreement);  
   }
-
+  
   closeModal() {
     this.visibleModal.emit(false);
   }
-
-  private getFundingProgram(idFunding: number): FundingProgram | null {
-    return idFunding === 0? null : this.fundingPrograms().find( f => f.id === idFunding) ?? null;
-  }
-
-  private getContractStatus(idContractStatus: number): ContractStatus | null {
-    return idContractStatus === 0? null : this.contractStatus().find( c => c.id === idContractStatus) ?? null;
-  }
-
-  private getEmployeeIws(idEmployeeIws: number): EmployeeIws | null {
-    return idEmployeeIws === 0? null : this.employeeIws().find( e => e.id === idEmployeeIws) ?? null;
+  
+  private findById<T extends { id: number }>(items: T[], id: number): T | null {
+    return id === 0 ? null : items.find(item => item.id === id) ?? null;
   }
 }
