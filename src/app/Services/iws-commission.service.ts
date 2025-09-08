@@ -35,8 +35,8 @@ export class IwsCommissionService {
         this._loading.set(true);
         return this.http.get<IwsCommission[]>(this.apiUrl, this.httpOptions).pipe(
             tap({
-                next: (projectStatuses) => {
-                    this._iwsCommissions.set(projectStatuses);
+                next: (iwsCommissions) => {
+                    this._iwsCommissions.set(iwsCommissions);
                     this._error.set(null);
                 },
                 error: (err) => {

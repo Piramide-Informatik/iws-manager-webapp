@@ -1,0 +1,74 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="createIwsCommissionForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2 mt-4">
+            <div class="commission-form flex align-items-center mb-3">
+                <label for="fromOrderValue" class="block">
+                    {{ 'IWS_COMMISSIONS.FORM.THRESHOLD' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="fromOrderValue" formControlName="fromOrderValue" autocomplete="off"
+                    [attr.aria-invalid]="createIwsCommissionForm.get('fromOrderValue')?.invalid"
+                    [attr.aria-describedby]="createIwsCommissionForm.get('fromOrderValue')?.invalid ? 'fromOrderValueError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createIwsCommissionForm.get('fromOrderValue')?.invalid && createIwsCommissionForm.get('fromOrderValue')?.touched"
+                    id="fromOrderValueError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="commission-form flex align-items-center mb-3">
+                <label for="commission" class="block">
+                    {{ 'IWS_COMMISSIONS.FORM.PERCENTAGE' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="commission" formControlName="commission" autocomplete="off"
+                    [attr.aria-invalid]="createIwsCommissionForm.get('commission')?.invalid"
+                    [attr.aria-describedby]="createIwsCommissionForm.get('commission')?.invalid ? 'commissionError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createIwsCommissionForm.get('commission')?.invalid && createIwsCommissionForm.get('commission')?.touched"
+                    id="employeeLabelError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="commission-form flex align-items-center mb-3">
+                <label for="minCommission" class="block">
+                    {{ 'IWS_COMMISSIONS.FORM.MIN_COMMISSION' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="minCommission" formControlName="minCommission" autocomplete="off"
+                    [attr.aria-invalid]="createIwsCommissionForm.get('minCommission')?.invalid"
+                    [attr.aria-describedby]="createIwsCommissionForm.get('minCommission')?.invalid ? 'minCommissionError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createIwsCommissionForm.get('minCommission')?.invalid && createIwsCommissionForm.get('minCommission')?.touched"
+                    id="minCommissionError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="flex justify-content-center gap-2 mt-4">
+                <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+                    icon="pi pi-check" iconPos="left" [loading]="isLoading"
+                    [disabled]="createIwsCommissionForm.invalid || isLoading" />
+
+                <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />
+            </div>
+            
+        </div>
+    </form>
+
+</ng-container>
+
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'USERS.DELETE.CONFIRM_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ iwsCommissionName }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />
+
+        </div>
+    </div>
+</ng-template>
