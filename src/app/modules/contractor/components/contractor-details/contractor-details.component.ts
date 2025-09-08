@@ -178,11 +178,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   handleUpdateError(error: Error): void {
-    // if (error.message.startsWith('Conflict detected: contractor version mismatch')) {
-    //   this.showOCCErrorModalContractor = true;
-    // } else {
-    //   this.commonMessageService.showErrorEditMessage();
-    // }
     if (error instanceof OccError) {
       this.showOCCErrorModalContractor = true;
       this.occErrorType = error.errorType;
