@@ -428,6 +428,7 @@
         "MIN_COMMISSION": "Comisión mínima"
       },
       "TITLE_DIALOG_REMOVE": "Eliminar Marco de Acuerdo",
+      "TITLE_DIALOG_CREATE": "Nuevo Marco de Acuerdo",
       "REMOVE_QUESTION":"¿Está seguro que desea eliminar el Marco de Acuerdo",
       "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"¿Está seguro que desea eliminar la comisión IWS "
     }
