@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AbsenceType } from '../../../../../../Entities/absenceType';
 import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -9,10 +9,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './modal-absence-types.component.html',
   styleUrl: './modal-absence-types.component.scss'
 })
-export class ModalAbsenceTypesComponent {
+export class ModalAbsenceTypesComponent implements OnChanges {
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   @Input() selectedAbsenceType!: AbsenceType | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createAbsenceType = new EventEmitter<{created?: AbsenceType, status: 'success' | 'error'}>();
   @Output() deleteAbsenceType = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
@@ -24,9 +25,15 @@ export class ModalAbsenceTypesComponent {
     name: new FormControl(''),
     label: new FormControl(''),
     shareOfDay: new FormControl(null, [Validators.max(1.0)]),
-    hours: new FormControl(0),
-    isHoliday: new FormControl(0)
-  })
+    isHoliday: new FormControl(0),
+    hours: new FormControl(0), // can be Booked 
+  });
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visibleModal'] && this.visibleModal && this.isCreateMode) {
+      this.focusInputIfNeeded();
+    }
+  } 
 
   public onSubmit(): void {
     if(this.absenceTypeForm.invalid || this.isLoading) return
@@ -35,7 +42,7 @@ export class ModalAbsenceTypesComponent {
     const newAbsenceType: Omit<AbsenceType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       name: this.absenceTypeForm.value.name ?? '',
       label: this.absenceTypeForm.value.label ?? '',
-      shareofday: this.absenceTypeForm.value.shareOfDay ?? 0,
+      shareOfDay: this.absenceTypeForm.value.shareOfDay ?? 0,
       isHoliday: this.absenceTypeForm.value.isHoliday ? 1 : 0,
       hours: this.absenceTypeForm.value.hours ? 1 : 0,
     };
@@ -88,7 +95,7 @@ export class ModalAbsenceTypesComponent {
         if (this.firstInput?.nativeElement) {
           this.firstInput.nativeElement.focus();
         }
-      }, 150);
+      }, 300);
     }
   }
 
