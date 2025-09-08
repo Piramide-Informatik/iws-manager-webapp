@@ -1,0 +1,31 @@
+.fa-form {
+  margin-left: 5% !important;
+  margin-right: 5% !important;
+}
+
+.form-fa-container {
+  display: block !important;
+}
+
+.order_input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
+
+  label {
+    width: 170px !important;
+    font-weight: normal;
+  }
+
+  input,
+  p-select,
+  p-datepicker {
+    width: 55% !important;
+  }
+}
+
+.buttons-fa-container {
+  display: flex;
+}

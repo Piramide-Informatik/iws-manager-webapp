@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject, computed } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { AbsenceType } from '../../../../../../Entities/absenceType';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
+import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 
 
 @Component({
@@ -14,7 +18,19 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styleUrl: './absence-types-table.component.scss'
 })
 export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
-  absenceTypes: any[] = [];
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
+  private readonly absenceTypeService = inject(AbsenceTypeService);
+  readonly absenceTypes = computed(() => {
+    return this.absenceTypeService.absenceTypes().map(aType => ({
+      id: aType.id,
+      type: aType.name,
+      abbreviation: aType.label,
+      fractionOfDay: aType.hours,
+      isVacation: aType.isHoliday && aType.isHoliday == 1,
+      canBeBooked: aType.shareofday
+    }));
+  });
   cols: any[] = [];
   selectedColumns: any[] = [];
   userAbsenceTypePreferences: UserPreference = {};
@@ -25,28 +41,14 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   private langSubscription!: Subscription;
 
+  public modalType: 'create' | 'delete' = 'create';
+  public visibleModal: boolean = false;
+  public selectedAbsenceType!: any;
+
   constructor(private readonly translate: TranslateService, private readonly userPreferenceService: UserPreferenceService, private readonly router: Router) { }
 
   ngOnInit() {
-    this.absenceTypes = [
-      {
-        id: 1,
-        type: 'Gemeldet krank',
-        abbreviation: 'Gk',
-        fractionOfDay: '',
-        isVacation: '',
-        canBeBooked: '',
-      },
-      {
-        id: 2,
-        type: 'Sonderurbaub',
-        abbreviation: 'X',
-        fractionOfDay: 'x',
-        isVacation: '',
-        canBeBooked: '',
-      },
-    ];
-
+    this.absenceTypeUtils.loadInitialData().subscribe();
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
     this.userAbsenceTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
@@ -67,7 +69,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
       { field: 'type', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')) },
       { field: 'abbreviation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.ABBREVIATION')) },
       { field: 'fractionOfDay', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
-      { field: 'isVacation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
+      { field: 'isVacation', filter:{ type: 'boolean'},minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
       { field: 'canBeBooked', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.CAN_BE_BOOKED')) }
     ];
   }
@@ -86,15 +88,35 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  editAbsenceType(absenceType: any) {
-    console.log('Editing', absenceType);
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
   }
 
-  deleteAbsenceType(id: number) {
-    console.log('Deleting ID', id);
+  onCreateAbsenceType(event: { created?: AbsenceType, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
   }
 
-  createAbsenceType() {
-    console.log('Creating new absence type');
+  onDeleteAbsenceType(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+    if(deleteEvent.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(deleteEvent.status === 'error' && deleteEvent.error){
+      if(deleteEvent.error.message === 'Version conflict: absence type has been updated by another user'){
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      }else{
+        this.commonMessageService.showErrorDeleteMessage();
+      }
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedAbsenceType = this.absenceTypes().find(at => at.id == event.data);
+    }
+    this.visibleModal = true;
   }
 }

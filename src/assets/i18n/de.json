@@ -429,6 +429,7 @@
         "MIN_COMMISSION": "Mindestprovision"
       },
       "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
+      "TITLE_DIALOG_CREATE": "Rahmenvereinbarung erstellen",
       "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen",
       "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen"
     }
@@ -520,6 +521,10 @@
       "FRACTION_OF_DAY": "Anteil Tag",
       "IS_VACATION": "Ist Urlaub",
       "CAN_BE_BOOKED": "Kann gebucht werden"
+    },
+    "HEADER": {
+      "NEW_ABSENCE_TYPE": "Neue Abwesenheitsart",
+      "DELETE_ABSENCE_TYPE": "Abwesenheitsart löschen"
     }
   },
   "SALUTATION": {

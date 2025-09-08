@@ -428,6 +428,7 @@
         "MIN_COMMISSION": "Comisión mínima"
       },
       "TITLE_DIALOG_REMOVE": "Eliminar Marco de Acuerdo",
+      "TITLE_DIALOG_CREATE": "Nuevo Marco de Acuerdo",
       "REMOVE_QUESTION":"¿Está seguro que desea eliminar el Marco de Acuerdo",
       "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"¿Está seguro que desea eliminar la comisión IWS "
     }
@@ -519,6 +520,10 @@
       "FRACTION_OF_DAY": "Fracción del Día",
       "IS_VACATION": "Es Vacación",
       "CAN_BE_BOOKED": "Se Puede Reservar"
+    },
+    "HEADER": {
+      "NEW_ABSENCE_TYPE": "Nuevo Tipo de Ausencia",
+      "DELETE_ABSENCE_TYPE": "Eliminar Tipo de Ausencia"
     }
   },
   "SALUTATION": {

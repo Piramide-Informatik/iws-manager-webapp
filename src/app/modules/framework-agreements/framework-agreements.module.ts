@@ -37,11 +37,13 @@ import { IwsProvisionComponent } from './components/framework-agreement-details/
 import { SharedModule } from '../shared/shared.module';
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { FrameworkAgreementsModalComponent } from './components/framework-agreements-modal/framework-agreements-modal.component';
 
 @NgModule({
     declarations: [
         FrameworkAgreementsSummaryComponent,
         FrameworkAgreementsDetailsComponent,
+        FrameworkAgreementsModalComponent,
         OrderComponent,
         IwsProvisionComponent
     ],

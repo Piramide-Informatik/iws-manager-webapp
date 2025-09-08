@@ -1,0 +1,81 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+  <form [formGroup]="absenceTypeForm" (ngSubmit)="onSubmit()">
+    <div class="create-form my-4">
+      <div class="absence-form">
+        <label for="name">{{ "ABSENCE_TYPES.LABEL.TYPE" | translate }}</label>
+        <input #firstInput
+          pInputText
+          type="text"
+          id="name"
+          formControlName="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="absence-form">
+        <label for="label">{{ "ABSENCE_TYPES.LABEL.ABBREVIATION" | translate }}</label>
+        <input pInputText
+          type="text"
+          id="label"
+          formControlName="label"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="absence-form">
+        <label for="shareOfDay">{{ "ABSENCE_TYPES.LABEL.FRACTION_OF_DAY" | translate }}</label>
+        <p-inputnumber  mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE"
+          inputId="shareOfDay"
+          formControlName="shareOfDay"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="absence-form">
+        <label for="hours">{{ "ABSENCE_TYPES.LABEL.IS_VACATION" | translate }}</label>
+        <p-toggleswitch formControlName="hours" class="flex">
+          <ng-template #handle let-checked="checked">
+            <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+          </ng-template>
+        </p-toggleswitch>
+      </div>
+
+      <div class="absence-form">
+        <label for="isHoliday">{{ "ABSENCE_TYPES.LABEL.CAN_BE_BOOKED" | translate }}</label>
+        <p-toggleswitch formControlName="isHoliday" class="flex">
+          <ng-template #handle let-checked="checked">
+            <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+          </ng-template>
+        </p-toggleswitch>
+      </div>
+    </div>
+
+    <div class="flex justify-content-center gap-2 mt-4">
+        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+            icon="pi pi-check" iconPos="left" [loading]="isLoading"
+            [disabled]="absenceTypeForm.invalid || isLoading" />
+
+        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #deleteTemplate>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'FUNDING.HEADER.DELETE_CONFIRM_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedAbsenceType?.name }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash" iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading"
+        [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</ng-template>

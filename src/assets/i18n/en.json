@@ -432,6 +432,7 @@
       }
     },
     "TITLE_DIALOG_REMOVE": "Delete Framework Agreement",
+    "TITLE_DIALOG_CREATE": "Create Framework Agreement",
     "REMOVE_QUESTION":"Are you sure you want to delete the framework agreement",
     "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Are you sure you want to delete the IWS Commission "
   },
@@ -522,6 +523,10 @@
       "FRACTION_OF_DAY": "Fraction of Day",
       "IS_VACATION": "Is Vacation",
       "CAN_BE_BOOKED": "Can be Booked"
+    },
+    "HEADER": {
+      "NEW_ABSENCE_TYPE": "New Absence Type",
+      "DELETE_ABSENCE_TYPE": "Delete Absence Type"
     }
   },
   "SALUTATION": {

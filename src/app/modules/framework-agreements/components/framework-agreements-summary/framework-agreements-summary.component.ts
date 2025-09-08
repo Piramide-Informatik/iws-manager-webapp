@@ -8,6 +8,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 import { Column } from '../../../../Entities/column';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
 
 @Component({
   selector: 'app-framework-agreements-summary',
@@ -18,6 +19,7 @@ import { Column } from '../../../../Entities/column';
 export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
   private readonly frameworkAgreementUtils = inject(FrameworkAgreementsUtils);
+  private readonly customerUtils = inject(CustomerUtils);
   private readonly translate = inject(TranslateService); 
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly router = inject(Router);
@@ -27,6 +29,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
   public frameworkAgreements!: any[];
   public selectedColumns!: Column[];
+  customer!: any;
   userFrameworkAgreementsPreferences: UserPreference = {};
   tableKey: string = 'FrameworkAgreements'
   dataKeys = ['contractno', 'frameworkContract', 'date', 'fundingProgram', 'contractStatus', 'iwsEmployee'];
@@ -35,6 +38,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   visibleFrameworkAgreementModal = false;
   isFrameworkAgreementLoading = false;
   selectedFrameworkAgreement: any = undefined;
+  modalFrameworkAgreementType: any = 'create';
 
   constructor(private readonly commonMessageService: CommonMessagesService) { }
 
@@ -64,6 +68,9 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
            return acc 
         }, []) 
       });
+      this.customerUtils.getCustomerById(params['id']).subscribe(customer => {
+        this.customer = customer;
+      })
     })
 
   }
@@ -109,6 +116,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   }
 
   deleteFrameworkAgreement(id: number) {
+    this.modalFrameworkAgreementType = 'delete';
     this.selectedFrameworkAgreement = this.frameworkAgreements.find(fa => fa.id == id);
     this.visibleFrameworkAgreementModal = true;
   }
@@ -143,8 +151,57 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   }
 
   createFrameworkAgreementDetail() {
-    this.router.navigate(['framework-agreement-details'], { 
-      relativeTo: this.route
+    this.modalFrameworkAgreementType = 'create';
+    this.visibleFrameworkAgreementModal = true;
+  }
+
+  onCreateFrameworkAgreement(data: any) {
+    this.frameworkAgreementUtils.createNewFrameworkAgreement(data).subscribe({
+      next: (createdContract) => {
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        setTimeout(()=>{
+          this.visibleFrameworkAgreementModal = false;
+          this.navigationToEdit(createdContract.id);
+        },2000)
+      },
+      error: (error) => {
+        console.log(error);
+        this.commonMessageService.showErrorCreatedMessage();
+      }
     });
+  }
+
+  private navigationToEdit(id: number): void {
+    this.router.navigate(['./framework-agreement-details', id], { relativeTo: this.route });
+  }
+
+  onDeleteFrameworkAgreement(data: any) {
+    console.log(data);
+    this.frameworkAgreementUtils.deleteFrameworkAgreement(data.id).subscribe({
+        next: () => {
+          this.frameworkAgreements = this.frameworkAgreements.filter( fa => fa.id != data.id);
+          this.commonMessageService.showDeleteSucessfullMessage()
+          this.visibleFrameworkAgreementModal = false;
+        },
+        error: (error) => {
+          if (error.message.includes('have associated orders')) {
+            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
+          this.handleFinishRequest();
+        },
+        complete: () => {
+          this.handleFinishRequest();
+        }
+      })
+  }
+
+  onModalVisible(value: boolean) {
+    this.visibleFrameworkAgreementModal = value;
+  }
+
+  onModalHide() {
+    this.modalFrameworkAgreementType = '';
   }
 }
