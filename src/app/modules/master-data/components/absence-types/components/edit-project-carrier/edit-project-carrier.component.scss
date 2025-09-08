@@ -1,15 +1,17 @@
 .absence-form, .absence-form-check {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
 
   label {
-      width: 150px;
-      font-weight: 500;
+    width: 130px;
+    flex-shrink: 0;
   }
   input,
+  .p-inputnumber,
   p-toggleswitch {
-      flex: 1;
-      max-width: 300px;
-      margin-left: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
   }
 }
