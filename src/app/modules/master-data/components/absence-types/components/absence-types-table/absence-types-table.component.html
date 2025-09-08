@@ -1,7 +1,7 @@
 <div class="container">
   <master-data-genaral-table
     [tableId]="tableKey"
-    [tableValues]="absenceTypes"
+    [tableValues]="absenceTypes()"
     [columns]="cols"
     [userPreferences]="userAbsenceTypePreferences"
     [dataKeys]="dataKeys"
@@ -19,8 +19,8 @@
         [modalType]="modalType"
         [selectedAbsenceType]="selectedAbsenceType"
         (isVisibleModal)="onModalVisibilityChange($event)"
-        (onCreateAbsenceType)="onCreateAbsenceType($event)"
-        (onDeleteAbsenceType)="onDeleteAbsenceType($event)"
+        (createAbsenceType)="onCreateAbsenceType($event)"
+        (deleteAbsenceType)="onDeleteAbsenceType($event)"
         #absenceTypeModal
       ></app-modal-absence-types>
     </p-dialog>

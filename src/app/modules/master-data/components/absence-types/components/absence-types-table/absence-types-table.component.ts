@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject, computed } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from "@ngx-translate/core";
@@ -7,6 +7,8 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { AbsenceType } from '../../../../../../Entities/absenceType';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
+import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 
 
 @Component({
@@ -17,7 +19,18 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
-  absenceTypes: any[] = [];
+  private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
+  private readonly absenceTypeService = inject(AbsenceTypeService);
+  readonly absenceTypes = computed(() => {
+    return this.absenceTypeService.absenceTypes().map(aType => ({
+      id: aType.id,
+      type: aType.name,
+      abbreviation: aType.label,
+      fractionOfDay: aType.hours,
+      isVacation: aType.isHoliday && aType.isHoliday == 1,
+      canBeBooked: aType.shareofday
+    }));
+  });
   cols: any[] = [];
   selectedColumns: any[] = [];
   userAbsenceTypePreferences: UserPreference = {};
@@ -30,30 +43,12 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
-  public selectedAbsenceType!: AbsenceType  | undefined;
+  public selectedAbsenceType!: any;
 
   constructor(private readonly translate: TranslateService, private readonly userPreferenceService: UserPreferenceService, private readonly router: Router) { }
 
   ngOnInit() {
-    this.absenceTypes = [
-      {
-        id: 1,
-        type: 'Gemeldet krank',
-        abbreviation: 'Gk',
-        fractionOfDay: '',
-        isVacation: '',
-        canBeBooked: '',
-      },
-      {
-        id: 2,
-        type: 'Sonderurbaub',
-        abbreviation: 'X',
-        fractionOfDay: 'x',
-        isVacation: '',
-        canBeBooked: '',
-      },
-    ];
-
+    this.absenceTypeUtils.loadInitialData().subscribe();
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
     this.userAbsenceTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
@@ -74,7 +69,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
       { field: 'type', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')) },
       { field: 'abbreviation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.ABBREVIATION')) },
       { field: 'fractionOfDay', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
-      { field: 'isVacation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
+      { field: 'isVacation', filter:{ type: 'boolean'},minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
       { field: 'canBeBooked', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.CAN_BE_BOOKED')) }
     ];
   }
@@ -120,7 +115,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
-      this.selectedAbsenceType = this.absenceTypes.find(at => at.id == event.data);
+      this.selectedAbsenceType = this.absenceTypes().find(at => at.id == event.data);
     }
     this.visibleModal = true;
   }

@@ -14,8 +14,8 @@ export class ModalAbsenceTypesComponent {
   @Input() selectedAbsenceType!: AbsenceType | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() onCreateAbsenceType = new EventEmitter<{created?: AbsenceType, status: 'success' | 'error'}>();
-  @Output() onDeleteAbsenceType = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createAbsenceType = new EventEmitter<{created?: AbsenceType, status: 'success' | 'error'}>();
+  @Output() deleteAbsenceType = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
@@ -35,7 +35,7 @@ export class ModalAbsenceTypesComponent {
     const newAbsenceType: Omit<AbsenceType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       name: this.absenceTypeForm.value.name ?? '',
       label: this.absenceTypeForm.value.label ?? '',
-      shareOfDay: this.absenceTypeForm.value.shareOfDay ?? 0,
+      shareofday: this.absenceTypeForm.value.shareOfDay ?? 0,
       isHoliday: this.absenceTypeForm.value.isHoliday ? 1 : 0,
       hours: this.absenceTypeForm.value.hours ? 1 : 0,
     };
@@ -44,11 +44,11 @@ export class ModalAbsenceTypesComponent {
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.onCreateAbsenceType.emit({created, status: 'success'})
+        this.createAbsenceType.emit({created, status: 'success'})
       },
       error: () => {
         this.isLoading = false;
-        this.onCreateAbsenceType.emit({status: 'error'})
+        this.createAbsenceType.emit({status: 'error'})
       }
     })
   }
@@ -58,11 +58,11 @@ export class ModalAbsenceTypesComponent {
     if (this.selectedAbsenceType) {
       this.absenceTypeUtils.deleteAbsenceType(this.selectedAbsenceType.id).subscribe({
         next: () => {
-          this.onDeleteAbsenceType.emit({status: 'success'});
+          this.deleteAbsenceType.emit({status: 'success'});
         },
         error: (error: Error) => {
           this.isLoading = false;
-          this.onDeleteAbsenceType.emit({status: 'error', error});
+          this.deleteAbsenceType.emit({status: 'error', error});
         },
         complete: () => {
           this.isLoading = false;
