@@ -520,6 +520,10 @@
       "FRACTION_OF_DAY": "Anteil Tag",
       "IS_VACATION": "Ist Urlaub",
       "CAN_BE_BOOKED": "Kann gebucht werden"
+    },
+    "HEADER": {
+      "NEW_ABSENCE_TYPE": "Neue Abwesenheitsart",
+      "DELETE_ABSENCE_TYPE": "Abwesenheitsart löschen"
     }
   },
   "SALUTATION": {

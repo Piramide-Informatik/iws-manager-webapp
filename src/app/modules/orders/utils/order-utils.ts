@@ -3,6 +3,7 @@ import { catchError, forkJoin, map, Observable, switchMap, take, throwError } fr
 import { OrderService } from '../../../Services/order.service';
 import { Order } from '../../../Entities/order';
 import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -139,11 +140,11 @@ export class OrderUtils {
       take(1),
       switchMap((currentOrder) => {
         if (!currentOrder) {
-          return throwError(() => new Error('Order not found'));
+          return throwError(() => createNotFoundUpdateError('Order'));
         }
 
         if (currentOrder.version !== order.version) {
-          return throwError(() => new Error('Conflict detected: order version mismatch'));
+          return throwError(() => createUpdateConflictError('Order'));
         }
 
         return this.orderService.updateOrder(order);
