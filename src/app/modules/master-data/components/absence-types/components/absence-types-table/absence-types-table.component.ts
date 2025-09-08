@@ -27,7 +27,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
       type: aType.name,
       abbreviation: aType.label,
       fractionOfDay: aType.hours,
-      isVacation: aType.isHoliday == 1,
+      isVacation: aType.isHoliday && aType.isHoliday == 1,
       canBeBooked: aType.shareofday
     }));
   });
