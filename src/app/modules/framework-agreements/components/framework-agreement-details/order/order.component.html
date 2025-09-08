@@ -53,6 +53,10 @@
         </div>  
     </div>
 </form>
-<app-occ-error-modal *ngIf="showOCCErrorModalBasicContract" (onClose)="showOCCErrorModalBasicContract = false">
+<app-occ-error-modal 
+    *ngIf="showOCCErrorModalBasicContract"
+    [redirectRoute]="redirectRoute" 
+    [errorType]="occErrorType"
+    (onClose)="showOCCErrorModalBasicContract = false">
 </app-occ-error-modal>
 <p-toast/>
