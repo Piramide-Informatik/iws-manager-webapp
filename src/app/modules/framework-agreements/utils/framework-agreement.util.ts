@@ -3,6 +3,7 @@ import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { FrameworkAgreementService } from '../../../Services/framework-agreenent.service';
 import { BasicContract } from '../../../Entities/basicContract';
 import { OrderUtils } from '../../orders/utils/order-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -112,11 +113,11 @@ export class FrameworkAgreementsUtils {
       take(1),
       switchMap((currentFrameworkAgreements) => {
         if (!currentFrameworkAgreements) {
-          return throwError(() => new Error('Framework Agreement not found'));
+          return throwError(() => createNotFoundUpdateError('Basic Contract'));
         }
 
         if (currentFrameworkAgreements.version !== frameworkAgreement.version) {
-          return throwError(() => new Error('Conflict detected: framework agreement version mismatch'));
+          return throwError(() => createUpdateConflictError('Basic Contract'));
         }
 
         return this.frameworkAgreementService.updateFrameworkAgreements(frameworkAgreement);

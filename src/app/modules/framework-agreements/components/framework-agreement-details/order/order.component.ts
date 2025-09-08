@@ -15,6 +15,7 @@ import { ContractStatus } from '../../../../../Entities/contractStatus';
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
 import { FrameworkAgreementsUtils } from '../../../utils/framework-agreement.util';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-order',
@@ -51,6 +52,8 @@ export class OrderComponent implements OnInit, OnChanges {
   @Input() typeForm: 'create' | 'edit' = 'create';
   @Output() onIsLoading = new EventEmitter<boolean>();
   public showOCCErrorModalBasicContract: boolean = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public redirectRoute = "";
   @ViewChild('inputText') firstInput!: ElementRef;
   public basicContractForm!: FormGroup;
 
@@ -61,7 +64,7 @@ export class OrderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['contractToEdit'] && this.contractToEdit){
+    if (changes['contractToEdit'] && this.contractToEdit) {
       this.basicContractForm.patchValue({
         contractNo: this.contractToEdit.contractNo,
         contractLabel: this.contractToEdit.contractLabel,
@@ -73,9 +76,9 @@ export class OrderComponent implements OnInit, OnChanges {
         employeeIws: this.contractToEdit.employeeIws?.id
       });
     }
-    if(changes['typeForm'] && this.typeForm === 'create'){
+    if (changes['typeForm'] && this.typeForm === 'create') {
       this.frameworkUtils.getNextContractNumber().subscribe(lastContractNo => {
-        if(lastContractNo){
+        if (lastContractNo) {
           this.basicContractForm.patchValue({
             contractNo: lastContractNo
           })
@@ -131,14 +134,20 @@ export class OrderComponent implements OnInit, OnChanges {
       },
       error: (error) => {
         this.onIsLoading.emit(false);
-        console.log(error);
-        if(error.message === 'Conflict detected: framework agreement version mismatch'){
-          this.showOCCErrorModalBasicContract = true;
-        }else{
-          this.commonMessageService.showErrorEditMessage();
-        }
+        this.handleSaveError(error);
       }
     });
+  }
+
+  private handleSaveError(error: any): void {
+    if (error instanceof OccError) {
+      this.showOCCErrorModalBasicContract = true;
+      this.occErrorType = error.errorType;
+      this.redirectRoute = "/customers/framework-agreements/" + this.currentCustomer.id;
+      return;
+    }
+
+    this.commonMessageService.showErrorEditMessage();
   }
 
   private createFrameworkAgreement(): void {
@@ -155,15 +164,15 @@ export class OrderComponent implements OnInit, OnChanges {
       employeeIws: this.getEmployeeIws(this.basicContractForm.value.employeeIws),
       customer: this.currentCustomer
     }
-    
+
     this.frameworkUtils.createNewFrameworkAgreement(newBasicContract).subscribe({
       next: (createdContract) => {
         this.onIsLoading.emit(false);
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.basicContractForm.reset();
-        setTimeout(()=>{
+        setTimeout(() => {
           this.navigationToEdit(createdContract.id);
-        },2000)
+        }, 2000)
       },
       error: (error) => {
         this.onIsLoading.emit(false);
@@ -174,21 +183,21 @@ export class OrderComponent implements OnInit, OnChanges {
   }
 
   private getFundingProgram(idFunding: number): FundingProgram | null {
-    return idFunding === 0? null : this.fundingPrograms().find( f => f.id === idFunding) ?? null;
+    return idFunding === 0 ? null : this.fundingPrograms().find(f => f.id === idFunding) ?? null;
   }
 
   private getContractStatus(idContractStatus: number): ContractStatus | null {
-    return idContractStatus === 0? null : this.contractStatus().find( c => c.id === idContractStatus) ?? null;
+    return idContractStatus === 0 ? null : this.contractStatus().find(c => c.id === idContractStatus) ?? null;
   }
 
   private getEmployeeIws(idEmployeeIws: number): EmployeeIws | null {
-    return idEmployeeIws === 0? null : this.employeeIws().find( e => e.id === idEmployeeIws) ?? null;
+    return idEmployeeIws === 0 ? null : this.employeeIws().find(e => e.id === idEmployeeIws) ?? null;
   }
-  
+
   private getCurrentCustomer(): void {
     this.subscriptions.add(
       this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
-        if(customer){
+        if (customer) {
           this.currentCustomer = customer;
         }
       })
@@ -200,10 +209,10 @@ export class OrderComponent implements OnInit, OnChanges {
   }
 
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput.nativeElement){
+    setTimeout(() => {
+      if (this.firstInput.nativeElement) {
         this.firstInput.nativeElement.focus();
       }
-    },300)
+    }, 300)
   }
 }
