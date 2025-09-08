@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { ContractorService } from '../../../Services/contractor.service';
 import { Contractor } from '../../../Entities/contractor';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -120,11 +121,11 @@ export class ContractorUtils {
       take(1),
       switchMap((currentContractor) => {
         if (!currentContractor) {
-          return throwError(() => new Error('Contractor not found'));
+          return throwError(() => createNotFoundUpdateError('Contractor'));
         }
 
         if (currentContractor.version !== contractor.version) {
-          return throwError(() => new Error('Conflict detected: contractor version mismatch'));
+          return throwError(() => createUpdateConflictError('Contractor'));
         }
 
         return this.contractorService.updateContractor(contractor);
