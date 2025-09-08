@@ -35,7 +35,7 @@ export class ModalAbsenceTypesComponent {
     const newAbsenceType: Omit<AbsenceType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       name: this.absenceTypeForm.value.name ?? '',
       label: this.absenceTypeForm.value.label ?? '',
-      shareOfDay: this.absenceTypeForm.value.shareOfDay ?? 0,
+      shareofday: this.absenceTypeForm.value.shareOfDay ?? 0,
       isHoliday: this.absenceTypeForm.value.isHoliday ? 1 : 0,
       hours: this.absenceTypeForm.value.hours ? 1 : 0,
     };
