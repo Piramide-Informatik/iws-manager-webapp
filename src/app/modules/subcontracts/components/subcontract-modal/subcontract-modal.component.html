@@ -1,0 +1,116 @@
+<ng-container *ngIf="isCreateSubcontractMode; else deleteTemplate">
+  <form [formGroup]="createSubcontractForm" (ngSubmit)="onSubmit()">
+    <div class="sub-contractor-form align-items-center mb-2 mt-4">
+      <div class="form-container flex align-items-center mb-6">
+        <div class="sub_contract_input order_name mb-2">
+          <label for="contractTitle">{{ 'SUB-CONTRACTS.FORM.ORDER_TITLE' | translate }}</label>
+          <input #inputText
+            pInputText
+            type="text"
+            id="contractTitle"
+            formControlName="contractTitle"
+            autocomplete="off"
+          />
+        </div>
+        <div class="sub_contract_input order_name mb-2">
+          <label for="contractor">{{ 'SUB-CONTRACTS.FORM.CONTRACTOR' | translate }}</label>
+          <p-select
+            [style]="{ width: '20vw' }"
+            inputId="contractor"
+            [options]="contractorsName()"
+            formControlName="contractor"
+            optionLabel="name"
+            optionValue="id"
+            showClear
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          ></p-select>
+        </div>
+        <div class="sub_contract_input order_name mb-2">
+          <label for="invoiceNumber">{{ 'SUB-CONTRACTS.FORM.INVOICE_NUMBER' | translate }}</label>
+          <input
+            pInputText
+            type="text"
+            id="invoiceNumber"
+            formControlName="invoiceNumber"
+            autocomplete="off"
+          />
+        </div>
+        <div class="sub_contract_input order_name mb-2">
+          <label for="invoiceDate">{{ 'SUB-CONTRACTS.FORM.INVOICE_DATE' | translate }}</label>
+          <p-datepicker
+            inputId="invoiceDate"
+            [showIcon]="true"
+            [showClear]="true"
+            formControlName="invoiceDate"
+            dateFormat="dd.mm.yy"
+          ></p-datepicker>
+        </div> 
+        <div class="sub_contract_input order_name mb-2">
+          <label for="netOrGross">{{ 'SUB-CONTRACTS.FORM.INVOICE_NET_OR_GROSS' | translate }}</label>
+          <p-select
+            [style]="{ width: '20vw' }"
+            inputId="netOrGross"
+            [options]="optionsNetOrGross"
+            formControlName="netOrGross"
+            optionLabel="label"
+            optionValue="value"
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          ></p-select>
+        </div>
+        <div class="sub_contract_input order_name mb-2">
+          <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
+          <p-inputNumber class="p-inputnumber-input" id="invoiceAmount" formControlName="invoiceAmount" 
+            mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" 
+          />
+        </div>
+        <div class="sub_contract_input order_name mb-2">
+          <label for="afa">{{ 'SUB-CONTRACTS.FORM.IS_AFA' | translate }}</label>
+          <p-checkbox
+            inputId="afa"
+            formControlName="afa"
+            binary="true"
+          ></p-checkbox>
+        </div>
+        <div class="sub_contract_input order_name mb-2">
+          <label for="afaDurationMonths">{{ 'SUB-CONTRACTS.FORM.AFA_MONTHS' | translate }}</label>
+          <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false"
+            inputId="afaDurationMonths"
+            formControlName="afaDurationMonths"
+            autocomplete="off"
+          />
+        </div>
+        <div class="sub_contract_input order_name mb-2 flex">
+          <label for="description">{{ 'SUB-CONTRACTS.FORM.DESCRIPTION' | translate }}</label>
+          <textarea
+            id="description"
+            pTextarea
+            rows="6"
+            formControlName="description"
+            style="resize: none; width: 20vw;"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="buttons-container flex justify-content-center gap-2 mt-4">
+      <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+        iconPos="left"/>
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+        (onClick)="closeModal()" />
+    </div>
+  </form>
+</ng-container>
+<ng-template #deleteTemplate>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedSubContract?.contractTitle }}"</strong>?
+    </p>
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onSubcontractDeleteConfirm()" severity="danger"/>
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="closeModal()"/>
+    </div>
+  </div>
+</ng-template>
