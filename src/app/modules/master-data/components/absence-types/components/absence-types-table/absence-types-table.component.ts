@@ -9,6 +9,8 @@ import { AbsenceType } from '../../../../../../Entities/absenceType';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
 import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
+import { Column } from '../../../../../../Entities/column';
+import { AbsenceTypeStateService } from '../../utils/absence-type-state.service';
 
 
 @Component({
@@ -21,18 +23,22 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly absenceTypeService = inject(AbsenceTypeService);
+  private readonly absenceStateService = inject(AbsenceTypeStateService);
   readonly absenceTypes = computed(() => {
     return this.absenceTypeService.absenceTypes().map(aType => ({
       id: aType.id,
+      version: aType.version,
+      createdAt: aType.createdAt,
+      updatedAt: aType.updatedAt,
       type: aType.name,
       abbreviation: aType.label,
-      fractionOfDay: aType.hours,
+      fractionOfDay: aType.shareOfDay,
       isVacation: aType.isHoliday && aType.isHoliday == 1,
-      canBeBooked: aType.shareofday
+      canBeBooked: aType.hours && aType.hours == 1
     }));
   });
-  cols: any[] = [];
-  selectedColumns: any[] = [];
+  cols: Column[] = [];
+  selectedColumns: Column[] = [];
   userAbsenceTypePreferences: UserPreference = {};
   tableKey: string = 'AbsenceType'
   dataKeys = ['type', 'abbreviation', 'fractionOfDay', 'isVacation', 'canBeBooked'];
@@ -68,9 +74,9 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
     this.cols = [
       { field: 'type', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')) },
       { field: 'abbreviation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.ABBREVIATION')) },
-      { field: 'fractionOfDay', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
-      { field: 'isVacation', filter:{ type: 'boolean'},minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
-      { field: 'canBeBooked', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.CAN_BE_BOOKED')) }
+      { field: 'fractionOfDay', customClasses: ['align-right'], type: 'double', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
+      { field: 'isVacation', filter:{ type: 'boolean'}, styles: { width: 'auto' }, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
+      { field: 'canBeBooked', filter:{ type: 'boolean'}, minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.CAN_BE_BOOKED')) }
     ];
   }
 
@@ -118,5 +124,19 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
       this.selectedAbsenceType = this.absenceTypes().find(at => at.id == event.data);
     }
     this.visibleModal = true;
+  }
+
+  editAbsenceType(absenceType: any): void {
+    this.absenceStateService.setAbsenceTypeToEdit({
+      id: absenceType.id,
+      version: absenceType.version,
+      createdAt: absenceType.createdAt,
+      updatedAt: absenceType.updatedAt,
+      name: absenceType.type,
+      label: absenceType.abbreviation,
+      shareOfDay: absenceType.fractionOfDay,
+      isHoliday: absenceType.isVacation ? 1 : 0,
+      hours: absenceType.canBeBooked ? 1 : 0
+    })
   }
 }

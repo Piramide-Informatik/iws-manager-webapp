@@ -1,39 +1,49 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'ABSENCE_TYPES.LABEL.TITLE_FORM' | translate">
     <form [formGroup]="editProjectCarrierForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
-            <div class="absence-form mb-2">
-                <label for="absenceType">{{ 'ABSENCE_TYPES.LABEL.TYPE' | translate }}</label>
-                <input pInputText type="text" id="absenceType" formControlName="absenceType" autocomplete="off" />
+            <div class="absence-form">
+                <label for="name">{{ 'ABSENCE_TYPES.LABEL.TYPE' | translate }}</label>
+                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
             </div>
-            <div class="absence-form mb-2">
-                <label for="absenceTypeLabel">{{ 'ABSENCE_TYPES.LABEL.ABBREVIATION' | translate }}</label>
-                <input pInputText type="text" id="absenceTypeLabel" formControlName="absenceTypeLabel"
-                    autocomplete="off" />
+            <div class="absence-form">
+                <label for="label">{{ 'ABSENCE_TYPES.LABEL.ABBREVIATION' | translate }}</label>
+                <input pInputText type="text" id="label" formControlName="label" autocomplete="off" />
             </div>
-            <div class="absence-form mb-2">
+            <div class="absence-form">
                 <label for="shareOfDay">{{ 'ABSENCE_TYPES.LABEL.FRACTION_OF_DAY' | translate }}</label>
-                <input pInputText type="text" id="shareOfDay" formControlName="shareOfDay" autocomplete="off" />
+                <p-inputnumber  mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE"
+                    inputId="shareOfDay"
+                    formControlName="shareOfDay"
+                    autocomplete="off"
+                />
             </div>
-            <div class="absence-form-check mb-2">
+            <div class="absence-form-check">
                 <label for="isHoliday">{{ 'ABSENCE_TYPES.LABEL.IS_VACATION' | translate }}</label>
-                <p-toggleswitch id="isHoliday" formControlName="isHoliday">
+                <p-toggleswitch inputId="isHoliday" formControlName="isHoliday">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>
                 </p-toggleswitch>
             </div>
-            <div class="absence-form-check mb-2">
-                <label for="canBeBooked">{{ 'ABSENCE_TYPES.LABEL.CAN_BE_BOOKED' | translate }}</label>
-                <p-toggleswitch id="canBeBooked" formControlName="canBeBooked">
+            <div class="absence-form-check">
+                <label for="hours">{{ 'ABSENCE_TYPES.LABEL.CAN_BE_BOOKED' | translate }}</label>
+                <p-toggleswitch inputId="hours" formControlName="hours">
                     <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                     </ng-template>
                 </p-toggleswitch>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
-                <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                <p-button size="small" type="submit" [loading]="isLoading" [disabled]="editProjectCarrierForm.invalid || isLoading" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
             </div>
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaAbsence"
+  (close)="showOCCErrorModaAbsence = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast/>

@@ -7,6 +7,7 @@
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserAbsenceTypePreferencesChanges($event)"
     (onCreateRegister)="handleTableEvents({ type: 'create' })"
+    (onEditRegister)="editAbsenceType($event)"
   ></master-data-genaral-table>
   <p-dialog 
       [header]="modalType === 'create' 
@@ -18,6 +19,7 @@
       <app-modal-absence-types
         [modalType]="modalType"
         [selectedAbsenceType]="selectedAbsenceType"
+        [visibleModal]="visibleModal"
         (isVisibleModal)="onModalVisibilityChange($event)"
         (createAbsenceType)="onCreateAbsenceType($event)"
         (deleteAbsenceType)="onDeleteAbsenceType($event)"
