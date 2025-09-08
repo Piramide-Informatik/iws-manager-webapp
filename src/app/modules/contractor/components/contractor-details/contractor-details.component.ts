@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { buildCustomer } from '../../../shared/utils/builders/customer';
 import { buildCountry } from '../../../shared/utils/builders/country';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-contractor-details',
@@ -29,6 +30,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   public showOCCErrorModalContractor = false;
   public isLoading = false;
   visibleContractorDeleteEntityModal = false;
+
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   @Input() currentCustomer!: Customer | undefined;
   @Input() contractor: Contractor | null = null;
@@ -113,7 +116,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       });
     }
     if (changes['isVisibleModal'] && !changes['isVisibleModal'].currentValue) {
-    this.contractorForm.reset();
+      this.contractorForm.reset();
     }
   }
 
@@ -175,11 +178,13 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   handleUpdateError(error: Error): void {
-    if (error.message.startsWith('Conflict detected: contractor version mismatch')) {
+    if (error instanceof OccError) {
       this.showOCCErrorModalContractor = true;
-    } else {
-      this.commonMessageService.showErrorEditMessage();
+      this.occErrorType = error.errorType;
+      return;
     }
+
+    this.commonMessageService.showErrorEditMessage();
   }
 
   get isCreateContractorMode(): boolean {
@@ -263,14 +268,23 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
           this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (err) => {
-          if (err?.error?.message.includes('foreign key constraint fails')) {
-            this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
+          this.handleDeleteError(err);
           this.isLoading = false;
         }
       })
+    }
+  }
+
+  private handleDeleteError(error: any) {
+    if (error.message.includes('foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+    } else if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+      this.visibleContractorDeleteEntityModal = false;
+      this.showOCCErrorModalContractor = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+      return;
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
