@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { AbsenceType } from '../../../../../../Entities/absenceType';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 
 @Component({
@@ -14,6 +16,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styleUrl: './absence-types-table.component.scss'
 })
 export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
+  private readonly commonMessageService = inject(CommonMessagesService);
   absenceTypes: any[] = [];
   cols: any[] = [];
   selectedColumns: any[] = [];
@@ -24,6 +27,10 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
+
+  public modalType: 'create' | 'delete' = 'create';
+  public visibleModal: boolean = false;
+  public selectedAbsenceType!: AbsenceType  | undefined;
 
   constructor(private readonly translate: TranslateService, private readonly userPreferenceService: UserPreferenceService, private readonly router: Router) { }
 
@@ -86,15 +93,35 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  editAbsenceType(absenceType: any) {
-    console.log('Editing', absenceType);
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
   }
 
-  deleteAbsenceType(id: number) {
-    console.log('Deleting ID', id);
+  onCreateAbsenceType(event: { created?: AbsenceType, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
   }
 
-  createAbsenceType() {
-    console.log('Creating new absence type');
+  onDeleteAbsenceType(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+    if(deleteEvent.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(deleteEvent.status === 'error' && deleteEvent.error){
+      if(deleteEvent.error.message === 'Version conflict: absence type has been updated by another user'){
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      }else{
+        this.commonMessageService.showErrorDeleteMessage();
+      }
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedAbsenceType = this.absenceTypes.find(at => at.id == event.data);
+    }
+    this.visibleModal = true;
   }
 }

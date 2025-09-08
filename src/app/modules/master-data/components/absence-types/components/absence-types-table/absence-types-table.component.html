@@ -1,16 +1,30 @@
 <div class="container">
-    <div class="row">
-      <div class>
-        <master-data-genaral-table
-          [tableId]="tableKey"
-          [tableValues]="absenceTypes"
-          [columns]="cols"
-          [userPreferences]="userAbsenceTypePreferences"
-          [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserAbsenceTypePreferencesChanges($event)"
-        ></master-data-genaral-table>
-      </div>
-    </div>
-  </div>
+  <master-data-genaral-table
+    [tableId]="tableKey"
+    [tableValues]="absenceTypes"
+    [columns]="cols"
+    [userPreferences]="userAbsenceTypePreferences"
+    [dataKeys]="dataKeys"
+    (onColumnChanges)="onUserAbsenceTypePreferencesChanges($event)"
+    (onCreateRegister)="handleTableEvents({ type: 'create' })"
+  ></master-data-genaral-table>
+  <p-dialog 
+      [header]="modalType === 'create' 
+        ? ('ABSENCE_TYPES.HEADER.NEW_ABSENCE_TYPE' | translate) 
+        : ('ABSENCE_TYPES.HEADER.DELETE_ABSENCE_TYPE' | translate)" 
+      [modal]="true" 
+      [(visible)]="visibleModal" 
+    >
+      <app-modal-absence-types
+        [modalType]="modalType"
+        [selectedAbsenceType]="selectedAbsenceType"
+        (isVisibleModal)="onModalVisibilityChange($event)"
+        (onCreateAbsenceType)="onCreateAbsenceType($event)"
+        (onDeleteAbsenceType)="onDeleteAbsenceType($event)"
+        #absenceTypeModal
+      ></app-modal-absence-types>
+    </p-dialog>
+</div>
+<p-toast/>
   
   
