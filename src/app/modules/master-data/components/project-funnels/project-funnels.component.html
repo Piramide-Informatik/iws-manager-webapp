@@ -10,7 +10,7 @@
         (onColumnChanges)="onUserProjectFunnelsPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
       ></master-data-genaral-table>
-      
+
       <p-dialog
         [header]="modalType === 'create' ?
           ('PROJECT_FUNNELS.MODAL.NEW' | translate) :
@@ -22,7 +22,7 @@
         <app-modal-project-funnel
           [visible]="isVisibleModal"
           (isVisibleModal)="isVisibleModal = $event"
-          (onCreatePromoter)="onCreatePromoter($event)"
+          (createPromoter)="onCreatePromoter($event)"
         ></app-modal-project-funnel>
       </p-dialog>
     </div>

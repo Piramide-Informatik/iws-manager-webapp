@@ -18,8 +18,8 @@ export class ModalProjectFunnelComponent implements OnChanges {
   @Input() visible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() onCreatePromoter = new EventEmitter<{created?: Promoter, status: 'success' | 'error'}>();
-  @Output() onDeletePromoter = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createPromoter = new EventEmitter<{created?: Promoter, status: 'success' | 'error'}>();
+  @Output() deletePromoter = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public isLoading: boolean = false;
 
@@ -61,11 +61,11 @@ export class ModalProjectFunnelComponent implements OnChanges {
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.onCreatePromoter.emit({created, status: 'success'});
+        this.createPromoter.emit({created, status: 'success'});
       },
       error: () => {
         this.isLoading = false;
-        this.onCreatePromoter.emit({ status: 'error' });
+        this.createPromoter.emit({ status: 'error' });
       } 
     })
   }
