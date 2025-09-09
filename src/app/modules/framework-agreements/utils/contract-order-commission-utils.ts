@@ -34,20 +34,38 @@ export class ContractOrderCommissionUtils {
   }
 
   /**
+   * Gets all contract order commissions
+   * @returns Observable emitting sorted array of contract order commissions
+   */
+  getAllContractOrderCommissions(): Observable<ContractOrderCommission[]> {
+    return this.contractOrderCommissionService.getAllContractOrderCommissions();
+  }
+
+  /**
+   * Gets all contract order commissions by Basic Contract ID
+   * @param basicContractId - ID of the basic contract
+   * @returns Observable emitting array of contract order commissions associated with the given basic contract ID
+   */
+  getContractOrderCommissionsByBasicContractId(basicContractId: number): Observable<ContractOrderCommission[]> {
+    return this.contractOrderCommissionService.getContractOrderCommissionsByBasicContractId(basicContractId);
+  }
+
+  /**
+   * Gets all contract order commissions by basic contract ID sorted by fromOrderValue
+   * @param basicContractId - ID of the basic contract
+   * @returns Observable emitting array of contract order commissions associated with the given basic contract ID, sorted by fromOrderValue
+   */
+  getContractOrderCommissionsByBasicContractIdSortedByFromOrderValue(basicContractId: number): Observable<ContractOrderCommission[]> {
+    return this.contractOrderCommissionService.getContractOrderCommissionsByBasicContractIdSortedByFromOrderValue(basicContractId);
+  }
+
+  /**
    * Creates a new contract order commission with validation
    * @param nameContractOrderCommission - Name for the new contract order commission
    * @returns Observable that completes when contract order commission is created
    */
   addContractOrderCommission(contractOrderCommission: Omit<ContractOrderCommission, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ContractOrderCommission> {
     return this.contractOrderCommissionService.addContractOrderCommission(contractOrderCommission);
-  }
-
-  /**
-   * Gets all contract order commissions
-   * @returns Observable emitting sorted array of contract order commissions
-   */
-  getAllContractOrderCommissions(): Observable<ContractOrderCommission[]> {
-    return this.contractOrderCommissionService.getAllContractOrderCommissions();
   }
 
   /**
