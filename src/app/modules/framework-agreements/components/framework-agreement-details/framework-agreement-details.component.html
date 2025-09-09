@@ -19,7 +19,7 @@
                 <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
                     iconPos="left" (onClick)="onSubmit()" [loading]="isLoading" />
                 <p-button class="delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-                    iconPos="left" [disabled]="isLoading" />
+                    iconPos="left" (onClick)="this.visibleFrameworkAgreementModalEntity = true;"/>
                 <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
                     iconPos="left" (onClick)="goBackFrameworksAgreement()"/>
 
@@ -27,3 +27,23 @@
         </div>
     </div>
 </div>
+<p-dialog 
+  [header]="('FRAMEWORK-AGREEMENTS.TITLE_DIALOG_REMOVE' | translate)" 
+  [modal]="true"
+  [(visible)]="visibleFrameworkAgreementModalEntity" 
+>
+  <div class="confirmation-content-entity mb-2 mt-4">
+    <p class="mb-4 title-container">
+      {{ 'FRAMEWORK-AGREEMENTS.REMOVE_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ currentBasicContract.contractLabel	}}"</strong>?
+    </p>
+    <div class="flex justify-content-center gap-2 buttons-container">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+          icon="pi pi-trash" iconPos="left" (onClick)="onFrameworkAgreementDeleteConfirm()" severity="danger" 
+          [loading]="isFrameworkAgreementEntityLoading"/>
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times" iconPos="left" (onClick)="this.visibleFrameworkAgreementModalEntity = false;"
+          [loading]="isFrameworkAgreementEntityLoading"/>
+    </div>
+  </div>
+</p-dialog>
