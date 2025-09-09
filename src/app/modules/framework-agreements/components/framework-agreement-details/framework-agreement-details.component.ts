@@ -4,6 +4,7 @@ import { OrderComponent } from './order/order.component';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 import { BasicContract } from '../../../../Entities/basicContract';
 import { IwsProvisionComponent } from './iws-provision/iws-provision.component'; 
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-framework-agreement-details',
@@ -19,11 +20,15 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
   private readonly contractId = this.route.snapshot.params['idContract'];
   public modeForm: 'create' | 'edit' = 'create';
   currentBasicContract!: BasicContract;
+  visibleFrameworkAgreementModalEntity = false;
+  isFrameworkAgreementEntityLoading = false;
   
   @ViewChild(OrderComponent) orderComponent!: OrderComponent;
   @ViewChild(IwsProvisionComponent) iwsProvisionComponent!: IwsProvisionComponent; 
   
   isLoading: boolean = false;
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
     if(this.contractId){
@@ -50,5 +55,23 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
   goBackFrameworksAgreement() {
     const path = this.modeForm === 'edit' ? '../../' : '../'
     this.router.navigate([path], { relativeTo: this.route });
+  }
+
+  onFrameworkAgreementDeleteConfirm() {
+    this.isFrameworkAgreementEntityLoading = true;
+    this.frameworkUtils.deleteFrameworkAgreement(this.currentBasicContract.id).subscribe({
+      next: () => {
+        this.commonMessageService.showDeleteSucessfullMessage()
+        this.visibleFrameworkAgreementModalEntity = false;
+        this.goBackFrameworksAgreement();
+      },
+      error: (error) => {
+        if (error.message.includes('have associated orders')) {
+          this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+        } else {
+          this.commonMessageService.showErrorDeleteMessage();
+        }
+      }
+    })
   }
 }

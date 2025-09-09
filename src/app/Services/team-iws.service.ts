@@ -29,7 +29,7 @@ export class TeamIwsService {
     public error = this._error.asReadonly();
     
     constructor() {
-        this.loadInitialData()
+        this.loadInitialData().subscribe();
     }
     public loadInitialData(): Observable<TeamIws[]> {
         this._loading.set(true);

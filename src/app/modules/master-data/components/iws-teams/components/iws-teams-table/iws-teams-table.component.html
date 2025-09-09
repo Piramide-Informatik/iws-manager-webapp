@@ -2,11 +2,32 @@
   <div class="row">
     <master-data-genaral-table
       [tableId]="tableKey"
-      [tableValues]="IwsTeams"
+      [tableValues]="teams()"
       [columns]="columnsHeaderIwsTeams"
       [userPreferences]="userIwsTeamsPreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserIwsTeamsPreferencesChanges($event)"
+      (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+      (onEditRegister)="editTeamIws($event)"
     ></master-data-genaral-table>
+    <p-dialog 
+        [header]="modalType === 'create' 
+          ? ('Nuevo Team' | translate) 
+          : ('Eliminar Team' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleModal" 
+        (onShow)="onDialogShow()"
+      >
+        <app-iws-teams-modal
+          [modalType]="modalType"
+          [teamIwsName]="TeamIwsName"
+          [teamIwsToDelete]="selectedTeamIws"
+          (isVisibleModal)="onModalVisibilityChange($event)"
+          (toastMessage)="toastMessageDisplay($event)"
+          #titleModal
+        ></app-iws-teams-modal>
+      </p-dialog>
   </div>
 </div>
+<p-toast/>

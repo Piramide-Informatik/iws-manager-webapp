@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ContractOrderCommission } from '../Entities/contractOrderCommission';
 
@@ -119,8 +119,35 @@ export class ContractOrderCommissionService {
   }
 
   getContractOrderCommissionById(id: number): Observable<ContractOrderCommission | undefined> {
-    return this.getAllContractOrderCommissions().pipe(
-      map(contractOrderCommissions => contractOrderCommissions.find(t => t.id === id))
+    return this.http.get<ContractOrderCommission>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch contract order commissions');
+        console.error('Error fetching contract order commissions:', err);
+        return of(undefined);
+      })
+    );
+  }
+
+  getContractOrderCommissionsByBasicContractId(basicContractId: number): Observable<ContractOrderCommission[]> {
+    return this.http.get<ContractOrderCommission[]>(`${this.apiUrl}/by-basic-contract/${basicContractId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch contract order commissions by basic contract ID');
+        console.error('Error fetching contract order commissions by basic contract ID:', err);
+        return of([]);
+      })
+    );
+  }
+
+  getContractOrderCommissionsByBasicContractIdSortedByFromOrderValue(basicContractId: number): Observable<ContractOrderCommission[]> {
+    return this.http.get<ContractOrderCommission[]>(`${this.apiUrl}/by-basic-contract/${basicContractId}/sort-by-from-order-value`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch contract order commissions sorted by from order value');
+        console.error('Error fetching contract order commissions sorted by from order value:', err);
+        return of([]);
+      })
     );
   }
 

@@ -18,6 +18,7 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
   @Input() selectedFrameworkAgreement: any
   @Input() customer: any
   @Input() modalType: any
+  @Input() isLoading = false;
   @Output() deletedFrameworkAgreement = new EventEmitter();
   @Output() createdFrameworkAgreement = new EventEmitter();
   @Output() visibleModal = new EventEmitter();
