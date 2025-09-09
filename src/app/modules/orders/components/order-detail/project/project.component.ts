@@ -19,7 +19,10 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
   private readonly route = inject(ActivatedRoute);
   private readonly subscription = new Subscription();
   private readonly customerId: number = this.route.snapshot.params['id'];
-  public readonly projects = toSignal( this.projectUtils.getAllProjectByCustomerId(this.customerId), { initialValue: []} );
+  public readonly projects = toSignal( 
+    this.projectUtils.getAllProjectByCustomerId(this.customerId),
+    { initialValue: []} 
+  );
 
   @Input() orderToEdit!: Order;
   @Output() onCreateOrderProject = new EventEmitter<Project | null>();
@@ -29,10 +32,14 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.initForm();
+    if(!this.orderToEdit){
+      this.changeProjectSelected();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['orderToEdit'] && this.orderToEdit) {
+      this.initForm();
       this.projectForm.patchValue({
         projectLabel: this.orderToEdit.project?.id,
         promoterNo: this.orderToEdit.project?.promoter?.promoterNo,
@@ -40,9 +47,6 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
         startDate: momentCreateDate(this.orderToEdit.project?.startDate),
         endDate: momentCreateDate(this.orderToEdit.project?.endDate)
       });
-    }
-    if(!this.orderToEdit) {
-      this.initForm();
       this.changeProjectSelected();
     }
   }
