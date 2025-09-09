@@ -1,0 +1,48 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="createTeamIwsForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2 mt-4">
+            <div class=".team-form flex align-items-center mb-3">
+                <label for="name" class="block">
+                    {{ 'IWS_TEAMS.LABEL.TEAM_NAME' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
+                    [attr.aria-invalid]="createTeamIwsForm.get('name')?.invalid"
+                    [attr.aria-describedby]="createTeamIwsForm.get('name')?.invalid ? 'nameError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createTeamIwsForm.get('name')?.invalid && createTeamIwsForm.get('name')?.touched"
+                    id="nameError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="flex justify-content-center gap-2 mt-4">
+                <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+                    icon="pi pi-check" iconPos="left" [loading]="isLoading"
+                    [disabled]="createTeamIwsForm.invalid || isLoading" />
+
+                <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />
+            </div>
+        </div>
+    </form>
+
+</ng-container>
+
+
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'USERS.DELETE.CONFIRM_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ teamIwsName }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />
+
+        </div>
+    </div>
+</ng-template>

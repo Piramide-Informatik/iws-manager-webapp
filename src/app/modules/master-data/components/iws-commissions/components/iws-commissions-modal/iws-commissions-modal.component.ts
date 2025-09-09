@@ -74,7 +74,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
     this.subscriptions.add(sub);
   }
 
-  // 🔹 unificado: cerrar modal + reset
+
   private closeModal(): void {
     this.isLoading = false;
     this.isVisibleModal.emit(false);
@@ -132,7 +132,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
     this.closeModal();
   }
 
-  // 🔹 unificado: errores + toast
+
   private handleErrorWithToast(
     error: any,
     defaultDetail: string,
