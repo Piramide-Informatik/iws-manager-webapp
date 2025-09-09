@@ -40,6 +40,17 @@ export class InvoiceUtils {
   }
 
   /**
+  * Gets all invoices given a order
+  * @param orderId - Order to get his invoices
+  * @returns Observable emitting the raw list of invoices
+  */
+  getAllInvoicesByOrderId(orderId: number): Observable<Invoice[]> {
+    return this.invoiceService.getAllInvoicesByOrderId(orderId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load invoices by order')))
+    );
+  }
+
+  /**
   * Creates a new invoice with validation
   * @param invoice - Invoice object to create (without id)
   * @returns Observable that completes when invoice is created
