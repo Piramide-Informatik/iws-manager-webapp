@@ -55,10 +55,12 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
 
   IwsTeams: any[] = [];
   columnsHeaderIwsTeams: any[] = [];
-  private langSubscription!: Subscription;
   userIwsTeamsPreferences: UserPreference = {};
   tableKey: string = 'IwsTeams';
   dataKeys = ['name'];
+
+  @ViewChild('dt2') dt2!: Table;
+  private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
@@ -68,18 +70,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.IwsTeams = [
-    //   { id: 1, name: 'Team1' },
-    //   { id: 2, name: 'Team2' },
-    //   { id: 3, name: 'Team3' },
-    //   { id: 4, name: 'TeamInno' },
-    //   { id: 5, name: 'TeamOpti' },
-    //   { id: 6, name: 'TeamVision' },
-    //   { id: 7, name: 'TeamAgile' },
-    //   { id: 8, name: 'TeamAlpha' },
-    //   { id: 9, name: 'TeamBeta' },
-    //   { id: 10, name: 'TeamDelta' },
-    // ];
+    
 
     this.loadColumnsIwsTeams();
     this.userIwsTeamsPreferences =

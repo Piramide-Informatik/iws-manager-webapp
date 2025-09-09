@@ -1,19 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  inject,
-  OnInit,
-  Input,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-} from '@angular/core';
-
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
 import { finalize } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { TeamIws } from '../../../../../../Entities/teamIWS';
 
 @Component({
@@ -22,7 +11,7 @@ import { TeamIws } from '../../../../../../Entities/teamIWS';
   templateUrl: './iws-teams-modal.component.html',
   styleUrl: './iws-teams-modal.component.scss',
 })
-export class IwsTeamsModalComponent {
+export class IwsTeamsModalComponent implements OnInit, OnDestroy {
   private readonly teamIwsUtils = inject(TeamIwsUtils);
   private readonly subscriptions = new Subscription();
 
@@ -34,12 +23,8 @@ export class IwsTeamsModalComponent {
   @Input() teamIwsName: string | null = null;
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() TeamIwsCreated = new EventEmitter<void>();
-  @Output() toastMessage = new EventEmitter<{
-    severity: string;
-    summary: string;
-    detail: string;
-  }>();
+  @Output() teamIwsCreated = new EventEmitter<void>();
+  @Output() toastMessage = new EventEmitter<{ severity: string; summary: string; detail: string }>();
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -61,15 +46,8 @@ export class IwsTeamsModalComponent {
     return this.modalType === 'create';
   }
 
-  private loadInitialData() {
-    const sub = this.teamIwsUtils.loadInitialData().subscribe();
-    this.subscriptions.add(sub);
-  }
-
-  private closeModal(): void {
-    this.isLoading = false;
-    this.isVisibleModal.emit(false);
-    this.resetForm();
+  private loadInitialData(): void {
+    this.addSubscription(this.teamIwsUtils.loadInitialData().subscribe());
   }
 
   onCancel(): void {
@@ -80,20 +58,42 @@ export class IwsTeamsModalComponent {
     if (!this.teamIwsToDelete) return;
     this.isLoading = true;
 
-    const sub = this.teamIwsUtils
-      .deleteTeamIws(this.teamIwsToDelete)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
-        error: (error) =>
-          this.handleErrorWithToast(
-            error,
-            'MESSAGE.DELETE_FAILED',
-            'MESSAGE.DELETE_ERROR_IN_USE'
-          ),
-      });
+    this.handleRequest(
+      this.teamIwsUtils.deleteTeamIws(this.teamIwsToDelete),
+      'MESSAGE.DELETE_SUCCESS',
+      'MESSAGE.DELETE_FAILED',
+      'MESSAGE.DELETE_ERROR_IN_USE'
+    );
+  }
 
-    this.subscriptions.add(sub);
+  onSubmit(): void {
+    if (this.createTeamIwsForm.invalid || this.isLoading) return;
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    const data = this.getSanitizedTeamIwsValues();
+    this.handleRequest(this.teamIwsUtils.addTeamIws(data), 'MESSAGE.CREATE_SUCCESS', 'MESSAGE.CREATE_FAILED');
+  }
+
+  // ------------------------ Helpers ------------------------
+
+  private handleRequest(
+    request$: Observable<any>,
+    successDetail: string,
+    errorDetail: string,
+    inUseDetail?: string
+  ): void {
+    this.addSubscription(
+      request$
+        .pipe(finalize(() => (this.isLoading = false)))
+        .subscribe({
+          next: () => {
+            if (successDetail === 'MESSAGE.CREATE_SUCCESS') this.teamIwsCreated.emit();
+            this.showToastAndClose('success', successDetail);
+          },
+          error: (error) => this.handleErrorWithToast(error, errorDetail, inUseDetail),
+        })
+    );
   }
 
   private showToastAndClose(severity: string, detail: string): void {
@@ -105,50 +105,17 @@ export class IwsTeamsModalComponent {
     this.closeModal();
   }
 
-    onSubmit(): void {
-    if (this.createTeamIwsForm.invalid || this.isLoading) return;
+  private handleErrorWithToast(error: any, defaultDetail: string, inUseDetail?: string): void {
+    const errorMessage = error?.message ?? defaultDetail;
+    const detail = errorMessage.includes('it is in use by other entities') ? inUseDetail ?? defaultDetail : this.getErrorDetail(errorMessage);
 
-    this.isLoading = true;
-    this.errorMessage = null;
-
-    const IwsCommissionData = this.getSanitizedTeamIwsValues();
-
-    const sub = this.teamIwsUtils
-      .addTeamIws(IwsCommissionData)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: () => {
-          this.TeamIwsCreated.emit();
-          this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
-        },
-        error: (error) => this.handleErrorWithToast(error, 'MESSAGE.CREATE_FAILED'),
-      });
-
-    this.subscriptions.add(sub);
-  }
-  private handleErrorWithToast(
-    error: any,
-    defaultDetail: string,
-    inUseDetail?: string
-  ): void {
-    this.errorMessage = error?.message ?? defaultDetail;
-
-    const detail = this.errorMessage?.includes('it is in use by other entities')
-      ? inUseDetail ?? defaultDetail
-      : this.getErrorDetail(this.errorMessage ?? '');
-
-    this.toastMessage.emit({
-      severity: 'error',
-      summary: 'MESSAGE.ERROR',
-      detail,
-    });
-
+    this.toastMessage.emit({ severity: 'error', summary: 'MESSAGE.ERROR', detail });
     console.error('Operation error:', error);
     this.closeModal();
   }
 
-  private getErrorDetail(errorCode: string): string {
-    switch (errorCode) {
+  private getErrorDetail(code: string): string {
+    switch (code) {
       case 'TITLE.ERROR.EMPTY':
         return 'MESSAGE.EMPTY_ERROR';
       case 'TITLE.ERROR.ALREADY_EXISTS':
@@ -158,13 +125,8 @@ export class IwsTeamsModalComponent {
     }
   }
 
-  private getSanitizedTeamIwsValues(): Omit<
-    TeamIws,
-    'id' | 'createdAt' | 'updatedAt' | 'version'
-  > {
-    return {
-      name: this.createTeamIwsForm.value.name?.trim() ?? '',
-    };
+  private getSanitizedTeamIwsValues(): Omit<TeamIws, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
+    return { name: this.createTeamIwsForm.value.name?.trim() ?? '' };
   }
 
   private resetForm(): void {
@@ -173,9 +135,17 @@ export class IwsTeamsModalComponent {
 
   public focusInputIfNeeded(): void {
     if (this.isCreateMode && this.teamIwsInput) {
-      setTimeout(() => {
-        this.teamIwsInput?.nativeElement?.focus();
-      }, 150);
+      setTimeout(() => this.teamIwsInput?.nativeElement?.focus(), 150);
     }
+  }
+
+  private closeModal(): void {
+    this.isLoading = false;
+    this.isVisibleModal.emit(false);
+    this.resetForm();
+  }
+
+  private addSubscription(sub: Subscription): void {
+    this.subscriptions.add(sub);
   }
 }
