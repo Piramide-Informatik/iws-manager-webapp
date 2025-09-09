@@ -2,16 +2,16 @@
   [style]="{ background: 'var(--light-cyan)' }"
   [header]="'IWS_TEAMS.HEADER.EDIT_TEAM' | translate"
 >
-  <form [formGroup]="teamForm">
+  <form [formGroup]="editTeamForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
       <div class="team-form mb-2">
-        <label for="teamName">{{
+        <label for="name">{{
           "IWS_TEAMS.LABEL.TEAM_NAME" | translate
         }}</label>
         <input
           pInputText
-          id="teamName"
-          formControlName="teamName"
+          id="name"
+          formControlName="name"
           autocomplete="off"
         />
       </div>
@@ -37,8 +37,7 @@
         size="small"
         [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check"
-        (click)="saveTeam()"
-        (keydown)="saveTeam()"
+        type="submit"
       ></p-button>
       <p-button
         class="cancel"
@@ -47,7 +46,15 @@
         icon="pi pi-times"
         severity="secondary"
         (keydown)="cancelEdit()"
+        (keydown)="cancelEdit()"
       ></p-button>
     </div>
   </form>
 </p-card>
+<app-occ-error-modal
+    *ngIf="showOCCErrorModalTeamIws"
+    [useEmitter]="true"
+    (close)="showOCCErrorModalTeamIws = false"
+    (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast></p-toast>
