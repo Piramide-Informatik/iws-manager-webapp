@@ -29,3 +29,24 @@
 .buttons-fa-container {
   display: flex;
 }
+
+.order_input p-calendar,
+.order_input p-calendar .p-inputtext {
+  width: 70%;
+}
+
+::ng-deep .p-datepicker {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 ;
+}
+
+::ng-deep .p-datepicker table,
+::ng-deep .p-datepicker .p-monthpicker,
+::ng-deep .p-datepicker .p-yearpicker,
+::ng-deep .p-datepicker .p-datepicker-group {
+  width: 100%;
+  table-layout: fixed;
+}

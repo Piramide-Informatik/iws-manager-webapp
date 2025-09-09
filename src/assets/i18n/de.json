@@ -427,12 +427,13 @@
         "FROM_VALUE": "ab Wert",
         "COMMISSION": "Provision",
         "MIN_COMMISSION": "Mindestprovision"
-      },
-      "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
-      "TITLE_DIALOG_CREATE": "Rahmenvereinbarung erstellen",
-      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen",
-      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen"
-    }
+      }
+    },
+    "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
+    "TITLE_DIALOG_CREATE": "Rahmenvereinbarung erstellen",
+    "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen",
+    "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen"
+
   },
   "CONTRACTS": {
     "FORM": {

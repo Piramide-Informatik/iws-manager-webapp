@@ -13,7 +13,7 @@
         </div>
         <div class="order_input mb-2">
             <label for="orderDate">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.DATE' | translate }}</label>
-            <p-datepicker inputId="orderDate" showIcon showClear formControlName="date"  dateFormat="dd.mm.yy" [appendTo]="'body'"  />
+            <p-datepicker inputId="orderDate" showIcon showClear formControlName="date"  dateFormat="dd.mm.yy" [appendTo]="'body'" [panelStyle]="{'width': '300px'}"/>
         </div>
         <div class="order_input mb-2">
             <label for="contractTitle">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.LONG_TEXT' | translate }}</label>
