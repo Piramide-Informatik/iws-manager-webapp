@@ -62,6 +62,16 @@ export class ReceivableUtils {
   }
 
   /**
+  * Gets all receivables
+  * @returns Observable emitting the raw list of receivables
+  */
+  getAllReceivables(): Observable<Debt[]> {
+    return this.receivableService.getAllReceivables().pipe(
+      catchError(() => throwError(() => new Error('Failed to load receivables')))
+    );
+  }
+
+  /**
   * Creates a new receivable with validation
   * @param receivable - Receivable object to create (without id)
   * @returns Observable that completes when receivable is created

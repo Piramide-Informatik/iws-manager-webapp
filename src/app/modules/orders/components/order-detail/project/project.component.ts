@@ -42,7 +42,7 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
       this.initForm();
       this.projectForm.patchValue({
         projectLabel: this.orderToEdit.project?.id,
-        promoterNo: this.orderToEdit.project?.promoter?.promoterno,
+        promoterNo: this.orderToEdit.project?.promoter?.promoterNo,
         promoter: this.orderToEdit.project?.promoter?.projectPromoter,
         startDate: momentCreateDate(this.orderToEdit.project?.startDate),
         endDate: momentCreateDate(this.orderToEdit.project?.endDate)
@@ -74,7 +74,7 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
       this.projectForm.get('projectLabel')?.valueChanges.subscribe((projectIdSelected: number | null)=>{
         this.selectedProject = this.projects().find(p => p.id === projectIdSelected) ?? null;
         if ( projectIdSelected && this.selectedProject ){
-          this.projectForm.get('promoterNo')?.setValue(this.selectedProject.promoter?.promoterno, { emitEvent: false });
+          this.projectForm.get('promoterNo')?.setValue(this.selectedProject.promoter?.promoterNo, { emitEvent: false });
           this.projectForm.get('promoter')?.setValue(this.selectedProject.promoter?.projectPromoter, { emitEvent: false });
           this.projectForm.get('startDate')?.setValue(momentCreateDate(this.selectedProject.startDate), { emitEvent: false });
           this.projectForm.get('endDate')?.setValue(momentCreateDate(this.selectedProject.endDate), { emitEvent: false });
