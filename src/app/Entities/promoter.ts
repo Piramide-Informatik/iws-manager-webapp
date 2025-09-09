@@ -10,9 +10,9 @@ export interface Promoter {
 
   city?: string;
   projectPromoter? : string;
-  promotername1?: string;
-  promotername2?: string;
-  promoterno?: string;
+  promoterName1?: string;
+  promoterName2?: string;
+  promoterNo?: string;
   street?: string;
-  zipcode?: string;
+  zipCode?: string;
 }
