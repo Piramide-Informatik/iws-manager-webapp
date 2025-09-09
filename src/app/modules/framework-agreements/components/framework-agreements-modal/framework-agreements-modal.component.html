@@ -2,29 +2,41 @@
   <form [formGroup]="basicContractCreateForm" (ngSubmit)="onSubmit()">
     <div class="fa-form align-items-center mb-2 mt-4">
       <div class="form-fa-container flex align-items-center mb-6">
-        <div class="order_input mb-2">
+        <div class="order_input_fa mb-2">
             <label for="orderId">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FRAMEWORK_AGREEMENT_NO' | translate }}</label>
             <p-inputnumber readonly [disabled]="true" id="orderId" formControlName="contractNo" autocomplete="off"
              [useGrouping]="false" [inputStyle]="{'text-align': 'right'}"/>
         </div>
-        <div class="order_input mb-2">
+        <div class="order_input_fa mb-2">
             <label for="orderLabel">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FRAMEWORK_AGREEMENT' | translate }}</label>
             <input #inputText pInputText type="text" id="orderLabel" formControlName="contractLabel" autocomplete="off" />
         </div>
-        <div class="order_input mb-2">
+        <div class="order_input_fa mb-2">
             <label for="orderDate">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.DATE' | translate }}</label>
-            <p-datepicker inputId="orderDate" showIcon showClear formControlName="date"  dateFormat="dd.mm.yy" [appendTo]="'body'"  />
+            <p-datepicker inputId="orderDate" 
+              appendTo="body"
+              formControlName="date"  
+              [showIcon]="true" 
+              [showClear]="true" 
+              dateFormat="dd.mm.yy" 
+            />
         </div>
-        <div class="order_input mb-2">
+        <div class="order_input_fa mb-2">
             <label for="contractTitle">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.LONG_TEXT' | translate }}</label>
             <input pInputText type="text" id="contractTitle" formControlName="contractTitle" autocomplete="off" />
         </div>
-        <div class="order_input mb-2"> 
+        <div class="order_input_fa mb-2"> 
             <label for="confirmationDate">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.SIGNATURE_DATE' | translate }}</label>
-            <p-datepicker inputId="confirmationDate" showIcon showClear formControlName="confirmationDate"  dateFormat="dd.mm.yy"  [appendTo]="'body'" />
+            <p-datepicker inputId="confirmationDate" 
+              appendTo="body"
+              formControlName="confirmationDate"  
+              showIcon 
+              showClear 
+              dateFormat="dd.mm.yy" 
+            />
         </div>
         
-        <div class="order_input mb-2">
+        <div class="order_input_fa mb-2">
             <label for="fundingProgram">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FUNDING_PROGRAM' | translate }}</label>
             <p-select inputId="fundingProgram" 
                 [options]="fundingPrograms()" 
@@ -35,7 +47,7 @@
              [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"></p-select>
         </div>
         
-        <div class="order_input mb-2">
+        <div class="order_input_fa mb-2">
             <label for="contractStatus">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.CONTRACT_STATUS' | translate }}</label>
             <p-select inputId="contractStatus" 
                 [options]="contractStatus()" 
@@ -46,7 +58,7 @@
              [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"></p-select>
         </div>
         
-        <div class="order_input mb-2">
+        <div class="order_input_fa mb-2">
             <label for="employeeIws">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.IWS_EMPLOYEES' | translate }}</label>
             <p-select inputId="employeeIws" 
                 [options]="employeeIws()" 

@@ -1,3 +1,4 @@
+@use 'variables' as *;
 .fa-form {
   margin-left: 5% !important;
   margin-right: 5% !important;
@@ -7,7 +8,7 @@
   display: block !important;
 }
 
-.order_input {
+.order_input_fa {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -16,16 +17,52 @@
 
   label {
     width: 170px !important;
+    flex-shrink: 0;
     font-weight: normal;
   }
 
   input,
+  p-inputnumber,
   p-select,
   p-datepicker {
-    width: 55% !important;
+    width: 100% !important;
   }
 }
 
 .buttons-fa-container {
   display: flex;
+}
+
+::ng-deep .p-datepicker {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 ;
+}
+
+::ng-deep .p-datepicker-panel table,
+::ng-deep .p-datepicker-panel .p-monthpicker,
+::ng-deep .p-datepicker-panel .p-yearpicker,
+::ng-deep .p-datepicker-panel .p-datepicker-group {
+  td, th {
+    padding: 0 !important;
+    text-align: center;
+  }
+}
+
+::ng-deep .p-datepicker-panel {
+  button.p-ripple.p-button.p-component {
+    background-color: initial !important;
+    border: none;
+    color: $primary-color;
+
+    &:hover{
+      background-color: $accent-color !important;
+    }
+  }
+
+  .p-datepicker-day-selected{
+    background: $primary-color !important;
+  }
 }
