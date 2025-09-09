@@ -92,9 +92,11 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
           this.commonMessage.showDeleteSucessfullMessage();
           this.orders = this.orders.filter( order => order.id != this.selectedOrder?.id);
         },
-        error: (odersError) => {
+        error: (ordersError) => {
           this.isOrderLoading = false;
-          if (odersError.message.includes('have associated debts')) {
+          if (ordersError.message.includes('have associated debts') || 
+              ordersError.message.includes('have associated invoices') ||
+              ordersError.message.includes('have associated commissions')) {
             this.commonMessage.showErrorDeleteMessageContainsOtherEntities();
           } else {
             this.commonMessage.showErrorDeleteMessage();
