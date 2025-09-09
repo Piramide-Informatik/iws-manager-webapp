@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { Promoter } from '../../../../Entities/promoter';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-project-funnels',
@@ -12,13 +14,16 @@ import { UserPreference } from '../../../../Entities/user-preference';
   templateUrl: './project-funnels.component.html',
   styles: ``
 })
-export class ProjectFunnelsComponent {
+export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   public projectFunnels: any[] = [];
   columsHeaderFieldProjecFunnels: any[] = [];
   userProjectFunnelsPreferences: UserPreference = {};
   tableKey: string = 'ProjectFunnels'
   dataKeys = ['id','projectSponsor'];
+  private readonly commonMessageService = inject(CommonMessagesService);
+  public modalType: 'create' | 'delete' = 'create';
+  public isVisibleModal: boolean = false;
 
   private langSubscription!: Subscription;
 
@@ -55,6 +60,20 @@ export class ProjectFunnelsComponent {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    
+    this.isVisibleModal = true;
+  }
+
+  onCreatePromoter(event: { created?: Promoter, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }

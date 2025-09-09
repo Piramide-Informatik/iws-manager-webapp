@@ -933,6 +933,10 @@
       "LAND": "tierra",
       "STREET": "Calle",
       "ZIP_CITY": "Código Postal / Ciudad"
+    },
+    "MODAL": {
+      "NEW": "Nuevo Patrocinador del Proyecto",
+      "DELETE": "Eliminar Patrocinador del Proyecto"
     }
   },
   "PROJECT_STATUS": {
