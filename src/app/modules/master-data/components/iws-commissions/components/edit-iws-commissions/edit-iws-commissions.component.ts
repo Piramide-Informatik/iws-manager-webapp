@@ -37,7 +37,7 @@ export class EditIwsCommissionsComponent implements OnInit {
     const savedIwsCommissionId = localStorage.getItem('selectedIwsCommissionId');
     if (savedIwsCommissionId) {
       this.loadIwsCommissionAfterRefresh(savedIwsCommissionId);
-      localStorage.removeItem('selectedEmployeeIwsId');
+      localStorage.removeItem('selectedIwsCommissionId');
     }
   }
 
@@ -71,6 +71,7 @@ export class EditIwsCommissionsComponent implements OnInit {
   }
 
   private loadIwsCommissionAfterRefresh(iwsCommissionId: string): void {
+    console.log(iwsCommissionId)
     this.isSaving = true;
     this.subscriptions.add(
       this.iwsCommissionUtils.getIwsCommissionById(Number(iwsCommissionId)).subscribe({
