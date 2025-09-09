@@ -9,31 +9,32 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
+
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
+import { TeamIwsUtils } from '../../utils/iws-team-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { IwsCommission } from '../../../../../../Entities/iws-commission ';
+import { TeamIws } from '../../../../../../Entities/teamIWS';
 
 @Component({
-  selector: 'app-iws-commissions-modal',
+  selector: 'app-iws-teams-modal',
   standalone: false,
-  templateUrl: './iws-commissions-modal.component.html',
-  styleUrl: './iws-commissions-modal.component.scss',
+  templateUrl: './iws-teams-modal.component.html',
+  styleUrl: './iws-teams-modal.component.scss',
 })
-export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
-  private readonly iwsCommissionUtils = inject(IwsCommissionUtils);
+export class IwsTeamsModalComponent {
+  private readonly teamIwsUtils = inject(TeamIwsUtils);
   private readonly subscriptions = new Subscription();
 
-  @ViewChild('iwsCommissionInput')
-  iwsCommissionInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('teamIwsInput')
+  teamIwsInput!: ElementRef<HTMLInputElement>;
 
   @Input() modalType: 'create' | 'delete' = 'create';
-  @Input() iwsCommissionToDelete: number | null = null;
-  @Input() iwsCommissionName: string | null = null;
+  @Input() teamIwsToDelete: number | null = null;
+  @Input() teamIwsName: string | null = null;
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() iwsCommissionCreated = new EventEmitter<void>();
+  @Output() TeamIwsCreated = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
     summary: string;
@@ -43,17 +44,8 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string | null = null;
 
-  readonly createIwsCommissionForm = new FormGroup({
-    fromOrderValue: new FormControl('', [
-      Validators.required,
-      Validators.min(0),
-      Validators.max(1000000),
-    ]),
-    commission: new FormControl('', [Validators.min(0), Validators.max(100)]),
-    minCommission: new FormControl('', [
-      Validators.min(0),
-      Validators.max(100000),
-    ]),
+  readonly createTeamIwsForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
   });
 
   ngOnInit(): void {
@@ -70,10 +62,9 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
   }
 
   private loadInitialData() {
-    const sub = this.iwsCommissionUtils.loadInitialData().subscribe();
+    const sub = this.teamIwsUtils.loadInitialData().subscribe();
     this.subscriptions.add(sub);
   }
-
 
   private closeModal(): void {
     this.isLoading = false;
@@ -86,38 +77,20 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
   }
 
   onDeleteConfirm(): void {
-    if (!this.iwsCommissionToDelete) return;
+    if (!this.teamIwsToDelete) return;
     this.isLoading = true;
 
-    const sub = this.iwsCommissionUtils
-      .deleteIwsCommission(this.iwsCommissionToDelete)
+    const sub = this.teamIwsUtils
+      .deleteTeamIws(this.teamIwsToDelete)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
         error: (error) =>
-          this.handleErrorWithToast(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE'),
-      });
-
-    this.subscriptions.add(sub);
-  }
-
-  onSubmit(): void {
-    if (this.createIwsCommissionForm.invalid || this.isLoading) return;
-
-    this.isLoading = true;
-    this.errorMessage = null;
-
-    const IwsCommissionData = this.getSanitizedIwsCommissionValues();
-
-    const sub = this.iwsCommissionUtils
-      .addIwsCommission(IwsCommissionData)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: () => {
-          this.iwsCommissionCreated.emit();
-          this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
-        },
-        error: (error) => this.handleErrorWithToast(error, 'MESSAGE.CREATE_FAILED'),
+          this.handleErrorWithToast(
+            error,
+            'MESSAGE.DELETE_FAILED',
+            'MESSAGE.DELETE_ERROR_IN_USE'
+          ),
       });
 
     this.subscriptions.add(sub);
@@ -132,7 +105,27 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
     this.closeModal();
   }
 
+    onSubmit(): void {
+    if (this.createTeamIwsForm.invalid || this.isLoading) return;
 
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    const IwsCommissionData = this.getSanitizedTeamIwsValues();
+
+    const sub = this.teamIwsUtils
+      .addTeamIws(IwsCommissionData)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: () => {
+          this.TeamIwsCreated.emit();
+          this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
+        },
+        error: (error) => this.handleErrorWithToast(error, 'MESSAGE.CREATE_FAILED'),
+      });
+
+    this.subscriptions.add(sub);
+  }
   private handleErrorWithToast(
     error: any,
     defaultDetail: string,
@@ -165,25 +158,23 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getSanitizedIwsCommissionValues(): Omit<
-    IwsCommission,
+  private getSanitizedTeamIwsValues(): Omit<
+    TeamIws,
     'id' | 'createdAt' | 'updatedAt' | 'version'
   > {
     return {
-      fromOrderValue: Number(this.createIwsCommissionForm.value.fromOrderValue),
-      commission: Number(this.createIwsCommissionForm.value.commission),
-      minCommission: Number(this.createIwsCommissionForm.value.minCommission),
+      name: this.createTeamIwsForm.value.name?.trim() ?? '',
     };
   }
 
   private resetForm(): void {
-    this.createIwsCommissionForm.reset();
+    this.createTeamIwsForm.reset();
   }
 
   public focusInputIfNeeded(): void {
-    if (this.isCreateMode && this.iwsCommissionInput) {
+    if (this.isCreateMode && this.teamIwsInput) {
       setTimeout(() => {
-        this.iwsCommissionInput?.nativeElement?.focus();
+        this.teamIwsInput?.nativeElement?.focus();
       }, 150);
     }
   }
