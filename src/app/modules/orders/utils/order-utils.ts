@@ -4,6 +4,8 @@ import { OrderService } from '../../../Services/order.service';
 import { Order } from '../../../Entities/order';
 import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
+import { InvoiceUtils } from '../../invoices/utils/invoice.utils';
+import { OrderCommissionUtils } from './order-commission-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -13,6 +15,8 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../shar
 export class OrderUtils {
   private readonly orderService = inject(OrderService);
   private readonly debtUtils = inject(ReceivableUtils);
+  private readonly invoiceUtils = inject(InvoiceUtils);
+  private readonly orderCommissionUtils = inject(OrderCommissionUtils);
 
   /**
   * Gets all orders without any transformation
@@ -107,13 +111,27 @@ export class OrderUtils {
           valid: debts.length === 0,
           error: 'Cannot be deleted because have associated debts'
         }))
+      ),
+      this.invoiceUtils.getAllInvoicesByOrderId(id).pipe(
+        take(1),
+        map(invoices => ({
+          valid: invoices.length === 0,
+          error: 'Cannot be deleted because have associated invoices'
+        }))
+      ),
+      this.orderCommissionUtils.getAllOrderCommissionByOrderId(id).pipe(
+        take(1),
+        map(commissions => ({
+          valid: commissions.length === 0,
+          error: 'Cannot be deleted because have associated commissions'
+        }))
       )
-    ]
+    ];
     return forkJoin(checks).pipe(
       switchMap(results => {
-        const isThereDebts = results.find(r => !r.valid);
-        if (isThereDebts) {
-          return throwError(() => new Error(isThereDebts.error))
+        const failedCheck = results.find(r => !r.valid);
+        if (failedCheck) {
+          return throwError(() => new Error(failedCheck.error))
         }
         return this.orderService.deleteOrder(id).pipe(
           catchError(error => {

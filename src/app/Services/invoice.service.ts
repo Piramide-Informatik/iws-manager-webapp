@@ -49,6 +49,7 @@ export class InvoiceService {
     );
   }
 
+  // ==================== READ OPERATIONS ====================
   /**
    * Retrieves a single invoice by ID
    * @param id Invoice identifier
@@ -77,6 +78,23 @@ export class InvoiceService {
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch invoices');
+        console.error('Error fetching invoices:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
+   * Retrieves all invoices given a order
+   * @param orderId Order to get his invoices 
+   * @returns Observable with Invoice array 
+   * @throws Error when server request fails
+   */
+  getAllInvoicesByOrderId(orderId: number): Observable<Invoice[]> {
+    return this.http.get<Invoice[]>(`${this.apiUrl}/by-order/${orderId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch invoices by order');
         console.error('Error fetching invoices:', err);
         return of([]);
       })
