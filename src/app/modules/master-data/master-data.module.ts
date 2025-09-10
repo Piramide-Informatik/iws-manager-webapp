@@ -135,6 +135,7 @@ import { ContractStatusModalComponent } from './components/contract-status/compo
 import { ModalAbsenceTypesComponent } from './components/absence-types/components/modal-absence-types/modal-absence-types.component';
 import { IwsCommissionsModalComponent } from './components/iws-commissions/components/iws-commissions-modal/iws-commissions-modal.component';
 import { IwsTeamsModalComponent } from './components/iws-teams/components/iws-teams-modal/iws-teams-modal.component';
+import { ModalTermsPaymentComponent } from './components/terms-payment/components/modal-terms-payment/modal-terms-payment.component';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -235,6 +236,7 @@ registerLocaleData(localeDe, 'de-DE');
     ModalAbsenceTypesComponent,
     IwsCommissionsModalComponent,
     IwsTeamsModalComponent,
+    ModalTermsPaymentComponent,
   ],
   imports: [
     ButtonModule,

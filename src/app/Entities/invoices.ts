@@ -1,24 +1,33 @@
+import { Customer } from "./customer";
 import { Order } from "./order";
+import { PayCondition } from "./payCondition";
 
 export interface Invoice {
-  id: number
-  invoiceNo: string;
-  invoiceDate: string;
-  note: string;
-  invoiceType: InvoiceType;
-  network: Network;
-  order: Order
-  value: number;
-  amountNet: number;
-  amountTax: number;
-  amountGross: number;
-  version?: number;
-}
+  id: number;
+  createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
+  updatedAt: string;
+  version: number;
 
-export interface InvoiceType {
-  name: string
-}
+  biller: null;
+  invoiceType: null;
+  network: null;
+  customer: Customer | null;
+  order: Order | null;
+  payCondition: PayCondition | null;
+  vat: null;
 
-export interface Network {
-  networkName: string
+  invoiceNo?: number;
+  invoiceDate?: number;
+  invoiceTitle?: string;
+  note?: string;
+  amountNet?: number;
+  amountTax?: number;
+  amountGross?: number;
+  amountOpen?: number;
+  amountPaid?: number;
+  comment?: string;
+  isCancellation?: number;
+  taxRate?: number;
+  payDeadline?: string;
+  paymentDate?: string;
 }
