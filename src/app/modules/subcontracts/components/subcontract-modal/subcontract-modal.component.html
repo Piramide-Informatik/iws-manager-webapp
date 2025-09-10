@@ -15,7 +15,6 @@
         <div class="sub_contract_input order_name mb-2">
           <label for="contractor">{{ 'SUB-CONTRACTS.FORM.CONTRACTOR' | translate }}</label>
           <p-select
-            [style]="{ width: '20vw' }"
             inputId="contractor"
             [options]="contractorsName()"
             formControlName="contractor"
@@ -48,7 +47,6 @@
         <div class="sub_contract_input order_name mb-2">
           <label for="netOrGross">{{ 'SUB-CONTRACTS.FORM.INVOICE_NET_OR_GROSS' | translate }}</label>
           <p-select
-            [style]="{ width: '20vw' }"
             inputId="netOrGross"
             [options]="optionsNetOrGross"
             formControlName="netOrGross"
@@ -59,9 +57,16 @@
         </div>
         <div class="sub_contract_input order_name mb-2">
           <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" id="invoiceAmount" formControlName="invoiceAmount" 
-            mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [inputStyle]="{'text-align': 'right'}"
-            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" 
+          <p-inputNumber 
+            id="invoiceAmount" 
+            formControlName="invoiceAmount" 
+            mode="decimal" 
+            [max]="99999.99" 
+            [min]="0" 
+            [useGrouping]="false" 
+            [minFractionDigits]="2" 
+            [maxFractionDigits]="2" 
+            locale="de-DE" 
           />
         </div>
         <div class="sub_contract_input order_name mb-2">
@@ -74,7 +79,7 @@
         </div>
         <div class="sub_contract_input order_name mb-2">
           <label for="afaDurationMonths">{{ 'SUB-CONTRACTS.FORM.AFA_MONTHS' | translate }}</label>
-          <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false"
+          <p-inputnumber
             inputId="afaDurationMonths"
             formControlName="afaDurationMonths"
             autocomplete="off"
@@ -87,7 +92,6 @@
             pTextarea
             rows="6"
             formControlName="description"
-            style="resize: none; width: 20vw;"
           ></textarea>
         </div>
       </div>
