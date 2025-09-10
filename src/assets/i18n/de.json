@@ -936,6 +936,10 @@
       "LAND": "Land",
       "STREET": "Straße",
       "ZIP_CITY": "PLZ / Ort"
+    },
+    "MODAL": {
+      "NEW": "Neu Projektträger",
+      "DELETE": "Projektträger löschen"
     }
   },
   "PROJECT_STATUS": {

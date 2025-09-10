@@ -134,6 +134,7 @@ import { IwsStaffModalComponent } from './components/iws-staff/components/iws-st
 import { ContractStatusModalComponent } from './components/contract-status/components/contract-status-modal/contract-status-modalcomponent';
 import { ModalAbsenceTypesComponent } from './components/absence-types/components/modal-absence-types/modal-absence-types.component';
 import { IwsCommissionsModalComponent } from './components/iws-commissions/components/iws-commissions-modal/iws-commissions-modal.component';
+import { ModalProjectFunnelComponent } from './components/project-funnels/components/modal-project-funnel/modal-project-funnel.component';
 import { IwsTeamsModalComponent } from './components/iws-teams/components/iws-teams-modal/iws-teams-modal.component';
 import { ModalTermsPaymentComponent } from './components/terms-payment/components/modal-terms-payment/modal-terms-payment.component';
 
@@ -235,6 +236,7 @@ registerLocaleData(localeDe, 'de-DE');
     IwsStaffModalComponent,
     ModalAbsenceTypesComponent,
     IwsCommissionsModalComponent,
+    ModalProjectFunnelComponent,
     IwsTeamsModalComponent,
     ModalTermsPaymentComponent,
   ],

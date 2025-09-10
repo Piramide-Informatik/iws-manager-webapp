@@ -938,6 +938,10 @@
       "LAND": "Land",
       "STREET": "Street",
       "ZIP_CITY": "ZIP / City"
+    },
+    "MODAL": {
+      "NEW": "New Project Sponsor",
+      "DELETE": "Delete Project Sponsor"
     }
   },
   "PROJECT_STATUS": {
