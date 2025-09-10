@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
@@ -7,6 +7,8 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { Promoter } from '../../../../Entities/promoter';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { PromoterUtils } from './utils/promoter-utils';
+import { PromoterService } from '../../../../Services/promoter.service';
 
 @Component({
   selector: 'app-project-funnels',
@@ -15,8 +17,8 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
   styles: ``
 })
 export class ProjectFunnelsComponent implements OnInit, OnDestroy {
-
-  public projectFunnels: any[] = [];
+  private readonly promoterUtils = inject(PromoterUtils);
+  private readonly promoterService = inject(PromoterService);
   columsHeaderFieldProjecFunnels: any[] = [];
   userProjectFunnelsPreferences: UserPreference = {};
   tableKey: string = 'ProjectFunnels'
@@ -26,6 +28,9 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   public isVisibleModal: boolean = false;
 
   private langSubscription!: Subscription;
+  readonly projectFunnels = computed(() => {
+    return this.promoterService.promoters();
+  });
 
   constructor(
     private readonly translate: TranslateService,
@@ -35,8 +40,7 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(): void {
-    this.projectFunnels = this.masterDataService.getProjectFunnelsData();
-
+    this.promoterUtils.loadInitialData().subscribe();
     this.loadColHeadersProjectFunnels();
     this.userProjectFunnelsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjecFunnels);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -53,7 +57,7 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   loadColHeadersProjectFunnels(): void {
     this.columsHeaderFieldProjecFunnels = [
       { field: 'id', styles: {'width': 'auto'}, header: 'Nr', customClasses: ['align-right'] },
-      { field: 'projectSponsor', styles: {'width': 'auto'},  header: this.translate.instant(_('PROJECT_FUNNELS.TABLE.PROJECT_SPONSOR')) },
+      { field: 'projectPromoter', styles: {'width': 'auto'},  header: this.translate.instant(_('PROJECT_FUNNELS.TABLE.PROJECT_SPONSOR')) },
     ];
   }
 
