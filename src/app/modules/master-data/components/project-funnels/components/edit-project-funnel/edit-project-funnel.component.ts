@@ -1,5 +1,13 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { PromoterUtils } from '../../utils/promoter-utils';
+import { CountryUtils } from '../../../countries/utils/country-util';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { PromoterStateService } from '../../utils/promoter-state.service';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { Subscription } from 'rxjs';
+import { Promoter } from '../../../../../../Entities/promoter';
+import { Country } from '../../../../../../Entities/country';
 
 @Component({
   selector: 'master-data-edit-project-funnel',
@@ -7,25 +15,143 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './edit-project-funnel.component.html',
   styleUrl: './edit-project-funnel.component.scss'
 })
-export class EditProjectFunnelComponent {
-
+export class EditProjectFunnelComponent implements OnInit, OnDestroy {
+  private readonly promoterUtils = inject(PromoterUtils);
+  private readonly promoterStateService = inject(PromoterStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly subscriptions = new Subscription();
+  private readonly countryUtils = inject(CountryUtils);
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  private promoterToEdit: Promoter | null = null;
+  public showOCCErrorModaPromoter = false;
+  public isLoading: boolean = false;
   public editProjectFunnelForm!: FormGroup;
-  public lands: any[]= [{name: 'Deutschland'},{name: 'Frankreich'},{name: 'Spanien'},{name: 'Italien'},{name: 'Japan'}];
+
+  public countries = toSignal( this.countryUtils.getCountriesSortedByName(), { initialValue: [] } )
 
   ngOnInit(): void {
+    this.initForm();
+    this.setupPromoterSubscription();
+    // Check if we need to load a promoter after page refresh for OCC
+    const savedPromoterId = localStorage.getItem('selectedPromoterId');
+    if (savedPromoterId) {
+      this.loadPromoterAfterRefresh(savedPromoterId);
+      localStorage.removeItem('selectedPromoterId');
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+  
+  private initForm(): void {
     this.editProjectFunnelForm = new FormGroup({
-      projectSponsorId: new FormControl('1601', [Validators.required]),
-      abbreviation: new FormControl('DLR', [Validators.required]),
-      name1: new FormControl('Deutsches Zentrum für Luft- und Raumfahrt e.V.', [Validators.required]),
-      name2: new FormControl('', [Validators.required]),
-      land: new FormControl(this.lands[0], [Validators.required]),
-      street: new FormControl('', [Validators.required]),
-      zip: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required]),
+      promoterNo: new FormControl(''),
+      projectPromoter: new FormControl(''),
+      promoterName1: new FormControl(''),
+      promoterName2: new FormControl(''),
+      country: new FormControl(),
+      street: new FormControl(''),
+      zipCode: new FormControl(''),
+      city: new FormControl(''),
+    });
+  }
+  
+  onSubmit(): void {
+    if(this.editProjectFunnelForm.invalid || !this.promoterToEdit) return 
+
+    this.isLoading = true;
+    const editedPromoter: Promoter = {
+      ...this.promoterToEdit,
+      promoterNo: this.editProjectFunnelForm.value.promoterNo,
+      projectPromoter: this.editProjectFunnelForm.value.projectPromoter,
+      promoterName1: this.editProjectFunnelForm.value.promoterName1,
+      promoterName2: this.editProjectFunnelForm.value.promoterName2,
+      country: this.getCountryById(this.editProjectFunnelForm.value.country ?? 0),
+      street: this.editProjectFunnelForm.value.street,
+      zipCode: this.editProjectFunnelForm.value.zipCode,
+      city: this.editProjectFunnelForm.value.city
+    }
+
+    this.promoterUtils.updatePromoter(editedPromoter).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.clearForm();
+        this.commonMessageService.showCreatedSuccesfullMessage();
+      },
+      error: (error: Error) => {
+        this.isLoading = false;
+        if(error.message === 'Version conflict: Promoter has been updated by another user'){
+          this.showOCCErrorModaPromoter = true;
+        }else{
+          this.commonMessageService.showErrorEditMessage();
+        }
+      }
     });
   }
 
-  onSubmit(): void {
-    console.log(this.editProjectFunnelForm.value);
+  private setupPromoterSubscription(): void {
+    this.subscriptions.add(
+      this.promoterStateService.currentPromoter$.subscribe(promoter => {
+        if(promoter){
+          this.promoterToEdit = promoter;
+          this.editProjectFunnelForm.patchValue({
+            promoterNo: this.promoterToEdit.promoterNo,
+            projectPromoter: this.promoterToEdit.projectPromoter,
+            promoterName1: this.promoterToEdit.promoterName1,
+            promoterName2: this.promoterToEdit.promoterName2,
+            country: this.promoterToEdit.country?.id,
+            street: this.promoterToEdit.street,
+            zipCode: this.promoterToEdit.zipCode,
+            city: this.promoterToEdit.city
+          });
+          this.focusInputIfNeeded();
+        }
+      })
+    );
+  }
+
+  private loadPromoterAfterRefresh(promoterId: string): void {
+    this.isLoading = true;
+    this.subscriptions.add(
+      this.promoterUtils.getPromoterById(Number(promoterId)).subscribe({
+        next: (promoter) => {
+          if (promoter) {
+            this.promoterStateService.setPromoterToEdit(promoter);
+          }
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+        }
+      })
+    );
+  }
+
+  private getCountryById(id: number): Country | null {
+    return id !== 0 ? this.countries().find(c => c.id === id) ?? null : null;
+  }
+
+  public clearForm(): void {
+    this.editProjectFunnelForm.reset();
+    this.promoterStateService.clearPromoter();
+    this.promoterToEdit = null;
+  }
+
+  public onRefresh(): void {
+    if (this.promoterToEdit?.id) {
+      localStorage.setItem('selectedPromoterId', this.promoterToEdit.id.toString());
+      window.location.reload();
+    }
+  }
+
+  public focusInputIfNeeded(): void {
+    if (this.promoterToEdit && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }
