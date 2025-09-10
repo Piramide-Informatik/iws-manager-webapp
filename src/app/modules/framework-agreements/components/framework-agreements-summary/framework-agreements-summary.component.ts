@@ -156,6 +156,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   }
 
   onCreateFrameworkAgreement(data: any) {
+    this.isFrameworkAgreementLoading = true;
     this.frameworkAgreementUtils.createNewFrameworkAgreement(data).subscribe({
       next: (createdContract) => {
         this.commonMessageService.showCreatedSuccesfullMessage();
@@ -167,6 +168,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.log(error);
         this.commonMessageService.showErrorCreatedMessage();
+        this.isFrameworkAgreementLoading = false;
       }
     });
   }

@@ -77,8 +77,8 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
             invoiceNumber: curr.invoiceNo, 
             date: curr.invoiceDate, 
             description: curr.note, 
-            type: curr.invoiceType?.name, 
-            iwsNumber: curr.network?.networkName, 
+            type: curr.invoiceType, 
+            iwsNumber: curr.network, 
             orderNumber: curr.order?.orderNo, 
             orderName: curr.order?.orderLabel, 
             netAmount: curr.amountNet, 
@@ -265,10 +265,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
       const productAction = this.currentInvoice.invoiceNo
         ? this.invoiceUtils.updateInvoice(this.currentInvoice)
         : this.invoiceUtils.createNewInvoice({
-            ...this.currentInvoice,
-            invoiceNo:
-              this.currentInvoice.invoiceNo ||
-              this.createUniqueId().toString(),
+            ...this.currentInvoice
           });
 
       productAction.subscribe(() => {

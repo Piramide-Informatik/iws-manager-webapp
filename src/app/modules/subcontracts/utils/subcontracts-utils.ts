@@ -6,6 +6,7 @@ import { SubcontractYearUtils } from './subcontract-year-utils';
 import { SubcontractProjectUtils } from './subcontract-project.utils';
 import { SubcontractProject } from '../../../Entities/subcontract-project';
 import { SubcontractYear } from '../../../Entities/subcontract-year';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -130,11 +131,11 @@ export class SubcontractUtils {
       take(1),
       switchMap((currentSubcontract) => {
         if (!currentSubcontract) {
-          return throwError(() => new Error('Subcontract not found'));
+          return throwError(() => createNotFoundUpdateError('Subcontract'));
         }
 
         if (currentSubcontract.version !== subcontract.version) {
-          return throwError(() => new Error('Conflict detected: subcontract version mismatch'));
+          return throwError(() => createUpdateConflictError('Subcontract'));
         }
 
         return this.subcontractService.updateSubcontract(subcontract);

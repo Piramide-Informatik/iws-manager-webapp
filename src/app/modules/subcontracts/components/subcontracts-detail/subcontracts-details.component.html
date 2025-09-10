@@ -74,3 +74,9 @@
     </div>
   </div>
 </p-dialog>
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalSubcontract" 
+  [errorType]="errorType"
+  [redirectRoute]="redirectRoute"
+  (onClose)="showOCCErrorModalSubcontract = false">
+</app-occ-error-modal>

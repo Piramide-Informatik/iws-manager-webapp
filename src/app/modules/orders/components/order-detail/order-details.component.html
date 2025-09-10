@@ -24,13 +24,35 @@
         <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
           [loading]="isLoading" (onClick)="onSubmit()" />
         <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-          iconPos="left" [style]="{ background: '#ef4444' }" />
+          iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="visibleOrderDeleteModal = true;"/>
         <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
           iconPos="left" (onClick)="goBackListOrders()" />
       </div>
     </div>
   </div>
 </div>
+<p-dialog
+  [header]="('ORDERS.ORDER_DIALOG_REMOVE' | translate)" 
+  [modal]="true"
+  [(visible)]="visibleOrderDeleteModal"
+  >
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4" *ngIf="currentOrder">
+      {{ 'ORDERS.REMOVE_ORDERS_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ currentOrder.orderLabel }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+          icon="pi pi-trash" iconPos="left" (onClick)="onOrderDelete()" severity="danger" [loading]="isLoading"
+          [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+          icon="pi pi-times" iconPos="left" (onClick)="this.visibleOrderDeleteModal = false;" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</p-dialog>
 <app-occ-error-modal 
   *ngIf="showOCCErrorModalOrder" 
   [errorType]="occErrorType"

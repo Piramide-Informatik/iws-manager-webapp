@@ -50,6 +50,7 @@ export class ReceivableService {
     );
   }
 
+  // ==================== READ OPERATIONS ====================
   /**
    * Retrieves a single receivable by ID
    * @param id Receivable identifier
@@ -112,6 +113,22 @@ export class ReceivableService {
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch receivables');
+        console.error('Error fetching receivables:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
+   * Retrieves all receivables
+   * @returns Observable with all Receivable array
+   * @throws Error when server request fails
+   */
+  getAllReceivables(): Observable<Debt[]> {
+    return this.http.get<Debt[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch all receivables');
         console.error('Error fetching receivables:', err);
         return of([]);
       })
