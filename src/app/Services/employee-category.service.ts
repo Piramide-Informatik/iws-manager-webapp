@@ -27,7 +27,7 @@ import { environment } from '../../environments/environment';
     public error = this._error.asReadonly();
 
     constructor() {
-        this.loadInitialData();
+        this.loadInitialData().subscribe();
     }
 
     public loadInitialData(): Observable<EmployeeCategory[]> {

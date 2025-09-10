@@ -135,6 +135,8 @@ import { ContractStatusModalComponent } from './components/contract-status/compo
 import { ModalAbsenceTypesComponent } from './components/absence-types/components/modal-absence-types/modal-absence-types.component';
 import { IwsCommissionsModalComponent } from './components/iws-commissions/components/iws-commissions-modal/iws-commissions-modal.component';
 import { IwsTeamsModalComponent } from './components/iws-teams/components/iws-teams-modal/iws-teams-modal.component';
+import { EmployeeQualificationTableComponent } from './components/employee-qualification/components/employee-qualification-table/employee-qualification-table.component';
+import { EmployeeQualificationModalComponent } from './components/employee-qualification/components/employee-qualification-modal/employee-qualification-modal.component';
 
 registerLocaleData(localeDe, 'de-DE');
 
@@ -235,6 +237,8 @@ registerLocaleData(localeDe, 'de-DE');
     ModalAbsenceTypesComponent,
     IwsCommissionsModalComponent,
     IwsTeamsModalComponent,
+    EmployeeQualificationTableComponent,
+    EmployeeQualificationModalComponent,
   ],
   imports: [
     ButtonModule,

@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        <div class>
+            <master-data-genaral-table
+            [tableId]="tableKey"
+            [tableValues]="employeeCategories()"
+            [columns]="columsHeaderFieldEmployee"
+            [userPreferences]="userEmployeeQualificationPreferences"
+            [dataKeys]="dataKeys"
+            (onColumnChanges)="onUserEmployeeQualificationPreferencesChanges($event)"
+            (onCreateRegister)="handleTableEvents({ type: 'create' })"
+            (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        ></master-data-genaral-table>
+        <p-dialog 
+            [header]="modalType === 'create' 
+            ? ('nueva calificacion' | translate) 
+            : ('IWS_STAFF.DELETE.CONFIRMATION' | translate)" 
+            [modal]="true" 
+            [(visible)]="visibleModal" 
+            (onShow)="onDialogShow()"
+        >
+            <app-employee-qualification-modal
+            [modalType]="modalType"
+            [employeeCategoryName]="NameEmployeeQualification"
+            [employeeCategoryToDelete]="selectedEmployeeQualification"
+            (isVisibleModal)="onModalVisibilityChange($event)"
+            (toastMessage)="toastMessageDisplay($event)"
+            #titleModal
+            ></app-employee-qualification-modal>
+        </p-dialog>
+        </div>
+    </div>
+</div>
+<p-toast/>
+<p>data: {{ employeeCategories() | json}}</p>
