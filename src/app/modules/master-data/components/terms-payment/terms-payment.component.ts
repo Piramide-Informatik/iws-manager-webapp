@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { PayCondition } from '../../../../Entities/payCondition';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-terms-payment',
@@ -12,13 +14,16 @@ import { UserPreference } from '../../../../Entities/user-preference';
   templateUrl: './terms-payment.component.html',
   styles: ``
 })
-export class TermsPaymentComponent {
+export class TermsPaymentComponent implements OnInit, OnDestroy {
+  private readonly commonMessageService = inject(CommonMessagesService);
   public termsPayment: any[] = [];
   public columsHeaderFieldTermsPayment: any[] = [];
   userTermsPaymentPreferences: UserPreference = {};
   tableKey: string = 'TermsPayment'
   dataKeys = ['termsPayment', 'termPayment'];
   private langSubscription!: Subscription;
+  public modalType: 'create' | 'delete' = 'create';
+  public isVisibleModal: boolean = false;
   
   constructor(
     private readonly translate: TranslateService,
@@ -53,6 +58,20 @@ export class TermsPaymentComponent {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    
+    this.isVisibleModal = true;
+  }
+
+  createPayCondition(event: { created?: PayCondition, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }

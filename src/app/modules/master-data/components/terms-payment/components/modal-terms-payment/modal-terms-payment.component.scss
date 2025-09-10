@@ -1,0 +1,16 @@
+.term-payment-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    label {
+      width: 150px;
+      flex-shrink: 0;
+    }
+  
+    input,
+    p-inputnumber, 
+    textarea {
+      width: 100%;
+    }
+}

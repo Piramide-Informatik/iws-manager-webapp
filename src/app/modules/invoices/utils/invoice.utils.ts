@@ -51,6 +51,16 @@ export class InvoiceUtils {
   }
 
   /**
+  * Gets all invoices
+  * @returns Observable emitting the raw list of invoices
+  */
+  getAllInvoices(): Observable<Invoice[]> {
+    return this.invoiceService.getAllInvoices().pipe(
+      catchError(() => throwError(() => new Error('Failed to load invoices')))
+    );
+  }
+
+  /**
   * Creates a new invoice with validation
   * @param invoice - Invoice object to create (without id)
   * @returns Observable that completes when invoice is created

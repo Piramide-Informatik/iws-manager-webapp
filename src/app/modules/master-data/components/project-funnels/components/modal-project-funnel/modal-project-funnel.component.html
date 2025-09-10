@@ -1,0 +1,68 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="projectFunnelForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column mt-4">
+            <div class="project-funnel-form">
+                <label for="promoterNo">{{ 'PROJECT_FUNNELS.FORM.PROJECT_SPONSOR_ID' | translate }}</label>
+                <input #firstInput pInputText type="text" id="promoterNo" formControlName="promoterNo" autocomplete="off" />
+            </div>
+            <div class="project-funnel-form">
+                <label for="projectPromoter">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>
+                <input pInputText type="text" id="projectPromoter" formControlName="projectPromoter" autocomplete="off" />
+            </div>
+            <div class="project-funnel-form align-items-start">
+                <label for="promoterName1" class="mt-1">{{ 'PROJECT_FUNNELS.FORM.NAME' | translate }}</label>
+                <div class="flex flex-column gap-2 group">
+                    <input pInputText type="text" id="promoterName1" formControlName="promoterName1" autocomplete="off" />
+                    <input pInputText type="text" id="promoterName2" formControlName="promoterName2" autocomplete="off" />
+                </div>
+            </div>
+            <div class="project-funnel-form">
+                <label for="country">{{ 'PROJECT_FUNNELS.FORM.LAND' | translate }}</label>
+                <p-select formControlName="country" 
+                    inputId="country"
+                    [options]="countries()" 
+                    optionValue="id"
+                    optionLabel="name" 
+                    [showClear]="true"
+                    appendTo="body"
+                />
+            </div>
+            <div class="project-funnel-form">
+                <label for="street">{{ 'PROJECT_FUNNELS.FORM.STREET' | translate }}</label>
+                <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
+            </div>
+            <div class="project-funnel-form flex">
+                <label for="zipCode">{{ 'PROJECT_FUNNELS.FORM.ZIP_CITY' | translate }}</label>
+                <div class="flex flex-row gap-1 group">
+                    <input pInputText type="text" class="w-4" id="zipCode" formControlName="zipCode" autocomplete="off" />
+                    <input pInputText type="text"  id="city" formControlName="city" autocomplete="off" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col flex justify-content-center mt-2">
+                    <p-button class="save me-2" type="submit" [loading]="projectFunnelForm.invalid || isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" (onClick)="closeModal()" [disabled]="isLoading" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-container>
+
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'PROJECT_FUNNELS.DELETE.CONFIRM_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedProjectFunnels.projectPromoter }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash" iconPos="left"  severity="danger" (onClick)="deleteProjectFunnel()" [loading]="isLoading"
+        [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</ng-template>
