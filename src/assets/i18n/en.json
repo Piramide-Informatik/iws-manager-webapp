@@ -939,6 +939,9 @@
       "STREET": "Street",
       "ZIP_CITY": "ZIP / City"
     },
+    "DELETE": {
+      "CONFIRM_QUESTION": "Möchten Sie den Projektsponsor wirklich löschen "
+    },
     "MODAL": {
       "NEW": "New Project Sponsor",
       "DELETE": "Delete Project Sponsor"

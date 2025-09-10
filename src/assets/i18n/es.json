@@ -934,6 +934,9 @@
       "STREET": "Calle",
       "ZIP_CITY": "Código Postal / Ciudad"
     },
+    "DELETE": {
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el patrocinador del proyecto "
+    },
     "MODAL": {
       "NEW": "Nuevo Patrocinador del Proyecto",
       "DELETE": "Eliminar Patrocinador del Proyecto"
