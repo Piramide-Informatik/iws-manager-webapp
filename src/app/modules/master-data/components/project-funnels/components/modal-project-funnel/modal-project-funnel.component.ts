@@ -17,6 +17,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
   private readonly countryUtils = inject(CountryUtils);
   @Input() visible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() selectedProjectFunnels!: Promoter;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createPromoter = new EventEmitter<{created?: Promoter, status: 'success' | 'error'}>();
   @Output() deletePromoter = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
@@ -65,9 +66,26 @@ export class ModalProjectFunnelComponent implements OnChanges {
       },
       error: () => {
         this.isLoading = false;
-        this.createPromoter.emit({ status: 'error' });
+        this.createPromoter.emit({ status: 'error',  });
       } 
     })
+  }
+
+  deleteProjectFunnel() {
+    this.isLoading = true;
+    if (this.selectedProjectFunnels) {
+      this.promoterUtils.deletePromoter(this.selectedProjectFunnels.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.deletePromoter.emit({status: 'success'});
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.deletePromoter.emit({ status: 'error', error });
+        } 
+      })
+    }
   }
 
   get isCreateMode(): boolean {

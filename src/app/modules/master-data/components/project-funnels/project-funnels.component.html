@@ -9,6 +9,7 @@
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserProjectFunnelsPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
       ></master-data-genaral-table>
 
       <p-dialog
@@ -21,8 +22,11 @@
         >
         <app-modal-project-funnel
           [visible]="isVisibleModal"
+          [selectedProjectFunnels]="selectedProjectFunnels"
+          [modalType]="modalType"
           (isVisibleModal)="isVisibleModal = $event"
           (createPromoter)="onCreatePromoter($event)"
+          (deletePromoter)="onDeletePromoter($event)"
         ></app-modal-project-funnel>
       </p-dialog>
     </div>
@@ -31,4 +35,3 @@
     </div>
   </div>
 </div>
-<p-toast/>
