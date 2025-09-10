@@ -6,6 +6,7 @@ import { Subcontract } from '../../../../Entities/subcontract';
 import { Subscription, switchMap } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { SubcontractStateService } from '../../utils/subcontract-state.service';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-subcontracts-details',
@@ -25,24 +26,27 @@ export class SubcontractsDetailsComponent implements OnInit {
   visibleSubcontractModal: boolean = false;
   isLoading: boolean = false;
 
+  public showOCCErrorModalSubcontract = false;
+  public redirectRoute = "";
+  public errorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
-  ){}
+  ) { }
 
   ngOnInit(): void {
     const routeSub = this.activatedRoute.params.pipe(
       switchMap(params => {
-      this.subcontractId = params['subContractId'];
-      return this.subcontractUtils.getSubcontractById(this.subcontractId);
-    })
+        this.subcontractId = params['subContractId'];
+        return this.subcontractUtils.getSubcontractById(this.subcontractId);
+      })
     ).subscribe({
       next: (subcontract) => {
         if (subcontract) {
           this.subcontractStateService.notifySubcontractUpdate(subcontract);
           this.subcontractStateService.currentSubcontract$.subscribe(updatedSubcontract => {
-            if(updatedSubcontract)
+            if (updatedSubcontract)
               this.currentSubcontract = updatedSubcontract;
           });
         }
@@ -61,7 +65,7 @@ export class SubcontractsDetailsComponent implements OnInit {
     this.subcontractComponent.onSubmit();
   }
 
-  goBackListSubcontracts(): void{
+  goBackListSubcontracts(): void {
     const path = this.subcontractId ? '../../' : '../'
     this.router.navigate([path], { relativeTo: this.activatedRoute });
   }
@@ -82,14 +86,31 @@ export class SubcontractsDetailsComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          if(error.message.includes('have associated subcontract projects') || 
-             error.message.includes('have associated subcontract years')){
-            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
+          this.handleDeleteError(error);
+          //   if (error.message.includes('have associated subcontract projects') ||
+          //     error.message.includes('have associated subcontract years')) {
+          //     this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          //   } else {
+          //     this.commonMessageService.showErrorDeleteMessage();
+          //   }
+          // }
         }
       });
+    }
+  }
+
+  private handleDeleteError(error: any) {
+    if (error.message.includes('have associated subcontract projects') ||
+      error.message.includes('have associated subcontract years')) {
+      this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+    } else if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+      this.showOCCErrorModalSubcontract = true;
+      this.errorType = 'DELETE_UNEXISTED';
+      this.visibleSubcontractModal = false;
+      this.redirectRoute = "/customers/subcontracts/" + this.currentSubcontract.customer?.id;
+      return;
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
