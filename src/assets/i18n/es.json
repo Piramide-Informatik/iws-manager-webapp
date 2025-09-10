@@ -524,6 +524,13 @@
     "HEADER": {
       "NEW_ABSENCE_TYPE": "Nuevo Tipo de Ausencia",
       "DELETE_ABSENCE_TYPE": "Eliminar Tipo de Ausencia"
+    },
+    "DELETE": {
+    "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar el tipo de ausencia "
+    },
+    "MODAL": {
+    "NEW": "Nuevo Tipo de Ausencia",
+    "DELETE": "Eliminar Tipo de Ausencia"
     }
   },
   "SALUTATION": {

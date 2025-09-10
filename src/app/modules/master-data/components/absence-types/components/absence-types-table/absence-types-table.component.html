@@ -7,26 +7,26 @@
     [dataKeys]="dataKeys"
     (onColumnChanges)="onUserAbsenceTypePreferencesChanges($event)"
     (onCreateRegister)="handleTableEvents({ type: 'create' })"
+    (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
     (onEditRegister)="editAbsenceType($event)"
   ></master-data-genaral-table>
+  
   <p-dialog 
-      [header]="modalType === 'create' 
-        ? ('ABSENCE_TYPES.HEADER.NEW_ABSENCE_TYPE' | translate) 
-        : ('ABSENCE_TYPES.HEADER.DELETE_ABSENCE_TYPE' | translate)" 
-      [modal]="true" 
-      [(visible)]="visibleModal" 
-    >
-      <app-modal-absence-types
-        [modalType]="modalType"
-        [selectedAbsenceType]="selectedAbsenceType"
-        [visibleModal]="visibleModal"
-        (isVisibleModal)="onModalVisibilityChange($event)"
-        (createAbsenceType)="onCreateAbsenceType($event)"
-        (deleteAbsenceType)="onDeleteAbsenceType($event)"
-        #absenceTypeModal
-      ></app-modal-absence-types>
-    </p-dialog>
+    [header]="modalType === 'create' 
+      ? ('ABSENCE_TYPES.MODAL.NEW' | translate) 
+      : ('ABSENCE_TYPES.MODAL.DELETE' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleModal" 
+    [style]="{ width: '35rem' }"
+  >
+    <app-modal-absence-types
+      [modalType]="modalType"
+      [selectedAbsenceType]="selectedAbsenceType"
+      [visible]="visibleModal"
+      (isVisibleModal)="onModalVisibilityChange($event)"
+      (createAbsenceType)="onCreateAbsenceType($event)"
+      (deleteAbsenceTypeEvent)="onDeleteAbsenceType($event)"
+    ></app-modal-absence-types>
+  </p-dialog>
 </div>
 <p-toast/>
-  
-  

@@ -525,6 +525,13 @@
     "HEADER": {
       "NEW_ABSENCE_TYPE": "Neue Abwesenheitsart",
       "DELETE_ABSENCE_TYPE": "Abwesenheitsart löschen"
+    },
+    "DELETE": {
+        "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
+    },
+    "MODAL": {
+        "NEW": "Neue Abwesenheitsart",
+        "DELETE": "Abwesenheitsart löschen"
     }
   },
   "SALUTATION": {
