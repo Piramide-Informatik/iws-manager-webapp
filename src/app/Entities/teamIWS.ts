@@ -4,7 +4,8 @@ export interface TeamIws {
   updatedAt: string;
   version: number;
 
-  teamleader: number; // consult
+  teamleader?: number; // consult
 
   teamiws?: string;
+  name?: string
 }

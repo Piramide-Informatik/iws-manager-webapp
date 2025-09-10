@@ -86,11 +86,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   private loadContractOrderCommissions(): void {
     if (!this.basicContract?.id) return;
 
-    this.contractCommissionUtils.getAllContractOrderCommissions().subscribe({
+    this.contractCommissionUtils.getContractOrderCommissionsByBasicContractIdSortedByFromOrderValue(this.basicContract.id).subscribe({
       next: (commissions) => {
-        this.orderCommissions = commissions.filter(commission => 
-          commission.basicContract?.id === this.basicContract.id
-        );
+        this.orderCommissions = commissions
       },
       error: (error) => {
         console.error('Error loading contract order commissions:', error);

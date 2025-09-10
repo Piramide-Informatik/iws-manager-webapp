@@ -32,9 +32,10 @@ export class OrderDetailsComponent implements OnInit {
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalOrder = false;
   public redirectRoute = "";
+  public visibleOrderDeleteModal = false;
 
   private readonly orderId = this.activatedRoute.snapshot.params['orderId'];
-  currentOrder!: Order;
+  public currentOrder!: Order;
 
   ngOnInit(): void {
     if (this.orderId) {
@@ -122,6 +123,33 @@ export class OrderDetailsComponent implements OnInit {
 
     this.commonMessageService.showErrorEditMessage();
     this.isLoading = false;
+  }
+
+  onOrderDelete() {
+    if (this.currentOrder) {
+      this.isLoading = true;
+      this.orderUtils.deleteOrder(this.currentOrder.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.visibleOrderDeleteModal = false;
+          this.commonMessageService.showDeleteSucessfullMessage();
+          setTimeout(() => {
+            this.goBackListOrders();
+          }, 2000);
+        },
+        error: (ordersError) => {
+          this.isLoading = false;
+          if (ordersError.message.includes('have associated debts') || 
+              ordersError.message.includes('have associated invoices') ||
+              ordersError.message.includes('have associated commissions')) {
+            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
+          this.visibleOrderDeleteModal = false;
+        }
+      })
+    }
   }
 
   public onOrderCommission(event: { fixCommission: number, maxCommission: number, iwsProvision: number }) {
