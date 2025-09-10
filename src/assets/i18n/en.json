@@ -940,7 +940,7 @@
       "ZIP_CITY": "ZIP / City"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "Möchten Sie den Projektsponsor wirklich löschen "
+      "CONFIRM_QUESTION": "Are you sure you want to delete the project sponsor "
     },
     "MODAL": {
       "NEW": "New Project Sponsor",
