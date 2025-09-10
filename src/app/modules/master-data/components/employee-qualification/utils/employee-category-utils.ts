@@ -20,9 +20,9 @@ export class EmployeeCategoryUtils {
   }
 
   addEmployeeCategory(
-    titleEmployeeCategory: string
+    employeeCategory: Omit<EmployeeCategory, 'id' | 'createdAt' | 'updatedAt' | 'version'>
   ): Observable<EmployeeCategory> {
-    const trimmedTitle = titleEmployeeCategory?.trim();
+    const trimmedTitle = employeeCategory.title?.trim();
     if (!trimmedTitle) {
       return throwError(
         () => new Error('EmployeeCategory name cannot be empty')
@@ -37,9 +37,7 @@ export class EmployeeCategoryUtils {
           );
         }
 
-        return this.employeeCategoryService.addEmployeeCategory({
-          title: trimmedTitle,
-        });
+        return this.employeeCategoryService.addEmployeeCategory(employeeCategory);
       }),
       catchError((err) => {
         if (
