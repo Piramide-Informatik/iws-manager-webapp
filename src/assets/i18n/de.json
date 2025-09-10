@@ -1007,7 +1007,11 @@
     "TERM_OF_PAYMENT": "Zahlungsziel",
     "TITLE_FORM": "Zahlungsbedingung bearbeiten",
     "TERM_OF_PAYMENT_DAYS": "Zahlungsziel (Tage)",
-    "INVOICE_TEXT": "Rechnungstext"
+    "INVOICE_TEXT": "Rechnungstext",
+    "MODAL": {
+      "NEW": "Neu Zahlungsziel",
+      "DELETE": "Zahlungsziel löschen"
+    }
   },
   "BILLERS": {
     "TITLE_FORM": "Rechnungsersteller bearbeiten"
