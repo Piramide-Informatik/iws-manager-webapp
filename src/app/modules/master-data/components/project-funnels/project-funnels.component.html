@@ -1,17 +1,34 @@
 <div class="container">
-    <div class="row">
-      <div class="col-6">
-        <master-data-genaral-table
-          [tableId]="tableKey"
-          [tableValues]="projectFunnels"
-          [columns]="columsHeaderFieldProjecFunnels"
-          [userPreferences]="userProjectFunnelsPreferences"
-          [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserProjectFunnelsPreferencesChanges($event)"
-        ></master-data-genaral-table>
-      </div>
-      <div class="col-6">
-        <master-data-edit-project-funnel></master-data-edit-project-funnel>
-      </div>
+  <div class="row">
+    <div class="col-6">
+      <master-data-genaral-table
+        [tableId]="tableKey"
+        [tableValues]="projectFunnels()"
+        [columns]="columsHeaderFieldProjecFunnels"
+        [userPreferences]="userProjectFunnelsPreferences"
+        [dataKeys]="dataKeys"
+        (onColumnChanges)="onUserProjectFunnelsPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      ></master-data-genaral-table>
+
+      <p-dialog
+        [header]="modalType === 'create' ?
+          ('PROJECT_FUNNELS.MODAL.NEW' | translate) :
+          ('PROJECT_FUNNELS.MODAL.DELETE' | translate)"
+        [modal]="true"
+        [(visible)]="isVisibleModal"
+        [style]="{ width: '35rem' }"
+        >
+        <app-modal-project-funnel
+          [visible]="isVisibleModal"
+          (isVisibleModal)="isVisibleModal = $event"
+          (createPromoter)="onCreatePromoter($event)"
+        ></app-modal-project-funnel>
+      </p-dialog>
     </div>
+    <div class="col-6">
+      <master-data-edit-project-funnel></master-data-edit-project-funnel>
+    </div>
+  </div>
 </div>
+<p-toast/>

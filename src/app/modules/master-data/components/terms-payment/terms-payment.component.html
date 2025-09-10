@@ -1,19 +1,36 @@
 <div class="container">
-    <div class="row">
-      <div class="col-6">
-        <master-data-genaral-table
-          [tableId]="tableKey"
-          [tableValues]="termsPayment"
-          [columns]="columsHeaderFieldTermsPayment"
-          [hideColumns]="false"
-          tableTitle="TERMS_OF_PAYMENT.TERMS_OF_PAYMENT"
-          [userPreferences]="userTermsPaymentPreferences"
-          [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserTermsPaymentPreferencesChanges($event)"
-        ></master-data-genaral-table>
-      </div>
-      <div class="col-6">
-        <master-data-edit-term-payment/>
-      </div>
+  <div class="row">
+    <div class="col-6">
+      <master-data-genaral-table
+        [tableId]="tableKey"
+        [tableValues]="termsPayment"
+        [columns]="columsHeaderFieldTermsPayment"
+        [hideColumns]="false"
+        tableTitle="TERMS_OF_PAYMENT.TERMS_OF_PAYMENT"
+        [userPreferences]="userTermsPaymentPreferences"
+        [dataKeys]="dataKeys"
+        (onColumnChanges)="onUserTermsPaymentPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      ></master-data-genaral-table>
+
+      <p-dialog
+        [header]="modalType === 'create' 
+          ? ('TERMS_OF_PAYMENT.MODAL.NEW' | translate)
+          : ('TERMS_OF_PAYMENT.MODAL.DELETE' | translate)"
+        [modal]="true"
+        [(visible)]="isVisibleModal"
+      >
+        <app-modal-terms-payment
+          [modalType]="modalType"
+          [isVisible]="isVisibleModal"
+          (isVisibleModal)="isVisibleModal = $event"
+          (createPayCondition)="createPayCondition($event)"
+        ></app-modal-terms-payment>
+      </p-dialog>
     </div>
+    <div class="col-6">
+      <master-data-edit-term-payment/>
+    </div>
+  </div>
 </div>
+<p-toast/>

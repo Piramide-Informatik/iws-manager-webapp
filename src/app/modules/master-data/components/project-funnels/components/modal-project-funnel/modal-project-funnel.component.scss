@@ -1,0 +1,19 @@
+.project-funnel-form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  label {
+    width: 130px;
+    flex-shrink: 0;
+  }
+
+  input, p-select {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+.group {
+  width: 100%;
+}

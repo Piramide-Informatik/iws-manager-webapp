@@ -13,6 +13,7 @@ import { momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { Customer } from '../../../../../Entities/customer';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { SubcontractStateService } from '../../../utils/subcontract-state.service';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-subcontract',
@@ -33,6 +34,8 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   private langSubscription!: Subscription;
   public subcontractForm!: FormGroup;
   public showOCCErrorModalSubcontract = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public redirectRoute = "";
   public optionsNetOrGross!: { label: string, value: string }[];
   @ViewChild('inputText') firstInput!: ElementRef;
   isLoading = false;
@@ -51,7 +54,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
       })
     )
   );
-  
+
   public currentCustomer!: Customer | undefined;
 
   ngOnInit(): void {
@@ -66,10 +69,10 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['subcontractToEdit'] && this.subcontractToEdit){
+    if (changes['subcontractToEdit'] && this.subcontractToEdit) {
       this.mode = 'edit';
       this.loadSubcontractDataForm(this.subcontractToEdit);
-    }else{
+    } else {
       this.mode = 'create';
       this.getCurrentCustomer();
     }
@@ -116,7 +119,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onSubmit(): void {
-    if(this.mode === 'edit') {
+    if (this.mode === 'edit') {
       this.updateSubcontract();
     } else {
       this.createSubcontract();
@@ -127,7 +130,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     if (this.subcontractForm.invalid) {
       console.error('Form is invalid');
       return;
-    } 
+    }
     this.isLoading = true;
     this.onLoadingOperation.emit(this.isLoading);
     const newSubcontract = this.buildSubcontractFromForm();
@@ -141,7 +144,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
 
   private buildSubcontractFromForm(): Omit<Subcontract, 'id'> {
     // controlNetOrGross == true -> invoiceNet, false -> invoiceGross 
-    const controlNetOrGross: boolean =  this.subcontractForm.value.netOrGross === 'net';
+    const controlNetOrGross: boolean = this.subcontractForm.value.netOrGross === 'net';
     return {
       contractTitle: this.subcontractForm.value.contractTitle,
       contractor: this.subcontractForm.value.contractor ? this.getContractorById(this.subcontractForm.value.contractor) : null,
@@ -177,11 +180,11 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     this.onLoadingOperation.emit(this.isLoading);
     const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
 
-    if(subcontractUpdated.netOrGross === this.subcontractToEdit?.netOrGross){
+    if (subcontractUpdated.netOrGross === this.subcontractToEdit?.netOrGross) {
       this.updateOnlySubcontract(subcontractUpdated);
-    }else{
-      console.log('pasa 2: before',this.subcontractToEdit)
-      console.log('pasa 2: after',subcontractUpdated)
+    } else {
+      console.log('pasa 2: before', this.subcontractToEdit)
+      console.log('pasa 2: after', subcontractUpdated)
       this.updateSubcontractWithProjects(subcontractUpdated);
     }
   }
@@ -220,7 +223,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
 
   private buildSubcontractEdited(subcontractSource: any): Subcontract {
     // controlNetOrGross == true -> invoiceNet, false -> invoiceGross
-    const controlNetOrGross: boolean =  this.subcontractForm.value.netOrGross === 'net';
+    const controlNetOrGross: boolean = this.subcontractForm.value.netOrGross === 'net';
     return {
       id: subcontractSource.id,
       createdAt: subcontractSource.createdAt ?? new Date().toISOString(),
@@ -267,14 +270,16 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     this.commonMessageService.showErrorCreatedMessage();
   }
 
-  private handleUpdateSubcontractError(err: Error): void {
+  private handleUpdateSubcontractError(error: Error): void {
     this.isLoading = false;
     this.onLoadingOperation.emit(this.isLoading);
-    console.error('Error updating subcontract:', err);
-    if (err.message === 'Conflict detected: subcontract version mismatch') {
+
+    if (error instanceof OccError) {
       this.showOCCErrorModalSubcontract = true;
-    } else {
-      this.commonMessageService.showErrorEditMessage();
+      this.occErrorType = error.errorType;
+      if (this.occErrorType === 'UPDATE_UNEXISTED') {
+        this.redirectRoute = "/customers/subcontracts/" + this.currentCustomer?.id;
+      }
     }
   }
 
@@ -288,10 +293,10 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput.nativeElement){
+    setTimeout(() => {
+      if (this.firstInput.nativeElement) {
         this.firstInput.nativeElement.focus()
       }
-    },300)
+    }, 300)
   }
 }
