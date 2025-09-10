@@ -103,7 +103,8 @@ button.p-ripple.p-button.p-component {
   background-color: #34495e38 !important;
 }
 
-
+// Styles for p-select
+//------------------------
 input,
 .p-select {
   height: 25px;
@@ -114,11 +115,16 @@ input,
 .p-select-label {
   height: 18px;
   padding: 0 !important;
-
+  margin-right: 10px !important;
   li {
     height: 25px;
   }
 }
+
+.p-select-dropdown {
+  justify-content: end !important;
+}
+//--------------------------
 
 .p-datatable.p-datatable-striped .p-datatable-tbody>tr:nth-child(odd) {
   background-color: #34495e38 !important;
