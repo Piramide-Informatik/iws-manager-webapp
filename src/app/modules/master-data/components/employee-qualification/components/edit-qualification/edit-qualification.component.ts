@@ -13,7 +13,7 @@ import { MessageService } from 'primeng/api';
   templateUrl: './edit-qualification.component.html',
   styleUrl: './edit-qualification.component.scss',
 })
-export class EditQualificationComponent {
+export class EditQualificationComponent implements OnInit {
   public showOCCErrorModalEmployeeCategory = false;
   currentEmployeeCategory: EmployeeCategory | null = null;
   editQualificationForm!: FormGroup;
@@ -23,7 +23,7 @@ export class EditQualificationComponent {
   private readonly editEmployeeCategorySource =
     new BehaviorSubject<EmployeeCategory | null>(null);
 
-constructor(
+  constructor(
     private readonly employeeCategoryUtils: EmployeeCategoryUtils,
     private readonly employeeCategoryStateService: EmployeeCategoryStateService,
     private readonly messageService: MessageService,
@@ -33,12 +33,13 @@ constructor(
   ngOnInit(): void {
     this.initForm();
     this.setupEmployeeCategorySubscription();
-    const savedEmployeeCategoryId = localStorage.getItem('selectedEmployeeCategoryIwsId');
+    const savedEmployeeCategoryId = localStorage.getItem(
+      'selectedEmployeeCategoryIwsId'
+    );
     if (savedEmployeeCategoryId) {
       this.loadEmployeeCategoryAfterRefresh(savedEmployeeCategoryId);
       localStorage.removeItem('selectedEmployeeCategoryId');
     }
-    
   }
 
   private initForm(): void {
@@ -49,26 +50,26 @@ constructor(
   }
 
   private setupEmployeeCategorySubscription(): void {
-      this.subscriptions.add(
-        this.employeeCategoryStateService.currentEmployeeCategory$.subscribe(
-          (EmployeeCategory) => {
-            this.currentEmployeeCategory = EmployeeCategory;
-            EmployeeCategory
-              ? this.loadEEmployeeCategoryData(EmployeeCategory)
-              : this.clearForm();
-          }
-        )
-      );
-    }
-  
-    private loadEEmployeeCategoryData(employeeCategory: EmployeeCategory): void {
-      this.editQualificationForm.patchValue({
-        qualification: employeeCategory.title,
-        abbreviation: employeeCategory.label,
-      });
-    }
+    this.subscriptions.add(
+      this.employeeCategoryStateService.currentEmployeeCategory$.subscribe(
+        (EmployeeCategory) => {
+          this.currentEmployeeCategory = EmployeeCategory;
+          EmployeeCategory
+            ? this.loadEEmployeeCategoryData(EmployeeCategory)
+            : this.clearForm();
+        }
+      )
+    );
+  }
 
-    private loadEmployeeCategoryAfterRefresh(employeeCategoryId: string): void {
+  private loadEEmployeeCategoryData(employeeCategory: EmployeeCategory): void {
+    this.editQualificationForm.patchValue({
+      qualification: employeeCategory.title,
+      abbreviation: employeeCategory.label,
+    });
+  }
+
+  private loadEmployeeCategoryAfterRefresh(employeeCategoryId: string): void {
     this.isSaving = true;
     this.subscriptions.add(
       this.employeeCategoryUtils
@@ -76,7 +77,9 @@ constructor(
         .subscribe({
           next: (employeeCategory) => {
             if (employeeCategory) {
-              this.employeeCategoryStateService.setPEmployeeCategoryToEdit(employeeCategory);
+              this.employeeCategoryStateService.setPEmployeeCategoryToEdit(
+                employeeCategory
+              );
             }
             this.isSaving = false;
           },
@@ -88,84 +91,87 @@ constructor(
   }
 
   onSubmit(): void {
-      if (
-        this.editQualificationForm.invalid ||
-        !this.currentEmployeeCategory ||
-        this.isSaving
-      ) {
-        this.markAllAsTouched();
-        return;
-      }
-  
-      this.isSaving = true;
-      const updateEmployeeCategory: EmployeeCategory = {
-        ...this.currentEmployeeCategory,
-        title: this.editQualificationForm.value.qualification,
-        label: this.editQualificationForm.value.abbreviation
-      };
-  
-      this.subscriptions.add(
-        this.employeeCategoryUtils.updateEmployeeCategory(updateEmployeeCategory).subscribe({
-          next: (savedEmployeeCategory) => this.handleSaveSuccess(savedEmployeeCategory),
-          error: (err) => this.handleError(err),
-        })
-      );
+    if (
+      this.editQualificationForm.invalid ||
+      !this.currentEmployeeCategory ||
+      this.isSaving
+    ) {
+      this.markAllAsTouched();
+      return;
     }
 
+    this.isSaving = true;
+    const updateEmployeeCategory: EmployeeCategory = {
+      ...this.currentEmployeeCategory,
+      title: this.editQualificationForm.value.qualification,
+      label: this.editQualificationForm.value.abbreviation,
+    };
+
+    this.subscriptions.add(
+      this.employeeCategoryUtils
+        .updateEmployeeCategory(updateEmployeeCategory)
+        .subscribe({
+          next: (savedEmployeeCategory) =>
+            this.handleSaveSuccess(savedEmployeeCategory),
+          error: (err) => this.handleError(err),
+        })
+    );
+  }
+
   private markAllAsTouched(): void {
-      Object.values(this.editQualificationForm.controls).forEach((control) => {
-        control.markAsTouched();
-        control.markAsDirty();
-      });
+    Object.values(this.editQualificationForm.controls).forEach((control) => {
+      control.markAsTouched();
+      control.markAsDirty();
+    });
+  }
+
+  private handleSaveSuccess(savedEEmployeeCategory: EmployeeCategory): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant('MESSAGE.SUCCESS'),
+      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
+    });
+    this.employeeCategoryStateService.setPEmployeeCategoryToEdit(null);
+    this.clearForm();
+  }
+
+  private handleError(err: any): void {
+    if (
+      err.message ===
+      'Version conflict: EmployeeCategory has been updated by another user'
+    ) {
+      this.showOCCErrorModalEmployeeCategory = true;
+    } else {
+      this.handleSaveError(err);
     }
-  
-    private handleSaveSuccess(savedEEmployeeCategory: EmployeeCategory): void {
-      this.messageService.add({
-        severity: 'success',
-        summary: this.translate.instant('MESSAGE.SUCCESS'),
-        detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
-      });
-      this.employeeCategoryStateService.setPEmployeeCategoryToEdit(null);
-      this.clearForm();
+    this.isSaving = false;
+  }
+
+  private handleSaveError(error: any): void {
+    console.error('Error saving EmployeeCategory:', error);
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translate.instant('MESSAGE.ERROR'),
+      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
+    });
+    this.isSaving = false;
+  }
+
+  cancelEdit(): void {
+    this.editQualificationForm.reset();
+  }
+  clearForm(): void {
+    this.editQualificationForm.reset();
+    this.currentEmployeeCategory = null;
+    this.isSaving = false;
+  }
+  onRefresh(): void {
+    if (this.currentEmployeeCategory?.id) {
+      localStorage.setItem(
+        'selectedPublicHolidayId',
+        this.currentEmployeeCategory.id.toString()
+      );
+      window.location.reload();
     }
-  
-    private handleError(err: any): void {
-      if (
-        err.message ===
-        'Version conflict: EmployeeCategory has been updated by another user'
-      ) {
-        this.showOCCErrorModalEmployeeCategory = true;
-      } else {
-        this.handleSaveError(err);
-      }
-      this.isSaving = false;
-    }
-  
-    private handleSaveError(error: any): void {
-      console.error('Error saving EmployeeCategory:', error);
-      this.messageService.add({
-        severity: 'error',
-        summary: this.translate.instant('MESSAGE.ERROR'),
-        detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
-      });
-      this.isSaving = false;
-    }
-  
-    cancelEdit(): void {
-      this.editQualificationForm.reset();
-    }
-    clearForm(): void {
-      this.editQualificationForm.reset();
-      this.currentEmployeeCategory = null;
-      this.isSaving = false;
-    }
-    onRefresh(): void {
-      if (this.currentEmployeeCategory?.id) {
-        localStorage.setItem(
-          'selectedPublicHolidayId',
-          this.currentEmployeeCategory.id.toString()
-        );
-        window.location.reload();
-      }
-    }
+  }
 }
