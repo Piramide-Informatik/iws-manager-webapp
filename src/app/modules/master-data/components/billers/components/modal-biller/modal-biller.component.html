@@ -1,0 +1,33 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="billerForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column mt-4">
+            <div class="billers-form flex flex-row mb-3 align-items-center gap-4">
+                <label for="name">{{ 'SIDEBAR.BILLERS' | translate }}</label>
+                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+            </div>
+            <div class="row">
+                <div class="col flex justify-content-center">
+                    <p-button class="save me-2" type="submit" [loading]="billerForm.invalid || isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="closeModal()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-container>
+
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">{{ 'confirm delete biller' | translate }}
+            <strong class="stronglock mt-1">"{{ selectedBiller.name }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left"  severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+        </div>
+  </div>
+</ng-template>

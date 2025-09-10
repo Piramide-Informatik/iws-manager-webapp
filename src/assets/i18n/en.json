@@ -1025,7 +1025,11 @@
     }
   },
   "BILLERS": {
-    "TITLE_FORM": "Edit Biller"
+    "TITLE_FORM": "Edit Biller",
+    "MODAL": {
+      "NEW": "New Biller",
+      "DELETE": "Delete Biller"
+    }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Edit Realization Probabilities"
