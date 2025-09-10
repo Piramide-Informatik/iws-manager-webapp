@@ -1,14 +1,13 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, computed, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
-import { Promoter } from '../../../../Entities/promoter';
-import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { PromoterUtils } from './utils/promoter-utils';
 import { PromoterService } from '../../../../Services/promoter.service';
+import { Promoter } from '../../../../Entities/promoter';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-project-funnels',
@@ -22,7 +21,8 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   columsHeaderFieldProjecFunnels: any[] = [];
   userProjectFunnelsPreferences: UserPreference = {};
   tableKey: string = 'ProjectFunnels'
-  dataKeys = ['id','projectSponsor'];
+  dataKeys = ['id','projectPromoter'];
+  selectedProjectFunnels!: Promoter;
   private readonly commonMessageService = inject(CommonMessagesService);
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
@@ -34,7 +34,6 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
@@ -69,7 +68,12 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    
+    if (event.type === 'delete') {
+      const promoterFound =  this.projectFunnels().find( pf => pf.id == event.data);
+      if (promoterFound) {
+        this.selectedProjectFunnels = promoterFound;
+      }
+    }
     this.isVisibleModal = true;
   }
 
@@ -78,6 +82,14 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeletePromoter(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else if(event.status === 'error') {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }

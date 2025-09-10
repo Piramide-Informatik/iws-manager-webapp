@@ -937,6 +937,9 @@
       "STREET": "Straße",
       "ZIP_CITY": "PLZ / Ort"
     },
+    "DELETE": {
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el patrocinador del proyecto "
+    },
     "MODAL": {
       "NEW": "Neu Projektträger",
       "DELETE": "Projektträger löschen"
