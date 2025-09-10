@@ -10,6 +10,7 @@
         (onColumnChanges)="onUserProjectFunnelsPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="onEditPromoter($event)"
       ></master-data-genaral-table>
 
       <p-dialog
