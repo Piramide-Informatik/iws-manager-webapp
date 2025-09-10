@@ -15,6 +15,7 @@ export interface Invoice {
   order: Order | null;
   payCondition: PayCondition | null;
   vat: null;
+  cancelledInvoice: Invoice | null;
 
   invoiceNo?: number;
   invoiceDate?: number;
@@ -30,4 +31,5 @@ export interface Invoice {
   taxRate?: number;
   payDeadline?: string;
   paymentDate?: string;
+  invoicePdf: Blob | null;
 }
