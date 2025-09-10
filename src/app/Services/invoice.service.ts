@@ -101,6 +101,22 @@ export class InvoiceService {
     );
   }
 
+  /**
+   * Retrieves all invoices
+   * @returns Observable with Invoice array 
+   * @throws Error when server request fails
+   */
+  getAllInvoices(): Observable<Invoice[]> {
+    return this.http.get<Invoice[]>(this.apiUrl, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch all invoices');
+        console.error('Error fetching all invoices:', err);
+        return of([]);
+      })
+    );
+  }
+
   // ==================== UPDATE OPERATIONS ====================
   /**
    * Updates an existing invoice

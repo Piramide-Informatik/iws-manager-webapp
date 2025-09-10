@@ -1007,7 +1007,11 @@
     "TERM_OF_PAYMENT": "Condición de Pago",
     "TITLE_FORM": "Editar Condición de Pago",
     "TERM_OF_PAYMENT_DAYS": "Condición de Pago (Días)",
-    "INVOICE_TEXT": "Texto de la Factura"
+    "INVOICE_TEXT": "Texto de la Factura",
+    "MODAL": {
+      "NEW": "Nueva Condición de Pago",
+      "DELETE": "Eliminar Condición de Pago"
+    }
   },
   "BILLERS": {
     "TITLE_FORM": "Editar Facturador"

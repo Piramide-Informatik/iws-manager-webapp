@@ -1011,7 +1011,11 @@
     "TERM_OF_PAYMENT": "Term of Payment",
     "TITLE_FORM": "Edit Term of Payment",
     "TERM_OF_PAYMENT_DAYS": "Term of Payment (Days)",
-    "INVOICE_TEXT": "Invoice Text"
+    "INVOICE_TEXT": "Invoice Text",
+    "MODAL": {
+      "NEW": "New Term of Payment",
+      "DELETE": "Delete Term of Payment"
+    }
   },
   "BILLERS": {
     "TITLE_FORM": "Edit Biller"
