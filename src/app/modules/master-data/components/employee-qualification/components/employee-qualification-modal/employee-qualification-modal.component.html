@@ -1,0 +1,59 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="createEmployeeCategoryForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mb-2 mt-4">
+            <div class="create-form flex align-items-center mb-3">
+                <label for="qualification" class="block">
+                    {{ 'qualification' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="qualification" formControlName="qualification" autocomplete="off"
+                    [attr.aria-invalid]="createEmployeeCategoryForm.get('qualification')?.invalid"
+                    [attr.aria-describedby]="createEmployeeCategoryForm.get('qualification')?.invalid ? 'qualificationError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createEmployeeCategoryForm.get('qualification')?.invalid && createEmployeeCategoryForm.get('qualification')?.touched"
+                    id="qualificationError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="create-form flex align-items-center mb-3">
+                <label for="abbreviation" class="block">
+                    {{ 'abbreviation' | translate }}
+                </label>
+                <input #titleInput pInputText type="text" id="abbreviation" formControlName="abbreviation" autocomplete="off"
+                    [attr.aria-invalid]="createEmployeeCategoryForm.get('abbreviation')?.invalid"
+                    [attr.aria-describedby]="createEmployeeCategoryForm.get('abbreviation')?.invalid ? 'abbreviationError' : null"
+                    class="w-full" />
+
+                <small *ngIf="createEmployeeCategoryForm.get('abbreviation')?.invalid && createEmployeeCategoryForm.get('abbreviation')?.touched"
+                    id="abbreviationError" class="text-red-500 block mt-1">
+                </small>
+            </div>
+            <div class="flex justify-content-center gap-2 mt-4">
+                <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+                    icon="pi pi-check" iconPos="left" [loading]="isLoading"
+                    [disabled]="createEmployeeCategoryForm.invalid || isLoading" />
+
+                <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                    icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />
+            </div>
+        </div>
+    </form>
+
+</ng-container>
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'USERS.DELETE.CONFIRM_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ employeeCategoryName }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />
+
+        </div>
+    </div>
+</ng-template>
