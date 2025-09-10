@@ -26,8 +26,8 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
-  private langSubscription!: Subscription;
 
+  private langSubscription!: Subscription;
   readonly projectFunnels = computed(() => {
     return this.promoterService.promoters();
   });
