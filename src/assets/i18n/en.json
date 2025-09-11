@@ -855,6 +855,13 @@
     },
     "PLACEHOLDER": {
       "SELECT_LEADER": "Select Leader"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Delete Team",
+      "CONFIRM_QUESTION" : "Are you sure you want to delete "
+    },
+    "FORM":{
+      "IWS_TEAM_FORM": "New Team"
     }
   },
   "COUNTRIES": {

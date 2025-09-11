@@ -853,6 +853,13 @@
     },
     "PLACEHOLDER": {
       "SELECT_LEADER": "Teamleiter auswählen"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Team löschen",
+      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+    },
+    "FORM":{
+      "IWS_TEAM_FORM": "New Team"
     }
   },
   "COUNTRIES": {
