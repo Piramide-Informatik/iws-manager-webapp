@@ -17,8 +17,8 @@ import { BillerService } from '../../../../Services/biller.service';
   styles: ``
 })
 export class BillersComponent implements OnInit, OnDestroy {
-  private billerUtils = inject(BillerUtils);
-  private billersService = inject(BillerService)
+  private readonly billerUtils = inject(BillerUtils);
+  private readonly billersService = inject(BillerService)
   public columsHeaderFieldBillers: any[] = [];
   userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
