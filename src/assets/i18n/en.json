@@ -1021,11 +1021,17 @@
     "INVOICE_TEXT": "Invoice Text",
     "MODAL": {
       "NEW": "New Term of Payment",
-      "DELETE": "Delete Term of Payment"
+      "DELETE": "Delete Term of Payment",
+      "CONFIRM_QUESTION":"Are you sure you want to delete the Term of Payment "
     }
   },
   "BILLERS": {
-    "TITLE_FORM": "Edit Biller"
+    "TITLE_FORM": "Edit Biller",
+    "MODAL": {
+      "NEW": "New Biller",
+      "DELETE": "Delete Biller",
+      "REMOVE_BILLER_QUESTION": "Are you sure you want to delete the biller "
+    }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Edit Realization Probabilities"

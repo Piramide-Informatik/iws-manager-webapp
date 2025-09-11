@@ -139,6 +139,7 @@ import { IwsTeamsModalComponent } from './components/iws-teams/components/iws-te
 import { EmployeeQualificationTableComponent } from './components/employee-qualification/components/employee-qualification-table/employee-qualification-table.component';
 import { EmployeeQualificationModalComponent } from './components/employee-qualification/components/employee-qualification-modal/employee-qualification-modal.component';
 import { ModalTermsPaymentComponent } from './components/terms-payment/components/modal-terms-payment/modal-terms-payment.component';
+import { ModalBillerComponent } from './components/billers/components/modal-biller/modal-biller.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -244,6 +245,7 @@ registerLocaleData(localeDe, 'de-DE');
     EmployeeQualificationTableComponent,
     EmployeeQualificationModalComponent,
     ModalTermsPaymentComponent,
+    ModalBillerComponent,
   ],
   imports: [
     ButtonModule,
