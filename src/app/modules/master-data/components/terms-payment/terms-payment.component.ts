@@ -1,12 +1,13 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { PayCondition } from '../../../../Entities/payCondition';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { PayConditionUtils } from './utils/pay-condition-utils';
+import { PayConditionService } from '../../../../Services/pay-condition.service';
 
 @Component({
   selector: 'app-terms-payment',
@@ -16,24 +17,27 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 })
 export class TermsPaymentComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
-  public termsPayment: any[] = [];
+  private readonly payConditionUtils = inject(PayConditionUtils);
+  private readonly payConditionService = inject(PayConditionService);
   public columsHeaderFieldTermsPayment: any[] = [];
   userTermsPaymentPreferences: UserPreference = {};
   tableKey: string = 'TermsPayment'
-  dataKeys = ['termsPayment', 'termPayment'];
+  dataKeys = ['name', 'deadline'];
   private langSubscription!: Subscription;
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
+  readonly termsPayment = computed(() => {
+    return this.payConditionService.payConditions();
+  });
   
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
   ngOnInit(): void {
-    this.termsPayment = this.masterDataService.getTermsPaymentData();
+    this.payConditionUtils.loadInitialData().subscribe()
 
     this.loadColHeadersTermsPayment();
     this.userTermsPaymentPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldTermsPayment);
@@ -50,8 +54,8 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
 
   loadColHeadersTermsPayment(): void {
     this.columsHeaderFieldTermsPayment = [
-      { field: 'termsPayment', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERMS_OF_PAYMENT')) },
-      { field: 'termPayment', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERM_OF_PAYMENT')), customClasses: ['align-right'] },
+      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERMS_OF_PAYMENT')) },
+      { field: 'deadline', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERM_OF_PAYMENT')), customClasses: ['align-right'] },
     ];
   }
 
