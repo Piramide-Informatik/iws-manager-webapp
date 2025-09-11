@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
@@ -7,6 +7,8 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { Biller } from '../../../../Entities/biller';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { BillerUtils } from './utils/biller-utils';
+import { BillerService } from '../../../../Services/biller.service';
 
 @Component({
   selector: 'app-billers',
@@ -15,15 +17,18 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
   styles: ``
 })
 export class BillersComponent implements OnInit, OnDestroy {
-  public billers: any[] = [];
+  private billerUtils = inject(BillerUtils);
+  private billersService = inject(BillerService)
   public columsHeaderFieldBillers: any[] = [];
   userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
-  dataKeys = ['biller'];
+  dataKeys = ['name'];
   private readonly commonMessageService = inject(CommonMessagesService);
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
-  
+  readonly billers = computed(() => {
+    return this.billersService.billers();
+  });
   private langSubscription!: Subscription;
   
   constructor(
@@ -34,7 +39,7 @@ export class BillersComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(): void {
-    this.billers = this.masterDataService.getBillersData();
+    this.billerUtils.loadInitialData().subscribe();
 
     this.loadColHeadersBillers();
     this.userBillersPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldBillers);
@@ -52,7 +57,7 @@ export class BillersComponent implements OnInit, OnDestroy {
 
   loadColHeadersBillers(): void {
     this.columsHeaderFieldBillers = [
-      { field: 'biller', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.BILLERS')) },
+      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.BILLERS')) },
     ];
   }
 
