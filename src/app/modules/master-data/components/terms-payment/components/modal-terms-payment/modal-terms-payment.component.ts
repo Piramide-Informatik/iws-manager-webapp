@@ -28,7 +28,7 @@ export class ModalTermsPaymentComponent implements OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['isVisible'] && this.isVisible && this.modalType === 'create'){
+    if(changes['isVisible'] && this.isVisible && this.modalType !== 'delete'){
       this.focusInputIfNeeded();
     }
   }
@@ -56,6 +56,7 @@ export class ModalTermsPaymentComponent implements OnChanges {
   }
 
   confirmDelete(): void {
+    this.isLoading = true;
     this.payConditionUtils.deletePayCondition(this.termPayment.id).subscribe({
       next: () => {
         this.isLoading = false;
