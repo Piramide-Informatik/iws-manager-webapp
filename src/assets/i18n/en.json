@@ -1029,7 +1029,8 @@
     "TITLE_FORM": "Edit Biller",
     "MODAL": {
       "NEW": "New Biller",
-      "DELETE": "Delete Biller"
+      "DELETE": "Delete Biller",
+      "REMOVE_BILLER_QUESTION": "Are you sure you want to delete the biller "
     }
   },
   "REALIZATION_PROBABILITIES": {

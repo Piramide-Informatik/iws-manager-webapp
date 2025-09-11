@@ -51,6 +51,21 @@ export class ModalBillerComponent implements OnChanges {
     })
   }
 
+  removeBiller(): void {
+    this.isLoading = true;
+    this.billerUtils.deleteBiller(this.selectedBiller.id).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.closeModal();
+        this.deleteBiller.emit({status: 'success'});
+      },
+      error: (errorDeleteBiller) => {
+        this.isLoading = false;
+        this.deleteBiller.emit({ status: 'error', error: errorDeleteBiller });
+      } 
+    })
+  }
+
   get isCreateMode(): boolean {
     return this.modalType === 'create';
   }
