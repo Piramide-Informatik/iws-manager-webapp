@@ -26,6 +26,7 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
+  termPayment!: PayCondition;
   readonly termsPayment = computed(() => {
     return this.payConditionService.payConditions();
   });
@@ -67,7 +68,12 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    
+    if (event.type === 'delete') {
+      const termPay = this.termsPayment().find(tp => tp.id == event.data);
+      if (termPay) {
+        this.termPayment = termPay;
+      }
+    }
     this.isVisibleModal = true;
   }
 
@@ -76,6 +82,14 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  deletePayCondition(event: {status: 'success' | 'error', error?: Error}) {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }

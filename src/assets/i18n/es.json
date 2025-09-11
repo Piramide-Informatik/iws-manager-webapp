@@ -1017,7 +1017,8 @@
     "INVOICE_TEXT": "Texto de la Factura",
     "MODAL": {
       "NEW": "Nueva Condición de Pago",
-      "DELETE": "Eliminar Condición de Pago"
+      "DELETE": "Eliminar Condición de Pago",
+      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar la Condición de Pago "
     }
   },
   "BILLERS": {
