@@ -2,23 +2,30 @@
     <form [formGroup]="editTermPaymentForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column mb-2 px-6">
             <div class="term-payment-form mb-2">
-                <label for="terms-of-payment">{{ 'TERMS_OF_PAYMENT.TERMS_OF_PAYMENT' | translate }}</label>
-                <input pInputText type="text" id="terms-of-payment" formControlName="termsPayment" autocomplete="off" />
+                <label for="name">{{ 'TERMS_OF_PAYMENT.TERMS_OF_PAYMENT' | translate }}</label>
+                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
             </div>
             <div class="term-payment-form mb-2">
-                <label for="term-of-payment">{{ 'TERMS_OF_PAYMENT.TERM_OF_PAYMENT_DAYS' | translate }}</label>
-                <input pInputText type="text" class="text-right" id="term-of-payment" formControlName="termPayment" autocomplete="off" />
+                <label for="deadline">{{ 'TERMS_OF_PAYMENT.TERM_OF_PAYMENT_DAYS' | translate }}</label>
+                <input pInputText type="text" class="text-right" id="deadline" formControlName="deadline" autocomplete="off" />
             </div>
             <div class="term-payment-form mb-2 flex flex-column align-items-start gap-2">
-                <label for="invoice-text">{{ 'TERMS_OF_PAYMENT.INVOICE_TEXT' | translate }}</label>
-                <textarea pTextarea id="invoice-text" rows="6" formControlName="invoiceText" style="resize: none;" ></textarea>
+                <label for="text">{{ 'TERMS_OF_PAYMENT.INVOICE_TEXT' | translate }}</label>
+                <textarea pTextarea id="text" rows="6" formControlName="text" style="resize: none;" ></textarea>
             </div>
             <div class="row">
                 <div class="col flex justify-content-center mt-2">
-                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="clearForm()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaPay"
+  (close)="showOCCErrorModaPay = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast/>
