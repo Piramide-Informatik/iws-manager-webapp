@@ -8,6 +8,7 @@ import { PayCondition } from '../../../../Entities/payCondition';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { PayConditionUtils } from './utils/pay-condition-utils';
 import { PayConditionService } from '../../../../Services/pay-condition.service';
+import { PayConditionStateService } from './utils/pay-condition-state.services';
 
 @Component({
   selector: 'app-terms-payment',
@@ -19,6 +20,7 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly payConditionUtils = inject(PayConditionUtils);
   private readonly payConditionService = inject(PayConditionService);
+  private readonly payStateService = inject(PayConditionStateService);
   public columsHeaderFieldTermsPayment: any[] = [];
   userTermsPaymentPreferences: UserPreference = {};
   tableKey: string = 'TermsPayment'
@@ -91,5 +93,9 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  editPayCondition(payCondition: PayCondition): void {
+    this.payStateService.setPayConditionToEdit(payCondition);
   }
 }
