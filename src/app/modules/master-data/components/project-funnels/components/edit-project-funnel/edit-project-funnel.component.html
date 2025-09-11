@@ -2,28 +2,29 @@
     <form [formGroup]="editProjectFunnelForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column mb-2 px-4">
             <div class="project-funnel-form mb-2">
-                <label for="project-sponsor-id">{{ 'PROJECT_FUNNELS.FORM.PROJECT_SPONSOR_ID' | translate }}</label>
-                <input pInputText type="text" id="project-sponsor-id" formControlName="projectSponsorId" autocomplete="off" />
+                <label for="promoterNo">{{ 'PROJECT_FUNNELS.FORM.PROJECT_SPONSOR_ID' | translate }}</label>
+                <input #firstInput pInputText type="text" id="promoterNo" formControlName="promoterNo" autocomplete="off" />
             </div>
             <div class="project-funnel-form mb-2">
-                <label for="abbreviation">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>
-                <input pInputText type="text" id="abbreviation" formControlName="abbreviation" autocomplete="off" />
+                <label for="projectPromoter">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>
+                <input pInputText type="text" id="projectPromoter" formControlName="projectPromoter" autocomplete="off" />
             </div>
             <div class="project-funnel-form mb-2 align-items-start">
-                <label for="name1" class="mt-1">{{ 'PROJECT_FUNNELS.FORM.NAME' | translate }}</label>
+                <label for="promoterName1" class="mt-1">{{ 'PROJECT_FUNNELS.FORM.NAME' | translate }}</label>
                 <div class="flex flex-column gap-2 group">
-                    <input pInputText type="text" id="name1" formControlName="name1" autocomplete="off" />
-                    <input pInputText type="text" id="name2" formControlName="name2" autocomplete="off" />
+                    <input pInputText type="text" id="promoterName1" formControlName="promoterName1" autocomplete="off" />
+                    <input pInputText type="text" id="promoterName2" formControlName="promoterName2" autocomplete="off" />
                 </div>
             </div>
             <div class="project-funnel-form mb-2">
-                <label for="land">{{ 'PROJECT_FUNNELS.FORM.LAND' | translate }}</label>
-                <p-select formControlName="land" 
-                    id="land"
-                    [options]="lands" 
-                    optionLabel="name" 
-                    placeholder="Select a Land"
-                    [style]="{'align-items': 'center'}" 
+                <label for="country">{{ 'PROJECT_FUNNELS.FORM.LAND' | translate }}</label>
+                <p-select formControlName="country" 
+                    inputId="country"
+                    [options]="countries()" 
+                    optionLabel="name"
+                    optionValue="id" 
+                    [showClear]="true"
+                    [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
                 />
             </div>
             <div class="project-funnel-form mb-2">
@@ -31,18 +32,25 @@
                 <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
             </div>
             <div class="project-funnel-form mb-2 flex">
-                <label for="zip">{{ 'PROJECT_FUNNELS.FORM.ZIP_CITY' | translate }}</label>
+                <label for="zipCode">{{ 'PROJECT_FUNNELS.FORM.ZIP_CITY' | translate }}</label>
                 <div class="flex flex-row gap-1 group">
-                    <input pInputText type="text" class="w-4" id="zip" formControlName="zip" autocomplete="off" />
+                    <input pInputText type="text" class="w-4" id="zipCode" formControlName="zipCode" autocomplete="off" />
                     <input pInputText type="text"  id="city" formControlName="city" autocomplete="off" />
                 </div>
             </div>
             <div class="row">
                 <div class="col flex justify-content-center mt-4">
-                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                    <p-button class="save me-2" size="small" type="submit" [loading]="editProjectFunnelForm.invalid || isLoading" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="clearForm()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaPromoter"
+  (close)="showOCCErrorModaPromoter = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
+<p-toast/>

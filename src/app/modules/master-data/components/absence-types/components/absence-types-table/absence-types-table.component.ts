@@ -12,7 +12,6 @@ import { AbsenceTypeService } from '../../../../../../Services/absence-type.serv
 import { Column } from '../../../../../../Entities/column';
 import { AbsenceTypeStateService } from '../../utils/absence-type-state.service';
 
-
 @Component({
   selector: 'app-absence-types-table',
   standalone: false,
@@ -24,6 +23,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly absenceTypeService = inject(AbsenceTypeService);
   private readonly absenceStateService = inject(AbsenceTypeStateService);
+  
   readonly absenceTypes = computed(() => {
     return this.absenceTypeService.absenceTypes().map(aType => ({
       id: aType.id,
@@ -37,6 +37,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
       canBeBooked: aType.hours && aType.hours == 1
     }));
   });
+  
   cols: Column[] = [];
   selectedColumns: Column[] = [];
   userAbsenceTypePreferences: UserPreference = {};
@@ -49,9 +50,13 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
-  public selectedAbsenceType!: any;
+  public selectedAbsenceType!: AbsenceType;
 
-  constructor(private readonly translate: TranslateService, private readonly userPreferenceService: UserPreferenceService, private readonly router: Router) { }
+  constructor(
+    private readonly translate: TranslateService, 
+    private readonly userPreferenceService: UserPreferenceService, 
+    private readonly router: Router
+  ) { }
 
   ngOnInit() {
     this.absenceTypeUtils.loadInitialData().subscribe();
@@ -110,7 +115,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
     if(deleteEvent.status === 'success'){
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(deleteEvent.status === 'error' && deleteEvent.error){
-      if(deleteEvent.error.message === 'Version conflict: absence type has been updated by another user'){
+      if(deleteEvent.error.message === 'Cannot delete register: it is in use by other entities'){
         this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
       }else{
         this.commonMessageService.showErrorDeleteMessage();
@@ -121,7 +126,10 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
-      this.selectedAbsenceType = this.absenceTypes().find(at => at.id == event.data);
+      const absenceTypeFound = this.absenceTypeService.absenceTypes().find(at => at.id == event.data);
+      if (absenceTypeFound) {
+        this.selectedAbsenceType = absenceTypeFound;
+      }
     }
     this.visibleModal = true;
   }

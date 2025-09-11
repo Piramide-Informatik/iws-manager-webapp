@@ -35,7 +35,7 @@
   <div class="confirmation-content-entity mb-2 mt-4">
     <p class="mb-4 title-container">
       {{ 'FRAMEWORK-AGREEMENTS.REMOVE_QUESTION' | translate }}
-      <strong class="stronglock mt-1">"{{ currentBasicContract.contractLabel	}}"</strong>?
+      <strong class="stronglock mt-1" *ngIf="currentBasicContract">"{{ currentBasicContract.contractLabel }}"</strong>?
     </p>
     <div class="flex justify-content-center gap-2 buttons-container">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
