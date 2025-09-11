@@ -1020,7 +1020,8 @@
     "INVOICE_TEXT": "Rechnungstext",
     "MODAL": {
       "NEW": "Neu Zahlungsziel",
-      "DELETE": "Zahlungsziel löschen"
+      "DELETE": "Zahlungsziel löschen",
+      "CONFIRM_QUESTION":"Möchten Sie die Zahlungsbedingungen wirklich löschen "
     }
   },
   "BILLERS": {

@@ -3,7 +3,7 @@
     <div class="col-6">
       <master-data-genaral-table
         [tableId]="tableKey"
-        [tableValues]="termsPayment"
+        [tableValues]="termsPayment()"
         [columns]="columsHeaderFieldTermsPayment"
         [hideColumns]="false"
         tableTitle="TERMS_OF_PAYMENT.TERMS_OF_PAYMENT"
@@ -11,6 +11,7 @@
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserTermsPaymentPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
       ></master-data-genaral-table>
 
       <p-dialog
@@ -23,8 +24,10 @@
         <app-modal-terms-payment
           [modalType]="modalType"
           [isVisible]="isVisibleModal"
+          [termPayment]="termPayment"
           (isVisibleModal)="isVisibleModal = $event"
           (createPayCondition)="createPayCondition($event)"
+          (deletePayCondition)="deletePayCondition($event)"
         ></app-modal-terms-payment>
       </p-dialog>
     </div>
