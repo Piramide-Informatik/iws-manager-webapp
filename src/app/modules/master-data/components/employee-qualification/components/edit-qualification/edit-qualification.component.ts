@@ -168,7 +168,7 @@ export class EditQualificationComponent implements OnInit {
   onRefresh(): void {
     if (this.currentEmployeeCategory?.id) {
       localStorage.setItem(
-        'selectedPublicHolidayId',
+        'selectedEmployeeCategoryId',
         this.currentEmployeeCategory.id.toString()
       );
       window.location.reload();

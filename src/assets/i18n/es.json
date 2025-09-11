@@ -768,6 +768,13 @@
       "TITLE_FORM": "Editar calificación",
       "QUALIFICATION": "Calificación",
       "ABBREVIATION": "Abreviatura"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Eliminar Calificación",
+      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
+    },
+    "FORM":{
+      "QUALIFICATION_FORM": "Nueva Calificación"
     }
   },
   "IWS_STAFF": {
