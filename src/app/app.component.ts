@@ -35,6 +35,7 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
+    localStorage.clear();
     const currentLanguage = this.userPreferenceService.getLanguage() ?? 'de';
     this.selectedLanguage = currentLanguage;
     this.translate.use(currentLanguage);
