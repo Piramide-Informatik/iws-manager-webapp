@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { Biller } from '../../../../Entities/biller';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-billers',
@@ -12,13 +14,15 @@ import { UserPreference } from '../../../../Entities/user-preference';
   templateUrl: './billers.component.html',
   styles: ``
 })
-export class BillersComponent {
+export class BillersComponent implements OnInit, OnDestroy {
   public billers: any[] = [];
   public columsHeaderFieldBillers: any[] = [];
   userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
   dataKeys = ['biller'];
-
+  private readonly commonMessageService = inject(CommonMessagesService);
+  public modalType: 'create' | 'delete' = 'create';
+  public isVisibleModal: boolean = false;
   
   private langSubscription!: Subscription;
   
@@ -55,6 +59,20 @@ export class BillersComponent {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    
+    this.isVisibleModal = true;
+  }
+
+  onCreateBiller(event: { created?: Biller, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }

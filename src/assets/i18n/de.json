@@ -1025,7 +1025,11 @@
     }
   },
   "BILLERS": {
-    "TITLE_FORM": "Rechnungsersteller bearbeiten"
+    "TITLE_FORM": "Rechnungsersteller bearbeiten",
+    "MODAL": {
+      "NEW": "Neu Rechnungsersteller",
+      "DELETE": "Rechnungsersteller löschen"
+    }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten"

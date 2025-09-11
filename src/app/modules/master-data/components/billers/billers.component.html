@@ -1,19 +1,36 @@
 <div class="container">
-    <div class="row">
-      <div class="col-6">
-        <master-data-genaral-table
-          [tableId]="tableKey"
-          [tableValues]="billers"
-          [columns]="columsHeaderFieldBillers"
-          [hideColumns]="false"
-          tableTitle="SIDEBAR.BILLERS"
-          [userPreferences]="userBillersPreferences"
-          [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserBillersPreferencesChanges($event)"
-        ></master-data-genaral-table>
-      </div>
-      <div class="col-6">
-        <master-data-edit-biller/>
-      </div>
+  <div class="row">
+    <div class="col-6">
+      <master-data-genaral-table
+        [tableId]="tableKey"
+        [tableValues]="billers"
+        [columns]="columsHeaderFieldBillers"
+        [hideColumns]="false"
+        tableTitle="SIDEBAR.BILLERS"
+        [userPreferences]="userBillersPreferences"
+        [dataKeys]="dataKeys"
+        (onColumnChanges)="onUserBillersPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      ></master-data-genaral-table>
+
+      <p-dialog
+        [header]="modalType === 'create'
+        ? ('BILLERS.MODAL.NEW' | translate)
+        : ('BILLERS.MODAL.DELETE' | translate)"
+        [modal]="true"
+        [(visible)]="isVisibleModal"
+        >
+          <app-modal-biller
+            [visible]="isVisibleModal"
+            [modalType]="modalType"
+            (isVisibleModal)="isVisibleModal = $event"
+            (createBiller)="onCreateBiller($event)"
+          ></app-modal-biller>
+      </p-dialog>
     </div>
+    <div class="col-6">
+      <master-data-edit-biller/>
+    </div>
+  </div>
 </div>
+<p-toast/>

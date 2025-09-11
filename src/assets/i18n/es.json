@@ -1022,7 +1022,11 @@
     }
   },
   "BILLERS": {
-    "TITLE_FORM": "Editar Facturador"
+    "TITLE_FORM": "Editar Facturador",
+    "MODAL": {
+      "NEW": "Nuevo Facturador",
+      "DELETE": "Eliminar Facturador"
+    }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Editar Probabilidad de Ejecución"
