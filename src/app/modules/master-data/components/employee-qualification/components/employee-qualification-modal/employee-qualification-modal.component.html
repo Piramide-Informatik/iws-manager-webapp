@@ -3,7 +3,7 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center mb-3">
                 <label for="qualification" class="block">
-                    {{ 'qualification' | translate }}
+                    {{ 'EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION' | translate }}
                 </label>
                 <input #titleInput pInputText type="text" id="qualification" formControlName="qualification" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeCategoryForm.get('qualification')?.invalid"
@@ -16,7 +16,7 @@
             </div>
             <div class="create-form flex align-items-center mb-3">
                 <label for="abbreviation" class="block">
-                    {{ 'abbreviation' | translate }}
+                    {{ 'EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION' | translate }}
                 </label>
                 <input #titleInput pInputText type="text" id="abbreviation" formControlName="abbreviation" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeCategoryForm.get('abbreviation')?.invalid"
@@ -42,7 +42,7 @@
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
-            {{ 'USERS.DELETE.CONFIRM_QUESTION' | translate }}
+            {{ 'EMPLOYEE_QUALIFICATION.DELETE.CONFIRM_QUESTION' | translate }}
             <strong class="stronglock mt-1">"{{ employeeCategoryName }}"</strong>?
         </p>
 

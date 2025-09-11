@@ -774,6 +774,13 @@
       "TITLE_FORM": "Qualifikation bearbeiten",
       "QUALIFICATION": "Qualifikation",
       "ABBREVIATION": "Kürzel"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Qualifikation löschen",
+      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+    },
+    "FORM":{
+      "QUALIFICATION_FORM": "Neue Qualifikation"
     }
   },
   "IWS_STAFF": {

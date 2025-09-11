@@ -776,6 +776,13 @@
       "TITLE_FORM": "Edit qualification",
       "QUALIFICATION": "Qualification",
       "ABBREVIATION": "Abbreviation"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Delete Qualification",
+      "CONFIRM_QUESTION" : "Are you sure you want to delete "
+    },
+    "FORM":{
+      "QUALIFICATION_FORM": "New Qualification"
     }
   },
   "IWS_STAFF": {
