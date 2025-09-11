@@ -12,6 +12,7 @@
         (onColumnChanges)="onUserBillersPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="onEditBiller($event)"
       ></master-data-genaral-table>
 
       <p-dialog
