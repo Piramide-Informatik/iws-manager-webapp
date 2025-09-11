@@ -24,7 +24,7 @@ export class ModalTermsPaymentComponent implements OnChanges {
   public readonly payConditionForm = new FormGroup({
     name: new FormControl(''),
     deadline: new FormControl(null),
-    invoiceText: new FormControl('')
+    text: new FormControl('')
   });
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -39,7 +39,8 @@ export class ModalTermsPaymentComponent implements OnChanges {
     this.isLoading = true;
     const newPayCondition: Omit<PayCondition, 'id' | 'createdAt'| 'updatedAt' | 'version'> = {
       name: this.payConditionForm.value.name ?? '',
-      deadline: this.payConditionForm.value.deadline ?? 0
+      deadline: this.payConditionForm.value.deadline ?? 0,
+      text: this.payConditionForm.value.text ?? ''
     }
 
     this.payConditionUtils.addPayCondition(newPayCondition).subscribe({
