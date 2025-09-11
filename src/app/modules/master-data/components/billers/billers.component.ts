@@ -9,6 +9,7 @@ import { Biller } from '../../../../Entities/biller';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { BillerUtils } from './utils/biller-utils';
 import { BillerService } from '../../../../Services/biller.service';
+import { BillerStateService } from './utils/biller-state.service';
 
 @Component({
   selector: 'app-billers',
@@ -18,7 +19,8 @@ import { BillerService } from '../../../../Services/biller.service';
 })
 export class BillersComponent implements OnInit, OnDestroy {
   private readonly billerUtils = inject(BillerUtils);
-  private readonly billersService = inject(BillerService)
+  private readonly billersService = inject(BillerService);
+  private readonly billerStateService = inject(BillerStateService);
   public columsHeaderFieldBillers: any[] = [];
   userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
@@ -93,5 +95,9 @@ export class BillersComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  onEditBiller(biller: Biller): void {
+    this.billerStateService.setBillerToEdit(biller);
   }
 }
