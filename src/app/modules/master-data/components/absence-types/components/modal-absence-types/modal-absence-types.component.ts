@@ -11,12 +11,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class ModalAbsenceTypesComponent implements OnChanges {
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
-  @Input() selectedAbsenceType!: AbsenceType | undefined;
+  
+  @Input() selectedAbsenceType!: AbsenceType;
   @Input() modalType: 'create' | 'delete' = 'create';
-  @Input() visibleModal: boolean = false;
+  @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createAbsenceType = new EventEmitter<{created?: AbsenceType, status: 'success' | 'error'}>();
-  @Output() deleteAbsenceType = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() deleteAbsenceTypeEvent = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
@@ -26,11 +28,11 @@ export class ModalAbsenceTypesComponent implements OnChanges {
     label: new FormControl(''),
     shareOfDay: new FormControl(null, [Validators.max(1.0)]),
     isHoliday: new FormControl(0),
-    hours: new FormControl(0), // can be Booked 
+    hours: new FormControl(0),
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['visibleModal'] && this.visibleModal && this.isCreateMode) {
+    if (changes['visible'] && this.visible && this.isCreateMode) {
       this.focusInputIfNeeded();
     }
   } 
@@ -60,21 +62,18 @@ export class ModalAbsenceTypesComponent implements OnChanges {
     })
   }
 
-  public onDeleteConfirm(): void {
+  public onDelete(): void {
     this.isLoading = true;
     if (this.selectedAbsenceType) {
       this.absenceTypeUtils.deleteAbsenceType(this.selectedAbsenceType.id).subscribe({
         next: () => {
-          this.deleteAbsenceType.emit({status: 'success'});
+          this.isLoading = false;
+          this.closeModal();
+          this.deleteAbsenceTypeEvent.emit({status: 'success'});
         },
         error: (error: Error) => {
           this.isLoading = false;
-          this.deleteAbsenceType.emit({status: 'error', error});
-        },
-        complete: () => {
-          this.isLoading = false;
-          this.closeModal();
-          this.selectedAbsenceType = undefined;
+          this.deleteAbsenceTypeEvent.emit({status: 'error', error});
         }
       })
     }
@@ -98,5 +97,4 @@ export class ModalAbsenceTypesComponent implements OnChanges {
       }, 300);
     }
   }
-
 }

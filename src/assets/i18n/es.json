@@ -524,6 +524,13 @@
     "HEADER": {
       "NEW_ABSENCE_TYPE": "Nuevo Tipo de Ausencia",
       "DELETE_ABSENCE_TYPE": "Eliminar Tipo de Ausencia"
+    },
+    "DELETE": {
+    "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar el tipo de ausencia "
+    },
+    "MODAL": {
+    "NEW": "Nuevo Tipo de Ausencia",
+    "DELETE": "Eliminar Tipo de Ausencia"
     }
   },
   "SALUTATION": {
@@ -1017,11 +1024,17 @@
     "INVOICE_TEXT": "Texto de la Factura",
     "MODAL": {
       "NEW": "Nueva Condición de Pago",
-      "DELETE": "Eliminar Condición de Pago"
+      "DELETE": "Eliminar Condición de Pago",
+      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar la Condición de Pago "
     }
   },
   "BILLERS": {
-    "TITLE_FORM": "Editar Facturador"
+    "TITLE_FORM": "Editar Facturador",
+    "MODAL": {
+      "NEW": "Nuevo Facturador",
+      "DELETE": "Eliminar Facturador",
+      "REMOVE_BILLER_QUESTION": "¿Está seguro que desea eliminar el facturador "
+    }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Editar Probabilidad de Ejecución"

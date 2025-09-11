@@ -525,6 +525,13 @@
     "HEADER": {
       "NEW_ABSENCE_TYPE": "Neue Abwesenheitsart",
       "DELETE_ABSENCE_TYPE": "Abwesenheitsart löschen"
+    },
+    "DELETE": {
+        "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
+    },
+    "MODAL": {
+        "NEW": "Neue Abwesenheitsart",
+        "DELETE": "Abwesenheitsart löschen"
     }
   },
   "SALUTATION": {
@@ -1020,11 +1027,17 @@
     "INVOICE_TEXT": "Rechnungstext",
     "MODAL": {
       "NEW": "Neu Zahlungsziel",
-      "DELETE": "Zahlungsziel löschen"
+      "DELETE": "Zahlungsziel löschen",
+      "CONFIRM_QUESTION":"Möchten Sie die Zahlungsbedingungen wirklich löschen "
     }
   },
   "BILLERS": {
-    "TITLE_FORM": "Rechnungsersteller bearbeiten"
+    "TITLE_FORM": "Rechnungsersteller bearbeiten",
+    "MODAL": {
+      "NEW": "Neu Rechnungsersteller",
+      "DELETE": "Rechnungsersteller löschen",
+      "REMOVE_BILLER_QUESTION": "Möchten Sie den Rechnungssteller wirklich löschen "
+    }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten"

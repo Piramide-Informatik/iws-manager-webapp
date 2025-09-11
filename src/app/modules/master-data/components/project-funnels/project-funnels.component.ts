@@ -8,6 +8,7 @@ import { PromoterUtils } from './utils/promoter-utils';
 import { PromoterService } from '../../../../Services/promoter.service';
 import { Promoter } from '../../../../Entities/promoter';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { PromoterStateService } from './utils/promoter-state.service';
 
 @Component({
   selector: 'app-project-funnels',
@@ -18,6 +19,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   private readonly promoterUtils = inject(PromoterUtils);
   private readonly promoterService = inject(PromoterService);
+  private readonly promoterStateService = inject(PromoterStateService);
   columsHeaderFieldProjecFunnels: any[] = [];
   userProjectFunnelsPreferences: UserPreference = {};
   tableKey: string = 'ProjectFunnels'
@@ -55,8 +57,8 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   loadColHeadersProjectFunnels(): void {
     this.columsHeaderFieldProjecFunnels = [
-      { field: 'id', styles: {'width': 'auto'}, header: 'Nr', customClasses: ['align-right'] },
-      { field: 'projectPromoter', styles: {'width': 'auto'},  header: this.translate.instant(_('PROJECT_FUNNELS.TABLE.PROJECT_SPONSOR')) },
+      { field: 'promoterNo', styles: {'width': 'auto'}, header: 'Nr'},
+      { field: 'projectPromoter',  header: this.translate.instant(_('PROJECT_FUNNELS.TABLE.PROJECT_SPONSOR')) },
     ];
   }
 
@@ -91,5 +93,9 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
     } else if(event.status === 'error') {
       this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  onEditPromoter(promoter: Promoter): void {
+    this.promoterStateService.setPromoterToEdit(promoter);
   }
 }
