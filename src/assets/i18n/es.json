@@ -1024,7 +1024,8 @@
     "TITLE_FORM": "Editar Facturador",
     "MODAL": {
       "NEW": "Nuevo Facturador",
-      "DELETE": "Eliminar Facturador"
+      "DELETE": "Eliminar Facturador",
+      "REMOVE_BILLER_QUESTION": "¿Está seguro que desea eliminar el facturador "
     }
   },
   "REALIZATION_PROBABILITIES": {

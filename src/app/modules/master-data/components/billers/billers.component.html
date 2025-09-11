@@ -11,6 +11,7 @@
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserBillersPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
       ></master-data-genaral-table>
 
       <p-dialog
@@ -23,8 +24,10 @@
           <app-modal-biller
             [visible]="isVisibleModal"
             [modalType]="modalType"
+            [selectedBiller]="biller"
             (isVisibleModal)="isVisibleModal = $event"
             (createBiller)="onCreateBiller($event)"
+            (deleteBiller)="onDeleteBiller($event)"
           ></app-modal-biller>
       </p-dialog>
     </div>

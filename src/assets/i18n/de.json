@@ -1027,7 +1027,8 @@
     "TITLE_FORM": "Rechnungsersteller bearbeiten",
     "MODAL": {
       "NEW": "Neu Rechnungsersteller",
-      "DELETE": "Rechnungsersteller löschen"
+      "DELETE": "Rechnungsersteller löschen",
+      "REMOVE_BILLER_QUESTION": "Möchten Sie den Rechnungssteller wirklich löschen "
     }
   },
   "REALIZATION_PROBABILITIES": {

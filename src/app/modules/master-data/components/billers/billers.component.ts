@@ -23,6 +23,7 @@ export class BillersComponent implements OnInit, OnDestroy {
   userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
   dataKeys = ['name'];
+  biller!: Biller;
   private readonly commonMessageService = inject(CommonMessagesService);
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
@@ -69,7 +70,12 @@ export class BillersComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    
+    if (event.type === 'delete') {
+      const foundBiller = this.billers().find(b => b.id == event.data);
+      if (foundBiller) {
+        this.biller = foundBiller;
+      }
+    }
     this.isVisibleModal = true;
   }
 
@@ -78,6 +84,14 @@ export class BillersComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteBiller(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
