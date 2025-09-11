@@ -1021,7 +1021,8 @@
     "INVOICE_TEXT": "Invoice Text",
     "MODAL": {
       "NEW": "New Term of Payment",
-      "DELETE": "Delete Term of Payment"
+      "DELETE": "Delete Term of Payment",
+      "CONFIRM_QUESTION":"Are you sure you want to delete the Term of Payment "
     }
   },
   "BILLERS": {
