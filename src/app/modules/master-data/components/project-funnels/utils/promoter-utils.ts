@@ -125,10 +125,10 @@ export class PromoterUtils {
       take(1),
       map((currentPromoter) => {
         if (!currentPromoter) {
-          throw new Error('Funding Program not found');
+          throw new Error('Promoter not found');
         }
         if (currentPromoter.version !== promoter.version) {
-          throw new Error('Version conflict: Funding Program has been updated by another user');
+          throw new Error('Version conflict: Promoter has been updated by another user');
         }
         return promoter;
       }),

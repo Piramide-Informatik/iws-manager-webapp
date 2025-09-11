@@ -13,6 +13,7 @@ export class ModalTermsPaymentComponent implements OnChanges {
   private readonly payConditionUtils = inject(PayConditionUtils);
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() isVisible: boolean = false;
+  @Input() termPayment!: PayCondition 
   @Output() createPayCondition = new EventEmitter<{created?: PayCondition, status: 'success' | 'error'}>();
   @Output() deletePayCondition = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -27,7 +28,7 @@ export class ModalTermsPaymentComponent implements OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['isVisible'] && this.isVisible && this.modalType === 'create'){
+    if(changes['isVisible'] && this.isVisible && this.modalType !== 'delete'){
       this.focusInputIfNeeded();
     }
   }
@@ -50,6 +51,21 @@ export class ModalTermsPaymentComponent implements OnChanges {
       error: () => {
         this.isLoading = false;
         this.createPayCondition.emit({ status: 'error' });
+      }
+    });
+  }
+
+  confirmDelete(): void {
+    this.isLoading = true;
+    this.payConditionUtils.deletePayCondition(this.termPayment.id).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.closeModal();
+        this.deletePayCondition.emit({ status: 'success' });
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.deletePayCondition.emit({ status: 'error', error });
       }
     });
   }

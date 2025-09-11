@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { Biller } from '../../../../Entities/biller';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { BillerUtils } from './utils/biller-utils';
+import { BillerService } from '../../../../Services/biller.service';
 
 @Component({
   selector: 'app-billers',
@@ -12,14 +16,20 @@ import { UserPreference } from '../../../../Entities/user-preference';
   templateUrl: './billers.component.html',
   styles: ``
 })
-export class BillersComponent {
-  public billers: any[] = [];
+export class BillersComponent implements OnInit, OnDestroy {
+  private readonly billerUtils = inject(BillerUtils);
+  private readonly billersService = inject(BillerService)
   public columsHeaderFieldBillers: any[] = [];
   userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
-  dataKeys = ['biller'];
-
-  
+  dataKeys = ['name'];
+  biller!: Biller;
+  private readonly commonMessageService = inject(CommonMessagesService);
+  public modalType: 'create' | 'delete' = 'create';
+  public isVisibleModal: boolean = false;
+  readonly billers = computed(() => {
+    return this.billersService.billers();
+  });
   private langSubscription!: Subscription;
   
   constructor(
@@ -30,7 +40,7 @@ export class BillersComponent {
   ){}
 
   ngOnInit(): void {
-    this.billers = this.masterDataService.getBillersData();
+    this.billerUtils.loadInitialData().subscribe();
 
     this.loadColHeadersBillers();
     this.userBillersPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldBillers);
@@ -48,13 +58,40 @@ export class BillersComponent {
 
   loadColHeadersBillers(): void {
     this.columsHeaderFieldBillers = [
-      { field: 'biller', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.BILLERS')) },
+      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.BILLERS')) },
     ];
   }
 
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete') {
+      const foundBiller = this.billers().find(b => b.id == event.data);
+      if (foundBiller) {
+        this.biller = foundBiller;
+      }
+    }
+    this.isVisibleModal = true;
+  }
+
+  onCreateBiller(event: { created?: Biller, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteBiller(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
