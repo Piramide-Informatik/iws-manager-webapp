@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import {
   TranslateService,
@@ -15,7 +15,7 @@ import { PrimeNGConfigService } from './shared/services/primeng-config.service';
   standalone: false,
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private readonly primeNGConfigService = inject(PrimeNGConfigService);
 
   title = 'iws-manager-webapp';
