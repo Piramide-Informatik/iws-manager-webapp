@@ -49,7 +49,7 @@ export class NetworkService {
   }
 
   // CREATE
-  addNetwork(network: Omit<Network, 'id' | 'createdAt' | 'updatedAt'>): Observable<Network> {
+  addNetwork(network: Omit<Network, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Network> {
     return this.http.post<Network>(this.apiUrl, network, this.httpOptions).pipe(
       tap({
         next: (newNetwork) => {

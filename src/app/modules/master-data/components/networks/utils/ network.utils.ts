@@ -45,15 +45,8 @@ export class NetowrkUtils {
    * @param network - New network to be created
    * @returns Observable that completes when network is created
    */
-  createNewNetwork(network: Omit<Network, 'id' | 'createdAt' | 'updatedAt'>): Observable<void> {
-
-    return new Observable<void>(subscriber => {
-      this.networkService.addNetwork(network);
-
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
-    });
+  createNewNetwork(network: Omit<Network, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Network> {
+    return this.networkService.addNetwork(network);
   }
 
   /**

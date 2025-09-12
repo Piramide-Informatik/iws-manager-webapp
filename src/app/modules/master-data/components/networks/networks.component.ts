@@ -8,6 +8,7 @@ import { NetowrkUtils } from './utils/ network.utils';
 import { NetworkService } from '../../../../Services/network.service';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Network } from '../../../../Entities/network';
+import { NetworkStateService } from './utils/network-state.service';
 
 @Component({
   selector: 'app-networks',
@@ -18,6 +19,7 @@ import { Network } from '../../../../Entities/network';
 export class NetworksComponent implements OnInit, OnDestroy {
   private readonly networkUtils = inject(NetowrkUtils);
   private readonly networkService = inject(NetworkService);
+  private readonly networkStateService = inject(NetworkStateService);
   public columsHeaderFieldNetworks: any[] = [];
   userNetworksPreferences: UserPreference = {};
   tableKey: string = 'Networks'
@@ -89,5 +91,17 @@ export class NetworksComponent implements OnInit, OnDestroy {
         this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
         this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  onCreateNetwork(event: { created?: Network, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onEditNetwork(network: Network): void {
+    this.networkStateService.setNetworkToEdit(network);
   }
 }
