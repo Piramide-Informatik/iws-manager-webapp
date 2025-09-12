@@ -85,7 +85,9 @@ export class NetworksComponent implements OnInit, OnDestroy {
     if(event.status === 'success'){
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(event.status === 'error'){
-      this.commonMessageService.showErrorDeleteMessage();
+      event.error?.message === 'Cannot delete register: it is in use by other entities' ?
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
+        this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
