@@ -14,6 +14,10 @@ export class CompanyTypeUtils {
   private readonly companyTypeService = inject(CompanyTypeService);
   private readonly customerUtils = inject(CustomerUtils);
 
+  loadInitialData(): Observable<CompanyType[]>  {
+    return this.companyTypeService.loadInitialData();
+  }
+
   /**
      * Gets a company type by ID with proper error handling
      * @param id - ID of the company type to retrieve
