@@ -3,7 +3,6 @@ import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { _, TranslateService } from "@ngx-translate/core";
 import { approvalStatus } from './approval-status.data'; 
-import { MasterDataService } from '../../../../../master-data.service';
 import { UserPreferenceService } from '../../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../../Entities/user-preference';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
@@ -73,7 +72,6 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly masterDataService: MasterDataService,
     private readonly approvalStatusStateService: ApprovalStatusStateService,
     ) { }
 
@@ -109,7 +107,12 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   }
   
   loadColHeaders(): void {
-    this.cols = this.masterDataService.getApprovalStatusColumns();
+    this.cols = [
+      { field: 'approvalStatus', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.APPROVAL_STATUS') },
+      { field: 'order', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.ORDER') },
+      { field: 'projects', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.PROJECTS'), filter: { type: 'boolean' } },
+      { field: 'networks', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.NETWORKS'), filter: { type: 'boolean' } }
+    ];
   }
 
   ngOnDestroy(): void {
