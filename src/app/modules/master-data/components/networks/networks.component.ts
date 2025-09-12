@@ -1,10 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
-import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { NetowrkUtils } from './utils/ network.utils';
+import { NetworkService } from '../../../../Services/network.service';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { Network } from '../../../../Entities/network';
 
 @Component({
   selector: 'app-networks',
@@ -13,24 +16,31 @@ import { UserPreference } from '../../../../Entities/user-preference';
   styles: ``
 })
 export class NetworksComponent implements OnInit, OnDestroy {
-  public networks: any[] = [];
+  private readonly networkUtils = inject(NetowrkUtils);
+  private readonly networkService = inject(NetworkService);
   public columsHeaderFieldNetworks: any[] = [];
   userNetworksPreferences: UserPreference = {};
   tableKey: string = 'Networks'
-  dataKeys = ['network'];
+  dataKeys = ['name'];
 
   private langSubscription!: Subscription;
+
+  readonly networks = computed(() => {
+    return this.networkService.networks();
+  });
+  visibleNetworksModal = false;
+  modalType: 'create' | 'delete' = 'create';
+  selectedNetwork!: Network;
   
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
   ngOnInit(): void {
-    this.networks = this.masterDataService.getNetworksData();
-
+    this.networkUtils.loadInitialData().subscribe();
     this.loadColHeadersNetworks();
     this.userNetworksPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldNetworks);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -46,13 +56,36 @@ export class NetworksComponent implements OnInit, OnDestroy {
   
   loadColHeadersNetworks(): void {
     this.columsHeaderFieldNetworks = [
-      { field: 'network', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')) },
+      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')) },
     ];
   }
   
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete') {
+      const foundNetwork = this.networks().find(nt => nt.id == event.data);
+      if (foundNetwork) {
+        this.selectedNetwork = foundNetwork;
+      }
+    }
+    this.visibleNetworksModal = true;
+  }
+
+  onModalVisibilityChange(isVisible: boolean) {
+    this.visibleNetworksModal = isVisible;
+  }
+
+  onDeleteNetwork(event: {status: 'success' | 'error', error?: Error}) {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }

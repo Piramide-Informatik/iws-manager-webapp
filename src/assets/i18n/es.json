@@ -1008,6 +1008,11 @@
       "CUSTOMER": "Cliente",
       "PARTNER": "Socio",
       "NEW_PARTNER": "Nuevo Socio"
+    },
+    "MODAL": {
+      "NEW": "Nueva Red",
+      "DELETE": "Eliminar Red",
+      "CONFIRM_QUESTION":"¿Está seguro de que desea eliminar la red "
     }
   },
   "SALES_TAX": {

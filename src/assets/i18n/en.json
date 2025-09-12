@@ -1012,6 +1012,11 @@
       "CUSTOMER": "Customer",
       "PARTNER": "Partner",
       "NEW_PARTNER": "New Partner"
+    },
+    "MODAL": {
+      "NEW": "New Network",
+      "DELETE": "Delete Network",
+      "CONFIRM_QUESTION":"Are you sure you want to delete the network "
     }
   },
   "SALES_TAX": {
