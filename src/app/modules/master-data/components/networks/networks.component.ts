@@ -1,12 +1,13 @@
 import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
-import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { NetowrkUtils } from './utils/ network.utils';
 import { NetworkService } from '../../../../Services/network.service';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { Network } from '../../../../Entities/network';
 
 @Component({
   selector: 'app-networks',
@@ -27,10 +28,13 @@ export class NetworksComponent implements OnInit, OnDestroy {
   readonly networks = computed(() => {
     return this.networkService.networks();
   });
+  visibleNetworksModal = false;
+  modalType: 'create' | 'delete' = 'create';
+  selectedNetwork!: Network;
   
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
@@ -59,6 +63,29 @@ export class NetworksComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete') {
+      const foundNetwork = this.networks().find(nt => nt.id == event.data);
+      if (foundNetwork) {
+        this.selectedNetwork = foundNetwork;
+      }
+    }
+    this.visibleNetworksModal = true;
+  }
+
+  onModalVisibilityChange(isVisible: boolean) {
+    this.visibleNetworksModal = isVisible;
+  }
+
+  onDeleteNetwork(event: {status: 'success' | 'error', error?: Error}) {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
