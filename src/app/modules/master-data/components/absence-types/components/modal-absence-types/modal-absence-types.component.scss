@@ -7,13 +7,17 @@
     margin-bottom: 1rem;
 
     label {
-      width: 150px;
+      width: 130px;
+      flex-shrink: 0;
     }
   
     input {
-      flex: 1;
+      width: 100%;
       max-width: 300px;
     }
   }
-    
+}
+
+::ng-deep input.p-inputnumber-input#shareOfDay {
+  width: 100% !important;
 }
