@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Network } from '../../../../../../Entities/network';
 import { NetowrkUtils } from '../../utils/ network.utils';
@@ -9,7 +9,7 @@ import { NetowrkUtils } from '../../utils/ network.utils';
   templateUrl: './network-modal.component.html',
   styleUrl: './network-modal.component.scss'
 })
-export class NetworkModalComponent {
+export class NetworkModalComponent implements OnInit {
 
   private readonly networkUtils = inject(NetowrkUtils)
   @Input() modalType!: string;
