@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { TeamIws } from '../../../../../../Entities/teamIWS';
+import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
 
 @Component({
   selector: 'app-iws-teams-modal',
@@ -13,8 +14,10 @@ import { TeamIws } from '../../../../../../Entities/teamIWS';
 })
 export class IwsTeamsModalComponent implements OnInit, OnDestroy {
   private readonly teamIwsUtils = inject(TeamIwsUtils);
+  private readonly employeeIws=  inject(EmployeeIwsService);
   private readonly subscriptions = new Subscription();
 
+  leaders: any[] = [];
   @ViewChild('teamIwsInput')
   teamIwsInput!: ElementRef<HTMLInputElement>;
 
@@ -31,10 +34,12 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy {
 
   readonly createTeamIwsForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
+    teamLeader: new FormControl(null,[])
   });
 
   ngOnInit(): void {
     this.loadInitialData();
+    this.loadTeams()
     this.resetForm();
   }
 
@@ -48,6 +53,22 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy {
 
   private loadInitialData(): void {
     this.addSubscription(this.teamIwsUtils.loadInitialData().subscribe());
+  }
+
+  private loadTeams() {
+    const sub = this.employeeIws.getAllEmployeeIws().pipe(
+    map(data => data.map(emp => ({
+      id: emp.id,
+      firstname: emp.firstname,
+      lastname: emp.lastname,
+      fullName: `${emp.firstname} ${emp.lastname}`,
+      version: emp.version
+    })))
+  ).subscribe({
+    next: (data) => (this.leaders = data),
+    error: (err) => console.error('Error loading leaders', err),
+  });
+  this.subscriptions.add(sub);
   }
 
   onCancel(): void {
@@ -126,7 +147,9 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy {
   }
 
   private getSanitizedTeamIwsValues(): Omit<TeamIws, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
-    return { name: this.createTeamIwsForm.value.name?.trim() ?? '' };
+    return { 
+      name: this.createTeamIwsForm.value.name?.trim() ?? '',
+      teamLeader: this.createTeamIwsForm.value.teamLeader ?? null };
   }
 
   private resetForm(): void {

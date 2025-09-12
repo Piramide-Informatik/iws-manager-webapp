@@ -49,7 +49,6 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     return this.teamIwsService.teamsIws().map((teamiws) => ({
       id: teamiws.id,
       name: teamiws.name,
-      //teamleader: teamiws.teamleader
     }));
   });
 
@@ -140,8 +139,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     const TeamIwsToEdit: TeamIws = {
       id: teamIws.id,
       name: teamIws.name,
-      teamleader: teamIws.teamleader,
-      teamiws: teamIws.teamiws,
+      teamLeader: teamIws.teamLeader,
       createdAt: '',
       updatedAt: '',
       version: 0,
