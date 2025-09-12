@@ -30,7 +30,7 @@ export class CompanyTypeService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): Observable<CompanyType[]> {
+  public loadInitialData(): Observable<CompanyType[]> {
     this._loading.set(true);
     return this.http.get<CompanyType[]>(this.apiUrl).pipe(
       tap({

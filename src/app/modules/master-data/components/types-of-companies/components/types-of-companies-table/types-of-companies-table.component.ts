@@ -33,10 +33,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
   selectedCompanyType: number | null = null;
   companyTypeName: string = '';
   readonly typeOfCompaniesValues = computed(() => {
-    return this.companyTypeService.companyTypes().map(companyType => ({
-      id: companyType.id,
-      name: companyType.name,
-    }));
+    return this.companyTypeService.companyTypes();
   });
   @ViewChild('companyTypeModal') companyTypeModalComponent!: TypeOfCompaniesModalComponent;
   @ViewChild('dt') dt!: Table;
@@ -49,6 +46,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
               private readonly companyTypeState: TypeOfCompaniesStateService ) { }
 
   ngOnInit() {
+    this.companyTypeUtils.loadInitialData().subscribe();
     this.loadTypeOfCompaniesHeadersAndColumns();
     this.userTypesOfCompaniesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.typeOfCompaniesColumns);
     this.langTypeOfCompaniesSubscription = this.translate.onLangChange.subscribe(() => {
