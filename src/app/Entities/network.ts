@@ -4,5 +4,5 @@ export interface Network {
   updatedAt: string;
   version: number;
 
-  network?: string;
+  name?: string;
 }

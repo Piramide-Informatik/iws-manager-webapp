@@ -1,10 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { NetowrkUtils } from './utils/ network.utils';
+import { NetworkService } from '../../../../Services/network.service';
 
 @Component({
   selector: 'app-networks',
@@ -13,13 +15,18 @@ import { UserPreference } from '../../../../Entities/user-preference';
   styles: ``
 })
 export class NetworksComponent implements OnInit, OnDestroy {
-  public networks: any[] = [];
+  private readonly networkUtils = inject(NetowrkUtils);
+  private readonly networkService = inject(NetworkService);
   public columsHeaderFieldNetworks: any[] = [];
   userNetworksPreferences: UserPreference = {};
   tableKey: string = 'Networks'
-  dataKeys = ['network'];
+  dataKeys = ['name'];
 
   private langSubscription!: Subscription;
+
+  readonly networks = computed(() => {
+    return this.networkService.networks();
+  });
   
   constructor(
     private readonly translate: TranslateService,
@@ -29,8 +36,7 @@ export class NetworksComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(): void {
-    this.networks = this.masterDataService.getNetworksData();
-
+    this.networkUtils.loadInitialData().subscribe();
     this.loadColHeadersNetworks();
     this.userNetworksPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldNetworks);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -46,7 +52,7 @@ export class NetworksComponent implements OnInit, OnDestroy {
   
   loadColHeadersNetworks(): void {
     this.columsHeaderFieldNetworks = [
-      { field: 'network', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')) },
+      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')) },
     ];
   }
   
