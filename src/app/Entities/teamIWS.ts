@@ -1,3 +1,4 @@
+import { EmployeeIws } from "./employeeIws";
 export interface TeamIws {
   id: number;
   createdAt: string;   // ISO format: "2025-06-17T06:21:35.281056"
@@ -8,4 +9,5 @@ export interface TeamIws {
 
   teamiws?: string;
   name?: string
+  teamLeader?: EmployeeIws | null;
 }

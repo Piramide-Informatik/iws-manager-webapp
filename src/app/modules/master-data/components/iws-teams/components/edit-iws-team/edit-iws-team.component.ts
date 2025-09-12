@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 import { TeamIws } from '../../../../../../Entities/teamIWS';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Subscription } from 'rxjs';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
+import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
@@ -29,18 +30,16 @@ export class EditIwsTeamComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly teamIwsUtils: TeamIwsUtils,
     private readonly teamIwsStateService: TeamIwsStateService,
+    private readonly employeeIwsService: EmployeeIwsService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService
   ) {}
 
-  leaders = [
-    { id: 1, fullName: 'Patrick Zessin' },
-    { id: 2, fullName: 'Philipp Glockner' },
-    { id: 3, fullName: 'Helga Zacherle' },
-  ];
+  leaders: any[] = [];
 
   ngOnInit(): void {
     this.initForm();
+    this.loadTeams();
     this.setupTeamIwsSubscription();
 
     const savedTeamIwsId = localStorage.getItem('selectedTeamIwsId');
@@ -70,8 +69,25 @@ export class EditIwsTeamComponent implements OnInit {
   private loadTeamIwsData(teamIws: TeamIws): void {
     this.editTeamForm.patchValue({
       name: teamIws.name,
+      teamLeader: teamIws.teamLeader
     });
   }
+
+  private loadTeams() {
+      const sub = this.employeeIwsService.getAllEmployeeIws().pipe(
+      map(data => data.map(emp => ({
+        id: emp.id,
+        firstname: emp.firstname,
+        lastname: emp.lastname,
+        fullName: `${emp.firstname} ${emp.lastname}`,
+        version: emp.version
+      })))
+    ).subscribe({
+      next: (data) => (this.leaders = data),
+      error: (err) => console.error('Error loading leaders', err),
+    });
+    this.subscriptions.add(sub);
+    }
 
   private loadTeamIwsAfterRefresh(teamIwsId: string): void {
     this.isSaving = true;
@@ -100,6 +116,7 @@ export class EditIwsTeamComponent implements OnInit {
     const updateTeamIws: TeamIws = {
       ...this.currentTeamIws,
       name: this.editTeamForm.value.name,
+      teamLeader: this.editTeamForm.value.team
     };
     this.subscriptions.add(
       this.teamIwsUtils.updateTeamIws(updateTeamIws).subscribe({

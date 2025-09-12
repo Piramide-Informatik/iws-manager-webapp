@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createTeamIwsForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class=".team-form flex align-items-center mb-3">
+            <div class="team-form flex align-items-center mb-2">
                 <label for="name" class="block">
                     {{ 'IWS_TEAMS.LABEL.TEAM_NAME' | translate }}
                 </label>
@@ -13,6 +13,21 @@
                 <small *ngIf="createTeamIwsForm.get('name')?.invalid && createTeamIwsForm.get('name')?.touched"
                     id="nameError" class="text-red-500 block mt-1">
                 </small>
+            </div>
+            <div class="team-form mb-2">
+                <label for="teamLeader">{{
+                "IWS_TEAMS.LABEL.TEAM_LEADER" | translate
+                }}</label>
+                <p-dropdown
+                id="teamLeader"
+                [options]="leaders"
+                optionLabel="fullName"
+                formControlName="teamLeader"
+                placeholder="{{ 'IWS_TEAMS.PLACEHOLDER.SELECT_LEADER' | translate }}"
+                [showClear]="true"
+                appendTo="body"
+                >
+                </p-dropdown>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
