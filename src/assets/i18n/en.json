@@ -849,7 +849,12 @@
       "HEADER": "Edit IWS Commission",
       "THRESHOLD": "Threshold Value",
       "PERCENTAGE": "Commission (%)",
-      "MIN_COMMISSION": "Minimum Commission"
+      "MIN_COMMISSION": "Minimum Commission",
+      "NEW": "New Commission"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Delete Commission",
+      "CONFIRM_QUESTION" : "Are you sure you want to delete "
     }
   },
   "IWS_TEAMS": {

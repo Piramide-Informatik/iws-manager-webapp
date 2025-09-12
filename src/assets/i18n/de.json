@@ -847,7 +847,12 @@
       "HEADER": "IWS Provision bearbeiten",
       "THRESHOLD": "ab Forderungswert",
       "PERCENTAGE": "Provision in %",
-      "MIN_COMMISSION": "Mindestprovision"
+      "MIN_COMMISSION": "Mindestprovision",
+      "NEW": "Neue Provision"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Provision löschen",
+      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
     }
   },
   "IWS_TEAMS": {
@@ -866,7 +871,7 @@
       "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
     },
     "FORM":{
-      "IWS_TEAM_FORM": "New Team"
+      "IWS_TEAM_FORM": "Neue Team"
     }
   },
   "COUNTRIES": {
