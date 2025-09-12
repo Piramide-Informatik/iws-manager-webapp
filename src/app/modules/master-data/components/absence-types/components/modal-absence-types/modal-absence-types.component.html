@@ -24,7 +24,7 @@
 
       <div class="absence-form">
         <label for="shareOfDay">{{ "ABSENCE_TYPES.LABEL.FRACTION_OF_DAY" | translate }}</label>
-        <p-inputnumber  mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE"
+        <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE"
           inputId="shareOfDay"
           formControlName="shareOfDay"
           autocomplete="off"
@@ -33,7 +33,7 @@
 
       <div class="absence-form">
         <label for="isHoliday">{{ "ABSENCE_TYPES.LABEL.IS_VACATION" | translate }}</label>
-        <p-toggleswitch formControlName="isHoliday" class="flex">
+        <p-toggleswitch inputId="isHoliday" formControlName="isHoliday" class="flex">
           <ng-template #handle let-checked="checked">
             <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
           </ng-template>
@@ -42,7 +42,7 @@
 
       <div class="absence-form">
         <label for="hours">{{ "ABSENCE_TYPES.LABEL.CAN_BE_BOOKED" | translate }}</label>
-        <p-toggleswitch formControlName="hours" class="flex">
+        <p-toggleswitch inputId="hours" formControlName="hours" class="flex">
           <ng-template #handle let-checked="checked">
             <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
           </ng-template>
