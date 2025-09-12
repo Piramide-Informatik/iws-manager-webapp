@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { EmployeeIwsStateService } from '../../utils/employee-iws-state.service';
+import { TeamIwsService } from '../../../../../../Services/team-iws.service';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
@@ -27,21 +28,19 @@ export class EditIwsStaffComponent implements OnInit {
   private readonly editEmployeeIwsSource =
     new BehaviorSubject<EmployeeIws | null>(null);
 
-  teams = [
-    { name: 'Team 1', code: 'T1' },
-    { name: 'Team 2', code: 'T2' },
-    { name: 'Team 3', code: 'T3' },
-  ];
+  teams: any[] = [];
 
   constructor(
     private readonly employeeIwsUtils: EmployeeIwsUtils,
     private readonly employeeIwsStateService: EmployeeIwsStateService,
+    private readonly teamIwsService: TeamIwsService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.loadTeams();
     this.setupEmployeeIwsSubscription();
     const savedPublicHolidayId = localStorage.getItem('selectedEmployeeIwsId');
     if (savedPublicHolidayId) {
@@ -63,6 +62,15 @@ export class EditIwsStaffComponent implements OnInit {
     });
   }
 
+  private loadTeams(): void {
+    this.subscriptions.add(
+      this.teamIwsService.getAllTeamsIws().subscribe({
+        next: (teams) => (this.teams = teams),
+        error: (err) => console.error('Error loading teams', err),
+      })
+    );
+  }
+  
   private setupEmployeeIwsSubscription(): void {
     this.subscriptions.add(
       this.employeeIwsStateService.currentEmployeeIws$.subscribe(
@@ -138,7 +146,7 @@ export class EditIwsStaffComponent implements OnInit {
             momentCreateDate(this.editIwsStaffForm.value.staffUntil)
           )
         : '',
-      teamIws: null,
+      teamIws: this.editIwsStaffForm.value.team,
     };
 
     this.subscriptions.add(
@@ -147,11 +155,6 @@ export class EditIwsStaffComponent implements OnInit {
         error: (err) => this.handleError(err),
       })
     );
-    if (this.editIwsStaffForm.valid) {
-      console.log(this.editIwsStaffForm.value);
-    } else {
-      console.log('Formulario inválido');
-    }
   }
 
   private markAllAsTouched(): void {
@@ -194,7 +197,6 @@ export class EditIwsStaffComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    console.log('Edición cancelada');
     this.editIwsStaffForm.reset();
   }
   clearForm(): void {

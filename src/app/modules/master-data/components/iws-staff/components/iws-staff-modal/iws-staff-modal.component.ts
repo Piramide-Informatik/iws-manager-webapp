@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
+import { TeamIwsService } from '../../../../../../Services/team-iws.service';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
@@ -27,14 +28,10 @@ import {
 })
 export class IwsStaffModalComponent implements OnInit, OnDestroy {
   private readonly employeeIwsUtils = inject(EmployeeIwsUtils);
+  private readonly teamIwsService = inject(TeamIwsService);
   private readonly subscriptions = new Subscription();
 
-  teams = [
-    { name: 'Team 1', code: 'T1' },
-    { name: 'Team 2', code: 'T2' },
-    { name: 'Team 3', code: 'T3' },
-  ];
-
+  teams: any[] = [];
   @ViewChild('employeeIwsInput')
   employeeIwsInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -70,11 +67,20 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadInitialData();
+    this.loadTeams();
     this.resetForm();
   }
 
   private loadInitialData() {
     const sub = this.employeeIwsUtils.loadInitialData().subscribe();
+    this.subscriptions.add(sub);
+  }
+
+  private loadTeams() {
+    const sub = this.teamIwsService.getAllTeamsIws().subscribe({
+      next: (data) => (this.teams = data),
+      error: (err) => console.error('Error loading teams', err),
+    });
     this.subscriptions.add(sub);
   }
 
@@ -197,7 +203,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy {
       employeeNo: this.createEmployeeIwsForm.value.employeeNo ?? 1,
       employeeLabel:
         this.createEmployeeIwsForm.value.employeeLabel?.trim() ?? '',
-      teamIws: null,
+      teamIws: this.createEmployeeIwsForm.value.teamIws ?? null,
       user: this.createEmployeeIwsForm.value.user ?? null,
       active: this.createEmployeeIwsForm.value.active ?? 1,
     };

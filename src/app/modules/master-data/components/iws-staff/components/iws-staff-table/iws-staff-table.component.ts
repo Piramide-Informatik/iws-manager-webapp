@@ -148,7 +148,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
         startDate: employeeIws.startDate,
         endDate: employeeIws.endDate,
         employeeNo: employeeIws.employeeNo,
-        teamIws: null,
+        teamIws: employeeIws.teamIws,
         user: employeeIws.user ?? null,
         createdAt: '',
         updatedAt: '',
