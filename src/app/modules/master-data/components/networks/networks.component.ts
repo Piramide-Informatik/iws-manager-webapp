@@ -88,4 +88,12 @@ export class NetworksComponent implements OnInit, OnDestroy {
       this.commonMessageService.showErrorDeleteMessage();
     }
   }
+
+  onCreateNetwork(event: { created?: Network, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
 }

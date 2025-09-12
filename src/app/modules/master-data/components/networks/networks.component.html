@@ -10,6 +10,7 @@
           [userPreferences]="userNetworksPreferences"
           [dataKeys]="dataKeys"
           (onColumnChanges)="onUserNetworksPreferencesChanges($event)"
+          (onCreateRegister)="handleTableEvents({ type: 'create' })"
           (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
         ></master-data-genaral-table>
       </div>
@@ -26,9 +27,11 @@
     >
       <app-network-modal
         [modalType]="modalType"
+        [visible]="visibleNetworksModal"
         [selectedNetwork]="selectedNetwork"
         (isVisibleModal)="onModalVisibilityChange($event)"
         (deleteNetwork)="onDeleteNetwork($event)"
+        (createNetwork)="onCreateNetwork($event)"
       ></app-network-modal>
     </p-dialog>
 </div>
