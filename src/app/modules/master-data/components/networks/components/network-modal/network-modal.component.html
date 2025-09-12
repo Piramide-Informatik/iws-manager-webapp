@@ -2,13 +2,13 @@
     <form [formGroup]="networkForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column mb-2 mt-4">
             <div class="network-form flex flex-row mb-4">
-                <label for="network">{{ 'NETWORKS.LABEL.NETWORK' | translate }}</label>
-                <input pInputText type="text" id="network" formControlName="network" autocomplete="off" />
+                <label for="name">{{ 'NETWORKS.LABEL.NETWORK' | translate }}</label>
+                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
             </div>
             <div class="row mt-2">
                 <div class="col flex justify-content-center">
-                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="closeModal()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
         </div>

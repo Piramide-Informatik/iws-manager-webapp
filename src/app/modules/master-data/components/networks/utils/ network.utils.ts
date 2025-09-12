@@ -1,7 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, switchMap, take, throwError } from 'rxjs';
 import { NetworkService } from '../../../../../Services/network.service';
 import { Network } from '../../../../../Entities/network';
+import { ProjectUtils } from '../../../../projects/utils/project.utils';
+import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 
 /**
  * Utility class for network-related business logic and operations.
@@ -10,6 +12,11 @@ import { Network } from '../../../../../Entities/network';
 @Injectable({ providedIn: 'root' })
 export class NetowrkUtils {
   private readonly networkService = inject(NetworkService);
+  private readonly projectUtils = inject(ProjectUtils);
+  private readonly invoiceUtils = inject(InvoiceUtils);
+  //faltan
+  //private readonly chanceNetworkUtils = inject(ChanceNetworkUtils);
+  //private readonly networkPartnerUtils = inject(NetworkPartnerUtils);
 
   loadInitialData(): Observable<Network[]> {
     return this.networkService.loadInitialData();
@@ -38,15 +45,8 @@ export class NetowrkUtils {
    * @param network - New network to be created
    * @returns Observable that completes when network is created
    */
-  createNewNetwork(network: Omit<Network, 'id' | 'createdAt' | 'updatedAt'>): Observable<void> {
-
-    return new Observable<void>(subscriber => {
-      this.networkService.addNetwork(network);
-
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
-    });
+  createNewNetwork(network: Omit<Network, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Network> {
+    return this.networkService.addNetwork(network);
   }
 
   /**
@@ -55,7 +55,37 @@ export class NetowrkUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteNetwork(id: number): Observable<void> {
-    return this.networkService.deleteNetwork(id);
+    return this.checkNetworkUsage(id).pipe(
+      switchMap(isUsed => {
+        if (isUsed) {
+          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+        }
+        return this.networkService.deleteNetwork(id);
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Checks if a network is used by any project, invoice, chanceNetwork, networkPartner.
+   * @param idNetwork - ID of the network to check
+   * @returns Observable emitting boolean indicating usage
+   */
+  private checkNetworkUsage(idNetwork: number): Observable<boolean> {
+    return forkJoin([
+      this.projectUtils.getAllProjects().pipe(
+        map(projects => projects.some(project => project.network?.id === idNetwork)),
+        catchError(() => of(false))
+      ),
+      this.invoiceUtils.getAllInvoices().pipe(
+        map(invoices => invoices.some(invoice => invoice.network?.id === idNetwork)),
+        catchError(() => of(false))
+      ),
+    ] as const).pipe(
+      map(([usedInProjects, usedInInvoices]) => usedInProjects || usedInInvoices)
+    );
   }
 
 
