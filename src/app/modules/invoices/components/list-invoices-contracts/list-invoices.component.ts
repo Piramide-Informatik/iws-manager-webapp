@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Invoice } from '../../../../Entities/invoices';
-import { InvoicesService } from '../../services/invoices.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import {TranslateService, _} from "@ngx-translate/core";
@@ -15,7 +14,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 @Component({
   selector: 'app-list-invoices',
   standalone: false,
-  providers: [MessageService, ConfirmationService, InvoicesService],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './list-invoices.component.html',
   styleUrl: './list-invoices.component.scss',
 })
