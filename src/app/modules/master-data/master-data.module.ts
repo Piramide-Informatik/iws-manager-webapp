@@ -141,6 +141,7 @@ import { EmployeeQualificationModalComponent } from './components/employee-quali
 import { ModalTermsPaymentComponent } from './components/terms-payment/components/modal-terms-payment/modal-terms-payment.component';
 import { ModalBillerComponent } from './components/billers/components/modal-biller/modal-biller.component';
 import { NetworkModalComponent } from './components/networks/components/network-modal/network-modal.component';
+import { ModalBillingMethodsComponent } from './components/billing-methods/components/modal-billing-methods/modal-billing-methods.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -247,7 +248,8 @@ registerLocaleData(localeDe, 'de-DE');
     EmployeeQualificationModalComponent,
     ModalTermsPaymentComponent,
     ModalBillerComponent,
-    NetworkModalComponent
+    NetworkModalComponent,
+    ModalBillingMethodsComponent
   ],
   imports: [
     ButtonModule,

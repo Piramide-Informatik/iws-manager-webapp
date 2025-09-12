@@ -1134,6 +1134,10 @@
     },
     "ERROR": {
       "BILLING_TYPE_REQUIRED": "Billing Type is required"
+    },
+    "MODAL": {
+      "NEW": "New Billing Type",
+      "DELETE": "Delete Billing Type"
     }
   },
   "CONTRACT_STATUS": {
