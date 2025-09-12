@@ -5,5 +5,6 @@ export interface PayCondition {
   version: number;
 
   name?: string;
-  deadline?: number; 
+  deadline?: number;
+  text?: string;
 }
