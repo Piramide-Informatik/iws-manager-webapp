@@ -848,7 +848,12 @@
       "HEADER": "Editar Comisión IWS",
       "THRESHOLD": "Desde valor de exigencia",
       "PERCENTAGE": "Comisión (%)",
-      "MIN_COMMISSION": "Comisión mínima"
+      "MIN_COMMISSION": "Comisión mínima",
+      "NEW": "Nuevo Comisión"
+    },
+    "DELETE": {
+      "CONFIRMATION":"Eliminar Comisión",
+      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
     }
   },
   "IWS_TEAMS": {
