@@ -1011,6 +1011,11 @@
       "CUSTOMER": "Kunde",
       "PARTNER": "Partner",
       "NEW_PARTNER": "Neuer Partner"
+    },
+    "MODAL": {
+      "NEW": "Neues Netzwerk",
+      "DELETE": "Netzwerk löschen",
+      "CONFIRM_QUESTION":"Möchten Sie das Netzwerk wirklich löschen "
     }
   },
   "SALES_TAX": {
