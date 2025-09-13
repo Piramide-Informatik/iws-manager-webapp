@@ -1031,6 +1031,10 @@
     },
     "ERROR": {
       "SALES_TAX_REQUIRED": "Impuesto sobre la venta requerido"
+    },
+    "MODAL": {
+      "NEW": "Nuevo Impuesto Sobre las Ventas",
+      "DELETE": "Eliminar Impuesto Sobre las Ventas"
     }
   },
   "TERMS_OF_PAYMENT": {

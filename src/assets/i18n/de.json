@@ -1034,6 +1034,10 @@
     },
     "ERROR": {
       "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
+    },
+    "MODAL": {
+      "NEW": "Neu Umsatzsteuer",
+      "DELETE": "Umsatzsteuer löschen"
     }
   },
   "TERMS_OF_PAYMENT": {

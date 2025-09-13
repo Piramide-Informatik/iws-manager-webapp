@@ -1035,6 +1035,10 @@
     },
     "ERROR": {
       "SALES_TAX_REQUIRED": "Sales Tax is required"
+    },
+    "MODAL": {
+      "NEW": "New Sales Tax",
+      "DELETE": "Delete Sales Tax"
     }
   },
   "TERMS_OF_PAYMENT": {
