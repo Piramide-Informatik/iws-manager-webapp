@@ -1,11 +1,12 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { BILLING_METHODS } from './billing-methods.data';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { InvoiceType } from '../../../../../../Entities/invoiceType';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-billing-methods-table',
@@ -15,11 +16,14 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 })
 export class BillingMethodsTableComponent implements OnInit, OnDestroy {
 
-  billingMethodsValues = [...BILLING_METHODS];
+  billingMethodsValues = [];
   billingMethodColumns: any[] = [];
   userBillingMethodsPreferences: UserPreference = {};
   tableKey: string = 'BillingMethods'
   dataKeys = ['invoiceType'];
+  private readonly commonMessageService = inject(CommonMessagesService);
+  public modalType: 'create' | 'delete' = 'create';
+  public visibleModal: boolean = false;
 
   @ViewChild('dt') dt!: Table;
 
@@ -59,6 +63,20 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     if (this.langBillingMethodsSubscription) {
       this.langBillingMethodsSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    
+    this.visibleModal = true;
+  }
+
+  onCreateInvoiceType(event: { created?: InvoiceType, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }

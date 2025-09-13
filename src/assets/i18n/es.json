@@ -1132,6 +1132,10 @@
     },
     "ERROR": {
       "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido"
+    },
+    "MODAL": {
+      "NEW": "Nuevo Tipo de Facturación",
+      "DELETE": "Eliminar Tipo de Facturación"
     }
   },
   "CONTRACT_STATUS": {

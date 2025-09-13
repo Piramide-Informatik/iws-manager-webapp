@@ -142,6 +142,7 @@ import { ModalTermsPaymentComponent } from './components/terms-payment/component
 import { ModalBillerComponent } from './components/billers/components/modal-biller/modal-biller.component';
 import { NetworkModalComponent } from './components/networks/components/network-modal/network-modal.component';
 import { SalesTaxModalComponent } from './components/sales-tax/components/sales-tax-modal/sales-tax-modal.component';
+import { ModalBillingMethodsComponent } from './components/billing-methods/components/modal-billing-methods/modal-billing-methods.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -249,7 +250,8 @@ registerLocaleData(localeDe, 'de-DE');
     ModalTermsPaymentComponent,
     ModalBillerComponent,
     NetworkModalComponent,
-    SalesTaxModalComponent
+    SalesTaxModalComponent,
+    ModalBillingMethodsComponent
   ],
   imports: [
     ButtonModule,

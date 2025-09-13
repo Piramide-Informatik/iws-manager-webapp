@@ -1128,7 +1128,7 @@
   },
   "BILLING_METHODS": {
     "TABLE_BILLING_METHODS": {
-      "BILLING_TYPE": "Verrechnungsart ",
+      "BILLING_TYPE": "Verrechnungsart",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
     },
     "LABEL": {
@@ -1137,6 +1137,10 @@
     },
     "ERROR": {
       "BILLING_TYPE_REQUIRED": "Verrechnungsart ist erforderlich"
+    },
+    "MODAL": {
+      "NEW": "Neu Verrechnungsart",
+      "DELETE": "Verrechnungsart löschen"
     }
   },
   "CONTRACT_STATUS": {
