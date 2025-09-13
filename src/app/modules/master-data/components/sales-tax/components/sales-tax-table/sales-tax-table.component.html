@@ -1,14 +1,28 @@
 <div class="container">
   <div class="row">
-    <div class>
-      <master-data-genaral-table
-        [tableId]="tableKey"
-        [tableValues]="salesTaxesValues"
-        [columns]="salesTaxesColumns"
-        [userPreferences]="userSalesTaxTablePreferences"
-        [dataKeys]="dataKeys"
-        (onColumnChanges)="onUserSalesTaxTablePreferencesChanges($event)"
-      ></master-data-genaral-table>
-    </div>
+    <master-data-genaral-table
+      [tableId]="tableKey"
+      [tableValues]="salesTaxesValues"
+      [columns]="salesTaxesColumns"
+      [userPreferences]="userSalesTaxTablePreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserSalesTaxTablePreferencesChanges($event)"
+      (onCreateRegister)="handleTableEvents({ type: 'create' })"
+    ></master-data-genaral-table>
+
+    <p-dialog
+      [header]="modalType === 'create'
+      ? ('BILLERS.MODAL.NEW' | translate)
+      : ('BILLERS.MODAL.DELETE' | translate)"
+      [modal]="true"
+      [(visible)]="isVisibleModal"
+      >
+      <app-sales-tax-modal
+        [visible]="isVisibleModal"
+        [modalType]="modalType"
+        (isVisibleModal)="isVisibleModal = $event"
+        (createVat)="onCreateVat($event)"
+      ></app-sales-tax-modal>
+    </p-dialog>
   </div>
 </div>
