@@ -1,14 +1,28 @@
 <div class="container">
   <div class="row">
-    <div class>
-      <master-data-genaral-table
-        [tableId]="tableKey"
-        [tableValues]="billingMethodsValues"
-        [columns]="billingMethodColumns"
-        [userPreferences]="userBillingMethodsPreferences"
-        [dataKeys]="dataKeys"
-        (onColumnChanges)="onUserBillingMethodsPreferencesChanges($event)"
-      ></master-data-genaral-table>
-    </div>
+    <master-data-genaral-table
+      [tableId]="tableKey"
+      [tableValues]="billingMethodsValues"
+      [columns]="billingMethodColumns"
+      [userPreferences]="userBillingMethodsPreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserBillingMethodsPreferencesChanges($event)"
+      (onCreateRegister)="handleTableEvents({ type: 'create' })"
+    ></master-data-genaral-table>
+    
+    <p-dialog
+      [header]="modalType === 'create' 
+          ? ('BILLING_METHODS.MODAL.NEW' | translate) 
+          : ('BILLING_METHODS.MODAL.DELETE' | translate)" 
+      [modal]="true" 
+      [(visible)]="visibleModal"
+      >
+        <app-modal-billing-methods
+          [modalType]="modalType"
+          [visible]="visibleModal"
+          (isVisibleModal)="visibleModal = $event"
+          (createInvoiceType)="onCreateInvoiceType($event)"
+        ></app-modal-billing-methods>
+    </p-dialog>
   </div>
 </div>

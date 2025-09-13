@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { BillingMethodService } from '../../services/billing-method.service';
 import { BillingType } from '../../../../../../Entities/billingType';
 
 @Component({
@@ -14,7 +13,7 @@ export class BillingMethodsFormComponent implements OnInit {
   billingType!: BillingType;
   billingMethodForm!: FormGroup;
 
-  constructor( private readonly billingMethodService: BillingMethodService ){ }
+  constructor(){ }
 
   ngOnInit(): void {
     this.billingMethodForm = new FormGroup({

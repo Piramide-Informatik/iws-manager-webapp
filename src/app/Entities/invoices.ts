@@ -1,5 +1,6 @@
 import { Biller } from "./biller";
 import { Customer } from "./customer";
+import { InvoiceType } from "./invoiceType";
 import { Network } from "./network";
 import { Order } from "./order";
 import { PayCondition } from "./payCondition";
@@ -16,7 +17,7 @@ export interface Invoice {
   cancelledInvoice: Invoice | null;
   order: Order | null;
   network: Network | null;
-  invoiceType: null;  //falta
+  invoiceType: InvoiceType | null;
   vat: null;      //falta
 
   invoiceNo?: number;
