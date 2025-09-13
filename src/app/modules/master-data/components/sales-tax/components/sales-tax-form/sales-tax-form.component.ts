@@ -1,16 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-
-import { Table } from 'primeng/table';
-
-import { SalesTaxService } from '../../services/sales-tax.service';
-import { SalesTax } from '../../../../../../Entities/salesTax';
-import { SalesTaxRate } from '../../../../../../Entities/salesTaxRate';
-import { SALES_TAX_RATES } from '../../sales.tax.rate.data';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { Vat } from '../../../../../../Entities/vat';
+import { VatRate } from '../../../../../../Entities/vatRate';
 
 @Component({
   selector: 'app-sales-tax-form',
@@ -20,21 +15,17 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 })
 export class SalesTaxFormComponent implements OnInit, OnDestroy {
 
-  salesTax!: SalesTax;
-  salesTaxRatesValues!: SalesTaxRate[];
+  salesTax!: Vat;
+  salesTaxRatesValues!: VatRate[];
   editSalesTaxForm!: FormGroup;
   salesTaxRatesColumns: any[] = [];
-  salesTaxId!: number;
   userSalesTaxFormPreferences: UserPreference = {};
   tableKey: string = 'SalesTaxForm'
   dataKeys = ['fromDate', 'rate'];
 
   private langSalesTaxRateSubscription!: Subscription;
 
-  @ViewChild('dt') dt!: Table;
-
-  constructor( private readonly salesTaxService: SalesTaxService,
-               private readonly userPreferenceService: UserPreferenceService, 
+  constructor( private readonly userPreferenceService: UserPreferenceService, 
                private readonly translate: TranslateService ){ }
 
   ngOnInit(): void {
@@ -47,8 +38,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       this.loadSalesTaxRateHeadersAndColumns();
       this.userSalesTaxFormPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salesTaxRatesColumns);
     });
-    this.salesTaxId = 1;
-    this.salesTaxRatesValues = SALES_TAX_RATES.filter((element: any) => element.salesTaxId === this.salesTaxId);
+    this.salesTaxRatesValues = [];
   }
 
   onUserSalesTaxFormPreferencesChanges(userSalesTaxFormPreferences: any) {

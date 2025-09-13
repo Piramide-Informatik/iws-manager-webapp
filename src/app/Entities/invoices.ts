@@ -4,6 +4,7 @@ import { InvoiceType } from "./invoiceType";
 import { Network } from "./network";
 import { Order } from "./order";
 import { PayCondition } from "./payCondition";
+import { Vat } from "./vat";
 
 export interface Invoice {
   id: number;
@@ -18,7 +19,7 @@ export interface Invoice {
   order: Order | null;
   network: Network | null;
   invoiceType: InvoiceType | null;
-  vat: null;      //falta
+  vat: Vat | null;
 
   invoiceNo?: number;
   invoiceDate?: number;

@@ -116,15 +116,15 @@ export class IwsCommissionService {
     }
 
     getIwsCommissionById(id: number): Observable<IwsCommission> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get<IwsCommission>(url, this.httpOptions).pipe(
-        tap(() => this._error.set(null)),
-        catchError(err => {
-        this._error.set('Failed to fetch IwsCommission');
-        console.error('Error fetching IwsCommission:', err);
-        return of(null as unknown as IwsCommission);
-        })
-    );
+        const url = `${this.apiUrl}/${id}`;
+        return this.http.get<IwsCommission>(url, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch IwsCommission');
+                console.error('Error fetching IwsCommission:', err);
+                return of(null as unknown as IwsCommission);
+            })
+        );
     }
 
     public refreshIwsCommission(): void {

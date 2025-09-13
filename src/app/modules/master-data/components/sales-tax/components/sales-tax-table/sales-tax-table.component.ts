@@ -1,16 +1,11 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-
-import { Table } from 'primeng/table';
-
-import { SALES_TAXES } from '../../sales.tax.data';
-import { SALES_TAX_RATES } from '../../sales.tax.rate.data';
-import { SalesTaxRate } from '../../../../../../Entities/salesTaxRate';
-import { SalesTax } from '../../../../../../Entities/salesTax';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { Vat } from '../../../../../../Entities/vat';
+import { VatRate } from '../../../../../../Entities/vatRate';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-sales-tax-table',
@@ -19,20 +14,19 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
   styleUrl: './sales-tax-table.component.scss'
 })
 export class SalesTaxTableComponent implements OnInit, OnDestroy {
-
-  salesTaxesValues: any[] = [...SALES_TAXES];
+  private readonly commonMessageService = inject(CommonMessagesService);
+  salesTaxesValues: any[] = [];
   salesTaxesColumns: any[] = [];
   isSalesTaxesChipVisible = false;
   userSalesTaxTablePreferences: UserPreference = {};
   tableKey: string = 'SalesTaxTable'
   dataKeys = ['vatlabel', 'rate'];
-
-  @ViewChild('dt') dt!: Table;
+  public modalType: 'create' | 'delete' = 'create';
+  public isVisibleModal: boolean = false;
 
   private langSalesTaxSubscription!: Subscription;
 
-  constructor(private readonly router: Router,
-              private readonly userPreferenceService: UserPreferenceService, 
+  constructor(private readonly userPreferenceService: UserPreferenceService, 
               private readonly translate: TranslateService ) { }
 
   ngOnInit() {
@@ -42,19 +36,9 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
       this.loadSalesTaxHeadersAndColumns();
       this.userSalesTaxTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salesTaxesColumns);
     });
-    const salesTaxesRatesData: SalesTaxRate[] = SALES_TAX_RATES;
-    const salesTaxesData: SalesTax[] = SALES_TAXES;
-    this.salesTaxesValues = salesTaxesData.map( (sales: SalesTax) => {
-        return {
-          vatlabel: sales.vatlabel,
-          rate: salesTaxesRatesData.filter( (salesTaxRate: SalesTaxRate) => salesTaxRate.salesTaxId === sales.id)
-                .reduce((actual: any, current: SalesTaxRate) => {
-                    if (actual.fromDate < new Date() && actual.fromDate > current.fromDate) return actual;
-                    else if (actual.fromDate < new Date() && actual.fromDate < current.fromDate) return current;
-                    return actual;  
-                }, {fromDate: new Date('01-01-1900')}).rate
-        }
-    })
+    const salesTaxesRatesData: VatRate[] = [];
+    const salesTaxesData: Vat[] = [];
+    this.salesTaxesValues = []
   }
 
   onUserSalesTaxTablePreferencesChanges(userSalesTaxTablePreferences: any) {
@@ -84,6 +68,20 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     if (this.langSalesTaxSubscription) {
       this.langSalesTaxSubscription.unsubscribe();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    
+    this.isVisibleModal = true;
+  }
+
+  onCreateVat(event: { created?: Vat, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }
