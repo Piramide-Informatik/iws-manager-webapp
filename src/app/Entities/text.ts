@@ -5,6 +5,6 @@ export interface Text {
   version: number;
 
   label?: string;
-  text?: string;
+  content?: string;
 }
   
