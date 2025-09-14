@@ -1,0 +1,37 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="textForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column mt-4">
+            <div class="text-form mb-2 flex align-items-center">
+                <label for="label">{{ 'TEXT.LABEL.TEXT_LABEL' | translate }}</label>
+                <input pInputText readonly [disabled]="true" type="text" id="label" formControlName="label" autocomplete="off" />
+            </div>
+            <div class="text-form mb-2 flex">
+                <label for="content">{{ 'TEXT.LABEL.TEXT_VALUE' | translate }}</label>
+                <textarea pTextarea id="content" formControlName="content" rows="6"  style="resize: none"></textarea>
+            </div>
+            <div class="row">
+                <div class="col flex justify-content-center">
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="closeModal()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-container>
+
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">{{ 'confirm delete' | translate }}
+            <strong class="stronglock mt-1">"{{ '' }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+        </div>
+  </div>
+</ng-template>

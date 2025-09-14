@@ -945,6 +945,10 @@
     "ERROR": {
       "TEXT_LABEL_REQUIRED": "Etiqueta de texto es requerido",
       "TEXT_VALUE_REQUIRED": "Texto es requerido"
+    },
+    "MODAL": {
+      "NEW": "Nuevo Texto",
+      "DELETE": "Eliminar Texto"
     }
   },
   "PROJECT_FUNNELS": {
