@@ -1,11 +1,13 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { TEXT } from './text.data';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { Column } from '../../../../../../Entities/column';
+import { Text } from '../../../../../../Entities/text';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-text-table',
@@ -14,14 +16,16 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
   styleUrl: './text-table.component.scss'
 })
 export class TextTableComponent implements OnInit, OnDestroy {
-
-  text = [...TEXT];
-  textColumns: any[] = [];
-  textDisplayedColumns: any[] = [];
+  private readonly commonMessageService = inject(CommonMessagesService);
+  text: Text[] = [];
+  textColumns: Column[] = [];
+  textDisplayedColumns: Column[] = [];
   isTextChipVisible = false;
   userTextPreferences: UserPreference = {};
   tableKey: string = 'Text'
   dataKeys = ['label', 'text'];
+  public modalType: 'create' | 'delete' = 'create';
+  public isVisibleModal: boolean = false;
   
   @ViewChild('dt') dt!: Table;
 
@@ -49,17 +53,8 @@ export class TextTableComponent implements OnInit, OnDestroy {
 
   loadTextHeaders(): void {
     this.textColumns = [
-      {
-        field: 'label',
-        minWidth: 110,
-        header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT_LABEL'))
-      },
-      {
-        field: 'text',
-        customClasses: ['nowrap-row'],
-        minWidth: 110,
-        header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT'))
-      }
+      { field: 'label', minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT_LABEL')) },
+      { field: 'text', customClasses: ['nowrap-row'], minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT')) }
     ];
   }
 
@@ -73,6 +68,20 @@ export class TextTableComponent implements OnInit, OnDestroy {
     const inputTextFilterElement = event.target as HTMLInputElement;
     if (inputTextFilterElement) {
       this.dt.filter(inputTextFilterElement.value, field, 'contains');
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    
+    this.isVisibleModal = true;
+  }
+
+  onCreateText(event: { created?: Text, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }
