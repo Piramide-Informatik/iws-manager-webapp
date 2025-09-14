@@ -950,6 +950,10 @@
     "ERROR": {
       "TEXT_LABEL_REQUIRED": "Text label is required",
       "TEXT_VALUE_REQUIRED": "Text value is required"
+    },
+    "MODAL": {
+      "NEW": "New Text",
+      "DELETE": "Delete Text"
     }
   },
   "PROJECT_FUNNELS": {
