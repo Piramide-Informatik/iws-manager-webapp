@@ -8,7 +8,23 @@
         [userPreferences]="userTextPreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserTextPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
       ></master-data-genaral-table>
+
+      <p-dialog
+        [header]="modalType === 'create'
+        ? ('TEXT.MODAL.NEW' | translate)
+        : ('TEXT.MODAL.DELETE' | translate)"
+        [modal]="true"
+        [(visible)]="isVisibleModal"
+        >
+          <app-text-modal
+            [visible]="isVisibleModal"
+            [modalType]="modalType"
+            (isVisibleModal)="isVisibleModal = $event"
+            (createText)="onCreateText($event)"
+          ></app-text-modal>
+      </p-dialog>
     </div>
 </div>
   

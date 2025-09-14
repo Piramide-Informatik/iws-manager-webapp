@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TextService } from '../../services/text.service';
 import { Text } from '../../../../../../Entities/text';
 
 @Component({
@@ -13,8 +12,6 @@ export class TextFormComponent implements OnInit {
 
   text!: Text;
   editTextForm!: FormGroup;
-
-   constructor( private readonly textService: TextService ){ }
 
   ngOnInit(): void {
     this.editTextForm = new FormGroup({
