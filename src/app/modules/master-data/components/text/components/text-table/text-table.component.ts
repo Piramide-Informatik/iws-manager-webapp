@@ -10,6 +10,7 @@ import { Text } from '../../../../../../Entities/text';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { TextUtils } from '../../utils/text-utils';
 import { TextService } from '../../../../../../Services/text.service';
+import { TextStateService } from '../../utils/text-state.service';
 
 @Component({
   selector: 'app-text-table',
@@ -18,6 +19,7 @@ import { TextService } from '../../../../../../Services/text.service';
   styleUrl: './text-table.component.scss'
 })
 export class TextTableComponent implements OnInit, OnDestroy {
+  private readonly textStateService = inject(TextStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly textUtils = inject(TextUtils);
   private readonly textService = inject(TextService);
@@ -105,5 +107,9 @@ export class TextTableComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  onEditText(text: Text): void {
+    this.textStateService.setTextToEdit(text);
   }
 }
