@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -7,6 +7,8 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { InvoiceType } from '../../../../../../Entities/invoiceType';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { InvoiceTypeUtils } from '../../utils/invoice-type-utils';
+import { InvoiceTypeService } from '../../../../../../Services/invoice-type.service';
 
 @Component({
   selector: 'app-billing-methods-table',
@@ -16,11 +18,12 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class BillingMethodsTableComponent implements OnInit, OnDestroy {
 
-  billingMethodsValues = [];
+  private readonly billingMethodUtils = inject(InvoiceTypeUtils);
+  private readonly billingMethodService = inject(InvoiceTypeService);
   billingMethodColumns: any[] = [];
   userBillingMethodsPreferences: UserPreference = {};
   tableKey: string = 'BillingMethods'
-  dataKeys = ['invoiceType'];
+  dataKeys = ['name'];
   private readonly commonMessageService = inject(CommonMessagesService);
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
@@ -28,12 +31,16 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
   @ViewChild('dt') dt!: Table;
 
   private langBillingMethodsSubscription!: Subscription;
+  readonly billingMethodsValues = computed(() => {
+    return this.billingMethodService.invoiceTypes();
+  });
 
   constructor(private readonly router: Router,
               private readonly userPreferenceService: UserPreferenceService, 
               private readonly translate: TranslateService ) { }
 
   ngOnInit() {
+    this.billingMethodUtils.loadInitialData().subscribe();
     this.loadBillingMethodsHeadersAndColumns();
     this.userBillingMethodsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.billingMethodColumns);
     this.langBillingMethodsSubscription = this.translate.onLangChange.subscribe(() => {
@@ -53,7 +60,7 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
   loadBillingMethodsHeaders(): any[] {
     return [
       {
-        field: 'invoiceType',
+        field: 'name',
         minWidth: 110,
         header: this.translate.instant(_('BILLING_METHODS.TABLE_BILLING_METHODS.BILLING_TYPE'))
       }
