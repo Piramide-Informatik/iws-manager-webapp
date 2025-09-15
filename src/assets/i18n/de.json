@@ -1041,7 +1041,8 @@
     },
     "MODAL": {
       "NEW": "Neu Umsatzsteuer",
-      "DELETE": "Umsatzsteuer löschen"
+      "DELETE": "Umsatzsteuer löschen",
+      "DELETE_QUESTION": "Möchten Sie das Umsatzsteuer wirklich löschen "
     }
   },
   "TERMS_OF_PAYMENT": {

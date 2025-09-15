@@ -29,6 +29,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   readonly salesTaxesValues = computed(() => {
     return this.salestTaxService.vats();
   });
+  selectedVat!: Vat;
 
   private langSalesTaxSubscription!: Subscription;
 
@@ -79,7 +80,12 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    
+    if (event.type === 'delete') {
+      const foundVat = this.salesTaxesValues().find(st => st.id == event.data);
+      if (foundVat) {
+        this.selectedVat = foundVat;
+      }
+    }
     this.isVisibleModal = true;
   }
 
@@ -88,6 +94,14 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteVat(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
