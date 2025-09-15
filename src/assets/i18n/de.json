@@ -951,7 +951,8 @@
     },
     "MODAL": {
       "NEW": "Neu Text",
-      "DELETE": "Text löschen"
+      "DELETE": "Text löschen",
+      "CONFIRM_QUESTION":"Möchten Sie den Text wirklich löschen "
     }
   },
   "PROJECT_FUNNELS": {

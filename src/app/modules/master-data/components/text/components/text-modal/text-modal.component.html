@@ -21,13 +21,13 @@
 
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">{{ 'confirm delete' | translate }}
-            <strong class="stronglock mt-1">"{{ '' }}"</strong>?
+        <p class="mb-4">{{ 'TEXT.MODAL.CONFIRM_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ selectedText.label }}"</strong>?
         </p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading"
+                icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading" (onClick)="deleteSelectedText()"
                 [disabled]="isLoading" />
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"

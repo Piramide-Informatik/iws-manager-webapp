@@ -21,6 +21,7 @@ export class TextTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly textUtils = inject(TextUtils);
   private readonly textService = inject(TextService);
+  selectedTextToDelete!: Text;
   textColumns: Column[] = [];
   textDisplayedColumns: Column[] = [];
   isTextChipVisible = false;
@@ -81,7 +82,12 @@ export class TextTableComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    
+    if (event.type === 'delete') {
+      const textFound = this.texts().find(txt => txt.id == event.data);
+      if (textFound) {
+        this.selectedTextToDelete = textFound;
+      }
+    }
     this.isVisibleModal = true;
   }
 
@@ -90,6 +96,14 @@ export class TextTableComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteText(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
