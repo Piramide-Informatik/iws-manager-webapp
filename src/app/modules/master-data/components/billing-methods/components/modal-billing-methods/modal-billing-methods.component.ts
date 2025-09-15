@@ -52,6 +52,23 @@ export class ModalBillingMethodsComponent implements OnChanges {
     })
   }
 
+  deleteBillingMethod() {
+    this.isLoading = true;
+    if (this.selectedInvoiceType) {
+      this.invoiceTypeUtils.deleteInvoiceType(this.selectedInvoiceType.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.deleteInvoiceType.emit({status: 'success'});
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.deleteInvoiceType.emit({ status: 'error', error: error });
+        }
+      })
+    }
+  }
+
   public closeModal(): void {
     this.isVisibleModal.emit(false);
     this.invoiceTypeForm.reset();

@@ -1139,7 +1139,8 @@
     },
     "MODAL": {
       "NEW": "Nuevo Tipo de Facturación",
-      "DELETE": "Eliminar Tipo de Facturación"
+      "DELETE": "Eliminar Tipo de Facturación",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el Tipo de Facturación "
     }
   },
   "CONTRACT_STATUS": {

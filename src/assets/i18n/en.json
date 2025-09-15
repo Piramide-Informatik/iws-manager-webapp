@@ -1145,7 +1145,8 @@
     },
     "MODAL": {
       "NEW": "New Billing Type",
-      "DELETE": "Delete Billing Type"
+      "DELETE": "Delete Billing Type",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the billing type "
     }
   },
   "CONTRACT_STATUS": {

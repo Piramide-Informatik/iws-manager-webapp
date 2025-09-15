@@ -27,6 +27,7 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
+  selectedInvoiceType!: InvoiceType | undefined;
 
   @ViewChild('dt') dt!: Table;
 
@@ -75,7 +76,12 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    
+    if (event.type === 'delete') {
+      const foundInvoiceType = this.billingMethodsValues().find(it => it.id == event.data);
+      if (foundInvoiceType) {
+        this.selectedInvoiceType = foundInvoiceType;
+      }
+    }
     this.visibleModal = true;
   }
 
@@ -84,6 +90,14 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteInvoiceType(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
