@@ -143,7 +143,7 @@
   "CUSTOMERS": {
     "CUSTOMER_NAME": "Customer",
     "TABLE": {
-      "CUSTOMER_ID": "Customer Number",
+      "CUSTOMER_ID": "No.",
       "COMPANY_NAME": "Company Name",
       "NAME_LINE_2": "Name Line 2",
       "COMPANY_TYPE": "Company Type",
@@ -206,7 +206,7 @@
       "EMPLOYMENT_CONTRACTS": "Employment Contracts"
     },
     "TABLE": {
-      "EMPLOYEE_ID": "Employee Number",
+      "EMPLOYEE_ID": "No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "EMAIL": "Email",
@@ -258,7 +258,7 @@
   },
   "EMPLOYEE-CONTRACTS": {
     "TABLE": {
-      "EMPLOYEE_ID": "Employee No.",
+      "EMPLOYEE_ID": "No.",
       "FIRST_NAME": "First Name",
       "LAST_NAME": "Last Name",
       "START_DATE": "Start Date",
@@ -334,7 +334,7 @@
       "FUNDING_PROGRAM": "Funding Program",
       "VALUE": "Value",
       "CONTRACT_STATUS": "Contract Status",
-      "CONTRACT_NRO": "Contract Number",
+      "CONTRACT_NRO": "Contract No.",
       "CONTRACT_TITLE": "Contract Title",
       "IWS_PERCENT": "IWS %",
       "IWS_PERCENT_VALUE": "IWS-Value"
@@ -363,8 +363,8 @@
   },
   "RECEIVABLES": {
     "TABLE": {
-      "CLAIM_NUMBER": "Claim Number",
-      "ORDER_NUMBER": "Order Number",
+      "CLAIM_NUMBER": "Claim No.",
+      "ORDER_NUMBER": "Order No.",
       "ORDER_TITLE": "Order Title",
       "FUNDING_PROGRAM": "Funding Program",
       "PROJECT_SPONSOR": "Project Sponsor",
@@ -387,12 +387,12 @@
   },
   "INVOICES": {
     "TABLE": {
-      "INVOICE_NUMBER": "Invoice Number",
+      "INVOICE_NUMBER": "Invoice No.",
       "INVOICE_DATE": "Date",
       "DESCRIPTION": "Description",
       "INVOICE_TYPE": "Type",
       "NETWORK": "Network",
-      "ORDER_NUMBER": "Order Number",
+      "ORDER_NUMBER": "Order No.",
       "ORDER_TITLE": "Order Title",
       "NET_AMOUNT": "Net Amount",
       "TAX_AMOUNT": "Tax Amount",
@@ -403,7 +403,7 @@
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
-      "CONTRACT_NUMBER": "Contract Number",
+      "CONTRACT_NUMBER": "Contract No.",
       "CONTRACT_LABEL": "Contract Label",
       "DATE": "Date",
       "FUNDING_PROGRAM": "Funding Program",
@@ -460,7 +460,7 @@
       "STREET": "Street",
       "ZIP_CODE": "Zip Code",
       "CITY": "City",
-      "TAX_NUMBER": "Tax Number"
+      "TAX_NUMBER": "Tax No."
     }
   },
   "SUB-CONTRACTS": {
@@ -493,7 +493,7 @@
       "CONTRACTOR": "Contractor",
       "PROJECT": "Project",
       "DATE": "Date",
-      "INVOICE_NUMBER": "Invoice Number",
+      "INVOICE_NUMBER": "Invoice No.",
       "NET_INVOICE": "Net Invoice Amount",
       "GROSS_INVOICE": "Gross Invoice Amount",
       "SHARE": "Share"
@@ -953,7 +953,8 @@
     },
     "MODAL": {
       "NEW": "New Text",
-      "DELETE": "Delete Text"
+      "DELETE": "Delete Text",
+      "CONFIRM_QUESTION":"Are you sure you want to delete the text "
     }
   },
   "PROJECT_FUNNELS": {
