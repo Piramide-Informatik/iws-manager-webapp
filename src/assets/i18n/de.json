@@ -951,7 +951,8 @@
     },
     "MODAL": {
       "NEW": "Neu Text",
-      "DELETE": "Text löschen"
+      "DELETE": "Text löschen",
+      "CONFIRM_QUESTION":"Möchten Sie den Text wirklich löschen "
     }
   },
   "PROJECT_FUNNELS": {
@@ -1041,7 +1042,8 @@
     },
     "MODAL": {
       "NEW": "Neu Umsatzsteuer",
-      "DELETE": "Umsatzsteuer löschen"
+      "DELETE": "Umsatzsteuer löschen",
+      "DELETE_QUESTION": "Möchten Sie das Umsatzsteuer wirklich löschen "
     }
   },
   "TERMS_OF_PAYMENT": {

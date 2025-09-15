@@ -2,12 +2,13 @@
   <div class="row">
     <master-data-genaral-table
       [tableId]="tableKey"
-      [tableValues]="salesTaxesValues"
+      [tableValues]="salesTaxesValues()"
       [columns]="salesTaxesColumns"
       [userPreferences]="userSalesTaxTablePreferences"
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserSalesTaxTablePreferencesChanges($event)"
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
     ></master-data-genaral-table>
 
     <p-dialog
@@ -20,8 +21,10 @@
       <app-sales-tax-modal
         [visible]="isVisibleModal"
         [modalType]="modalType"
+        [selectedVat]="selectedVat"
         (isVisibleModal)="isVisibleModal = $event"
         (createVat)="onCreateVat($event)"
+        (deleteVat)="onDeleteVat($event)"
       ></app-sales-tax-modal>
     </p-dialog>
   </div>
