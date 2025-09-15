@@ -953,7 +953,8 @@
     },
     "MODAL": {
       "NEW": "New Text",
-      "DELETE": "Delete Text"
+      "DELETE": "Delete Text",
+      "CONFIRM_QUESTION":"Are you sure you want to delete the text "
     }
   },
   "PROJECT_FUNNELS": {
