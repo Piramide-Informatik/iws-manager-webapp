@@ -948,7 +948,8 @@
     },
     "MODAL": {
       "NEW": "Nuevo Texto",
-      "DELETE": "Eliminar Texto"
+      "DELETE": "Eliminar Texto",
+      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar el texto "
     }
   },
   "PROJECT_FUNNELS": {
