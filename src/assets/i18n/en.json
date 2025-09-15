@@ -1043,7 +1043,8 @@
     },
     "MODAL": {
       "NEW": "New Sales Tax",
-      "DELETE": "Delete Sales Tax"
+      "DELETE": "Delete Sales Tax",
+      "DELETE_QUESTION": "Are you sure you want to delete the sales tax "
     }
   },
   "TERMS_OF_PAYMENT": {

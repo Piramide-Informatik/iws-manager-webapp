@@ -1039,7 +1039,8 @@
     },
     "MODAL": {
       "NEW": "Nuevo Impuesto Sobre las Ventas",
-      "DELETE": "Eliminar Impuesto Sobre las Ventas"
+      "DELETE": "Eliminar Impuesto Sobre las Ventas",
+      "DELETE_QUESTION": "¿Está seguro que desea eliminar el impuesto de ventas  "
     }
   },
   "TERMS_OF_PAYMENT": {

@@ -51,6 +51,23 @@ export class SalesTaxModalComponent implements OnChanges {
     })
   }
 
+  deleteSelectedVat() {
+    this.isLoading = true;
+    if (this.selectedVat) {
+      this.vatUtils.deleteVat(this.selectedVat.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.deleteVat.emit({status: 'success'});
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.deleteVat.emit({ status: 'error', error: error });
+        }
+      })
+    }
+  }
+
   get isCreateMode(): boolean {
     return this.modalType === 'create';
   }
