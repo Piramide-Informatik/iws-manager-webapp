@@ -8,6 +8,7 @@
       [dataKeys]="dataKeys"
       (onColumnChanges)="onUserBillingMethodsPreferencesChanges($event)"
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
     ></master-data-genaral-table>
     
     <p-dialog
@@ -20,8 +21,10 @@
         <app-modal-billing-methods
           [modalType]="modalType"
           [visible]="visibleModal"
+          [selectedInvoiceType]="selectedInvoiceType"
           (isVisibleModal)="visibleModal = $event"
           (createInvoiceType)="onCreateInvoiceType($event)"
+          (deleteInvoiceType)="onDeleteInvoiceType($event)"
         ></app-modal-billing-methods>
     </p-dialog>
   </div>

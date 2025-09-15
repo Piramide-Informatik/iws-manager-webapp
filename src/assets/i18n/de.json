@@ -1146,7 +1146,8 @@
     },
     "MODAL": {
       "NEW": "Neu Verrechnungsart",
-      "DELETE": "Verrechnungsart löschen"
+      "DELETE": "Verrechnungsart löschen",
+      "CONFIRM_QUESTION": "Möchten Sie den Verrechnungsart wirklich löschen "
     }
   },
   "CONTRACT_STATUS": {

@@ -17,13 +17,13 @@
 <ng-template #deleteTemplate>
     <div class="confirmation-content mt-4">
         <p class="mb-4">
-            {{ 'confirm delete' | translate }}
-            <strong class="stronglock mt-1">"{{ '' }}"</strong>?
+            {{ 'BILLING_METHODS.MODAL.CONFIRM_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ selectedInvoiceType?.name }}"</strong>?
         </p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-                icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading"
+                icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading" (onClick)="deleteBillingMethod()"
                 [disabled]="isLoading" />
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
