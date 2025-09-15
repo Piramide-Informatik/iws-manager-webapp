@@ -9,6 +9,7 @@
       (onColumnChanges)="onUserBillingMethodsPreferencesChanges($event)"
       (onCreateRegister)="handleTableEvents({ type: 'create' })"
       (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+      (onEditRegister)="onEditInvoiceType($event)"
     ></master-data-genaral-table>
     
     <p-dialog

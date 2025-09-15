@@ -9,6 +9,7 @@ import { InvoiceType } from '../../../../../../Entities/invoiceType';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { InvoiceTypeUtils } from '../../utils/invoice-type-utils';
 import { InvoiceTypeService } from '../../../../../../Services/invoice-type.service';
+import { InvoiceTypeStateService } from '../../utils/invoice-type-state.service';
 
 @Component({
   selector: 'app-billing-methods-table',
@@ -17,9 +18,9 @@ import { InvoiceTypeService } from '../../../../../../Services/invoice-type.serv
   styleUrl: './billing-methods-table.component.scss'
 })
 export class BillingMethodsTableComponent implements OnInit, OnDestroy {
-
   private readonly billingMethodUtils = inject(InvoiceTypeUtils);
   private readonly billingMethodService = inject(InvoiceTypeService);
+  private readonly billingMethodStateService = inject(InvoiceTypeStateService);
   billingMethodColumns: any[] = [];
   userBillingMethodsPreferences: UserPreference = {};
   tableKey: string = 'BillingMethods'
@@ -99,5 +100,9 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  onEditInvoiceType(invoiceType: InvoiceType): void {
+    this.billingMethodStateService.setInvoiceTypeToEdit(invoiceType);
   }
 }
