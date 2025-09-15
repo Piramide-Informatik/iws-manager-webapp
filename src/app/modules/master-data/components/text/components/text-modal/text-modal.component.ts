@@ -57,6 +57,23 @@ export class TextModalComponent implements OnInit, OnChanges {
     })
   }
 
+  deleteSelectedText() {
+    this.isLoading = true;
+    if (this.selectedText) {
+      this.textUtils.deleteText(this.selectedText.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.deleteText.emit({status: 'success'});
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.deleteText.emit({ status: 'error', error: error });
+        }
+      })
+    }
+  }
+
   get isCreateMode(): boolean {
     return this.modalType === 'create';
   }

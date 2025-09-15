@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
@@ -6,6 +6,8 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { Vat } from '../../../../../../Entities/vat';
 import { VatRate } from '../../../../../../Entities/vatRate';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { VatUtils } from '../../utils/vat-utils';
+import { VatService } from '../../../../../../Services/vat.service';
 
 @Component({
   selector: 'app-sales-tax-table',
@@ -15,14 +17,19 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class SalesTaxTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
-  salesTaxesValues: any[] = [];
+  private readonly salesTaxUtils = inject(VatUtils);
+  private readonly salestTaxService = inject(VatService);
   salesTaxesColumns: any[] = [];
   isSalesTaxesChipVisible = false;
   userSalesTaxTablePreferences: UserPreference = {};
   tableKey: string = 'SalesTaxTable'
-  dataKeys = ['vatlabel', 'rate'];
+  dataKeys = ['label', 'rate'];
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
+  readonly salesTaxesValues = computed(() => {
+    return this.salestTaxService.vats();
+  });
+  selectedVat!: Vat;
 
   private langSalesTaxSubscription!: Subscription;
 
@@ -30,6 +37,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
               private readonly translate: TranslateService ) { }
 
   ngOnInit() {
+    this.salesTaxUtils.loadInitialData().subscribe();
     this.loadSalesTaxHeadersAndColumns();
     this.userSalesTaxTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salesTaxesColumns);
     this.langSalesTaxSubscription = this.translate.onLangChange.subscribe(() => {
@@ -38,7 +46,6 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
     });
     const salesTaxesRatesData: VatRate[] = [];
     const salesTaxesData: Vat[] = [];
-    this.salesTaxesValues = []
   }
 
   onUserSalesTaxTablePreferencesChanges(userSalesTaxTablePreferences: any) {
@@ -52,7 +59,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   loadColumnSalesTaxHeaders(): any [] {
     return [
       {
-        field: 'vatlabel',
+        field: 'label',
         minWidth: 110,
         header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX.SALES_TAX'))
       },
@@ -73,7 +80,12 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    
+    if (event.type === 'delete') {
+      const foundVat = this.salesTaxesValues().find(st => st.id == event.data);
+      if (foundVat) {
+        this.selectedVat = foundVat;
+      }
+    }
     this.isVisibleModal = true;
   }
 
@@ -82,6 +94,14 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteVat(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
