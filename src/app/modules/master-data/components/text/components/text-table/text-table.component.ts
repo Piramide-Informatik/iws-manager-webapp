@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -8,6 +8,8 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { Column } from '../../../../../../Entities/column';
 import { Text } from '../../../../../../Entities/text';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { TextUtils } from '../../utils/text-utils';
+import { TextService } from '../../../../../../Services/text.service';
 
 @Component({
   selector: 'app-text-table',
@@ -17,13 +19,14 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class TextTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
-  text: Text[] = [];
+  private readonly textUtils = inject(TextUtils);
+  private readonly textService = inject(TextService);
   textColumns: Column[] = [];
   textDisplayedColumns: Column[] = [];
   isTextChipVisible = false;
   userTextPreferences: UserPreference = {};
   tableKey: string = 'Text'
-  dataKeys = ['label', 'text'];
+  dataKeys = ['label', 'content'];
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
   
@@ -31,9 +34,14 @@ export class TextTableComponent implements OnInit, OnDestroy {
 
   private langTextSubscription!: Subscription;
 
+  readonly texts = computed(() => {
+    return this.textService.texts();
+  });
+
   constructor(private readonly router: Router, private readonly userPreferenceService: UserPreferenceService, private readonly translate: TranslateService ) { }
 
   ngOnInit() {
+    this.textUtils.loadInitialData().subscribe();
     this.loadTextHeadersAndColumns();
     this.userTextPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.textDisplayedColumns)
     this.langTextSubscription = this.translate.onLangChange.subscribe(() => {
@@ -54,7 +62,7 @@ export class TextTableComponent implements OnInit, OnDestroy {
   loadTextHeaders(): void {
     this.textColumns = [
       { field: 'label', minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT_LABEL')) },
-      { field: 'text', customClasses: ['nowrap-row'], minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT')) }
+      { field: 'content', customClasses: ['nowrap-row'], minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT')) }
     ];
   }
 
