@@ -1,32 +1,36 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'SALES_TAX.LABEL.EDIT_SALES_TAX' | translate">
-    <form [formGroup]="editSalesTaxForm" (ngSubmit)="onSubmit()">
-        <div class="align-items-center mb-2">
-            <div class="sales-tax-form mb-2 flex">
-                <label for="vatlabel">{{ 'SALES_TAX.LABEL.SALES_TAX_LABEL' | translate }}</label>
-                <div>
-                    <input pInputText type="text" id="vatlabel" formControlName="vatlabel" [ngClass]="{'ng-invalid': editSalesTaxForm.get('vatlabel')?.invalid && 
-                    editSalesTaxForm.get('vatlabel')?.dirty && editSalesTaxForm.get('vatlabel')?.touched}" autocomplete="off" />
-                     <p-message severity="error" variant="simple" size="small" *ngIf="
-                         editSalesTaxForm.get('name')?.invalid && 
-                         editSalesTaxForm.get('name')?.dirty && 
-                         editSalesTaxForm.get('name')!.hasError('required')
-                         ">
-                         {{ 'SALES_TAX.ERROR.SALES_TAX_REQUIRED' | translate }}</p-message>
-                </div>
-                <p-button class="save ml-5" size="small" [label]="'BUTTONS.SAVE' | translate" />
-            </div>
-        </div>
-    </form>
-    <div class="row">
-      <div class>
-        <master-data-genaral-table
-          [tableId]="tableKey"
-          [tableValues]="salesTaxRatesValues"
-          [columns]="salesTaxRatesColumns"
-          [userPreferences]="userSalesTaxFormPreferences"
-          [dataKeys]="dataKeys"
-          (onColumnChanges)="onUserSalesTaxFormPreferencesChanges($event)"
-        ></master-data-genaral-table>
+  <form [formGroup]="editSalesTaxForm" (ngSubmit)="onSubmit()">
+    <div class="align-items-center mb-2">
+      <div class="sales-tax-form mb-2">
+        <label for="label">{{ 'SALES_TAX.LABEL.SALES_TAX_LABEL' | translate }}</label>
+        <input pInputText type="text" id="label" formControlName="label" [ngClass]="{'ng-invalid': editSalesTaxForm.get('label')?.invalid && 
+          editSalesTaxForm.get('label')?.dirty && editSalesTaxForm.get('label')?.touched}" autocomplete="off" />
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            editSalesTaxForm.get('label')?.invalid && 
+            editSalesTaxForm.get('label')?.dirty && 
+            editSalesTaxForm.get('label')!.hasError('required')"
+          >{{ 'SALES_TAX.ERROR.SALES_TAX_REQUIRED' | translate }}</p-message>
+      </div>
+      <div class="flex justify-content-center gap-3">
+        <p-button class="save ml-5" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"/>
+        <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
       </div>
     </div>
+  </form>
+  <div class="row">
+    <master-data-genaral-table
+      [tableId]="tableKey"
+      [tableValues]="salesTaxRatesValues"
+      [columns]="salesTaxRatesColumns"
+      [userPreferences]="userSalesTaxFormPreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserSalesTaxFormPreferencesChanges($event)"
+    ></master-data-genaral-table>
+  </div>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalVat"
+  (close)="showOCCErrorModalVat = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
