@@ -14,27 +14,40 @@
 
       <div class="funding-form">
         <label for="rate">{{ "FUNDING.LABEL.RATE" | translate }}</label>
-        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="rate"
-          formControlName="defaultFundingRate"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            inputId="rate" formControlName="defaultFundingRate" [inputStyle]="{'text-align': 'right'}"
+            autocomplete="off" invalid="
+            fundingProgramForm.get('defaultFundingRate')?.invalid  
+              && fundingProgramForm.get('defaultFundingRate')?.dirty 
+              || fundingProgramForm.get('defaultFundingRate')?.touched"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            fundingProgramForm.get('defaultFundingRate')?.invalid && 
+            fundingProgramForm.get('defaultFundingRate')?.dirty
+          ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="funding-form">
         <label for="personnelRate">{{ "FUNDING.LABEL.PERSONNEL_RATE" | translate }}</label>
-        <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="personnelRate"
-          formControlName="defaultStuffFlat"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            inputId="personnelRate" formControlName="defaultStuffFlat" [inputStyle]="{'text-align': 'right'}"
+            autocomplete="off" invalid="
+            fundingProgramForm.get('defaultStuffFlat')?.invalid  
+              && fundingProgramForm.get('defaultStuffFlat')?.dirty 
+              || fundingProgramForm.get('defaultStuffFlat')?.touched"/>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+            fundingProgramForm.get('defaultStuffFlat')?.invalid && 
+            fundingProgramForm.get('defaultStuffFlat')?.dirty
+          ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="funding-form">
         <label for="researchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
         <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="researchShare"
-          formControlName="defaultResearchShare"
+          inputId="researchShare" formControlName="defaultResearchShare" [inputStyle]="{'text-align': 'right'}"
           autocomplete="off"
         />
       </div>
@@ -42,8 +55,7 @@
       <div class="funding-form">
         <label for="productiveHours">{{ "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate }}</label>
         <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="productiveHours"
-          formControlName="defaultHoursPerYear"
+          inputId="productiveHours" formControlName="defaultHoursPerYear" [inputStyle]="{'text-align': 'right'}"
           autocomplete="off"
         />
       </div>
