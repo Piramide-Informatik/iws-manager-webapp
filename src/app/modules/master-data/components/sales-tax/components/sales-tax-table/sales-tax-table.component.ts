@@ -8,6 +8,7 @@ import { VatRate } from '../../../../../../Entities/vatRate';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { VatUtils } from '../../utils/vat-utils';
 import { VatService } from '../../../../../../Services/vat.service';
+import { VatStateService } from '../../utils/vat-state.service';
 
 @Component({
   selector: 'app-sales-tax-table',
@@ -19,6 +20,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly salesTaxUtils = inject(VatUtils);
   private readonly salestTaxService = inject(VatService);
+  private readonly salesTaxStateService = inject(VatStateService);
   salesTaxesColumns: any[] = [];
   isSalesTaxesChipVisible = false;
   userSalesTaxTablePreferences: UserPreference = {};
@@ -103,5 +105,9 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  onEditVat(vat: Vat): void {
+    this.salesTaxStateService.setVatToEdit(vat);
   }
 }
