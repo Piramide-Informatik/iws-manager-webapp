@@ -1,8 +1,7 @@
 import { EnvironmentInjector, Injectable, inject, signal } from '@angular/core';
-import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { ContactPersonService } from '../../../Services/contact-person.service';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 /**

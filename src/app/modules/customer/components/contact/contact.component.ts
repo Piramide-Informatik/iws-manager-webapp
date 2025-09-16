@@ -232,7 +232,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
       this.showOCCErrorModal = true;
       this.occErrorType = 'DELETE_UNEXISTED';
       this.visibleDeleteContactPersonEntity = false;
-      return;
     }
   }
 
