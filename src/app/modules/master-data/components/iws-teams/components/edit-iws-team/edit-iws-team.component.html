@@ -21,12 +21,11 @@
           "IWS_TEAMS.LABEL.TEAM_LEADER" | translate
         }}</label>
         <p-dropdown
-          id="teamLeader"
           [options]="leaders"
+          optionValue="id"
           optionLabel="fullName"
           formControlName="teamLeader"
-          placeholder="{{ 'IWS_TEAMS.PLACEHOLDER.SELECT_LEADER' | translate }}"
-          [showClear]="true"
+          [placeholder]="'IWS_TEAMS.PLACEHOLDER.SELECT_LEADER' | translate"
         >
         </p-dropdown>
       </div>
@@ -42,11 +41,12 @@
       <p-button
         class="cancel"
         size="small"
+        type="button"
         [label]="'BUTTONS.CANCEL' | translate"
         icon="pi pi-times"
         severity="secondary"
         (keydown)="cancelEdit()"
-        (keydown)="cancelEdit()"
+        (click)="cancelEdit()"
       ></p-button>
     </div>
   </form>
