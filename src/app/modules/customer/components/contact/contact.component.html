@@ -194,5 +194,7 @@
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModal"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
   (onClose)="showOCCErrorModal = false">
 </app-occ-error-modal>
