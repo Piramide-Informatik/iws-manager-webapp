@@ -16,16 +16,15 @@
   [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT' | translate" 
   [modal]="true" 
   [(visible)]="visibleSubcontractModal"
-  (onHide)="onModalHide()"
   [style]="{ width: '45rem' }"
   >
   <app-subcontract-modal
     [selectedSubContract]="selectedSubcontract"
     [customer]="customer"
     [modalSubcontractType]="subContractModalType"
+    [isVisibleModal]="visibleSubcontractModal"
     (createdSubContract)="onCreateFrameworkAgreement($event)"
     (deletedSubContract)="onDeleteFrameworkAgreement($event)"
     (visibleModal)="onModalVisible($event)"
-  >
-  </app-subcontract-modal>
+  ></app-subcontract-modal>
 </p-dialog>

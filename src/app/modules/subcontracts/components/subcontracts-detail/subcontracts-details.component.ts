@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubcontractComponent } from './subcontract/subcontract.component';
 import { SubcontractUtils } from '../../utils/subcontracts-utils';
@@ -14,7 +14,7 @@ import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
   templateUrl: './subcontracts-details.component.html',
   styleUrls: ['./subcontracts-details.component.scss'],
 })
-export class SubcontractsDetailsComponent implements OnInit {
+export class SubcontractsDetailsComponent implements OnInit, OnDestroy {
   private readonly subcontractUtils = inject(SubcontractUtils);
   private readonly subcontractStateService = inject(SubcontractStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
@@ -87,13 +87,6 @@ export class SubcontractsDetailsComponent implements OnInit {
         error: (error) => {
           this.isLoading = false;
           this.handleDeleteError(error);
-          //   if (error.message.includes('have associated subcontract projects') ||
-          //     error.message.includes('have associated subcontract years')) {
-          //     this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          //   } else {
-          //     this.commonMessageService.showErrorDeleteMessage();
-          //   }
-          // }
         }
       });
     }
