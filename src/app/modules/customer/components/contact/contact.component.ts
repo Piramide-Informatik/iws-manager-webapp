@@ -12,6 +12,7 @@ import { Customer } from '../../../../Entities/customer';
 import { ContactStateService } from '../../utils/contact-state.service';
 import { CustomerStateService } from '../../utils/customer-state.service';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-contact',
@@ -40,6 +41,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   public contacts = toSignal(this.salutationService.getAllSalutations(), { initialValue: [] });
   public titles = toSignal(this.titleService.getAllTitles(), { initialValue: [] });
   public showOCCErrorModal = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   // Form configuration
   public contactForm!: FormGroup;
@@ -155,14 +157,12 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleSaveError(error: any): void {
-    console.error('Error saving contact:', error);
-    this.isSaving = false; // Asegurar que se resetee
+    this.isSaving = false;
 
-    if (error instanceof Error && error.message?.includes('version mismatch')) {
+    if (error instanceof OccError) {
       this.showOCCErrorModal = true;
-      return;
+      this.occErrorType = error.errorType;
     }
-
     this.commonMessageService.showErrorEditMessage();
   }
 
@@ -220,9 +220,19 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
         error: (error) => {
           this.errorMessage = error.message ?? 'Failed to delete contact person';
           console.error('Delete error:', error);
+          this.handleDeleteError(error);
           this.commonMessageService.showErrorDeleteMessage();
         }
       });
+    }
+  }
+
+  handleDeleteError(error: any) {
+    if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+      this.showOCCErrorModal = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+      this.visibleDeleteContactPersonEntity = false;
+      return;
     }
   }
 
