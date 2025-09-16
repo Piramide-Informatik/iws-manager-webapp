@@ -48,7 +48,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   isDeletingSubcontract: boolean = false;
 
-  subContractModalType: string = '';
+  subContractModalType: 'create' | 'delete' = 'create';
 
   constructor( private readonly translate: TranslateService,
                private readonly userPreferenceService: UserPreferenceService, 
@@ -117,15 +117,6 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
    })
  }
 
-  deleteSubcontract(id: any) {
-    this.subContractModalType = 'delete';
-    const sub = this.subcontracts.find( subcontract => subcontract.id !== id);
-    if (sub) {
-      this.selectedSubcontract = sub;
-    }
-    this.visibleSubcontractModal = true;
-  }
-
   goToSubContractDetails() {
     this.subContractModalType = 'create';
     this.visibleSubcontractModal = true;
@@ -136,6 +127,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteSubcontracts(id: number) {
+    this.subContractModalType = 'delete';
     const subcontract = this.subcontracts.find( sub => sub.id === id);
     if (subcontract) {
       this.selectedSubcontract = subcontract
@@ -186,9 +178,5 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   onModalVisible(value: boolean) {
     this.visibleSubcontractModal = value;
-  }
-
-  onModalHide() {
-    this.subContractModalType = '';
   }
 }

@@ -14,8 +14,8 @@
                 </p-message>
             </div>
             <div class="text-form mb-2 flex">
-                <label for="text">{{ 'TEXT.LABEL.TEXT_VALUE' | translate }}</label>
-                <textarea pTextarea id="text" formControlName="text" rows="6"  style="resize: none"  
+                <label for="content">{{ 'TEXT.LABEL.TEXT_VALUE' | translate }}</label>
+                <textarea pTextarea id="content" formControlName="content" rows="6"  style="resize: none"  
                 [ngClass]="{'ng-invalid': editTextForm.get('text')?.invalid && editTextForm.get('text')?.dirty && editTextForm.get('text')?.touched}" ></textarea>
                 <p-message severity="error" variant="simple" size="small" *ngIf="
                     editTextForm.get('text')?.invalid && 
@@ -25,11 +25,17 @@
                     {{ 'TEXT.ERROR.TEXT_VALUE_REQUIRED' | translate }}</p-message> 
             </div>
         </div>
-    </form>
-    <div class="flex justify-content-center gap-2 mt-4">
-        <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+        <div class="flex justify-content-center gap-2 mt-4">
+            <p-button size="small" type="submit" [loading]="isLoading" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
             iconPos="left" />
-        <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" />
-    </div>
+        </div>
+    </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalText"
+  (close)="showOCCErrorModalText = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 import { TeamIws } from '../../../../../../Entities/teamIWS';
@@ -8,6 +8,7 @@ import { EmployeeIwsService } from '../../../../../../Services/employee-iws.serv
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
+import { EmployeeIws } from '../../../../../../Entities/employeeIws';
 
 @Component({
   selector: 'app-edit-iws-team',
@@ -15,7 +16,7 @@ import { TeamIwsStateService } from '../../utils/iws-team-state.service';
   templateUrl: './edit-iws-team.component.html',
   styleUrl: './edit-iws-team.component.scss',
 })
-export class EditIwsTeamComponent implements OnInit {
+export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   public showOCCErrorModalTeamIws = false;
   currentTeamIws: TeamIws | null = null;
   editTeamForm!: FormGroup;
@@ -69,7 +70,7 @@ export class EditIwsTeamComponent implements OnInit {
   private loadTeamIwsData(teamIws: TeamIws): void {
     this.editTeamForm.patchValue({
       name: teamIws.name,
-      teamLeader: teamIws.teamLeader
+      teamLeader: teamIws.teamLeader?.id
     });
   }
 
@@ -113,10 +114,16 @@ export class EditIwsTeamComponent implements OnInit {
     }
 
     this.isSaving = true;
+
+    const selectedLeaderId = this.editTeamForm.value.teamLeader;
+    const leaderObj = this.leaders.find((l) => l.id === selectedLeaderId);
+
     const updateTeamIws: TeamIws = {
       ...this.currentTeamIws,
       name: this.editTeamForm.value.name,
-      teamLeader: this.editTeamForm.value.team
+      teamLeader: leaderObj
+      ? ({ id: leaderObj.id, version: leaderObj.version } as EmployeeIws)
+      : null,
     };
     this.subscriptions.add(
       this.teamIwsUtils.updateTeamIws(updateTeamIws).subscribe({
@@ -124,6 +131,10 @@ export class EditIwsTeamComponent implements OnInit {
         error: (err) => this.handleError(err),
       })
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   private markAllAsTouched(): void {

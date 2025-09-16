@@ -7,6 +7,8 @@ import { Contractor } from '../../../../Entities/contractor';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContractorUtils } from '../../../contractor/utils/contractor-utils';
 import { ActivatedRoute } from '@angular/router';
+import { Customer } from '../../../../Entities/customer';
+import { Subcontract } from '../../../../Entities/subcontract';
 
 @Component({
   selector: 'app-subcontract-modal',
@@ -15,18 +17,21 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './subcontract-modal.component.scss'
 })
 export class SubContractModalComponent implements OnInit, OnChanges {
+  private readonly contractorUtils = inject(ContractorUtils);
+  private readonly route = inject(ActivatedRoute);
+  private readonly translate = inject(TranslateService);
 
-  @Input() selectedSubContract: any
-  @Input() customer: any
-  @Input() modalSubcontractType: any
+  @Input() selectedSubContract!: Subcontract;
+  @Input() customer: Customer | undefined;
+  @Input() modalSubcontractType: 'create' | 'delete' = 'create';
+  @Input() isVisibleModal: boolean = false;
   @Output() deletedSubContract = new EventEmitter();
   @Output() createdSubContract = new EventEmitter();
   @Output() visibleModal = new EventEmitter();
-  private readonly contractorUtils = inject(ContractorUtils);
-  private readonly route = inject(ActivatedRoute);
+  @ViewChild('inputText') firstInput!: ElementRef;
+
   public createSubcontractForm!: FormGroup;
   public optionsNetOrGross!: { label: string, value: string }[];
-  @ViewChild('inputText') firstInput!: ElementRef;
   private readonly customerId: number = this.route.snapshot.params['id'];
   private contractors: Contractor[] = [];
   public contractorsName = toSignal(
@@ -37,8 +42,6 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       })
     )
   );
-  
-  constructor(private readonly translate: TranslateService) {}
 
   ngOnInit(): void {
     this.loadOptionsInvoiceLabel();
@@ -46,16 +49,11 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       this.loadOptionsInvoiceLabel();
     });
     this.initForm();
-    this.firstInputFocus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let modalTypeChanges = changes['modalSubcontractType'];
-    if (modalTypeChanges && !modalTypeChanges.firstChange) {
-      let modalTypeValue = modalTypeChanges.currentValue;
-      if (modalTypeValue === 'create') {
-        this.ngOnInit()
-      }
+    if(changes['isVisibleModal'] && this.isVisibleModal && this.modalSubcontractType !== 'delete'){
+      this.firstInputFocus();
     }
   }
 
@@ -86,11 +84,13 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput.nativeElement){
-        this.firstInput.nativeElement.focus()
-      }
-    },300)
+    if(this.firstInput && this.isCreateSubcontractMode){
+      setTimeout(()=>{
+        if(this.firstInput.nativeElement){
+          this.firstInput.nativeElement.focus()
+        }
+      },300)
+    }
   }
 
   onSubmit() {
