@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 
@@ -22,8 +22,8 @@ export class ModalFundingProgramComponent {
 
   public readonly fundingProgramForm = new FormGroup({
     name: new FormControl(''),
-    defaultFundingRate: new FormControl(null),
-    defaultStuffFlat: new FormControl(null),
+    defaultFundingRate: new FormControl(null, [Validators.max(100.00)]),
+    defaultStuffFlat: new FormControl(null, [Validators.max(100.00)]),
     defaultResearchShare: new FormControl(null),
     defaultHoursPerYear: new FormControl(null)
   })

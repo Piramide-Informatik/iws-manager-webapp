@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramStateService } from '../../utils/funding-program-state.service';
@@ -25,8 +25,8 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
   constructor(private readonly fb: FormBuilder) {
     this.fundingForm = this.fb.group({
       name: [''],
-      defaultFundingRate: [null],
-      defaultStuffFlat: [null],
+      defaultFundingRate: [null, [Validators.max(100.00)]],
+      defaultStuffFlat: [null, [Validators.max(100.00)]],
       defaultResearchShare: [null],
       defaultHoursPerYear: [null],
     });
