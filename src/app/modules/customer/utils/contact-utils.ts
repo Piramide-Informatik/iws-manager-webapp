@@ -3,6 +3,7 @@ import { Observable, catchError, filter, map, switchMap, take, throwError } from
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { ContactPersonService } from '../../../Services/contact-person.service';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 /**
  * Utility class for contact person-related business logic and operations.
@@ -123,12 +124,7 @@ export class ContactUtils {
       return throwError(() => new Error('Invalid contact person ID'));
     }
 
-    return this.contactPersonService.deleteContactPerson(id).pipe(
-      catchError(err => {
-        console.error('Error deleting contact person:', err);
-        return throwError(() => new Error('Failed to delete contact person'));
-      })
-    );
+    return this.contactPersonService.deleteContactPerson(id)
   }
 
   /**
@@ -145,11 +141,11 @@ export class ContactUtils {
       take(1),
       switchMap((currentContact) => {
         if (!currentContact) {
-          return throwError(() => new Error('Contact person not found'));
+          return throwError(() => createNotFoundUpdateError('Contact'));
         }
 
         if (currentContact.version !== contact.version) {
-          return throwError(() => new Error('Conflict detected: contact person version mismatch'));
+          return throwError(() => createUpdateConflictError('Contact'));
         }
 
         return this.contactPersonService.updateContactPerson(contact);
@@ -157,26 +153,4 @@ export class ContactUtils {
     );
   }
 
-  private waitForUpdatedSalutation(id: number, observer: any) {
-    return toObservable(this.contactPersonService.contactPersons).pipe(
-      map(contacts => contacts.find(c => c.id === id)),
-      filter(updated => !!updated),
-      take(1)
-    ).subscribe({
-      next: (updatedContactPerson) => {
-        observer.next(updatedContactPerson);
-        observer.complete();
-      },
-      error: (err) => observer.error(err)
-    });
-  }
-
-  private listenForUpdateErrors(observer: any) {
-    return toObservable(this.contactPersonService.error).pipe(
-      filter(error => !!error),
-      take(1)
-    ).subscribe({
-      next: (err) => observer.error(err)
-    });
-  }
 }
