@@ -6,7 +6,7 @@ import { SalutationService } from '../../../../Services/salutation.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Title } from '../../../../Entities/title';
 import { TitleService } from '../../../../Services/title.service';
-import { finalize, of, Subscription, switchMap } from 'rxjs';
+import { finalize, Subscription, switchMap } from 'rxjs';
 import { ContactUtils } from '../../utils/contact-utils';
 import { Customer } from '../../../../Entities/customer';
 import { ContactStateService } from '../../utils/contact-state.service';
@@ -109,13 +109,12 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
     const createSub = this.contactUtils.createNewContactPerson(newContact).subscribe({
       next: () => {
-        this.commonMessageService.showSuccessMessage('MESSAGE.CREATE_SUCCESS');
+        this.commonMessageService.showCreatedSuccesfullMessage();
         this.onOperationContact.emit(this.currentCustomer.id);
         this.handleClose();
       },
       error: (err) => {
         this.commonMessageService.showErrorCreatedMessage();
-        this.handleError('MESSAGE.CREATE_FAILED', err);
       }
     });
 
@@ -173,13 +172,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   private prepareForSubmission(): void {
     this.isLoading = true;
     this.errorMessage = null;
-  }
-
-  private handleError(messageKey: string, error: any) {
-    this.errorMessage = messageKey;
-    this.commonMessageService.showErrorMessage(this.errorMessage);
-    console.error('Error:', error);
-    return of(null);
   }
 
   private getContactFormValues(): Omit<ContactPerson, 'id'> {
