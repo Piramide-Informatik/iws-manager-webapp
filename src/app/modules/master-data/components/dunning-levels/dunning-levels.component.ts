@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
+import { DunningLevelUtils } from './utils/dunning-level.utils';
+import { ReminderLevelService } from '../../../../Services/reminder-level.service';
 
 @Component({
   selector: 'app-dunning-levels',
@@ -13,23 +14,25 @@ import { UserPreference } from '../../../../Entities/user-preference';
   styles: []
 })
 export class DunningLevelsComponent implements OnInit, OnDestroy {
-  dunningLevels: any[] = [];
+  private readonly dunningUtils = inject(DunningLevelUtils);
+  private readonly reminderLevelService = inject(ReminderLevelService);
   columsHeaderField: any[] = [];
   userDunningPreferences: UserPreference = {};
   tableKey: string = 'Dunning'
-  dataKeys = ['dunningLevel', 'text'];
-
+  dataKeys = ['levelNo', 'reminderText'];
+  readonly dunningLevels = computed(() => {
+    return this.reminderLevelService.reminders();
+  });
   private langSubscription!: Subscription;
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
   ngOnInit(): void {
-    this.dunningLevels = this.masterDataService.getDunningLevelsData();
+    this.dunningUtils.loadInitialData().subscribe();
     this.loadColHeaders();
     this.userDunningPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
 
@@ -46,8 +49,8 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.columsHeaderField = [
-      { field: 'dunningLevel', styles: {'width': '100px'}, header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')), customClasses: ['align-right']  },
-      { field: 'text', styles: {'width': 'auto'},  header: this.translate.instant(_('DUNNING_LEVELS.LABEL.TEXT')) },
+      { field: 'levelNo', styles: {'width': '100px'}, header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')), customClasses: ['align-right']  },
+      { field: 'reminderText', styles: {'width': 'auto'},  header: this.translate.instant(_('DUNNING_LEVELS.LABEL.TEXT')) },
     ];
   }
 
