@@ -6,6 +6,8 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { UserPreference } from '../../../../Entities/user-preference';
 import { DunningLevelUtils } from './utils/dunning-level.utils';
 import { ReminderLevelService } from '../../../../Services/reminder-level.service';
+import { ReminderLevel } from '../../../../Entities/reminderLevel';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-dunning-levels',
@@ -20,6 +22,8 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   userDunningPreferences: UserPreference = {};
   tableKey: string = 'Dunning'
   dataKeys = ['levelNo', 'reminderText'];
+  visibleDunningLevelModal = false;
+  modalType: 'create' | 'delete' = 'create';
   readonly dunningLevels = computed(() => {
     return this.reminderLevelService.reminders();
   });
@@ -28,7 +32,8 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly commonMessageService: CommonMessagesService
   ){}
 
   ngOnInit(): void {
@@ -58,5 +63,22 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
+  }
+
+  onModalVisibilityChange(isVisible: boolean) {
+    this.visibleDunningLevelModal = isVisible;
+  }
+
+  onCreateDunningLevel(event: {created?: ReminderLevel, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    this.visibleDunningLevelModal = true;
   }
 }
