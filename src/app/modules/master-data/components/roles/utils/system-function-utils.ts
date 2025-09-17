@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, map, of, switchMap, take, tap, throwError } from "rxjs";
+import { Observable, catchError, map, of, tap } from "rxjs";
 import { SystemFunction } from "../../../../../Entities/systemFunction";
 import { SystemFunctionWithRights } from "../../../../../Entities/systemFunctionWithRights";
 import { SystemFunctionService } from "../../../../../Services/systen-function.service";
@@ -12,7 +12,7 @@ export class FunctionUtils {
         return this.functionService.loadInitialData();
     }
 
-    private _error: { set: (value: string | null) => void } = {
+    private readonly _error: { set: (value: string | null) => void } = {
     set: (value: string | null) => {
         if (value) {
         console.error("FunctionUtils Error:", value);

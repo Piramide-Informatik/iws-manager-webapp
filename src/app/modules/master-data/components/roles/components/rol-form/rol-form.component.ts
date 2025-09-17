@@ -12,7 +12,6 @@ import { Rol } from '../../../../../../Entities/rol';
 import { RolesService } from '../../services/roles.service';
 import { SystemModule } from '../../../../../../Entities/systemModule';
 import { ModuleUtils } from '../../utils/system-module-utils';
-import { SystemFunction } from '../../../../../../Entities/systemFunction';
 import { SystemFunctionWithRights } from '../../../../../../Entities/systemFunctionWithRights';
 import { FunctionUtils } from '../../utils/system-function-utils';
 import { Column } from '../../../../../../Entities/column';
