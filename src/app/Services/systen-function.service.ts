@@ -10,7 +10,7 @@ import { SystemFunction } from '../Entities/systemFunction';
 
 export class SystemFunctionService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_LOCALHOST_DEV}/systemfunctions`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/systemfunctions`;
 
     private readonly httpOptions = {
         headers: new HttpHeaders({
@@ -50,7 +50,7 @@ export class SystemFunctionService {
     }
 
 //READ
-    getAllSystemModules(): Observable<SystemFunction[]> {
+    getAllSystemFunction(): Observable<SystemFunction[]> {
         return this.http.get<SystemFunction[]>(this.apiUrl, this.httpOptions).pipe(
             tap(() => this._error.set(null)),
             catchError(err => {

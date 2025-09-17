@@ -9,7 +9,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { MasterDataService } from '../../../../master-data.service';
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
@@ -80,7 +79,6 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly publicHolidayStateService: PublicHolidayStateService
   ) {}

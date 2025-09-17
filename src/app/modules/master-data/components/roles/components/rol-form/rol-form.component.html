@@ -24,21 +24,32 @@
                     id="selectedModule"
                     [options]="modules"
                     optionLabel="name"
+                    optionValue="id"
                     placeholder="Seleccione un módulo"
+                    (onChange)="onModuleChange($event.value)"
                     />
             </div>
         </div>
 
         <!-- Tabla permisos -->
-        <p-table [value]="roles" showGridlines stripedRows [tableStyle]="{ 'min-width': '100%' }"
-                 [rows]="15" [paginator]="true" scrollable="true" [rowsPerPageOptions]="[15, 30, 50]" scrollHeight="90vh"
-                 [globalFilterFields]="['function']" [rowHover]="true" dataKey="id"
-                 [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
-                 [showCurrentPageReport]="true">
+        <p-table
+            [value]="functions"
+            showGridlines stripedRows
+            [tableStyle]="{ 'min-width': '100%' }"
+            [rows]="15"
+            [paginator]="true"
+            scrollable="true"
+            [rowsPerPageOptions]="[15, 30, 50]"
+            scrollHeight="90vh"
+            [globalFilterFields]="['functionName']" 
+            [rowHover]="true" 
+            dataKey="id"
+            [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
+            [showCurrentPageReport]="true">
 
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="function"  scope="col">{{ 'ROLES.TABLE_MODULES.FUNCTION' | translate }} <p-sortIcon field="function" /></th>
+                    <th pSortableColumn="functionName"  scope="col">{{ 'ROLES.TABLE_MODULES.FUNCTION' | translate }} <p-sortIcon field="functionName" /></th>
                     <th  scope="col">{{ 'ROLES.TABLE_MODULES.READ' | translate }}</th>
                     <th  scope="col">{{ 'ROLES.TABLE_MODULES.INSERT' | translate }}</th>
                     <th  scope="col">{{ 'ROLES.TABLE_MODULES.MODIFY' | translate }}</th>
@@ -47,17 +58,18 @@
                 </tr>
             </ng-template>
 
-            <ng-template pTemplate="body" let-rol>
+            <ng-template pTemplate="body" let-fn>
                 <tr>
-                    <td>{{ rol.function }}</td>
-                    <td class="text-center"><p-checkbox [(ngModel)]="rol.read" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
-                    <td class="text-center"><p-checkbox [(ngModel)]="rol.insert" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
-                    <td class="text-center"><p-checkbox [(ngModel)]="rol.modify" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
-                    <td class="text-center"><p-checkbox [(ngModel)]="rol.delete" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
-                    <td class="text-center"><p-checkbox [(ngModel)]="rol.execute" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td>{{ fn.functionName  }}</td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="fn.read" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="fn.insert" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="fn.modify" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="fn.delete" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
+                    <td class="text-center"><p-checkbox [(ngModel)]="fn.execute" [ngModelOptions]="{standalone: true}" [binary]="true"></p-checkbox></td>
                 </tr>
             </ng-template>
         </p-table>
+        <p>{{ functions | json}}</p>
 
         <!-- Botones -->
         <div class="flex justify-content-center gap-2 mt-4">
