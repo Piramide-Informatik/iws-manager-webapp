@@ -771,7 +771,8 @@
     },
     "MODAL": {
       "NEW": "Nuevo Nivel de Reclamación",
-      "DELETE": "Borrar Nivel de Reclamación"
+      "DELETE": "Borrar Nivel de Reclamación",
+      "DELETE_QUESTION": "¿Está seguro que desea eliminar el Nivel de Reclamación: "
     }
   },
   "EMPLOYEE_QUALIFICATION": {

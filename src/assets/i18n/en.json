@@ -772,7 +772,8 @@
     },
     "MODAL": {
       "NEW": "New Dunning level",
-      "DELETE": "Delete Dunning level"
+      "DELETE": "Delete Dunning level",
+      "DELETE_QUESTION": "Are you sure you want to delete the Dunning level "
     }
   },
   "EMPLOYEE_QUALIFICATION": {
