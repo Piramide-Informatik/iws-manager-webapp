@@ -84,19 +84,4 @@ export class CommonMessagesService {
     })
   }
   
-  showSuccessMessage(messageDetail: string){
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translateService.instant('MESSAGE.SUCCESS'),
-      detail: this.translateService.instant(messageDetail)
-    }); 
-  }
-
-  showErrorMessage(messageDetail: string){
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translateService.instant('MESSAGE.ERROR'),
-      detail: this.translateService.instant(messageDetail)
-    })
-  }
 }
