@@ -1,9 +1,7 @@
-import { Component , ViewChild, inject, computed, SimpleChanges } from '@angular/core';
+import { Component , ViewChild, inject, computed, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { MasterDataService } from '../../../../master-data.service';
 import { Subscription } from 'rxjs';
-import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { UserService } from '../../../../../../Services/user.service';
@@ -19,7 +17,7 @@ import { User } from '../../../../../../Entities/user';
   styleUrl: './user-table.component.scss',
   standalone: false,
 })
-export class UserTableComponent {
+export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly userUtils = new UserUtils();
   private readonly userService = inject(UserService);
   private readonly messageService =  inject(MessageService);
@@ -69,9 +67,7 @@ export class UserTableComponent {
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService,
     private readonly userStateService: UserStateService
   ) {}
 
