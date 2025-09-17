@@ -66,6 +66,23 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
     this.isVisibleModal.emit(false);
   }
 
+  onDeleteDunningLevelConfirm() {
+    this.isLoading = true;
+    if (this.selectedDunningLevel) {
+      this.dunningLevelUtils.deleteReminderLevel(this.selectedDunningLevel.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.deleteDunningLevel.emit({status: 'success'});
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.deleteDunningLevel.emit({ status: 'error', error: error });
+        }
+      })
+    }
+  }
+
   get isCreateMode(): boolean {
     return this.modalType === 'create';
   }

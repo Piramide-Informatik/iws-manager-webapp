@@ -24,6 +24,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   dataKeys = ['levelNo', 'reminderText'];
   visibleDunningLevelModal = false;
   modalType: 'create' | 'delete' = 'create';
+  selectedDunningLevel!: ReminderLevel | null;
   readonly dunningLevels = computed(() => {
     return this.reminderLevelService.reminders();
   });
@@ -77,8 +78,24 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onDeleteDunningLevel(event: {status: 'success' | 'error', error?: Error}) {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else if(event.status === 'error'){
+      event.error?.message === 'Cannot delete register: it is in use by other entities' ?
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
+        this.commonMessageService.showErrorDeleteMessage();
+    }
+  }
+
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
+    if (event.type === 'delete') {
+      const foundDunningLevel = this.dunningLevels().find(dl => dl.id == event.data);
+      if (foundDunningLevel) {
+        this.selectedDunningLevel = foundDunningLevel;
+      }
+    }
     this.visibleDunningLevelModal = true;
   }
 }

@@ -770,7 +770,8 @@
     },
     "MODAL": {
       "NEW": "Neue Mahnstufe",
-      "DELETE": "Mahnstufe löschen"
+      "DELETE": "Mahnstufe löschen",
+      "DELETE_QUESTION": "Möchten Sie den Mahnstufe wirklich löschen "
     }
   },
   "EMPLOYEE_QUALIFICATION": {

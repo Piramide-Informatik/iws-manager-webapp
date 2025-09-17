@@ -9,6 +9,7 @@
           [dataKeys]="dataKeys"
           (onColumnChanges)="onUserDunningPreferencesChanges($event)"
           (onCreateRegister)="handleTableEvents({ type: 'create' })"
+          (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
         ></master-data-genaral-table>
       </div>
       <div class="col-4">
@@ -25,8 +26,10 @@
       <app-dunning-level-modal
         [modalType]="modalType"
         [visible]="visibleDunningLevelModal"
+        [selectedDunningLevel]="selectedDunningLevel"
         (isVisibleModal)="onModalVisibilityChange($event)"
         (createDunningLevel)="onCreateDunningLevel($event)"
+        (deleteDunningLevel)="onDeleteDunningLevel($event)"
       ></app-dunning-level-modal>
     </p-dialog>
   </div>
