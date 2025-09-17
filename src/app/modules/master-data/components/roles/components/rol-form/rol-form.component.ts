@@ -11,7 +11,9 @@ import { RoleStateService } from '../../utils/role-state.service';
 import { Rol } from '../../../../../../Entities/rol';
 import { RolesService } from '../../services/roles.service';
 import { SystemModule } from '../../../../../../Entities/systemModule';
-import { SystemModuleService } from '../../../../../../Services/system-module.service';
+import { ModuleUtils } from '../../utils/system-module-utils';
+import { SystemFunctionWithRights } from '../../../../../../Entities/systemFunctionWithRights';
+import { FunctionUtils } from '../../utils/system-function-utils';
 import { Column } from '../../../../../../Entities/column';
 
 @Component({
@@ -32,6 +34,7 @@ export class RolFormComponent implements OnInit, OnDestroy{
 
   selectedOrderCommission!: null;
   roles: Rol[] = [];
+  functions: SystemFunctionWithRights[] = [];
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
@@ -43,7 +46,8 @@ export class RolFormComponent implements OnInit, OnDestroy{
     private readonly roleStateService: RoleStateService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
-    private readonly moduleService: SystemModuleService,
+    private readonly moduleUtils: ModuleUtils,
+    private readonly functionUtils: FunctionUtils,
     private readonly fb: FormBuilder,
   ){ }
 
@@ -61,18 +65,28 @@ export class RolFormComponent implements OnInit, OnDestroy{
       selectedModule: new FormControl('')
     });
 
-    this.roles = this.rolService.list();
-    this.loadModules();
-  }
+      this.loadModules();
+    }
 
   loadModules(): void {
-    this.moduleService.getAllSystemModules().subscribe({
+    this.moduleUtils.getAllSystemModules().subscribe({
       next: (data) => {
         this.modules = data;
       },
       error: (err) => {
         console.error('Error loading modules', err);
       }
+    });
+  }
+
+  onModuleChange(moduleId: number): void {
+    console.log("onModuleChange",moduleId)
+    if (!moduleId) {
+      this.functions = []; // limpiar funciones si no hay selección
+      return;
+    }
+      this.functionUtils.getFunctionsByModuleId(moduleId).subscribe(data => {
+      this.functions = data;
     });
   }
 
