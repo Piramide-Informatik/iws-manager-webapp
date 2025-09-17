@@ -101,4 +101,8 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  onEditChance(chance: Chance): void {
+    this.chanceStateService.setChanceToEdit(chance);
+  }
 }

@@ -1,6 +1,12 @@
 .realization-probabilities-form {
 
-  input {
-    width: 100%;
+  label {
+    width: auto;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  ::ng-deep .p-inputnumber {
+    width: 100% !important;
   }
 }
