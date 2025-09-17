@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ReminderLevel } from '../../../../../../Entities/reminderLevel';
 import { DunningLevelUtils } from '../../utils/dunning-level.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
