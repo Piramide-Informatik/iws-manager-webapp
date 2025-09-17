@@ -1072,7 +1072,11 @@
     }
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten"
+    "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten",
+    "MODAL": {
+      "NEW": "Neu Realisierungswahrscheinlichkeit",
+      "DELETE": "Realisierungswahrscheinlichkeit löschen"
+    }
   },
   "TYPE_OF_COMPANIES": {
     "TABLE_TYPE_OF_COMPANIES": {
