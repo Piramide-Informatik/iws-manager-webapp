@@ -3,13 +3,31 @@
       <div class="col-6">
         <master-data-genaral-table
           [tableId]="tableKey"
-          [tableValues]="probabilities"
+          [tableValues]="probabilities()"
           tableTitle="realization probabilities"
           [columns]="columsHeaderFieldProbabilities"
           [userPreferences]="userRealitationProbabilitiesPreferences"
           [dataKeys]="dataKeys"
           (onColumnChanges)="onUserRealitationProbabilitiesPreferencesChanges($event)"
+          (onCreateRegister)="handleTableEvents({ type: 'create' })"
+          (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
         ></master-data-genaral-table>
+
+        <p-dialog
+          [header]="modalType === 'create' 
+          ? ('REALIZATION_PROBABILITIES.MODAL.NEW' | translate) 
+          : ('REALIZATION_PROBABILITIES.MODAL.DELETE' | translate)" 
+          [modal]="true" 
+          [(visible)]="visibleModal">
+          <app-modal-realization-probabilities
+            [modalType]="modalType"
+            [selectedChance]="selectedChance"
+            [visible]="visibleModal"
+            (isVisibleModal)="visibleModal = $event"
+            (createChance)="onCreateChance($event)"
+            (deleteChance)="onDeleteChance($event)"
+          ></app-modal-realization-probabilities>
+        </p-dialog>
       </div>
       <div class="col-6">
         <master-data-edit-realization-probabilities/>

@@ -144,6 +144,7 @@ import { NetworkModalComponent } from './components/networks/components/network-
 import { SalesTaxModalComponent } from './components/sales-tax/components/sales-tax-modal/sales-tax-modal.component';
 import { ModalBillingMethodsComponent } from './components/billing-methods/components/modal-billing-methods/modal-billing-methods.component';
 import { TextModalComponent } from './components/text/components/text-modal/text-modal.component';
+import { ModalRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/modal-realization-probabilities/modal-realization-probabilities.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -253,7 +254,8 @@ registerLocaleData(localeDe, 'de-DE');
     NetworkModalComponent,
     SalesTaxModalComponent,
     ModalBillingMethodsComponent,
-    TextModalComponent
+    TextModalComponent,
+    ModalRealizationProbabilitiesComponent
   ],
   imports: [
     ButtonModule,

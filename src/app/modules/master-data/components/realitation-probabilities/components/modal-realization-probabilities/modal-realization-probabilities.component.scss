@@ -1,0 +1,19 @@
+.create-form {
+  .chance-form{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 1rem;
+
+    label {
+      width: auto;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+  
+    p-inputnumber {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}
