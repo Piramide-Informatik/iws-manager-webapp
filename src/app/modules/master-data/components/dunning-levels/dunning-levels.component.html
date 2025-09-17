@@ -3,15 +3,30 @@
       <div class="col-8">
         <master-data-genaral-table
           [tableId]="tableKey"
-          [tableValues]="dunningLevels"
+          [tableValues]="dunningLevels()"
           [columns]="columsHeaderField"
           [userPreferences]="userDunningPreferences"
           [dataKeys]="dataKeys"
           (onColumnChanges)="onUserDunningPreferencesChanges($event)"
+          (onCreateRegister)="handleTableEvents({ type: 'create' })"
         ></master-data-genaral-table>
       </div>
       <div class="col-4">
         <app-edit-dunning-level></app-edit-dunning-level>
       </div>
     </div>
+    <p-dialog 
+      [header]="modalType === 'create' 
+        ? ('DUNNING_LEVELS.MODAL.NEW' | translate) 
+        : ('DUNNING_LEVELS.MODAL.DELETE' | translate)" 
+      [modal]="true" 
+      [(visible)]="visibleDunningLevelModal"
+    >
+      <app-dunning-level-modal
+        [modalType]="modalType"
+        [visible]="visibleDunningLevelModal"
+        (isVisibleModal)="onModalVisibilityChange($event)"
+        (createDunningLevel)="onCreateDunningLevel($event)"
+      ></app-dunning-level-modal>
+    </p-dialog>
   </div>

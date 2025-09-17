@@ -769,6 +769,10 @@
       "DEFAULT_INTEREST": "Default Interes",
       "PAYMENT_TERM": "Payment Term (Days)",
       "REMINDER_TEXT": "Reminder Text"
+    },
+    "MODAL": {
+      "NEW": "New Dunning level",
+      "DELETE": "Delete Dunning level"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
