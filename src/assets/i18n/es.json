@@ -1068,7 +1068,11 @@
     }
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Editar Probabilidad de Ejecución"
+    "TITLE_FORM": "Editar Probabilidad de Ejecución",
+    "MODAL": {
+      "NEW": "Nueva Probabilidad de Ejecución",
+      "DELETE": "Eliminar Probabilidad de Ejecución"
+    }
   },
   "TYPE_OF_COMPANIES": {
     "TABLE_TYPE_OF_COMPANIES": {

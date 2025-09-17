@@ -1072,7 +1072,11 @@
     }
   },
   "REALIZATION_PROBABILITIES": {
-    "TITLE_FORM": "Edit Realization Probabilities"
+    "TITLE_FORM": "Edit Realization Probabilities",
+    "MODAL": {
+      "NEW": "New Realization Probabilities",
+      "DELETE": "Delete Realization Probabilities"
+    }
   },
   "TYPE_OF_COMPANIES": {
     "TABLE_TYPE_OF_COMPANIES": {
