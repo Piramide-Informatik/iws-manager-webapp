@@ -767,6 +767,10 @@
       "DEFAULT_INTEREST": "Verzugszinsen",
       "PAYMENT_TERM": "Zahlungsgziel (Tagen)",
       "REMINDER_TEXT": "Mahntext"
+    },
+    "MODAL": {
+      "NEW": "Neue Mahnstufe",
+      "DELETE": "Mahnstufe löschen"
     }
   },
   "EMPLOYEE_QUALIFICATION": {

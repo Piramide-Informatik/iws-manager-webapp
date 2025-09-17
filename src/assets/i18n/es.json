@@ -768,6 +768,10 @@
       "DEFAULT_INTEREST": "Interés Predeterminado",
       "PAYMENT_TERM": "Plazo de Pago (Días)",
       "REMINDER_TEXT": "Texto Recordatorio"
+    },
+    "MODAL": {
+      "NEW": "Nuevo Nivel de Reclamación",
+      "DELETE": "Borrar Nivel de Reclamación"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
