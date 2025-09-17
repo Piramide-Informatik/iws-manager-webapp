@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { MasterDataService } from '../../../../master-data.service';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
@@ -78,7 +77,6 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService,
     private readonly employeeCategoryStateService: EmployeeCategoryStateService
