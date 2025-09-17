@@ -8,9 +8,9 @@ import { ProjectStatusService } from '../../../../../../Services/project-status.
 import { ProjectStatusUtils } from '../../../../../../modules/master-data/components/project-status/utils/project-status-utils';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
 import { ModelProjectStatusComponent  } from '../model-project-status/model-project-status.component';
-import { MasterDataService } from '../../../../master-data.service';
 import { MessageService } from 'primeng/api';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-table-project-status',
@@ -54,9 +54,8 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     }));
   });
 
-  projects: any[] = [];
-  projectColumns: any[] = [];
-  projectStatusDisplayedColumns: any[] = [];
+  projectColumns: Column[] = [];
+  projectStatusDisplayedColumns: Column[] = [];
   isChipsVisible = false;
   userProjectStatusPreferences: UserPreference = {};
   tableKey: string = 'ProjectStatus'
@@ -70,7 +69,6 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   
   constructor(
         private readonly translate: TranslateService,
-        private readonly masterDataService: MasterDataService,
         private readonly userPreferenceService: UserPreferenceService,
         private readonly projectStatusStateService: ProjectStatusStateService
       ){ }
@@ -83,8 +81,6 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
       this.loadProjectStatusHeadersAndColumns();
       this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.projectStatusDisplayedColumns);
     })
-    this.projects = this.masterDataService.getProjectStatusData();
-    
   }
     
   onUserProjectStatusPreferencesChanges(userProjectStatusPreferences: any) {

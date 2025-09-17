@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { MasterDataService } from '../../master-data.service';
 import { RouterUtilsService } from '../../router-utils.service';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
@@ -12,9 +11,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
   templateUrl: './project-status.component.html',
   styles: ``
 })
-export class ProjectStatusComponent {
-
-  public projects: any[] = [];
+export class ProjectStatusComponent implements OnInit, OnDestroy {
   public columsHeaderFieldProjects: any[] = [];
   userProjectStatusPreferences: UserPreference = {};
   tableKey: string = 'ProjectStatus'
@@ -24,14 +21,11 @@ export class ProjectStatusComponent {
   
   constructor(
     private readonly translate: TranslateService,
-    private readonly masterDataService: MasterDataService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
   ){}
 
   ngOnInit(): void {
-    this.projects = this.masterDataService.getProjectStatusData();
-
     this.loadColHeadersProjects();
     this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjects);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
