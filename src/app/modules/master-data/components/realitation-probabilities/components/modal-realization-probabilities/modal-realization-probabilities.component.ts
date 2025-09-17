@@ -78,7 +78,7 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
     return this.modalType === 'create';
   }
 
-  public focusInputIfNeeded(): void {
+  private focusInputIfNeeded(): void {
     if (this.isCreateMode && this.firstInput) {
       setTimeout(() => {
         if (this.firstInput.input.nativeElement) {

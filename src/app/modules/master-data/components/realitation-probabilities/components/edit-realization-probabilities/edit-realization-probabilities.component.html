@@ -1,16 +1,33 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'REALIZATION_PROBABILITIES.TITLE_FORM' | translate ">
     <form [formGroup]="editProbablitiesForm" (ngSubmit)="onSubmit()">
-        <div class="flex flex-column mb-2 mt-4 px-4">
-            <div class="realization-probabilities-form flex flex-row mb-4 align-items-center gap-8">
-                <label id="label-probability" for="realization-probabilities">{{ 'SIDEBAR.REALIZATION_PROBABILITIES' | translate }}</label>
-                <input pInputText type="text" class="text-right" id="realization-probabilities" formControlName="probability" autocomplete="off" />
+        <div class="flex flex-column mb-2 mt-4">
+            <div class="realization-probabilities-form flex flex-row mb-4 align-items-center">
+                <label for="probability">{{ 'SIDEBAR.REALIZATION_PROBABILITIES' | translate }}</label>
+                <div class="input-message">
+                    <p-inputnumber #firstInput mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+                    inputId="probability" formControlName="probability" [inputStyle]="{'text-align': 'right'}"
+                    autocomplete="off" invalid="
+                        editProbablitiesForm.get('probability')?.invalid  
+                        && editProbablitiesForm.get('probability')?.dirty 
+                        || editProbablitiesForm.get('probability')?.touched"/>
+                    <p-message severity="error" variant="simple" size="small" *ngIf="
+                        editProbablitiesForm.get('probability')?.invalid && 
+                        editProbablitiesForm.get('probability')?.dirty
+                    ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+                </div>
             </div>
             <div class="row mt-2">
                 <div class="col flex justify-content-center">
-                    <p-button class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" (onClick)="clearForm()" [disabled]="isLoading" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalChance"
+  (close)="showOCCErrorModalChance = false"
+  [useEmitter]="true"
+  (refresh)="onRefresh()">
+</app-occ-error-modal>
