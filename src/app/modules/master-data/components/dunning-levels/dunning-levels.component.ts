@@ -25,6 +25,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   visibleDunningLevelModal = false;
   modalType: 'create' | 'delete' = 'create';
   selectedDunningLevel!: ReminderLevel | null;
+  selectedDunningLevelToEdit!: ReminderLevel | null;
   readonly dunningLevels = computed(() => {
     return this.reminderLevelService.reminders();
   });
@@ -97,5 +98,13 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
       }
     }
     this.visibleDunningLevelModal = true;
+  }
+
+  onEditDunningLevel(value: ReminderLevel) {
+    this.selectedDunningLevelToEdit = value;
+  }
+
+  onCancelEdit(value: any) {
+    this.selectedDunningLevelToEdit = null;
   }
 }
