@@ -2,7 +2,7 @@
     <form [formGroup]="createContractStatusForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
             <div class="contract-status-form flex align-items-center mb-3">
-                <label for="contractStatus" class="block label-status">{{ 'CONTRACT_STATUS.LABEL.CONTRACT_STATUS' | translate }}</label>
+                <label for="status" class="block label-status">{{ 'CONTRACT_STATUS.LABEL.CONTRACT_STATUS' | translate }}</label>
                 <div>
                     <input #statusInput pInputText type="text" id="status" formControlName="status" [ngClass]="{'ng-invalid': createContractStatusForm.get('status')?.invalid && 
                       createContractStatusForm.get('status')?.dirty && createContractStatusForm.get('status')?.touched}" autocomplete="off" />

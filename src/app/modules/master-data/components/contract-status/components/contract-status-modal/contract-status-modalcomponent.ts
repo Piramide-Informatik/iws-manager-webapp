@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContractStatus } from '../../../../../../Entities/contractStatus';
 
@@ -9,9 +9,10 @@ import { ContractStatus } from '../../../../../../Entities/contractStatus';
   styleUrls: ['./contract-status-modal.component.scss']
 })
 
-export class ContractStatusModalComponent implements OnInit {
+export class ContractStatusModalComponent implements OnInit, OnChanges {
 
   @ViewChild('statusInput') statusInput!: ElementRef<HTMLInputElement>;
+  @Input() isVisible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedContractStatus: ContractStatus | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -26,6 +27,12 @@ export class ContractStatusModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.createContractStatusForm.reset();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['isVisible'] && this.isVisible){
+      this.focusInputIfNeeded();
+    }
   }
 
   get isCreateMode(): boolean {
@@ -55,13 +62,13 @@ export class ContractStatusModalComponent implements OnInit {
     this.createContractStatusForm.reset();
   }
 
-  public focusInputIfNeeded() {
+  private focusInputIfNeeded() {
     if (this.isCreateMode && this.statusInput) {
       setTimeout(() => {
         if (this.statusInput?.nativeElement) {
           this.statusInput.nativeElement.focus();
         }
-      }, 150);
+      }, 200);
     }
   }
 }

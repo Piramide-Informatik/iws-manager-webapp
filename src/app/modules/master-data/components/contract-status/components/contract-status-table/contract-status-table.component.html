@@ -23,6 +23,7 @@
       <app-contract-status-modal
         [modalType]="modalContractStatusType"
         [selectedContractStatus]="selectedContractStatus"
+        [isVisible]="visibleContractStatusModal"
         (isVisibleModal)="onModalVisibilityChange($event)"
         (contractStatusCreated)="onContractStatusCreated($event)"
         (contractStatusDeleted)="onContractStatusDeleted($event)"
