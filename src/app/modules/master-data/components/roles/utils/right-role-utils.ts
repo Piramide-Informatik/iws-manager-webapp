@@ -1,0 +1,104 @@
+import { Injectable, inject } from '@angular/core';
+import {
+  Observable,
+  catchError,
+  map,
+  take,
+  throwError,
+  switchMap,
+  of,
+} from 'rxjs';
+import { RightRoleService } from '../../../../../Services/rightrole.service';
+import { RightRole } from '../../../../../Entities/rightRole';
+
+@Injectable({ providedIn: 'root' })
+export class RightRoleUtils {
+  private readonly rightRoleService = inject(RightRoleService);
+
+  loadInitialData(): Observable<RightRole[]> {
+    return this.rightRoleService.loadInitialData();
+  }
+
+  addRightRole(
+    rightRole: Omit<RightRole, 'id' | 'createdAt' | 'updatedAt' | 'version'>
+  ): Observable<RightRole> {
+    return this.rightRoleService.addRightRole(rightRole);
+  }
+
+  getAllRightRole(): Observable<RightRole[]> {
+    return this.rightRoleService.getAllRightRole();
+  }
+
+  getRightRoleById(id: number): Observable<RightRole | undefined> {
+    if (!id || id <= 0) {
+      return throwError(() => new Error('Invalid RightRole ID'));
+    }
+
+    return this.rightRoleService.getRightRoleById(id).pipe(
+      catchError((err) => {
+        console.error('Error fetching RightRole:', err);
+        return throwError(() => new Error('Failed to load RightRole'));
+      })
+    );
+  }
+
+  refreshRightRole(): Observable<void> {
+    return new Observable<void>((subscriber) => {
+      this.rightRoleService.loadInitialData();
+      subscriber.next();
+      subscriber.complete();
+    });
+  }
+
+  //Delete a RightRole by ID after checking if it's used by any entity
+  deleteRightRole(id: number): Observable<void> {
+    return this.checkRightRoleUsage(id).pipe(
+      switchMap((isUsed) => {
+        if (isUsed) {
+          return throwError(
+            () =>
+              new Error(
+                'Cannot delete register: it is in use by other entities'
+              )
+          );
+        }
+        return this.rightRoleService.deleteRightRole(id);
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
+  }
+  //Checks if a RightRole is used by any entity
+  private checkRightRoleUsage(idRightRole: number): Observable<boolean> {
+    return of(false);
+  }
+  //Update a RightRole by ID and updates the internal RightRole signal
+  updateRightRole(rightRole: RightRole): Observable<RightRole> {
+    if (!rightRole?.id) {
+      return throwError(() => new Error('Invalid RightRole data'));
+    }
+
+    return this.rightRoleService.getRightRoleById(rightRole.id).pipe(
+      take(1),
+      map((currentRightRole) => {
+        if (!currentRightRole) {
+          throw new Error('RightRole not found');
+        }
+        if (currentRightRole.version !== rightRole.version) {
+          throw new Error(
+            'Version conflict: RightRole has been updated by another user'
+          );
+        }
+        return rightRole;
+      }),
+      switchMap((validatedRightRole: RightRole) =>
+        this.rightRoleService.updateRightRole(validatedRightRole)
+      ),
+      catchError((err) => {
+        console.error('Error updating RightRole:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+}
