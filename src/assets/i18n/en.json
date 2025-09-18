@@ -846,13 +846,13 @@
   },
   "IWS_COMMISSIONS": {
     "TABLE": {
-      "THRESHOLD": "Threshold",
+      "THRESHOLD": "From Value",
       "PERCENTAGE": "Commission (%)",
       "MIN_COMMISSION": "Minimum Commission"
     },
     "FORM": {
       "HEADER": "Edit IWS Commission",
-      "THRESHOLD": "Threshold Value",
+      "THRESHOLD": "From Value",
       "PERCENTAGE": "Commission (%)",
       "MIN_COMMISSION": "Minimum Commission",
       "NEW": "New Commission"
