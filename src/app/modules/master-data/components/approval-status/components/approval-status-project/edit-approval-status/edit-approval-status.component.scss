@@ -1,25 +1,14 @@
 .approval-status-form {
     display: flex;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 
     label {
         flex-shrink: 0;
-        width: 100px;
+        width: 120px;
     }
 
-    .input-message {
+    input {
         width: 100%;
-        position: relative;
-
-        input {
-            width: 100%;
-        }
-
-        p-message {
-            position: absolute;
-            left: 0px;
-            bottom: -18px;
-        }
     }
 }

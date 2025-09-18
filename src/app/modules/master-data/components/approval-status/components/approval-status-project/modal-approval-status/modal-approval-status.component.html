@@ -14,17 +14,17 @@
             </div>
             <div class="approvalstatus-form mb-3 flex align-items-center">
                 <label for="order">{{ "Orden" }}</label>
-                <input
-                    pInputText
-                    type="text"
-                    id="order"
+                <p-inputnumber
+                    inputId="order"
                     formControlName="order"
                     autocomplete="off"
+                    [useGrouping]="false"
+                    [inputStyle]="{'text-align': 'right'}"
                 />
             </div>
             <div class="approvalstatus-form-check mb-3 flex align-items-center">
                 <label for="isProjectChecked">{{ 'APPROVAL_STATUS.LABEL.IS_PROJECTS' | translate }}</label>
-                <p-toggleswitch formControlName="isProject" class="flex">
+                <p-toggleswitch inputId="isProjectChecked" formControlName="isProject" class="flex">
                 <ng-template #handle let-checked="checked">
                     <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                 </ng-template>
@@ -32,7 +32,7 @@
             </div>
             <div class="approvalstatus-form-check mb-3 flex align-items-center">
                 <label for="isNetworkChecked">{{ 'APPROVAL_STATUS.LABEL.IS_NETWORKS' | translate}}</label>
-                <p-toggleswitch formControlName="isNetwork" class="flex">
+                <p-toggleswitch inputId="isNetworkChecked" formControlName="isNetwork" class="flex">
                 <ng-template #handle let-checked="checked">
                     <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                 </ng-template>

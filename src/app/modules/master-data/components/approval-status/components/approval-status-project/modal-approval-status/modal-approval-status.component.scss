@@ -2,17 +2,17 @@
     display: flex;
     margin-bottom: 1rem;
 
-label {
-    width: 140px;
-    font-weight: 500; 
-    margin-bottom: 0;
-    text-align: left; 
-}
+    label {
+        width: 140px;
+        margin-bottom: 0;
+        text-align: left; 
+    }
 
-input {
-    max-width: 200px;
-    width: 100%;
-}
+    input,
+    p-inputnumber {
+        max-width: 200px;
+        width: 100%;
+    }
 }
 
 .approvalstatus-form-check {
@@ -24,5 +24,5 @@ input {
         width: 125px;
         font-weight: 500;
         text-align: left;
-}
+    }
 }
