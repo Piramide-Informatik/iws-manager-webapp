@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form flex align-items-center mb-6">
+            <div class="create-form flex align-items-center">
                 <label for="userName" class="block">
                     {{ 'USERS.FORM.USERNAME' | translate }}
                 </label>
@@ -14,7 +14,7 @@
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
-            <div class="create-form flex align-items-center mb-6">
+            <div class="create-form flex align-items-center">
                 <label for="firstName" class="block">
                     {{ 'USERS.FORM.FIRSTNAME' | translate }}
                 </label>
@@ -27,7 +27,7 @@
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
-            <div class="create-form flex align-items-center mb-6">
+            <div class="create-form flex align-items-center">
                 <label for="lastName" class="block">
                     {{ 'USERS.FORM.LASTNAME' | translate }}
                 </label>
@@ -40,7 +40,7 @@
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
-            <div class="create-form flex align-items-center mb-6">
+            <div class="create-form flex align-items-center">
                 <label for="password" class="block">
                     {{ 'USERS.FORM.PASSWORD' | translate }}
                 </label>
@@ -52,7 +52,7 @@
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
-            <div class="create-form flex align-items-center mb-6">
+            <div class="create-form flex align-items-center">
                 <label for="email" class="block">
                     {{ 'USERS.FORM.EMAIL' | translate }}
                 </label>

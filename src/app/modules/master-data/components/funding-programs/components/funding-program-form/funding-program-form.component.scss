@@ -1,15 +1,18 @@
-.funding-form {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+.funding-form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1rem;
 
-  label {
-    width: 140px;
+    label {
+      width: 150px;
+      flex-shrink: 0;
+    }
+  
+    input, .p-inputnumber-input {
+      width: 70%;
+    }
   }
-
-  input,
-  p-inputnumber {
-    flex: 1;
-    max-width: 300px;
+  .custom-input {
+    width: 70% !important;
   }
-}
