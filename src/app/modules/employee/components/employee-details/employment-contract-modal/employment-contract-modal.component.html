@@ -47,7 +47,7 @@
            employmentContractForm.get('workShortTime')?.invalid  
             && employmentContractForm.get('workShortTime')?.dirty 
             || employmentContractForm.get('workShortTime')?.touched"/>
-          <p-message severity="error" variant="simple" size="small" *ngIf="
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             employmentContractForm.get('workShortTime')?.invalid && 
             employmentContractForm.get('workShortTime')?.dirty">
             {{ 'ERROR.NUMBER_MAX' | translate }}</p-message>

@@ -87,7 +87,7 @@
            iwsCommissionForm.get('commission')?.invalid  
             && iwsCommissionForm.get('commission')?.dirty 
             || iwsCommissionForm.get('commission')?.touched"/> 
-          <p-message severity="error" variant="simple" size="small" *ngIf="
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             iwsCommissionForm.get('commission')?.invalid && 
             iwsCommissionForm.get('commission')?.dirty
             ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>

@@ -18,7 +18,7 @@
               fundingForm.get('defaultFundingRate')?.invalid  
                 && fundingForm.get('defaultFundingRate')?.dirty 
                 || fundingForm.get('defaultFundingRate')?.touched"/>
-            <p-message severity="error" variant="simple" size="small" *ngIf="
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
               fundingForm.get('defaultFundingRate')?.invalid && 
               fundingForm.get('defaultFundingRate')?.dirty
             ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
@@ -34,7 +34,7 @@
               fundingForm.get('defaultStuffFlat')?.invalid  
                 && fundingForm.get('defaultStuffFlat')?.dirty 
                 || fundingForm.get('defaultStuffFlat')?.touched"/>
-            <p-message severity="error" variant="simple" size="small" *ngIf="
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
               fundingForm.get('defaultStuffFlat')?.invalid && 
               fundingForm.get('defaultStuffFlat')?.dirty
             ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
