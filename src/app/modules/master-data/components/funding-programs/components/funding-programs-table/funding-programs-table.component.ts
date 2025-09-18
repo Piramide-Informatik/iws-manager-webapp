@@ -9,6 +9,7 @@ import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramService } from '../../../../../../Services/funding-program.service';
 import { FundingProgramStateService } from '../../utils/funding-program-state.service';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-funding-programs-table',
@@ -23,7 +24,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   @ViewChild('fundingProgramModal') fundingProgramModalComponent!: ModalFundingProgramComponent;
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
-  columnsHeaderFieldFundingProgram: any[] = [];
+  columnsHeaderFieldFundingProgram: Column[] = [];
   userFundingProgramsPreferences: UserPreference = {};
   tableKey: string = 'FundingPrograms'
   dataKeys = ['name', 'defaultFundingRate'];
@@ -63,6 +64,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
       },
       {
         field: 'defaultFundingRate',
+        type: 'double',
         styles: { width: '100px' },
         header: this.translate.instant(_('FUNDING.TABLE.RATE')),
         customClasses: ['align-right']
