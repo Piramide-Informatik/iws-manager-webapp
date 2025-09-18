@@ -13,7 +13,7 @@
         <label for="defaultFundingRate">{{ "FUNDING.LABEL.RATE" | translate }}</label>
         <div class="input-message">
           <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-            inputId="defaultFundingRate" formControlName="defaultFundingRate" [inputStyle]="{'text-align': 'right'}"
+            inputId="defaultFundingRate" formControlName="defaultFundingRate" [inputStyle]="{'text-align': 'right', 'width': '70%' }"
             autocomplete="off" invalid="
               fundingForm.get('defaultFundingRate')?.invalid  
                 && fundingForm.get('defaultFundingRate')?.dirty 
@@ -29,7 +29,7 @@
         <label for="defaultStuffFlat">{{ "FUNDING.LABEL.PERSONNEL_RATE" | translate }}</label>
         <div class="input-message">
           <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-            inputId="defaultStuffFlat" formControlName="defaultStuffFlat" [inputStyle]="{'text-align': 'right'}"
+            inputId="defaultStuffFlat" formControlName="defaultStuffFlat" [inputStyle]="{'text-align': 'right', 'width': '70%' }"
             autocomplete="off" invalid="
               fundingForm.get('defaultStuffFlat')?.invalid  
                 && fundingForm.get('defaultStuffFlat')?.dirty 
@@ -44,7 +44,7 @@
       <div class="funding-form">
         <label for="defaultResearchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
         <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="defaultResearchShare" formControlName="defaultResearchShare" [inputStyle]="{'text-align': 'right'}"
+          inputId="defaultResearchShare" formControlName="defaultResearchShare" [inputStyle]="{'text-align': 'right', 'width': '70%' }"
           autocomplete="off"
         />
       </div>
@@ -52,7 +52,7 @@
       <div class="funding-form">
         <label for="defaultHoursPerYear">{{ "FUNDING.LABEL.PRODUCTIVE_HOURS" | translate }}</label>
         <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="defaultHoursPerYear" formControlName="defaultHoursPerYear" [inputStyle]="{'text-align': 'right'}"
+          inputId="defaultHoursPerYear" formControlName="defaultHoursPerYear" [inputStyle]="{'text-align': 'right', 'width': '70%' }"
           autocomplete="off"
         />
       </div>
