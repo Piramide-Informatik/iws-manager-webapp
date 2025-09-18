@@ -1,11 +1,14 @@
 @use 'variables' as *;
 
 .contract-status-form {
+    display: flex; 
+    align-items: center;
+
     label {
         width: 120px;
     }
 
     input {
-        width: 250px;
+        width: 100%;
     }
 }
