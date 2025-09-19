@@ -16,7 +16,6 @@ import { SystemFunctionWithRights } from '../../../../../../Entities/systemFunct
 import { FunctionUtils } from '../../utils/system-function-utils';
 import { Column } from '../../../../../../Entities/column';
 import { RightRoleUtils } from '../../utils/right-role-utils';
-import { RightRole } from '../../../../../../Entities/rightRole';
 @Component({
   selector: 'app-rol-form',
   standalone: false,
