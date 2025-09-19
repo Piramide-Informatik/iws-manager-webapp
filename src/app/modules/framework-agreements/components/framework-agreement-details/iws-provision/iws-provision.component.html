@@ -69,7 +69,7 @@
           formControlName="provision"
           autocomplete="off"
         /> 
-        <p-message severity="error" variant="simple" size="small" *ngIf="
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
           iwsCommissionFAForm.get('provision')?.invalid && 
           iwsCommissionFAForm.get('provision')?.dirty
         ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>

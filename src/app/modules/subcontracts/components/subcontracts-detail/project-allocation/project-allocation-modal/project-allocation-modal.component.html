@@ -22,7 +22,7 @@
           allocationForm.get('percentage')?.invalid  
             && allocationForm.get('percentage')?.dirty 
             || allocationForm.get('percentage')?.touched"/>
-          <p-message severity="error" variant="simple" size="small" *ngIf="
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             allocationForm.get('percentage')?.invalid && 
             allocationForm.get('percentage')?.dirty
           ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
