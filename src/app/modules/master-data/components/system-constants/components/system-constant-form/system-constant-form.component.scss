@@ -1,13 +1,19 @@
 @use 'variables' as *;
 
-.system-constant-form {
-    align-items: center;
+.edit-system-constant-form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  
+  label {
+      width: 150px;
+  }
+  .edit-input-container {
+    flex: 1;
+    margin-left: 1rem;
 
-    label{
-        width: 185px;
+    input {
+      width: 70%;
     }
-
-    input{
-        width: 100%;
-    }
+  }
 }

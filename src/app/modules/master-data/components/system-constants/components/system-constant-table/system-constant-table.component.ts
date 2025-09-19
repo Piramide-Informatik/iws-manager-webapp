@@ -28,6 +28,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   visibleSystemConstantModal = false;
   modalType: 'create' | 'delete' = 'create';
   selectedSystemConstant!: System | null;
+  selectedSystemConstantToEdit!: System | null;
 
   @ViewChild('dt') dt!: Table;
 
@@ -73,11 +74,13 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         minWidth: 110,
+        classesTHead: ['proportional-width'],
         header: this.translate.instant(_('SYSTEM_CONSTANT.TABLE_SYSTEM_CONSTANT.CONSTANT'))
       },
       {
         field: 'value',
         minWidth: 110,
+        classesTHead: ['proportional-width'],
         header: this.translate.instant(_('SYSTEM_CONSTANT.TABLE_SYSTEM_CONSTANT.VALUE'))
       }
     ];
@@ -120,5 +123,16 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
       }
     }
     this.visibleSystemConstantModal = true;
+  }
+
+  onEditSystemConstant(value: System) {
+    const systemConstantFound = this.systemConstantService.systems().find(sct => sct.id == value.id);
+    if (systemConstantFound) {
+      this.selectedSystemConstantToEdit = systemConstantFound;
+    }
+  }
+
+  onCancelEdit(value: any) {
+    this.selectedSystemConstantToEdit = null;
   }
 }
