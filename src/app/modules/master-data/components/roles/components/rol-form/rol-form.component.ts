@@ -1,11 +1,16 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder,
+} from '@angular/forms';
 import { Role } from '../../../../../../Entities/role';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription, forkJoin, of } from 'rxjs';
 import { RoleUtils } from '../../utils/role-utils';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 import { RoleStateService } from '../../utils/role-state.service';
 
 import { Rol } from '../../../../../../Entities/rol';
@@ -16,14 +21,14 @@ import { SystemFunctionWithRights } from '../../../../../../Entities/systemFunct
 import { FunctionUtils } from '../../utils/system-function-utils';
 import { Column } from '../../../../../../Entities/column';
 import { RightRoleUtils } from '../../utils/right-role-utils';
+import { RightRole } from '../../../../../../Entities/rightRole';
 @Component({
   selector: 'app-rol-form',
   standalone: false,
   templateUrl: './rol-form.component.html',
-  styleUrl: './rol-form.component.scss'
+  styleUrl: './rol-form.component.scss',
 })
-export class RolFormComponent implements OnInit, OnDestroy{
-
+export class RolFormComponent implements OnInit, OnDestroy {
   currentRole: Role | null = null;
   editRoleForm!: FormGroup;
   isSaving = false;
@@ -31,6 +36,7 @@ export class RolFormComponent implements OnInit, OnDestroy{
   public showOCCErrorModalRole = false;
 
   modules: SystemModule[] = [];
+  existingRights: RightRole[] = [];
 
   selectedOrderCommission!: null;
   roles: Rol[] = [];
@@ -40,7 +46,7 @@ export class RolFormComponent implements OnInit, OnDestroy{
   loading: boolean = true;
   cols!: Column[];
 
-  constructor( 
+  constructor(
     private readonly rolService: RolesService,
     private readonly roleUtils: RoleUtils,
     private readonly roleStateService: RoleStateService,
@@ -50,7 +56,7 @@ export class RolFormComponent implements OnInit, OnDestroy{
     private readonly functionUtils: FunctionUtils,
     private readonly fb: FormBuilder,
     private readonly rightRoleUtils: RightRoleUtils
-  ){ }
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -63,11 +69,11 @@ export class RolFormComponent implements OnInit, OnDestroy{
     }
     this.editRoleForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
-      selectedModule: new FormControl('')
+      selectedModule: new FormControl(''),
     });
 
-      this.loadModules();
-    }
+    this.loadModules();
+  }
 
   loadModules(): void {
     this.moduleUtils.getAllSystemModules().subscribe({
@@ -76,48 +82,47 @@ export class RolFormComponent implements OnInit, OnDestroy{
       },
       error: (err) => {
         console.error('Error loading modules', err);
-      }
+      },
     });
   }
 
   onModuleChange(moduleId: number): void {
-  console.log("onModuleChange", moduleId);
-
-  if (!moduleId || !this.currentRole?.id) {
-    this.functions = [];
-    return;
-  }
-
-  forkJoin({
-    functions: this.functionUtils.getFunctionsByModuleId(moduleId),
-    rights: this.rightRoleUtils.getRightRolesByModuleId(moduleId, this.currentRole.id)
-  }).subscribe({
-    next: ({ functions, rights }) => {
-      console.log("Funciones:", functions);
-      console.log("RightRoles:", rights);
-
-      this.functions = functions.map(fn => {
-        // Busca el RightRole asociado a esta función
-        const rr = rights.find(r => r.systemFunction?.id === fn.id);
-        const rightsValue = rr?.accessRight ?? 0;
-
-        return {
-          ...fn,
-          read:    (rightsValue & 1) !== 0,
-          insert:  (rightsValue & 2) !== 0,
-          modify:  (rightsValue & 4) !== 0,
-          delete:  (rightsValue & 8) !== 0,
-          execute: (rightsValue & 16) !== 0,
-        } as SystemFunctionWithRights;
-      });
-    },
-    error: (err) => {
-      console.error("Error loading RightRoles or Functions:", err);
+    if (!moduleId || !this.currentRole?.id) {
       this.functions = [];
+      return;
     }
-  });
-}
 
+    forkJoin({
+      functions: this.functionUtils.getFunctionsByModuleId(moduleId),
+      rights: this.rightRoleUtils.getRightRolesByModuleId(
+        moduleId,
+        this.currentRole.id
+      ),
+    }).subscribe({
+      next: ({ functions, rights }) => {
+        this.existingRights = rights;
+
+        this.functions = functions.map((fn) => {
+          // Find the RightRole associated with this function
+          const rr = rights.find((r) => r.systemFunction?.id === fn.id);
+          const rightsValue = rr?.accessRight ?? 0;
+
+          return {
+            ...fn,
+            read: (rightsValue & 1) !== 0,
+            insert: (rightsValue & 2) !== 0,
+            modify: (rightsValue & 4) !== 0,
+            delete: (rightsValue & 8) !== 0,
+            execute: (rightsValue & 16) !== 0,
+          } as SystemFunctionWithRights;
+        });
+      },
+      error: (err) => {
+        console.error('Error loading RightRoles or Functions:', err);
+        this.functions = [];
+      },
+    });
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -125,25 +130,28 @@ export class RolFormComponent implements OnInit, OnDestroy{
 
   onSubmit(): void {
     if (this.editRoleForm.invalid || !this.currentRole || this.isSaving) {
-              this.markAllAsTouched();
-              return;
-            }
-        
-            this.isSaving = true;
-            const updatedApprovalStatus: Role = {
-              ...this.currentRole,
-              name: this.editRoleForm.value.name
-            };
-            this.subscriptions.add(
-              this.roleUtils.updateRole(updatedApprovalStatus).subscribe({
-                next: () => this.handleSaveSuccess(),
-                error: (err) => this.handleError(err)
-              })
-            );
+      this.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true;
+    const updatedRole: Role = {
+      ...this.currentRole,
+      name: this.editRoleForm.value.name,
+    };
+    this.subscriptions.add(
+      this.roleUtils.updateRole(updatedRole).subscribe({
+        next: (savedRole) => {
+          this.currentRole = savedRole;
+          this.saveRights(savedRole);
+        },
+        error: (err) => this.handleError(err),
+      })
+    );
   }
 
   private markAllAsTouched(): void {
-    Object.values(this.editRoleForm.controls).forEach(control => {
+    Object.values(this.editRoleForm.controls).forEach((control) => {
       control.markAsTouched();
       control.markAsDirty();
     });
@@ -153,15 +161,17 @@ export class RolFormComponent implements OnInit, OnDestroy{
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
+      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
     this.roleStateService.setRoleToEdit(null);
     this.clearForm();
   }
 
   private handleError(err: any): void {
-    console.log(err)
-    if (err.message === 'Version conflict: role has been updated by another user') {
+    console.log(err);
+    if (
+      err.message === 'Version conflict: role has been updated by another user'
+    ) {
       this.showOCCErrorModalRole = true;
     } else {
       this.handleSaveError(err);
@@ -174,20 +184,24 @@ export class RolFormComponent implements OnInit, OnDestroy{
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.UPDATE_FAILED')
+      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
     });
     this.isSaving = false;
   }
 
   private initForm(): void {
     this.editRoleForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)])
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+      ]),
     });
   }
 
   private setupRoleSubscription(): void {
     this.subscriptions.add(
-      this.roleStateService.currentRole$.subscribe(name => {
+      this.roleStateService.currentRole$.subscribe((name) => {
         this.currentRole = name;
         name ? this.loadApprovalStatusData(name) : this.clearForm();
       })
@@ -195,10 +209,10 @@ export class RolFormComponent implements OnInit, OnDestroy{
   }
 
   private loadApprovalStatusData(role: Role): void {
-        this.editRoleForm.patchValue({
-          name: role.name
-        });
-      }
+    this.editRoleForm.patchValue({
+      name: role.name,
+    });
+  }
   clearForm(): void {
     this.editRoleForm.reset();
     this.currentRole = null;
@@ -218,7 +232,7 @@ export class RolFormComponent implements OnInit, OnDestroy{
         },
         error: () => {
           this.isSaving = false;
-        }
+        },
       })
     );
   }
@@ -229,5 +243,72 @@ export class RolFormComponent implements OnInit, OnDestroy{
       window.location.reload();
     }
   }
-  
+
+  saveRights(role: Role): void {
+    if (!role?.id) {
+      console.error('No role selected');
+      return;
+    }
+    this.isSaving = true;
+
+    const toSave: RightRole[] = [];
+    const toUpdate: RightRole[] = [];
+    const toDelete: RightRole[] = [];
+
+    this.functions.forEach((fn) => {
+      const accessRight = this.calculateAccessRight(fn);
+      const current = this.existingRights.find(
+        (r) => r.systemFunction.id === fn.id
+      );
+
+      if (accessRight > 0) {
+        if (current) {
+          if (current.accessRight !== accessRight) {
+            // update
+            toUpdate.push({ ...current, accessRight });
+          }
+        } else {
+          // new
+          toSave.push({
+            accessRight,
+            role: { id: role.id },
+            systemFunction: { id: fn.id },
+          } as RightRole);
+        }
+      } else if (current) {
+        // delete
+        toDelete.push(current);
+      }
+    });
+
+    const requests = [
+      ...toSave.map((r) => this.rightRoleUtils.addRightRole(r)),
+      ...toUpdate.map((r) => this.rightRoleUtils.updateRightRole(r)),
+      ...toDelete.map((r) => this.rightRoleUtils.deleteRightRole(r.id!)),
+    ];
+
+    forkJoin({
+      save: requests.length ? forkJoin(requests) : of(null),
+    }).subscribe({
+      next: () => {
+        this.handleSaveSuccess();
+        this.isSaving = false;
+      },
+      error: (err) => {
+        console.error('Error saving rights:', err);
+        this.handleError(err);
+        this.isSaving = false;
+      },
+    });
+  }
+
+  private calculateAccessRight(fn: SystemFunctionWithRights): number {
+    let value = 0;
+    if (fn.read) value |= 1;
+    if (fn.insert) value |= 2;
+    if (fn.modify) value |= 4;
+    if (fn.delete) value |= 8;
+    if (fn.execute) value |= 16;
+    return value;
+  }
 }
