@@ -1,11 +1,12 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject, computed } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { SYSTEM_CONSTANT } from './system.constants.data';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
+import { SystemConstantUtils } from '../../utils/system-constant.utils';
+import { SystemConstantService } from '../../../../../../Services/system-constant.service';
 
 @Component({
   selector: 'app-system-constant-table',
@@ -15,14 +16,25 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 })
 export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
-  systemConstantsValues = [...SYSTEM_CONSTANT];
+  private readonly systemConstantUtils =  inject(SystemConstantUtils);
+  private readonly systemConstantService = inject(SystemConstantService);
   systemConstantsColumns: any[] = [];
   isSystemConstantsChipVisible = false;
   userSystemConstantPreferences: UserPreference = {};
   tableKey: string = 'SystemConstant'
-  dataKeys = ['constant', 'value'];
+  dataKeys = ['name', 'value'];
 
   @ViewChild('dt') dt!: Table;
+
+  readonly systemConstantsValues = computed(() => {
+    return this.systemConstantService.systems().map(data => {
+      return {
+        id: data.id,
+        name: data.name,
+        value: data.valueChar ?? data.valueNum
+      }
+    });
+  });
 
   private langConstantsSubscription!: Subscription;
 
@@ -31,6 +43,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
               private readonly translate: TranslateService ) { }
 
   ngOnInit() {
+    this.systemConstantUtils.loadInitialData().subscribe();
     this.loadHeadersAndColumns();
     this.userSystemConstantPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.systemConstantsColumns);
     this.langConstantsSubscription = this.translate.onLangChange.subscribe(() => {
@@ -50,7 +63,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   loadColumnSystemConstantHeaders(): any[] {
     return  [
       {
-        field: 'constant',
+        field: 'name',
         minWidth: 110,
         header: this.translate.instant(_('SYSTEM_CONSTANT.TABLE_SYSTEM_CONSTANT.CONSTANT'))
       },
