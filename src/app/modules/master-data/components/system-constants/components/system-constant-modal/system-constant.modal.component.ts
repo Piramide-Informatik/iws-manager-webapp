@@ -26,7 +26,7 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.createSystemConstantForm  = new FormGroup({
       name: new FormControl(''),
-      valueNum: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+      valueNum: new FormControl('', [Validators.pattern('^-?[0-9]+(.[0-9]+)?')]),
       valueChar: new FormControl('', [Validators.pattern('^[a-zA-Z0-9]*$')]),
     });
   }

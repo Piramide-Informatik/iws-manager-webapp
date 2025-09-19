@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class>
+    <div class="col-6">
       <master-data-genaral-table
         [tableId]="tableKey"
         [tableValues]="systemConstantsValues()"
@@ -10,7 +10,14 @@
         (onColumnChanges)="onUserSystemConstantPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        (onEditRegister)="onEditSystemConstant($event)"
       ></master-data-genaral-table>
+    </div>
+    <div class="col-6">
+      <app-system-constant-form
+        [selectedSystemConstant]="selectedSystemConstantToEdit"
+        (cancelAction)="onCancelEdit($event)"
+      ></app-system-constant-form>
     </div>
   </div>
   <p-dialog 

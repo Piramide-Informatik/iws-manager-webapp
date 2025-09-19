@@ -1,48 +1,54 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'SYSTEM_CONSTANT.LABEL.EDIT_SYSTEM_CONSTANT' | translate">
     <form [formGroup]="editSystemConstantForm" (ngSubmit)="onSubmit()">
-        <div class="align-items-center mb-2">
-            <div class="system-constant-form mb-2 flex">
+        <div class="align-items-center mt-4 mb-2">
+            <div class="edit-system-constant-form mb-2 flex">
                 <label for="name">{{ 'SYSTEM_CONSTANT.LABEL.CONSANT' | translate }}</label>
-                <input pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': editSystemConstantForm.get('name')?.invalid && 
-                 editSystemConstantForm.get('name')?.dirty && editSystemConstantForm.get('name')?.touched}" autocomplete="off" />
-                 <p-message severity="error" variant="simple" size="small" *ngIf="
-                     editSystemConstantForm.get('name')?.invalid && 
-                     editSystemConstantForm.get('name')?.dirty && 
-                     editSystemConstantForm.get('name')!.hasError('required')
-                     ">
-                     {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}
-                 </p-message>                
+                <div class="edit-input-container">
+                  <input pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': editSystemConstantForm.get('name')?.invalid && 
+                  editSystemConstantForm.get('name')?.dirty && editSystemConstantForm.get('name')?.touched}" autocomplete="off" />
+                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                      editSystemConstantForm.get('name')?.invalid && 
+                      editSystemConstantForm.get('name')?.dirty && 
+                      editSystemConstantForm.get('name')!.hasError('required')
+                      ">
+                      {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}
+                  </p-message>   
+                </div>             
             </div>
-            <div class="system-constant-form mb-2 flex">
+            <div class="edit-system-constant-form mb-2 flex">
                 <label for="valuenum">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_NUMERIC' | translate }}</label>
-                <input pInputText type="text" id="valuenum" formControlName="valuenum" [ngClass]="{'ng-invalid': editSystemConstantForm.get('valuenum')?.invalid && 
-                editSystemConstantForm.get('valuenum')?.dirty && editSystemConstantForm.get('valuenum')?.touched}" autocomplete="off" />
-                <p-message severity="error" variant="simple" size="small" *ngIf="
-                    editSystemConstantForm.get('valuenum')?.invalid && 
-                    editSystemConstantForm.get('valuenum')?.dirty && 
-                    editSystemConstantForm.get('valuenum')!.hasError('pattern')
-                    ">
-                    {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}
-                </p-message> 
+                <div class="edit-input-container">
+                  <input pInputText type="text" id="valuenum" formControlName="valueNum" [ngClass]="{'ng-invalid': editSystemConstantForm.get('valueNum')?.invalid && 
+                  editSystemConstantForm.get('valueNum')?.dirty && editSystemConstantForm.get('valueNum')?.touched}" autocomplete="off" />
+                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                      editSystemConstantForm.get('valueNum')?.invalid && 
+                      editSystemConstantForm.get('valueNum')?.dirty && 
+                      editSystemConstantForm.get('valueNum')!.hasError('pattern')
+                      ">
+                      {{ 'SYSTEM_CONSTANT.ERROR.ONLY_NUMBER_REQUIRED' | translate }}
+                  </p-message> 
+                </div>
             </div>
-            <div class="system-constant-form mb-2 flex">
+            <div class="edit-system-constant-form mb-2 flex">
                 <label for="valuechar">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_ALPHANUMERIC' | translate }}</label>
-                <input pInputText type="text" id="valuechar" formControlName="valuechar" [ngClass]="{'ng-invalid': editSystemConstantForm.get('valuechar')?.invalid && 
-                editSystemConstantForm.get('valuechar')?.dirty && editSystemConstantForm.get('valuechar')?.touched}" autocomplete="off" />
-                <p-message severity="error" variant="simple" size="small" *ngIf="
-                    editSystemConstantForm.get('valuechar')?.invalid && 
-                    editSystemConstantForm.get('valuechar')?.dirty && 
-                    editSystemConstantForm.get('valuechar')!.hasError('pattern')
-                    ">
-                    {{ 'SYSTEM_CONSTANT.ERROR.ONLY_ALPHANUMERIC_REQUIRED' | translate }}
-                </p-message >  
+                <div class="edit-input-container">
+                  <input pInputText type="text" id="valuechar" formControlName="valueChar" [ngClass]="{'ng-invalid': editSystemConstantForm.get('valueChar')?.invalid && 
+                  editSystemConstantForm.get('valueChar')?.dirty && editSystemConstantForm.get('valueChar')?.touched}" autocomplete="off" />
+                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                      editSystemConstantForm.get('valueChar')?.invalid && 
+                      editSystemConstantForm.get('valueChar')?.dirty && 
+                      editSystemConstantForm.get('valueChar')!.hasError('pattern')
+                      ">
+                      {{ 'SYSTEM_CONSTANT.ERROR.ONLY_ALPHANUMERIC_REQUIRED' | translate }}
+                  </p-message >  
+                </div>
             </div>
         </div>
+        <div class="flex justify-content-center gap-2 mt-4">
+            <p-button size="small" type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+                iconPos="left" [loading]="isLoading"  />
+            <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" [disabled]="isLoading" (onClick)="clearForm()" />
+        </div>
     </form>
-    <div class="flex justify-content-center gap-2 mt-4">
-        <p-button size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-            iconPos="left" />
-        <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-            icon="pi pi-times" iconPos="left" />
-    </div>
 </p-card>
