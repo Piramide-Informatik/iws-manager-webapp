@@ -5,6 +5,6 @@ export interface System {
   version: number;
 
   name?: string;
-  valuenum?: number;
-  valuechar?: string;
+  valueNum?: number;
+  valueChar?: string;
 }
