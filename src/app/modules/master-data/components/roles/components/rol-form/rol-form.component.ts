@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Role } from '../../../../../../Entities/role';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { RoleUtils } from '../../utils/role-utils';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -15,7 +15,8 @@ import { ModuleUtils } from '../../utils/system-module-utils';
 import { SystemFunctionWithRights } from '../../../../../../Entities/systemFunctionWithRights';
 import { FunctionUtils } from '../../utils/system-function-utils';
 import { Column } from '../../../../../../Entities/column';
-
+import { RightRoleUtils } from '../../utils/right-role-utils';
+import { RightRole } from '../../../../../../Entities/rightRole';
 @Component({
   selector: 'app-rol-form',
   standalone: false,
@@ -49,6 +50,7 @@ export class RolFormComponent implements OnInit, OnDestroy{
     private readonly moduleUtils: ModuleUtils,
     private readonly functionUtils: FunctionUtils,
     private readonly fb: FormBuilder,
+    private readonly rightRoleUtils: RightRoleUtils
   ){ }
 
   ngOnInit(): void {
@@ -80,15 +82,43 @@ export class RolFormComponent implements OnInit, OnDestroy{
   }
 
   onModuleChange(moduleId: number): void {
-    console.log("onModuleChange",moduleId)
-    if (!moduleId) {
-      this.functions = []; // limpiar funciones si no hay selección
-      return;
-    }
-      this.functionUtils.getFunctionsByModuleId(moduleId).subscribe(data => {
-      this.functions = data;
-    });
+  console.log("onModuleChange", moduleId);
+
+  if (!moduleId || !this.currentRole?.id) {
+    this.functions = [];
+    return;
   }
+
+  forkJoin({
+    functions: this.functionUtils.getFunctionsByModuleId(moduleId),
+    rights: this.rightRoleUtils.getRightRolesByModuleId(moduleId, this.currentRole.id)
+  }).subscribe({
+    next: ({ functions, rights }) => {
+      console.log("Funciones:", functions);
+      console.log("RightRoles:", rights);
+
+      this.functions = functions.map(fn => {
+        // Busca el RightRole asociado a esta función
+        const rr = rights.find(r => r.systemFunction?.id === fn.id);
+        const rightsValue = rr?.accessRight ?? 0;
+
+        return {
+          ...fn,
+          read:    (rightsValue & 1) !== 0,
+          insert:  (rightsValue & 2) !== 0,
+          modify:  (rightsValue & 4) !== 0,
+          delete:  (rightsValue & 8) !== 0,
+          execute: (rightsValue & 16) !== 0,
+        } as SystemFunctionWithRights;
+      });
+    },
+    error: (err) => {
+      console.error("Error loading RightRoles or Functions:", err);
+      this.functions = [];
+    }
+  });
+}
+
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -174,6 +204,7 @@ export class RolFormComponent implements OnInit, OnDestroy{
     this.editRoleForm.reset();
     this.currentRole = null;
     this.isSaving = false;
+    this.functions = [];
   }
 
   private loadRoleAfterRefresh(roleId: string): void {

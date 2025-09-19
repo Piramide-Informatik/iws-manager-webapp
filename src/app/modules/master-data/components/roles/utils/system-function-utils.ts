@@ -45,6 +45,7 @@ export class FunctionUtils {
 
     // GET BY MODULE ID
     getFunctionsByModuleId(id: number): Observable<SystemFunctionWithRights[] > {
+        console.log("id function:"+id)
             return this.functionService.getFunctionsByModuleId(id).pipe(
         map((functions: SystemFunction[]) =>
             functions.map(fn => ({
