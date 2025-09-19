@@ -16,6 +16,7 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
   @Input() selectedSystemConstant!: System | null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createSystemConstant = new EventEmitter<{created?: System, status: 'success' | 'error'}>();
+  @Output() deleteSystemConstant = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public createSystemConstantForm!: FormGroup;
   public isLoading = false;
@@ -55,6 +56,23 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
         this.createSystemConstant.emit({ status: 'error' });
       } 
     })
+  }
+
+  onDeleteSystemConstantConfirm() {
+    this.isLoading = true;
+    if (this.selectedSystemConstant) {
+      this.systemConstantUtils.deleteSystemConstant(this.selectedSystemConstant.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.deleteSystemConstant.emit({status: 'success'});
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.deleteSystemConstant.emit({ status: 'error', error: error });
+        }
+      })
+    }
   }
 
   closeModal() {

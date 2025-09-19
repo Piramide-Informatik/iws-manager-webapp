@@ -844,7 +844,8 @@
     },
     "MODAL": {
       "NEW": "Crear Constantes del Sistema",
-      "DELETE": "Eliminar Constantes del Sistema"
+      "DELETE": "Eliminar Constantes del Sistema",
+      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar la constante de sistema "
     }
   },
   "IWS_COMMISSIONS": {

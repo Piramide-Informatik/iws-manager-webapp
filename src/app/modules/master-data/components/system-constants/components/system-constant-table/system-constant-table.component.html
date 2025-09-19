@@ -9,6 +9,7 @@
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserSystemConstantPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
       ></master-data-genaral-table>
     </div>
   </div>
@@ -22,8 +23,10 @@
     <app-system-constant-modal
       [modalType]="modalType"
       [visible]="visibleSystemConstantModal"
+      [selectedSystemConstant]="selectedSystemConstant"
       (isVisibleModal)="onModalVisibilityChange($event)"
       (createSystemConstant)="onCreateSystemConstant($event)"
+      (deleteSystemConstant)="onDeleteSystemConstant($event)"
     ></app-system-constant-modal>
   </p-dialog>
 </div>
