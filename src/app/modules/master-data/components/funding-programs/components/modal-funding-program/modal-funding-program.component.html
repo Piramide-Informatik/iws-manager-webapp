@@ -21,7 +21,7 @@
             fundingProgramForm.get('defaultFundingRate')?.invalid  
               && fundingProgramForm.get('defaultFundingRate')?.dirty 
               || fundingProgramForm.get('defaultFundingRate')?.touched"/>
-          <p-message severity="error" variant="simple" size="small" *ngIf="
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             fundingProgramForm.get('defaultFundingRate')?.invalid && 
             fundingProgramForm.get('defaultFundingRate')?.dirty
           ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
@@ -37,7 +37,7 @@
             fundingProgramForm.get('defaultStuffFlat')?.invalid  
               && fundingProgramForm.get('defaultStuffFlat')?.dirty 
               || fundingProgramForm.get('defaultStuffFlat')?.touched"/>
-          <p-message severity="error" variant="simple" size="small" *ngIf="
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             fundingProgramForm.get('defaultStuffFlat')?.invalid && 
             fundingProgramForm.get('defaultStuffFlat')?.dirty
           ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
@@ -46,10 +46,18 @@
 
       <div class="funding-form">
         <label for="researchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
-        <p-inputnumber  mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="researchShare" formControlName="defaultResearchShare" [inputStyle]="{'text-align': 'right'}"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <p-inputnumber  mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            inputId="researchShare" formControlName="defaultResearchShare" [inputStyle]="{'text-align': 'right'}"
+            autocomplete="off" invalid="
+              fundingProgramForm.get('defaultResearchShare')?.invalid  
+                && fundingProgramForm.get('defaultResearchShare')?.dirty 
+                || fundingProgramForm.get('defaultResearchShare')?.touched"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            fundingProgramForm.get('defaultResearchShare')?.invalid && 
+            fundingProgramForm.get('defaultResearchShare')?.dirty
+          ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="funding-form">

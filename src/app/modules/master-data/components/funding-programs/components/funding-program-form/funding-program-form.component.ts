@@ -27,7 +27,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
       name: [''],
       defaultFundingRate: [null, [Validators.max(100.00)]],
       defaultStuffFlat: [null, [Validators.max(100.00)]],
-      defaultResearchShare: [null],
+      defaultResearchShare: [null, [Validators.max(100.00)]],
       defaultHoursPerYear: [null],
     });
   }
