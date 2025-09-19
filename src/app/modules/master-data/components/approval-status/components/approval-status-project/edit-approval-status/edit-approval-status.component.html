@@ -25,7 +25,7 @@
                 <div class="input-message">
                     <p-inputnumber
                         inputId="order"
-                        [useGrouping]="false"
+                        [useGrouping]="true"
                         formControlName="order"
                         [ngClass]="{'ng-invalid ng-dirty': editApprovalStatusForm.get('order')?.invalid && editApprovalStatusForm.get('order')?.touched}"
                         autocomplete="off"

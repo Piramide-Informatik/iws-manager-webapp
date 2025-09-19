@@ -11,7 +11,7 @@ import { IwsCommission } from '../../../../../../Entities/iws-commission ';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
-import { IwsCommissionsModalComponent } from '../iws-commissions-modal/iws-commissions-modal.component';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-iws-commissions-table',
@@ -27,7 +27,6 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'delete' = 'create';
   selectedIwsCommission: number | null = null;
   OrderValueIwsCommission: string = '';
-  @ViewChild('iwsCommissionsModal') iwsCommissionsModalComponent!: IwsCommissionsModalComponent;
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
@@ -54,8 +53,8 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
     }));
   });
 
-  datascommissions: any[] = [];
-  columnsHeaderFieldCommissions: any[] = [];
+  datascommissions: IwsCommission[] = [];
+  columnsHeaderFieldCommissions: Column[] = [];
   userIwsCommissionsPreferences: UserPreference = {};
   tableKey: string = 'IwsCommissions'
   dataKeys = ['threshold', 'percentage', 'minCommission'];
@@ -99,21 +98,22 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
       {
         field: 'threshold',
         styles: { width: '120px' },
+        type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.THRESHOLD')),
         customClasses: ['align-right'] 
       },
       {
         field: 'percentage',
         styles: { width: '120px' },
+        type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.PERCENTAGE')),
         customClasses: ['align-right'] 
       },
       {
         field: 'minCommission',
         styles: { width: '120px' },
-        header: this.translate.instant(
-          _('IWS_COMMISSIONS.TABLE.MIN_COMMISSION')
-        ),
+        type: 'double',
+        header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.MIN_COMMISSION')),
         customClasses: ['align-right'] 
       },
     ];
@@ -122,12 +122,6 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
-    }
-  }
-
-  onDialogShow() {
-    if (this.modalType === 'create' && this.iwsCommissionsModalComponent) {
-      this.iwsCommissionsModalComponent.focusInputIfNeeded();
     }
   }
 
@@ -147,28 +141,28 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   }
 
   editIwsCommissions(iwsCommission: IwsCommission) {
-        const IwsCommissionToEdit: IwsCommission = {
-          id: iwsCommission.id,
-          fromOrderValue: iwsCommission.fromOrderValue,
-          commission: iwsCommission.commission,
-          minCommission: iwsCommission.minCommission,
-          createdAt: '',
-          updatedAt: '',
-          version: 0,
-        };
-        this.iwsCommissionUtils
-          .getIwsCommissionById(IwsCommissionToEdit.id)
-          .subscribe({
-            next: (fullIwsCommission) => {
-              if (fullIwsCommission) {
-                this.iwsCommissionStateService.setIwsCommissionToEdit(
-                  fullIwsCommission
-                );
-              }
-            },
-            error: (err) => {
-              console.error('Error Id IwsCommission', err);
-            },
-          });
-      }
+    const IwsCommissionToEdit: IwsCommission = {
+      id: iwsCommission.id,
+      fromOrderValue: iwsCommission.fromOrderValue,
+      commission: iwsCommission.commission,
+      minCommission: iwsCommission.minCommission,
+      createdAt: '',
+      updatedAt: '',
+      version: 0,
+    };
+    this.iwsCommissionUtils
+      .getIwsCommissionById(IwsCommissionToEdit.id)
+      .subscribe({
+        next: (fullIwsCommission) => {
+          if (fullIwsCommission) {
+            this.iwsCommissionStateService.setIwsCommissionToEdit(
+              fullIwsCommission
+            );
+          }
+        },
+        error: (err) => {
+          console.error('Error Id IwsCommission', err);
+        },
+      });
+  }
 }

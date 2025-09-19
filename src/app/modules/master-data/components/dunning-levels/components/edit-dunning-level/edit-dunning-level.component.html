@@ -1,27 +1,27 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'DUNNING_LEVELS.LABEL.EDIT_DUNNING_LEVEL' | translate ">
     <form [formGroup]="editDunningLevelForm" class="edit-form" (ngSubmit)="onSubmit()">
-        <div class="flex flex-column mb-2 mt-4 edit-form-container">
-            <div class="dunning-level-form flex flex-row mb-4 edit-field-container">
+        <div class="flex flex-column mb-2 edit-form-container">
+            <div class="dunning-level-form flex flex-row edit-field-container">
                 <label class="edit-label-container" for="dunning-level">{{ 'DUNNING_LEVELS.LABEL.DUNNING_LEVEL' | translate }}</label>
                 <input #firstInput class="edit-input-container" pInputText type="text" id="dunning-level" formControlName="levelNo" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4 edit-field-container">
+            <div class="dunning-level-form flex flex-row edit-field-container">
                 <label class="edit-label-container" for="designation">{{ 'DUNNING_LEVELS.LABEL.DESIGNATION' | translate }}</label>
                 <input #firstInput class="edit-input-container" pInputText type="text" id="designation" formControlName="reminderTitle" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4 edit-field-container">
+            <div class="dunning-level-form flex flex-row edit-field-container">
                 <label class="edit-label-container" for="fee">{{ 'DUNNING_LEVELS.LABEL.FEE' | translate }}</label>
                 <input #firstInput class="edit-input-container" pInputText type="text" id="fee" formControlName="fee" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4 edit-field-container">
+            <div class="dunning-level-form flex flex-row edit-field-container">
                 <label class="edit-label-container" for="default-interest">{{ 'DUNNING_LEVELS.LABEL.DEFAULT_INTEREST' | translate }}</label>
                 <input #firstInput class="edit-input-container" pInputText type="text" id="default-interest" formControlName="interestRate" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4 edit-field-container">
+            <div class="dunning-level-form flex flex-row edit-field-container">
                 <label class="edit-label-container" for="payment-term">{{ 'DUNNING_LEVELS.LABEL.PAYMENT_TERM' | translate }}</label>
                 <input #firstInput class="edit-input-container" pInputText type="text" id="payment-term" formControlName="payPeriod" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4 edit-field-container">
+            <div class="dunning-level-form flex flex-row edit-field-container">
                 <label class="edit-label-container" for="reminderText">{{ 'DUNNING_LEVELS.LABEL.REMINDER_TEXT' | translate }}</label>
                 <input #firstInput class="edit-input-container" pInputText type="text" id="reminderText" formControlName="reminderText" autocomplete="off" />
             </div>
