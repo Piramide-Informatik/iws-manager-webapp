@@ -43,10 +43,18 @@
 
       <div class="funding-form">
         <label for="defaultResearchShare">{{ "FUNDING.LABEL.RESEARCH_SHARE" | translate }}</label>
-        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          inputId="defaultResearchShare" formControlName="defaultResearchShare" [inputStyle]="{'text-align': 'right', 'width': '70%' }"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            inputId="defaultResearchShare" formControlName="defaultResearchShare" [inputStyle]="{'text-align': 'right', 'width': '70%' }"
+            autocomplete="off" invalid="
+                fundingForm.get('defaultResearchShare')?.invalid  
+                  && fundingForm.get('defaultResearchShare')?.dirty 
+                  || fundingForm.get('defaultResearchShare')?.touched"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            fundingForm.get('defaultResearchShare')?.invalid && 
+            fundingForm.get('defaultResearchShare')?.dirty
+          ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+        </div>
       </div>
 
       <div class="funding-form">

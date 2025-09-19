@@ -24,7 +24,7 @@ export class ModalFundingProgramComponent {
     name: new FormControl(''),
     defaultFundingRate: new FormControl(null, [Validators.max(100.00)]),
     defaultStuffFlat: new FormControl(null, [Validators.max(100.00)]),
-    defaultResearchShare: new FormControl(null),
+    defaultResearchShare: new FormControl(null, [Validators.max(100.00)]),
     defaultHoursPerYear: new FormControl(null)
   })
 
