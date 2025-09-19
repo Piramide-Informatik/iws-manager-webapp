@@ -129,7 +129,6 @@ export class RightRoleService {
     }
 
     getRightRolesByModuleId(moduleId: number, roleId: number) {
-        console.log("module: "+moduleId+" role: "+roleId)
         const url = `${this.apiUrl}/module/${moduleId}/role/${roleId}`;
         return this.http.get<RightRole[]>(url, this.httpOptions).pipe(
                 tap(() => this._error.set(null)),
@@ -139,6 +138,22 @@ export class RightRoleService {
                     return of([] as unknown as RightRole []);
                 })
         );
+    }
+
+    saveAll(rightRoles: RightRole []) : Observable<RightRole[]> {
+    const url = `${this.apiUrl}/bulk`;
+    return this.http.post<RightRole[]>(url, rightRoles, this.httpOptions).pipe(
+                tap({
+                    next: (newRightRoles) => {
+                        this._rightRole.update(rightRole => [...rightRole, ...newRightRoles]);
+                        this._error.set(null);
+                    },
+                    error: (err) => {
+                        this._error.set('Failed to add all RightRole');
+                        console.error('Error adding RightRoles:', err);
+                    }
+                })
+            )
     }
     
     public refreshRoles(): void {

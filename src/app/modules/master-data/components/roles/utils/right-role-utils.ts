@@ -103,7 +103,6 @@ export class RightRoleUtils {
   }
 
   getRightRolesByModuleId(moduleId: number, roleId: number): Observable<RightRole[]> {
-    console.log("m id:"+moduleId+"r id: "+roleId)
     if (!moduleId || moduleId <= 0) {
       return throwError(() => new Error('Invalid module ID'));
     }
@@ -115,4 +114,13 @@ export class RightRoleUtils {
       })
     );
   }
+
+  saveAll(rightRoles: RightRole[]): Observable<RightRole[]> {
+  return this.rightRoleService.saveAll(rightRoles).pipe(
+    catchError((err) => {
+      console.error("Error saving all RightRoles:", err);
+      return throwError(() => new Error("Failed to save RightRoles"));
+    })
+  );
+}
 }
