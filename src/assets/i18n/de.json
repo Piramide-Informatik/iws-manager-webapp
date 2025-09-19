@@ -752,7 +752,7 @@
     },
     "HEADER": {
       "EDIT_FUNDING": "Förderprogramm bearbeiten",
-      "NEW_FUNDING": "Neue Förderprogramm",
+      "NEW_FUNDING": "Neues Förderprogramm",
       "DELETE_FUNDING": "Förderprogramm löschen",
       "DELETE_CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Förderprogramm löschen möchten: "
     }
