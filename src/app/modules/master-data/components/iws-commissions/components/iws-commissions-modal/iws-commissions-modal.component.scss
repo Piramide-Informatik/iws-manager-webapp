@@ -1,18 +1,15 @@
 .commission-form {
-  label {
-    width: 200px;
-  }
-
-  input {
-    width: 13em;
-  }
-}
-
-.commission-form-check {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
 
   label {
-    width: 150px;
+    width: 125px;
+    flex-shrink: 0;
+    margin-right: 10px;
+  }
+
+  p-inputnumber {
+    width: 100%;
   }
 }

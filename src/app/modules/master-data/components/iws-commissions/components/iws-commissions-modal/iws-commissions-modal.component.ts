@@ -1,19 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  inject,
-  OnInit,
-  Input,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, OnDestroy, OnChanges, SimpleChanges, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { IwsCommission } from '../../../../../../Entities/iws-commission ';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-iws-commissions-modal',
@@ -21,16 +12,16 @@ import { IwsCommission } from '../../../../../../Entities/iws-commission ';
   templateUrl: './iws-commissions-modal.component.html',
   styleUrl: './iws-commissions-modal.component.scss',
 })
-export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
+export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly iwsCommissionUtils = inject(IwsCommissionUtils);
   private readonly subscriptions = new Subscription();
 
-  @ViewChild('iwsCommissionInput')
-  iwsCommissionInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('firstInput') firstInput!: InputNumber;
 
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() iwsCommissionToDelete: number | null = null;
   @Input() iwsCommissionName: string | null = null;
+  @Input() isVisible: boolean = false;
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() iwsCommissionCreated = new EventEmitter<void>();
@@ -44,21 +35,20 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   readonly createIwsCommissionForm = new FormGroup({
-    fromOrderValue: new FormControl('', [
-      Validators.required,
-      Validators.min(0),
-      Validators.max(1000000),
-    ]),
-    commission: new FormControl('', [Validators.min(0), Validators.max(100)]),
-    minCommission: new FormControl('', [
-      Validators.min(0),
-      Validators.max(100000),
-    ]),
+    fromOrderValue: new FormControl(null),
+    commission: new FormControl(null, [Validators.max(100.00)]),
+    minCommission: new FormControl(null),
   });
 
   ngOnInit(): void {
     this.loadInitialData();
     this.resetForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['isVisible'] && this.isVisible){
+      this.focusInputIfNeeded();
+    }
   }
 
   ngOnDestroy(): void {
@@ -181,10 +171,10 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy {
   }
 
   public focusInputIfNeeded(): void {
-    if (this.isCreateMode && this.iwsCommissionInput) {
+    if (this.isCreateMode && this.firstInput) {
       setTimeout(() => {
-        this.iwsCommissionInput?.nativeElement?.focus();
-      }, 150);
+        this.firstInput.input.nativeElement?.focus();
+      }, 200);
     }
   }
 }

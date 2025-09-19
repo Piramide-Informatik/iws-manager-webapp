@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IwsCommission } from '../../../../../../Entities/iws-commission ';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-edit-iws-commissions',
@@ -17,11 +18,9 @@ export class EditIwsCommissionsComponent implements OnInit {
   public showOCCErrorModaEmployeeIws = false;
   currentIwsCommission: IwsCommission | null = null;
   editCommissionForm!: FormGroup;
-
+  @ViewChild('firstInput') firstInput!: InputNumber;
   isSaving = false;
   private readonly subscriptions = new Subscription();
-  private readonly editIwsCommissionSource =
-    new BehaviorSubject<IwsCommission | null>(null);
 
   constructor(
     private readonly iwsCommissionUtils: IwsCommissionUtils,
@@ -43,9 +42,9 @@ export class EditIwsCommissionsComponent implements OnInit {
 
   private initForm(): void {
     this.editCommissionForm = new FormGroup({
-      threshold: new FormControl('', []),
-      percentage: new FormControl('', []),
-      minCommission: new FormControl('', []),
+      threshold: new FormControl(null, []),
+      percentage: new FormControl(null, [Validators.max(100.00)]),
+      minCommission: new FormControl(null, []),
     });
   }
 
@@ -68,10 +67,10 @@ export class EditIwsCommissionsComponent implements OnInit {
       percentage: iwsCommission.commission,
       minCommission: iwsCommission.minCommission,
     });
+    this.firstInputFocus();
   }
 
   private loadIwsCommissionAfterRefresh(iwsCommissionId: string): void {
-    console.log(iwsCommissionId)
     this.isSaving = true;
     this.subscriptions.add(
       this.iwsCommissionUtils.getIwsCommissionById(Number(iwsCommissionId)).subscribe({
@@ -128,6 +127,7 @@ export class EditIwsCommissionsComponent implements OnInit {
   }
 
   private handleSaveSuccess(savedIwsCommission: IwsCommission): void {
+    this.isSaving = false;
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('MESSAGE.SUCCESS'),
@@ -155,7 +155,6 @@ export class EditIwsCommissionsComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    console.log('Edición cancelada');
     this.resetForm();
   }
 
@@ -175,5 +174,13 @@ export class EditIwsCommissionsComponent implements OnInit {
       );
       window.location.reload();
     }
+  }
+
+  private firstInputFocus(): void {
+    setTimeout(() => {
+      if (this.firstInput.input.nativeElement) {
+        this.firstInput.input.nativeElement.focus();
+      }
+    }, 200)
   }
 }

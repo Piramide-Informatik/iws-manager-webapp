@@ -4,40 +4,35 @@
 >
   <form [formGroup]="editCommissionForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
-      <div class="commission-form mb-2">
-        <label for="threshold">{{
-          "IWS_COMMISSIONS.FORM.THRESHOLD" | translate
-        }}</label>
-        <input
-          pInputText
-          type="number"
-          id="threshold"
+      <div class="commission-form">
+        <label for="threshold">{{ "IWS_COMMISSIONS.FORM.THRESHOLD" | translate }}</label>
+        <p-inputnumber #firstInput mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          inpuId="threshold" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
           formControlName="threshold"
           autocomplete="off"
         />
       </div>
 
-      <div class="commission-form mb-2">
-        <label for="percentage">{{
-          "IWS_COMMISSIONS.FORM.PERCENTAGE" | translate
-        }}</label>
-        <input
-          pInputText
-          type="number"
-          id="percentage"
-          formControlName="percentage"
-          autocomplete="off"
-        />
+      <div class="commission-form">
+        <label for="percentage">{{ "IWS_COMMISSIONS.FORM.PERCENTAGE" | translate }}</label>
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            inputId="percentage" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            formControlName="percentage" autocomplete="off" 
+            invalid="editCommissionForm.get('percentage')?.invalid  
+              && editCommissionForm.get('percentage')?.dirty 
+              || editCommissionForm.get('percentage')?.touched"/>
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+              editCommissionForm.get('percentage')?.invalid && 
+              editCommissionForm.get('percentage')?.dirty">
+              {{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+        </div>
       </div>
 
-      <div class="commission-form mb-2">
-        <label for="minCommission">{{
-          "IWS_COMMISSIONS.FORM.MIN_COMMISSION" | translate
-        }}</label>
-        <input
-          pInputText
-          type="number"
-          id="minCommission"
+      <div class="commission-form">
+        <label for="minCommission">{{ "IWS_COMMISSIONS.FORM.MIN_COMMISSION" | translate }}</label>
+        <p-inputnumber mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          inputId="minCommission" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
           formControlName="minCommission"
           autocomplete="off"
         />
@@ -50,6 +45,8 @@
           icon="pi pi-check"
           iconPos="left"
           type="submit"
+          [loading]="isSaving"
+          [disabled]="editCommissionForm.invalid"
         ></p-button>
         <p-button
           class="cancel"
@@ -57,6 +54,7 @@
           [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times"
           iconPos="left"
+          [disabled]="isSaving"
           (click)="cancelEdit()"
           (keydown)="cancelEdit()"
         ></p-button>
@@ -70,4 +68,3 @@
     (close)="showOCCErrorModaEmployeeIws = false"
     (refresh)="onRefresh()">
 </app-occ-error-modal>
-<p-toast></p-toast>
