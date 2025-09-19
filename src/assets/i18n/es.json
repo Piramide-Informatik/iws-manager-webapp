@@ -841,6 +841,10 @@
       "NAME_REQUIRED": "Nombre es requerido",
       "ONLY_NUMBER_REQUIRED": "Ingrese solo numeros",
       "ONLY_ALPHANUMERIC_REQUIRED": "Ingrese solo valores alfanumericos"
+    },
+    "MODAL": {
+      "NEW": "Crear Constantes del Sistema",
+      "DELETE": "Eliminar Constantes del Sistema"
     }
   },
   "IWS_COMMISSIONS": {

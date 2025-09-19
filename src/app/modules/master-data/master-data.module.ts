@@ -146,6 +146,7 @@ import { ModalBillingMethodsComponent } from './components/billing-methods/compo
 import { TextModalComponent } from './components/text/components/text-modal/text-modal.component';
 import { DunningLevelModalComponent } from './components/dunning-levels/components/dunning-level-modal/dunning-level-modal.component';
 import { ModalRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/modal-realization-probabilities/modal-realization-probabilities.component';
+import { SystemConstantModalComponent } from './components/system-constants/components/system-constant-modal/system-constant.modal.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -258,6 +259,7 @@ registerLocaleData(localeDe, 'de-DE');
     TextModalComponent,
     DunningLevelModalComponent,
     ModalRealizationProbabilitiesComponent,
+    SystemConstantModalComponent
   ],
   imports: [
     ButtonModule,

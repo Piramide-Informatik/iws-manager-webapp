@@ -1,0 +1,73 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="createSystemConstantForm" (ngSubmit)="onSubmit()">
+        <div class="align-items-center mt-4 mb-2">
+            <div class="create-system-constant-form mb-2 flex">
+                <label for="name">{{ 'SYSTEM_CONSTANT.LABEL.CONSANT' | translate }}</label>
+                <div class="input-container">
+                  <input pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': createSystemConstantForm.get('name')?.invalid && 
+                  createSystemConstantForm.get('name')?.dirty && createSystemConstantForm.get('name')?.touched}" autocomplete="off" />
+                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                      createSystemConstantForm.get('name')?.invalid && 
+                      createSystemConstantForm.get('name')?.dirty && 
+                      createSystemConstantForm.get('name')!.hasError('required')
+                      ">
+                      {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}
+                  </p-message>   
+                </div>             
+            </div>
+            <div class="create-system-constant-form mb-2 flex">
+                <label for="valuenum">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_NUMERIC' | translate }}</label>
+                <div class="input-container">
+                  <input pInputText type="text" id="valuenum" formControlName="valueNum" [ngClass]="{'ng-invalid': createSystemConstantForm.get('valueNum')?.invalid && 
+                  createSystemConstantForm.get('valueNum')?.dirty && createSystemConstantForm.get('valueNum')?.touched}" autocomplete="off" />
+                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                      createSystemConstantForm.get('valueNum')?.invalid && 
+                      createSystemConstantForm.get('valueNum')?.dirty && 
+                      createSystemConstantForm.get('valueNum')!.hasError('pattern')
+                      ">
+                      {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}
+                  </p-message> 
+                </div>
+            </div>
+            <div class="create-system-constant-form mb-2 flex">
+                <label for="valuechar">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_ALPHANUMERIC' | translate }}</label>
+                <div class="input-container">
+                  <input pInputText type="text" id="valuechar" formControlName="valueChar" [ngClass]="{'ng-invalid': createSystemConstantForm.get('valueChar')?.invalid && 
+                  createSystemConstantForm.get('valueChar')?.dirty && createSystemConstantForm.get('valueChar')?.touched}" autocomplete="off" />
+                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                      createSystemConstantForm.get('valueChar')?.invalid && 
+                      createSystemConstantForm.get('valueChar')?.dirty && 
+                      createSystemConstantForm.get('valueChar')!.hasError('pattern')
+                      ">
+                      {{ 'SYSTEM_CONSTANT.ERROR.ONLY_ALPHANUMERIC_REQUIRED' | translate }}
+                  </p-message >  
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-content-center gap-2 mt-4">
+            <p-button size="small" type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+                iconPos="left" [loading]="isLoading"  />
+            <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" [disabled]="isLoading" (onClick)="closeModal()" />
+        </div>
+    </form>
+    
+</ng-container>
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'question'}}
+            <strong class="stronglock mt-1">"{{ 'name' }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+
+        </div>
+    </div>
+</ng-template>
