@@ -8,7 +8,22 @@
         [userPreferences]="userSystemConstantPreferences"
         [dataKeys]="dataKeys"
         (onColumnChanges)="onUserSystemConstantPreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
       ></master-data-genaral-table>
     </div>
   </div>
+  <p-dialog 
+    [header]="modalType === 'create' 
+      ? ('SYSTEM_CONSTANT.MODAL.NEW' | translate) 
+      : ('SYSTEM_CONSTANT.MODAL.DELETE' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleSystemConstantModal"
+  >
+    <app-system-constant-modal
+      [modalType]="modalType"
+      [visible]="visibleSystemConstantModal"
+      (isVisibleModal)="onModalVisibilityChange($event)"
+      (createSystemConstant)="onCreateSystemConstant($event)"
+    ></app-system-constant-modal>
+  </p-dialog>
 </div>

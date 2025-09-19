@@ -840,6 +840,10 @@
       "NAME_REQUIRED": "Name ist erforderlich",
       "ONLY_NUMBER_REQUIRED": "Geben Sie nur Zahlen ein",
       "ONLY_ALPHANUMERIC_REQUIRED": "Geben Sie nur alphanumerische Zeichen ein"
+    },
+    "MODAL": {
+      "NEW": "Neu Systemkonstante",
+      "DELETE": "Systemkonstante löschen"
     }
   },
   "IWS_COMMISSIONS": {

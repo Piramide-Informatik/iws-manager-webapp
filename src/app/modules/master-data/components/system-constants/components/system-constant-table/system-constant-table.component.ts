@@ -7,6 +7,8 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { SystemConstantUtils } from '../../utils/system-constant.utils';
 import { SystemConstantService } from '../../../../../../Services/system-constant.service';
+import { System } from '../../../../../../Entities/system';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-system-constant-table',
@@ -23,15 +25,19 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   userSystemConstantPreferences: UserPreference = {};
   tableKey: string = 'SystemConstant'
   dataKeys = ['name', 'value'];
+  visibleSystemConstantModal = false;
+  modalType: 'create' | 'delete' = 'create';
 
   @ViewChild('dt') dt!: Table;
 
   readonly systemConstantsValues = computed(() => {
     return this.systemConstantService.systems().map(data => {
+      let length = 0;
+      if (data.valueChar) length = data.valueChar.length;
       return {
         id: data.id,
         name: data.name,
-        value: data.valueChar ?? data.valueNum
+        value: length > 0 ? data.valueChar : data.valueNum
       }
     });
   });
@@ -40,7 +46,8 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
   constructor(private readonly router: Router,
               private readonly userPreferenceService: UserPreferenceService, 
-              private readonly translate: TranslateService ) { }
+              private readonly translate: TranslateService,
+              private readonly commonMessageService: CommonMessagesService ) { }
 
   ngOnInit() {
     this.systemConstantUtils.loadInitialData().subscribe();
@@ -79,5 +86,23 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
     if (this.langConstantsSubscription) {
       this.langConstantsSubscription.unsubscribe();
     }
+  }
+
+  onModalVisibilityChange(isVisible: boolean) {
+    this.visibleSystemConstantModal = isVisible;
+  }
+
+  onCreateSystemConstant(event: {created?: System, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+  
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+
+    this.visibleSystemConstantModal = true;
   }
 }
