@@ -275,11 +275,9 @@ export class RolFormComponent implements OnInit, OnDestroy {
             systemFunction: { id: fn.id },
           } as RightRole);
         }
-      } else {
-        if (current) {
-          // delete
-          toDelete.push(current);
-        }
+      } else if (current) {
+        // delete
+        toDelete.push(current);
       }
     });
 

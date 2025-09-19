@@ -1,6 +1,3 @@
-import { SystemFunction } from "./systemFunction";
-import { Role } from "./role";
-
 export interface RightRole {
     id?: number;
     createdAt?: string; // ISO: "2025-06-17T06:21:35.281056"
