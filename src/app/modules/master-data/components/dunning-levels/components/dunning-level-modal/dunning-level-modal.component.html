@@ -1,27 +1,27 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="dunningLevelForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column mb-2 mt-4">
-            <div class="dunning-level-form flex flex-row mb-4">
+            <div class="dunning-level-form flex flex-row">
                 <label for="dunning-level">{{ 'DUNNING_LEVELS.LABEL.DUNNING_LEVEL' | translate }}</label>
                 <input #firstInput pInputText type="text" id="dunning-level" formControlName="levelNo" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4">
+            <div class="dunning-level-form flex flex-row">
                 <label for="designation">{{ 'DUNNING_LEVELS.LABEL.DESIGNATION' | translate }}</label>
                 <input #firstInput pInputText type="text" id="designation" formControlName="reminderTitle" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4">
+            <div class="dunning-level-form flex flex-row">
                 <label for="fee">{{ 'DUNNING_LEVELS.LABEL.FEE' | translate }}</label>
                 <input #firstInput pInputText type="text" id="fee" formControlName="fee" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4">
+            <div class="dunning-level-form flex flex-row">
                 <label for="default-interest">{{ 'DUNNING_LEVELS.LABEL.DEFAULT_INTEREST' | translate }}</label>
                 <input #firstInput pInputText type="text" id="default-interest" formControlName="interestRate" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4">
+            <div class="dunning-level-form flex flex-row">
                 <label for="payment-term">{{ 'DUNNING_LEVELS.LABEL.PAYMENT_TERM' | translate }}</label>
                 <input #firstInput pInputText type="text" id="payment-term" formControlName="payPeriod" autocomplete="off" />
             </div>
-            <div class="dunning-level-form flex flex-row mb-4">
+            <div class="dunning-level-form flex flex-row">
                 <label for="reminderText">{{ 'DUNNING_LEVELS.LABEL.REMINDER_TEXT' | translate }}</label>
                 <input #firstInput pInputText type="text" id="reminderText" formControlName="reminderText" autocomplete="off" />
             </div>

@@ -1,9 +1,9 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'APPROVAL_STATUS.FORM.TITLE_FORM' | translate">
     <form [formGroup]="editApprovalStatusForm"  (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
-            <!-- Grupo: Bewilligungsstatus -->
+            <!-- Grupo: status -->
             <div class="approval-status-form">
-                <label for="approvalStatus">{{ 'APPROVAL_STATUS.TABLE.APPROVAL_STATUS' | translate }}</label>
+                <label for="status">{{ 'APPROVAL_STATUS.TABLE.APPROVAL_STATUS' | translate }}</label>
                 <div class="input-message">
                     <input
                         pInputText
@@ -19,17 +19,17 @@
                 </div>
             </div>
 
-            <!-- Grupo: Reihenfolge -->
+            <!-- Grupo: sequenceNo -->
             <div class="approval-status-form">
                 <label for="order">{{ 'APPROVAL_STATUS.TABLE.ORDER' | translate }}</label>
                 <div class="input-message">
-                    <input
-                        pInputText
-                        type="text"
-                        id="order"
+                    <p-inputnumber
+                        inputId="order"
+                        [useGrouping]="true"
                         formControlName="order"
                         [ngClass]="{'ng-invalid ng-dirty': editApprovalStatusForm.get('order')?.invalid && editApprovalStatusForm.get('order')?.touched}"
-                        autocomplete="off" 
+                        autocomplete="off"
+                        [inputStyle]="{'text-align': 'right'}" 
                     />
                     <p-message severity="error" variant="simple" size="small"
                         *ngIf="editApprovalStatusForm.get('order')?.invalid && editApprovalStatusForm.get('order')?.touched && editApprovalStatusForm.get('order')!.hasError('required')">
@@ -38,10 +38,11 @@
                 </div>
             </div>
 
-            <!-- Grupo: gilt für Projekte -->
+            <!-- Grupo: forProject -->
             <div class="approval-status-form">
                 <label for="forProject">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_PROJECT' | translate }}</label>
                 <p-toggleswitch 
+                    inputId="forProject"
                     formControlName="forProject"
                     class="flex"
                 >
@@ -51,10 +52,11 @@
                 </p-toggleswitch>
             </div>
 
-            <!-- Grupo: gilt fur Netzwerke -->
+            <!-- Grupo: forNetwork -->
             <div class="approval-status-form">
                 <label for="forNetwork">{{ 'APPROVAL_STATUS.FORM.APPLIES_TO_NETWORK' | translate }}</label>
                 <p-toggleswitch 
+                    inputId="forNetwork"
                     formControlName="forNetwork"
                     class="flex"
                 >

@@ -3,8 +3,8 @@
   [header]="'IWS_TEAMS.HEADER.EDIT_TEAM' | translate"
 >
   <form [formGroup]="editTeamForm" (ngSubmit)="onSubmit()">
-    <div class="align-items-center mb-2">
-      <div class="team-form mb-2">
+    <div class="align-items-center">
+      <div class="team-form">
         <label for="name">{{
           "IWS_TEAMS.LABEL.TEAM_NAME" | translate
         }}</label>
@@ -16,7 +16,7 @@
         />
       </div>
 
-      <div class="team-form mb-2">
+      <div class="team-form">
         <label for="teamLeader">{{
           "IWS_TEAMS.LABEL.TEAM_LEADER" | translate
         }}</label>

@@ -1,16 +1,16 @@
 .create-form{
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
 
     label {
-        width: 80px;
+        width: 100px;
         font-weight: 500;
-        margin-left: 25px;
     }
 
     input {
         flex: 1;
-        max-width: 390px;
+        max-width: 340px;
         margin-left: 1rem;
         display: flex;
     } 

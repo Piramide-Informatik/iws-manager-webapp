@@ -63,7 +63,7 @@
            ContractDetailsForm.get('workShortTime')?.invalid
             && ContractDetailsForm.get('workShortTime')?.dirty
             || ContractDetailsForm.get('workShortTime')?.touched" />
-          <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('workShortTime')?.invalid && ContractDetailsForm.get('workShortTime')?.dirty">
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('workShortTime')?.invalid && ContractDetailsForm.get('workShortTime')?.dirty">
             {{ 'ERROR.NUMBER_MAX' | translate }}
           </p-message>
         </div>

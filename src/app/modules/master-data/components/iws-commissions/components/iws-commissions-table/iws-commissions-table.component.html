@@ -16,16 +16,15 @@
           ? ('IWS_COMMISSIONS.FORM.NEW' | translate) 
           : ('IWS_COMMISSIONS.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
-        [(visible)]="visibleModal" 
-        (onShow)="onDialogShow()"
+        [(visible)]="visibleModal"
       >
         <app-iws-commissions-modal
           [modalType]="modalType"
+          [isVisible]="visibleModal"
           [iwsCommissionName]="OrderValueIwsCommission"
           [iwsCommissionToDelete]="selectedIwsCommission"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
-          #titleModal
         ></app-iws-commissions-modal>
       </p-dialog>
   </div>
