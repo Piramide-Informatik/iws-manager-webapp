@@ -1,6 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SystemConstantService } from '../../services/system-constant.service';
 import { System } from '../../../../../../Entities/system';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { SystemConstantUtils } from '../../utils/system-constant.utils';
@@ -24,7 +23,7 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.editSystemConstantForm = new FormGroup({
       name: new FormControl({value: '', disabled: true}),
-      valueNum: new FormControl('', [Validators.pattern('^-?[0-9]+(\.[0-9]+)?')]),
+      valueNum: new FormControl('', [Validators.pattern('^-?[0-9]+(.[0-9]+)?')]),
       valueChar: new FormControl('', [Validators.pattern('^[a-zA-Z0-9]*$')]),
     });
   }
