@@ -56,14 +56,14 @@
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
-            {{ 'question'}}
-            <strong class="stronglock mt-1">"{{ 'name' }}"</strong>?
+            {{ 'SYSTEM_CONSTANT.MODAL.CONFIRM_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ selectedSystemConstant?.name  }}"</strong>?
         </p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
                 icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading"
-                [disabled]="isLoading" />
+                [disabled]="isLoading" (onClick)="onDeleteSystemConstantConfirm()"/>
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />

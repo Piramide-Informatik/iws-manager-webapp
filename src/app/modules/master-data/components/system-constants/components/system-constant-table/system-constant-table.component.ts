@@ -27,6 +27,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   dataKeys = ['name', 'value'];
   visibleSystemConstantModal = false;
   modalType: 'create' | 'delete' = 'create';
+  selectedSystemConstant!: System | null;
 
   @ViewChild('dt') dt!: Table;
 
@@ -99,10 +100,25 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
+
+  onDeleteSystemConstant(event: {status: 'success' | 'error', error?: Error}) {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else if(event.status === 'error'){
+      event.error?.message === 'Cannot delete register: it is in use by other entities' ?
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
+        this.commonMessageService.showErrorDeleteMessage();
+    }
+  }
   
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-
+    if (event.type === 'delete') {
+      const foundSystemConstant = this.systemConstantService.systems().find(sc => sc.id == event.data);
+      if (foundSystemConstant) {
+        this.selectedSystemConstant = foundSystemConstant;
+      }
+    }
     this.visibleSystemConstantModal = true;
   }
 }

@@ -843,7 +843,8 @@
     },
     "MODAL": {
       "NEW": "Neu Systemkonstante",
-      "DELETE": "Systemkonstante löschen"
+      "DELETE": "Systemkonstante löschen",
+      "CONFIRM_QUESTION":"Möchten Sie die Systemkonstante wirklich löschen "
     }
   },
   "IWS_COMMISSIONS": {
