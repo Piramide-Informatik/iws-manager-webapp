@@ -10,7 +10,7 @@ import { environment } from "../../environments/environment";
 export class RightRoleService {
 
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/rightroles`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/rolerights`;
     
     private readonly httpOptions = {
         headers: new HttpHeaders({
@@ -124,6 +124,19 @@ export class RightRoleService {
                     this._error.set('Failed to fetch RightRole');
                     console.error('Error fetching RightRole:', err);
                     return of(null as unknown as RightRole);
+                })
+        );
+    }
+
+    getRightRolesByModuleId(moduleId: number, roleId: number) {
+        console.log("module: "+moduleId+" role: "+roleId)
+        const url = `${this.apiUrl}/module/${moduleId}/role/${roleId}`;
+        return this.http.get<RightRole[]>(url, this.httpOptions).pipe(
+                tap(() => this._error.set(null)),
+                catchError(err => {
+                    this._error.set('Failed to fetch RightRole');
+                    console.error('Error fetching RightRole:', err);
+                    return of([] as unknown as RightRole []);
                 })
         );
     }
