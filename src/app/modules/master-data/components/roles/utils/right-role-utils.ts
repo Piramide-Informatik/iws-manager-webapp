@@ -101,4 +101,18 @@ export class RightRoleUtils {
       })
     );
   }
+
+  getRightRolesByModuleId(moduleId: number, roleId: number): Observable<RightRole[]> {
+    console.log("m id:"+moduleId+"r id: "+roleId)
+    if (!moduleId || moduleId <= 0) {
+      return throwError(() => new Error('Invalid module ID'));
+    }
+
+    return this.rightRoleService.getRightRolesByModuleId(moduleId, roleId).pipe(
+      catchError((err) => {
+        console.error('Error fetching RightRole:', err);
+        return throwError(() => new Error('Failed to load RightRole'));
+      })
+    );
+  }
 }

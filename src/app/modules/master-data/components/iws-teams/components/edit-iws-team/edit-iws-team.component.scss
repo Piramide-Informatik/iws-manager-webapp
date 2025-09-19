@@ -1,18 +1,16 @@
 .team-form {
-  label {
-    width: 111px;
-  }
-
-  input, p-dropdown {
-    width: 13em;
-  }
-}
-
-.team-form-check {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
 
   label {
-    width: 150px;
+    width: 100px;
+    margin-right: 0.5rem;
+  }
+
+  input,
+  ::ng-deep .p-dropdown {
+    flex: 1;       
+    max-width: 16em; 
   }
 }

@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createTeamIwsForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="team-form flex align-items-center mb-2">
+            <div class="team-form flex align-items-center">
                 <label for="name" class="block">
                     {{ 'IWS_TEAMS.LABEL.TEAM_NAME' | translate }}
                 </label>
@@ -14,7 +14,7 @@
                     id="nameError" class="text-red-500 block mt-1">
                 </small>
             </div>
-            <div class="team-form mb-2">
+            <div class="team-form">
                 <label for="teamLeader">{{
                 "IWS_TEAMS.LABEL.TEAM_LEADER" | translate
                 }}</label>
