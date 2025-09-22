@@ -74,7 +74,8 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-   if(this.networkPartnerForm.invalid || this.isLoading) return
+    if(this.networkPartnerForm.invalid || this.isLoading) return
+    this.isLoading = true;
     const networkPartnerData = this.networkPartnerForm.value;
     networkPartnerData.network = this.network;
     networkPartnerData.partner = this.customers().find(ct => ct.id == networkPartnerData.partner);
