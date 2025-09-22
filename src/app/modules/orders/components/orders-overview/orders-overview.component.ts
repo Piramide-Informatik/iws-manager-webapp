@@ -10,6 +10,7 @@ import { OrderUtils } from '../../utils/order-utils';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Order } from '../../../../Entities/order';
 import { Column } from '../../../../Entities/column';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-orders-overview',
@@ -32,6 +33,9 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   public selectedColumns!: Column[];
   userOrdersOverviewPreferences: UserPreference = {};
   tableKey: string = 'OrdersOverview';
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public redirectRoute = "";
+  public showOCCErrorModalOrder = false;
   dataKeys = ['orderNr', 'orderLabel', 'orderType', 'orderDate', 'acronym', 'fundingProgram', 'value', 'contractStatus', 'contractNr', 'contractTitle', 'iwsPercent', 'iwsPercentValue'];
 
   constructor(
@@ -42,7 +46,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     private readonly commonMessage: CommonMessagesService
   ) { }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.loadOrdersOverviewColHeaders();
     this.selectedColumns = this.cols;
     this.userOrdersOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
@@ -78,7 +82,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   openDeleteModal(id: number) {
     this.visibleOrderModal = true;
-    const order = this.orders.find( order => order.id == id);
+    const order = this.orders.find(order => order.id == id);
     if (order) {
       this.selectedOrder = order;
     }
@@ -90,13 +94,14 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
       this.orderUtils.deleteOrder(this.selectedOrder.id).subscribe({
         next: () => {
           this.commonMessage.showDeleteSucessfullMessage();
-          this.orders = this.orders.filter( order => order.id != this.selectedOrder?.id);
+          this.orders = this.orders.filter(order => order.id != this.selectedOrder?.id);
         },
         error: (ordersError) => {
           this.isOrderLoading = false;
-          if (ordersError.message.includes('have associated debts') || 
-              ordersError.message.includes('have associated invoices') ||
-              ordersError.message.includes('have associated commissions')) {
+          this.handleOnDeleteError(ordersError);
+          if (ordersError.message.includes('have associated debts') ||
+            ordersError.message.includes('have associated invoices') ||
+            ordersError.message.includes('have associated commissions')) {
             this.commonMessage.showErrorDeleteMessageContainsOtherEntities();
           } else {
             this.commonMessage.showErrorDeleteMessage();
@@ -107,9 +112,16 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
         complete: () => {
           this.visibleOrderModal = false;
           this.selectedOrder = undefined;
-          this.isOrderLoading = false; 
+          this.isOrderLoading = false;
         }
       })
+    }
+  }
+
+  handleOnDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message?.includes('404')) {
+      this.showOCCErrorModalOrder = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
@@ -119,23 +131,23 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   loadOrdersOverviewColHeaders(): void {
     this.cols = [
-      { 
-        field: 'orderNr', 
-        customClasses: ['align-right','date-font-style'],
+      {
+        field: 'orderNr',
+        customClasses: ['align-right', 'date-font-style'],
         routerLink: (row: any) => `./order-details/${row.id}`,
-        header:  this.translate.instant(_('ORDERS.TABLE.ORDER_ID'))
+        header: this.translate.instant(_('ORDERS.TABLE.ORDER_ID'))
       },
-      { field: 'orderLabel', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_LABEL'))},
-      { field: 'orderType', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_TYPE'))},
-      { field: 'orderDate', type: 'date', header:  this.translate.instant(_('ORDERS.TABLE.ORDER_DATE'))},
-      { field: 'acronym',  header:  this.translate.instant(_('ORDERS.TABLE.ACRONYM'))},
-      { field: 'fundingProgram.name',  header:  this.translate.instant(_('ORDERS.TABLE.FUNDING_PROGRAM'))},
-      { field: 'value', customClasses: ['align-right'], type: 'double', header:  this.translate.instant(_('ORDERS.TABLE.VALUE'))},
-      { field: 'contractStatus',  header:  this.translate.instant(_('ORDERS.TABLE.CONTRACT_STATUS'))},
-      { field: 'contractNr', header:  this.translate.instant(_('ORDERS.TABLE.CONTRACT_NRO'))},
-      { field: 'contractTitle', header:  this.translate.instant(_('ORDERS.TABLE.CONTRACT_TITLE'))},
-      { field: 'iwsPercent', customClasses: ['align-right'], type: 'double', header:  this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT'))},
-      { field: 'iwsPercentValue', customClasses: ['align-right'], type: 'double', header:  this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT_VALUE'))},
+      { field: 'orderLabel', header: this.translate.instant(_('ORDERS.TABLE.ORDER_LABEL')) },
+      { field: 'orderType', header: this.translate.instant(_('ORDERS.TABLE.ORDER_TYPE')) },
+      { field: 'orderDate', type: 'date', header: this.translate.instant(_('ORDERS.TABLE.ORDER_DATE')) },
+      { field: 'acronym', header: this.translate.instant(_('ORDERS.TABLE.ACRONYM')) },
+      { field: 'fundingProgram.name', header: this.translate.instant(_('ORDERS.TABLE.FUNDING_PROGRAM')) },
+      { field: 'value', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('ORDERS.TABLE.VALUE')) },
+      { field: 'contractStatus', header: this.translate.instant(_('ORDERS.TABLE.CONTRACT_STATUS')) },
+      { field: 'contractNr', header: this.translate.instant(_('ORDERS.TABLE.CONTRACT_NRO')) },
+      { field: 'contractTitle', header: this.translate.instant(_('ORDERS.TABLE.CONTRACT_TITLE')) },
+      { field: 'iwsPercent', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT')) },
+      { field: 'iwsPercentValue', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT_VALUE')) },
     ];
   }
 
