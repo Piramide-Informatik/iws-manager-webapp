@@ -1,15 +1,17 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { Vat } from '../../../../../../Entities/vat';
-import { VatRate } from '../../../../../../Entities/vatRate';
 import { VatUtils } from '../../utils/vat-utils';
 import { VatStateService } from '../../utils/vat-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Column } from '../../../../../../Entities/column';
+import { VatRateService } from '../../../../../../Services/vat-rate.service';
+import { VatRateUtils } from '../../utils/vat-rate-utils';
+import { VatRate } from '../../../../../../Entities/vatRate';
 
 @Component({
   selector: 'app-sales-tax-form',
@@ -28,13 +30,22 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   public showOCCErrorModalVat = false;
   public isLoading: boolean = false;
   public editSalesTaxForm!: FormGroup;
-
+  
   // Configure table VatRate (SalesTaxRate)
-  salesTaxRatesValues!: VatRate[];
+  private readonly vatRateService = inject(VatRateService);
+  private readonly vatRateUtils = inject(VatRateUtils);
   salesTaxRatesColumns: Column[] = [];
   userSalesTaxFormPreferences: UserPreference = {};
   tableKey: string = 'SalesTaxForm'
-  dataKeys = ['fromDate', 'rate'];
+  dataKeys = ['fromdate', 'rate'];
+  modalType: 'create' | 'delete' | 'edit' = 'create';
+  visibleModal: boolean = false;
+  buttonsDisabledTableVatRate: boolean = true;
+  selectedVatRate!: VatRate | undefined;
+
+  public readonly vatRates = computed(() => {
+    return this.vatRateService.vatRates();
+  })
 
   private langSalesTaxRateSubscription!: Subscription;
 
@@ -56,7 +67,6 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       this.loadSalesTaxRateHeadersAndColumns();
       this.userSalesTaxFormPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salesTaxRatesColumns);
     });
-    this.salesTaxRatesValues = [];
   }
 
   onUserSalesTaxFormPreferencesChanges(userSalesTaxFormPreferences: any) {
@@ -73,8 +83,8 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
 
   loadSalesTaxRateHeadersAndColumns() {
     this.salesTaxRatesColumns = [
-      { field: 'fromDate', minWidth: 110, type: 'date', header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')) },
-      { field: 'rate', minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')) }
+      { field: 'fromdate', minWidth: 110, type: 'date', header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')) },
+      { field: 'rate', type: 'double', customClasses: ['align-right'],minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')) }
     ];
   }
 
@@ -112,6 +122,8 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
           this.editSalesTaxForm.patchValue({
             label: this.vatToEdit.label,
           });
+          this.vatRateUtils.getAllVatRatesByVatId(this.vatToEdit.id).subscribe();
+          this.buttonsDisabledTableVatRate = false;
         }
       })
     )
@@ -128,6 +140,8 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
     this.editSalesTaxForm.reset();
     this.vatStateService.clearVat();
     this.vatToEdit = null;
+    this.vatRateService.clearVatRates();
+    this.buttonsDisabledTableVatRate = true;
   }
 
   private loadVatAfterRefresh(vatId: string): void {
@@ -145,5 +159,51 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  public handleTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedVatRate = this.vatRateService.vatRates().find(vr => vr.id == event.data);
+    }
+
+    if(event.type === 'edit' && event.data){
+      this.selectedVatRate = event.data;
+    }
+
+    this.visibleModal = true;
+  }
+
+  onCreateVatRate(event: { created?: VatRate, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteVatRate(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+    if(deleteEvent.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(deleteEvent.status === 'error' && deleteEvent.error){
+      if(deleteEvent.error.message === 'Cannot delete register: it is in use by other entities'){
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      }else{
+        this.commonMessageService.showErrorDeleteMessage();
+      }
+    }
+  }
+
+  onEditVatRate(event: {status: 'success' | 'error', error?: Error}): void {
+    if(event.status === 'success'){
+      this.commonMessageService.showEditSucessfullMessage();
+    }else if(event.status === 'error' && event.error){
+      if(event.error.message === 'Version conflict: VatRate has been updated by another user'){
+        this.visibleModal = false;
+        this.showOCCErrorModalVat = true;
+      }else{
+        this.commonMessageService.showErrorEditMessage();
+      }
+    }
   }
 }
