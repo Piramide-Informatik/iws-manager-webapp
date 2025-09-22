@@ -1029,7 +1029,8 @@
       "NEW": "Nueva Red",
       "DELETE": "Eliminar Red",
       "CONFIRM_QUESTION":"¿Está seguro de que desea eliminar la red ",
-      "NEW_PARTNER": "Nuevo Socio"
+      "NEW_PARTNER": "Nuevo Socio",
+      "EDIT_PARTNER": "Editar Socio"
     },
     "PARTNER": {
       "NO": "No",

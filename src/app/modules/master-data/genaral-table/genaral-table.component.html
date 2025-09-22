@@ -59,9 +59,9 @@
         }">
         <td>
           <div class="flex justify-content-center gap-2">
-            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info button-option"
+            <button pButton icon="pi pi-pencil" type="button" class="p-button-rounded p-button-info button-option"
               (click)="editRegister(row)" [disabled]="disableButtons"></button>
-            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger button-option"
+            <button pButton icon="pi pi-trash" type="button" class="p-button-rounded p-button-danger button-option"
               (click)="deleteRegister(row[removeKey])" [disabled]="disableButtons"></button>
           </div>
         </td>

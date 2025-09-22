@@ -114,4 +114,8 @@ export class NetworkPartnerService {
       })
     );
   }
+
+  clearNetworkPartners() {
+    this._networksPartner.set([]);
+  }
 }
