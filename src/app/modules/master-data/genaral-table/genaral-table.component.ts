@@ -28,6 +28,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Input() userPreferences: any = [];
   @Input() customerUploadButtonText = '';
   @Input() disableButtons: boolean = false;
+  @Input() enableCreateButton: boolean = false;
   selectedColumns: any[] = [];
   displayedColumns: any[] = [];
   booleanHeaders: any[] = [];

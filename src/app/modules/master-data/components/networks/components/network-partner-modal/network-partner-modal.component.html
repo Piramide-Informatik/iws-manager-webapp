@@ -1,0 +1,87 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+    <form [formGroup]="networkPartnerForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column mb-2 mt-4">
+            <div class="network-partner-form flex flex-row mb-4">
+                <label for="partnerno">{{ 'NETWORKS.PARTNER.NO' | translate }}</label>
+                <p-inputNumber class="p-inputnumber-input" inputId="partnerno" formControlName="partnerno" [inputStyle]="{'text-align': 'right'}"
+                [max]="999999" [min]="0" [useGrouping]="false" locale="de-DE"/>
+            </div>
+            <div class="network-partner-form flex flex-row mb-4">
+                <label for="comment">{{ 'NETWORKS.PARTNER.COMMENT' | translate }}</label>
+                <input #firstInput pInputText type="text" id="name" formControlName="comment" autocomplete="off" />
+            </div>
+
+            <div class="network-partner-form flex flex-row mb-4">
+                <label for="comment">{{ 'NETWORKS.PARTNER.CUSTOMER' | translate }}</label>
+                <p-select 
+                  [options]="customers()" 
+                  class="search-box w-auto"
+                  [(ngModel)]="selectedCustomer" 
+                  optionLabel="customername1" 
+                  optionValue="id" 
+                  [filter]="true" 
+                  filterBy="customername1" 
+                  [showClear]="true" 
+                  [placeholder]="'COMMON.SELECT_CUSTOMER' | translate" 
+                  [appendTo]="'body'"
+                  [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+                  [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+                  formControlName="partner">
+                    <ng-template #selectedItem let-selectedOption>
+                        <div class="flex items-center gap-2">
+                            <div>{{ selectedOption.customername1 }}</div>
+                        </div>
+                    </ng-template>
+                </p-select>
+            </div>
+            <div class="network-partner-form flex flex-row mb-4">
+                <label for="comment">{{ 'NETWORKS.PARTNER.CONTACT' | translate }}</label>
+                <p-select 
+                  [options]="contacts()" 
+                  class="search-box w-auto"
+                  [(ngModel)]="selectedContact" 
+                  optionLabel="name" 
+                  optionValue="id" 
+                  [filter]="true" 
+                  filterBy="name" 
+                  [showClear]="true" 
+                  [placeholder]="'COMMON.SELECT_CONTACT' | translate" 
+                  [appendTo]="'body'"
+                  [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+                  [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+                  formControlName="contactperson">
+                    <ng-template #selectedItem let-selectedOption>
+                        <div class="flex items-center gap-2">
+                            <div>{{ selectedOption.name }}</div>
+                        </div>
+                    </ng-template>
+                </p-select>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col flex justify-content-center">
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="closeModal()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-container>
+<ng-template #deleteTemplate>
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">
+            {{ 'NETWORKS.MODAL.DELETE_PARTNER_QUESTION' | translate }}
+            <strong class="stronglock mt-1">"{{ selectedNetworkPartner?.partnerno }}"</strong>?
+        </p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+                icon="pi pi-trash" iconPos="left" severity="danger" [loading]="isLoading"
+                [disabled]="isLoading" (onClick)="onDeleteNetworkPartnerConfirm()" />
+
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+
+        </div>
+    </div>
+</ng-template>

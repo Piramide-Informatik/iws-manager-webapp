@@ -31,9 +31,9 @@ export class ContactPersonService {
     this.loadInitialData();
   }
 
-  private loadInitialData(): void {
+  public loadInitialData(): Observable<ContactPerson[]> {
     this._loading.set(true);
-    this.http.get<ContactPerson[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<ContactPerson[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (persons) => {
           this._contactPersons.set(persons);

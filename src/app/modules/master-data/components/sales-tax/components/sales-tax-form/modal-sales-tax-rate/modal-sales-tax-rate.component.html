@@ -1,0 +1,75 @@
+<ng-container *ngIf="modalType !== 'delete'; else deleteTemplate">
+  <form [formGroup]="vatRateForm" (ngSubmit)="onSubmit()">
+    <div class="vat-rate-form mt-3">
+      <label for="fromdate">{{ 'SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE' | translate }}</label>
+      <p-datepicker #firstInput formControlName="fromdate" inputId="fromdate"
+        appendTo="body" showIcon showClear dateFormat="dd.mm.yy"
+      />
+    </div>
+    <div class="vat-rate-form">
+      <label for="rate">{{ 'SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE' | translate }}</label>
+      <div class="input-message">
+        <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          [inputStyle]="{'text-align': 'right'}" inputId="rate"
+          formControlName="rate" autocomplete="off" invalid="
+              vatRateForm.get('rate')?.invalid  
+              && vatRateForm.get('rate')?.dirty 
+              || vatRateForm.get('rate')?.touched"/>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          vatRateForm.get('rate')?.invalid && 
+          vatRateForm.get('rate')?.dirty
+        ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+      </div>
+    </div>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" size="small"
+        type="submit" [loading]="isLoading" [disabled]="isLoading || vatRateForm.invalid || isLoadingDelete"></p-button>
+      @if(modalType === 'edit') {
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [disabled]="isLoading || isLoadingDelete" (onClick)="visibleModalDeleteConfirmVatRate = true" />
+      }
+      <p-button [label]="'BUTTONS.CANCEL' | translate" class="cancel" icon="pi pi-times" iconPos="left"
+      size="small" (click)="closeModal()" (keydown.enter)="closeModal()" [disabled]="isLoading || isLoadingDelete"></p-button>
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #deleteTemplate>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">{{ 'SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.DELETE_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedVatRate?.fromdate | date: 'dd.MM.yyyy' }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+      iconPos="left" severity="danger" [loading]="isLoadingDelete" [disabled]="isLoadingDelete" (onClick)="onDeleteConfirm()" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+      iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete" />
+    </div>
+  </div>
+</ng-template>
+
+<p-dialog
+  [header]="'SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.DELETE' | translate"
+  [modal]="true"
+  [(visible)]="visibleModalDeleteConfirmVatRate"
+  appendTo="body"
+  [style]="{ width: 'auto' }"
+>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4">
+      {{ 'SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.DELETE_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedVatRate?.fromdate | date: 'dd.MM.yyyy'  }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [loading]="isLoadingDelete" [disabled]="isLoadingDelete" (onClick)="onDeleteConfirm()" />
+      
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" [disabled]="isLoadingDelete" (onClick)="visibleModalDeleteConfirmVatRate = false;" />
+    </div>
+  </div>
+</p-dialog>

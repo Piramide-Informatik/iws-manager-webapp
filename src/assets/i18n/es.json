@@ -92,7 +92,8 @@
     "SELECT_CUSTOMER": "Seleccione un Cliente",
     "SELECT_ONE": "Seleccione uno",
     "ANY": "Seleccione alguno",
-    "NO_DATA_AVAILABLE": "No hay datos disponibles"
+    "NO_DATA_AVAILABLE": "No hay datos disponibles",
+    "SELECT_CONTACT": "Seleccionar un Contacto"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas",
@@ -1027,7 +1028,17 @@
     "MODAL": {
       "NEW": "Nueva Red",
       "DELETE": "Eliminar Red",
-      "CONFIRM_QUESTION":"¿Está seguro de que desea eliminar la red "
+      "CONFIRM_QUESTION":"¿Está seguro de que desea eliminar la red ",
+      "NEW_PARTNER": "Nuevo Socio",
+      "EDIT_PARTNER": "Editar Socio",
+      "DELETE_PARTNER": "Eliminar Socio",
+      "DELETE_PARTNER_QUESTION": "¿Está seguro de que desea eliminar el socio "
+    },
+    "PARTNER": {
+      "NO": "No",
+      "COMMENT": "Comentario",
+      "CUSTOMER":"Cliente",
+      "CONTACT": "Contacto"
     }
   },
   "SALES_TAX": {
@@ -1038,7 +1049,13 @@
     },
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "Desde la Fecha",
-      "SENTENCE": "Tasa"
+      "SENTENCE": "Tasa",
+      "MODAL_SALES_TAX_RATE": {
+        "NEW": "Nueva Tasa Impositiva",
+        "DELETE": "Eliminar Tasa Impositiva",
+        "DELETE_QUESTION": "¿Está seguro de que desea eliminar la tasa impositiva ",
+        "EDIT": "Editar Tasa Impositiva"
+      }
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Editar Impuesto Sobre las Ventas",

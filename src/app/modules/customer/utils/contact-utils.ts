@@ -19,6 +19,9 @@ export class ContactUtils {
   public readonly contactCreated$ = this.contactCreated.asReadonly();
   public readonly contactCreationError$ = this.contactCreationError.asReadonly();
 
+  loadInitialData(): Observable<ContactPerson[]> {
+    return this.contactPersonService.loadInitialData();
+  }
 
   /**
    * Gets a contact person by ID with proper error handling

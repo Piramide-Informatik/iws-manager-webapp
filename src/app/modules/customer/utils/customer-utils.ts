@@ -33,6 +33,10 @@ export class CustomerUtils {
     private readonly invoiceUtils = inject(InvoiceUtils);
     private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
 
+    loadInitialData(): Observable<Customer[]> {
+      return this.customerService.loadInitialData();
+    }
+
     /**
      * Gets all customers without any transformation
      * @returns Observable emitting the raw list of customers

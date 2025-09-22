@@ -147,6 +147,8 @@ import { TextModalComponent } from './components/text/components/text-modal/text
 import { DunningLevelModalComponent } from './components/dunning-levels/components/dunning-level-modal/dunning-level-modal.component';
 import { ModalRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/modal-realization-probabilities/modal-realization-probabilities.component';
 import { SystemConstantModalComponent } from './components/system-constants/components/system-constant-modal/system-constant.modal.component';
+import { NetworkPartnerModalComponent } from './components/networks/components/network-partner-modal/network-partner-modal.component';
+import { ModalSalesTaxRateComponent } from './components/sales-tax/components/sales-tax-form/modal-sales-tax-rate/modal-sales-tax-rate.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -259,7 +261,9 @@ registerLocaleData(localeDe, 'de-DE');
     TextModalComponent,
     DunningLevelModalComponent,
     ModalRealizationProbabilitiesComponent,
-    SystemConstantModalComponent
+    SystemConstantModalComponent,
+    NetworkPartnerModalComponent,
+    ModalSalesTaxRateComponent,
   ],
   imports: [
     ButtonModule,

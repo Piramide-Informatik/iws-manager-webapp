@@ -92,7 +92,8 @@
     "SELECT_CUSTOMER": "Wählen Sie einen Kunden aus",
     "SELECT_ONE": "Wählen Sie eine",
     "ANY": "Beliebig",
-    "NO_DATA_AVAILABLE": "Keine Daten verfügbar"
+    "NO_DATA_AVAILABLE": "Keine Daten verfügbar",
+    "SELECT_CONTACT": "Wählen Sie einen Kontakt aus"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
@@ -1030,7 +1031,17 @@
     "MODAL": {
       "NEW": "Neues Netzwerk",
       "DELETE": "Netzwerk löschen",
-      "CONFIRM_QUESTION":"Möchten Sie das Netzwerk wirklich löschen "
+      "CONFIRM_QUESTION":"Möchten Sie das Netzwerk wirklich löschen ",
+      "NEW_PARTNER": "Neuer Partner",
+      "EDIT_PARTNER": "Partner bearbeiten",
+      "DELETE_PARTNER": "Partner löschen",
+      "DELETE_PARTNER_QUESTION": "Möchten Sie das Partner wirklich löschen "
+    },
+    "PARTNER": {
+      "NO": "Nein",
+      "COMMENT": "Kommentar",
+      "CUSTOMER":"Kunde",
+      "CONTACT": "Kontakt"
     }
   },
   "SALES_TAX": {
@@ -1041,7 +1052,13 @@
     },
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "ab Datum",
-      "SENTENCE": "Satz"
+      "SENTENCE": "Satz",
+      "MODAL_SALES_TAX_RATE": {
+        "NEW": "Neu Steuersatz",
+        "DELETE": "Steuersatz löschen",
+        "DELETE_QUESTION": "Möchten Sie den Steuersatz wirklich löschen ",
+        "EDIT": "Steuersatz bearbeiten"
+      }
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Steuersätze",
