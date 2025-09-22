@@ -1,17 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { EmployeeIwsStateService } from '../../utils/employee-iws-state.service';
 import { TeamIwsService } from '../../../../../../Services/team-iws.service';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
-import {
-  momentCreateDate,
-  momentFormatDate,
-} from '../../../../../shared/utils/moment-date-utils';
-import moment from 'moment';
+import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 @Component({
   selector: 'app-edit-iws-staff',
   standalone: false,
@@ -22,11 +18,9 @@ export class EditIwsStaffComponent implements OnInit {
   public showOCCErrorModaEmployeeIws = false;
   currentEmployeeIws: EmployeeIws | null = null;
   editIwsStaffForm!: FormGroup;
-
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   isSaving = false;
   private readonly subscriptions = new Subscription();
-  private readonly editEmployeeIwsSource =
-    new BehaviorSubject<EmployeeIws | null>(null);
 
   teams: any[] = [];
 
@@ -51,7 +45,7 @@ export class EditIwsStaffComponent implements OnInit {
 
   private initForm(): void {
     this.editIwsStaffForm = new FormGroup({
-      staffId: new FormControl('', []),
+      staffId: new FormControl({ value: null, disabled: true}),
       shortName: new FormControl('', []),
       firstName: new FormControl('', []),
       lastName: new FormControl('', []),
@@ -92,13 +86,10 @@ export class EditIwsStaffComponent implements OnInit {
       lastName: employeeIws.lastname,
       email: employeeIws.mail,
       team: employeeIws.teamIws,
-      staffSince: employeeIws.startDate
-        ? moment(employeeIws.startDate, 'YYYY-MM-DD').toDate()
-        : null,
-      staffUntil: employeeIws.endDate
-        ? moment(employeeIws.endDate, 'YYYY-MM-DD').toDate()
-        : null,
+      staffSince: momentCreateDate(employeeIws.startDate),
+      staffUntil: momentCreateDate(employeeIws.endDate),
     });
+    this.focusInputIfNeeded();
   }
 
   private loadEmployeeIwsAfterRefresh(employeeIwsId: string): void {
@@ -133,19 +124,13 @@ export class EditIwsStaffComponent implements OnInit {
     this.isSaving = true;
     const updateEmployeeIws: EmployeeIws = {
       ...this.currentEmployeeIws,
-      employeeNo: this.editIwsStaffForm.value.staffId,
+      employeeNo: this.editIwsStaffForm.getRawValue().staffId,
       employeeLabel: this.editIwsStaffForm.value.shortName,
       firstname: this.editIwsStaffForm.value.firstName,
       lastname: this.editIwsStaffForm.value.lastName,
       mail: this.editIwsStaffForm.value.email,
-      startDate: momentFormatDate(
-        momentCreateDate(this.editIwsStaffForm.value.staffSince)
-      ),
-      endDate: this.editIwsStaffForm.value.staffUntil
-        ? momentFormatDate(
-            momentCreateDate(this.editIwsStaffForm.value.staffUntil)
-          )
-        : '',
+      startDate: momentFormatDate(this.editIwsStaffForm.value.staffSince),
+      endDate: momentFormatDate(this.editIwsStaffForm.value.staffUntil),
       teamIws: this.editIwsStaffForm.value.team,
     };
 
@@ -165,6 +150,7 @@ export class EditIwsStaffComponent implements OnInit {
   }
 
   private handleSaveSuccess(savedEmployeeIws: EmployeeIws): void {
+    this.isSaving = false;
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('MESSAGE.SUCCESS'),
@@ -175,10 +161,7 @@ export class EditIwsStaffComponent implements OnInit {
   }
 
   private handleError(err: any): void {
-    if (
-      err.message ===
-      'Version conflict: EmployeeIws has been updated by another user'
-    ) {
+    if (err.message === 'Version conflict: EmployeeIws has been updated by another user') {
       this.showOCCErrorModaEmployeeIws = true;
     } else {
       this.handleSaveError(err);
@@ -206,11 +189,18 @@ export class EditIwsStaffComponent implements OnInit {
   }
   onRefresh(): void {
     if (this.currentEmployeeIws?.id) {
-      localStorage.setItem(
-        'selectedPublicHolidayId',
-        this.currentEmployeeIws.id.toString()
-      );
+      localStorage.setItem('selectedEmployeeIwsId', this.currentEmployeeIws.id.toString());
       window.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentEmployeeIws && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }
