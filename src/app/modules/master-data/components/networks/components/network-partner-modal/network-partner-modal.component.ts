@@ -26,6 +26,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   @Input() network: Network | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createNetworkPartner = new EventEmitter<{created?: Network, status: 'success' | 'error'}>();
+  @Output() editNetworkPartner = new EventEmitter<{edited?: Network, status: 'success' | 'error'}>();
   @Output() deleteNetwork = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @Output() cancelNetworkPartnerAction = new EventEmitter();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
@@ -69,7 +70,13 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     let selectNetworkPartnerChange = changes['selectedNetworkPartner'];
     if (selectNetworkPartnerChange && !selectNetworkPartnerChange.firstChange) {
       this.selectedNetworkPartner = selectNetworkPartnerChange.currentValue;
-      this.isCreateButtonEnable = this.selectedNetworkPartner !== null; 
+      this.isCreateButtonEnable = this.selectedNetworkPartner !== null;
+      this.networkPartnerForm.patchValue({
+        partnerno: this.selectedNetworkPartner?.partnerno,
+        comment: this.selectedNetworkPartner?.comment,
+        partner: this.selectedNetworkPartner?.partner?.id,
+        contactperson: this.selectedNetworkPartner?.contactperson?.id
+      });
     }
   }
 
@@ -82,16 +89,32 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     networkPartnerData.contactperson = this.contactService.contactPersons().find( cp => cp.id == networkPartnerData.contactperson);
     if (!this.selectedNetworkPartner) {
       this.networPartnerUtils.createNewNetworkPartner(networkPartnerData).subscribe({
-      next: (created) => {
-        this.isLoading = false;
-        this.closeModal();
-        this.createNetworkPartner.emit({created, status: 'success'});
-      },
-      error: () => {
-        this.isLoading = false;
-        this.createNetworkPartner.emit({ status: 'error' });
-      } 
-    })
+        next: (created) => {
+          this.isLoading = false;
+          this.closeModal();
+          this.createNetworkPartner.emit({created, status: 'success'});
+        },
+        error: () => {
+          this.isLoading = false;
+          this.createNetworkPartner.emit({ status: 'error' });
+        } 
+      })
+    } else {
+      networkPartnerData.id = this.selectedNetworkPartner.id;
+      networkPartnerData.createdAt = this.selectedNetworkPartner.createdAt;
+      networkPartnerData.updatedAt = this.selectedNetworkPartner.updatedAt;
+      networkPartnerData.version = this.selectedNetworkPartner.version;
+      this.networPartnerUtils.updateNetworkPartner(networkPartnerData).subscribe({
+        next: (edited) => {
+          this.isLoading = false;
+          this.closeModal();
+          this.editNetworkPartner.emit({edited, status: 'success'});
+        },
+        error: (error) => {
+          console.log(error)
+          this.editNetworkPartner.emit({ status: 'error' });
+        }
+      });
     }
   }
 
@@ -101,7 +124,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   }
 
   get isCreateMode(): boolean {
-    return this.modalType === 'create';
+    return this.modalType !== 'delete';
   }
 
   private focusInputIfNeeded(): void {

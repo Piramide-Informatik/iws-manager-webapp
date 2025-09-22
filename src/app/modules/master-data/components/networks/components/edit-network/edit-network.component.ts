@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -37,7 +37,8 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   networksPartners = computed(() => {
     return this.networkPartnerService.networksPartner().map(np => {
       return {
-        id: np.partnerno,
+        id: np.id,
+        no: np.partnerno,
         customerNumber: np.partner?.customerno ?? np.partner?.id,
         partner: np.partner?.customername1
       }
@@ -49,7 +50,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   public columsHeaderFieldPartner: any[] = [];
   userEditNetworkPreferences: UserPreference = {};
   tableKey: string = 'EditNetwork'
-  dataKeys = ['id', 'customerNumber', 'partner'];
+  dataKeys = ['no', 'customerNumber', 'partner'];
 
   private langSubscription!: Subscription;
 
@@ -89,7 +90,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
 
   loadColHeadersPartner(): void {
     this.columsHeaderFieldPartner = [
-      { field: 'id', styles: {'width': 'auto'}, header: 'No' },
+      { field: 'no', styles: {'width': 'auto'}, header: 'No' },
       { field: 'customerNumber', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.CUSTOMER')) },
       { field: 'partner', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.PARTNER')) },
     ];
@@ -123,11 +124,34 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
     this.modalNetworkPartnerType = event.type;
+    if (event.type === 'edit') {
+      const foundNetWorkPartnerToEdit = this.networkPartnerService.networksPartner()
+        .find(ntp => ntp.id == event.data.id);
+      if (foundNetWorkPartnerToEdit) {
+        this.selectedNetworkPartner = foundNetWorkPartnerToEdit;
+      }  
+    }
     this.visibleNetworksPartnersModal = true;
   }
 
   onModalNetworkPartenerVisibilityChange(value: boolean) {
     this.visibleNetworksPartnersModal = value;
+  }
+
+  onCreateNetworkPartner(event: { created?: NetworkPartner, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onEditNetworkPartner(event: { edited?: NetworkPartner, status: 'success' | 'error'}): void {
+    if(event.edited && event.status === 'success'){
+      this.commonMessageService.showEditSucessfullMessage();
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorEditMessage();
+    }
   }
 
   public onRefresh(): void {
@@ -141,7 +165,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
     this.editNetworkForm.reset();
     this.networkStateService.clearNetwork();
     this.networkToEdit = null;
-    this.networksPartners = signal([]);
+    this.networkPartnerService.clearNetworkPartners();
     this.isCreateButtonEnable = false;
   }
 

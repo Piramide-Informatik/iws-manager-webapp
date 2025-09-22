@@ -1033,7 +1033,8 @@
       "NEW": "New Network",
       "DELETE": "Delete Network",
       "CONFIRM_QUESTION":"Are you sure you want to delete the network ",
-      "NEW_PARTNER": "New Network Partner"
+      "NEW_PARTNER": "New Network Partner",
+      "EDIT_PARTNER": "Edit Network Partner"
     },
     "PARTNER": {
       "NO": "No",

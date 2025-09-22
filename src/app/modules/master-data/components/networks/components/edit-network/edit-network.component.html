@@ -16,13 +16,14 @@
                 [dataKeys]="dataKeys"
                 (onColumnChanges)="onUserEditNetworkPreferencesChanges($event)"
                 (onCreateRegister)="handleTableEvents({ type: 'create' })"
+                (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
                 [enableCreateButton]="!isCreateButtonEnable"
             ></master-data-genaral-table>
             <p-dialog 
               [header]="modalNetworkPartnerType === 'create' 
                 ? ('NETWORKS.MODAL.NEW_PARTNER' | translate) 
                 : modalNetworkPartnerType === 'edit'
-                  ? ('NETWORKS_PARTNER.MODAL.EDIT' | translate) 
+                  ? ('NETWORKS.MODAL.EDIT_PARTNER' | translate) 
                   : ('NETWORKS_PARTNER.MODAL.DELETE' | translate)" 
               [modal]="true"
               [(visible)]="visibleNetworksPartnersModal"
@@ -33,6 +34,8 @@
                 [selectedNetworkPartner]="selectedNetworkPartner"
                 [visible]="visibleNetworksPartnersModal"
                 (isVisibleModal)="onModalNetworkPartenerVisibilityChange($event)"
+                (createNetworkPartner)="onCreateNetworkPartner($event)"
+                (editNetworkPartner)="onEditNetworkPartner($event)"
               ></app-network-partner-modal>
             </p-dialog>
             <div class="row mt-2">
