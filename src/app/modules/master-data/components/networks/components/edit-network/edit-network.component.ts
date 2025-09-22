@@ -131,6 +131,13 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
         this.selectedNetworkPartner = foundNetWorkPartnerToEdit;
       }  
     }
+    if (event.type === 'delete') {
+      const foundNetWorkPartnerToDelete = this.networkPartnerService.networksPartner()
+        .find(ntp => ntp.id == event.data);
+      if (foundNetWorkPartnerToDelete) {
+        this.selectedNetworkPartner = foundNetWorkPartnerToDelete;
+      }  
+    }
     this.visibleNetworksPartnersModal = true;
   }
 
@@ -151,6 +158,16 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
       this.commonMessageService.showEditSucessfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorEditMessage();
+    }
+  }
+
+  onDeleteNetworkPartner(event: {status: 'success' | 'error', error?: Error}) {
+    if(event.status === 'success'){
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else if(event.status === 'error'){
+      event.error?.message === 'Cannot delete register: it is in use by other entities' ?
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
+        this.commonMessageService.showErrorDeleteMessage();
     }
   }
 
