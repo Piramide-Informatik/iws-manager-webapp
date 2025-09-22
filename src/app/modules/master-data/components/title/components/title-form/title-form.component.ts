@@ -6,6 +6,7 @@ import { TitleStateService } from '../../utils/title-state.service';
 import { TitleUtils } from '../../utils/title-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-title-form',
@@ -20,6 +21,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   isSaving = false;
   private readonly subscriptions = new Subscription();
   private readonly editTitleSource = new BehaviorSubject<Title | null>(null);
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   constructor(
     private readonly titleUtils: TitleUtils,
@@ -112,11 +114,21 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private handleError(err: any): void {
-    if (err.message === 'Version conflict: Title has been updated by another user') {
+  private handleError(error: Error) {
+    // console.log("aqui el error: ", error)
+    // if (error.message === 'Version conflict: Title has been updated by another user') {
+    //   this.showOCCErrorModaTitle = true;
+    // } else {
+    //   this.handleSaveError(error);
+    // }
+    // this.isSaving = false;
+
+    if (error instanceof OccError) {
+      console.log("tipo de error: ", error.errorType)
       this.showOCCErrorModaTitle = true;
+      this.occErrorType = error.errorType;
     } else {
-      this.handleSaveError(err);
+      this.handleSaveError(error)
     }
     this.isSaving = false;
   }

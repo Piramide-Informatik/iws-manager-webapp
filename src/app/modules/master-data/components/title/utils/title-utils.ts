@@ -4,6 +4,7 @@ import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for title-related business logic and operations.
@@ -168,16 +169,16 @@ export class TitleUtils {
 
     return this.titleService.getTitleById(title.id).pipe(
       take(1),
-      map((currentTitle) => {
+      switchMap((currentTitle) => {
         if (!currentTitle) {
-          throw new Error('Title not found');
+          return throwError(() => createNotFoundUpdateError('Title'));
         }
         if (currentTitle.version !== title.version) {
-          throw new Error('Version conflict: Title has been updated by another user');
+          return throwError(() => createUpdateConflictError('Title'));
         }
-        return title;
+        return this.titleService.updateTitle(title);
+
       }),
-      switchMap((validatedTitle: Title) => this.titleService.updateTitle(validatedTitle)),
       catchError((err) => {
         console.error('Error updating title:', err);
         return throwError(() => err);
