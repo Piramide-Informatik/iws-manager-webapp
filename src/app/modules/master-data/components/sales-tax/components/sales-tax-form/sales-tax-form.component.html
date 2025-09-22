@@ -20,12 +20,34 @@
   <div class="row">
     <master-data-genaral-table
       [tableId]="tableKey"
-      [tableValues]="salesTaxRatesValues"
+      [tableValues]="vatRates()"
       [columns]="salesTaxRatesColumns"
       [userPreferences]="userSalesTaxFormPreferences"
       [dataKeys]="dataKeys"
+      [disableButtons]="buttonsDisabledTableVatRate"
       (onColumnChanges)="onUserSalesTaxFormPreferencesChanges($event)"
+      (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+      (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
     ></master-data-genaral-table>
+
+    <p-dialog
+      [header]="modalType === 'delete' ? 
+        ('SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.DELETE' | translate) : modalType === 'create' ? 
+        ('SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.NEW' | translate) : 
+        ('SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.EDIT' | translate)"
+      [modal]="true"
+      [(visible)]="visibleModal">
+      <app-modal-sales-tax-rate
+        [modalType]="modalType"
+        [visibleModal]="visibleModal"
+        [selectedVatRate]="selectedVatRate"
+        (isVisibleModal)="visibleModal = $event"
+        (createVatRate)="onCreateVatRate($event)"
+        (deleteVatRate)="onDeleteVatRate($event)"
+        (editVatRate)="onEditVatRate($event)"
+      ></app-modal-sales-tax-rate>
+    </p-dialog>
   </div>
 </p-card>
 <app-occ-error-modal

@@ -1046,7 +1046,13 @@
     },
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "Desde la Fecha",
-      "SENTENCE": "Tasa"
+      "SENTENCE": "Tasa",
+      "MODAL_SALES_TAX_RATE": {
+        "NEW": "Nueva Tasa Impositiva",
+        "DELETE": "Eliminar Tasa Impositiva",
+        "DELETE_QUESTION": "¿Está seguro de que desea eliminar la tasa impositiva ",
+        "EDIT": "Editar Tasa Impositiva"
+      }
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Editar Impuesto Sobre las Ventas",

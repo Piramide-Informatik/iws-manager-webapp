@@ -34,3 +34,9 @@
     </div>
   </p-dialog>
 </div>
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalOrder" 
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalOrder = false">
+</app-occ-error-modal>
