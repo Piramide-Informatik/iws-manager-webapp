@@ -15,7 +15,26 @@
                 [userPreferences]="userEditNetworkPreferences"
                 [dataKeys]="dataKeys"
                 (onColumnChanges)="onUserEditNetworkPreferencesChanges($event)"
+                (onCreateRegister)="handleTableEvents({ type: 'create' })"
+                [enableCreateButton]="!isCreateButtonEnable"
             ></master-data-genaral-table>
+            <p-dialog 
+              [header]="modalNetworkPartnerType === 'create' 
+                ? ('NETWORKS.MODAL.NEW_PARTNER' | translate) 
+                : modalNetworkPartnerType === 'edit'
+                  ? ('NETWORKS_PARTNER.MODAL.EDIT' | translate) 
+                  : ('NETWORKS_PARTNER.MODAL.DELETE' | translate)" 
+              [modal]="true"
+              [(visible)]="visibleNetworksPartnersModal"
+            >
+              <app-network-partner-modal
+                [modalType]="modalNetworkPartnerType"
+                [network]="networkToEdit"
+                [selectedNetworkPartner]="selectedNetworkPartner"
+                [visible]="visibleNetworksPartnersModal"
+                (isVisibleModal)="onModalNetworkPartenerVisibilityChange($event)"
+              ></app-network-partner-modal>
+            </p-dialog>
             <div class="row mt-2">
                 <div class="col flex justify-content-center">
                     <p-button class="save me-2" size="small" type="submit" [loading]="isLoading" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />

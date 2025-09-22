@@ -92,7 +92,8 @@
     "SELECT_CUSTOMER": "Wählen Sie einen Kunden aus",
     "SELECT_ONE": "Wählen Sie eine",
     "ANY": "Beliebig",
-    "NO_DATA_AVAILABLE": "Keine Daten verfügbar"
+    "NO_DATA_AVAILABLE": "Keine Daten verfügbar",
+    "SELECT_CONTACT": "Wählen Sie einen Kontakt aus"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
@@ -1030,7 +1031,14 @@
     "MODAL": {
       "NEW": "Neues Netzwerk",
       "DELETE": "Netzwerk löschen",
-      "CONFIRM_QUESTION":"Möchten Sie das Netzwerk wirklich löschen "
+      "CONFIRM_QUESTION":"Möchten Sie das Netzwerk wirklich löschen ",
+      "NEW_PARTNER": "Neuer Partner"
+    },
+    "PARTNER": {
+      "NO": "Nein",
+      "COMMENT": "Kommentar",
+      "CUSTOMER":"Kunde",
+      "CONTACT": "Kontakt"
     }
   },
   "SALES_TAX": {
