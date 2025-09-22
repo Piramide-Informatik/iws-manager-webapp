@@ -1,26 +1,26 @@
 .create-form {
     display: flex;
     align-items: center;
+    gap: 1rem; 
+    
     label {
-        width: auto;
+        width: 50px; 
         font-weight: 500;
+        text-align: left;
+        flex-shrink: 0;
     }
 
     input {
         flex: 1;
         max-width: 300px;
-        margin-left: 3rem;
-
     }
-    .datepicker-container {
-        flex: 1;
-        max-width: 200px;
-        margin-left: 3.6rem;
-    }
+}
+/* el panel toma mismo ancho que el input */
+.p-datepicker.datepicker-panel {
+width: 300px !important;       /* o 100% si lo quieres responsivo */
+min-width: unset !important;
 }
 
 strong {
     display: inline;
 }
-
-
