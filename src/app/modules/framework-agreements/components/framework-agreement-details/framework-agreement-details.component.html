@@ -47,3 +47,10 @@
     </div>
   </div>
 </p-dialog>
+
+<app-occ-error-modal 
+    *ngIf="showOCCErrorModalBasicContract"
+    [redirectRoute]="redirectRoute" 
+    [errorType]="occErrorType"
+    (onClose)="showOCCErrorModalBasicContract = false">
+</app-occ-error-modal>

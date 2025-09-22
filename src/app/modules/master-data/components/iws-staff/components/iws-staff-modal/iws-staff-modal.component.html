@@ -2,65 +2,59 @@
     <form [formGroup]="createEmployeeIwsForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center mb-3">
-                <label for="employeeNo" class="block">
-                    {{ 'IWS_STAFF.LABEL.STAFF_ID' | translate }}
-                </label>
-                <input #titleInput pInputText type="text" id="employeeNo" formControlName="employeeNo" autocomplete="off"
-                    [attr.aria-invalid]="createEmployeeIwsForm.get('employeeNo')?.invalid"
+                <label for="employeeNo">{{ 'IWS_STAFF.LABEL.STAFF_ID' | translate }}</label>
+                <p-inputnumber [useGrouping]="true" inputId="employeeNo" formControlName="employeeNo" autocomplete="off"
+                    [attr.aria-invalid]="createEmployeeIwsForm.get('employeeNo')?.invalid" [inputStyle]="{'text-align': 'right'}"
                     [attr.aria-describedby]="createEmployeeIwsForm.get('employeeNo')?.invalid ? 'employeeNoError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createEmployeeIwsForm.get('employeeNo')?.invalid && createEmployeeIwsForm.get('employeeNo')?.touched"
                     id="employeeNoError" class="text-red-500 block mt-1">
                 </small>
             </div>
             <div class="create-form flex align-items-center mb-3">
-                <label for="employeeLabel" class="block">
-                    {{ 'IWS_STAFF.LABEL.SHORT_NAME' | translate }}
-                </label>
-                <input #titleInput pInputText type="text" id="employeeLabel" formControlName="employeeLabel" autocomplete="off"
+                <label for="employeeLabel">{{ 'IWS_STAFF.LABEL.SHORT_NAME' | translate }}</label>
+                <input #fisrtInput pInputText type="text" id="employeeLabel" formControlName="employeeLabel" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeIwsForm.get('employeeLabel')?.invalid"
                     [attr.aria-describedby]="createEmployeeIwsForm.get('employeeLabel')?.invalid ? 'employeeLabelError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createEmployeeIwsForm.get('employeeLabel')?.invalid && createEmployeeIwsForm.get('employeeLabel')?.touched"
                     id="employeeLabelError" class="text-red-500 block mt-1">
                 </small>
             </div>
             <div class="create-form flex align-items-center mb-3">
-                <label for="firstName" class="block">
-                    {{ 'IWS_STAFF.LABEL.FIRST_NAME' | translate }}
-                </label>
-                <input #titleInput pInputText type="text" id="firstName" formControlName="firstName" autocomplete="off"
+                <label for="firstName">{{ 'IWS_STAFF.LABEL.FIRST_NAME' | translate }}</label>
+                <input pInputText type="text" id="firstName" formControlName="firstName" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeIwsForm.get('firstName')?.invalid"
                     [attr.aria-describedby]="createEmployeeIwsForm.get('firstName')?.invalid ? 'emplopyeeIwsError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createEmployeeIwsForm.get('firstName')?.invalid && createEmployeeIwsForm.get('firstName')?.touched"
                     id="emplopyeeIwsError" class="text-red-500 block mt-1">
                 </small>
             </div>
             <div class="create-form flex align-items-center mb-3">
-                <label for="lastName" class="block">
+                <label for="lastName">
                     {{ 'IWS_STAFF.LABEL.LAST_NAME' | translate }}
                 </label>
-                <input #titleInput pInputText type="text" id="lastName" formControlName="lastName" autocomplete="off"
+                <input pInputText type="text" id="lastName" formControlName="lastName" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeIwsForm.get('lastName')?.invalid"
                     [attr.aria-describedby]="createEmployeeIwsForm.get('lastName')?.invalid ? 'lastNameError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createEmployeeIwsForm.get('lastName')?.invalid && createEmployeeIwsForm.get('lastName')?.touched"
                     id="lastNameError" class="text-red-500 block mt-1">
                 </small>
             </div>
             <div class="create-form flex align-items-center mb-3">
-                <label for="mail" class="block">
+                <label for="mail">
                     {{ 'IWS_STAFF.LABEL.EMAIL' | translate }}
                 </label>
-                <input #titleInput pInputText type="text" id="mail" formControlName="mail" autocomplete="off"
+                <input pInputText type="text" id="mail" formControlName="mail" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeIwsForm.get('mail')?.invalid"
                     [attr.aria-describedby]="createEmployeeIwsForm.get('mail')?.invalid ? 'mailError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createEmployeeIwsForm.get('mail')?.invalid && createEmployeeIwsForm.get('mail')?.touched"
                     id="mailError" class="text-red-500 block mt-1">
@@ -68,36 +62,29 @@
             </div>
             <div class="create-form flex align-items-center mb-3">
                 <label for="team">{{ "IWS_STAFF.LABEL.TEAM" | translate }}</label>
-                <p-dropdown
+                <p-select
                 [options]="teams"
                 formControlName="teamIws"
                 optionLabel="name"
                 [placeholder]="'IWS_STAFF.LABEL.SELECT_TEAM' | translate"
                 optionDisabled="inactive"
                 appendTo="body"
-                ></p-dropdown>
+                showClear
+                ></p-select>
             </div>
             <div class="create-form flex align-items-center mb-3">
-                <label for="startDate" class="block w-1/3">
-                {{ "IWS_STAFF.LABEL.STAFF_SINCE" | translate }}
-                </label>
-                <div class="datepicker-container w-full">
+                <label for="startDate">{{ "IWS_STAFF.LABEL.STAFF_SINCE" | translate }}</label>
                 <p-datepicker
                     formControlName="startDate"
-                    
                     [showIcon]="true"
                     inputId="startDate"
                     dateFormat="dd.mm.yy"
                     [showClear]="true"
                     appendTo="body"
                 />
-                </div>
             </div>
             <div class="create-form flex align-items-center mb-3">
-                <label for="endDate" class="block w-1/3">
-                {{ "IWS_STAFF.LABEL.STAFF_UNTIL" | translate }}
-                </label>
-                <div class="datepicker-container w-full">
+                <label for="endDate">{{ "IWS_STAFF.LABEL.STAFF_UNTIL" | translate }}</label>
                 <p-datepicker
                     formControlName="endDate"
                     [showIcon]="true"
@@ -106,7 +93,6 @@
                     [showClear]="true"
                     appendTo="body"
                 />
-                </div>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"

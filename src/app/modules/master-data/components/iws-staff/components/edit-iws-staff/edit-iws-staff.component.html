@@ -3,25 +3,19 @@
   [header]="'IWS_STAFF.HEADER.EDIT_STAFF' | translate"
 >
   <form [formGroup]="editIwsStaffForm" (ngSubmit)="onSubmit()">
-    <div class="align-items-center mb-2">
-      <div class="iws-form mb-2">
-        <label for="staffId">{{
-          "IWS_STAFF.LABEL.STAFF_ID" | translate
-        }}</label>
-        <input
-          pInputText
-          type="text"
-          id="staffId"
+    <div class="mb-2">
+      <div class="iws-form">
+        <label for="staffId">{{ "IWS_STAFF.LABEL.STAFF_ID" | translate }}</label>
+        <p-inputnumber [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          inputId="staffId"
           formControlName="staffId"
           autocomplete="off"
         />
       </div>
 
-      <div class="iws-form mb-2">
-        <label for="shortName">{{
-          "IWS_STAFF.LABEL.SHORT_NAME" | translate
-        }}</label>
-        <input
+      <div class="iws-form">
+        <label for="shortName">{{ "IWS_STAFF.LABEL.SHORT_NAME" | translate }}</label>
+        <input #firstInput
           pInputText
           type="text"
           id="shortName"
@@ -30,10 +24,8 @@
         />
       </div>
 
-      <div class="iws-form mb-2">
-        <label for="firstName">{{
-          "IWS_STAFF.LABEL.FIRST_NAME" | translate
-        }}</label>
+      <div class="iws-form">
+        <label for="firstName">{{ "IWS_STAFF.LABEL.FIRST_NAME" | translate }}</label>
         <input
           pInputText
           type="text"
@@ -43,10 +35,8 @@
         />
       </div>
 
-      <div class="iws-form mb-2">
-        <label for="lastName">{{
-          "IWS_STAFF.LABEL.LAST_NAME" | translate
-        }}</label>
+      <div class="iws-form">
+        <label for="lastName">{{ "IWS_STAFF.LABEL.LAST_NAME" | translate }}</label>
         <input
           pInputText
           type="text"
@@ -56,7 +46,7 @@
         />
       </div>
 
-      <div class="iws-form mb-2">
+      <div class="iws-form">
         <label for="email">{{ "IWS_STAFF.LABEL.EMAIL" | translate }}</label>
         <input
           pInputText
@@ -67,37 +57,37 @@
         />
       </div>
 
-      <div class="iws-form mb-2">
+      <div class="iws-form">
         <label for="team">{{ "IWS_STAFF.LABEL.TEAM" | translate }}</label>
-        <p-dropdown
+        <p-select
+          inputId="team"
           [options]="teams"
           formControlName="team"
           optionLabel="name"
+          showClear
           [placeholder]="'IWS_STAFF.LABEL.SELECT_TEAM' | translate"
-        ></p-dropdown>
+        ></p-select>
       </div>
 
-      <div class="iws-form mb-2">
-        <label for="staffSince">{{
-          "IWS_STAFF.LABEL.STAFF_SINCE" | translate
-        }}</label>
+      <div class="iws-form">
+        <label for="staffSince">{{ "IWS_STAFF.LABEL.STAFF_SINCE" | translate }}</label>
         <p-datepicker
-          id="staffSince"
+          inputId="staffSince"
           formControlName="staffSince"
           dateFormat="dd.mm.yy"
           showIcon="true"
+          showClear
         ></p-datepicker>
       </div>
 
-      <div class="iws-form mb-2">
-        <label for="staffUntil">{{
-          "IWS_STAFF.LABEL.STAFF_UNTIL" | translate
-        }}</label>
+      <div class="iws-form">
+        <label for="staffUntil">{{ "IWS_STAFF.LABEL.STAFF_UNTIL" | translate }}</label>
         <p-datepicker
-          id="staffUntil"
+          inputId="staffUntil"
           formControlName="staffUntil"
           dateFormat="dd.mm.yy"
           showIcon="true"
+          showClear
         ></p-datepicker>
       </div>
 
@@ -108,6 +98,7 @@
           icon="pi pi-check"
           iconPos="left"
           type="submit"
+          [loading]="isSaving"
         ></p-button>
         <p-button
           class="cancel"
@@ -115,9 +106,8 @@
           [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times"
           iconPos="left"
-          (click)="cancelEdit()"
-          type="button"
-          (keydown)="cancelEdit()"
+          [disabled]="isSaving"
+          (onClick)="cancelEdit()"
         ></p-button>
       </div>
     </div>
@@ -130,4 +120,3 @@
     (close)="showOCCErrorModaEmployeeIws = false"
     (refresh)="onRefresh()">
 </app-occ-error-modal>
-<p-toast></p-toast>

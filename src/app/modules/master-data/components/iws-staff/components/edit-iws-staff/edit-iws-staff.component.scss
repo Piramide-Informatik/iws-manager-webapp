@@ -1,11 +1,20 @@
 .iws-form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+
   label {
-    width: 111px;
+    width: 110px;
+    flex-shrink: 0;
   }
 
-  input, p-dropdown {
-    width: 13em;
+  input, p-select, p-inputnumber {
+    width: 100%;
   }
+}
+
+::ng-deep #staffId.p-inputnumber-input {
+  width: 100%;
 }
 
 .iws-form-check {

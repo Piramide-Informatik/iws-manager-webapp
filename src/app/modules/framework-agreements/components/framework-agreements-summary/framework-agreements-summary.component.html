@@ -30,3 +30,9 @@
     ></app-framework-agreements-modal>
   </p-dialog>
 </div>
+<app-occ-error-modal 
+    *ngIf="showOCCErrorModalBasicContract"
+    [reloadCurrentPage]="true" 
+    [errorType]="occErrorType"
+    (onClose)="showOCCErrorModalBasicContract = false">
+</app-occ-error-modal>
