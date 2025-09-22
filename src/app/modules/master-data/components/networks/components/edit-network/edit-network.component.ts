@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,8 @@ import { NetowrkUtils } from '../../utils/ network.utils';
 import { NetworkStateService } from '../../utils/network-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Network } from '../../../../../../Entities/network';
+import { NetowrkPartnerUtils } from '../../utils/ network-partner.utils';
+import { NetworkPartnerService } from '../../../../../../Services/network-partner.service';
 
 @Component({
   selector: 'master-data-edit-network',
@@ -19,19 +21,30 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   private readonly networkUtils = inject(NetowrkUtils);
   private readonly networkStateService = inject(NetworkStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly networkPartnerUtils = inject(NetowrkPartnerUtils);
+  private readonly networkPartnerService = inject(NetworkPartnerService);
   private readonly subscriptions = new Subscription();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public editNetworkForm!: FormGroup;
   private networkToEdit: Network | null = null;
   public showOCCErrorModalNetwork = false;
   public isLoading: boolean = false;
+  readonly networksPartners = computed(() => {
+    return this.networkPartnerService.networksPartner().map(np => {
+      return {
+        id: np.partnerno,
+        customerNumber: np.partner?.customerno ?? np.partner?.id,
+        partner: np.partner?.customername1
+      }
+    });
+  });
 
   // Partner network
   public partners!: any[];
   public columsHeaderFieldPartner: any[] = [];
   userEditNetworkPreferences: UserPreference = {};
   tableKey: string = 'EditNetwork'
-  dataKeys = ['customerNumber', 'partner'];
+  dataKeys = ['id', 'customerNumber', 'partner'];
 
   private langSubscription!: Subscription;
 
@@ -125,6 +138,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
             name: this.networkToEdit.name
           });
           this.focusInputIfNeeded();
+          this.networkPartnerUtils.getNetworkPartnerByNetworkId(network.id).subscribe();
         }
       })
     )
