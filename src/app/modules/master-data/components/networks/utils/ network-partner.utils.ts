@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, forkJoin, map, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
 import { Network } from '../../../../../Entities/network';
 import { NetworkPartnerService } from '../../../../../Services/network-partner.service';
 import { NetworkPartner } from '../../../../../Entities/network-partner';
