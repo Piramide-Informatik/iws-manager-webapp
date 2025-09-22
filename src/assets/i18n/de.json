@@ -1033,7 +1033,9 @@
       "DELETE": "Netzwerk löschen",
       "CONFIRM_QUESTION":"Möchten Sie das Netzwerk wirklich löschen ",
       "NEW_PARTNER": "Neuer Partner",
-      "EDIT_PARTNER": "Partner bearbeiten"
+      "EDIT_PARTNER": "Partner bearbeiten",
+      "DELETE_PARTNER": "Partner löschen",
+      "DELETE_PARTNER_QUESTION": "Möchten Sie das Partner wirklich löschen "
     },
     "PARTNER": {
       "NO": "Nein",

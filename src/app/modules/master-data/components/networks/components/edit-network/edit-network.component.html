@@ -17,6 +17,7 @@
                 (onColumnChanges)="onUserEditNetworkPreferencesChanges($event)"
                 (onCreateRegister)="handleTableEvents({ type: 'create' })"
                 (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
+                (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
                 [enableCreateButton]="!isCreateButtonEnable"
             ></master-data-genaral-table>
             <p-dialog 
@@ -24,7 +25,7 @@
                 ? ('NETWORKS.MODAL.NEW_PARTNER' | translate) 
                 : modalNetworkPartnerType === 'edit'
                   ? ('NETWORKS.MODAL.EDIT_PARTNER' | translate) 
-                  : ('NETWORKS_PARTNER.MODAL.DELETE' | translate)" 
+                  : ('NETWORKS.MODAL.DELETE_PARTNER' | translate)" 
               [modal]="true"
               [(visible)]="visibleNetworksPartnersModal"
             >
@@ -36,6 +37,7 @@
                 (isVisibleModal)="onModalNetworkPartenerVisibilityChange($event)"
                 (createNetworkPartner)="onCreateNetworkPartner($event)"
                 (editNetworkPartner)="onEditNetworkPartner($event)"
+                (deleteNetworkPartner)="onDeleteNetworkPartner($event)"
               ></app-network-partner-modal>
             </p-dialog>
             <div class="row mt-2">

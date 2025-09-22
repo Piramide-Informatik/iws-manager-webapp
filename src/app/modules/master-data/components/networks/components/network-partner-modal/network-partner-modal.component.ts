@@ -27,7 +27,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createNetworkPartner = new EventEmitter<{created?: Network, status: 'success' | 'error'}>();
   @Output() editNetworkPartner = new EventEmitter<{edited?: Network, status: 'success' | 'error'}>();
-  @Output() deleteNetwork = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() deleteNetworkPartner = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @Output() cancelNetworkPartnerAction = new EventEmitter();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public networkPartnerForm!: FormGroup;
@@ -121,6 +121,23 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   closeModal() {
     this.networkPartnerForm.reset();
     this.isVisibleModal.emit(false);
+  }
+
+  onDeleteNetworkPartnerConfirm() {
+    this.isLoading = true;
+    if (this.selectedNetworkPartner) {
+      this.networPartnerUtils.deleteNetworkPartener(this.selectedNetworkPartner.id).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.closeModal();
+          this.deleteNetworkPartner.emit({status: 'success'});
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.deleteNetworkPartner.emit({ status: 'error', error: error });
+        }
+      })
+    }
   }
 
   get isCreateMode(): boolean {

@@ -1034,7 +1034,9 @@
       "DELETE": "Delete Network",
       "CONFIRM_QUESTION":"Are you sure you want to delete the network ",
       "NEW_PARTNER": "New Network Partner",
-      "EDIT_PARTNER": "Edit Network Partner"
+      "EDIT_PARTNER": "Edit Network Partner",
+      "DELETE_PARTNER": "Delete Network Partner",
+      "DELETE_PARTNER_QUESTION": "Are you sure you want to delete the network partner "
     },
     "PARTNER": {
       "NO": "No",
