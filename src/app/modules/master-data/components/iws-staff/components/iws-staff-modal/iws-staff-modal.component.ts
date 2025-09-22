@@ -1,24 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  inject,
-  OnInit,
-  Input,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { TeamIwsService } from '../../../../../../Services/team-iws.service';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
-import {
-  momentCreateDate,
-  momentFormatDate,
-} from '../../../../../shared/utils/moment-date-utils';
+import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-iws-staff-modal',
@@ -26,15 +13,15 @@ import {
   templateUrl: './iws-staff-modal.component.html',
   styleUrl: './iws-staff-modal.component.scss',
 })
-export class IwsStaffModalComponent implements OnInit, OnDestroy {
+export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly employeeIwsUtils = inject(EmployeeIwsUtils);
   private readonly teamIwsService = inject(TeamIwsService);
   private readonly subscriptions = new Subscription();
 
   teams: any[] = [];
-  @ViewChild('employeeIwsInput')
-  employeeIwsInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fisrtInput') firstInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() visibleModal: boolean = false;
   @Input() employeeIwsToDelete: number | null = null;
   @Input() employeeIwsName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -49,14 +36,10 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   readonly createEmployeeIwsForm = new FormGroup({
-    firstName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50),
-    ]),
+    firstName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     lastName: new FormControl('', [Validators.minLength(2), Validators.maxLength(50)]),
     mail: new FormControl('', [Validators.email]),
-    employeeNo: new FormControl(0, [Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+    employeeNo: new FormControl(null, [Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
     employeeLabel: new FormControl('', []),
     startDate: new FormControl('', []),
     endDate: new FormControl('', []),
@@ -69,6 +52,12 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy {
     this.loadInitialData();
     this.loadTeams();
     this.resetForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['visibleModal'] && this.visibleModal){
+      this.focusInputIfNeeded();
+    }
   }
 
   private loadInitialData() {
@@ -182,10 +171,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getSanitizedEmployeeIwsValues(): Omit<
-    EmployeeIws,
-    'id' | 'createdAt' | 'updatedAt' | 'version'
-  > {
+  private getSanitizedEmployeeIwsValues(): Omit<EmployeeIws, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
     return {
       firstname: this.createEmployeeIwsForm.value.firstName?.trim() ?? '',
       lastname: this.createEmployeeIwsForm.value.lastName?.trim() ?? '',
@@ -217,11 +203,11 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy {
     this.closeAndReset();
   }
 
-  public focusInputIfNeeded() {
-    if (this.isCreateMode && this.employeeIwsInput) {
+  private focusInputIfNeeded() {
+    if (this.isCreateMode && this.firstInput) {
       setTimeout(() => {
-        this.employeeIwsInput?.nativeElement?.focus();
-      }, 150);
+        this.firstInput?.nativeElement?.focus();
+      }, 300);
     }
   }
 }

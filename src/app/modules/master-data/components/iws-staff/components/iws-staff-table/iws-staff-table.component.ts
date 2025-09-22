@@ -10,7 +10,6 @@ import { EmployeeIwsService } from '../../../../../../Services/employee-iws.serv
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { IwsStaffModalComponent } from '../iws-staff-modal/iws-staff-modal.component';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
 @Component({
   selector: 'app-iws-staff-table',
@@ -26,7 +25,6 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'delete' = 'create';
   selectedEmployeeIws: number | null = null;
   NameEmployeeIws: string = '';
-  @ViewChild('iwsEmployeeModal') iwsStaffModalComponent!: IwsStaffModalComponent;
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
@@ -115,12 +113,6 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
     ];
-  }
-
-    onDialogShow() {
-    if (this.modalType === 'create' && this.iwsStaffModalComponent) {
-      this.iwsStaffModalComponent.focusInputIfNeeded();
-    }
   }
 
   onModalVisibilityChange(visible: boolean): void {

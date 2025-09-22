@@ -16,11 +16,11 @@
           ? ('IWS_STAFF.FORM.IWS_STAFF_FORM' | translate) 
           : ('IWS_STAFF.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
-        [(visible)]="visibleModal" 
-        (onShow)="onDialogShow()"
+        [(visible)]="visibleModal"
       >
         <app-iws-staff-modal
           [modalType]="modalType"
+          [visibleModal]="visibleModal"
           [employeeIwsName]="NameEmployeeIws"
           [employeeIwsToDelete]="selectedEmployeeIws"
           (isVisibleModal)="onModalVisibilityChange($event)"
