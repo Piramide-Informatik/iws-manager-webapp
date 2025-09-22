@@ -147,6 +147,7 @@ import { TextModalComponent } from './components/text/components/text-modal/text
 import { DunningLevelModalComponent } from './components/dunning-levels/components/dunning-level-modal/dunning-level-modal.component';
 import { ModalRealizationProbabilitiesComponent } from './components/realitation-probabilities/components/modal-realization-probabilities/modal-realization-probabilities.component';
 import { SystemConstantModalComponent } from './components/system-constants/components/system-constant-modal/system-constant.modal.component';
+import { NetworkPartnerModalComponent } from './components/networks/components/network-partner-modal/network-partner-modal.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -259,7 +260,8 @@ registerLocaleData(localeDe, 'de-DE');
     TextModalComponent,
     DunningLevelModalComponent,
     ModalRealizationProbabilitiesComponent,
-    SystemConstantModalComponent
+    SystemConstantModalComponent,
+    NetworkPartnerModalComponent
   ],
   imports: [
     ButtonModule,

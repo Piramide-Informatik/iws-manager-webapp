@@ -92,7 +92,8 @@
     "SELECT_CUSTOMER": "Select a Customer",
     "SELECT_ONE": "Choose One",
     "ANY": "Any",
-    "NO_DATA_AVAILABLE": "No data available"
+    "NO_DATA_AVAILABLE": "No data available",
+    "SELECT_CONTACT": "Select a Contact"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries",
@@ -1031,7 +1032,14 @@
     "MODAL": {
       "NEW": "New Network",
       "DELETE": "Delete Network",
-      "CONFIRM_QUESTION":"Are you sure you want to delete the network "
+      "CONFIRM_QUESTION":"Are you sure you want to delete the network ",
+      "NEW_PARTNER": "New Network Partner"
+    },
+    "PARTNER": {
+      "NO": "No",
+      "COMMENT": "Comment",
+      "CUSTOMER":"Customer",
+      "CONTACT": "Contact"
     }
   },
   "SALES_TAX": {

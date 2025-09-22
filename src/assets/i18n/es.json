@@ -92,7 +92,8 @@
     "SELECT_CUSTOMER": "Seleccione un Cliente",
     "SELECT_ONE": "Seleccione uno",
     "ANY": "Seleccione alguno",
-    "NO_DATA_AVAILABLE": "No hay datos disponibles"
+    "NO_DATA_AVAILABLE": "No hay datos disponibles",
+    "SELECT_CONTACT": "Seleccionar un Contacto"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas",
@@ -1027,7 +1028,14 @@
     "MODAL": {
       "NEW": "Nueva Red",
       "DELETE": "Eliminar Red",
-      "CONFIRM_QUESTION":"¿Está seguro de que desea eliminar la red "
+      "CONFIRM_QUESTION":"¿Está seguro de que desea eliminar la red ",
+      "NEW_PARTNER": "Nuevo Socio"
+    },
+    "PARTNER": {
+      "NO": "No",
+      "COMMENT": "Comentario",
+      "CUSTOMER":"Cliente",
+      "CONTACT": "Contacto"
     }
   },
   "SALES_TAX": {
