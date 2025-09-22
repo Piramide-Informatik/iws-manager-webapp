@@ -1051,7 +1051,13 @@
     },
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "From Date",
-      "SENTENCE": "Sentence"
+      "SENTENCE": "Sentence",
+      "MODAL_SALES_TAX_RATE": {
+        "NEW": "New Tax Rate",
+        "DELETE": "Delete Tax Rate",
+        "DELETE_QUESTION": "Are you sure you want to delete the tax rate ",
+        "EDIT": "Edit Tax Rate"
+      }
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Edit Sales Tax",

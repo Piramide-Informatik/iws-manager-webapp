@@ -1050,7 +1050,13 @@
     },
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "ab Datum",
-      "SENTENCE": "Satz"
+      "SENTENCE": "Satz",
+      "MODAL_SALES_TAX_RATE": {
+        "NEW": "Neu Steuersatz",
+        "DELETE": "Steuersatz löschen",
+        "DELETE_QUESTION": "Möchten Sie den Steuersatz wirklich löschen ",
+        "EDIT": "Steuersatz bearbeiten"
+      }
     },
     "LABEL": {
       "EDIT_SALES_TAX": "Steuersätze",

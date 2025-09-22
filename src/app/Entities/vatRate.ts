@@ -8,6 +8,6 @@ export interface VatRate {
 
   vat: Vat | null;
 
-  fromDate?: string;
-  rate?: number;  //decimal(5,2)
+  fromdate?: string;
+  rate?: number;  //decimal(5,2) Max 100.00
 }
