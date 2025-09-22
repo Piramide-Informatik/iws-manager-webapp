@@ -139,9 +139,10 @@ export class OrderDetailsComponent implements OnInit {
         },
         error: (ordersError) => {
           this.isLoading = false;
-          if (ordersError.message.includes('have associated debts') || 
-              ordersError.message.includes('have associated invoices') ||
-              ordersError.message.includes('have associated commissions')) {
+          this.handleDeleteError(ordersError);
+          if (ordersError.message.includes('have associated debts') ||
+            ordersError.message.includes('have associated invoices') ||
+            ordersError.message.includes('have associated commissions')) {
             this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
           } else {
             this.commonMessageService.showErrorDeleteMessage();
@@ -149,6 +150,14 @@ export class OrderDetailsComponent implements OnInit {
           this.visibleOrderDeleteModal = false;
         }
       })
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message?.includes('404') ) {
+      this.showOCCErrorModalOrder = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+      this.redirectRoute = '/customers/orders/' + this.currentOrder.customer?.id;
     }
   }
 
