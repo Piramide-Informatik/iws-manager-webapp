@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-title-modal',
@@ -14,6 +15,9 @@ import { Subscription } from 'rxjs';
 export class TitleModalComponent implements OnInit, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
   private readonly subscriptions = new Subscription();
+
+  public showOCCErrorModaTitle = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -68,6 +72,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
           this.closeModal();
         },
         error: (error) => {
+          this.handleDeleteError(error);
           this.errorMessage = error.message ?? 'Failed to delete title';
           this.toastMessage.emit({
             severity: 'error',
@@ -77,11 +82,17 @@ export class TitleModalComponent implements OnInit, OnDestroy {
               : 'MESSAGE.DELETE_FAILED'
           });
           console.error('Delete error:', error);
-          this.closeModal();
         }
       });
 
       this.subscriptions.add(sub);
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModaTitle = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
