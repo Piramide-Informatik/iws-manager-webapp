@@ -15,12 +15,77 @@
         max-width: 300px;
     }
 }
-/* el panel toma mismo ancho que el input */
-.p-datepicker.datepicker-panel {
-width: 300px !important;       /* o 100% si lo quieres responsivo */
-min-width: unset !important;
+/* Ensure the input has the desired width */
+::ng-deep .p-datepicker .p-inputtext {
+    width: 100% !important;
+    max-width: 300px !important;
+    padding: 1px 1px !important;
 }
 
+/* The calendar table must have the same width as the input */
+::ng-deep .p-datepicker-panel {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    
+    /* Internal table of the datepicker */
+    table {
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+    
+    /* Table header */
+    .p-datepicker-header {
+        width: 100% !important;
+    }
+    
+    /* Table container */
+    .p-datepicker-calendar-container {
+        width: 100% !important;
+    }
+    
+    /* Table cells */
+    th, td {
+        width: 14.28% !important; /* 100% / 7 días = 14.28% */
+        text-align: center !important;
+        padding: 0.25rem !important;
+    }
+    
+    /* Calendar days */
+    .p-datepicker-calendar {
+        width: 100% !important;
+        
+        th, td {
+            > span {
+                width: 100% !important;
+                min-width: auto !important;
+                max-width: none !important;
+            }
+        }
+    }
+}
+
+/* Main container */
+.datepicker-container {
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Or more specific for PrimeNG */
+::ng-deep .p-datepicker .centered-date {
+    text-align: center !important;
+    .p-inputtext {
+        text-align: center !important;
+        padding: 1px 1px !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        
+        /* Centered placeholder */
+        &::placeholder {
+            text-align: center !important;
+        }
+    }
+}
 strong {
     display: inline;
 }
