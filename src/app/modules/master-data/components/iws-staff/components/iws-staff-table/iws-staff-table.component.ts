@@ -94,22 +94,20 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     this.columnsHeaderFieldIwsStaff = [
       {
         field: 'abbreviation',
-        styles: { width: '100px' },
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.SHORT_NAME')),
       },
       {
         field: 'firstName',
-        styles: { width: '150px' },
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.FIRST_NAME')),
       },
       {
         field: 'lastName',
-        styles: { width: '150px' },
         header: this.translate.instant(_('IWS_STAFF.TABLE.LAST_NAME')),
       },
       {
         field: 'email',
-        styles: { width: 'auto' },
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
     ];
