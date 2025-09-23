@@ -25,7 +25,7 @@
                     [options]="modules"
                     optionLabel="name"
                     optionValue="id"
-                    placeholder="Seleccione un módulo"
+                    [placeholder]="'ROLES.LABEL.SELECT_MODULE' | translate"
                     (onChange)="onModuleChange($event.value)"
                     />
             </div>

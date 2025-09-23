@@ -96,7 +96,7 @@ export class RoleService {
                     this._error.set(null);
                 },
                 error: (err) => {
-                    this._error.set('Failed to delete role');
+                    this._error.set(err);
                     console.error('Error deleting role:', err);
                 }
             })
