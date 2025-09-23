@@ -26,23 +26,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   selectedTitle: number | null = null;
   titleName: string = '';
   @ViewChild('titleModal') titleModalComponent!: TitleModalComponent;
-  // handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-  //   this.modalType = event.type;
-  //   if (event.type === 'delete' && event.data) {
-  //     this.selectedTitle = event.data;
-
-  //     this.titleUtils.getTitleById(this.selectedTitle!).subscribe({
-  //       next: (title) => {
-  //         this.titleName = title?.name ?? '';
-  //       },
-  //       error: (err) => {
-  //         console.error('No se pudo obtener el título:', err);
-  //         this.titleName = '';
-  //       }
-  //     });
-  //   }
-  //   this.visibleModal = true;
-  // }
+  
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
@@ -144,27 +128,6 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  // editTitle(title: Title) {
-  //   const titleToEdit: Title = {
-  //     id: title.id,
-  //     name: title.name,
-  //     createdAt: '',
-  //     updatedAt: '',
-  //     version: 0
-  //   };
-
-  //   this.titleUtils.getTitleById(titleToEdit.id).subscribe({
-  //     next: (fullTitle) => {
-  //       if (fullTitle) {
-  //         this.titleStateService.setTitleToEdit(fullTitle);
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error al cargar título:', err);
-  //     }
-  //   });
-  // }
-
   editTitle(title: Title) {
     const fullTitle = this.titleService.titles().find(t => t.id === title.id);
 
@@ -174,8 +137,6 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
       console.warn('Error al cargar titulo:', title.id);
     }
   }
-
-
 
   onModalVisibilityChange(visible: boolean): void {
     this.visibleModal = visible;
