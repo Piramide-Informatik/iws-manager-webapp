@@ -144,14 +144,20 @@ export class RolModalComponent {
       });
     } else {
       const isInUse = error?.message?.includes('it is in use by other entities');
+      let usedByUser = false;
+      if (error.error) {
+        usedByUser = error.error?.message?.includes('Role is assigned to') && error.error?.message?.includes('user');
+      }
       this.errorMessage = error?.message ?? 'Failed to delete role';
       console.error('Delete error:', error);
       this.confirmDelete.emit({
         severity: 'error',
         summary: 'ROLES.MESSAGE.ERROR',
-        detail: isInUse
-          ? 'ROLES.MESSAGE.DELETE_ERROR_IN_USE'
-          : 'ROLES.MESSAGE.DELETE_FAILED'
+        detail: usedByUser
+          ? 'ROLES.MESSAGE.DELETE_ERROR_BY_USER'
+          : isInUse
+            ? 'ROLES.MESSAGE.DELETE_ERROR_IN_USE'
+            : 'ROLES.MESSAGE.DELETE_FAILED'
       });
     }
 

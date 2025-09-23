@@ -668,7 +668,8 @@
     "LABEL": {
       "EDIT_ROL": "Edit Role",
       "ROL": "Role",
-      "MODULE": "Module"
+      "MODULE": "Module",
+      "SELECT_MODULE": "Select a Module"
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "New Role"
@@ -682,7 +683,8 @@
       "DELETE_SUCCESS":"Record successfully deleted.",
       "ERROR":"ERROR",
       "DELETE_ERROR_IN_USE":"The record cannot be deleted because it is in use by other entities.",
-      "DELETE_FAILED":"The record could not be deleted."
+      "DELETE_FAILED":"The record could not be deleted.",
+      "DELETE_ERROR_BY_USER": "The record cannot be deleted because it is in use by User entities."
     },
     "ERROR" : {
       "APPROVAL_STATUS_REQUIRED": "Required role",
