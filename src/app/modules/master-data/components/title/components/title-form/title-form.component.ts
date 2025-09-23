@@ -115,13 +115,6 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   }
 
   private handleError(error: Error) {
-    // console.log("aqui el error: ", error)
-    // if (error.message === 'Version conflict: Title has been updated by another user') {
-    //   this.showOCCErrorModaTitle = true;
-    // } else {
-    //   this.handleSaveError(error);
-    // }
-    // this.isSaving = false;
 
     if (error instanceof OccError) {
       console.log("tipo de error: ", error.errorType)

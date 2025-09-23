@@ -82,7 +82,6 @@ export class TitleModalComponent implements OnInit, OnDestroy {
               : 'MESSAGE.DELETE_FAILED'
           });
           console.error('Delete error:', error);
-          // this.closeModal();
         }
       });
 
