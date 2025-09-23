@@ -53,6 +53,7 @@ export class EditIwsStaffComponent implements OnInit {
       team: new FormControl('', []),
       staffSince: new FormControl(null),
       staffUntil: new FormControl(null),
+      active: new FormControl(false)
     });
   }
 
@@ -88,6 +89,7 @@ export class EditIwsStaffComponent implements OnInit {
       team: employeeIws.teamIws,
       staffSince: momentCreateDate(employeeIws.startDate),
       staffUntil: momentCreateDate(employeeIws.endDate),
+      active: employeeIws.active === 1
     });
     this.focusInputIfNeeded();
   }
@@ -132,6 +134,7 @@ export class EditIwsStaffComponent implements OnInit {
       startDate: momentFormatDate(this.editIwsStaffForm.value.staffSince),
       endDate: momentFormatDate(this.editIwsStaffForm.value.staffUntil),
       teamIws: this.editIwsStaffForm.value.team,
+      active: this.editIwsStaffForm.value.active ? 1 : 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     };
 
     this.subscriptions.add(

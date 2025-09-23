@@ -11,6 +11,7 @@ import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
+import { Column } from '../../../../../../Entities/column';
 @Component({
   selector: 'app-iws-staff-table',
   templateUrl: './iws-staff-table.component.html',
@@ -43,22 +44,16 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     this.visibleModal = true;
   }
 
-    readonly employeeIwss = computed(() => {
-    return this.employeeIwsService.employeeIws().map(employeeIws => ({
-      id: employeeIws.id,
-      abbreviation: employeeIws.employeeLabel,
-      firstName: employeeIws.firstname,
-      lastName: employeeIws.lastname,
-      email: employeeIws.mail,
-    }));
+  readonly employeeIwss = computed(() => {
+    return this.employeeIwsService.employeeIws()
   });
 
 
   iwsStaff: any[] = [];
-  columnsHeaderFieldIwsStaff: any[] = [];
+  columnsHeaderFieldIwsStaff: Column[] = [];
   userIwsStaffTPreferences: UserPreference = {};
   tableKey: string = 'IwsStaffT'
-  dataKeys = ['type', 'abbreviation', 'firstName', 'lastName', 'email'];
+  dataKeys = ['employeeNo', 'employeeLabel', 'firstname', 'lastname', 'mail'];
 
 
   @ViewChild('dt2') dt2!: Table;
@@ -93,21 +88,26 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   loadColHeadersIwsStaff(): void {
     this.columnsHeaderFieldIwsStaff = [
       {
-        field: 'abbreviation',
+        field: 'employeeNo',
+        classesTHead: ['fix-width'],
+        header: this.translate.instant(_('IWS_STAFF.TABLE.STAFF_NUMBER')),
+      },
+      {
+        field: 'employeeLabel',
         classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.SHORT_NAME')),
       },
       {
-        field: 'firstName',
+        field: 'firstname',
         classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.FIRST_NAME')),
       },
       {
-        field: 'lastName',
+        field: 'lastname',
         header: this.translate.instant(_('IWS_STAFF.TABLE.LAST_NAME')),
       },
       {
-        field: 'email',
+        field: 'mail',
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
     ];
@@ -129,34 +129,6 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   }
 
   editEmployeeIws(employeeIws: EmployeeIws) {
-      const EmployeeIwsToEdit: EmployeeIws = {
-        id: employeeIws.id,
-        firstname: employeeIws.firstname,
-        lastname: employeeIws.lastname,
-        employeeLabel: employeeIws.employeeLabel,
-        mail: employeeIws.mail,
-        startDate: employeeIws.startDate,
-        endDate: employeeIws.endDate,
-        employeeNo: employeeIws.employeeNo,
-        teamIws: employeeIws.teamIws,
-        user: employeeIws.user ?? null,
-        createdAt: '',
-        updatedAt: '',
-        version: 0,
-      };
-      this.employeeIwsUtils
-        .getEmployeeIwsById(EmployeeIwsToEdit.id)
-        .subscribe({
-          next: (fullEmployeeIws) => {
-            if (fullEmployeeIws) {
-              this.employeeIwsStateService.setEmployeeIwsToEdit(
-                fullEmployeeIws
-              );
-            }
-          },
-          error: (err) => {
-            console.error('Error Id EmployeeIws', err);
-          },
-        });
-    }
+    this.employeeIwsStateService.setEmployeeIwsToEdit(employeeIws);
+  }
 }

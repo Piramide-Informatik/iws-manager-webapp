@@ -811,7 +811,8 @@
       "TEAM": "Equipo IWS",
       "STAFF_SINCE": "Empleado desde",
       "STAFF_UNTIL": "Empleado hasta",
-      "SELECT_TEAM": "Seleccionar equipo"
+      "SELECT_TEAM": "Seleccionar equipo",
+      "ACTIVE": "Activo"
     },
     "TABLE": {
       "STAFF_NUMBER": "N° de Empleado",
