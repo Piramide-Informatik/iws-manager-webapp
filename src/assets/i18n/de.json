@@ -672,7 +672,8 @@
     "LABEL": {
       "EDIT_ROL": "Rollen bearbeiten",
       "ROL": "Benutzerrolle",
-      "MODULE": "Modul"
+      "MODULE": "Modul",
+      "SELECT_MODULE": "Wählen Sie ein Modul aus"
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "Neue Rolle"
@@ -686,7 +687,8 @@
       "DELETE_SUCCESS":"Datensatz erfolgreich gelöscht.",
       "ERROR":"FEHLER",
       "DELETE_ERROR_IN_USE":"Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
-      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden."
+      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden.",
+      "DELETE_ERROR_BY_USER": "Der Datensatz kann nicht gelöscht werden, da er von anderen Benutzer verwendet wird."
     },
     "ERROR" : {
       "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",

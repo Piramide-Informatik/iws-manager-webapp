@@ -671,7 +671,8 @@
     "LABEL": {
       "EDIT_ROL": "Editar Rol",
       "ROL": "Rol",
-      "MODULE": "Módulo"
+      "MODULE": "Módulo",
+      "SELECT_MODULE": "Seleccione un módulo"
     },
     "DELETE": {
       "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar ",
@@ -686,7 +687,8 @@
       "DELETE_SUCCESS":"Registro eliminado exitosamente.",
       "ERROR":"ERROR",
       "DELETE_ERROR_IN_USE":"No se puede eliminar el registro porque está en uso por otras entidades.",
-      "DELETE_FAILED":"No se pudo eliminar el registro."
+      "DELETE_FAILED":"No se pudo eliminar el registro.",
+      "DELETE_ERROR_BY_USER": "No se puede eliminar el registro porque está en uso por otros Usuarios."
     },
     "ERROR" : {
       "APPROVAL_STATUS_REQUIRED": "Rol requerido",
