@@ -91,6 +91,15 @@
         ></p-datepicker>
       </div>
 
+      <div class="iws-form">
+        <label for="active">{{ "IWS_STAFF.LABEL.ACTIVE" | translate }}</label>
+        <p-toggleswitch inputId="active" formControlName="active">
+          <ng-template #handle let-checked="checked">
+            <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+          </ng-template>
+        </p-toggleswitch>
+      </div>
+
       <div class="flex justify-content-center gap-2 mt-4">
         <p-button
           size="small"

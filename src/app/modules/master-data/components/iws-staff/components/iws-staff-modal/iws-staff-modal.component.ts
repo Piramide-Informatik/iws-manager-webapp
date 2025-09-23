@@ -39,13 +39,13 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
     firstName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     lastName: new FormControl('', [Validators.minLength(2), Validators.maxLength(50)]),
     mail: new FormControl('', [Validators.email]),
-    employeeNo: new FormControl(null, [Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
-    employeeLabel: new FormControl('', []),
-    startDate: new FormControl('', []),
-    endDate: new FormControl('', []),
-    teamIws: new FormControl(null, []),
-    user: new FormControl(null, []),
-    active: new FormControl(0, []),
+    employeeNo: new FormControl({value: null, disabled: true}),
+    employeeLabel: new FormControl(''),
+    startDate: new FormControl(''),
+    endDate: new FormControl(''),
+    teamIws: new FormControl(null),
+    user: new FormControl(null),
+    active: new FormControl(false),
   });
 
   ngOnInit(): void {
@@ -186,12 +186,12 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
             momentCreateDate(this.createEmployeeIwsForm.value.endDate)
           )
         : '',
-      employeeNo: this.createEmployeeIwsForm.value.employeeNo ?? 1,
+      employeeNo: this.createEmployeeIwsForm.value.employeeNo ?? 5, // Pendiente llamar endpoint 
       employeeLabel:
         this.createEmployeeIwsForm.value.employeeLabel?.trim() ?? '',
       teamIws: this.createEmployeeIwsForm.value.teamIws ?? null,
       user: this.createEmployeeIwsForm.value.user ?? null,
-      active: this.createEmployeeIwsForm.value.active ?? 1,
+      active: this.createEmployeeIwsForm.value.active ? 1 : 0,
     };
   }
 
