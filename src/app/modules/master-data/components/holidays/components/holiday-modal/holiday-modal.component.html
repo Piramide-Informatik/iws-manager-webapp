@@ -66,17 +66,18 @@
             {{ "HOLIDAYS.MODAL.DATE" | translate }}
             </label>
             <div class="datepicker-container w-full">
-            <p-datepicker
-            formControlName="date"
-            [showIcon]="true"
-            inputId="date"
-            dateFormat="dd.mm"
-            [showClear]="true"
-            appendTo="body"
-            [placeholder]="'DD.MM'"
-            [style]="{ 'width': '100%', 'max-width': '300px' }"
-            panelStyleClass="datepicker-panel"
-            />
+                <p-datepicker
+                    formControlName="date"
+                    [showIcon]="true"
+                    inputId="date"
+                    dateFormat="dd.mm"
+                    [showClear]="true"
+                    appendTo="body"
+                    [placeholder]="'DD.MM'"
+                    [style]="{ 'width': '100%' , 'max-width': '300px'}"
+                    inputStyleClass="centered-date"
+                    panelStyleClass="datepicker-panel"
+                />
             </div>
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
