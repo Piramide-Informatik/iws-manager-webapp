@@ -651,6 +651,12 @@
       "USERNAME":"Username",
       "NAME": "Name",
       "ACTIVE": "Active"
+    },
+    "PASSWORD_LABEL": {
+      "ENTER_PASSWORD": "Enter a Password",
+      "WEAK": "Weak",
+      "MEDIUM": "Medium",
+      "STRONG": "Strong"
     }
   },
   "ROLES": {

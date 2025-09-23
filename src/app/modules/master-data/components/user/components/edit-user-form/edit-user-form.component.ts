@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../../../../Entities/user';
 import { BehaviorSubject, forkJoin, Observable, Subscription, switchMap } from 'rxjs';
@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { Role } from '../../../../../../Entities/role';
 import { RoleService } from '../../../../../../Services/role.service';
+import { PasswordDirective } from 'primeng/password';
 
 @Component({
   selector: 'app-edit-user-form',
@@ -34,6 +35,8 @@ export class EditUserFormComponent implements OnInit {
   selectedAssignedRoles: string[] = [];
   selectedAvailableRoles: string[] = [];
   canBeBooked: boolean = false;
+  private langSubscription!: Subscription;
+  @ViewChild('passwordContainer') passwordContainer!: PasswordDirective;
 
   constructor(
     private readonly userUtils: UserUtils,
@@ -51,6 +54,12 @@ export class EditUserFormComponent implements OnInit {
       this.loadTitleAfterRefresh(savedProjectStatusId);
       localStorage.removeItem('selectedUserId');
     }
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.passwordContainer.weakLabel = this.translate.instant('USERS.PASSWORD_LABEL.WEAK');
+      this.passwordContainer.mediumLabel = this.translate.instant('USERS.PASSWORD_LABEL.MEDIUM');
+      this.passwordContainer.strongLabel = this.translate.instant('USERS.PASSWORD_LABEL.STRONG');
+      this.passwordContainer.promptLabel = this.translate.instant('USERS.PASSWORD_LABEL.ENTER_PASSWORD');
+    });
   }
   
   private initForm(): void {

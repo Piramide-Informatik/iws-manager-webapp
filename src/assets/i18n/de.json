@@ -649,6 +649,12 @@
       "USERNAME":"Benutzername",
       "NAME": "Name",
       "ACTIVE": "Aktiv"
+    },
+    "PASSWORD_LABEL": {
+      "ENTER_PASSWORD": "Geben Sie ein Passwort ein",
+      "WEAK": "Schwach",
+      "MEDIUM": "Medium",
+      "STRONG": "Stark"
     }
   },
   "ROLES": {
