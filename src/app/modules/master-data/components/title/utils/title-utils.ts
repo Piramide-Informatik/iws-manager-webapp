@@ -129,10 +129,12 @@ export class TitleUtils {
         if (isUsed) {
           return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
         }
-        return this.titleService.deleteTitle(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
+        return this.titleService.deleteTitle(id).pipe(
+          // }),
+          catchError(error => {
+            return throwError(() => error);
+          })
+        );
       })
     );
   }
