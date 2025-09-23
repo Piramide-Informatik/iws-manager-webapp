@@ -66,16 +66,14 @@ export class EditHolidayComponent implements OnInit {
   }
 
   loadYears(publicHolidayId: number): void {
-    
     this.holidayYearService.getByPublicHoliday(publicHolidayId).subscribe({
       next: (years) => {
         this.years = years;
       },
       error: (err) => {
         console.error('Error loading years:', err);
-      }
+      },
     });
-    
   }
 
   addYear(publicHolidayId: number | undefined): void {
@@ -83,7 +81,9 @@ export class EditHolidayComponent implements OnInit {
 
     this.holidayYearService.createNextYear(publicHolidayId).subscribe({
       next: (newYear) => {
-        this.years = [...this.years, newYear].sort((a, b) => a.year.localeCompare(b.year));
+        this.years = [...this.years, newYear].sort((a, b) =>
+          a.year.localeCompare(b.year)
+        );
       },
       error: (err) => {
         console.error('Error adding new year:', err);
@@ -93,14 +93,29 @@ export class EditHolidayComponent implements OnInit {
   }
 
   formatDate(date: string): string {
+    console.log('Formatting date:', date);
     if (!date) return '';
-    return new Date(date).toLocaleDateString('de-DE'); // dd.MM.yyyy
+    let day: string, month: string, year: string;
+
+    if (date.includes('.')) {
+      [day, month, year] = date.split('.');
+    } else if (date.includes('-')) {
+      [year, month, day] = date.split('-');
+    } else {
+      return date; 
+    }
+    day = day.padStart(2, '0');
+    month = month.padStart(2, '0');
+
+    return `${day}.${month}.${year}`;
   }
 
   loadStates(publicHolidayId: number): void {
-    this.publicHolidayService.getStatesByHolidayId(publicHolidayId).subscribe(states => {
-      this.bundeslands = states;
-    });
+    this.publicHolidayService
+      .getStatesByHolidayId(publicHolidayId)
+      .subscribe((states) => {
+        this.bundeslands = states;
+      });
   }
 
   saveSelections(publicHolidayId: number): void {
@@ -267,7 +282,7 @@ export class EditHolidayComponent implements OnInit {
       );
       window.location.reload();
     }
-    
+
     if (this.selectedPublicHolidayId) {
       this.loadYears(this.selectedPublicHolidayId);
     }
