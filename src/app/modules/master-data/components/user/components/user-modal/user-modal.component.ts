@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserUtils } from '../../utils/user-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { PasswordDirective } from 'primeng/password';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-modal',
@@ -22,6 +24,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
   @Output() userCreated = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{ severity: string, summary: string, detail: string }>();
 
+  private langSubscription!: Subscription;
+  @ViewChild('passwordCreateContainer') passwordCreateContainer!: PasswordDirective;
+
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -33,9 +38,17 @@ export class UserModalComponent implements OnInit, OnDestroy {
     email: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100),Validators.email])
   });
 
+  constructor(private readonly translate: TranslateService) {}
+
   ngOnInit(): void {
     this.loadInitialData();
     this.resetForm();
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.passwordCreateContainer.weakLabel = this.translate.instant('USERS.PASSWORD_LABEL.WEAK');
+      this.passwordCreateContainer.mediumLabel = this.translate.instant('USERS.PASSWORD_LABEL.MEDIUM');
+      this.passwordCreateContainer.strongLabel = this.translate.instant('USERS.PASSWORD_LABEL.STRONG');
+      this.passwordCreateContainer.promptLabel = this.translate.instant('USERS.PASSWORD_LABEL.ENTER_PASSWORD');
+    });
   }
 
   private loadInitialData() {

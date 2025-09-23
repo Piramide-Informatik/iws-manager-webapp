@@ -44,8 +44,9 @@
                 <label for="password" class="block">
                     {{ 'USERS.FORM.PASSWORD' | translate }}
                 </label>
-                    <p-password formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':createUserForm.get('password')?.invalid && 
-                    createUserForm.get('password')?.touched}" autocomplete="off">
+                    <p-password #passwordCreateContainer formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':createUserForm.get('password')?.invalid && 
+                    createUserForm.get('password')?.touched}" autocomplete="off" [weakLabel]="'USERS.PASSWORD_LABEL.WEAK' | translate" [mediumLabel]="'USERS.PASSWORD_LABEL.MEDIUM' | translate" 
+                    [strongLabel]="'USERS.PASSWORD_LABEL.STRONG' | translate" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate">
                     </p-password>
 
                 <small *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched"
