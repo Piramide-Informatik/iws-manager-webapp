@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../../../../Entities/user';
 import { BehaviorSubject, forkJoin, Observable, Subscription, switchMap } from 'rxjs';
