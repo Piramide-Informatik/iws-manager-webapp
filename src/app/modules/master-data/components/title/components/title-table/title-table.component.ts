@@ -20,29 +20,48 @@ import { MessageService } from 'primeng/api';
 export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly titleUtils = new TitleUtils();
   private readonly titleService = inject(TitleService);
-  private readonly messageService =  inject(MessageService);
+  private readonly messageService = inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedTitle: number | null = null;
   titleName: string = '';
   @ViewChild('titleModal') titleModalComponent!: TitleModalComponent;
+  // handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+  //   this.modalType = event.type;
+  //   if (event.type === 'delete' && event.data) {
+  //     this.selectedTitle = event.data;
+
+  //     this.titleUtils.getTitleById(this.selectedTitle!).subscribe({
+  //       next: (title) => {
+  //         this.titleName = title?.name ?? '';
+  //       },
+  //       error: (err) => {
+  //         console.error('No se pudo obtener el título:', err);
+  //         this.titleName = '';
+  //       }
+  //     });
+  //   }
+  //   this.visibleModal = true;
+  // }
+
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      this.selectedTitle = event.data;
 
-      this.titleUtils.getTitleById(this.selectedTitle!).subscribe({
-        next: (title) => {
-          this.titleName = title?.name ?? '';
-        },
-        error: (err) => {
-          console.error('No se pudo obtener el título:', err);
-          this.titleName = '';
-        }
-      });
+    if (event.type === 'delete' && event.data) {
+      const id = event.data.id ?? event.data;
+      const titleObj = this.titleService.titles().find(t => t.id === id);
+      if (titleObj) {
+        this.selectedTitle = titleObj.id;
+        this.titleName = titleObj.name;
+      } else {
+        this.selectedTitle = id;
+        this.titleName = event.data.title ?? '';
+      }
     }
+
     this.visibleModal = true;
   }
+
 
   readonly titles = computed(() => {
     return this.titleService.titles().map(title => ({
@@ -125,26 +144,38 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  editTitle(title: Title) {
-    const titleToEdit: Title = {
-      id: title.id,
-      name: title.name,
-      createdAt: '',
-      updatedAt: '',
-      version: 0
-    };
+  // editTitle(title: Title) {
+  //   const titleToEdit: Title = {
+  //     id: title.id,
+  //     name: title.name,
+  //     createdAt: '',
+  //     updatedAt: '',
+  //     version: 0
+  //   };
 
-    this.titleUtils.getTitleById(titleToEdit.id).subscribe({
-      next: (fullTitle) => {
-        if (fullTitle) {
-          this.titleStateService.setTitleToEdit(fullTitle);
-        }
-      },
-      error: (err) => {
-        console.error('Error al cargar título:', err);
-      }
-    });
+  //   this.titleUtils.getTitleById(titleToEdit.id).subscribe({
+  //     next: (fullTitle) => {
+  //       if (fullTitle) {
+  //         this.titleStateService.setTitleToEdit(fullTitle);
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error al cargar título:', err);
+  //     }
+  //   });
+  // }
+
+  editTitle(title: Title) {
+    const fullTitle = this.titleService.titles().find(t => t.id === title.id);
+
+    if (fullTitle) {
+      this.titleStateService.setTitleToEdit(fullTitle);
+    } else {
+      console.warn('Error al cargar titulo:', title.id);
+    }
   }
+
+
 
   onModalVisibilityChange(visible: boolean): void {
     this.visibleModal = visible;
@@ -158,7 +189,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
+  toastMessageDisplay(message: { severity: string, summary: string, detail: string }): void {
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
