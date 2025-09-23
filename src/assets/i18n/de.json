@@ -653,7 +653,7 @@
     "PASSWORD_LABEL": {
       "ENTER_PASSWORD": "Geben Sie ein Passwort ein",
       "WEAK": "Schwach",
-      "MEDIUM": "Medium",
+      "MEDIUM": "Mittel",
       "STRONG": "Stark"
     }
   },
