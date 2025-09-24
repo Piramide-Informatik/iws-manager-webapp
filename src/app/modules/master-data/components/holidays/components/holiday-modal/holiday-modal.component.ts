@@ -113,12 +113,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
     const publicHoliday = this.getSanitizedPublicHolidayValues();
 
     const sub = this.publicHolidayUtils
-      .addPublicHoliday(
-        publicHoliday.name,
-        publicHoliday.date ?? '',
-        publicHoliday.sequenceNo,
-        publicHoliday.isFixedDate
-      )
+      .addPublicHoliday(publicHoliday)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => this.handleSuccess(),
@@ -180,7 +175,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
             momentCreateDate(this.createdPublicHolidayForm.value.date)
           )
         : '',
-      sequenceNo: Number(this.createdPublicHolidayForm.value.sequenceNo) || 5, // Pendiente llamar endpoint 
+      sequenceNo: Number(this.createdPublicHolidayForm.value.sequenceNo),
       isFixedDate: true,
     };
   }
