@@ -28,7 +28,7 @@ jobs:
         run: npm run build
 
       - name: Run SonarCloud analysis
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
         with:
           projectBaseDir: .
           args: >

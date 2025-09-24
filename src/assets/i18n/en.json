@@ -488,7 +488,8 @@
       "REMOVE_SUBCONTRACT_YEAR_QUESTION": "Are you sure you want to delete the Subcontract Year",
       "DELETE_SUBCONTRACT_YEAR": "Delete Subcontract Year",
       "REMOVE_SUBCONTRACT_PROJECT_QUESTION": "Are you sure you want to delete the Subcontract Project",
-      "DELETE_SUBCONTRACT_PROJECT": "Delete Subcontract Project"
+      "DELETE_SUBCONTRACT_PROJECT": "Delete Subcontract Project",
+      "NEW_SUBCONTRACT": "New Subcontract"
     },
     "TABLE": {
       "ORDER_TITLE": "Order Title",
