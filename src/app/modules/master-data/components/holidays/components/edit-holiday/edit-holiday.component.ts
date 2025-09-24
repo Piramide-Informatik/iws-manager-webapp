@@ -134,7 +134,7 @@ export class EditHolidayComponent implements OnInit {
     this.editPublicHolidayForm = new FormGroup({
       publicHoliday: new FormControl('', [Validators.required]),
       date: new FormControl('', [Validators.required]),
-      sequenceNo: new FormControl({ disabled: true}),
+      sequenceNo: new FormControl({value: null, disabled: true}),
       isFixedDate: new FormControl(true),
     });
   }
@@ -204,7 +204,7 @@ export class EditHolidayComponent implements OnInit {
             momentCreateDate(this.editPublicHolidayForm.value.date as string)
           )
         : '',
-      sequenceNo: this.editPublicHolidayForm.value.sequenceNo,
+      sequenceNo: this.editPublicHolidayForm.getRawValue().sequenceNo,
       isFixedDate: this.editPublicHolidayForm.value.isFixedDate,
     };
     this.subscriptions.add(
