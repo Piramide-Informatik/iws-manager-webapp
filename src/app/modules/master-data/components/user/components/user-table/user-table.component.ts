@@ -105,6 +105,7 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
         field: 'active',
         minWidth: 110,
         header: this.translate.instant(_('USERS.HEADER.ACTIVE')),
+        filter: { type: 'boolean' }
       }
     ];
   }
@@ -126,7 +127,7 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
       this.userDisplayedColumns = [
         { field: 'username', header: this.translate.instant(_('USERS.HEADER.USERNAME')) },
         { field: 'name', header: this.translate.instant(_('USERS.HEADER.NAME')) },
-        { field: 'active', header: this.translate.instant(_('USERS.HEADER.ACTIVE')) }]
+        { field: 'active', header: this.translate.instant(_('USERS.HEADER.ACTIVE')), filter: { type: 'boolean' }  }]
     }
   }
 
