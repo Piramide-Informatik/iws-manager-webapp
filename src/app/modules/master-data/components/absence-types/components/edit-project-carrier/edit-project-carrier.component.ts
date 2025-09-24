@@ -26,7 +26,7 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
     this.editProjectCarrierForm = new FormGroup({
       name: new FormControl(''),
       label: new FormControl(''),
-      shareOfDay: new FormControl(null, [Validators.max(1.0)]),
+      shareOfDay: new FormControl(null, [Validators.min(0), Validators.max(1.0)]),
       isHoliday: new FormControl(0),
       hours: new FormControl(0), // can be Booked
     });
