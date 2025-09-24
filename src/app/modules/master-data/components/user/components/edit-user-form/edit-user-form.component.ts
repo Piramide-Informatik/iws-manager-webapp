@@ -76,6 +76,8 @@ export class EditUserFormComponent implements OnInit {
   }
 
   onRolesChange(): void {
+  this.userRoles = [...this.userRoles].sort((a, b) => a.name.localeCompare(b.name));
+  this.availableRoless = [...this.availableRoless].sort((a, b) => a.name.localeCompare(b.name));
   this.editUserForm.get('role')?.setValue(this.userRoles);
   this.editUserForm.get('role')?.markAsDirty();
 }
