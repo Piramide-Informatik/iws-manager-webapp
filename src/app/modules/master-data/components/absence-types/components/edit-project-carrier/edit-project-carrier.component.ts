@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
 import { AbsenceTypeStateService } from '../../utils/absence-type-state.service';
@@ -21,14 +21,15 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
   public showOCCErrorModaAbsence = false;
   public isLoading: boolean = false;
   public editProjectCarrierForm!: FormGroup;
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
     this.editProjectCarrierForm = new FormGroup({
       name: new FormControl(''),
       label: new FormControl(''),
       shareOfDay: new FormControl(null, [Validators.min(0), Validators.max(1.0)]),
-      isHoliday: new FormControl(0),
-      hours: new FormControl(0), // can be Booked
+      isHoliday: new FormControl(false),
+      hours: new FormControl(false), // can be Booked
     });
     this.setupAbsenceTypeSubscription();
     // Check if we need to load an absence type after page refresh for OCC
@@ -88,6 +89,7 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
             isHoliday: this.absenceTypeToEdit.isHoliday === 1,
             hours: this.absenceTypeToEdit.hours === 1
           });
+          this.focusInputIfNeeded();
         }
       })
     )
@@ -121,5 +123,15 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
         }
       })
     );
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.absenceTypeToEdit && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }

@@ -23,7 +23,8 @@
       }
     },
     "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet.",
-    "NUMBER_MAX": "Maximalwert 100 erwartet"
+    "NUMBER_MAX": "Maximalwert 100 erwartet",
+    "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
