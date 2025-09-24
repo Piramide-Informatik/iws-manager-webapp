@@ -117,6 +117,14 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
    })
  }
 
+  getModalHeader(): string {
+    if (this.subContractModalType === 'create') {
+      return this.translate.instant('SUB-CONTRACTS.LABEL.NEW_SUBCONTRACT');
+    } else {
+      return this.translate.instant('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT');
+    }
+  }
+
   goToSubContractDetails() {
     this.subContractModalType = 'create';
     this.visibleSubcontractModal = true;

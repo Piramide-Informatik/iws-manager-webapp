@@ -13,7 +13,7 @@
   ></master-data-genaral-table>
 </div>
 <p-dialog 
-  [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT' | translate" 
+  [header]="getModalHeader()"
   [modal]="true" 
   [(visible)]="visibleSubcontractModal"
   [style]="{ width: '45rem' }"
