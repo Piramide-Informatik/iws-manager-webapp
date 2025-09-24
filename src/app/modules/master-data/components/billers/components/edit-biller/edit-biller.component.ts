@@ -111,7 +111,7 @@ export class EditBillerComponent implements OnInit, OnDestroy {
     );
   }
 
-  public focusInputIfNeeded(): void {
+  private focusInputIfNeeded(): void {
     if (this.billerToEdit && this.firstInput) {
       setTimeout(() => {
         if (this.firstInput?.nativeElement) {

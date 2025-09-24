@@ -77,11 +77,11 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'type', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')) },
-      { field: 'abbreviation', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.ABBREVIATION')) },
-      { field: 'fractionOfDay', customClasses: ['align-right'], type: 'double', minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
-      { field: 'isVacation', filter:{ type: 'boolean'}, styles: { width: 'auto' }, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
-      { field: 'canBeBooked', filter:{ type: 'boolean'}, minWidth: 110, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.CAN_BE_BOOKED')) }
+      { field: 'type', header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')) },
+      { field: 'abbreviation', header: this.translate.instant(_('ABSENCE_TYPES.LABEL.ABBREVIATION')) },
+      { field: 'fractionOfDay', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
+      { field: 'isVacation', filter:{ type: 'boolean'}, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
+      { field: 'canBeBooked', filter:{ type: 'boolean'}, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.CAN_BE_BOOKED')) }
     ];
   }
 

@@ -26,9 +26,9 @@ export class ModalAbsenceTypesComponent implements OnChanges {
   public readonly absenceTypeForm = new FormGroup({
     name: new FormControl(''),
     label: new FormControl(''),
-    shareOfDay: new FormControl(null, [Validators.max(1.0)]),
-    isHoliday: new FormControl(0),
-    hours: new FormControl(0),
+    shareOfDay: new FormControl(null, [Validators.min(0), Validators.max(1.0)]),
+    isHoliday: new FormControl(false),
+    hours: new FormControl(false),
   });
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -88,7 +88,7 @@ export class ModalAbsenceTypesComponent implements OnChanges {
     return this.modalType === 'create';
   }
 
-  public focusInputIfNeeded(): void {
+  private focusInputIfNeeded(): void {
     if (this.isCreateMode && this.firstInput) {
       setTimeout(() => {
         if (this.firstInput?.nativeElement) {
