@@ -113,14 +113,14 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
     this.columsHeaderFieldEmployee = [
       {
         field: 'qualification',
-        styles: { width: 'auto' },
+        classesTHead: ['width-50'],
         header: this.translate.instant(
           _('EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION')
         ),
       },
       {
         field: 'abbreviation',
-        styles: { width: 'auto' },
+        classesTHead: ['width-50'],
         header: this.translate.instant(
           _('EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION')
         ),
