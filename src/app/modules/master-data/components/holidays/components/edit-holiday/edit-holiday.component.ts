@@ -134,7 +134,7 @@ export class EditHolidayComponent implements OnInit {
     this.editPublicHolidayForm = new FormGroup({
       publicHoliday: new FormControl('', [Validators.required]),
       date: new FormControl('', [Validators.required]),
-      sequenceNo: new FormControl('', [Validators.required]),
+      sequenceNo: new FormControl({ disabled: true}),
       isFixedDate: new FormControl(true),
     });
   }

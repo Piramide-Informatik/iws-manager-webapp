@@ -132,13 +132,14 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
       {
         field: 'sort',
         styles: { width: '100px' },
+        useSameAsEdit: true,
         header: this.translate.instant(_('HOLIDAYS.TABLE.SORT')),
         customClasses: ['align-right'],
       },
       {
         field: 'name',
         styles: { width: 'auto' },
-        useSameAsEdit: true,
+        useSameAsEdit: false,
         header: this.translate.instant(_('HOLIDAYS.TABLE.NAME')),
       },
     ];

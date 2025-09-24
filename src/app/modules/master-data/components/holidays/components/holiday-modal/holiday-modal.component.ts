@@ -48,8 +48,8 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
       Validators.minLength(2),
       Validators.maxLength(50),
     ]),
-    date: new FormControl('', [Validators.required]),
-    sequenceNo: new FormControl('', [Validators.required]),
+    date: new FormControl(''),
+    sequenceNo: new FormControl({value: null, disabled: true}),
   });
 
   ngOnInit(): void {
@@ -180,7 +180,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
             momentCreateDate(this.createdPublicHolidayForm.value.date)
           )
         : '',
-      sequenceNo: Number(this.createdPublicHolidayForm.value.sequenceNo) || 0,
+      sequenceNo: Number(this.createdPublicHolidayForm.value.sequenceNo) || 5, // Pendiente llamar endpoint 
       isFixedDate: true,
     };
   }
