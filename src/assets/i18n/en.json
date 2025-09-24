@@ -1063,7 +1063,7 @@
     },
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "From Date",
-      "SENTENCE": "Sentence",
+      "SENTENCE": "Percentage",
       "MODAL_SALES_TAX_RATE": {
         "NEW": "New Tax Rate",
         "DELETE": "Delete Tax Rate",

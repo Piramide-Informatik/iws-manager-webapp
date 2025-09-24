@@ -11,7 +11,7 @@
             </div>
             <div class="absence-form">
                 <label for="shareOfDay">{{ 'ABSENCE_TYPES.LABEL.FRACTION_OF_DAY' | translate }}</label>
-                <p-inputnumber  mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE"
+                <p-inputnumber  mode="decimal" [min]="0" [max]="1" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE" [step]="0.1"
                     inputId="shareOfDay"
                     formControlName="shareOfDay"
                     autocomplete="off"
