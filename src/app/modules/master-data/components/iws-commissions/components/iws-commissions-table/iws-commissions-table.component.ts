@@ -97,21 +97,21 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
     this.columnsHeaderFieldCommissions = [
       {
         field: 'threshold',
-        styles: { width: '120px' },
+        classesTHead: ['width-33'],
         type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.THRESHOLD')),
         customClasses: ['align-right'] 
       },
       {
         field: 'percentage',
-        styles: { width: '120px' },
+        classesTHead: ['width-33'],
         type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.PERCENTAGE')),
         customClasses: ['align-right'] 
       },
       {
         field: 'minCommission',
-        styles: { width: '120px' },
+        classesTHead: ['width-33'],
         type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.MIN_COMMISSION')),
         customClasses: ['align-right'] 

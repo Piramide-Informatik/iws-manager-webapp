@@ -50,7 +50,7 @@
     </div>
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left" [loading]="isLoading" />
+        iconPos="left" [loading]="isLoading" [disabled]="!hasAtLeastOneFieldFilled()"/>
       @if(modalContractType === 'edit') {
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" severity="danger" [loading]="isLoading"
