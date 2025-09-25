@@ -1,28 +1,15 @@
 .approvalstatus-form {
     display: flex;
-    margin-bottom: 1rem;
-
-    label {
-        width: 140px;
-        margin-bottom: 0;
-        text-align: left; 
-    }
-
-    input,
-    p-inputnumber {
-        max-width: 200px;
-        width: 100%;
-    }
-}
-
-.approvalstatus-form-check {
-    display: flex;
     align-items: center;
     margin-bottom: 1rem;
 
     label {
-        width: 125px;
-        font-weight: 500;
-        text-align: left;
+        width: 120px;
+        flex-shrink: 0;
+    }
+
+    input,
+    p-inputnumber {
+        width: 100%;
     }
 }
