@@ -48,7 +48,7 @@ p-button {
     }
   }
 
-  p-columnfilter > div > p-columnfilterformelement {
+  p-columnfilter>div>p-columnfilterformelement {
     width: 100%;
   }
 
@@ -57,29 +57,31 @@ p-button {
     width: 100% !important;
   }
 
-  .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
+  .p-datatable-resizable-table>.p-datatable-thead>tr>th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
     width: 100% !important;
   }
 
-  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.fix-width:not(.p-datatable-frozen-column) {
+  p-table#iwstable table.p-datatable-resizable-table>thead.p-datatable-thead>tr>th.p-datatable-resizable-column.fix-width:not(.p-datatable-frozen-column) {
     width: 100px !important;
     max-width: 130px !important;
   }
 
-  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.width-50:not(.p-datatable-frozen-column) {
-    width: 50% !important;
-    max-width: 130px !important;
+  @for $i from 1 through 100 {
+    p-table#iwstable table.p-datatable-resizable-table>thead.p-datatable-thead>tr>th.p-datatable-resizable-column.width-#{$i}:not(.p-datatable-frozen-column) {
+      width: #{$i * 1%} !important;
+      max-width: 130px !important;
+    }
   }
 
-  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.proportional-width:not(.p-datatable-frozen-column) {
+  p-table#iwstable table.p-datatable-resizable-table>thead.p-datatable-thead>tr>th.p-datatable-resizable-column.proportional-width:not(.p-datatable-frozen-column) {
     width: 50% !important;
     max-width: 100px !important;
   }
 
 
-  thead.p-datatable-thead > tr > th#hide-columns.thead-bg-blue {
-    width:75px !important;
-    max-width: 75px !important;    
+  thead.p-datatable-thead>tr>th#hide-columns.thead-bg-blue {
+    width: 75px !important;
+    max-width: 75px !important;
   }
 }
 

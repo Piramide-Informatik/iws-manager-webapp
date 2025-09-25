@@ -111,7 +111,7 @@ export class ContractorService {
    * @throws Error when server request fails
    */
   getAllContractorsByCustomerId(customerId: number): Observable<Contractor[]> {
-    return this.http.get<Contractor[]>(`${this.apiUrl}/customer/${customerId}`, this.httpOptions).pipe(
+    return this.http.get<Contractor[]>(`${this.apiUrl}/customer/${customerId}/ordered-by-name`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch contractors');
