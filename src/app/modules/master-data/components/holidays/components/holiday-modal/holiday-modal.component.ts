@@ -17,6 +17,7 @@ import {
   momentCreateDate,
   momentFormatDate,
 } from '../../../../../shared/utils/moment-date-utils';
+import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
 @Component({
   selector: 'app-holiday-modal',
   standalone: false,
@@ -25,6 +26,7 @@ import {
 })
 export class HolidayModalComponent implements OnInit, OnDestroy {
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
+  private readonly publicHolidayStateService = inject(PublicHolidayStateService);
   private readonly subscriptions = new Subscription();
   @ViewChild('publicHolidayInput')
   publicHolidayInput!: ElementRef<HTMLInputElement>;
@@ -84,6 +86,8 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
               summary: 'MESSAGE.SUCCESS',
               detail: 'MESSAGE.DELETE_SUCCESS',
             });
+            // Notify the state that the holiday has been eliminated
+            this.publicHolidayStateService.setPublicHolidayToEdit(null);
             this.closeModel();
           },
           error: (error) => {
