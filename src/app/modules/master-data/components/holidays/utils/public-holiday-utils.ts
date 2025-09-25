@@ -2,7 +2,6 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
 import { PublicHoliday } from '../../../../../Entities/publicholiday';
 import { PublicHolidayService } from '../../../../../Services/public-holiday.service';
-import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,52 +12,9 @@ export class PublicHolidayUtils {
         }
     
         addPublicHoliday(
-            namePublicHoliday: string,
-            date: string,
-            sequenceNo: number,
-            isFixedDate: boolean
+            publicHoliday: Omit<PublicHoliday, 'id' | 'createdAt' | 'updatedAt' | 'version'>
             ): Observable<PublicHoliday> {
-            const trimmedName = namePublicHoliday?.trim();
-            const trimmedDate = date ? momentFormatDate(momentCreateDate(date)) : '';
-            const trimmedSequenceNo = sequenceNo ?? 0;
-
-            if (!trimmedName) {
-                return throwError(() => new Error('PublicHoliday name cannot be empty'));
-            }
-
-            if (!trimmedDate) {
-                return throwError(() => new Error('PublicHoliday date cannot be empty'));
-            }
-
-            if (!trimmedSequenceNo) {
-                return throwError(() => new Error('PublicHoliday sequenceNo cannot be empty'));
-            }
-
-            return this.publicHolidayExists(trimmedName).pipe(
-                switchMap(exists => {
-                if (exists) {
-                    return throwError(() => new Error('PROJECT_STATUS.ERROR.ALREADY_EXISTS'));
-                }
-
-                return this.publicHolidayService.addPublicHoliday({
-                    name: trimmedName,
-                    date: trimmedDate,
-                    sequenceNo: trimmedSequenceNo,
-                    isFixedDate: isFixedDate
-                });
-                }),
-                catchError(err => {
-                if (
-                    err.message === 'PROJECT_STATUS.ERROR.ALREADY_EXISTS' ||
-                    err.message === 'PROJECT_STATUS.ERROR.EMPTY'
-                ) {
-                    return throwError(() => err);
-                }
-
-                console.error('Error creating publicHoliday:', err);
-                return throwError(() => new Error('PROJECT_STATUS.ERROR.CREATION_FAILED'));
-                })
-            );
+            return this.publicHolidayService.addPublicHoliday(publicHoliday);
             }
 
     
