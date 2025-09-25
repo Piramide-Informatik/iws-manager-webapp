@@ -55,9 +55,9 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.contractorForm = this.fb.group({
-      contractorlabel: ['', Validators.required],
-      contractorname: ['', Validators.required],
-      country: [null, Validators.required],
+      contractorlabel: [''],
+      contractorname: [''],
+      country: [null],
       street: [''],
       zipcode: [''],
       city: [''],
@@ -103,6 +103,21 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     })
   }
 
+  hasAtLeastOneFieldFilled(): boolean {
+    const formValues = this.contractorForm.value;
+    
+    return Object.keys(formValues).some(key => {
+      const value = formValues[key];
+      
+      if (value === null || value === undefined) return false;
+      if (typeof value === 'string') return value.trim().length > 0;
+      if (typeof value === 'number') return value !== 0;
+      if (typeof value === 'object') return value !== null;
+      
+      return false;
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if ((changes['contractor'] || changes['isVisibleModal']) && this.modalContractType === 'edit' && this.contractor) {
       this.contractorForm.patchValue({
@@ -122,13 +137,15 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   private buildContractor(customerSource: any, countrySource: any): Contractor {
     const formValues = this.contractorForm.value;
+    const country = countrySource ? this.buildCountryFromSource(countrySource) : null;
+
     return {
       id: this.contractor?.id ?? 0,
       version: this.contractor?.version ?? 0,
       createdAt: '',
       updatedAt: '',
       customer: this.buildCustomerFromSource(customerSource),
-      country: this.buildCountryFromSource(countrySource),
+      country: country,
       label: formValues.contractorlabel,
       name: formValues.contractorname,
       number: 0,
@@ -149,7 +166,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   private getSelectedCountry(): any {
     const selectedCountryId = this.contractorForm.value.country;
-    return this.countries().find(c => c.id === selectedCountryId);
+    return selectedCountryId ? this.countries().find(c => c.id === selectedCountryId) : null;
   }
 
   updateContractor() {
@@ -192,13 +209,15 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   onSubmit() {
-    if (this.contractorForm.valid) {
-      if (this.modalContractType === 'create') {
-        const newContractor = this.buildContractorFromForm();
-        this.createContractor(newContractor);
-      } else if (this.modalContractType === 'edit') {
-        this.updateContractor();
-      }
+    if (!this.hasAtLeastOneFieldFilled()) {
+      return;
+    }
+
+    if (this.modalContractType === 'create') {
+      const newContractor = this.buildContractorFromForm();
+      this.createContractor(newContractor);
+    } else if (this.modalContractType === 'edit') {
+      this.updateContractor();
     }
   }
 
@@ -227,6 +246,17 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private buildContractorFromForm(): Omit<Contractor, 'id'> {
+    const selectedCountryId = this.contractorForm.value.country;
+    const country = selectedCountryId ? {
+      id: selectedCountryId,
+      version: 0,
+      createdAt: '',
+      updatedAt: '',
+      isDefault: false,
+      label: '',
+      name: ''
+    } : null;
+
     return {
       version: 0,
       createdAt: new Date().toISOString(),
@@ -238,15 +268,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       street: this.contractorForm.value.street,
       taxNumber: this.contractorForm.value.taxno,
       zipCode: this.contractorForm.value.zipcode,
-      country: {
-        id: this.contractorForm.value.country,
-        version: 0,
-        createdAt: '',
-        updatedAt: '',
-        isDefault: false,
-        label: '',
-        name: ''
-      },
+      country: country,
       customer: this.currentCustomer ?? null
     }
   }
