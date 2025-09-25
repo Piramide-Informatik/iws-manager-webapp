@@ -1,19 +1,18 @@
-.user-form,
-.user-form-check {
+.user-form {
   display: flex;
   align-items: center;
 
   label {
-    width: 150px;
-    font-weight: 500;
-    margin-left: 25px;
+    width: 130px;
+    flex-shrink: 0;
   }
 
-  input,
-  p-toggleswitch {
-    flex: 1;
-    max-width: 390px;
-    margin-left: 1rem;
-    display: flex;
+  input, p-password {
+    width: 100%;
   } 
+
+  p-toggleswitch {
+    display: flex;
+    align-items: center;
+  }
 }

@@ -8,8 +8,8 @@ import { UserService } from '../../../../../../Services/user.service';
 import { UserUtils } from '../../utils/user-utils';
 import { UserStateService } from '../../utils/user-state.service';
 import { MessageService } from 'primeng/api';
-import { UserModalComponent } from '../user-modal/user-modal.component';
 import { User } from '../../../../../../Entities/user';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-user-table',
@@ -21,41 +21,37 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly userUtils = new UserUtils();
   private readonly userService = inject(UserService);
   private readonly messageService =  inject(MessageService);
+  private readonly usersMap: Map<number, User> = new Map();
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedUser: number | null = null;
   UserName: string = '';
-  @ViewChild('userModal') userModalComponent!: UserModalComponent;
+
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
       this.selectedUser = event.data;
 
-      this.userUtils.getUseryId(this.selectedUser!).subscribe({
-        next: (user) => {
-          this.UserName = user?.username ?? '';
-        },
-        error: (err) => {
-          console.error('Could not get user:', err);
-          this.UserName = '';
-        }
-      });
+      this.UserName = this.users().find(user => user.id === this.selectedUser)?.username ?? '';
     }
     this.visibleModal = true;
   }
 
 
   readonly users = computed(() => {
-    return this.userService.users().map(user => ({
-      id: user.id,
-      username: user.username,
-      name: `${user.firstName} ${user.lastName}`,
-      active: user.active
-    }));
+    return this.userService.users().map(user => {
+      this.usersMap.set(user.id, user);
+      return {
+        id: user.id,
+        username: user.username,
+        name: `${user.firstName} ${user.lastName}`,
+        active: user.active
+      }
+    });
   });
 
-  userColumns: any[] = [];
-  userDisplayedColumns: any[] = [];
+  userColumns: Column[] = [];
+  userDisplayedColumns: Column[] = [];
   userUserPreferences: UserPreference = {};
   tableKey: string = 'User'
   dataKeys = ['username', 'name', 'active'];
@@ -83,7 +79,7 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
     localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
   }
 
-    loadUserHeadersAndColumns() {
+  loadUserHeadersAndColumns() {
     this.loadUserHeaders();
     this.userDisplayedColumns = this.userColumns.filter(col => col.field !== 'label');
   }
@@ -147,11 +143,6 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
       this.selectedUser = null;
     }
   }
-  onDialogShow() {
-    if (this.modalType === 'create' && this.userModalComponent) {
-      this.userModalComponent.focusInputIfNeeded();
-    }
-  }
 
   toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
     this.messageService.add({
@@ -161,29 +152,8 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  editUser(user: User) {
-    
-    const userToEdit: User = {
-      id: user.id,
-      username: user.username,
-      password: user.password,
-      active: user.active ?? true,
-      email: user.email ?? '',
-      firstName: user.firstName ?? '', 
-      lastName: user.lastName ?? '',
-      createdAt: '',
-      updatedAt: '',
-      version: 0
-    };
-    this.userUtils.getUseryId(userToEdit.id).subscribe({
-      next: (fullUser) => {
-        if(fullUser) {
-          this.userStateService.setUserToEdit(fullUser);
-        }
-      },
-      error: (err) => {
-        console.error('Error Id user', err);
-      }
-    })
+  editUser(user: { id: number, username: string, name: string, active: boolean }) {
+    const userToEdit = this.usersMap.get(user.id) ?? null;
+    this.userStateService.setUserToEdit(userToEdit);
   }
 }

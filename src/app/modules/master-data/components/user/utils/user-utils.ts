@@ -31,86 +31,10 @@ export class UserUtils {
         );
     }
 
-    addUser(
-        username: string,
-        firstName: string,
-        lastName: string,
-        password: string,
-        email: string
-    ): Observable<User> {
-
-        const trimmedUsername = username?.trim();
-        const trimmedFirstName = firstName?.trim();
-        const trimmedLastName = lastName?.trim();
-        const trimmedPassword = password?.trim();
-        const trimmedEmail = email?.trim().toLowerCase();
-    
-        if (!trimmedUsername) {
-            return throwError(() => new Error('TITLE.ERROR.EMPTY_USERNAME'));
-        }
-
-        if (!trimmedFirstName) {
-            return throwError(() => new Error('TITLE.ERROR.EMPTY_FIRSTNAME'));
-        }
-
-        if (!trimmedLastName) {
-            return throwError(() => new Error('TITLE.ERROR.EMPTY_LASTNAME'));
-        }
-
-        if (!trimmedPassword) {
-            return throwError(() => new Error('TITLE.ERROR.EMPTY_PASSWORD'));
-        }
-
-        if (!trimmedEmail) {
-            return throwError(() => new Error('TITLE.ERROR.EMPTY_EMAIL'));
-        }
-
-        if (!this.isValidEmail(trimmedEmail)) {
-            return throwError(() => new Error('TITLE.ERROR.INVALID_EMAIL'));
-        }
-    
-        return this.userExists(trimmedUsername).pipe(
-            switchMap(exists => {
-            if (exists) {
-                return throwError(() => new Error('TITLE.ERROR.ALREADY_EXISTS'));
-            }
-
-            return this.userService.addUser({
-                username: trimmedUsername,
-                firstName: trimmedFirstName,
-                lastName: trimmedLastName,
-                password: trimmedPassword,
-                email: trimmedEmail
-            });
-            }),
-            catchError(err => {
-            if (err.message.startsWith('TITLE.ERROR.')) {
-                return throwError(() => err);
-            }
-
-            console.error('Error creating user:', err);
-            return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
-            })
+    addUser(user: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<User> {
+        return this.userService.addUser(user).pipe(
+            catchError(err => throwError(() => new Error(err)))
         );
-    }
-
-    private isValidEmail(email: string): boolean {
-    // Local part max 64 characters, domain max 255
-    const safeEmailRegex = /^[^\s@]{1,64}@[^\s@]{1,255}$/;
-    return safeEmailRegex.test(email);
-}
-
-
-    userExists(username: string): Observable<boolean> {
-    return this.userService.getAllUser().pipe(
-        map(users => users.some(
-            t => t.username.toLowerCase() === username.toLowerCase()
-        )),
-        catchError(err => {
-        console.error('Error checking title existence:', err);
-        return throwError(() => new Error('Failed to check title existence'));
-        })
-    );
     }
 
     getAllUsers(): Observable<User[]> {
@@ -124,22 +48,11 @@ export class UserUtils {
             subscriber.complete();
         });
     }
+    
     deleteUser(id: number): Observable<void> {
-        return this.checkUserUsage(id).pipe(
-            switchMap(isUsed => {
-                console.log(isUsed)
-                if (isUsed) {
-                return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-                }
-                return this.userService.deleteUser(id);
-            }),
-        catchError(error => {
-            return throwError(() => error);
-        })
+        return this.userService.deleteUser(id).pipe(
+            catchError(error => throwError(() => error))
         );
-    }
-    private checkUserUsage(idUser: number): Observable<boolean> {
-        return of(false);
     }
 
     updateUsers(user: User): Observable<User> {
@@ -170,23 +83,23 @@ export class UserUtils {
         if(!userId || userId <= 0) {
             return throwError(() => new Error('Invalid user Id'));
         }
-            return this.userService.assignRole(userId, rolesIds);
+        return this.userService.assignRole(userId, rolesIds);
     }
 
     getRolesByUser(userId: number): Observable<Role[]> {
         if (!userId || userId <= 0) {
-        return throwError(() => new Error('Invalid user Id'));
-    }
+            return throwError(() => new Error('Invalid user Id'));
+        }
 
-    return this.userService.getRolesByUser(userId).pipe(
-        tap({
-            next: () => this._error = null,
-            error: (err) => {
-            this._error = 'Failed to fetch roles by user';
-            console.error('Error fetching roles for user:', err);
-            }
-        }),
-        catchError(() => of([]))
+        return this.userService.getRolesByUser(userId).pipe(
+            tap({
+                next: () => this._error = null,
+                error: (err) => {
+                this._error = 'Failed to fetch roles by user';
+                console.error('Error fetching roles for user:', err);
+                }
+            }),
+            catchError(() => of([]))
         );
     }
 }

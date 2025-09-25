@@ -3,7 +3,7 @@
     <div class="align-items-center mb-2">
       <div class="user-form mb-2">
         <label for="username">{{ "USERS.FORM.USERNAME" | translate }}</label>
-        <input pInputText id="username" formControlName="username" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('username')?.invalid && 
+        <input #firstInput pInputText id="username" formControlName="username" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('username')?.invalid && 
         editUserForm.get('username')?.touched}" autocomplete="off" />
       </div>
 
@@ -29,14 +29,12 @@
         <label for="password">{{ "USERS.FORM.PASSWORD" | translate }}</label>
         <p-password #passwordContainer formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('password')?.invalid && 
         editUserForm.get('password')?.touched}" autocomplete="off" [weakLabel]="'USERS.PASSWORD_LABEL.WEAK' | translate" [mediumLabel]="'USERS.PASSWORD_LABEL.MEDIUM' | translate" 
-        [strongLabel]="'USERS.PASSWORD_LABEL.STRONG' | translate" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate">
+        [strongLabel]="'USERS.PASSWORD_LABEL.STRONG' | translate" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate" inputId="password">
         </p-password>
       </div>
-      <div class="user-form-check mb-2">
-        <label for="canBeBookedChecked">{{
-          "USERS.FORM.ACTIVE" | translate
-          }}</label>
-        <p-toggleswitch formControlName="active">
+      <div class="user-form mb-2">
+        <label for="active">{{ "USERS.FORM.ACTIVE" | translate }}</label>
+        <p-toggleswitch formControlName="active" inputId="active">
           <ng-template #handle let-checked="checked">
             <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
           </ng-template>
@@ -88,6 +86,7 @@
           [label]="'BUTTONS.SAVE' | translate"
           icon="pi pi-check"
           iconPos="left"
+          [loading]="isSaving"
           [disabled]="editUserForm.invalid || !editUserForm.dirty || isSaving"
         />
 
@@ -97,6 +96,7 @@
           [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times"
           iconPos="left"
+          [disabled]="isSaving"
           (click)="clearForm()" 
           (keydown.enter)="clearForm()"
         />

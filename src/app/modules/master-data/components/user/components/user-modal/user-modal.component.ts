@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserUtils } from '../../utils/user-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { PasswordDirective } from 'primeng/password';
 import { TranslateService } from '@ngx-translate/core';
+import { UserStateService } from '../../utils/user-state.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -12,14 +13,16 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './user-modal.component.html',
   styleUrl: './user-modal.component.scss'
 })
-export class UserModalComponent implements OnInit, OnDestroy {
+export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly userUtils = inject(UserUtils);
+  private readonly userStateService = inject(UserStateService);
   private readonly subscriptions = new Subscription();
 
-  @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() userToDelete: number | null = null;
   @Input() userName: string | null = null;
+  @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() userCreated = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{ severity: string, summary: string, detail: string }>();
@@ -31,18 +34,17 @@ export class UserModalComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   readonly createUserForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    firstName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    email: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100),Validators.email])
+    username: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    password: new FormControl(''),
+    email: new FormControl('',  [Validators.email]),
+    active: new FormControl(false),
   });
 
   constructor(private readonly translate: TranslateService) {}
 
   ngOnInit(): void {
-    this.loadInitialData();
-    this.resetForm();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.passwordCreateContainer.weakLabel = this.translate.instant('USERS.PASSWORD_LABEL.WEAK');
       this.passwordCreateContainer.mediumLabel = this.translate.instant('USERS.PASSWORD_LABEL.MEDIUM');
@@ -51,9 +53,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadInitialData() {
-    const sub = this.userUtils.loadInitialData().subscribe();
-    this.subscriptions.add(sub);
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['visibleModal'] && this.visibleModal){
+      this.focusInputIfNeeded();
+    }
   }
 
   ngOnDestroy(): void {
@@ -77,6 +80,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       summary: severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR',
       detail
     });
+    this.userStateService.clearUser();
     this.closeAndReset();
   }
 
@@ -120,13 +124,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     const userData = this.getSanitizedUserValues();
 
-    const sub = this.userUtils.addUser(
-      userData.username,
-      userData.firstName,
-      userData.lastName,
-      userData.password,
-      userData.email
-    ).pipe(
+    const sub = this.userUtils.addUser(userData).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: () => {
@@ -156,8 +154,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
       username: this.createUserForm.value.username?.trim() ?? '',
       firstName: this.createUserForm.value.firstName?.trim() ?? '',
       lastName: this.createUserForm.value.lastName?.trim() ?? '',
+      email: this.createUserForm.value.email?.trim() ?? '',
       password: this.createUserForm.value.password?.trim() ?? '',
-      email: this.createUserForm.value.email?.trim() ?? ''
+      active: this.createUserForm.value.active ?? false
     };
   }
 
@@ -169,11 +168,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
     this.closeAndReset();
   }
 
-  public focusInputIfNeeded() {
-    if (this.isCreateMode && this.userInput) {
+  private focusInputIfNeeded() {
+    if (this.isCreateMode && this.firstInput) {
       setTimeout(() => {
-        this.userInput?.nativeElement?.focus();
-      }, 150);
+        this.firstInput?.nativeElement?.focus();
+      }, 200);
     }
   }
 }

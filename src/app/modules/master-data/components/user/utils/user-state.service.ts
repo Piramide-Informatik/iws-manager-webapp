@@ -11,7 +11,7 @@ export class UserStateService {
         this.editUserSource.next(user);
     }
 
-    clearTitle() {
+    clearUser() {
         this.editUserSource.next(null);
     }
 }

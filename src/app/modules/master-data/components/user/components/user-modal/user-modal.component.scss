@@ -5,13 +5,21 @@
 
     label {
         width: 100px;
-        font-weight: 500;
+        flex-shrink: 0;
     }
 
-    input {
-        flex: 1;
-        max-width: 340px;
-        margin-left: 1rem;
-        display: flex;
+    input, p-password {
+        width: 100%;
     } 
+
+    
+    p-toggleswitch {
+        display: flex;
+        align-items: center;
+    }
+}
+
+::ng-deep .p-password, 
+::ng-deep #password.p-password-input {
+    width: 100% !important;
 }
