@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode;  else deleteTemplate">
     <form [formGroup]="createApprovalStatusForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center display mb-2 mt-4">
-            <div class="approvalstatus-form mb-3 flex align-items-center">
+            <div class="approvalstatus-form">
                 <label for="status">{{ "APPROVAL_STATUS.LABEL.NAME" | translate}}</label>
                 <input
                     #approvalStatusNameInput
@@ -12,7 +12,7 @@
                     autocomplete="off"
                     />
             </div>
-            <div class="approvalstatus-form mb-3 flex align-items-center">
+            <div class="approvalstatus-form">
                 <label for="order">{{ "Orden" }}</label>
                 <p-inputnumber
                     inputId="order"
@@ -22,7 +22,7 @@
                     [inputStyle]="{'text-align': 'right'}"
                 />
             </div>
-            <div class="approvalstatus-form-check mb-3 flex align-items-center">
+            <div class="approvalstatus-form">
                 <label for="isProjectChecked">{{ 'APPROVAL_STATUS.LABEL.IS_PROJECTS' | translate }}</label>
                 <p-toggleswitch inputId="isProjectChecked" formControlName="isProject" class="flex">
                 <ng-template #handle let-checked="checked">
@@ -30,7 +30,7 @@
                 </ng-template>
                 </p-toggleswitch>
             </div>
-            <div class="approvalstatus-form-check mb-3 flex align-items-center">
+            <div class="approvalstatus-form">
                 <label for="isNetworkChecked">{{ 'APPROVAL_STATUS.LABEL.IS_NETWORKS' | translate}}</label>
                 <p-toggleswitch inputId="isNetworkChecked" formControlName="isNetwork" class="flex">
                 <ng-template #handle let-checked="checked">
