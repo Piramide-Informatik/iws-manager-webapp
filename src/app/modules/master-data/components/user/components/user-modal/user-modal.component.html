@@ -2,70 +2,68 @@
     <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center">
-                <label for="userName" class="block">
-                    {{ 'USERS.FORM.USERNAME' | translate }}
-                </label>
-                <input #titleInput pInputText type="text" id="userName" formControlName="username" autocomplete="off"
+                <label for="userName">{{ 'USERS.FORM.USERNAME' | translate }}</label>
+                <input #firstInput pInputText type="text" id="userName" formControlName="username" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('username')?.invalid"
                     [attr.aria-describedby]="createUserForm.get('username')?.invalid ? 'userError' : null"
-                    class="w-full" />
+                     />
 
                 <small *ngIf="createUserForm.get('username')?.invalid && createUserForm.get('username')?.touched"
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
             <div class="create-form flex align-items-center">
-                <label for="firstName" class="block">
-                    {{ 'USERS.FORM.FIRSTNAME' | translate }}
-                </label>
-                <input #titleInput pInputText type="text" id="firstName" formControlName="firstName" autocomplete="off"
+                <label for="firstName">{{ 'USERS.FORM.FIRSTNAME' | translate }}</label>
+                <input pInputText type="text" id="firstName" formControlName="firstName" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('firstName')?.invalid"
                     [attr.aria-describedby]="createUserForm.get('firstName')?.invalid ? 'userError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createUserForm.get('firstName')?.invalid && createUserForm.get('firstName')?.touched"
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
             <div class="create-form flex align-items-center">
-                <label for="lastName" class="block">
-                    {{ 'USERS.FORM.LASTNAME' | translate }}
-                </label>
-                <input #titleInput pInputText type="text" id="lastName" formControlName="lastName" autocomplete="off"
+                <label for="lastName">{{ 'USERS.FORM.LASTNAME' | translate }}</label>
+                <input pInputText type="text" id="lastName" formControlName="lastName" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('lastName')?.invalid"
                     [attr.aria-describedby]="createUserForm.get('lastName')?.invalid ? 'userError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createUserForm.get('lastName')?.invalid && createUserForm.get('lastName')?.touched"
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
             <div class="create-form flex align-items-center">
-                <label for="password" class="block">
-                    {{ 'USERS.FORM.PASSWORD' | translate }}
-                </label>
-                    <p-password #passwordCreateContainer formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':createUserForm.get('password')?.invalid && 
-                    createUserForm.get('password')?.touched}" autocomplete="off" [weakLabel]="'USERS.PASSWORD_LABEL.WEAK' | translate" [mediumLabel]="'USERS.PASSWORD_LABEL.MEDIUM' | translate" 
-                    [strongLabel]="'USERS.PASSWORD_LABEL.STRONG' | translate" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate">
-                    </p-password>
-
-                <small *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched"
-                    id="userError" class="text-red-500 block mt-1">
-                </small>
-            </div>
-            <div class="create-form flex align-items-center">
-                <label for="email" class="block">
-                    {{ 'USERS.FORM.EMAIL' | translate }}
-                </label>
-                <input #titleInput pInputText type="text" id="email" formControlName="email" autocomplete="off"
+                <label for="email">{{ 'USERS.FORM.EMAIL' | translate }}</label>
+                <input pInputText type="text" id="email" formControlName="email" autocomplete="off"
                     [attr.aria-invalid]="createUserForm.get('email')?.invalid"
                     [attr.aria-describedby]="createUserForm.get('email')?.invalid ? 'userError' : null"
-                    class="w-full" />
+                    />
 
                 <small *ngIf="createUserForm.get('email')?.invalid && createUserForm.get('email')?.touched"
                     id="userError" class="text-red-500 block mt-1">
                 </small>
             </div>
+            <div class="create-form flex align-items-center">
+                <label for="password">{{ 'USERS.FORM.PASSWORD' | translate }}</label>
+                <p-password #passwordCreateContainer formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':createUserForm.get('password')?.invalid && 
+                    createUserForm.get('password')?.touched}" autocomplete="off" [weakLabel]="'USERS.PASSWORD_LABEL.WEAK' | translate" [mediumLabel]="'USERS.PASSWORD_LABEL.MEDIUM' | translate" 
+                    [strongLabel]="'USERS.PASSWORD_LABEL.STRONG' | translate" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate" inputId="password">
+                </p-password>
+
+                <small *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched"
+                    id="userError" class="text-red-500 block mt-1">
+                </small>
+            </div>   
+            <div class="create-form flex align-items-center">
+                <label for="active">{{ "USERS.FORM.ACTIVE" | translate }}</label>
+                <p-toggleswitch formControlName="active" inputId="active">
+                    <ng-template #handle let-checked="checked">
+                        <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+                    </ng-template>
+                </p-toggleswitch>
+            </div>         
 
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
