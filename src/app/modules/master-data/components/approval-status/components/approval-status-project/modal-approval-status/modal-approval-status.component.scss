@@ -12,4 +12,8 @@
     p-inputnumber {
         width: 100%;
     }
+
+    ::ng-deep .p-inputnumber-input {
+        width: 100%;
+    }
 }
