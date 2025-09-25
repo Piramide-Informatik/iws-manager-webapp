@@ -1,6 +1,6 @@
 import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { map, Subscription } from 'rxjs';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { ContractorUtils } from '../../utils/contractor-utils';
