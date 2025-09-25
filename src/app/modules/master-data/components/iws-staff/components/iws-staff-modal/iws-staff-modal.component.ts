@@ -186,7 +186,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
             momentCreateDate(this.createEmployeeIwsForm.value.endDate)
           )
         : '',
-      employeeNo: this.createEmployeeIwsForm.value.employeeNo ?? 5, // Pendiente llamar endpoint 
+      employeeNo: Number(this.createEmployeeIwsForm.value.employeeNo), // Pendiente llamar endpoint, ya hice el cambio en el backend atte: Rigo
       employeeLabel:
         this.createEmployeeIwsForm.value.employeeLabel?.trim() ?? '',
       teamIws: this.createEmployeeIwsForm.value.teamIws ?? null,
