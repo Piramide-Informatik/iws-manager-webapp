@@ -23,7 +23,8 @@
       }
     },  
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
-    "NUMBER_MAX": "Max value 100 expected"
+    "NUMBER_MAX": "Max value 100 expected",
+    "NUMBER_BETWEEN_0_1": "Values between 0 - 1"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -487,7 +488,8 @@
       "REMOVE_SUBCONTRACT_YEAR_QUESTION": "Are you sure you want to delete the Subcontract Year",
       "DELETE_SUBCONTRACT_YEAR": "Delete Subcontract Year",
       "REMOVE_SUBCONTRACT_PROJECT_QUESTION": "Are you sure you want to delete the Subcontract Project",
-      "DELETE_SUBCONTRACT_PROJECT": "Delete Subcontract Project"
+      "DELETE_SUBCONTRACT_PROJECT": "Delete Subcontract Project",
+      "NEW_SUBCONTRACT": "New Subcontract"
     },
     "TABLE": {
       "ORDER_TITLE": "Order Title",
@@ -1062,7 +1064,7 @@
     },
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "From Date",
-      "SENTENCE": "Sentence",
+      "SENTENCE": "Percentage",
       "MODAL_SALES_TAX_RATE": {
         "NEW": "New Tax Rate",
         "DELETE": "Delete Tax Rate",

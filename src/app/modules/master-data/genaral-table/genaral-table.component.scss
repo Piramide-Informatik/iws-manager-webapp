@@ -66,6 +66,11 @@ p-button {
     max-width: 130px !important;
   }
 
+  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.width-50:not(.p-datatable-frozen-column) {
+    width: 50% !important;
+    max-width: 130px !important;
+  }
+
   p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.proportional-width:not(.p-datatable-frozen-column) {
     width: 50% !important;
     max-width: 100px !important;

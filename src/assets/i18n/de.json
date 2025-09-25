@@ -23,7 +23,8 @@
       }
     },
     "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet.",
-    "NUMBER_MAX": "Maximalwert 100 erwartet"
+    "NUMBER_MAX": "Maximalwert 100 erwartet",
+    "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -485,7 +486,8 @@
       "REMOVE_SUBCONTRACT_YEAR_QUESTION": "Möchten Sie das Untervertragsjahr wirklich löschen",
       "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
       "REMOVE_SUBCONTRACT_PROJECT_QUESTION": "Möchten Sie das Unterouftrag Projekt wirklich löschen",
-      "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen"
+      "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen",
+      "NEW_SUBCONTRACT": "Neuer Untervertrag"
     },
     "TABLE": {
       "ORDER_TITLE": "Autrag",

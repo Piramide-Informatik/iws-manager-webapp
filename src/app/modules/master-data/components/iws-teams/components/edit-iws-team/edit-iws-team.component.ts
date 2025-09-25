@@ -75,7 +75,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   }
 
   private loadTeams() {
-      const sub = this.employeeIwsService.getAllEmployeeIws().pipe(
+      const sub = this.employeeIwsService.getAllEmployeeIwsSortedByFirstname().pipe(
       map(data => data.map(emp => ({
         id: emp.id,
         firstname: emp.firstname,

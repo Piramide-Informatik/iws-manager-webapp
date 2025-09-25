@@ -11,11 +11,19 @@
             </div>
             <div class="absence-form">
                 <label for="shareOfDay">{{ 'ABSENCE_TYPES.LABEL.FRACTION_OF_DAY' | translate }}</label>
-                <p-inputnumber  mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE"
-                    inputId="shareOfDay"
-                    formControlName="shareOfDay"
-                    autocomplete="off"
-                />
+                <div class="input-message">
+                    <p-inputnumber mode="decimal" [min]="0" [max]="1" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE" [step]="0.1"
+                        inputId="shareOfDay" [inputStyle]="{'text-align': 'right'}"
+                        formControlName="shareOfDay"
+                        autocomplete="off" invalid="
+                    editProjectCarrierForm.get('shareOfDay')?.invalid  
+                    && editProjectCarrierForm.get('shareOfDay')?.dirty 
+                    || editProjectCarrierForm.get('shareOfDay')?.touched"/>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                        editProjectCarrierForm.get('shareOfDay')?.invalid && 
+                        editProjectCarrierForm.get('shareOfDay')?.dirty
+                    ">{{ 'ERROR.NUMBER_BETWEEN_0_1' | translate }}</p-message>
+                </div>
             </div>
             <div class="absence-form-check">
                 <label for="isHoliday">{{ 'ABSENCE_TYPES.LABEL.IS_VACATION' | translate }}</label>
