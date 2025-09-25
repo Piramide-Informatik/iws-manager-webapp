@@ -113,8 +113,8 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
 
   private loadOptionsInvoiceLabel(): void {
     this.optionsNetOrGross = [
-      { label: this.translate.instant('SUB-CONTRACTS.FORM.NET'), value: 'net' },
-      { label: this.translate.instant('SUB-CONTRACTS.FORM.GROSS'), value: 'gross' }
+      { label: this.translate.instant('SUB-CONTRACTS.FORM.GROSS'), value: 'gross' },
+      { label: this.translate.instant('SUB-CONTRACTS.FORM.NET'), value: 'net' }
     ];
   }
 
