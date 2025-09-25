@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../Entities/user-preference';
@@ -93,7 +93,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   private initForm(): void {
     this.depreciationForm = new FormGroup({
       year: new FormControl(''),
-      months: new FormControl(null),
+      months: new FormControl(null, [Validators.min(0), Validators.max(12)]),
       depreciationAmount: new FormControl(null),
     });
     this.depreciationForm.get('depreciationAmount')?.disable();

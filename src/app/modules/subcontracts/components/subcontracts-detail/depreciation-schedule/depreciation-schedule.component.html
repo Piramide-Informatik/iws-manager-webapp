@@ -39,11 +39,19 @@
         </div>
         <div class="form-item-container flex gap-4 mb-3">
           <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.FORM_COMMISSION.DURATION_OF_USE' | translate }}</label>
-          <p-inputnumber [inputStyle]="{'text-align': 'right'}"
-            inputId="months"
-            formControlName="months"
-            autocomplete="off"
-          />
+          <div class="input-message">
+            <p-inputnumber [inputStyle]="{'text-align': 'right'}"
+              inputId="months" [min]="0" [max]="12" [useGrouping]="true"
+              formControlName="months"
+              autocomplete="off" invalid="
+              depreciationForm.get('months')?.invalid  
+              && depreciationForm.get('months')?.dirty 
+              || depreciationForm.get('months')?.touched"/>
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+              depreciationForm.get('months')?.invalid && 
+              depreciationForm.get('months')?.dirty
+            ">{{ 'ERROR.NUMBER_MAX_12' | translate }}</p-message>
+          </div>
         </div>
         <div class="form-item-container flex gap-4 mb-3">
           <label for="depreciationAmount" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' | translate }}</label>
@@ -69,7 +77,7 @@
             size="small"
             type="submit"
             [loading]="isLoading"
-            [disabled]="isLoading"
+            [disabled]="isLoading || depreciationForm.invalid"
           ></p-button>
           @if(selectedSubcontractYear) {
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"

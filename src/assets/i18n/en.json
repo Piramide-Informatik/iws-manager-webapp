@@ -24,7 +24,8 @@
     },  
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
     "NUMBER_MAX": "Max value 100 expected",
-    "NUMBER_BETWEEN_0_1": "Values between 0 - 1"
+    "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
+    "NUMBER_MAX_12": "Max value 12 expected"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
