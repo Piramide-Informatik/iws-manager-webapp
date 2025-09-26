@@ -24,21 +24,8 @@ export class ApprovalStatusUtils {
         );
     }
     //Creates a new approvalStatus with validation 
-    createNewApprovalStatus(status: string, order:number, projects:number, networks:number ): Observable<void> {
-        
-        if (!status?.trim()) {
-            return throwError(() => new Error('ProjectStatus name cannot be empty'));
-        }
-        return new Observable<void>(subscriber => {
-            this.approvalStatusService.addApprovalStatus({
-                status: status.trim(),
-                forProjects: projects,
-                forNetworks: networks,
-                sequenceNo: order,
-            });
-            subscriber.next();
-            subscriber.complete();
-        });
+    createNewApprovalStatus(approvalStatus:Omit<ApprovalStatus, 'id' | 'createdAt' | 'updatedAt' | 'version'> ): Observable<ApprovalStatus> {
+        return this.approvalStatusService.addApprovalStatus(approvalStatus);
     }
     //Check if an approval status already exists
     approvalStatusExists(status: string): Observable<boolean> {

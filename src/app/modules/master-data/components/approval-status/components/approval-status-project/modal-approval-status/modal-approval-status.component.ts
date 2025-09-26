@@ -1,25 +1,47 @@
-import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  inject,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
+import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 
 @Component({
   selector: 'app-modal-approval-status',
   standalone: false,
   templateUrl: './modal-approval-status.component.html',
-  styleUrl: './modal-approval-status.component.scss'
+  styleUrl: './modal-approval-status.component.scss',
 })
-export class ModalApprovalStatusComponent implements OnInit {
+export class ModalApprovalStatusComponent
+  implements OnInit, OnChanges, OnDestroy
+{
   private readonly approvalStatusUtils = inject(ApprovalStatusUtils);
+  private readonly subscriptions = new Subscription();
 
+  @ViewChild('approvalStatusNameInput')
+  approvalStatusNameInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() visibleModal = false;
   @Input() approvalStatusToDelete: number | null = null;
   @Input() approvalStatusName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() approvalStatusCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
-  @ViewChild('approvalStatusNameInput') approvalStatusNameInput!: ElementRef<HTMLInputElement>;
+  @Output() toastMessage = new EventEmitter<{
+    severity: string;
+    summary: string;
+    detail: string;
+  }>();
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -28,134 +50,160 @@ export class ModalApprovalStatusComponent implements OnInit {
     status: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50)
+      Validators.maxLength(50),
     ]),
     order: new FormControl(null),
     isProject: new FormControl(false),
-    isNetwork: new FormControl(false)
+    isNetwork: new FormControl(false),
   });
-
-  ngOnInit(): void {
-      this.resetForm();
-  }
 
   get isCreateMode(): boolean {
     return this.modalType === 'create';
   }
 
-  onSubmit(): void {
-    if (this.shouldPreventSubmission()) return;
+  ngOnInit(): void {
+    this.loadInitialData();
+    this.resetForm();
+  }
 
-    this.prepareForSubmission();
-    const { status, order, isProject, isNetwork } = this.getApprovalStatusFormValues();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visibleModal'] && this.visibleModal) {
+      this.focusInputIfNeeded();
+    }
+  }
 
-    this.approvalStatusUtils.approvalStatusExists(status).pipe(
-      switchMap(exists => this.handleCountryExistence(exists, status, order, isProject, isNetwork)),
-      catchError(err => this.handleError('APPROVAL_STATUS.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.isLoading = false)
-    ).subscribe(result => {
-      if (result !== null) {
-        this.approvalStatusCreated.emit();
-        this.handleClose();
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  // ========================
+  //  PUBLIC METHODS
+  // ========================
+
+  onDeleteConfirm(): void {
+    if (!this.approvalStatusToDelete) return;
+    this.runOperation(
+      this.approvalStatusUtils.deleteApprovalStatus(this.approvalStatusToDelete),
+      {
+        success: 'MESSAGE.DELETE_SUCCESS',
+        fail: 'MESSAGE.DELETE_FAILED',
+        inUse: 'MESSAGE.DELETE_ERROR_IN_USE',
       }
+    );
+  }
+
+  onSubmit(): void {
+    if (this.createApprovalStatusForm.invalid || this.isLoading) return;
+    const ApprovalStatusData = this.getSanitizedApprovalStatusValues();
+
+    this.runOperation(
+      this.approvalStatusUtils.createNewApprovalStatus(ApprovalStatusData),
+      {
+        success: 'MESSAGE.CREATE_SUCCESS',
+        fail: 'MESSAGE.CREATE_FAILED',
+      },
+      () => this.approvalStatusCreated.emit()
+    );
+  }
+
+  onCancel(): void {
+    this.closeModal();
+  }
+
+  // ========================
+  //  PRIVATE HELPERS
+  // ========================
+
+  private loadInitialData(): void {
+    const sub = this.approvalStatusUtils.loadInitialData().subscribe();
+    this.subscriptions.add(sub);
+  }
+
+  /**
+   * Método centralizado para operaciones (create, delete, update)
+   */
+  private runOperation<T>(
+    operation$: Observable<T>,
+    messages: { success: string; fail: string; inUse?: string },
+    onSuccess?: () => void
+  ): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    const sub = operation$
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: () => {
+          onSuccess?.();
+          this.emitToast('success', messages.success);
+          this.closeModal();
+        },
+        error: (error) =>
+          this.handleOperationError(error, messages.fail, messages.inUse),
+      });
+
+    this.subscriptions.add(sub);
+  }
+
+  private emitToast(severity: string, detail: string): void {
+    this.toastMessage.emit({
+      severity,
+      summary: severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR',
+      detail,
     });
   }
 
-  onDeleteConfirm(): void {
-    this.isLoading = true;
-    if (this.approvalStatusToDelete) {
-      this.approvalStatusUtils.deleteApprovalStatus(this.approvalStatusToDelete).subscribe({
-        next: () => this.handleDeleteSuccess(),
-        error: (error) => this.handleDeleteError(error)
-      });
+  private handleOperationError(
+    error: any,
+    defaultDetail: string,
+    inUseDetail?: string
+  ): void {
+    this.errorMessage = error?.message ?? defaultDetail;
+
+    const detail = this.errorMessage?.includes('it is in use by other entities')
+      ? inUseDetail ?? defaultDetail
+      : this.getErrorDetail(this.errorMessage ?? '');
+
+    this.emitToast('error', detail);
+
+    console.error('Operation error:', error);
+    this.closeModal();
+  }
+
+  private getErrorDetail(errorCode: string): string {
+    switch (errorCode) {
+      case 'TITLE.ERROR.EMPTY':
+        return 'MESSAGE.EMPTY_ERROR';
+      case 'TITLE.ERROR.ALREADY_EXISTS':
+        return 'MESSAGE.RECORD_ALREADY_EXISTS';
+      default:
+        return 'MESSAGE.CREATE_FAILED';
     }
   }
 
-  private handleDeleteSuccess(): void {
-  this.isLoading = false;
-  this.confirmDelete.emit({
-    severity: 'success',
-    summary: 'APPROVAL_STATUS.MESSAGE.SUCCESS',
-    detail: 'APPROVAL_STATUS.MESSAGE.DELETE_SUCCESS'
-  });
-  this.closeModal();
-}
-
-private handleDeleteError(error: any): void {
-  this.isLoading = false;
-  this.errorMessage = error.message ?? 'Failed to delete approval status';
-  console.error('Delete error:', error);
-  this.confirmDelete.emit({
-    severity: 'error',
-    summary: 'APPROVAL_STATUS.MESSAGE.ERROR',
-    detail: this.errorMessage?.includes('it is in use by other entities')
-      ? 'APPROVAL_STATUS.MESSAGE.DELETE_ERROR_IN_USE'
-      : 'APPROVAL_STATUS.MESSAGE.DELETE_FAILED'
-  });
-  this.closeModal();
-}
-
-  onCancel(): void {
-    this.handleClose();
-  }
-
-  private shouldPreventSubmission(): boolean {
-    return this.createApprovalStatusForm.invalid || this.isLoading;
-  }
-
-  private prepareForSubmission(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
-  }
-
-  private getApprovalStatusFormValues() {
+  private getSanitizedApprovalStatusValues(): Omit<
+    ApprovalStatus,
+    'id' | 'createdAt' | 'updatedAt' | 'version'
+  > {
     return {
       status: this.createApprovalStatusForm.value.status?.trim() ?? '',
-      order: this.createApprovalStatusForm.value.order ?? 0,
-      isProject: this.createApprovalStatusForm.value.isProject ? 1 : 0,
-      isNetwork: this.createApprovalStatusForm.value.isNetwork ? 1 : 0
+      sequenceNo: this.createApprovalStatusForm.value.order ?? 0,
+      forProjects: this.createApprovalStatusForm.value.isProject ? 1 : 0,
+      forNetworks: this.createApprovalStatusForm.value.isNetwork ? 1 : 0,
     };
   }
 
-  private handleCountryExistence(
-    exists: boolean,
-    status: string,
-    order: number ,
-    isProject: number ,
-    isNetwork: number
-  ) {
-    if (exists) {
-      this.errorMessage = 'MESSAGE.RECORD_ALREADY_EXISTS';
-      return of(null);
-    }
-    return this.approvalStatusUtils.createNewApprovalStatus(status, order, isProject, isNetwork).pipe(
-      catchError(err => this.handleError('APPROVAL_STATUS.ERROR.CREATION_FAILED', err))
-    );
-    
-  }
-
-  private handleError(messageKey: string, error: any) {
-    this.errorMessage = messageKey;
-    console.error('Error:', error);
-    return of(null);
-  }
-
-  handleClose(): void {
+  private closeModal(reset: boolean = true): void {
     this.isLoading = false;
     this.isVisibleModal.emit(false);
-    this.resetForm();
+    if (reset) this.resetForm();
   }
 
   private resetForm(): void {
     this.createApprovalStatusForm.reset();
   }
 
-  closeModal(): void {
-    this.isVisibleModal.emit(false);
-    this.createApprovalStatusForm.reset();
-  }
-
-  public focusInputIfNeeded() {
+  public focusInputIfNeeded(): void {
     if (this.isCreateMode && this.approvalStatusNameInput) {
       setTimeout(() => {
         this.approvalStatusNameInput?.nativeElement?.focus();
