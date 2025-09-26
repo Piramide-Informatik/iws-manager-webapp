@@ -253,11 +253,15 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         } as DepreciationEntry);
           return acc;  
       }, [])
-      this.subcontractsYear = this.subcontractsYear.sort((sy1: DepreciationEntry,sy2: DepreciationEntry) => {
-        const sy1Date = new Date(sy1.createdAt);
-        const sy2Date = new Date(sy2.createdAt);
-        return sy2Date.getTime() - sy1Date.getTime();
-      });
+      this.subcontractsYear = this.sortByCreatedAt()
+    });
+  }
+
+  private sortByCreatedAt() {
+    return this.subcontractsYear.sort((sy1: DepreciationEntry,sy2: DepreciationEntry) => {
+      const sy1Date = new Date(sy1.createdAt);
+      const sy2Date = new Date(sy2.createdAt);
+      return sy2Date.getTime() - sy1Date.getTime();
     });
   }
 
