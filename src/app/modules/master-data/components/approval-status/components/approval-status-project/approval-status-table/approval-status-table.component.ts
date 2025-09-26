@@ -128,14 +128,6 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   onVisibleModal(visible: boolean){
     this.visibleModal = visible;
   }
-
-  onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
-      this.messageService.add({
-        severity: message.severity,
-        summary: this.translate.instant(_(message.summary)),
-        detail: this.translate.instant(_(message.detail)),
-      });
-    }
   
   onModalVisibilityChange(visible: boolean): void {
     this.visibleModal = visible;

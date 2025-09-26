@@ -1,23 +1,38 @@
-import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  inject,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
 import { finalize } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 
 @Component({
   selector: 'app-modal-approval-status',
   standalone: false,
   templateUrl: './modal-approval-status.component.html',
-  styleUrl: './modal-approval-status.component.scss'
+  styleUrl: './modal-approval-status.component.scss',
 })
-export class ModalApprovalStatusComponent implements OnInit, OnChanges, OnDestroy {
+export class ModalApprovalStatusComponent
+  implements OnInit, OnChanges, OnDestroy
+{
   private readonly approvalStatusUtils = inject(ApprovalStatusUtils);
   private readonly subscriptions = new Subscription();
 
-  @ViewChild('approvalStatusNameInput') approvalStatusNameInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('approvalStatusNameInput')
+  approvalStatusNameInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
-  @Input() visibleModal: boolean = false;
+  @Input() visibleModal = false;
   @Input() approvalStatusToDelete: number | null = null;
   @Input() approvalStatusName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -35,12 +50,16 @@ export class ModalApprovalStatusComponent implements OnInit, OnChanges, OnDestro
     status: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50)
+      Validators.maxLength(50),
     ]),
     order: new FormControl(null),
     isProject: new FormControl(false),
-    isNetwork: new FormControl(false)
+    isNetwork: new FormControl(false),
   });
+
+  get isCreateMode(): boolean {
+    return this.modalType === 'create';
+  }
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -48,7 +67,7 @@ export class ModalApprovalStatusComponent implements OnInit, OnChanges, OnDestro
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visibleModal'] && this.visibleModal){
+    if (changes['visibleModal'] && this.visibleModal) {
       this.focusInputIfNeeded();
     }
   }
@@ -56,75 +75,82 @@ export class ModalApprovalStatusComponent implements OnInit, OnChanges, OnDestro
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-  get isCreateMode(): boolean {
-    return this.modalType === 'create';
-  }
 
-  closeAndReset(): void {
-    this.isLoading = false;
-    this.isVisibleModal.emit(false);
-    this.resetForm();
-  }
+  // ========================
+  //  PUBLIC METHODS
+  // ========================
 
   onDeleteConfirm(): void {
     if (!this.approvalStatusToDelete) return;
-    this.isLoading = true;
-
-    const sub = this.approvalStatusUtils
-      .deleteApprovalStatus(this.approvalStatusToDelete)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
-        error: (error) =>
-          this.handleOperationError(
-            error,
-            'MESSAGE.DELETE_FAILED',
-            'MESSAGE.DELETE_ERROR_IN_USE'
-          ),
-      });
-
-    this.subscriptions.add(sub);
+    this.runOperation(
+      this.approvalStatusUtils.deleteApprovalStatus(this.approvalStatusToDelete),
+      {
+        success: 'MESSAGE.DELETE_SUCCESS',
+        fail: 'MESSAGE.DELETE_FAILED',
+        inUse: 'MESSAGE.DELETE_ERROR_IN_USE',
+      }
+    );
   }
 
   onSubmit(): void {
     if (this.createApprovalStatusForm.invalid || this.isLoading) return;
+    const ApprovalStatusData = this.getSanitizedApprovalStatusValues();
 
+    this.runOperation(
+      this.approvalStatusUtils.createNewApprovalStatus(ApprovalStatusData),
+      {
+        success: 'MESSAGE.CREATE_SUCCESS',
+        fail: 'MESSAGE.CREATE_FAILED',
+      },
+      () => this.approvalStatusCreated.emit()
+    );
+  }
+
+  onCancel(): void {
+    this.closeModal();
+  }
+
+  // ========================
+  //  PRIVATE HELPERS
+  // ========================
+
+  private loadInitialData(): void {
+    const sub = this.approvalStatusUtils.loadInitialData().subscribe();
+    this.subscriptions.add(sub);
+  }
+
+  /**
+   * Método centralizado para operaciones (create, delete, update)
+   */
+  private runOperation<T>(
+    operation$: Observable<T>,
+    messages: { success: string; fail: string; inUse?: string },
+    onSuccess?: () => void
+  ): void {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const ApprovalStatusData = this.getSanitizedApprovalStatusValues();
-    const sub = this.approvalStatusUtils
-      .createNewApprovalStatus(ApprovalStatusData)
+    const sub = operation$
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {
-          this.approvalStatusCreated.emit();
-          this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
+          onSuccess?.();
+          this.emitToast('success', messages.success);
+          this.closeModal();
         },
         error: (error) =>
-          this.handleOperationError(error, 'MESSAGE.CREATE_FAILED'),
+          this.handleOperationError(error, messages.fail, messages.inUse),
       });
 
     this.subscriptions.add(sub);
   }
 
-
-  private loadInitialData(){
-    const sub = this.approvalStatusUtils.loadInitialData().subscribe();
-    this.subscriptions.add(sub);
-  }
-
-  onCancel(): void {
-    this.handleClose();
-  }
-
-  private showToastAndClose(severity: string, detail: string): void {
+  private emitToast(severity: string, detail: string): void {
     this.toastMessage.emit({
       severity,
       summary: severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR',
       detail,
     });
-    this.closeAndReset();
   }
 
   private handleOperationError(
@@ -138,14 +164,10 @@ export class ModalApprovalStatusComponent implements OnInit, OnChanges, OnDestro
       ? inUseDetail ?? defaultDetail
       : this.getErrorDetail(this.errorMessage ?? '');
 
-    this.toastMessage.emit({
-      severity: 'error',
-      summary: 'MESSAGE.ERROR',
-      detail,
-    });
+    this.emitToast('error', detail);
 
     console.error('Operation error:', error);
-    this.closeAndReset();
+    this.closeModal();
   }
 
   private getErrorDetail(errorCode: string): string {
@@ -159,32 +181,29 @@ export class ModalApprovalStatusComponent implements OnInit, OnChanges, OnDestro
     }
   }
 
-  private getSanitizedApprovalStatusValues(): Omit<ApprovalStatus, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
+  private getSanitizedApprovalStatusValues(): Omit<
+    ApprovalStatus,
+    'id' | 'createdAt' | 'updatedAt' | 'version'
+  > {
     return {
       status: this.createApprovalStatusForm.value.status?.trim() ?? '',
       sequenceNo: this.createApprovalStatusForm.value.order ?? 0,
       forProjects: this.createApprovalStatusForm.value.isProject ? 1 : 0,
-      forNetworks: this.createApprovalStatusForm.value.isNetwork ? 1 : 0
+      forNetworks: this.createApprovalStatusForm.value.isNetwork ? 1 : 0,
     };
   }
 
-
-  handleClose(): void {
+  private closeModal(reset: boolean = true): void {
     this.isLoading = false;
     this.isVisibleModal.emit(false);
-    this.resetForm();
+    if (reset) this.resetForm();
   }
 
   private resetForm(): void {
     this.createApprovalStatusForm.reset();
   }
 
-  closeModal(): void {
-    this.isVisibleModal.emit(false);
-    this.createApprovalStatusForm.reset();
-  }
-
-  public focusInputIfNeeded() {
+  public focusInputIfNeeded(): void {
     if (this.isCreateMode && this.approvalStatusNameInput) {
       setTimeout(() => {
         this.approvalStatusNameInput?.nativeElement?.focus();
