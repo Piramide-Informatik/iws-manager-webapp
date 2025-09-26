@@ -64,7 +64,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService,
     private readonly employeeIwsStateService: EmployeeIwsStateService,
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     if (this.langSubscription) {
@@ -104,6 +104,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       },
       {
         field: 'lastname',
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.LAST_NAME')),
       },
       {
@@ -120,7 +121,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
+  toastMessageDisplay(message: { severity: string, summary: string, detail: string }): void {
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
