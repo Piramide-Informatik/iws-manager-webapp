@@ -100,7 +100,8 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
         classesTHead: ['width-33'],
         type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.THRESHOLD')),
-        customClasses: ['align-right'] 
+        customClasses: ['align-right'],
+        useSameAsEdit: true 
       },
       {
         field: 'percentage',
