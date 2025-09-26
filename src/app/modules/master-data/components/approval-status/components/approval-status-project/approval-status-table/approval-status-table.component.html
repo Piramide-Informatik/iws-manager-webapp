@@ -23,11 +23,11 @@
           <app-modal-approval-status
             #approvalStatusModal
             (isVisibleModal)="onVisibleModal($event)"
-            (confirmDelete)="onConfirmDelete($event)"
             [modalType]="modalType"
             [approvalStatusName]="approvalStatusName"
             [approvalStatusToDelete]="selectedApprovalStatus"
             (isVisibleModal)="onModalVisibilityChange($event)"
+            (toastMessage)="toastMessageDisplay($event)"
           ></app-modal-approval-status>
         </p-dialog>
       </div>
