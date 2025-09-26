@@ -85,3 +85,7 @@
     display: inline;
   }
 }
+
+::ng-deep .sub_contract_input .p-select-option {
+  white-space: normal !important;
+}
