@@ -5,7 +5,7 @@
                 <label for="qualification" class="block">
                     {{ 'EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION' | translate }}
                 </label>
-                <input #titleInput pInputText type="text" id="qualification" formControlName="qualification" autocomplete="off"
+                <input #titleInput #employeeCategoryInput pInputText type="text" id="qualification" formControlName="qualification" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeCategoryForm.get('qualification')?.invalid"
                     [attr.aria-describedby]="createEmployeeCategoryForm.get('qualification')?.invalid ? 'qualificationError' : null"
                     class="w-full" />
