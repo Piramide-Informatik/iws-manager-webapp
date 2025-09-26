@@ -34,7 +34,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   booleanHeaders: any[] = [];
 
   colOrders: any = {};
-  defaultDateFormat = "dd.MM.YYYY"
+  readonly defaultDateFormat = "dd.MM.yyyy";
 
   @Output() onEditRegister = new EventEmitter<any>();
   @Output() onDeleteRegister = new EventEmitter<number>();
