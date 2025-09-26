@@ -894,7 +894,7 @@
       "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
     },
     "FORM":{
-      "IWS_TEAM_FORM": "Neue Team"
+      "IWS_TEAM_FORM": "Neues Team"
     }
   },
   "COUNTRIES": {
@@ -1100,7 +1100,7 @@
   "BILLERS": {
     "TITLE_FORM": "Rechnungsersteller bearbeiten",
     "MODAL": {
-      "NEW": "Neu Rechnungsersteller",
+      "NEW": "Neuer Rechnungsersteller",
       "DELETE": "Rechnungsersteller löschen",
       "REMOVE_BILLER_QUESTION": "Möchten Sie den Rechnungssteller wirklich löschen "
     }
