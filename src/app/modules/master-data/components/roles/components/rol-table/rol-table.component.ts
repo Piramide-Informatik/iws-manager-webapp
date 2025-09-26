@@ -92,7 +92,8 @@ export class RolTableComponent implements OnInit, OnDestroy {
       {
         field: 'role',
         minWidth: 110,
-        header: this.translate.instant(_('ROLES.TABLE_ROLES.USER_ROL'))
+        header: this.translate.instant(_('ROLES.TABLE_ROLES.USER_ROL')),
+        useSameAsEdit: true
       }
     ];
   }
