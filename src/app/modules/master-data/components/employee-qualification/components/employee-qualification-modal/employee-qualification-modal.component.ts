@@ -8,6 +8,8 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeCategoryUtils } from '../../utils/employee-category-utils';
@@ -21,15 +23,17 @@ import { EmployeeCategory } from '../../../../../../Entities/employee-category '
   templateUrl: './employee-qualification-modal.component.html',
   styleUrl: './employee-qualification-modal.component.scss',
 })
-export class EmployeeQualificationModalComponent implements OnInit, OnDestroy {
+export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
   private readonly subscriptions = new Subscription();
 
   @ViewChild('employeeCategoryInput')
   employeeCategoryInput!: ElementRef<HTMLInputElement>;
+
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() employeeCategoryToDelete: number | null = null;
   @Input() employeeCategoryName: string | null = null;
+  @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() employeeCategoryCreated = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{
@@ -56,6 +60,11 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadInitialData();
     this.resetForm();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visibleModal'] && this.visibleModal) {
+      this.focusInputIfNeeded();
+    }
   }
 
   private loadInitialData() {
@@ -127,48 +136,48 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy {
   }
 
   private emitToastAndClose(
-  severity: 'success' | 'error',
-  detail: string,
-  summaryKey?: string
-): void {
-  this.toastMessage.emit({
-    severity,
-    summary:
-      summaryKey ??
-      (severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR'),
-    detail,
-  });
-  this.closeAndReset();
-}
-
-private showToastAndClose(severity: 'success' | 'error', detail: string): void {
-  this.emitToastAndClose(severity, detail);
-}
-
-private handleOperationError(
-  error: any,
-  defaultDetail: string,
-  inUseDetail?: string
-): void {
-  this.errorMessage = error?.message ?? defaultDetail;
-  const detail = this.errorMessage?.includes('it is in use by other entities')
-    ? inUseDetail ?? defaultDetail
-    : this.getErrorDetail(this.errorMessage ?? '');
-
-  this.emitToastAndClose('error', detail, 'MESSAGE.ERROR');
-  console.error('Operation error:', error);
-}
-
-private getErrorDetail(errorCode: string): string {
-  switch (errorCode) {
-    case 'TITLE.ERROR.EMPTY':
-      return 'MESSAGE.EMPTY_ERROR';
-    case 'TITLE.ERROR.ALREADY_EXISTS':
-      return 'MESSAGE.RECORD_ALREADY_EXISTS';
-    default:
-      return 'MESSAGE.CREATE_FAILED';
+    severity: 'success' | 'error',
+    detail: string,
+    summaryKey?: string
+  ): void {
+    this.toastMessage.emit({
+      severity,
+      summary:
+        summaryKey ??
+        (severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR'),
+      detail,
+    });
+    this.closeAndReset();
   }
-}
+
+  private showToastAndClose(severity: 'success' | 'error', detail: string): void {
+    this.emitToastAndClose(severity, detail);
+  }
+
+  private handleOperationError(
+    error: any,
+    defaultDetail: string,
+    inUseDetail?: string
+  ): void {
+    this.errorMessage = error?.message ?? defaultDetail;
+    const detail = this.errorMessage?.includes('it is in use by other entities')
+      ? inUseDetail ?? defaultDetail
+      : this.getErrorDetail(this.errorMessage ?? '');
+
+    this.emitToastAndClose('error', detail, 'MESSAGE.ERROR');
+    console.error('Operation error:', error);
+  }
+
+  private getErrorDetail(errorCode: string): string {
+    switch (errorCode) {
+      case 'TITLE.ERROR.EMPTY':
+        return 'MESSAGE.EMPTY_ERROR';
+      case 'TITLE.ERROR.ALREADY_EXISTS':
+        return 'MESSAGE.RECORD_ALREADY_EXISTS';
+      default:
+        return 'MESSAGE.CREATE_FAILED';
+    }
+  }
 
   private getSanitizedEmployeeCategoryValues(): Omit<
     EmployeeCategory,
@@ -192,7 +201,7 @@ private getErrorDetail(errorCode: string): string {
     if (this.isCreateMode && this.employeeCategoryInput) {
       setTimeout(() => {
         this.employeeCategoryInput?.nativeElement?.focus();
-      }, 150);
+      }, 200);
     }
   }
 }
