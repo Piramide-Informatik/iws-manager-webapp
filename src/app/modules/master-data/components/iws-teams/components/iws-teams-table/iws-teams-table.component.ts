@@ -101,6 +101,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
         field: 'name',
         header: this.translate.instant(_('IWS_TEAMS.LABEL.TEAM_NAME')),
         styles: { width: 'auto' },
+        useSameAsEdit: true
       },
     ];
   }

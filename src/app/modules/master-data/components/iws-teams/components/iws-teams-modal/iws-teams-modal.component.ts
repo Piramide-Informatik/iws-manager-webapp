@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
 import { finalize, map } from 'rxjs/operators';
@@ -12,19 +12,19 @@ import { EmployeeIwsService } from '../../../../../../Services/employee-iws.serv
   templateUrl: './iws-teams-modal.component.html',
   styleUrl: './iws-teams-modal.component.scss',
 })
-export class IwsTeamsModalComponent implements OnInit, OnDestroy {
+export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly teamIwsUtils = inject(TeamIwsUtils);
   private readonly employeeIws=  inject(EmployeeIwsService);
   private readonly subscriptions = new Subscription();
 
   leaders: any[] = [];
-  @ViewChild('teamIwsInput')
+  @ViewChild('titleInput')
   teamIwsInput!: ElementRef<HTMLInputElement>;
 
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() teamIwsToDelete: number | null = null;
   @Input() teamIwsName: string | null = null;
-
+  @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() teamIwsCreated = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{ severity: string; summary: string; detail: string }>();
@@ -45,6 +45,12 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['visibleModal'] && this.visibleModal){
+      this.focusInputIfNeeded();
+    }
   }
 
   get isCreateMode(): boolean {
@@ -156,9 +162,11 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy {
     this.createTeamIwsForm.reset();
   }
 
-  public focusInputIfNeeded(): void {
+  public focusInputIfNeeded() {
     if (this.isCreateMode && this.teamIwsInput) {
-      setTimeout(() => this.teamIwsInput?.nativeElement?.focus(), 150);
+      setTimeout(() => {
+        this.teamIwsInput?.nativeElement?.focus();
+      }, 200);
     }
   }
 
