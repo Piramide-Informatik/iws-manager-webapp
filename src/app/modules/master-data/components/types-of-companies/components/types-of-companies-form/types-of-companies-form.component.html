@@ -1,6 +1,6 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'TYPE_OF_COMPANIES.LABEL.EDIT_COMPANY_TYPE' | translate">
     <form [formGroup]="companyTypeEditForm" (ngSubmit)="onCompanyTypeEditFormSubmit()">
-        <div class="type-of-companies-form">
+        <div class="type-of-companies-form px-2">
             <label for="name">{{ 'TYPE_OF_COMPANIES.LABEL.COMPANY_TYPE' | translate }}</label>
             <div class="input-message">
                 <input #firstInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': companyTypeEditForm.get('name')?.invalid && 

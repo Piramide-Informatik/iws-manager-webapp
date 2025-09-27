@@ -3,12 +3,11 @@
     align-items: center;
     
     label {
-        width: auto;
+        width: 120px;
+        flex-shrink: 0;
     }
 
     input {
-       flex: 1;
-       max-width: 300px;
-       margin-left: 1rem;
+       width: 100%;
     }
 }

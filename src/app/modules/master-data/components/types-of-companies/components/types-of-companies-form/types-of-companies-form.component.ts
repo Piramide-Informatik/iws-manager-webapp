@@ -62,10 +62,8 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   }
 
   onCompanyTypeEditFormSubmit(): void {
-    if (this.companyTypeEditForm.invalid || !this.companyType || this.isSaving) {
-      this.markAllFieldsAsTouched();
-      return;
-    }
+    if (this.companyTypeEditForm.invalid || !this.companyType || this.isSaving) return;
+
     this.isSaving = true;
     const companyType = Object.assign(this.companyType, this.companyTypeEditForm.value);
 
@@ -102,13 +100,6 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private markAllFieldsAsTouched(): void {
-    Object.values(this.companyTypeEditForm.controls).forEach(controlForm => {
-      controlForm.markAsTouched();
-      controlForm.markAsDirty();
-    });
-  }
-
   private loadCompanyTypeAfterRefresh(companyTypeId: string): void {
     this.isSaving = true;
     this.subscriptions.add(
@@ -129,7 +120,7 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   onRefresh(): void {
     if (this.companyType?.id) {
       localStorage.setItem('selectedCompanyTypeId', this.companyType.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="companyTypeForm" (ngSubmit)="onCompanyTypeSubmit()">
-        <div class="create-form">
-            <label for="companyType">{{ 'TYPE_OF_COMPANIES.LABEL.COMPANY_TYPE' | translate }}</label>
+        <div class="create-form mt-4">
+            <label for="name">{{ 'TYPE_OF_COMPANIES.LABEL.COMPANY_TYPE' | translate }}</label>
             <div class="input-message">
                 <input #companyTypeInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': companyTypeForm.get('name')?.invalid && 
                   companyTypeForm.get('name')?.dirty && companyTypeForm.get('name')?.touched}" autocomplete="off" />
