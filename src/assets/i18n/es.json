@@ -773,7 +773,6 @@
   "DUNNING_LEVELS": {
     "LABEL": {
       "DUNNING_LEVEL": "Nivel de reclamación",
-      "TEXT": "Texto",
       "EDIT_DUNNING_LEVEL": "Editar Nivel de Reclamación",
       "DESIGNATION": "Designación",
       "FEE": "Tarifa",

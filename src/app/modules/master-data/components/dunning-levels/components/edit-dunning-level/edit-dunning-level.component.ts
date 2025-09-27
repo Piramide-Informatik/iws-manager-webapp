@@ -1,8 +1,9 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReminderLevel } from '../../../../../../Entities/reminderLevel';
 import { DunningLevelUtils } from '../../utils/dunning-level.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-edit-dunning-level',
@@ -13,6 +14,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 export class EditDunningLevelComponent implements OnInit, OnChanges {
   @Input() selectedDunningLevel!: ReminderLevel | null;
   @Output() cancelAction = new EventEmitter();
+  @ViewChild('firstInput') firstInput!: InputNumber;
   private readonly dunningLevelUtils = inject(DunningLevelUtils);
   editDunningLevelForm!: FormGroup;
   isLoading = false;
@@ -21,11 +23,11 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.editDunningLevelForm = new FormGroup({
-      levelNo: new FormControl(''),
+      levelNo: new FormControl(null),
       reminderTitle: new FormControl(''),
-      fee: new FormControl(''),
-      interestRate: new FormControl(''),
-      payPeriod: new FormControl(''),
+      fee: new FormControl(null),
+      interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
+      payPeriod: new FormControl(null),
       reminderText: new FormControl('')
     });
   }
@@ -34,6 +36,7 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
     let dunningLevelChange = changes['selectedDunningLevel'];
     if (dunningLevelChange && !dunningLevelChange.firstChange) {
       this.editDunningLevelForm.patchValue(dunningLevelChange.currentValue);
+      this.focusInputIfNeeded();
     }
   }
 
@@ -60,5 +63,15 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
     this.editDunningLevelForm.reset();
     this.selectedDunningLevel = null;
     this.cancelAction.emit(true);
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.selectedDunningLevel && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput.input.nativeElement) {
+          this.firstInput.input.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }

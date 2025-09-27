@@ -33,6 +33,9 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
     if(changes['isVisible'] && this.isVisible){
       this.focusInputIfNeeded();
     }
+    if(changes['isVisible'] && !this.isVisible){
+      this.createContractStatusForm.reset();
+    }
   }
 
   get isCreateMode(): boolean {
