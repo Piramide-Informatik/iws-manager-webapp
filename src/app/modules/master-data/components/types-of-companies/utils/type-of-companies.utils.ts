@@ -38,37 +38,11 @@ export class CompanyTypeUtils {
 
   /**
    * Creates a new company type with validation
-   * @param nameCompanyType - Name for the new compnay type
+   * @param CompanyType - new compnay type without timestamp
    * @returns Observable that completes when company type is created
    */
-  createNewCompanyType(nameCompanyType: string): Observable<void> {
-
-    return new Observable<void>(subscriber => {
-      this.companyTypeService.addCompanyType({
-        name: nameCompanyType
-      });
-
-      // Complete the observable after operation
-      subscriber.next();
-      subscriber.complete();
-    });
-  }
-
-  /**
-   * Checks if a company type exists (case-insensitive comparison)
-   * @param name - Name to check
-   * @returns Observable emitting boolean indicating existence
-   */
-  companyTypeExists(name: string): Observable<boolean> {
-    return this.companyTypeService.getAllCompanyTypes().pipe(
-      map(companyType => companyType.some(
-        ct => ct.name.toLowerCase() === name.toLowerCase()
-      )),
-      catchError(err => {
-        console.error('Error checking compnay type existence:', err);
-        return throwError(() => new Error('Failed to check company type existence'));
-      })
-    );
+  createNewCompanyType(companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<CompanyType> {
+    return this.companyTypeService.addCompanyType(companyType);
   }
 
   /**

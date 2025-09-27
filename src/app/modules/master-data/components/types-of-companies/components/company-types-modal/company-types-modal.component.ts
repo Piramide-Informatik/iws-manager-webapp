@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { emptyValidator } from '../../utils/empty.validator';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { CompanyType } from '../../../../../../Entities/companyType';
 
 @Component({
   selector: 'app-company-types-modal',
@@ -14,12 +13,13 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrl: './company-types-modal.component.scss'
 })
 
-export class TypeOfCompaniesModalComponent implements OnInit {
+export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   private readonly companyTypeUtils = inject(CompanyTypeUtils);
   @ViewChild('companyTypeInput') companyTypeInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() companyTypeToDelete: number | null = null;
   @Input() companyTypeName: string | null = null;
+  @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() companyTypeCreated = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
@@ -40,6 +40,12 @@ export class TypeOfCompaniesModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyTypeForm.reset();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['visible'] && this.visible){
+      this.focusCompanyTypeInputIfNeeded();
+    }
   }
 
   get isCreateMode(): boolean {
@@ -72,6 +78,7 @@ export class TypeOfCompaniesModalComponent implements OnInit {
 
   handleDeletionCompanyType(message: {severity: string, summary: string, detail: string, error?: any}): void {
     this.isLoading = false;
+    this.closeModal();
     if (message.error) {
       this.errorMessage = message.error.message ?? 'Failed to delete company type';
       console.error('Deletion error:', message.error);
@@ -81,59 +88,33 @@ export class TypeOfCompaniesModalComponent implements OnInit {
       summary: message.summary,
       detail: message.detail
     });
-    this.closeModal();
   }
 
   onCompanyTypeSubmit(): void {
-    if (this.shouldPreventSubmission()) return;
+    if (this.companyTypeForm.invalid || this.isLoading) return;
 
-    this.prepareForSubmission();
-    const companyName = this.companyTypeForm.value.name ?? '';
-
-    this.companyTypeUtils.companyTypeExists(companyName).pipe(
-      switchMap(exists => this.handleCompanyTypeExistence(exists, companyName)),
-      catchError(err => this.handleError('TITLE.ERROR.CHECKING_DUPLICATE', err)),
-      finalize(() => this.isLoading = false)
-    ).subscribe({
-      next: (data) => {
-        if (data !== null) {
-          this.onCreateCompanyTypeSuccessfully()
-        }
-      }
-    });
-
-    this.handleClose();
-  }
-
-  private shouldPreventSubmission(): boolean {
-    return this.companyTypeForm.invalid || this.isLoading;
-  }
-
-  private prepareForSubmission(): void {
     this.isLoading = true;
     this.errorMessage = null;
-  }
+    const companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      name: this.companyTypeForm.value.name ?? ''
+    };
 
-  private handleCompanyTypeExistence(exists: boolean, companyName: string) {
-    if (exists) {
-      this.errorMessage = 'TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_ALREADY_EXIST';
-      this.messageService.add({
-        severity: 'error',
-        summary: this.translateService.instant('TYPE_OF_COMPANIES.MESSAGE.ERROR'),
-        detail: this.translateService.instant(this.errorMessage)
-      });
-      return of(null);
-    }
-
-    return this.companyTypeUtils.createNewCompanyType(companyName).pipe(
-      catchError(err => this.handleError('TYPE_OF_COMPANIES.ERROR.CREATION_FAILED', err))
-    )
+    this.companyTypeUtils.createNewCompanyType(companyType).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.onCreateCompanyTypeSuccessfully();
+        this.closeModal();      
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.handleError(err.message, err)
+      }
+    });
   }
 
   private handleError(messageKey: string, error: any) {
     this.errorMessage = messageKey;
     console.error('Error:', error);
-    return of(null);
   }
 
   private onCreateCompanyTypeSuccessfully() {
@@ -144,28 +125,18 @@ export class TypeOfCompaniesModalComponent implements OnInit {
     });
   }
 
-  handleClose(): void {
-    this.isLoading = false;
-    this.isVisibleModal.emit(false);
-    this.companyTypeForm.reset();
-  }
-
   closeModal(): void {
     this.isVisibleModal.emit(false);
     this.companyTypeForm.reset();
   }
 
-  onCancel(): void {
-    this.handleClose();
-  }
-
-  public focusCompanyTypeInputIfNeeded() {
+  private focusCompanyTypeInputIfNeeded() {
     if (this.isCreateMode && this.companyTypeInput) {
       setTimeout(() => {
         if (this.companyTypeInput?.nativeElement) {
           this.companyTypeInput.nativeElement.focus(); 
         }
-      }, 150); 
+      }, 200); 
     }
   }
 }

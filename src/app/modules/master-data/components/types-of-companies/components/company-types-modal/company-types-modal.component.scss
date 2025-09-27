@@ -3,17 +3,11 @@
     align-items: center;
     
     label {
-        width: auto;
-        font-weight: 500;
+        width: 120px;
+        flex-shrink: 0;
     }
 
     input {
-       flex: 1;
-       max-width: 300px;
-       margin-left: 1rem;
+       width: 100%;
     }
-}
-
-strong {
-    display: inline;
 }

@@ -18,15 +18,14 @@
           : ('TYPE_OF_COMPANIES.LABEL.DELETE_TITLE' | translate)" 
         [modal]="true" 
         [(visible)]="visibleCompanyTypeModal" 
-        (onShow)="onDialogShow()"
       >
         <app-company-types-modal
           [modalType]="compnayTypeModalType"
+          [visible]="visibleCompanyTypeModal"
           [companyTypeName]="companyTypeName"
           [companyTypeToDelete]="selectedCompanyType"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (confirmDelete)="onConfirmDelete($event)"
-          #companyTypeModal
         ></app-company-types-modal>
       </p-dialog>
     </div>

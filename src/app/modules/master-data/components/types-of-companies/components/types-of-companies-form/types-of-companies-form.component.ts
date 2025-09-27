@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.state.service';
 import { CompanyType } from '../../../../../../Entities/companyType';
@@ -15,12 +15,12 @@ import { Subscription } from 'rxjs';
   styleUrl: './types-of-companies-form.component.scss'
 })
 export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
-
   companyType: CompanyType | null = null;
   companyTypeEditForm!: FormGroup;
   isSaving = false;
   public showOCCErrorModalCompanyType = false;
   private readonly subscriptions = new Subscription();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(private readonly companyTypeServiceUtils: CompanyTypeUtils,
     private readonly typeOfCompanyStateService: TypeOfCompaniesStateService,
@@ -42,9 +42,10 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.typeOfCompanyStateService.currentTypeOfCompany$.subscribe((companyType) => {
-        if (companyType !== null) {
+        if (companyType) {
           this.companyType = companyType;
           this.companyTypeEditForm.patchValue(companyType);
+          this.focusInputIfNeeded();
           this.companyTypeEditForm.updateValueAndValidity();
         }
       })
@@ -58,26 +59,24 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   clearForm(): void {
     this.companyTypeEditForm.reset();
     this.companyType = null;
-    this.isSaving = false;
   }
 
   onCompanyTypeEditFormSubmit(): void {
-    if (this.companyTypeEditForm.invalid || !this.companyType || this.isSaving) {
-      this.markAllFieldsAsTouched();
-      return;
-    }
+    if (this.companyTypeEditForm.invalid || !this.companyType || this.isSaving) return;
+
     this.isSaving = true;
     const companyType = Object.assign(this.companyType, this.companyTypeEditForm.value);
 
     this.subscriptions.add(
       this.companyTypeServiceUtils.updateCompanyType(companyType).subscribe({
-        next: (savedCompanyType) => this.handleSaveSuccess(savedCompanyType),
+        next: () => this.handleSaveSuccess(),
         error: (err) => this.handleSaveError(err)
       })
     );
   }
 
-  private handleSaveSuccess(savedCompanyType: CompanyType): void {
+  private handleSaveSuccess(): void {
+    this.isSaving = false;
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.SUCCESS'),
@@ -88,6 +87,7 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveError(error: any): void {
+    this.isSaving = false;
     console.error('Error saving companyType:', error);
     if (error instanceof Error && error.message?.includes('version mismatch')) {
       this.showOCCErrorModalCompanyType = true;
@@ -97,14 +97,6 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
       severity: 'error',
       summary: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.ERROR'),
       detail: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.UPDATE_FAILED')
-    });
-    this.isSaving = false;
-  }
-
-  private markAllFieldsAsTouched(): void {
-    Object.values(this.companyTypeEditForm.controls).forEach(controlForm => {
-      controlForm.markAsTouched();
-      controlForm.markAsDirty();
     });
   }
 
@@ -128,7 +120,17 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   onRefresh(): void {
     if (this.companyType?.id) {
       localStorage.setItem('selectedCompanyTypeId', this.companyType.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.companyType && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }
