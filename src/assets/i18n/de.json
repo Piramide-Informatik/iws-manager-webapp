@@ -1206,7 +1206,7 @@
       "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
     },
     "MODAL": {
-      "TITLE_CREATE": "Neu Vertragsstatus",
+      "TITLE_CREATE": "Neuer Vertragsstatus",
       "TITLE_DELETE": "Vertragsstatus löschen",
       "DELETE_QUESTION": "Möchten Sie den Vertragsstatus wirklich löschen "
     }
