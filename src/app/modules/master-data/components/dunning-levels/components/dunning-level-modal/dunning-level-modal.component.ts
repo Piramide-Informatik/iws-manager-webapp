@@ -1,7 +1,8 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DunningLevelUtils } from '../../utils/dunning-level.utils';
 import { ReminderLevel } from '../../../../../../Entities/reminderLevel';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-dunning-level-modal',
@@ -17,19 +18,17 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createDunningLevel = new EventEmitter<{created?: ReminderLevel, status: 'success' | 'error'}>();
   @Output() deleteDunningLevel = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
-  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('firstInput') firstInput!: InputNumber;
   public dunningLevelForm!: FormGroup;
   public isLoading = false;
 
-  constructor(){}
-
   ngOnInit(): void {
     this.dunningLevelForm = new FormGroup({
-      levelNo: new FormControl(''),
+      levelNo: new FormControl(null),
       reminderTitle: new FormControl(''),
-      fee: new FormControl(''),
-      interestRate: new FormControl(''),
-      payPeriod: new FormControl(''),
+      fee: new FormControl(null),
+      interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
+      payPeriod: new FormControl(null),
       reminderText: new FormControl('')
     });
   }
@@ -90,8 +89,8 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
   private focusInputIfNeeded(): void {
     if (this.isCreateMode && this.firstInput) {
       setTimeout(() => {
-        if (this.firstInput?.nativeElement) {
-          this.firstInput.nativeElement.focus();
+        if (this.firstInput.input.nativeElement) {
+          this.firstInput.input.nativeElement.focus();
         }
       }, 200);
     }

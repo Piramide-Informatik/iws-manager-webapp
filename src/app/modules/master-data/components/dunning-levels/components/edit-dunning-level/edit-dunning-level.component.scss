@@ -1,11 +1,18 @@
 .dunning-level-form {
+    display: flex;
+    align-items: center;
     margin-bottom: 1rem;
 
     label {
-        width: 150px;
+        width: 130px;
+        flex-shrink: 0;
     }
 
-    input, textarea {
-        width: 14em;
+    input, textarea, p-inputnumber {
+        width: 100%;
+    }
+
+    ::ng-deep .p-inputnumber-input {
+        width: 100%;
     }
 }

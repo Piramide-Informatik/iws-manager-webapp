@@ -21,7 +21,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
   columsHeaderField: any[] = [];
   userDunningPreferences: UserPreference = {};
   tableKey: string = 'Dunning'
-  dataKeys = ['levelNo', 'reminderText'];
+  dataKeys = ['levelNo', 'reminderTitle'];
   visibleDunningLevelModal = false;
   modalType: 'create' | 'delete' = 'create';
   selectedDunningLevel!: ReminderLevel | null;
@@ -56,8 +56,8 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.columsHeaderField = [
-      { field: 'levelNo', classesTHead: ['proportional-width'], header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')), customClasses: ['align-right']  },
-      { field: 'reminderText', classesTHead: ['proportional-width'],  header: this.translate.instant(_('DUNNING_LEVELS.LABEL.TEXT')) },
+      { field: 'levelNo', classesTHead: ['width-10'], header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')), customClasses: ['align-right']  },
+      { field: 'reminderTitle',  header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DESIGNATION')) },
     ];
   }
 
