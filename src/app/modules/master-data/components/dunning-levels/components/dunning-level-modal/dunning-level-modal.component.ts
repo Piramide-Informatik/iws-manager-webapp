@@ -27,7 +27,7 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
       levelNo: new FormControl(null),
       reminderTitle: new FormControl(''),
       fee: new FormControl(null),
-      interestRate: new FormControl(null, [Validators.min(0), Validators.max(100.00)]),
+      interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
       payPeriod: new FormControl(null),
       reminderText: new FormControl('')
     });
