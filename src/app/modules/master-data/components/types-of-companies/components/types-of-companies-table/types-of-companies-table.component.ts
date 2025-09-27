@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, computed, SimpleChanges, inject } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, computed, SimpleChanges, inject, OnChanges } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -7,7 +7,6 @@ import { UserPreferenceService } from '../../../../../../Services/user-preferenc
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { CompanyTypeService } from '../../../../../../Services/company-type.service';
-import { TypeOfCompaniesModalComponent } from '../company-types-modal/company-types-modal.component';
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.state.service';
 import { MessageService } from 'primeng/api';
@@ -18,10 +17,10 @@ import { MessageService } from 'primeng/api';
   templateUrl: './types-of-companies-table.component.html',
   styleUrl: './types-of-companies-table.component.scss'
 })
-export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
-
+export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly companyTypeUtils = new CompanyTypeUtils();
   private readonly companyTypeService = inject(CompanyTypeService);
+  private readonly companyTypeStateService = inject(TypeOfCompaniesStateService);
   private readonly messageService = inject(MessageService);
   typeOfCompaniesColumns: any[] = [];
   isTypeOfCompaniesChipVisible = false;
@@ -35,7 +34,6 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
   readonly typeOfCompaniesValues = computed(() => {
     return this.companyTypeService.companyTypes();
   });
-  @ViewChild('companyTypeModal') companyTypeModalComponent!: TypeOfCompaniesModalComponent;
   @ViewChild('dt') dt!: Table;
 
   private langTypeOfCompaniesSubscription!: Subscription;
@@ -60,15 +58,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
     if (event.type === 'delete' && event.data) {
       this.selectedCompanyType = event.data;
 
-      this.companyTypeUtils.getCompanyTypeById(this.selectedCompanyType!).subscribe({
-        next: (companyType) => {
-          this.companyTypeName = companyType?.name ?? '';
-        },
-        error: (err) => {
-          console.error('No se pudo obtener el tipo de compania:', err);
-          this.companyTypeName = '';
-        }
-      });
+      this.companyTypeName = this.typeOfCompaniesValues().find(tc => tc.id === this.selectedCompanyType)?.name ?? '';
     }
     this.visibleCompanyTypeModal = true;
   }
@@ -116,23 +106,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
   }
 
   editCompanyType(companyType: CompanyType) {
-    const companyTypeEdit: CompanyType = {
-      id: companyType.id,
-      name: companyType.name,
-      createdAt: '',
-      updatedAt: ''
-    };
-
-    this.companyTypeUtils.getCompanyTypeById(companyTypeEdit.id).subscribe({
-      next: (fullCompanyType) => {
-        if (fullCompanyType) {
-          this.companyTypeState.setTypeOfCompanyTypeToEdit(fullCompanyType);
-        }
-      },
-      error: (err) => {
-        console.error('Error al cargar el tipo de compania:', err);
-      }
-    });
+    this.companyTypeStateService.setTypeOfCompanyTypeToEdit(companyType);
   }
 
   onVisibleModal(visible: boolean) {
@@ -143,11 +117,6 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy {
     this.visibleCompanyTypeModal = visible;
     if (!visible) {
       this.selectedCompanyType = null;
-    }
-  }
-  onDialogShow() {
-    if (this.compnayTypeModalType === 'create' && this.companyTypeModalComponent) {
-      this.companyTypeModalComponent.focusCompanyTypeInputIfNeeded();
     }
   }
 

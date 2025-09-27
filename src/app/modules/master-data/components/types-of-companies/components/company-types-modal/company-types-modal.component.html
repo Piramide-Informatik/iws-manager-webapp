@@ -1,34 +1,32 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="companyTypeForm" (ngSubmit)="onCompanyTypeSubmit()">
-        <div class="align-items-center mb-2 mt-4">
-            <div class="create-form flex align-items-center mb-6">
-                <label for="companyType">{{ 'TYPE_OF_COMPANIES.LABEL.COMPANY_TYPE' | translate }}</label>
-                <div>
-                    <input #companyTypeInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': companyTypeForm.get('name')?.invalid && 
-                      companyTypeForm.get('name')?.dirty && companyTypeForm.get('name')?.touched}" autocomplete="off" />
-                     <p-message severity="error" variant="simple" size="small" *ngIf="
-                         companyTypeForm.get('name')?.invalid && 
-                         companyTypeForm.get('name')?.dirty && 
-                         companyTypeForm.get('name')!.hasError('required')
-                         ">
-                         {{ 'TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_REQUIRED' | translate }}</p-message>
-                    <p-message severity="error" variant="simple" size="small" *ngIf="
-                         companyTypeForm.get('name')?.invalid && 
-                         companyTypeForm.get('name')?.dirty && 
-                         companyTypeForm.get('name')!.hasError('emptyValue')
-                         ">
-                         {{ 'TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_EMPTY' | translate }}</p-message>     
-                </div>
+        <div class="create-form">
+            <label for="companyType">{{ 'TYPE_OF_COMPANIES.LABEL.COMPANY_TYPE' | translate }}</label>
+            <div class="input-message">
+                <input #companyTypeInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': companyTypeForm.get('name')?.invalid && 
+                  companyTypeForm.get('name')?.dirty && companyTypeForm.get('name')?.touched}" autocomplete="off" />
+                 <p-message severity="error" variant="simple" size="small" *ngIf="
+                     companyTypeForm.get('name')?.invalid && 
+                     companyTypeForm.get('name')?.dirty && 
+                     companyTypeForm.get('name')!.hasError('required')
+                     ">
+                     {{ 'TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_REQUIRED' | translate }}</p-message>
+                <p-message severity="error" variant="simple" size="small" *ngIf="
+                     companyTypeForm.get('name')?.invalid && 
+                     companyTypeForm.get('name')?.dirty && 
+                     companyTypeForm.get('name')!.hasError('emptyValue')
+                     ">
+                     {{ 'TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_EMPTY' | translate }}</p-message>     
             </div>
+        </div>
 
-            <div class="flex justify-content-center gap-2 mt-4">
-                <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
-                    icon="pi pi-check" iconPos="left" [loading]="isLoading"
-                    [disabled]="companyTypeForm.invalid || isLoading" />
+        <div class="flex justify-content-center gap-2 mt-4">
+            <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
+                icon="pi pi-check" iconPos="left" [loading]="isLoading"
+                [disabled]="companyTypeForm.invalid || isLoading" />
 
-                <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                    icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
-            </div>
+            <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+                icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
         </div>
     </form>
 </ng-container>
