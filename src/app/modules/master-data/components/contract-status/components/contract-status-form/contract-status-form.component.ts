@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContractStatus } from '../../../../../../Entities/contractStatus';
 
@@ -9,11 +9,11 @@ import { ContractStatus } from '../../../../../../Entities/contractStatus';
   styleUrl: './contract-status-form.component.scss'
 })
 export class ContractStatusFormComponent implements OnInit, OnChanges {
-
   @Input() contractStatus!: ContractStatus;
   contractStatusForm!: FormGroup;
   @Output() contractStatusToEdit = new EventEmitter<any>();
   @Output() cancelEditContractStatus = new EventEmitter<any>();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   
   ngOnChanges(changes: SimpleChanges): void {
     let contractStatusChange = changes['contractStatus'];
@@ -21,6 +21,7 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
       this.contractStatus = contractStatusChange.currentValue;
       if (this.contractStatus) {
         this.contractStatusForm.patchValue(this.contractStatus);
+        this.focusInputIfNeeded();
       } else {
         this.contractStatusForm.reset();
       }
@@ -38,13 +39,21 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
       const value = this.contractStatusForm.value;
       this.contractStatus.status = value.status;
       this.contractStatusToEdit.emit(this.contractStatus);
-    } else {
-      console.log("Ungültiges Formular");
     }
   }
 
   cancel() {
     this.contractStatusForm.reset();
     this.cancelEditContractStatus.emit(null);
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.contractStatus && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }
