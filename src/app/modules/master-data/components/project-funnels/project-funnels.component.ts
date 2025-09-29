@@ -9,6 +9,7 @@ import { PromoterService } from '../../../../Services/promoter.service';
 import { Promoter } from '../../../../Entities/promoter';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { PromoterStateService } from './utils/promoter-state.service';
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-project-funnels',
@@ -20,7 +21,7 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   private readonly promoterUtils = inject(PromoterUtils);
   private readonly promoterService = inject(PromoterService);
   private readonly promoterStateService = inject(PromoterStateService);
-  columsHeaderFieldProjecFunnels: any[] = [];
+  columsHeaderFieldProjecFunnels: Column[] = [];
   userProjectFunnelsPreferences: UserPreference = {};
   tableKey: string = 'ProjectFunnels'
   dataKeys = ['id','projectPromoter'];
@@ -57,7 +58,7 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   loadColHeadersProjectFunnels(): void {
     this.columsHeaderFieldProjecFunnels = [
-      { field: 'promoterNo', styles: {'width': 'auto'}, header: 'Nr'},
+      { field: 'promoterNo', classesTHead: ['width-10'],header: 'Nr'},
       { field: 'projectPromoter',  header: this.translate.instant(_('PROJECT_FUNNELS.TABLE.PROJECT_SPONSOR')) },
     ];
   }
