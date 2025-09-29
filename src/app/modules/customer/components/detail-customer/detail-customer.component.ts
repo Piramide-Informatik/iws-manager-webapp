@@ -173,7 +173,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         this.contactPersons.set([]);
         return;
       }
-      this.updateTitle(this.translate.instant('PAGETITLE.CUSTOMER') + ' ...');
+      this.updateTitle(' ...');
       // Si hay ID, cargar el customer existente
       this.customerUtils.getCustomerById(Number(this.customerId)).subscribe({
         next: (customer) => {
