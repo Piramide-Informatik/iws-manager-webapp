@@ -12,7 +12,7 @@
           >{{ 'SALES_TAX.ERROR.SALES_TAX_REQUIRED' | translate }}</p-message>
       </div>
       <div class="flex justify-content-center gap-3">
-        <p-button class="save ml-5" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"/>
+        <p-button class="save ml-5" type="submit" [loading]="isLoading" [disabled]="editSalesTaxForm.invalid || isLoading || !editSalesTaxForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"/>
         <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
       </div>
     </div>
