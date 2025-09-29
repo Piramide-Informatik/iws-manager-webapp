@@ -101,13 +101,13 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public readonly tableData = computed(() => {
     return this.contactPersons()
-    .sort((c1: ContactPerson, c2: ContactPerson) => new Date(c2.createdAt ?? '2021-01-01').getTime() - new Date(c1.createdAt ?? '2021-01-01').getTime())
-    .map(contact => ({
-      id: contact.id,
-      name: `${contact.firstName} ${contact.lastName}`,
-      function: contact.function ?? '',
-      right: contact.forInvoicing
-    }));
+      .sort((c1: ContactPerson, c2: ContactPerson) => new Date(c2.createdAt ?? '2021-01-01').getTime() - new Date(c1.createdAt ?? '2021-01-01').getTime())
+      .map(contact => ({
+        id: contact.id,
+        name: `${contact.firstName} ${contact.lastName}`,
+        function: contact.function ?? '',
+        right: contact.forInvoicing
+      }));
   });
 
   @ViewChild('inputText') firstInput!: ElementRef;
@@ -173,7 +173,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         this.contactPersons.set([]);
         return;
       }
-
+      this.updateTitle(this.translate.instant('PAGETITLE.CUSTOMER') + ' ...');
       // Si hay ID, cargar el customer existente
       this.customerUtils.getCustomerById(Number(this.customerId)).subscribe({
         next: (customer) => {
@@ -228,7 +228,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private updateTitle(name: string): void {
     this.titleService.setTitle(
-      this.translate.instant('PAGETITLE.CUSTOMER') + name
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
     );
   }
 
@@ -438,7 +438,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private handleSaveError(error: any): void {
     console.error('Error saving customer:', error);
- 
+
     if (error instanceof OccError) {
       this.showOCCErrorModalCustomer = true;
       this.occErrorType = error.errorType;
@@ -568,7 +568,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isLoadingCustomer = false;
-          if (error instanceof OccError  || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
             this.showOCCErrorModalCustomer = true;
             this.occErrorType = 'DELETE_UNEXISTED';
             this.showDeleteCustomerModal = false;
