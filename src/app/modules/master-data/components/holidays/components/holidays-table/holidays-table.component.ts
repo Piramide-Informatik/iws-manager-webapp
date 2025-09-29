@@ -18,7 +18,7 @@ import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
 import { PublicHolidayService } from '../../../../../../Services/public-holiday.service';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { HolidayModalComponent } from '../holiday-modal/holiday-modal.component';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-holidays-table',
@@ -35,8 +35,6 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
   modalType: 'create' | 'delete' = 'create';
   selectedPublicHoliday: number | null = null;
   publicHolidayName: string = '';
-  @ViewChild('HolidayModel')
-  publicHolidayModelComponent!: HolidayModalComponent;
 
   handleTableEvents(event: { type: 'create' | 'delete'; data?: any }): void {
     this.modalType = event.type;
@@ -66,9 +64,8 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
     .sort((a, b) => a.name.localeCompare(b.name));
   });
 
-  holidays: any[] = [];
-  columnsHeaderFieldHoliday: any[] = [];
-  publicHolidayDisplayedColumns: any[] = [];
+  columnsHeaderFieldHoliday: Column[] = [];
+  publicHolidayDisplayedColumns: Column[] = [];
   userHolidaysPreferences: UserPreference = {};
   tableKey: string = 'Holidays';
   dataKeys = ['sort', 'name'];
@@ -132,14 +129,13 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
     this.columnsHeaderFieldHoliday = [
       {
         field: 'sort',
-        styles: { width: '100px' },
+        classesTHead: ['width-10'],
         useSameAsEdit: true,
         header: this.translate.instant(_('HOLIDAYS.TABLE.SORT')),
         customClasses: ['align-right'],
       },
       {
         field: 'name',
-        styles: { width: 'auto' },
         useSameAsEdit: true,
         header: this.translate.instant(_('HOLIDAYS.TABLE.NAME')),
       },
@@ -186,11 +182,6 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
       this.showToast(message);
   }
 
-  onDialogShow() {
-    if (this.modalType === 'create' && this.publicHolidayModelComponent) {
-      this.publicHolidayModelComponent.focusInputIfNeeded();
-    }
-  }
 
   onModalVisibilityChange(visible: boolean): void {
     this.visibleModal = visible;
