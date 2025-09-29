@@ -6,7 +6,8 @@
     width: 1.5rem;
 }
 
-td, th {
+td,
+th {
     padding: 5px 16px !important;
     font-size: 14px;
     margin-left: 15px !important;
@@ -16,11 +17,11 @@ td, th {
 .thead {
     background: $primary-color;
     color: #fff;
-    min-width: 6.25rem;//=100px
-  
+    min-width: 6.25rem; //=100px
+
     &:hover {
-      background: $accent-color;
-      color: #12435d
+        background: $accent-color;
+        color: #12435d
     }
 }
 
@@ -29,13 +30,19 @@ td, th {
 }
 
 .thead-input-id {
-    min-width: 4.4rem;//=70px
+    min-width: 4.4rem; //=70px
     width: 100%;
 }
 
 .thead-input-width {
     width: 100%;
 }
+
 .align-right {
     text-align: right;
-  }
+}
+
+.card{
+    width: 100%;
+    max-width: 100%;
+}
