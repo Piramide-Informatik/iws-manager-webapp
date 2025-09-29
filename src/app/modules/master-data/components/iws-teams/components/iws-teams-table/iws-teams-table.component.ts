@@ -49,6 +49,9 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     return this.teamIwsService.teamsIws().map((teamiws) => ({
       id: teamiws.id,
       name: teamiws.name,
+      teamLeader: teamiws.teamLeader
+      ? `${teamiws.teamLeader.lastname ?? ""} ${teamiws.teamLeader.firstname ?? ""}`.trim()
+      : "",
     }));
   });
 
@@ -100,8 +103,13 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         header: this.translate.instant(_('IWS_TEAMS.LABEL.TEAM_NAME')),
-        styles: { width: 'auto' },
+        styles: { width: '50%', 'min-width': '200px' },
         useSameAsEdit: true
+      },
+      {
+        field: 'teamLeader',
+        header: this.translate.instant(_('IWS_TEAMS.LABEL.TEAM_LEADER')),
+        styles: { width: '50%', 'min-width': '200px' },
       },
     ];
   }
