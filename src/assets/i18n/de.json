@@ -705,11 +705,11 @@
     },
     "LABEL": {
       "HOLIDAY_NAME": "Feiertag",
-      "SORT": "Sortierung",
+      "SORT": "Reihenfolge",
       "FIXED_DATE": "Festes Datum"
     },
     "TABLE": {
-      "SORT": "Sort",
+      "SORT": "Reihenfolge",
       "NAME": "Feiertag",
       "PAGE_INFO": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
       "COLUMNS_SELECTED": "{0} Spalten ausgewählt",
@@ -735,9 +735,9 @@
       "HOLIDAY_LABEL_REQUIRED": "Der Name des Feiertags ist erforderlich."
     },
     "MODAL":{
-      "NAME":"Feiertags",
+      "NAME":"Feiertag",
       "DATE":"Datum",
-      "ORDEN":"Befehl"
+      "ORDEN":"Reihenfolge"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "Keine Staaten verfügbar"
