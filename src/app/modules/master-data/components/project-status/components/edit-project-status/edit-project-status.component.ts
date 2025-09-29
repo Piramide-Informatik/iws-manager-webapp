@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,14 +13,13 @@ import {  MessageService } from 'primeng/api';
   templateUrl: './edit-project-status.component.html',
   styleUrl: './edit-project-status.component.scss'
 })
-export class EditProjectStatusComponent {
+export class EditProjectStatusComponent implements OnInit {
   public showOCCErrorModalProjectStatus = false;
   currentProjectStatus: ProjectStatus | null = null;
   editProjectStatusForm!: FormGroup;
   isSaving = false;
   private readonly subscriptions = new Subscription();
-  private readonly editProjectStatusSource = new BehaviorSubject<ProjectStatus | null>(null);
-
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly projectStatusUtils: ProjectStatusUtils,
@@ -56,6 +55,7 @@ export class EditProjectStatusComponent {
 
   private loadProjectStatusData(projectStatus: ProjectStatus):void{
     this.editProjectStatusForm.patchValue({ projectStatus: projectStatus.name });
+    this.focusInputIfNeeded();
   }
 
   private loadProjectStatuAfterRefresh(projectStatusId: string): void {
@@ -143,6 +143,16 @@ export class EditProjectStatusComponent {
     if (this.currentProjectStatus?.id) {
       localStorage.setItem('selectedProjectStatusId', this.currentProjectStatus.id.toString());
       window.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentProjectStatus && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }
