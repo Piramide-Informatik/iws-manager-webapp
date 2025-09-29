@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import {  finalize } from 'rxjs/operators';
@@ -10,11 +10,12 @@ import { Subscription } from 'rxjs';
   templateUrl: './model-project-status.component.html',
   styleUrl: './model-project-status.component.scss'
 })
-export class ModelProjectStatusComponent implements OnInit {
+export class ModelProjectStatusComponent implements OnInit, OnChanges{
   private readonly projectStatusUtils = inject(ProjectStatusUtils);
   private readonly subscriptions = new Subscription();
   @ViewChild('projectStatusInput') projectStatusInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() visible: boolean = false;
   @Input() projectStatusToDelete: number | null = null;
   @Input() projectStatusName: string | null = null;
   @Output() isVisibleModel = new EventEmitter<boolean>();
@@ -35,6 +36,12 @@ export class ModelProjectStatusComponent implements OnInit {
   ngOnInit(): void {
     this.loadInitialData()
     this.resetForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visible'] && this.visible) {
+      this.focusInputIfNeeded();
+    }
   }
 
   get isCreateMode(): boolean {
@@ -166,7 +173,7 @@ export class ModelProjectStatusComponent implements OnInit {
         if (this.projectStatusInput?.nativeElement) {
           this.projectStatusInput.nativeElement.focus();
         }
-      }, 150);
+      }, 200);
     }
   }
 
