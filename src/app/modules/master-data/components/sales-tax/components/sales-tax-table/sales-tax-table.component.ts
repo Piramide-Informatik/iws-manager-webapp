@@ -63,7 +63,8 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
       {
         field: 'label',
         minWidth: 110,
-        header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX.SALES_TAX'))
+        header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX.SALES_TAX')),
+        useSameAsEdit: true
       },
       {
         field: 'rate',

@@ -1061,6 +1061,7 @@
       "CURRENT_TAX_RATE": "akt Steuersatz",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
     },
+    
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "ab Datum",
       "SENTENCE": "Satz",
@@ -1079,7 +1080,7 @@
       "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
     },
     "MODAL": {
-      "NEW": "Neu Umsatzsteuer",
+      "NEW": "Neue Umsatzsteuer",
       "DELETE": "Umsatzsteuer löschen",
       "DELETE_QUESTION": "Möchten Sie das Umsatzsteuer wirklich löschen "
     }
