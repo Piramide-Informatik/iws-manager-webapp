@@ -80,7 +80,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
         id: emp.id,
         firstname: emp.firstname,
         lastname: emp.lastname,
-        fullName: `${emp.firstname} ${emp.lastname}`,
+        fullName: `${emp.lastname} ${emp.firstname} `,
         version: emp.version
       })))
     ).subscribe({
