@@ -12,6 +12,9 @@ import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/mom
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 
 @Component({
   selector: 'app-employee-form',
@@ -25,7 +28,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
   private readonly qualificationFZUtils = inject(QualificationFZUtils);
   private readonly router = inject(Router);
+  private readonly titleService = inject(Title);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly customerUtils = inject(CustomerUtils);
   private readonly subscriptions = new Subscription();
 
   public employeeForm!: FormGroup;
@@ -37,6 +42,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   // Modal delete
   public visibleEmployeeModalDelete: boolean = false;
   public isLoading = false;
+  public customer: any;
 
   public salutations = toSignal(
     this.salutationUtils.getSalutationsSortedByName().pipe(
@@ -61,15 +67,24 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputNumber') firstInput!: InputNumber;
 
-  constructor(private readonly commonMessageService: CommonMessagesService) { }
+  constructor(private readonly commonMessageService: CommonMessagesService, private readonly translate: TranslateService,) { }
 
   ngOnInit(): void {
     this.initForm();
     this.firstInputFocus();
+    this.updateTitle('...');
     this.activatedRoute.params.subscribe(params => {
       const employeeId = params['employeeId'];
       if (!employeeId) {
         this.formType = 'create';
+        const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
+        if (customerId) {
+          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+            this.customer = customer;
+            this.updateTitle(customer?.customername1!);
+          });
+        }
+
       } else {
         this.formType = 'update';
         this.subscriptions.add(
@@ -91,6 +106,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
                   qualificationFzId: employee.qualificationFZ?.id ?? '',
                   qualificationKMUi: employee.qualificationkmui ?? ''
                 });
+                this.updateTitle(employee.customer?.customername1!);
               }
             },
             error: (err) => console.error('Error loading employee:', err)
@@ -169,7 +185,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private buildEmployeeFromForm(): Omit<Employee, 'id'> {
-    const employee = this.buildEmployeeData(history.state.customer);
+    const employee = this.buildEmployeeData(this.customer);
     return {
       ...employee,
       version: 0,
@@ -283,7 +299,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           console.error('Failed to delete employee:', error.message);
           if (error.message.includes('Cannot be deleted because have associated employment contracts')) {
             this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          }else if (error instanceof OccError  || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+          } else if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
             this.showOCCErrorModaEmployee = true;
             this.occErrorType = 'DELETE_UNEXISTED';
             this.visibleEmployeeModalDelete = false;
@@ -302,7 +318,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     if (error instanceof OccError) {
       this.showOCCErrorModaEmployee = true;
       this.occErrorType = error.errorType;
-      if(this.occErrorType === 'UPDATE_UNEXISTED'){
+      if (this.occErrorType === 'UPDATE_UNEXISTED') {
         this.occRoute = "/customers/employees/" + this.currentEmployee?.customer?.id;
       }
     }
@@ -328,5 +344,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   public getFullNameEmployee(): string {
     return `${this.currentEmployee?.firstname} ${this.currentEmployee?.lastname}`.trim();
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
+    );
   }
 }
