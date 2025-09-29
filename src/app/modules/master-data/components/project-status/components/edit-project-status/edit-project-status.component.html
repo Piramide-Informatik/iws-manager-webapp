@@ -3,7 +3,7 @@
         <div class="project-status-form flex align-items-center pb-4">
             <label for="projectStatus"> {{ 'PROJECT_STATUS.PROJECT_STATUS' | translate }}</label>
             <div class="input-message">
-                <input pInputText type="text" id="projectStatus" formControlName="projectStatus" [ngClass]="{'ng-invalid ng-dirty': editProjectStatusForm.get('projectStatus')?.invalid &&
+                <input #firstInput pInputText type="text" id="projectStatus" formControlName="projectStatus" [ngClass]="{'ng-invalid ng-dirty': editProjectStatusForm.get('projectStatus')?.invalid &&
                     editProjectStatusForm.get('projectStatus')?.touched}" autocomplete="off"/>
                     <p-message severity="error" variant="simple" size="small" *ngIf="
                         editProjectStatusForm.get('projectStatus')?.invalid &&
@@ -16,7 +16,7 @@
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button  type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
-                [disabled]="editProjectStatusForm.invalid || !editProjectStatusForm.dirty || isSaving"/>
+                [disabled]="editProjectStatusForm.invalid || !editProjectStatusForm.dirty || isSaving" [loading]="isSaving"/>
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times" iconPos="left" (click)="clearForm()" (keydown.enter)="clearForm()"/>
         </div>

@@ -62,7 +62,8 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
       id: publicHoliday.id,
       sort: publicHoliday.sequenceNo,
       name: publicHoliday.name,
-    }));
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
   });
 
   holidays: any[] = [];
@@ -139,7 +140,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
       {
         field: 'name',
         styles: { width: 'auto' },
-        useSameAsEdit: false,
+        useSameAsEdit: true,
         header: this.translate.instant(_('HOLIDAYS.TABLE.NAME')),
       },
     ];

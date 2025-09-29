@@ -17,11 +17,11 @@
     ? ('PROJECT_STATUS.FORM.PROJECT_STATUS_FORM' | translate) 
     : ('PROJECT_STATUS.DELETE.CONFIRMATION' | translate)" 
     [modal]="true" 
-    [(visible)]="visibleModal" 
-    (onShow)="onDialogShow()"
+    [(visible)]="visibleModal"
     >
     <app-model-project-status
         [modalType]="modalType"
+        [visible]="visibleModal"
         [projectStatusName]="projectStatusName"
         [projectStatusToDelete]="selectedProjectStatus"
         (isVisibleModel)="onModalVisibilityChange($event)"
