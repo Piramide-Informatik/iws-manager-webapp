@@ -12,6 +12,7 @@ import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { Customer } from '../../../../Entities/customer';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Column } from '../../../../Entities/column';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employee-overview',
@@ -23,6 +24,7 @@ import { Column } from '../../../../Entities/column';
 export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly customerUtils = inject(CustomerUtils);
+  private readonly titleService = inject(Title);
   public customer!: Customer | undefined;
   employees: Employee[] = [];
   @ViewChild('dt2') dt2!: Table;
@@ -62,9 +64,11 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       this.userEmployeeOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
+    this.updateTitle('...');
     this.route.params.subscribe(params => {
       this.customerUtils.getCustomerById(params['id']).subscribe(customer => {
         this.customer = customer; 
+        this.updateTitle(this.customer?.customername1!);
       });
 
       this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
@@ -208,6 +212,12 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
+    );
   }
 
   private handleMessages(severity: string, summary: string, detail: string): void {
