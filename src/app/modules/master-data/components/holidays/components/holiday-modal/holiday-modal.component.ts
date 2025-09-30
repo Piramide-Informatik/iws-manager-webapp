@@ -1,22 +1,9 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import {
-  momentCreateDate,
-  momentFormatDate,
-} from '../../../../../shared/utils/moment-date-utils';
+import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
 @Component({
   selector: 'app-holiday-modal',
@@ -24,13 +11,13 @@ import { PublicHolidayStateService } from '../../utils/public-holiday-state.serv
   templateUrl: './holiday-modal.component.html',
   styleUrl: './holiday-modal.component.scss',
 })
-export class HolidayModalComponent implements OnInit, OnDestroy {
+export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
   private readonly publicHolidayStateService = inject(PublicHolidayStateService);
   private readonly subscriptions = new Subscription();
-  @ViewChild('publicHolidayInput')
-  publicHolidayInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('publicHolidayInput') publicHolidayInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() visible: boolean = false;
   @Input() publicHolidayToDelete: number | null = null;
   @Input() publicHolidayName: string | null = null;
   @Output() isVisibleModel = new EventEmitter<boolean>();
@@ -57,6 +44,12 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadInitialData();
     this.resetForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['visible'] && this.visible) {
+      this.focusInputIfNeeded();
+    }
   }
 
   get isCreateMode(): boolean {
@@ -203,13 +196,13 @@ export class HolidayModalComponent implements OnInit, OnDestroy {
     this.createdPublicHolidayForm.reset();
   }
 
-  public focusInputIfNeeded() {
+  private focusInputIfNeeded() {
     if (this.isCreateMode && this.publicHolidayInput) {
       setTimeout(() => {
         if (this.publicHolidayInput?.nativeElement) {
           this.publicHolidayInput.nativeElement.focus();
         }
-      }, 150);
+      }, 200);
     }
   }
 }

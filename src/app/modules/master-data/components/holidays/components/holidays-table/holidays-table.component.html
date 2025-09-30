@@ -22,15 +22,15 @@
     : ('HOLIDAYS.DELETE.CONFIRMATION' | translate)"
     [modal]="true"
     [(visible)]="visibleModal"
-    (onShow)="onDialogShow()"
     >
     <app-holiday-modal
         [modalType]="modalType"
+        [visible]="visibleModal"
         [publicHolidayName]="publicHolidayName"
         [publicHolidayToDelete]="selectedPublicHoliday"
         (isVisibleModel)="onModalVisibilityChange($event)"
         (toastMessage)="toastMessageDisplay($event)"
-        #projectStatusModel>
+        #holidayModal>
     </app-holiday-modal>
 </p-dialog>
 <p-toast/>
