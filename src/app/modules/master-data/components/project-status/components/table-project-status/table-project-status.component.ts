@@ -7,7 +7,6 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { ProjectStatusService } from '../../../../../../Services/project-status.service';
 import { ProjectStatusUtils } from '../../../../../../modules/master-data/components/project-status/utils/project-status-utils';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
-import { ModelProjectStatusComponent  } from '../model-project-status/model-project-status.component';
 import { MessageService } from 'primeng/api';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 import { Column } from '../../../../../../Entities/column';
@@ -19,7 +18,9 @@ import { Column } from '../../../../../../Entities/column';
   styleUrl: './table-project-status.component.scss'
 })
 export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges {
-
+  private readonly translate = inject(TranslateService);
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly projectStatusStateService = inject(ProjectStatusStateService);
   private readonly projectStatusUtils = new ProjectStatusUtils();
   private readonly projectStatusService = inject(ProjectStatusService);
   private readonly messageService = inject(MessageService);
@@ -27,31 +28,9 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   modalType: 'create' | 'delete' = 'create';
   selectedProjectStatus: number | null = null;
   projectStatusName: string = '';
-  @ViewChild('projectStatusModel') projectStatusModelComponent!: ModelProjectStatusComponent;
-  
-  projectStatusModalComponent!: ModelProjectStatusComponent;
-  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-    if(event.type === 'delete' && event.data) {
-      this.selectedProjectStatus = event.data;
-      this.projectStatusUtils.getProjectStatusById(this.selectedProjectStatus!).subscribe({
-        next: (projectStatus) => {
-          this.projectStatusName = projectStatus?.name ?? '';
-        },
-        error: (error) => {
-          console.error('Error fetching projectStatus:', error);
-          this.projectStatusName = '';
-        }
-      });
-    }
-    this.visibleModal = true;
-  }
   
   readonly projectStatuses = computed(()=>{
-    return this.projectStatusService.projectStatuses().map(projectStatus => ({
-      id: projectStatus.id,
-      projectStatus: projectStatus.name,
-    }));
+    return this.projectStatusService.projectStatuses();
   });
 
   projectColumns: Column[] = [];
@@ -59,22 +38,15 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   isChipsVisible = false;
   userProjectStatusPreferences: UserPreference = {};
   tableKey: string = 'ProjectStatus'
-  dataKeys = ['label','projectStatus'];
+  dataKeys = ['name'];
   projectStatusData: ProjectStatus[] = [];
 
   @ViewChild('dt2') dt2!:Table;
 
   private langSubscription!: Subscription;
-
-  
-  constructor(
-        private readonly translate: TranslateService,
-        private readonly userPreferenceService: UserPreferenceService,
-        private readonly projectStatusStateService: ProjectStatusStateService
-      ){ }
     
   ngOnInit(): void {
-    this.loadProjectStatusData();
+    this.projectStatusUtils.loadInitialData().subscribe()
     this.loadProjectStatusHeadersAndColumns();
     this.userProjectStatusPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.projectStatusDisplayedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -87,17 +59,25 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     localStorage.setItem('userPreferences', JSON.stringify(userProjectStatusPreferences));
   }
     
-  
-    
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
   }
+
   ngOnChanges(changes: SimpleChanges): void {
       if (changes['projectStatuses']) {
       this.prepareTableData();
     }
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if(event.type === 'delete' && event.data) {
+      this.selectedProjectStatus = event.data;
+      this.projectStatusName = this.projectStatuses().find(ps => ps.id === this.selectedProjectStatus)?.name || '';
+    }
+    this.visibleModal = true;
   }
 
   private prepareTableData () {
@@ -110,27 +90,16 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   
   loadProjectStatusHeadersAndColumns() {
     this.loadProjectStatusHeaders();
-    this.projectStatusDisplayedColumns = this.projectColumns.filter(col => col != null);
+    this.projectStatusDisplayedColumns = [...this.projectColumns];
   }
   
   loadProjectStatusHeaders(): void{
     this.projectColumns = [
-      { field: 'label',
-        minWidth: 110, 
-        header: this.translate.instant(_('PROJECT_STATUS.TABLE_PROJECT_STATUS.PROJECT_STATUS_LABEL')) 
-      },
       {
-        field: 'projectStatus',
-        minWidth: 110,
+        field: 'name',
         header: this.translate.instant(_('PROJECT_STATUS.TABLE_PROJECT_STATUS.PROJECT_STATUS'))
       }
     ];
-  }
-
-  onDialogShow() {
-    if( this.modalType === 'create' && this.projectStatusModalComponent) {
-      this.projectStatusModalComponent.focusInputIfNeeded();
-    }
   }
 
   onModalVisibilityChange(visible: boolean): void {
@@ -147,18 +116,6 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     })
   }
 
-  loadProjectStatusData(): void {
-    this.projectStatusService.getAllProjectStatuses().subscribe({
-      next: (data: ProjectStatus[]) => {
-        this.projectStatusData = data;
-      },
-      error: (error) => {
-        console.error('Error loading project status data:', error);
-        this.projectStatusData = []; // Fallback to empty array
-      }
-    });
-  }
-
   toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
     this.messageService.add({
       severity: message.severity,
@@ -168,23 +125,6 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   }
 
   editProjectStatus(projectStatus: ProjectStatus){
-    const projectStatusToEdit: ProjectStatus ={
-      id: projectStatus.id,
-      name: projectStatus.name,
-      createdAt: '',
-      updatedAt: '',
-      version: 0
-    };
-
-    this.projectStatusUtils.getProjectStatusById(projectStatusToEdit.id).subscribe({
-      next: (fullProjectStatus) => {
-        if (fullProjectStatus) {
-          this.projectStatusStateService.setProjectStatusToEdit(fullProjectStatus);
-        }
-      },
-      error: (err) => {
-        console.error('Error Id projectStatus',err);
-      }
-    });
+    this.projectStatusStateService.setProjectStatusToEdit(projectStatus);
   }
 }

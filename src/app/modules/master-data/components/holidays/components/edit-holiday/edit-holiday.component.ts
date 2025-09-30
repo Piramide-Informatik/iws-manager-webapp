@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -31,7 +31,7 @@ import { HolidayYear } from '../../../../../../Entities/holidayYear';
 export class EditHolidayComponent implements OnInit {
   years: HolidayYear[] = [];
   selectedPublicHolidayId!: number;
-
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public showOCCErrorModalPublicHoliday = false;
   currentPublicHoliday: PublicHoliday | null = null;
   editPublicHolidayForm!: FormGroup;
@@ -162,6 +162,7 @@ export class EditHolidayComponent implements OnInit {
     this.selectedPublicHolidayId = publicHoliday.id;
     this.loadStates(publicHoliday.id);
     this.loadYears(publicHoliday.id);
+    this.focusInputIfNeeded();
   }
 
   private loadPublicHolidayAfterRefresh(publicHolidayId: string): void {
@@ -285,6 +286,16 @@ export class EditHolidayComponent implements OnInit {
 
     if (this.selectedPublicHolidayId) {
       this.loadYears(this.selectedPublicHolidayId);
+    }
+  }
+
+  private focusInputIfNeeded() {
+    if (this.currentPublicHoliday && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }
