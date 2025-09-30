@@ -163,8 +163,13 @@ export class RolFormComponent implements OnInit, OnDestroy {
       summary: this.translate.instant('MESSAGE.SUCCESS'),
       detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
-    this.roleStateService.setRoleToEdit(null);
-    this.clearForm();
+    // Keep the selected role
+    // Only clear modules and functions
+    this.editRoleForm.patchValue({ selectedModule: null });
+    this.functions = [];
+    this.existingRights = [];
+    this.isSaving = false;
+    this.editRoleForm.reset();
   }
 
   private handleError(err: any): void {
@@ -211,13 +216,17 @@ export class RolFormComponent implements OnInit, OnDestroy {
   private loadApprovalStatusData(role: Role): void {
     this.editRoleForm.patchValue({
       name: role.name,
+      selectedModule: null // deselect the module when changing roles
     });
+    this.functions = []; // deselect the module when changing roles
+    this.existingRights = [];
   }
   clearForm(): void {
     this.editRoleForm.reset();
     this.currentRole = null;
     this.isSaving = false;
     this.functions = [];
+    this.existingRights = [];
   }
 
   private loadRoleAfterRefresh(roleId: string): void {
