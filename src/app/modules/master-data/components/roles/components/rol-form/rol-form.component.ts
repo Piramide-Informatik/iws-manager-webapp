@@ -310,6 +310,12 @@ export class RolFormComponent implements OnInit, OnDestroy {
       },
     });
   }
+  onCancel(): void {
+  this.editRoleForm.patchValue({ selectedModule: null });
+  this.functions = [];
+  this.existingRights = [];
+  this.clearForm(); 
+}
 
   private calculateAccessRight(fn: SystemFunctionWithRights): number {
     let value = 0;

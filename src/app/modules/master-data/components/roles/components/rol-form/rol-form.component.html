@@ -81,7 +81,9 @@
                 [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times"
                 iconPos="left"
-                (click)="editRoleForm.patchValue({ selectedModule: null }); functions = []; existingRights = []; clearForm();"
+                (click)="onCancel()"
+                (keydown.enter)="onCancel()"
+                (keydown.space)="onCancel()"
                 >
             </p-button>
         </div>
