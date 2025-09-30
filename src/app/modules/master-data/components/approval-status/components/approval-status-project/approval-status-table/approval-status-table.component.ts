@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, inject, computed } from '@angular/core';
-import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { _, TranslateService } from "@ngx-translate/core";
-import { approvalStatus } from './approval-status.data'; 
 import { UserPreferenceService } from '../../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../../Entities/user-preference';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
@@ -11,6 +9,7 @@ import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 import { MessageService } from 'primeng/api';
 import { ModalApprovalStatusComponent } from '../modal-approval-status/modal-approval-status.component';
 import { ApprovalStatusStateService } from '../../../utils/approval-status-state.service';
+import { Column } from '../../../../../../../Entities/column';
 @Component({
   selector: 'app-approval-types-table',
   standalone: false,
@@ -33,40 +32,22 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
     this.modalType = event.type;
     if(event.type === 'delete' && event.data) {
       this.selectedApprovalStatus = event.data;
-      this.approvalStatusUtils.getApprovalStatusById(this.selectedApprovalStatus!).subscribe({
-        next: (projectStatus) => {
-          this.approvalStatusName = projectStatus?.status ?? '';
-        },
-        error: (error) => {
-          console.error('Error fetching projectStatus:', error);
-          this.approvalStatusName = '';
-        }
-      });
+      
+      this.approvalStatusName = this.approvalStatuses().find(as => as.id === this.selectedApprovalStatus)?.status || '';
     }
     this.visibleModal = true;
   }
-
-  approvalStatusesData: ApprovalStatus[] = [];
   
-  appovalStatuses = [...approvalStatus];
-  cols: any[] = [];
-  selectedColumns: any[] = [];
+  cols: Column[] = [];
+  selectedColumns: Column[] = [];
   userApprovalTypePreferences: UserPreference = {};
   tableKey: string = 'ApprovalType'
-  dataKeys = ['approvalStatus', 'order', 'projects', 'networks'];
-
-  @ViewChild('dt2') dt2!: Table;
+  dataKeys = ['status', 'sequenceNo', 'forProjects', 'forNetworks'];
 
   private langSubscription!: Subscription;
   
-  readonly approvalStatusesD = computed(()=>{
-    return this.approvalStatusService.approvalStatuses().map(approvalStatus => ({
-      id: approvalStatus.id,
-      approvalStatus: approvalStatus.status,
-      order: approvalStatus.sequenceNo,
-      projects: approvalStatus.forProjects,
-      networks: approvalStatus.forNetworks,
-    }))
+  readonly approvalStatuses = computed(()=>{
+    return this.approvalStatusService.approvalStatuses();
   });
 
   constructor(
@@ -76,25 +57,13 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.loadApprovalStatuses();
+    this.approvalStatusUtils.loadInitialData().subscribe();
     this.updateColumnHeaders();
     this.userApprovalTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns); 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateColumnHeaders();
       this.userApprovalTypePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns); 
     });
-  }
-
-  loadApprovalStatuses(): void {
-    this.approvalStatusService.getAllApprovalStatuses().subscribe({
-          next: (data: ApprovalStatus[]) => {
-            this.approvalStatusesData = data;
-          },
-          error: (error) => {
-            console.error('Error loading project status data:', error);
-            this.approvalStatusesData = [];
-          }
-        });
   }
 
   onUserApprovalTypePreferencesChanges(userApprovalTypePreferences: any) {
@@ -108,10 +77,10 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   
   loadColHeaders(): void {
     this.cols = [
-      { field: 'approvalStatus', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.APPROVAL_STATUS') },
-      { field: 'order', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.ORDER') },
-      { field: 'projects', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.PROJECTS'), filter: { type: 'boolean' } },
-      { field: 'networks', minWidth: 110, header: this.translate.instant('APPROVAL_STATUS.TABLE.NETWORKS'), filter: { type: 'boolean' } }
+      { field: 'status', header: this.translate.instant('APPROVAL_STATUS.TABLE.APPROVAL_STATUS') },
+      { field: 'sequenceNo', header: this.translate.instant('APPROVAL_STATUS.TABLE.ORDER') },
+      { field: 'forProjects', header: this.translate.instant('APPROVAL_STATUS.TABLE.PROJECTS'), filter: { type: 'boolean' } },
+      { field: 'forNetworks', header: this.translate.instant('APPROVAL_STATUS.TABLE.NETWORKS'), filter: { type: 'boolean' } }
     ];
   }
 
@@ -137,28 +106,9 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   }
 
   editApprovalStatus(approvalStatus: ApprovalStatus){
-    const approvalStatusToEdit: ApprovalStatus = {
-          id: approvalStatus.id,
-          status: approvalStatus.status,
-          sequenceNo: approvalStatus.sequenceNo,
-          forProjects: approvalStatus.forProjects? 1:0,
-          forNetworks: 1,
-          createdAt: approvalStatus.createdAt ?? '',
-          updatedAt: approvalStatus.updatedAt ?? '',
-          version: approvalStatus.version
-        };
-    
-        this.approvalStatusUtils.getApprovalStatusById(approvalStatusToEdit.id).subscribe({
-          next: (fullApprovalStatus) => {
-            if (fullApprovalStatus) {
-              this.approvalStatusStateService.setApprovalStatusToEdit(fullApprovalStatus);
-            }
-          },
-          error: (err) => {
-            console.error('Error loading approval status:', err);
-          }
-        });
+    this.approvalStatusStateService.setApprovalStatusToEdit(approvalStatus);
   }
+
   toastMessageDisplay(message: { severity: string, summary: string, detail: string }): void {
     this.messageService.add({
       severity: message.severity,

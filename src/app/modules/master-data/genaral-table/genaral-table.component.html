@@ -4,7 +4,8 @@
     [paginator]="true" [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
     [showCurrentPageReport]="true" [resizableColumns]="true" columnResizeMode="expand" showGridlines
     [tableStyle]="{ width: '100%', 'border-spacing': '1px' }" [globalFilterFields]="dataKeys"
-    (onFilter)="onTableFilterChange($event)" stateStorage="local" [stateKey]="tableId + '-table-state'">
+    (onFilter)="onTableFilterChange($event)" stateStorage="local" [stateKey]="tableId + '-table-state'"
+    [sortField]="sortField" [sortOrder]="sortOrder">
     <ng-template #header let-columns>
       <tr>
         <th id="hide-columns" class="thead-bg-blue">
