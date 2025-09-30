@@ -605,7 +605,7 @@
       "CONFIRMATION": "Genehmigungsstatus löschen"
     },
     "MODAL_CREATE": {
-      "CREATE_FORM": "Neuer Genehmigungsstatus"
+      "CREATE_FORM": "Neuer Bewilligungsstatus"
     },
     "ERROR" : {
       "APPROVAL_STATUS_REQUIRED": "Genehmigungsstatus erforderlich",
