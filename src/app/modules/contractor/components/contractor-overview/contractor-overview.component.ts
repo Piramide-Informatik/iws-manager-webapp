@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Contractor } from '../../../../Entities/contractor';
 import { TranslateService, _ } from "@ngx-translate/core";
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
@@ -11,6 +11,8 @@ import { Customer } from '../../../../Entities/customer';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { MessageService } from 'primeng/api';
 import { Column } from '../../../../Entities/column';
+import { Title } from '@angular/platform-browser';
+import { CustomerStateService } from '../../../customer/utils/customer-state.service';
 
 @Component({
   selector: 'app-contractor-overview',
@@ -50,6 +52,8 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly messageService = inject(MessageService);
+  private readonly titleService = inject(Title);
+  private readonly customerStateService = inject(CustomerStateService);
 
 
   ngOnInit(): void {
@@ -67,10 +71,25 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
     this.route.params.subscribe(params => {
       const customerId = params['id'];
+      if (!customerId) {
+        this.updateTitle('...');
+        return;
+      }
 
-      this.customerUtils.getCustomerById(customerId).subscribe(customer => {
-        this.customer = customer;
-      });
+      this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
+        if (currentCustomer) {
+          this.updateTitle(currentCustomer.customername1!);
+        } else {
+          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+            if (customer) {
+              this.updateTitle(customer.customername1!);
+              this.customer = customer;
+            } else {
+              this.updateTitle('');
+            }
+          });
+        }
+      })
 
       this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(customerId).subscribe(contractors => {
         this.contractors = contractors;
@@ -80,7 +99,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'label', classesTHead: ['fix-width'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL'))},
+      { field: 'label', classesTHead: ['fix-width'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL')) },
       { field: 'name', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
       { field: 'country.label', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL')) },
       { field: 'street', header: this.translate.instant(_('CONTRACTS.TABLE.STREET')) },
@@ -88,6 +107,10 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
       { field: 'city', header: this.translate.instant(_('CONTRACTS.TABLE.CITY')) },
       { field: 'taxNumber', header: this.translate.instant(_('CONTRACTS.TABLE.TAX_NUMBER')) }
     ];
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`);
   }
 
 
@@ -99,7 +122,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   handleContractorTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalContractorType = event.type;
-    
+
     if (event.type === 'edit') {
       this.currentContract = event.data;
     }
@@ -131,14 +154,14 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   onContractorDeleted(contractorId: number) {
     this.contractors = this.contractors.filter(contract => contract.id !== contractorId);
   }
-  public messageOperation(message: {severity: string, summary: string, detail: string}): void {
+  public messageOperation(message: { severity: string, summary: string, detail: string }): void {
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
       detail: this.translate.instant(_(message.detail))
     })
   }
-  
+
   onContractorUpdated(updated: Contractor): void {
     const index = this.contractors.findIndex(c => c.id === updated.id);
     if (index !== -1) {
