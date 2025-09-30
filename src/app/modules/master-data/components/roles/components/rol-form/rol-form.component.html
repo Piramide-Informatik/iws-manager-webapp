@@ -20,12 +20,12 @@
             <div class="rol-form mb-2">
                 <label for="selectedModule">{{ 'ROLES.LABEL.MODULE' | translate }}</label>
                 <p-select
-                    formControlName="selectedModule"
                     id="selectedModule"
                     [options]="modules"
                     optionLabel="name"
                     optionValue="id"
                     [placeholder]="'ROLES.LABEL.SELECT_MODULE' | translate"
+                    formControlName="selectedModule"
                     (onChange)="onModuleChange($event.value)"
                     />
             </div>
@@ -81,9 +81,10 @@
                 [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times"
                 iconPos="left"
-                (click)="clearForm()"
-                (keydown.enter)="clearForm()"
-                (keydown.space)="clearForm()">
+                (click)="onCancel()"
+                (keydown.enter)="onCancel()"
+                (keydown.space)="onCancel()"
+                >
             </p-button>
         </div>
     </form>
