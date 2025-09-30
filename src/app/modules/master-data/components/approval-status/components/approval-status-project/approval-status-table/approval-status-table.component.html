@@ -3,11 +3,11 @@
       <div class>
         <master-data-genaral-table
           [tableId]="tableKey"
-          [tableValues]="approvalStatusesD()"
+          [tableValues]="approvalStatuses()"
           [columns]="selectedColumns"
           [userPreferences]="userApprovalTypePreferences"
           [dataKeys]="dataKeys"
-          [sortField]="'order'" 
+          [sortField]="'sequenceNo'" 
           [sortOrder]="1"
           (onColumnChanges)="onUserApprovalTypePreferencesChanges($event)"
           (onCreateRegister)="handleTableEvents({ type: 'create' })"
