@@ -5,11 +5,10 @@
   <form [formGroup]="editPublicHolidayForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
       <div class="holiday-form mb-2">
-        <label for="name">{{
-          "HOLIDAYS.LABEL.HOLIDAY_NAME" | translate
-        }}</label>
+        <label for="name">{{ "HOLIDAYS.LABEL.HOLIDAY_NAME" | translate }}</label>
         <input
           pInputText
+          #firstInput
           type="text"
           id="publicHoliday"
           formControlName="publicHoliday"
@@ -60,6 +59,7 @@
           [label]="'BUTTONS.SAVE' | translate"
           icon="pi pi-check"
           class="p-button-sm"
+          [loading]="isSaving"
         ></p-button>
       </div>
     </div>
