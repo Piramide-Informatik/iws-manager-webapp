@@ -119,7 +119,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
           fundingLabel: curr.fundingLabel,
           startDate: curr.startDate,
           endDate: curr.endDate,
-          authDate: curr.authorizationDate,
+          authDate: curr.approvalDate,
           fundingRate: curr.fundingRate
         });
         return acc;
