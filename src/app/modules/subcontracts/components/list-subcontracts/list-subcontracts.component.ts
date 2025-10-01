@@ -84,14 +84,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         if (currentCustomer) {
           this.updateTitle(currentCustomer.customername1!);
         } else {
-          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
-            if (customer) {
-              this.updateTitle(customer.customername1!);
-              this.customer = customer;
-            } else {
-              this.updateTitle('');
-            }
-          });
+          this.getTitleByCustomerId(customerId);
         }
       })
 
@@ -101,6 +94,17 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     })
 
     this.subcontracts = [];
+  }
+
+  getTitleByCustomerId(customerId: number): void {
+    this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+      if (customer) {
+        this.updateTitle(customer.customername1!);
+        this.customer = customer;
+      } else {
+        this.updateTitle('');
+      }
+    });
   }
 
   private updateTitle(name: string): void {
