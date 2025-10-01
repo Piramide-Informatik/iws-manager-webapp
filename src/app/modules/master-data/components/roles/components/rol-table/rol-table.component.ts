@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { RoleUtils } from '../../utils/role-utils';
 import { RoleStateService } from '../../utils/role-state.service';
 import { RolModalComponent } from '../rol-modal/rol-modal.component';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-rol-table',
@@ -28,38 +29,18 @@ export class RolTableComponent implements OnInit, OnDestroy {
   roleName: string = '';
   @ViewChild('roleModal') rolModalComponent!: RolModalComponent;
   
-  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-    if(event.type === 'delete' && event.data) {
-      this.selectedRole = event.data;
-      this.roleUtils.getRoleById(this.selectedRole!).subscribe({
-        next: (role) => {
-          this.roleName = role?.name ?? '';
-        },
-        error: (error) => {
-          console.error('Error fetching role:', error);
-          this.roleName = '';
-        }
-      });
-    }
-    this.visibleModal = true;
-  }
-  roleDatas: Role[] = [];
-  cols: any[] = [];
-  selectedColumns: any[] = [];
+  cols: Column[] = [];
+  selectedColumns: Column[] = [];
   userRolPreferences: UserPreference = {};
   tableKey: string = 'RolType'
-  dataKeys = ['rol'];
+  dataKeys = ['name'];
 
   @ViewChild('dt') dt!: Table;
 
   private langSubscription!: Subscription;
 
   readonly rolesData = computed(()=>{
-    return this.roleService.roles().map(role => ({
-      id: role.id,
-      role: role.name,
-    }))
+    return this.roleService.roles()
   });
 
   constructor(
@@ -77,6 +58,15 @@ export class RolTableComponent implements OnInit, OnDestroy {
     });
   }
 
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if(event.type === 'delete' && event.data) {
+      this.selectedRole = event.data;
+
+      this.roleName = this.rolesData().find(role => role.id === this.selectedRole)?.name ?? '';
+    }
+    this.visibleModal = true;
+  }
 
   onUserRolPreferencesChanges(userRolPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userRolPreferences));
@@ -90,8 +80,7 @@ export class RolTableComponent implements OnInit, OnDestroy {
   loadColumnHeaders(): void {
     this.cols = [
       {
-        field: 'role',
-        minWidth: 110,
+        field: 'name',
         header: this.translate.instant(_('ROLES.TABLE_ROLES.USER_ROL')),
         useSameAsEdit: true
       }
@@ -137,23 +126,6 @@ export class RolTableComponent implements OnInit, OnDestroy {
   }
 
   editRole(role: Role){
-      const roleToEdit: Role = {
-            id: role.id,
-            name: role.name,
-            createdAt: role.createdAt ?? '',
-            updatedAt: role.updatedAt ?? '',
-            version: role.version
-          };
-      
-          this.roleUtils.getRoleById(roleToEdit.id).subscribe({
-            next: (fullRole) => {
-              if (fullRole) {
-                this.roleStateService.setRoleToEdit(fullRole);
-              }
-            },
-            error: (err) => {
-              console.error('Error loading role:', err);
-            }
-          });
-    }
+    this.roleStateService.setRoleToEdit(role);
+  }
 }

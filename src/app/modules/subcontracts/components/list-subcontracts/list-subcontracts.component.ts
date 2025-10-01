@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Table } from 'primeng/table';
-import {TranslateService, _} from "@ngx-translate/core";
-import { Subscription } from 'rxjs';
+import { TranslateService, _ } from "@ngx-translate/core";
+import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
@@ -11,6 +11,8 @@ import { Customer } from '../../../../Entities/customer';
 import { Subcontract } from '../../../../Entities/subcontract';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Column } from '../../../../Entities/column';
+import { Title } from '@angular/platform-browser';
+import { CustomerStateService } from '../../../customer/utils/customer-state.service';
 
 @Component({
   selector: 'app-list-subcontracts',
@@ -22,6 +24,8 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   private readonly subcontractsUtils = inject(SubcontractUtils);
   private readonly customerUtils = inject(CustomerUtils);
+  private readonly titleService = inject(Title);
+  private readonly customerStateService = inject(CustomerStateService);
   public customer!: Customer | undefined;
 
   public cols!: Column[];
@@ -37,7 +41,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   userSubcontractsListPreferences: UserPreference = {};
 
   tableKey: string = 'SubcontractsList'
-  
+
   dataKeys = ['contractTitle', 'contractor', 'projectCostCenter', 'date', 'invoiceNo', 'invoiceNet', 'invoiceGross', 'share'];
 
   selectedSubcontract!: Subcontract;
@@ -50,13 +54,13 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   subContractModalType: 'create' | 'delete' = 'create';
 
-  constructor( private readonly translate: TranslateService,
-               private readonly userPreferenceService: UserPreferenceService, 
-               private readonly router:Router,
-               private readonly route: ActivatedRoute,
-               private readonly commonMessageService: CommonMessagesService){}
+  constructor(private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly commonMessageService: CommonMessagesService) { }
 
-  
+
   ngOnInit(): void {
 
     this.loadColHeaders();
@@ -71,9 +75,19 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     });
 
     this.route.params.subscribe(params => {
-      this.customerUtils.getCustomerById(params['id']).subscribe(customer => {
-        this.customer = customer; 
-      });
+      const customerId = params['id'];
+      if (!customerId) {
+        this.updateTitle('...');
+        return;
+      }
+      this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
+        if (currentCustomer) {
+          this.updateTitle(currentCustomer.customername1!);
+        } else {
+          this.getTitleByCustomerId(customerId);
+        }
+      })
+
       this.subcontractsUtils.getAllSubcontractsByCustomerId(params['id']).subscribe(subcontracts => {
         this.subcontracts = subcontracts;
       })
@@ -82,26 +96,41 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     this.subcontracts = [];
   }
 
+  getTitleByCustomerId(customerId: number): void {
+    this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+      if (customer) {
+        this.updateTitle(customer.customername1!);
+        this.customer = customer;
+      } else {
+        this.updateTitle('');
+      }
+    });
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`);
+  }
+
   onUserSubcontractsListPreferencesChanges(userSubcontractsListPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userSubcontractsListPreferences));
   }
 
   loadColHeaders(): void {
     this.cols = [
-          { 
-            field: 'contractTitle', 
-            classesTHead: ['width-13'],
-            routerLink: (row: any) => `./subcontracts-details/${row.id}`,
-            header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))
-          },
-          { field: 'contractor.name', classesTHead: ['width-13'], header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR'))},
-          { field: 'projectCostCenter.costCenter', classesTHead: ['width-13'], customClasses: ['text-center'], header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT'))},
-          { field: 'date', type: 'date', classesTHead: ['width-13'], header:  this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE'))},
-          { field: 'invoiceNo', classesTHead: ['width-13'], customClasses: ['align-left'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER'))},
-          { field: 'invoiceNet', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE'))},
-          { field: 'invoiceGross', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE'))},
-          { field: 'share', classesTHead: ['width-13'], header:   this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE'))}
-        ];
+      {
+        field: 'contractTitle',
+        classesTHead: ['width-13'],
+        routerLink: (row: any) => `./subcontracts-details/${row.id}`,
+        header: this.translate.instant(_('SUB-CONTRACTS.TABLE.ORDER_TITLE'))
+      },
+      { field: 'contractor.name', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR')) },
+      { field: 'projectCostCenter.costCenter', classesTHead: ['width-13'], customClasses: ['text-center'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT')) },
+      { field: 'date', type: 'date', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE')) },
+      { field: 'invoiceNo', classesTHead: ['width-13'], customClasses: ['align-left'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER')) },
+      { field: 'invoiceNet', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE')) },
+      { field: 'invoiceGross', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE')) },
+      { field: 'share', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE')) }
+    ];
   }
 
   ngOnDestroy(): void {
@@ -110,13 +139,13 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  reloadComponent(self:boolean,urlToNavigateTo ?:string){
-   const url=self ? this.router.url :urlToNavigateTo;
-   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
-     this.router.navigate([`/${url}`]).then(()=>{
-     })
-   })
- }
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+      })
+    })
+  }
 
   getModalHeader(): string {
     if (this.subContractModalType === 'create') {
@@ -137,7 +166,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
   handleDeleteSubcontracts(id: number) {
     this.subContractModalType = 'delete';
-    const subcontract = this.subcontracts.find( sub => sub.id === id);
+    const subcontract = this.subcontracts.find(sub => sub.id === id);
     if (subcontract) {
       this.selectedSubcontract = subcontract
       this.subcontractName = subcontract.contractTitle
@@ -149,10 +178,10 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     this.subcontractsUtils.createNewSubcontract(data).subscribe({
       next: (createdSubContract) => {
         this.commonMessageService.showCreatedSuccesfullMessage();
-        setTimeout(()=>{
+        setTimeout(() => {
           this.visibleSubcontractModal = false;
           this.navigationToEdit(createdSubContract.id);
-        },2000)
+        }, 2000)
       },
       error: (error) => {
         console.log(error);
@@ -175,8 +204,8 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isDeletingSubcontract = false;
-        if(error.message.includes('have associated subcontract projects') || 
-           error.message.includes('have associated subcontract years')){
+        if (error.message.includes('have associated subcontract projects') ||
+          error.message.includes('have associated subcontract years')) {
           this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
         } else {
           this.commonMessageService.showErrorDeleteMessage();

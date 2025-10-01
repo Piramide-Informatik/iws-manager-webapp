@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode;  else deleteTemplate">
     <form [formGroup]="createRoleForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center display mb-2 mt-4">
-            <div class="role-form mb-3 flex align-items-center">
+            <div class="role-form">
                 <label for="name">{{ "ROLES.LABEL.ROL" | translate}}</label>
                 <input
                     #roleNameInput

@@ -14,6 +14,7 @@ import { Customer } from '../../../../../Entities/customer';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { SubcontractStateService } from '../../../utils/subcontract-state.service';
 import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-subcontract',
@@ -31,6 +32,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   private readonly subscriptions = new Subscription();
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly titleService = inject(Title);
   private langSubscription!: Subscription;
   public subcontractForm!: FormGroup;
   public showOCCErrorModalSubcontract = false;
@@ -251,7 +253,14 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptions.add(
       this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
         this.currentCustomer = customer;
+        this.updateTitle(customer?.customername1!);
       })
+    );
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
     );
   }
 
