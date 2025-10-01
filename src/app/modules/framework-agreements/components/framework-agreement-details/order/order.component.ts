@@ -16,6 +16,8 @@ import { EmployeeIws } from '../../../../../Entities/employeeIws';
 import { FrameworkAgreementsUtils } from '../../../utils/framework-agreement.util';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order',
@@ -33,6 +35,8 @@ export class OrderComponent implements OnInit, OnChanges {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly router = inject(Router);
+  private readonly titleService = inject(Title);
+  private readonly translate = inject(TranslateService);
 
   public readonly fundingPrograms = toSignal(
     this.fundingProgramUtils.getAllFundingPrograms(), { initialValue: [] }
@@ -61,6 +65,12 @@ export class OrderComponent implements OnInit, OnChanges {
     this.getCurrentCustomer();
     this.initOrderForm();
     this.firstInputFocus();
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -199,6 +209,7 @@ export class OrderComponent implements OnInit, OnChanges {
       this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
         if (customer) {
           this.currentCustomer = customer;
+          this.updateTitle(this.currentCustomer.customername1!)
         }
       })
     );
