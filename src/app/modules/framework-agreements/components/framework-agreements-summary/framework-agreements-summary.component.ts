@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
@@ -10,6 +10,8 @@ import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 import { Column } from '../../../../Entities/column';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { Title } from '@angular/platform-browser';
+import { CustomerStateService } from '../../../customer/utils/customer-state.service';
 
 @Component({
   selector: 'app-framework-agreements-summary',
@@ -25,6 +27,8 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly titleService = inject(Title);
+  private readonly customerStateService = inject(CustomerStateService);
 
   public cols!: Column[];
   private langSubscription!: Subscription;
@@ -57,6 +61,26 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
     });
     this.route.params.subscribe(params => {
       this.frameworkAgreementUtils.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(params['id']).subscribe(fas => {
+        const customerId = params['id'];
+        if (!customerId) {
+          this.updateTitle('...');
+          return;
+        }
+        this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
+          if (currentCustomer) {
+            this.updateTitle(currentCustomer.customername1!);
+          } else {
+            this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+              if (customer) {
+                this.updateTitle(customer.customername1!);
+                this.customer = customer;
+              } else {
+                this.updateTitle('');
+              }
+            });
+          }
+        })
+
         this.frameworkAgreements = fas.reduce((acc: any[], curr) => {
           acc.push({
             id: curr.id,
@@ -71,11 +95,12 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
           return acc
         }, [])
       });
-      this.customerUtils.getCustomerById(params['id']).subscribe(customer => {
-        this.customer = customer;
-      })
     })
 
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`);
   }
 
   loadFrameworkAgreementsColHeaders(): void {
