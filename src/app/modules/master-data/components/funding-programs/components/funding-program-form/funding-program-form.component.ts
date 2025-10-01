@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
@@ -17,6 +17,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
   private readonly fundingStateService = inject(FundingProgramStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   private fundingToEdit: FundingProgram | null = null;
   public showOCCErrorModaFunding = false;
   public isLoading: boolean = false;
@@ -49,18 +50,21 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
   private setupFundingSubscription(): void {
     this.subscriptions.add(
       this.fundingStateService.currentFundingProgram$.subscribe(funding => {
-        if(funding){
-          this.fundingToEdit = funding;
-          this.fundingForm.patchValue({
-            name: this.fundingToEdit.name,
-            defaultFundingRate: this.fundingToEdit.defaultFundingRate,
-            defaultStuffFlat: this.fundingToEdit.defaultStuffFlat,
-            defaultResearchShare: this.fundingToEdit.defaultResearchShare,
-            defaultHoursPerYear: this.fundingToEdit.defaultHoursPerYear
-          });
-        }
+        this.fundingToEdit = funding;
+        funding ? this.loadFundingProgram(funding) : this.clearForm();
       })
     )
+  }
+
+  private loadFundingProgram(funding: FundingProgram): void {
+    this.fundingForm.patchValue({
+      name: funding.name,
+      defaultFundingRate: funding.defaultFundingRate,
+      defaultStuffFlat: funding.defaultStuffFlat,
+      defaultResearchShare: funding.defaultResearchShare,
+      defaultHoursPerYear: funding.defaultHoursPerYear
+    });
+    this.focusInputIfNeeded();
   }
 
   public onSubmit(): void {
@@ -103,8 +107,8 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
 
   public clearForm(): void {
     this.fundingForm.reset();
-    this.fundingStateService.clearFundingProgram();
     this.fundingToEdit = null;
+    this.isLoading = false;
   }
 
   private loadFundingAfterRefresh(fundingId: string): void {
@@ -122,5 +126,15 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.fundingToEdit && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }

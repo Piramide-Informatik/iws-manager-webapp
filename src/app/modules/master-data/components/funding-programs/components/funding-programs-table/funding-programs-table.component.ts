@@ -87,7 +87,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
-      this.selectedFunding = this.fundingProgramService.fundingPrograms().find(fp => fp.id == event.data);
+      this.selectedFunding = this.fundingPrograms().find(fp => fp.id == event.data);
     }
     this.visibleModal = true;
   }

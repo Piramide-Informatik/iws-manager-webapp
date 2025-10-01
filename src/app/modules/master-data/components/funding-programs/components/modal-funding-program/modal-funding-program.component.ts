@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild }
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
+import { FundingProgramStateService } from '../../utils/funding-program-state.service';
 
 @Component({
   selector: 'app-modal-funding-program',
@@ -11,6 +12,7 @@ import { FundingProgramUtils } from '../../utils/funding-program-utils';
 })
 export class ModalFundingProgramComponent {
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
+  private readonly fundingProgramStateService = inject(FundingProgramStateService);
   @Input() selectedFunding!: FundingProgram | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -58,16 +60,15 @@ export class ModalFundingProgramComponent {
     if (this.selectedFunding) {
       this.fundingProgramUtils.deleteFundingProgram(this.selectedFunding.id).subscribe({
         next: () => {
+          this.isLoading = false;
+          this.fundingProgramStateService.clearFundingProgram();
+          this.selectedFunding = undefined;
           this.onDeleteFundingProgram.emit({status: 'success'});
+          this.closeModal();
         },
         error: (error: Error) => {
           this.isLoading = false;
           this.onDeleteFundingProgram.emit({status: 'error', error});
-        },
-        complete: () => {
-          this.isLoading = false;
-          this.closeModal();
-          this.selectedFunding = undefined;
         }
       })
     }
