@@ -20,6 +20,7 @@
     [(visible)]="visibleCostTypeModal">
     <app-modal-cost
       [modalType]="modalType"
+      [visible]="visibleCostTypeModal"
       [selectedCostType]="selectedCostType"
       (isVisibleModal)="onModalVisibilityChange($event)"
       (onDeleteCostType)="onCostTypeDelete($event)"

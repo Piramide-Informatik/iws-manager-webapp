@@ -9,6 +9,7 @@ import { CostTypeService } from '../../../../../../Services/cost-type.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { CostType } from '../../../../../../Entities/costType';
 import { CostTypeStateService } from '../../utils/cost-type-state.service';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-costs-table',
@@ -20,7 +21,7 @@ export class CostsTableComponent implements OnInit, OnDestroy {
   private readonly costTypeUtils = new CostTypeUtils();
   private readonly costTypeService = inject(CostTypeService);
   private readonly costTypeStateService = inject(CostTypeStateService);
-  columnsHeaderFieldCosts: any[] = [];
+  columnsHeaderFieldCosts: Column[] = [];
   userCostTablePreferences: UserPreference = {};
   tableKey: string = 'CostTable'
   dataKeys = ['name', 'sort'];
@@ -32,13 +33,14 @@ export class CostsTableComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
 
   readonly costsUI = computed(() => {
-    const costTypes = this.costTypeService.costTypes();
-    costTypes.forEach(cost => this.costTypesMap.set(cost.id, cost));
-    return costTypes.map(cost => ({
-      id: cost.id,
-      name: cost.type,
-      sort: cost.sequenceNo
-    }));
+    return this.costTypeService.costTypes().map(cost => {
+      this.costTypesMap.set(cost.id, cost);
+      return {
+        id: cost.id,
+        name: cost.type,
+        sort: cost.sequenceNo
+      };
+    });
   });
 
   constructor(
