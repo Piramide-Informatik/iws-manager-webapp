@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 import { TeamIws } from '../../../../../../Entities/teamIWS';
@@ -22,6 +22,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   editTeamForm!: FormGroup;
 
   isSaving = false;
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   private readonly subscriptions = new Subscription();
   private readonly editTeamIwsSource = new BehaviorSubject<TeamIws | null>(
     null
@@ -72,6 +73,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
       name: teamIws.name,
       teamLeader: teamIws.teamLeader?.id
     });
+    this.focusInputIfNeeded();
   }
 
   private loadTeams() {
@@ -145,6 +147,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   }
 
   private handleSaveSuccess(savedTeamIws: TeamIws): void {
+    this.isSaving = false;
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('MESSAGE.SUCCESS'),
@@ -155,6 +158,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   }
 
   private handleError(err: any): void {
+    this.isSaving = false;
     if (
       err.message === 'Version conflict: TeamIws has been updated by another user'
     ) {
@@ -167,7 +171,6 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
         detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
       });
     }
-    this.isSaving = false;
   }
 
   cancelEdit(): void {
@@ -178,7 +181,6 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
     this.editTeamForm.reset();
     if (clearCommission) {
       this.currentTeamIws = null;
-      this.isSaving = false;
     }
   }
 
@@ -189,6 +191,16 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
         this.currentTeamIws.id.toString()
       );
       window.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentTeamIws && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }

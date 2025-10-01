@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createEmployeeCategoryForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form flex align-items-center mb-3">
+            <div class="create-form">
                 <label for="qualification" class="block">
                     {{ 'EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION' | translate }}
                 </label>
@@ -14,7 +14,7 @@
                     id="qualificationError" class="text-red-500 block mt-1">
                 </small>
             </div>
-            <div class="create-form flex align-items-center mb-3">
+            <div class="create-form">
                 <label for="abbreviation" class="block">
                     {{ 'EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION' | translate }}
                 </label>

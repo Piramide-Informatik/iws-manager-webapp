@@ -11,7 +11,7 @@ export class TeamIwsStateService {
         this.editTeamIwsSource.next(team);
     }
 
-    clearTitle() {
+    clearTeamIws() {
         this.editTeamIwsSource.next(null);
     }
 }
