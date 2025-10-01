@@ -51,7 +51,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.fundingStateService.currentFundingProgram$.subscribe(funding => {
         this.fundingToEdit = funding;
-        funding ? this.loadFundingProgram(funding) : this.clearForm();
+        funding ? this.loadFundingProgram(funding) : this.fundingForm.reset();
       })
     )
   }
@@ -109,6 +109,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
     this.fundingForm.reset();
     this.fundingToEdit = null;
     this.isLoading = false;
+    this.fundingStateService.setFundingProgramToEdit(null);
   }
 
   private loadFundingAfterRefresh(fundingId: string): void {

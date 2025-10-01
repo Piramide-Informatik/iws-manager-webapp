@@ -4,14 +4,15 @@
   flex-direction: row;
 
   label {
-    width: 120px;
+    width: 100px;
+    flex-shrink: 0;
   }
 
-  input {
+  input, p-inputnumber {
     width: 100%;
   }
 
-  ::ng-deep .p-inputnumber {
-    width: 100%;
+  ::ng-deep .p-inputnumber-input {
+    width: 100% !important;
   }
 }
