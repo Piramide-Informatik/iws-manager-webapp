@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CostTypeUtils } from '../../utils/cost-type-utils';
 import { CostTypeStateService } from '../../utils/cost-type-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -17,6 +17,7 @@ export class EditCostComponent implements OnInit, OnDestroy {
   private readonly costTypeStateService = inject(CostTypeStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   private costTypeToEdit: CostType | null = null;
   public showOCCErrorModaCost = false;
   public isLoading: boolean = false;
@@ -72,15 +73,23 @@ export class EditCostComponent implements OnInit, OnDestroy {
   private setupCostTypeSubscription(): void {
     this.subscriptions.add(
       this.costTypeStateService.currentCostType$.subscribe(cost => {
+        this.costTypeToEdit = cost;
         if(cost){
-          this.costTypeToEdit = cost;
-          this.costForm.patchValue({
-            type: this.costTypeToEdit.type,
-            sequenceNo: this.costTypeToEdit.sequenceNo
-          });
+          this.loadCostType(cost);
+        }else{
+          this.costForm.reset();
+          this.costTypeToEdit = null;
         }
       })
     )
+  }
+
+  private loadCostType(cost: CostType): void {
+    this.costForm.patchValue({
+      type: cost.type,
+      sequenceNo: cost.sequenceNo
+    });
+    this.focusInputIfNeeded();
   }
 
   clearForm(): void {
@@ -110,6 +119,16 @@ export class EditCostComponent implements OnInit, OnDestroy {
     if (this.costTypeToEdit?.id) {
       localStorage.setItem('selectedCostTypeId', this.costTypeToEdit.id.toString());
       window.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.costTypeToEdit && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }

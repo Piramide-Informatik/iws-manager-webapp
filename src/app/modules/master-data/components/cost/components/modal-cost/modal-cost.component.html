@@ -15,7 +15,7 @@
       <div class="cost-form">
         <label for="sequenceNo">{{ "COSTS.LABEL.SORT" | translate }}</label>
         <p-inputnumber [useGrouping]="true" locale="de-DE"
-          inputId="sequenceNo"
+          inputId="sequenceNo" [inputStyle]="{'text-align': 'right'}"
           formControlName="sequenceNo"
           autocomplete="off"
         />
@@ -26,7 +26,7 @@
     <div class="flex justify-content-center gap-2 mt-4">
         <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
             icon="pi pi-check" iconPos="left" [loading]="isLoading"
-            [disabled]="costTypeForm.invalid || isLoading" />
+            [disabled]="costTypeForm.invalid || isLoading || !costTypeForm.dirty"/>
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />

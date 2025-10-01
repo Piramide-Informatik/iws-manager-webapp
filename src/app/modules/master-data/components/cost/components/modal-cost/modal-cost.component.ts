@@ -1,7 +1,8 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { CostTypeUtils } from '../../utils/cost-type-utils';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CostType } from '../../../../../../Entities/costType';
+import { CostTypeStateService } from '../../utils/cost-type-state.service';
 
 @Component({
   selector: 'app-modal-cost',
@@ -9,19 +10,30 @@ import { CostType } from '../../../../../../Entities/costType';
   templateUrl: './modal-cost.component.html',
   styleUrl: './modal-cost.component.scss'
 })
-export class ModalCostComponent {
+export class ModalCostComponent implements OnChanges {
   private readonly costTypeUtils = inject(CostTypeUtils);
+  private readonly costTypeStateService = inject(CostTypeStateService);
   @Input() selectedCostType!: CostType | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
+  @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() onCreateCostType = new EventEmitter<{created?: CostType, status: 'success' | 'error'}>();
   @Output() onDeleteCostType = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
   public readonly costTypeForm = new FormGroup({
     type: new FormControl(''),
     sequenceNo: new FormControl(null)
   });
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['visible'] && this.visible){
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
+    }
+  }
 
   onSubmit(): void {
     if(this.costTypeForm.invalid || this.isLoading) return
@@ -60,6 +72,7 @@ export class ModalCostComponent {
       this.costTypeUtils.deleteCostType(this.selectedCostType.id).subscribe({
         next: () => {
           this.isLoading = false;
+          this.costTypeStateService.clearCostType();
           this.onDeleteCostType.emit({status: 'success'});
           this.closeModal();
         },
@@ -68,6 +81,16 @@ export class ModalCostComponent {
           this.onDeleteCostType.emit({status: 'error', error: errorResponse});
         }
       });
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.isCreateMode && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }
