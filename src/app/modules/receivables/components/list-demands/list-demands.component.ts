@@ -1,13 +1,16 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { ReceivableUtils } from '../../utils/receivable-utils';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Column } from '../../../../Entities/column';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { CustomerStateService } from '../../../customer/utils/customer-state.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-list-demands',
@@ -18,6 +21,9 @@ import { Column } from '../../../../Entities/column';
 export class ListDemandsComponent implements OnInit, OnDestroy {
 
   receivableUtils = inject(ReceivableUtils);
+  customerUtils = inject(CustomerUtils);
+  customerStateService = inject(CustomerStateService);
+  titleService = inject(Title);
 
   public cols!: Column[];
 
@@ -32,9 +38,9 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
   public selectedColumns!: Column[];
 
   userReceivablePreferences: UserPreference = {};
-  
+
   tableKey: string = 'Receivables'
-  
+
   dataKeys = ['idClaim', 'idOrder', 'orderTitle', 'fundingProgram', 'projectSponsor', 'fundingConcentration', 'projectStart', 'projectEnd', 'abrStart', 'abrEnd', 'forNet', 'ofSt', 'zaGross', 'zaReceived', 'zaOffen', 'iwsPercent']
 
   visibleReceivablesModal = false;
@@ -43,12 +49,12 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
 
   selectedReceivables!: any;
 
-  constructor(private readonly translate: TranslateService, 
-              private readonly userPreferenceService: UserPreferenceService,
-              private readonly router: Router,
-              private readonly route: ActivatedRoute,
-              private readonly commonMessage: CommonMessagesService
-          ) { }
+  constructor(private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly commonMessage: CommonMessagesService
+  ) { }
 
   ngOnInit(): void {
     this.loadReceivableColHeaders();
@@ -61,6 +67,19 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
     });
     this.route.params.subscribe(params => {
       this.receivableUtils.getAllReceivableByCustomerId(params['id']).subscribe(debts => {
+        const customerId = params['id'];
+        if (!customerId) {
+          this.titleService.setTitle('...');
+          return;
+        }
+        this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
+          if (currentCustomer) {
+            this.updateTitle(currentCustomer.customername1!);
+          } else {
+            this.getTitleByCustomerId(customerId);
+          }
+        })
+
         this.demands = debts.reduce((acc: any[], curr) => {
           acc.push({
             id: curr.id,
@@ -69,16 +88,16 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
             orderTitle: curr.order?.orderLabel,
             fundingProgram: curr.order?.fundingProgram?.name,
             projectSponsor: curr.promoter?.projectPromoter,
-            fundingConcentration: curr.fundinglabel, 
-            projectStart: curr.project?.startDate, 
+            fundingConcentration: curr.fundinglabel,
+            projectStart: curr.project?.startDate,
             projectEnd: curr.project?.endDate,
-            abrStart: curr.billingStart, 
-            abrEnd: curr.billingEnd, 
-            forNet: curr.netAmount, 
-            ofSt: curr.grossAmount, 
-            zaGross: curr.grossAmount, 
+            abrStart: curr.billingStart,
+            abrEnd: curr.billingEnd,
+            forNet: curr.netAmount,
+            ofSt: curr.grossAmount,
+            zaGross: curr.grossAmount,
             zaReceived: curr.payedAmount,
-            zaOffen: curr.openAmount, 
+            zaOffen: curr.openAmount,
             iwsPercent: curr.iwsPercent
           })
           return acc
@@ -87,9 +106,23 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
     })
   }
 
+  private getTitleByCustomerId(customerId: any): void {
+    this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+      if (customer) {
+        this.updateTitle(customer.customername1!);
+      } else {
+        this.updateTitle('');
+      }
+    });
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`);
+  }
+
   openDeleteModal(id: any) {
     this.visibleReceivablesModal = true;
-    const receivables = this.demands.find( debts => debts.id == id);
+    const receivables = this.demands.find(debts => debts.id == id);
     if (receivables) {
       this.selectedReceivables = receivables;
     }
@@ -101,7 +134,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
       this.receivableUtils.deleteReceivable(this.selectedReceivables.id).subscribe({
         next: () => {
           this.commonMessage.showDeleteSucessfullMessage();
-          this.demands = this.demands.filter( debts => debts.id != this.selectedReceivables.id);
+          this.demands = this.demands.filter(debts => debts.id != this.selectedReceivables.id);
         },
         error: () => {
           this.commonMessage.showErrorDeleteMessage();
@@ -109,7 +142,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         complete: () => {
           this.visibleReceivablesModal = false;
           this.selectedReceivables = undefined;
-          this.isReceivablesLoading = false; 
+          this.isReceivablesLoading = false;
         }
       })
     }
@@ -125,10 +158,10 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
 
   loadReceivableColHeaders(): void {
     this.cols = [
-      { 
-        field: 'idClaim', 
+      {
+        field: 'idClaim',
         routerLink: (row: any) => `./receivable-edit/${row.idClaim}`,
-        header: this.translate.instant(_('RECEIVABLES.TABLE.CLAIM_NUMBER')) 
+        header: this.translate.instant(_('RECEIVABLES.TABLE.CLAIM_NUMBER'))
       },
       { field: 'idOrder', customClasses: ['align-left'], header: this.translate.instant(_('RECEIVABLES.TABLE.ORDER_NUMBER')) },
       { field: 'orderTitle', header: this.translate.instant(_('RECEIVABLES.TABLE.ORDER_TITLE')) },
