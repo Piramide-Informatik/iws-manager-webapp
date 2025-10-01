@@ -3,10 +3,10 @@
 
         <div class="align-items-center mb-4">
             <!-- Nombre rol -->
-            <div class="rol-form mb-2">
+            <div class="rol-form">
                 <label for="name">{{ 'ROLES.LABEL.ROL' | translate }}</label>
                 <div class="input-message">
-                    <input pInputText type="text" id="name" formControlName="name"
+                    <input #firstInput pInputText type="text" id="name" formControlName="name"
                         [ngClass]="{'ng-invalid ng-dirty': editRoleForm.get('name')?.invalid && editRoleForm.get('name')?.touched}"
                         autocomplete="off" />
                     <p-message severity="error" variant="simple" size="small"
@@ -17,7 +17,7 @@
             </div>
 
             <!-- Módulo -->
-            <div class="rol-form mb-2">
+            <div class="rol-form">
                 <label for="selectedModule">{{ 'ROLES.LABEL.MODULE' | translate }}</label>
                 <p-select
                     id="selectedModule"
@@ -81,9 +81,7 @@
                 [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times"
                 iconPos="left"
-                (click)="onCancel()"
-                (keydown.enter)="onCancel()"
-                (keydown.space)="onCancel()"
+                (onClick)="onCancel()"
                 >
             </p-button>
         </div>
