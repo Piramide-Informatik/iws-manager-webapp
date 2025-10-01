@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
@@ -11,6 +11,9 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { Order } from '../../../../Entities/order';
 import { Column } from '../../../../Entities/column';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { Title } from '@angular/platform-browser';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { CustomerStateService } from '../../../customer/utils/customer-state.service';
 
 @Component({
   selector: 'app-orders-overview',
@@ -20,6 +23,9 @@ import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 })
 export class OrdersOverviewComponent implements OnInit, OnDestroy {
   private readonly orderUtils = inject(OrderUtils);
+  private readonly customerUtils = inject(CustomerUtils);
+  private readonly titleService = inject(Title);
+  private readonly customerStateService = inject(CustomerStateService);
 
   public orders!: Order[];
   visibleOrderModal = false;
@@ -50,12 +56,33 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     this.loadOrdersOverviewColHeaders();
     this.selectedColumns = this.cols;
     this.userOrdersOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadOrdersOverviewColHeaders();
       this.reloadComponent(true);
       this.userOrdersOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
+
     this.route.params.subscribe(params => {
+      const customerId = params['id'];
+      if (!customerId) {
+        this.updateTitle('...');
+        return;
+      }
+      this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
+        if (currentCustomer) {
+          this.updateTitle(currentCustomer.customername1!);
+        } else {
+          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+            if (customer) {
+              this.updateTitle(customer.customername1!);
+            } else {
+              this.updateTitle('');
+            }
+          });
+        }
+      })
+
       this.orderUtils.getAllOrdersByCustomerIdSortedByOrderNo(params['id']).subscribe(orders => {
         this.orders = orders.reduce((acc: any[], curr) => {
           acc.push({
@@ -149,6 +176,10 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
       { field: 'iwsPercent', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT')) },
       { field: 'iwsPercentValue', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('ORDERS.TABLE.IWS_PERCENT_VALUE')) },
     ];
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`);
   }
 
   ngOnDestroy(): void {
