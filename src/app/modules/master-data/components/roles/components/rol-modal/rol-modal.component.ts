@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Output, Input, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Output, Input, inject, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RoleUtils } from '../../utils/role-utils'; 
 import { of, Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { RoleStateService } from '../../utils/role-state.service';
 
 @Component({
   selector: 'app-rol-modal',
@@ -10,8 +11,9 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   templateUrl: './rol-modal.component.html',
   styleUrl: './rol-modal.component.scss'
 })
-export class RolModalComponent {
+export class RolModalComponent implements OnInit {
   private readonly roleUtils = inject(RoleUtils);
+  private readonly roleStateService = inject(RoleStateService);
   private readonly subscriptions = new Subscription();
 
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -134,6 +136,7 @@ export class RolModalComponent {
   }
 
   private emitDeleteMessage(type: 'success' | 'error', error?: any): void {
+    this.roleStateService.clearRole();
     this.stopLoading();
 
     if (type === 'success') {

@@ -3,31 +3,22 @@
 .rol-form{
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
 
   label {
     width: 120px;
-    font-weight: 500;
     margin-left: 25px;
+    flex-shrink: 0;
   }
 
   .p-select {
+    min-width: 10%;
     width: 100%;
   }
 
-  .input-message {
-        width: 100%;
-        position: relative;
-
-        input {
-            width: 100%;
-        }
-
-        p-message {
-            position: absolute;
-            left: 0px;
-            bottom: -18px;
-        }
-    }
+  input {
+    width: 100%;
+  }
 }
 
 //Styles table head

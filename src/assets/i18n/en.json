@@ -304,7 +304,7 @@
       "FUNDING_LABEL": "Funding Label",
       "START_DATE": "Start Date",
       "END_DATE": "End Date",
-      "AUTH_DATE": "Auth. Date",
+      "AUTH_DATE": "Appr. Date",
       "FUNDING_RATE": "Funding Rate"
     },
     "PROJECTS_DIALOG_REMOVE": "Delete Project",

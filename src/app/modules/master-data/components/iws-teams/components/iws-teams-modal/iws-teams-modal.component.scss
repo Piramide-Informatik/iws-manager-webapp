@@ -6,11 +6,12 @@
   label {
     width: 100px;
     margin-right: 0.5rem;
+    flex-shrink: 0;
   }
 
   input,
-  ::ng-deep .p-dropdown {
-    flex: 1;       
-    max-width: 16em; 
+  ::ng-deep .p-select {
+    min-width: 10%;
+    width: 100%;
   }
 }
