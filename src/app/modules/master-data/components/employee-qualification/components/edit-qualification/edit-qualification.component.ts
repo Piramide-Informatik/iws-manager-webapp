@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ export class EditQualificationComponent implements OnInit {
   public showOCCErrorModalEmployeeCategory = false;
   currentEmployeeCategory: EmployeeCategory | null = null;
   editQualificationForm!: FormGroup;
-
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   isSaving = false;
   private readonly subscriptions = new Subscription();
   private readonly editEmployeeCategorySource =
@@ -67,6 +67,7 @@ export class EditQualificationComponent implements OnInit {
       qualification: employeeCategory.title,
       abbreviation: employeeCategory.label,
     });
+    this.focusInputIfNeeded();
   }
 
   private loadEmployeeCategoryAfterRefresh(employeeCategoryId: string): void {
@@ -77,7 +78,7 @@ export class EditQualificationComponent implements OnInit {
         .subscribe({
           next: (employeeCategory) => {
             if (employeeCategory) {
-              this.employeeCategoryStateService.setPEmployeeCategoryToEdit(
+              this.employeeCategoryStateService.setEmployeeCategoryToEdit(
                 employeeCategory
               );
             }
@@ -131,7 +132,7 @@ export class EditQualificationComponent implements OnInit {
       summary: this.translate.instant('MESSAGE.SUCCESS'),
       detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
-    this.employeeCategoryStateService.setPEmployeeCategoryToEdit(null);
+    this.employeeCategoryStateService.setEmployeeCategoryToEdit(null);
     this.clearForm();
   }
 
@@ -172,6 +173,16 @@ export class EditQualificationComponent implements OnInit {
         this.currentEmployeeCategory.id.toString()
       );
       window.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentEmployeeCategory && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }
