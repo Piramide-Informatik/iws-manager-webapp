@@ -1,8 +1,11 @@
 .qualification-form {
     display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
 
     label {
-        width: 111px;
+        width: 100px;
+        flex-shrink: 0;
     }
 
     input {

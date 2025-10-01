@@ -7,11 +7,11 @@ export class EmployeeCategoryStateService {
     private readonly editEmployeeCategorySource = new BehaviorSubject<EmployeeCategory | null>(null);
     currentEmployeeCategory$ = this.editEmployeeCategorySource.asObservable();
 
-    setPEmployeeCategoryToEdit(employeeCategory: EmployeeCategory | null): void {
+    setEmployeeCategoryToEdit(employeeCategory: EmployeeCategory | null): void {
         this.editEmployeeCategorySource.next(employeeCategory)
     }
 
-    clearProjectStatus(): void {
+    clearEmployeeCategory(): void {
         this.editEmployeeCategorySource.next(null);
     }
 }

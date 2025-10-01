@@ -1,21 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  inject,
-  OnInit,
-  Input,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeCategoryUtils } from '../../utils/employee-category-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
+import { EmployeeCategoryStateService } from '../../utils/employee-category-state.service';
 
 @Component({
   selector: 'app-employee-qualification-modal',
@@ -25,6 +14,7 @@ import { EmployeeCategory } from '../../../../../../Entities/employee-category '
 })
 export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
+  private readonly employeeCategoryStateService = inject(EmployeeCategoryStateService);
   private readonly subscriptions = new Subscription();
 
   @ViewChild('employeeCategoryInput')
@@ -63,7 +53,9 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visibleModal'] && this.visibleModal) {
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      });
     }
   }
 
@@ -94,6 +86,7 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {
+          this.employeeCategoryStateService.clearEmployeeCategory();
           afterSuccess?.();
           this.showToastAndClose('success', successMessage);
         },

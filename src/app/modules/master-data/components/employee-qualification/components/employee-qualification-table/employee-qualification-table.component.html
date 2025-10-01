@@ -17,8 +17,7 @@
             ? ('EMPLOYEE_QUALIFICATION.FORM.QUALIFICATION_FORM' | translate) 
             : ('EMPLOYEE_QUALIFICATION.DELETE.CONFIRMATION' | translate)" 
             [modal]="true" 
-            [(visible)]="visibleModal" 
-            (onShow)="onDialogShow()"
+            [(visible)]="visibleModal"
         >
             <app-employee-qualification-modal
             [modalType]="modalType"
