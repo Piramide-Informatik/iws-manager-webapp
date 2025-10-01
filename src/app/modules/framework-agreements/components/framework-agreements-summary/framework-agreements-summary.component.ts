@@ -73,6 +73,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
             this.customerUtils.getCustomerById(customerId).subscribe(customer => {
               if (customer) {
                 this.updateTitle(customer.customername1!);
+                this.customer = customer;
               } else {
                 this.updateTitle('');
               }
@@ -94,9 +95,6 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
           return acc
         }, [])
       });
-      this.customerUtils.getCustomerById(params['id']).subscribe(customer => {
-        this.customer = customer;
-      })
     })
 
   }
