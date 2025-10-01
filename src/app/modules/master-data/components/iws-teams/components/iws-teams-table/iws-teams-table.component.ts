@@ -29,37 +29,25 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   TeamIwsName: string = '';
   @ViewChild('IwsTeamsModalComponent')
   iwsTeamsModalComponent!: IwsTeamsModalComponent;
-  handleTableEvents(event: { type: 'create' | 'delete'; data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      this.selectedTeamIws = event.data;
-      this.teamIwsUtils.getTeamIwsById(this.selectedTeamIws!).subscribe({
-        next: (teamIws) => {
-          this.TeamIwsName = teamIws?.name?.toString() ?? '';
-        },
-        error: (err) => {
-          console.error('Could not get teamIws:', err);
-          this.TeamIwsName = '';
-        },
-      });
-    }
-    this.visibleModal = true;
-  }
+  mapTeamIws = new Map<number, TeamIws>();
+
   readonly teams = computed(() => {
-    return this.teamIwsService.teamsIws().map((teamiws) => ({
-      id: teamiws.id,
-      name: teamiws.name,
-      teamLeader: teamiws.teamLeader
-      ? `${teamiws.teamLeader.lastname ?? ""} ${teamiws.teamLeader.firstname ?? ""}`.trim()
-      : "",
-    }));
+    return this.teamIwsService.teamsIws().map((teamiws) => {
+      this.mapTeamIws.set(teamiws.id, teamiws);
+      return {
+        id: teamiws.id,
+        name: teamiws.name,
+        teamLeader: teamiws.teamLeader
+          ? `${teamiws.teamLeader.lastname ?? ""} ${teamiws.teamLeader.firstname ?? ""}`.trim()
+          : "",
+      };
+    });
   });
 
-  IwsTeams: any[] = [];
   columnsHeaderIwsTeams: any[] = [];
   userIwsTeamsPreferences: UserPreference = {};
   tableKey: string = 'IwsTeams';
-  dataKeys = ['name'];
+  dataKeys = ['name','teamLeader'];
 
   @ViewChild('dt2') dt2!: Table;
   private langSubscription!: Subscription;
@@ -89,6 +77,16 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
           this.columnsHeaderIwsTeams
         );
     });
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete'; data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedTeamIws = event.data;
+
+      this.TeamIwsName = this.mapTeamIws.get(this.selectedTeamIws ?? 0)?.name ?? '';
+    }
+    this.visibleModal = true;
   }
 
   onUserIwsTeamsPreferencesChanges(userIwsTeamsPreferences: any) {
@@ -144,28 +142,8 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  editTeamIws(teamIws: TeamIws) {
-    const TeamIwsToEdit: TeamIws = {
-      id: teamIws.id,
-      name: teamIws.name,
-      teamLeader: teamIws.teamLeader,
-      createdAt: '',
-      updatedAt: '',
-      version: 0,
-    };
-    this.teamIwsUtils
-      .getTeamIwsById(TeamIwsToEdit.id)
-      .subscribe({
-        next: (fullTeamIws) => {
-          if (fullTeamIws) {
-            this.teamIwsStateService.setTeamIwsToEdit(
-              fullTeamIws
-            );
-          }
-        },
-        error: (err) => {
-          console.error('Error Id fullTeamIws', err);
-        },
-      });
+  editTeamIws(teamIws: { id: number; name: string | undefined; teamLeader: string; }): void {
+    const TeamIwsToEdit: TeamIws | null = this.mapTeamIws.get(teamIws.id) || null; 
+    this.teamIwsStateService.setTeamIwsToEdit(TeamIwsToEdit);
   }
 }

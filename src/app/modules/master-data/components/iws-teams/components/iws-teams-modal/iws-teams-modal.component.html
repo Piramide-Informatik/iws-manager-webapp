@@ -5,7 +5,7 @@
                 <label for="name" class="block">
                     {{ 'IWS_TEAMS.LABEL.TEAM_NAME' | translate }}
                 </label>
-                <input #titleInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
+                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
                     [attr.aria-invalid]="createTeamIwsForm.get('name')?.invalid"
                     [attr.aria-describedby]="createTeamIwsForm.get('name')?.invalid ? 'nameError' : null"
                     class="w-full" />
@@ -15,19 +15,18 @@
                 </small>
             </div>
             <div class="team-form">
-                <label for="teamLeader">{{
-                "IWS_TEAMS.LABEL.TEAM_LEADER" | translate
-                }}</label>
-                <p-dropdown
+                <label for="teamLeader">{{ "IWS_TEAMS.LABEL.TEAM_LEADER" | translate }}</label>
+                <p-select
                 id="teamLeader"
                 [options]="leaders"
                 optionLabel="fullName"
                 formControlName="teamLeader"
                 placeholder="{{ 'IWS_TEAMS.PLACEHOLDER.SELECT_LEADER' | translate }}"
+                [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
                 [showClear]="true"
                 appendTo="body"
                 >
-                </p-dropdown>
+                </p-select>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"

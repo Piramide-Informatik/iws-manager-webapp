@@ -5,6 +5,7 @@ import { finalize, map } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { TeamIws } from '../../../../../../Entities/teamIWS';
 import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
+import { TeamIwsStateService } from '../../utils/iws-team-state.service';
 
 @Component({
   selector: 'app-iws-teams-modal',
@@ -13,12 +14,13 @@ import { EmployeeIwsService } from '../../../../../../Services/employee-iws.serv
   styleUrl: './iws-teams-modal.component.scss',
 })
 export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
+  private readonly teamIwsStateService = inject(TeamIwsStateService);
   private readonly teamIwsUtils = inject(TeamIwsUtils);
-  private readonly employeeIws=  inject(EmployeeIwsService);
+  private readonly employeeIws = inject(EmployeeIwsService);
   private readonly subscriptions = new Subscription();
 
   leaders: any[] = [];
-  @ViewChild('titleInput')
+  @ViewChild('firstInput')
   teamIwsInput!: ElementRef<HTMLInputElement>;
 
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -49,7 +51,9 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visibleModal'] && this.visibleModal){
-      this.focusInputIfNeeded();
+      setTimeout(()=>{
+        this.focusInputIfNeeded();
+      })
     }
   }
 
@@ -63,18 +67,18 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
 
   private loadTeams() {
     const sub = this.employeeIws.getAllEmployeeIwsSortedByFirstname().pipe(
-    map(data => data.map(emp => ({
-      id: emp.id,
-      firstname: emp.firstname,
-      lastname: emp.lastname,
-      fullName: `${emp.lastname} ${emp.firstname}`,
-      version: emp.version
-    })))
-  ).subscribe({
-    next: (data) => (this.leaders = data),
-    error: (err) => console.error('Error loading leaders', err),
-  });
-  this.subscriptions.add(sub);
+      map(data => data.map(emp => ({
+        id: emp.id,
+        firstname: emp.firstname,
+        lastname: emp.lastname,
+        fullName: `${emp.lastname} ${emp.firstname}`,
+        version: emp.version
+      })))
+    ).subscribe({
+      next: (data) => (this.leaders = data),
+      error: (err) => console.error('Error loading leaders', err),
+    });
+    this.subscriptions.add(sub);
   }
 
   onCancel(): void {
@@ -115,6 +119,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
         .pipe(finalize(() => (this.isLoading = false)))
         .subscribe({
           next: () => {
+            this.teamIwsStateService.clearTeamIws();
             if (successDetail === 'MESSAGE.CREATE_SUCCESS') this.teamIwsCreated.emit();
             this.showToastAndClose('success', successDetail);
           },
