@@ -89,3 +89,10 @@
 ::ng-deep .sub_contract_input .p-select-option {
   white-space: normal !important;
 }
+
+::ng-deep .p-select .p-select-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 10px !important;
+}
