@@ -1,20 +1,14 @@
 .create-form {
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
 
     label {
-        width: 111px;
-        font-weight: 500;
-        margin-left: 20px;
+        width: 100px;
+        flex-shrink: 0;
     }
 
     input {
-        flex: 1;
-        max-width: 350px;
-        width: 15em;
-    }
-
-    p-datepicker {
-        display: flex;
+        width: 100%;
     }
 }

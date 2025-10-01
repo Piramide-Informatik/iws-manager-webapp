@@ -1,11 +1,4 @@
-import {
-  Component,
-  computed,
-  inject,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
@@ -17,7 +10,6 @@ import { EmployeeCategoryService } from '../../../../../../Services/employee-cat
 import { EmployeeCategoryUtils } from '../../utils/employee-category-utils';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { EmployeeQualificationModalComponent } from '../employee-qualification-modal/employee-qualification-modal.component';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
 
 @Component({
@@ -34,43 +26,16 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'delete' = 'create';
   selectedEmployeeQualification: number | null = null;
   NameEmployeeQualification: string = '';
-  @ViewChild('employeeQualificationModalComponent')
-  employeeQualificationModalComponent!: EmployeeQualificationModalComponent;
-  handleTableEvents(event: { type: 'create' | 'delete'; data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      this.selectedEmployeeQualification = event.data;
-
-      this.employeeCategoryUtils
-        .getEmployeeCategoryById(this.selectedEmployeeQualification!)
-        .subscribe({
-          next: (employeeQualification) => {
-            this.NameEmployeeQualification = employeeQualification?.title ?? '';
-          },
-          error: (err) => {
-            console.error('Could not get employeeIws:', err);
-            this.NameEmployeeQualification = '';
-          },
-        });
-    }
-    this.visibleModal = true;
-  }
 
   readonly employeeCategories = computed(() => {
-    return this.employeeCategoryService
-      .employeeCategories()
-      .map((employeeCategory) => ({
-        id: employeeCategory.id,
-        qualification: employeeCategory.title,
-        abbreviation: employeeCategory.label,
-      }));
+    return this.employeeCategoryService.employeeCategories();
   });
 
   public employeesQualifications: any[] = [];
   public columsHeaderFieldEmployee: any[] = [];
   userEmployeeQualificationPreferences: UserPreference = {};
   tableKey: string = 'EmployeeQualification';
-  dataKeys = ['qualification', 'abbreviation'];
+  dataKeys = ['title', 'label'];
 
   @ViewChild('dt2') dt2!: Table;
   private langSubscription!: Subscription;
@@ -85,19 +50,23 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadColHeaders();
     this.userEmployeeQualificationPreferences =
-      this.userPreferenceService.getUserPreferences(
-        this.tableKey,
-        this.columsHeaderFieldEmployee
-      );
+      this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldEmployee);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.routerUtils.reloadComponent(true);
       this.userEmployeeQualificationPreferences =
-        this.userPreferenceService.getUserPreferences(
-          this.tableKey,
-          this.columsHeaderFieldEmployee
-        );
+        this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldEmployee);
     });
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete'; data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedEmployeeQualification = event.data;
+
+      this.NameEmployeeQualification = this.employeeCategories().find(category => category.id === this.selectedEmployeeQualification)?.title ?? '';
+    }
+    this.visibleModal = true;
   }
 
   onUserEmployeeQualificationPreferencesChanges(
@@ -112,18 +81,14 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
   loadColHeaders(): void {
     this.columsHeaderFieldEmployee = [
       {
-        field: 'qualification',
+        field: 'title',
         classesTHead: ['width-50'],
-        header: this.translate.instant(
-          _('EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION')
-        ),
+        header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION')),
       },
       {
-        field: 'abbreviation',
+        field: 'label',
         classesTHead: ['width-50'],
-        header: this.translate.instant(
-          _('EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION')
-        ),
+        header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.ABBREVIATION')),
       },
     ];
   }
@@ -131,12 +96,6 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
-    }
-  }
-
-  onDialogShow() {
-    if (this.modalType === 'create' && this.employeeQualificationModalComponent) {
-      this.employeeQualificationModalComponent.focusInputIfNeeded();
     }
   }
 
@@ -156,29 +115,8 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
   }
 
   editEmployeeCategory(employeeCategory: EmployeeCategory) {
-        const EmployeeCategoryToEdit: EmployeeCategory = {
-          id: employeeCategory.id,
-          title: employeeCategory.title,
-          label: employeeCategory.label,
-          createdAt: '',
-          updatedAt: '',
-          version: 0,
-        };
-        this.employeeCategoryUtils
-          .getEmployeeCategoryById(EmployeeCategoryToEdit.id)
-          .subscribe({
-            next: (fullEmployeeCategory) => {
-              if (fullEmployeeCategory) {
-                this.employeeCategoryStateService.setPEmployeeCategoryToEdit(
-                  fullEmployeeCategory
-                );
-              }
-            },
-            error: (err) => {
-              console.error('Error Id EmployeeCategory', err);
-            },
-          });
-      }
+    this.employeeCategoryStateService.setEmployeeCategoryToEdit(employeeCategory);
+  }
 
   get isCreateMode(): boolean {
     return this.modalType === 'create';
