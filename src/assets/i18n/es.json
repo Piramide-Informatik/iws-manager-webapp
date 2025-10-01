@@ -297,7 +297,7 @@
       "FUNDING_LABEL": "Sigla de Financiación",
       "START_DATE": "Fecha Incio",
       "END_DATE": "Fecha Fin",
-      "AUTH_DATE": "Fecha de Autorización",
+      "AUTH_DATE": "Fecha de Aprobación",
       "FUNDING_RATE": "Tasa de Financiación"
     },
     "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto",
