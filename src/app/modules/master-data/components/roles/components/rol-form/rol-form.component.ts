@@ -1,10 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Role } from '../../../../../../Entities/role';
 import { Subscription, forkJoin, of } from 'rxjs';
 import { RoleUtils } from '../../utils/role-utils';
@@ -34,7 +29,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
   isSaving = false;
   private readonly subscriptions = new Subscription();
   public showOCCErrorModalRole = false;
-
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   modules: SystemModule[] = [];
   existingRights: RightRole[] = [];
 
@@ -68,7 +63,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
       localStorage.removeItem('selectedRoleId');
     }
     this.editRoleForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl(''),
       selectedModule: new FormControl(''),
     });
 
@@ -208,18 +203,19 @@ export class RolFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.roleStateService.currentRole$.subscribe((name) => {
         this.currentRole = name;
-        name ? this.loadApprovalStatusData(name) : this.clearForm();
+        name ? this.loadRolesData(name) : this.clearForm();
       })
     );
   }
 
-  private loadApprovalStatusData(role: Role): void {
+  private loadRolesData(role: Role): void {
     this.editRoleForm.patchValue({
       name: role.name,
       selectedModule: null // deselect the module when changing roles
     });
     this.functions = []; // deselect the module when changing roles
     this.existingRights = [];
+    this.focusInputIfNeeded();
   }
   clearForm(): void {
     this.editRoleForm.reset();
@@ -325,5 +321,15 @@ export class RolFormComponent implements OnInit, OnDestroy {
     if (fn.delete) value |= 8;
     if (fn.execute) value |= 16;
     return value;
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentRole && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }
