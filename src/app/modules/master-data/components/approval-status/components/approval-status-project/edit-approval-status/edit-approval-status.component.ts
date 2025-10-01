@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 import { Subscription } from 'rxjs';
@@ -19,6 +19,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   isSaving = false;
   private readonly subscriptions = new Subscription();
   public showOCCErrorModalApprovalStatus = false;
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly approvalStatusUtils: ApprovalStatusUtils,
@@ -68,6 +69,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
         forProject: !!status.forProjects,
         forNetwork: !!status.forNetworks,
       });
+      this.focusInputIfNeeded();
     }
 
   clearForm(): void {
@@ -155,6 +157,16 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
     if (this.currentApprovalStatus?.id) {
       localStorage.setItem('selectedCountryId', this.currentApprovalStatus.id.toString());
       window.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentApprovalStatus && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }

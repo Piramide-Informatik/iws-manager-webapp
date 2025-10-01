@@ -601,7 +601,8 @@
       "APPLIES_TO_NETWORK": "Aplica a Redes"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Estado de Aprobación"
+      "CONFIRMATION": "Eliminar Estado de Aprobación",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el Estado de Aprobación "
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "Nuevo Estado de Aprobación"

@@ -604,7 +604,8 @@
       "APPLIES_TO_NETWORK": "Applies to Network"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Approval Status"
+      "CONFIRMATION": "Delete Approval Status",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the Approval Status "
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "New Approval Status"
