@@ -49,11 +49,19 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       this.loadOptionsInvoiceLabel();
     });
     this.initForm();
+    this.checkboxAfaChange();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isVisibleModal'] && this.isVisibleModal && this.modalSubcontractType !== 'delete'){
       this.firstInputFocus();
+    }
+
+    let modalVisibleChange = changes['isVisibleModal'];
+    if (modalVisibleChange && !modalVisibleChange.firstChange) {
+      if (this.isVisibleModal && this.modalSubcontractType === 'create') {
+        this.createSubcontractForm.reset();
+      }
     }
   }
 
@@ -102,6 +110,18 @@ export class SubContractModalComponent implements OnInit, OnChanges {
     this.createdSubContract.emit(newSubcontract);
   }
 
+  private checkboxAfaChange(): void {
+    this.createSubcontractForm.get('afa')?.valueChanges.subscribe((value: boolean) => {
+      const afaDurationControl = this.createSubcontractForm.get('afaDurationMonths');
+      if (value) {
+        afaDurationControl?.enable();
+      } else {
+        afaDurationControl?.disable();
+        afaDurationControl?.setValue(null, { emitEvent: false });
+      }
+    });
+  }
+
   private buildSubcontractFromForm() {
     const controlNetOrGross: boolean =  this.createSubcontractForm.value.netOrGross === 'net';
     return {
@@ -135,6 +155,7 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   closeModal() {
+    this.createSubcontractForm.reset();
     this.visibleModal.emit(false);
   }
 
