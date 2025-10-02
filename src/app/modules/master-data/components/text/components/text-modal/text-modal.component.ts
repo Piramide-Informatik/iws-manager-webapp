@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Text } from '../../../../../../Entities/text';
 import { TextUtils } from '../../utils/text-utils';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -9,7 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './text-modal.component.html',
   styleUrl: './text-modal.component.scss'
 })
-export class TextModalComponent implements OnInit, OnChanges {
+export class TextModalComponent implements OnChanges {
   private readonly textUtils = inject(TextUtils);
   @Input() visible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -21,17 +21,15 @@ export class TextModalComponent implements OnInit, OnChanges {
   public isLoading: boolean = false;
 
   public readonly textForm = new FormGroup({
-    label: new FormControl(''),
+    label: new FormControl({ value: '', disabled: true }),
     content: new FormControl('')
   });
 
-  ngOnInit(): void {
-    this.textForm.get('label')?.disable();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.modalType === 'create'){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 
