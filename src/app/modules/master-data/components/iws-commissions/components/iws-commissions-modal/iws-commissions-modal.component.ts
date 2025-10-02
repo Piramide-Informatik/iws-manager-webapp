@@ -48,7 +48,9 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isVisible'] && this.isVisible){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 
