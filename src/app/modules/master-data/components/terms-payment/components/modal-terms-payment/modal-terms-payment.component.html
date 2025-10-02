@@ -15,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="col flex justify-content-center mt-2">
-                    <p-button class="save me-2" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="payConditionForm.invalid || !payConditionForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                     <p-button class="cancel me-2" size="small" (onClick)="closeModal()" [disabled]="isLoading" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
