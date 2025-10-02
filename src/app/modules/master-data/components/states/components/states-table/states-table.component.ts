@@ -11,6 +11,7 @@ import { StateModalComponent } from '../state-modal/state-modal.component';
 import { State } from '../../../../../../Entities/state';
 import { StatesStateService } from '../../utils/states.state.service.service';
 import { MessageService } from 'primeng/api';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-states-table',
@@ -21,21 +22,19 @@ import { MessageService } from 'primeng/api';
 export class StatesTableComponent implements OnInit, OnDestroy {
   private readonly stateUtils = new StateUtils();
   private readonly stateService = inject(StateService);
+  private readonly stateStateService = inject(StatesStateService);
   private readonly messageService = inject(MessageService);
-  cols: any[] = [];
-  selectedColumns: any[] = [];
+  cols: Column[] = [];
+  selectedColumns: Column[] = [];
   userStatesPreferences: UserPreference = {};
   tableKey: string = 'States'
-  dataKeys = ['state'];
+  dataKeys = ['name'];
   visibleStateModal: boolean = false;
   stateModalType: 'create' | 'delete' = 'create';
   selectedState: number | null = null;
   stateName: string = '';
   readonly states = computed(() => {
-    return this.stateService.states().map(state => ({
-      id: state.id,
-      name: state.name,
-    }));
+    return this.stateService.states();
   });
   @ViewChild('stateModal') stateModalComponent!: StateModalComponent;
     
@@ -73,7 +72,6 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     this.cols = [
       {
         field: 'name',
-        minWidth: 110,
         header: this.translate.instant(_('STATES.TABLE.STATE'))
       }
     ];
@@ -84,37 +82,13 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     if (event.type === 'delete' && event.data) {
       this.selectedState = event.data;
 
-      this.stateUtils.getStateById(this.selectedState!).subscribe({
-        next: (state) => {
-          this.stateName = state?.name ?? '';
-        },
-        error: (err) => {
-          console.error('No se pudo obtener el estado:', err);
-          this.stateName = '';
-        }
-      });
+      this.stateName = this.states().find(state => state.id === this.selectedState)?.name ?? '';
     }
     this.visibleStateModal = true;
   }
 
   editState(state: State) {
-    const stateToEdit: State = {
-      id: state.id,
-      name: state.name,
-      createdAt: '',
-      updatedAt: ''
-    };
-
-    this.stateUtils.getStateById(stateToEdit.id).subscribe({
-      next: (fullState) => {
-        if (fullState) {
-          this.statesState.setStateToEdit(fullState);
-        }
-      },
-      error: (err) => {
-        console.error('Error al cargar el estado:', err);
-      }
-    });
+    this.stateStateService.setStateToEdit(state);
   }
 
   onVisibleModal(visible: boolean) {
@@ -134,39 +108,9 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]);
-    });
-  }
-
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
-    }
-  }
-
-  logAction(action: string, data?: any) {
-    console.log(`${action}`, data ?? '');
-  }
-
-  editAbsenceType(absenceType: any) {
-    this.logAction('Editing', absenceType);
-  }
-
-  deleteAbsenceType(id: number) {
-    this.logAction('Deleting ID', id);
-  }
-
-  createAbsenceType() {
-    this.logAction('Creating new state');
-  }
-
-  applyFilter(event: any, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
     }
   }
 
