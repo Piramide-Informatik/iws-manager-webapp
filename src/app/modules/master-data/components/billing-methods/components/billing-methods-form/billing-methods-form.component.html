@@ -1,12 +1,12 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'BILLING_METHODS.LABEL.EDIT_BILLING_TYPE' | translate">
     <form [formGroup]="billingMethodForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
-            <div class="billing-method-form mb-2 flex">
+            <div class="billing-method-form">
                 <label for="name">{{ 'BILLING_METHODS.LABEL.BILLING_TYPE' | translate }}</label>
-                <div>
-                    <input pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': billingMethodForm.get('name')?.invalid && 
+                <div class="input-message">
+                    <input #firstInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': billingMethodForm.get('name')?.invalid && 
                       billingMethodForm.get('name')?.dirty && billingMethodForm.get('name')?.touched}" autocomplete="off" />
-                     <p-message severity="error" variant="simple" size="small" *ngIf="
+                     <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
                          billingMethodForm.get('name')?.invalid && 
                          billingMethodForm.get('name')?.dirty && 
                          billingMethodForm.get('name')!.hasError('required')
@@ -16,17 +16,11 @@
                 
             </div>
         </div>
-        <div class="billing-method-form buttons">
-            <div class="row">
-                <div class="col-4">
-                </div>
-                <div class="col-8">
-                    <p-button class="save me-2" type="submit" [loading]="isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-                    iconPos="left" />
-                    <p-button class="cancel me-2" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                    icon="pi pi-times" iconPos="left" />
-                </div>
-            </div>
+        <div class="flex justify-content-center gap-2">
+            <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="billingMethodForm.invalid || isLoading || !billingMethodForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+            iconPos="left" />
+            <p-button class="cancel me-2" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate"
+            icon="pi pi-times" iconPos="left" />
         </div>
     </form>
 </p-card>

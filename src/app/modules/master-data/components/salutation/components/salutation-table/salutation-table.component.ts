@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
@@ -11,6 +10,7 @@ import { Salutation } from '../../../../../../Entities/salutation';
 import { SalutationStateService } from '../../utils/salutation-state.service';
 import { SalutationModalComponent } from '../salutation-modal/salutation-modal.component';
 import { MessageService } from 'primeng/api';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'master-data-salutation-table',
@@ -18,7 +18,7 @@ import { MessageService } from 'primeng/api';
   templateUrl: './salutation-table.component.html',
   styleUrl: './salutation-table.component.scss'
 })
-export class SalutationTableComponent implements OnInit, OnDestroy {
+export class SalutationTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private readonly salutationUtils = new SalutationUtils();
   private readonly salutationService = inject(SalutationService);
@@ -29,22 +29,19 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
   salutationName: string = '';
   @ViewChild('salutationModal') salutationModalComponent!: SalutationModalComponent;
 
-  salutationColumns: any[] = [];
-  salutationDisplayedColumns: any[] = [];
+  salutationColumns: Column[] = [];
+  salutationDisplayedColumns: Column[] = [];
   isChipsVisible = false;
   userSalutationPreferences: UserPreference = {};
   tableKey: string = 'Salutation';
-  dataKeys = ['salutation'];
+  dataKeys = ['name'];
 
   @ViewChild('dt2') dt2!: Table;
 
   private langSubscription!: Subscription;
 
   readonly salutations = computed(() => {
-    return this.salutationService.salutations().map(salutation => ({
-      id: salutation.id,
-      salutation: salutation.name,
-    }));
+    return this.salutationService.salutations();
   });
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
@@ -52,15 +49,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
     if (event.type === 'delete' && event.data) {
       this.selectedSalutation = event.data;
 
-      this.salutationUtils.getSalutationById(this.selectedSalutation!).subscribe({
-        next: (salutation) => {
-          this.salutationName = salutation?.name ?? '';
-        },
-        error: (err) => {
-          console.error('Cannot get Salutation:', err);
-          this.salutationName = '';
-        }
-      });
+      this.salutationName = this.salutations().find(s => s.id === this.selectedSalutation)?.name ?? '';
     }
     this.visibleModal = true;
   }
@@ -68,7 +57,6 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly router: Router,
     private readonly salutationStateService: SalutationStateService
   ) {}
 
@@ -93,7 +81,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
 
   loadSalutationHeaders(): void {
     this.salutationColumns = [
-      { field: 'salutation', minWidth: 110, header: this.translate.instant(_('SALUTATION.TABLE.SALUTATION')) }
+      { field: 'name', header: this.translate.instant(_('SALUTATION.TABLE.SALUTATION')) }
     ];
   }
 
@@ -125,24 +113,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
   }
 
   editSalutation(salutation: Salutation) {
-    const salutationToEdit: Salutation = {
-      id: salutation.id,
-      name: salutation.name,
-      createdAt: '',
-      updatedAt: '',
-      version: 0
-    };
-
-    this.salutationUtils.getSalutationById(salutationToEdit.id).subscribe({
-      next: (fullSalutation) => {
-        if (fullSalutation) {
-          this.salutationStateService.setSalutationToEdit(fullSalutation);
-        }
-      },
-      error: (err) => {
-        console.error('Error to load Salutation:', err);
-      }
-    });
+    this.salutationStateService.setSalutationToEdit(salutation);
   }
 
   onVisibleModal(visible: boolean){

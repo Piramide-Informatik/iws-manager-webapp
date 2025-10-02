@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -26,6 +26,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public vatToEdit: Vat | null = null;
   public showOCCErrorModalVat = false;
   public isLoading: boolean = false;
@@ -122,10 +123,13 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
           this.editSalesTaxForm.patchValue({
             label: this.vatToEdit.label,
           });
+          this.focusInputIfNeeded();
+          // Load VatRates (SalesTaxRates) for the selected Vat (SalesTax)
           this.vatRateUtils.getAllVatRatesByVatId(this.vatToEdit.id).subscribe();
           this.buttonsDisabledTableVatRate = false;
         } else {
-          this.clearForm();
+          this.editSalesTaxForm.reset();
+          this.vatRateService.clearVatRates();
         }
       })
     )
@@ -206,6 +210,16 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       }else{
         this.commonMessageService.showErrorEditMessage();
       }
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.vatToEdit && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }

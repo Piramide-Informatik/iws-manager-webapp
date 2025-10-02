@@ -1,10 +1,10 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'STATES.LABEL.EDIT_STATE' | translate">
     <form [formGroup]="editStateForm" (ngSubmit)="onStateEditFormSubmit()">
         <div class="align-items-center mb-2">
-            <div class="state-form mb-2 flex">
+            <div class="state-form">
                 <label for="name">{{ 'STATES.LABEL.STATE' | translate }}</label>
-                <div>
-                    <input pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': editStateForm.get('name')?.invalid && 
+                <div class="input-message">
+                    <input #firstInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': editStateForm.get('name')?.invalid && 
                       editStateForm.get('name')?.dirty && editStateForm.get('name')?.touched}" autocomplete="off" />
                      <p-message severity="error" variant="simple" size="small" *ngIf="
                          editStateForm.get('name')?.invalid && 
@@ -22,9 +22,9 @@
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-                    [disabled]="editStateForm.invalid || !editStateForm.dirty || isSaving" iconPos="left" />
+                    [disabled]="editStateForm.invalid || !editStateForm.dirty || isSaving" [loading]="isSaving" iconPos="left" />
                 <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                    icon="pi pi-times" iconPos="left" (click)="clearForm()" (keydown.enter)="clearForm()" />
+                    icon="pi pi-times" iconPos="left" (onClick)="clearForm()" [disabled]="isSaving"/>
             </div>
         </div>
     </form>
@@ -35,4 +35,3 @@
   (close)="showOCCErrorModaState = false"
   (refresh)="onRefresh()">
 </app-occ-error-modal>
-<p-toast></p-toast>

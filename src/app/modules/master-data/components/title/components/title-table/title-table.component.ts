@@ -10,6 +10,7 @@ import { Title } from '../../../../../../Entities/title';
 import { TitleStateService } from '../../utils/title-state.service';
 import { TitleModalComponent } from '../title-modal/title-modal.component';
 import { MessageService } from 'primeng/api';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-title-table',
@@ -26,40 +27,17 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   selectedTitle: number | null = null;
   titleName: string = '';
   @ViewChild('titleModal') titleModalComponent!: TitleModalComponent;
-  
-
-  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-
-    if (event.type === 'delete' && event.data) {
-      const id = event.data.id ?? event.data;
-      const titleObj = this.titleService.titles().find(t => t.id === id);
-      if (titleObj) {
-        this.selectedTitle = titleObj.id;
-        this.titleName = titleObj.name;
-      } else {
-        this.selectedTitle = id;
-        this.titleName = event.data.title ?? '';
-      }
-    }
-
-    this.visibleModal = true;
-  }
-
 
   readonly titles = computed(() => {
-    return this.titleService.titles().map(title => ({
-      id: title.id,
-      title: title.name,
-    }));
+    return this.titleService.titles();
   });
 
-  titleColumns: any[] = [];
-  titleDisplayedColumns: any[] = [];
+  titleColumns: Column[] = [];
+  titleDisplayedColumns: Column[] = [];
   isChipsVisible = false;
   userTitlePreferences: UserPreference = {};
   tableKey: string = 'Title'
-  dataKeys = ['label', 'title'];
+  dataKeys = ['name'];
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -77,25 +55,31 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+
+    if (event.type === 'delete' && event.data) {
+      this.selectedTitle = event.data;
+
+      this.titleName = this.titles().find(t => t.id === this.selectedTitle)?.name || '';
+    }
+
+    this.visibleModal = true;
+  }
+
   onUserTitlePreferencesChanges(userTitlePreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userTitlePreferences));
   }
 
   loadTitleHeadersAndColumns() {
     this.loadTitleHeaders();
-    this.titleDisplayedColumns = this.titleColumns.filter(col => col.field !== 'label');
+    this.titleDisplayedColumns = [...this.titleColumns];
   }
 
   loadTitleHeaders(): void {
     this.titleColumns = [
       {
-        field: 'label',
-        minWidth: 110,
-        header: this.translate.instant(_('TITLE.TABLE_TITLE.TITLE_LABEL'))
-      },
-      {
-        field: 'title',
-        minWidth: 110,
+        field: 'name',
         header: this.translate.instant(_('TITLE.TABLE_TITLE.TITLE'))
       }
     ];
@@ -129,13 +113,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   editTitle(title: Title) {
-    const fullTitle = this.titleService.titles().find(t => t.id === title.id);
-
-    if (fullTitle) {
-      this.titleStateService.setTitleToEdit(fullTitle);
-    } else {
-      console.warn('Error al cargar titulo:', title.id);
-    }
+    this.titleStateService.setTitleToEdit(title);
   }
 
   onModalVisibilityChange(visible: boolean): void {
