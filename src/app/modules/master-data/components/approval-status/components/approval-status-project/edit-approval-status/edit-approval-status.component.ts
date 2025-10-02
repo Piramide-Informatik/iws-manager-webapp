@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 import { Subscription } from 'rxjs';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
@@ -46,7 +46,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.editApprovalStatusForm = new FormGroup({
-      status: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+      status: new FormControl(''),
       order: new FormControl(null),
       forProject: new FormControl(false),
       forNetwork: new FormControl(false),

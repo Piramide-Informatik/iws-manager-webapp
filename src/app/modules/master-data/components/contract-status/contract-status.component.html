@@ -3,12 +3,14 @@
         <div class="col-6">
             <app-contract-status-table #contractTable
               (contractStatusToEdit)="onSelectedContractStatusToEdit($event)"
+              (loadEdit)="isLoading = $event"
             >  
             </app-contract-status-table>
         </div>
         <div class="col-6">
             <app-contract-status-form #contractForm
              [contractStatus] = "selectedContractStatusToEdit"
+             [isLoading]="isLoading"
              (contractStatusToEdit) = "onContractStatusToEdit($event)"
              (cancelEditContractStatus) = "onCancelEdit($event)"
             ></app-contract-status-form>

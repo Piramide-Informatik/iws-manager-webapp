@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Subscription, combineLatest, map, take } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
@@ -9,6 +9,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { VatUtils } from '../../utils/vat-utils';
 import { VatService } from '../../../../../../Services/vat.service';
 import { VatStateService } from '../../utils/vat-state.service';
+import { VatRateUtils } from '../../utils/vat-rate-utils';
 
 @Component({
   selector: 'app-sales-tax-table',
@@ -21,6 +22,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   private readonly salesTaxUtils = inject(VatUtils);
   private readonly salestTaxService = inject(VatService);
   private readonly salesTaxStateService = inject(VatStateService);
+  private readonly vatRateUtils = inject(VatRateUtils);
   salesTaxesColumns: any[] = [];
   isSalesTaxesChipVisible = false;
   userSalesTaxTablePreferences: UserPreference = {};
@@ -28,15 +30,27 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   dataKeys = ['label', 'rate'];
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
-  readonly salesTaxesValues = computed(() => {
-    return this.salestTaxService.vats();
-  });
+
+  readonly salesTaxesValues$ = combineLatest([
+    this.salestTaxService.getAllVats(),
+    this.vatRateUtils.getAllVatRates()
+  ]).pipe(
+    map(([vats, vatRates]) => {
+      const array = (vats ?? []).map(v => ({
+        ...v,
+        rate: this.vatRateUtils.calculateCurrentRateForVat(v, vatRates ?? [])
+      }));
+      return array;
+    })
+  );
+
+
   selectedVat!: Vat;
 
   private langSalesTaxSubscription!: Subscription;
 
-  constructor(private readonly userPreferenceService: UserPreferenceService, 
-              private readonly translate: TranslateService ) { }
+  constructor(private readonly userPreferenceService: UserPreferenceService,
+    private readonly translate: TranslateService) { }
 
   ngOnInit() {
     this.salesTaxUtils.loadInitialData().subscribe();
@@ -58,7 +72,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
     this.salesTaxesColumns = this.loadColumnSalesTaxHeaders();
   }
 
-  loadColumnSalesTaxHeaders(): any [] {
+  loadColumnSalesTaxHeaders(): any[] {
     return [
       {
         field: 'label',
@@ -69,13 +83,14 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
       {
         field: 'rate',
         minWidth: 110,
+        type: 'double',
         header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX.CURRENT_TAX_RATE')),
         customClasses: ['align-right']
       }
     ];
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langSalesTaxSubscription) {
       this.langSalesTaxSubscription.unsubscribe();
     }
@@ -83,28 +98,34 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
-    if (event.type === 'delete') {
-      const foundVat = this.salesTaxesValues().find(st => st.id == event.data);
-      if (foundVat) {
-        this.selectedVat = foundVat;
-      }
+
+    if (event.type === 'delete' && event.data != null) {
+      this.salesTaxesValues$.pipe(take(1)).subscribe(salesTaxes => {
+        const foundVat = salesTaxes.find(st => st.id === event.data);
+        if (foundVat) {
+          this.selectedVat = foundVat;
+        }
+        this.isVisibleModal = true;
+      });
+    } else {
+      this.isVisibleModal = true;
     }
-    this.isVisibleModal = true;
   }
 
-  onCreateVat(event: { created?: Vat, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+
+  onCreateVat(event: { created?: Vat, status: 'success' | 'error' }): void {
+    if (event.created && event.status === 'success') {
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
-  onDeleteVat(event: {status: 'success' | 'error', error?: Error}): void {
-    if(event.status === 'success'){
+  onDeleteVat(event: { status: 'success' | 'error', error?: Error }): void {
+    if (event.status === 'success') {
       this.salesTaxStateService.clearVat();
       this.commonMessageService.showDeleteSucessfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorDeleteMessage();
     }
   }

@@ -14,7 +14,7 @@ export class ContractStatusComponent {
   contractStatusTable!: ContractStatusTableComponent;
   @ViewChild('contractForm') 
   formContractStatus!: ContractStatusFormComponent;
-
+  isLoading = false;
   selectedContractStatusToEdit: any;
 
 

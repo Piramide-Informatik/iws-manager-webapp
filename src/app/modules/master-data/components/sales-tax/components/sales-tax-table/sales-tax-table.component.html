@@ -2,7 +2,7 @@
   <div class="row">
     <master-data-genaral-table
       [tableId]="tableKey"
-      [tableValues]="salesTaxesValues()"
+      [tableValues]="(salesTaxesValues$ | async) ?? []"
       [columns]="salesTaxesColumns"
       [userPreferences]="userSalesTaxTablePreferences"
       [dataKeys]="dataKeys"

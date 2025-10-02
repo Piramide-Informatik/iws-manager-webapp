@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
 import { VatRateService } from '../../../../../Services/vat-rate.service';
 import { VatRate } from '../../../../../Entities/vatRate';
+import { Vat } from '../../../../../Entities/vat';
 
 /**
  * Utility class for vatRate-related business logic and operations.
@@ -40,7 +41,7 @@ export class VatRateUtils {
   */
   getAllVatRatesByVatId(vatId: number): Observable<VatRate[]> {
     return this.vatRateService.getAllVatRatesByVatId(vatId).pipe(
-    catchError(() => throwError(() => new Error('Failed to load vatRates by vat')))
+      catchError(() => throwError(() => new Error('Failed to load vatRates by vat')))
     );
   }
 
@@ -113,5 +114,26 @@ export class VatRateUtils {
         return throwError(() => err);
       })
     );
+  }
+
+  calculateCurrentRateForVat(vat: Vat, vatRates: VatRate[]): number | undefined {
+    if (!vatRates || vatRates.length === 0) return undefined;
+
+    const ratesForVat = vatRates.filter(vr => vr.vat?.id === vat.id);
+    if (ratesForVat.length === 0) return undefined;
+
+    const today = new Date();
+    const sortedRates = ratesForVat.sort(
+      (a, b) => new Date(a.fromdate!).getTime() - new Date(b.fromdate!).getTime()
+    );
+
+    let currentRate: number | undefined = undefined;
+    for (const rate of sortedRates) {
+      if (rate.fromdate && new Date(rate.fromdate) <= today) {
+        currentRate = rate.rate ?? undefined;
+      }
+    }
+
+    return currentRate;
   }
 }
