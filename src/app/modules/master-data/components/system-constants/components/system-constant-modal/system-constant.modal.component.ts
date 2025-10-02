@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { SystemConstantUtils } from '../../utils/system-constant.utils';
 import { System } from '../../../../../../Entities/system';
 
@@ -26,14 +26,16 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.createSystemConstantForm  = new FormGroup({
       name: new FormControl(''),
-      valueNum: new FormControl('', [Validators.pattern('^-?[0-9]+(.[0-9]+)?')]),
-      valueChar: new FormControl('', [Validators.pattern('^[a-zA-Z0-9]*$')]),
+      valueNum: new FormControl(null),
+      valueChar: new FormControl(''),
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.visible){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 
