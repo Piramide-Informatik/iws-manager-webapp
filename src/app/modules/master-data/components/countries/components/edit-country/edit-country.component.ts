@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Country } from '../../../../../../Entities/country';
 import { Subscription } from 'rxjs';
 import { CountryStateService } from '../../utils/country-state.service';
@@ -18,6 +18,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   countryForm!: FormGroup;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public showOCCErrorModalCountry = false;
   
   constructor(
@@ -44,8 +45,8 @@ export class EditCountryComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.countryForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-      abbreviation: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+      name: new FormControl(''),
+      abbreviation: new FormControl(''),
       isStandard: new FormControl(false)
     });
   }
@@ -65,6 +66,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
       abbreviation: country.label,
       isStandard: country.isDefault
     });
+    this.focusInputIfNeeded();
   }
 
   clearForm(): void {
@@ -149,5 +151,15 @@ export class EditCountryComponent implements OnInit, OnDestroy {
       control.markAsTouched();
       control.markAsDirty();
     });
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentCountry && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }
