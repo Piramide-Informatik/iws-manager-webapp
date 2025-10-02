@@ -3,9 +3,9 @@
         <div class="salutation-form pb-2 flex align-items-center">
             <label for="salutation">{{ 'SALUTATION.LABEL.TITLE_LABEL' | translate }}</label>
             <div class="input-message">
-                <input pInputText type="text" id="salutation" formControlName="salutation" [ngClass]="{'ng-invalid ng-dirty': editSalutationForm.get('salutation')?.invalid && 
+                <input #firstInput pInputText type="text" id="salutation" formControlName="salutation" [ngClass]="{'ng-invalid ng-dirty': editSalutationForm.get('salutation')?.invalid && 
                     editSalutationForm.get('salutation')?.touched}" autocomplete="off" />
-                <p-message severity="error" variant="simple" size="small" *ngIf="
+                <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
                      editSalutationForm.get('salutation')?.invalid && 
                      editSalutationForm.get('salutation')?.touched && 
                      editSalutationForm.get('salutation')!.hasError('required')
@@ -16,9 +16,9 @@
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
-                [disabled]="editSalutationForm.invalid || !editSalutationForm.dirty || isSaving" />
+                [disabled]="editSalutationForm.invalid || !editSalutationForm.dirty || isSaving" [loading]="isSaving" />
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (click)="clearForm()" (keydown.enter)="clearForm()" />
+                icon="pi pi-times" iconPos="left" (onClick)="clearForm()" [disabled]="isSaving" />
         </div>
     </form>
 </p-card>
@@ -29,4 +29,3 @@
   (close)="showOCCErrorModalSalutation = false"
   (refresh)="onRefresh()">
 </app-occ-error-modal>
-<p-toast></p-toast>

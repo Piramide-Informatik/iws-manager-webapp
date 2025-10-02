@@ -27,27 +27,10 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   CountryName: string = '';
   @ViewChild('countryModal') countryModalComponent!: CountryModalComponent;
 
-  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      this.selectedCountry = event.data;
-
-      this.countryUtils.getCountryById(this.selectedCountry!).subscribe({
-        next: (country) => {
-          this.CountryName = country?.name ?? '';
-        },
-        error: (err) => {
-          console.error('No se pudo obtener el título:', err);
-          this.CountryName = '';
-        }
-      });
-    }
-    this.visibleModal = true;
-  }
   columnsHeaderFieldCoutries: any[] = [];
   userCountriesPreferences: UserPreference = {};
   tableKey: string = 'Countries'
-  dataKeys = ['name', 'abbreviation', 'isStandard'];
+  dataKeys = ['name', 'label', 'isDefault'];
 
   private langSubscription!: Subscription;
 
@@ -71,13 +54,18 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   }
 
   readonly countries = computed(() => {
-    return this.countryService.countries().map(country => ({
-      id: country.id,
-      name: country.name,
-      abbreviation: country.label,
-      isStandard: country.isDefault
-    }));
+    return this.countryService.countries();
   });
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedCountry = event.data;
+
+      this.CountryName = this.countries()?.find(country => country.id === this.selectedCountry)?.name ?? '';
+    }
+    this.visibleModal = true;
+  }
 
   onUserCountriesPreferencesChanges(userCountriesPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userCountriesPreferences));
@@ -91,12 +79,12 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
         styles: { width: '120px' },
       },
       {
-        field: 'abbreviation',
+        field: 'label',
         header: this.translate.instant(_('COUNTRIES.TABLE.ABBREVIATION')),
         styles: { width: '120px' },
       },
       {
-        field: 'isStandard',
+        field: 'isDefault',
         filter: {
           type: 'boolean'
         },
@@ -123,25 +111,7 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
     }
   }
   editCountry(country: Country) {
-    const countryToEdit: Country = {
-      id: country.id,
-      name: country.name,
-      label: country.label,
-      isDefault: country.isDefault,
-      createdAt: country.createdAt ?? '',
-      updatedAt: country.updatedAt ?? ''
-    };
-
-    this.countryUtils.getCountryById(countryToEdit.id).subscribe({
-      next: (fullCountry) => {
-        if (fullCountry) {
-          this.countryStateService.setCountryToEdit(fullCountry);
-        }
-      },
-      error: (err) => {
-        console.error('Error al cargar país:', err);
-      }
-    });
+    this.countryStateService.setCountryToEdit(country);
   }
 
   onDialogShow() {

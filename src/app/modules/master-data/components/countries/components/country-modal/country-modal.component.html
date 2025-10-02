@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode;  else deleteTemplate">
   <form [formGroup]="createCountryForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center display mb-2 mt-4">
-      <div class="country-form mb-3 flex align-items-center">
+      <div class="country-form">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
         <input
           #countryNameInput
@@ -13,7 +13,7 @@
         />
       </div>
 
-      <div class="country-form mb-3 flex align-items-center">
+      <div class="country-form">
         <label for="abbreviation">{{ "COUNTRIES.LABEL.ABBREVIATION" | translate }}</label>
         <input
           pInputText
@@ -24,9 +24,9 @@
         />
       </div>
 
-      <div class="country-form-check mb-3 flex align-items-center">
+      <div class="country-form">
         <label for="isStandardChecked">{{ "COUNTRIES.LABEL.IS_STANDARD" | translate }}</label>
-        <p-toggleswitch formControlName="isStandard" class="flex">
+        <p-toggleswitch formControlName="isStandard" inputId="isStandardChecked" class="flex">
           <ng-template #handle let-checked="checked">
             <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
           </ng-template>
