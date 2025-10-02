@@ -1,11 +1,16 @@
 @use 'variables' as *;
 
 .billing-method-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
     label {
         width: 120px;
+        flex-shrink: 0;
     }
 
     input {
-        width: 250px;
+        width: 100%;
     }
 }
