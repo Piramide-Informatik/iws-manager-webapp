@@ -26,7 +26,9 @@ export class ModalBillerComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.modalType === 'create'){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 
@@ -35,7 +37,7 @@ export class ModalBillerComponent implements OnChanges {
     
     this.isLoading = true;
     const newBiller: Omit<Biller, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.billerForm.value.name ?? ''
+      name: this.billerForm.value.name?.trim() ?? ''
     }
 
     this.billerUtils.addBiller(newBiller).subscribe({
