@@ -108,6 +108,7 @@
           iconPos="left"
           type="submit"
           [loading]="isSaving"
+          [disabled]="isSaving || editIwsStaffForm.invalid || !editIwsStaffForm.dirty"
         ></p-button>
         <p-button
           class="cancel"
