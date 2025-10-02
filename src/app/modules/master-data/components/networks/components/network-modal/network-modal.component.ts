@@ -34,7 +34,9 @@ export class NetworkModalComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.visible){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 

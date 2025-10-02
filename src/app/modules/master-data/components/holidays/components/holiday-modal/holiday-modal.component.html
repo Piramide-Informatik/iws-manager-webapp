@@ -83,7 +83,7 @@
                 icon="pi pi-check"
                 iconPos="left"
                 [loading]="isLoading"
-                [disabled]="createdPublicHolidayForm.invalid || isLoading"
+                [disabled]="createdPublicHolidayForm.invalid || isLoading || !createdPublicHolidayForm.dirty"
                 />
 
                 <p-button
