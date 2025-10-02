@@ -27,7 +27,9 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible && this.isCreateMode) {
-      this.focusInputIfNeeded();
+      setTimeout(()=> {
+        this.focusInputIfNeeded();
+      })
     }
   } 
 
