@@ -52,12 +52,12 @@ export class StateFormComponent implements OnInit, OnDestroy {
   private setupStateSubscription(): void {
     this.subscriptions.add(
       this.statesStateService.currentState$.subscribe((state) => {
-        if (state !== null) {
+        if (state === null) {
+          this.clearForm();
+        } else {
           this.state = state;
           this.editStateForm.patchValue(state);
           this.editStateForm.updateValueAndValidity();
-        } else {
-          this.clearForm();
         }
       })
     );
