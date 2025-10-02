@@ -60,8 +60,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
       id: publicHoliday.id,
       sort: publicHoliday.sequenceNo,
       name: publicHoliday.name,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    }));
   });
 
   columnsHeaderFieldHoliday: Column[] = [];
