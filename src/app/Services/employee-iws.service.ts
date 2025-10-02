@@ -55,7 +55,7 @@ export class EmployeeIwsService {
     return this.http.post<EmployeeIws>(this.apiUrl, employeeIws, this.httpOptions).pipe(
       tap({
         next: (newEmployeeIws) => {
-          this._employeeIws.update(employeeIws => [...employeeIws, newEmployeeIws]);
+          this._employeeIws.update(employeeIws => [newEmployeeIws, ...employeeIws]);
           this._error.set(null);
         },
         error: (err) => {

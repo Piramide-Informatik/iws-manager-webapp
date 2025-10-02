@@ -1,9 +1,9 @@
 <ng-container *ngIf="isStateCreateMode; else deleteStateTemplate">
     <form [formGroup]="stateForm" (ngSubmit)="onCreateStateFormSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-state-form flex align-items-center mb-6">
+            <div class="create-state-form flex align-items-center mb-4">
                 <label for="name">{{ 'STATES.LABEL.STATE' | translate }}</label>
-                <div>
+                <div class="input-message">
                     <input #stateInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': stateForm.get('name')?.invalid && 
                       stateForm.get('name')?.dirty && stateForm.get('name')?.touched}" autocomplete="off" />
                      <p-message severity="error" variant="simple" size="small" *ngIf="
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-content-center gap-2 mt-4">
+            <div class="flex justify-content-center gap-2 mt-2">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
                     icon="pi pi-check" iconPos="left" [loading]="isStateLoading"
                     [disabled]="stateForm.invalid || isStateLoading" />

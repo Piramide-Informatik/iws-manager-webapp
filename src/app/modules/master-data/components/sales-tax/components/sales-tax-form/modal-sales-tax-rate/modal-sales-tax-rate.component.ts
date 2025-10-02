@@ -48,7 +48,9 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visibleModal'] && this.visibleModal){
-      this.focusInputIfNeeded();
+      setTimeout(()=>{
+        this.focusInputIfNeeded();
+      })
     }
     if((changes['selectedVatRate'] || changes['visibleModal']) && this.visibleModal && this.selectedVatRate && this.modalType === 'edit'){
       this.vatRateForm.patchValue({

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StatesStateService } from '../../utils/states.state.service.service';
 import { State } from '../../../../../../Entities/state';
@@ -20,6 +20,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
   editStateForm!: FormGroup;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly stateServiceUtils: StateUtils,
@@ -53,10 +54,11 @@ export class StateFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.statesStateService.currentState$.subscribe((state) => {
         if (state === null) {
-          this.clearForm();
+          this.editStateForm.reset();
         } else {
           this.state = state;
           this.editStateForm.patchValue(state);
+          this.focusInputIfNeeded();
           this.editStateForm.updateValueAndValidity();
         }
       })
@@ -91,6 +93,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
     this.editStateForm.reset();
     this.state = null;
     this.isSaving = false;
+    this.statesStateService.setStateToEdit(null);
   }
 
   onStateEditFormSubmit(): void {
@@ -112,7 +115,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('STATES.MESSAGE.UPDATE_SUCCESS')
+      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
     });
     this.statesStateService.setStateToEdit(null);
     this.clearForm();
@@ -140,5 +143,15 @@ export class StateFormComponent implements OnInit, OnDestroy {
       controlStateForm.markAsTouched();
       controlStateForm.markAsDirty();
     });
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.state && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }

@@ -3,7 +3,7 @@
     <div class="align-items-center mb-2">
       <div class="sales-tax-form mb-2">
         <label for="label">{{ 'SALES_TAX.LABEL.SALES_TAX_LABEL' | translate }}</label>
-        <input pInputText type="text" id="label" formControlName="label" [ngClass]="{'ng-invalid': editSalesTaxForm.get('label')?.invalid && 
+        <input #firstInput pInputText type="text" id="label" formControlName="label" [ngClass]="{'ng-invalid': editSalesTaxForm.get('label')?.invalid && 
           editSalesTaxForm.get('label')?.dirty && editSalesTaxForm.get('label')?.touched}" autocomplete="off" />
           <p-message severity="error" variant="simple" size="small" *ngIf="
             editSalesTaxForm.get('label')?.invalid && 

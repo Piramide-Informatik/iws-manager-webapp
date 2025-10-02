@@ -10,7 +10,7 @@
                 chanceForm.get('probability')?.invalid  
                 && chanceForm.get('probability')?.dirty 
                 || chanceForm.get('probability')?.touched"/>
-            <p-message severity="error" variant="simple" size="small" *ngIf="
+            <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
                 chanceForm.get('probability')?.invalid && 
                 chanceForm.get('probability')?.dirty
             ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
@@ -21,7 +21,7 @@
     <div class="flex justify-content-center gap-2 mt-4">
         <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
             icon="pi pi-check" iconPos="left" [loading]="isLoading"
-            [disabled]="chanceForm.invalid || isLoading" />
+            [disabled]="chanceForm.invalid || isLoading || !chanceForm.dirty" />
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
@@ -32,8 +32,8 @@
 <ng-template #deleteTemplate>
   <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4">
-      {{ 'ABSENCE_TYPES.DELETE.CONFIRM_QUESTION' | translate }}
-      <strong class="stronglock mt-1">"{{ selectedChance.probability }}"</strong>?
+      {{ 'REALIZATION_PROBABILITIES.MODAL.CONFIRM_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedChance.probability | number:'1.2-2':'de-DE' }}"</strong>?
     </p>
 
     <div class="flex justify-content-center gap-2">
