@@ -26,23 +26,6 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'delete' = 'create';
   selectedEmployeeIws: number | null = null;
   NameEmployeeIws: string = '';
-  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      this.selectedEmployeeIws = event.data;
-
-      this.employeeIwsUtils.getEmployeeIwsById(this.selectedEmployeeIws!).subscribe({
-        next: (employeeIws) => {
-          this.NameEmployeeIws = employeeIws?.employeeLabel ?? '';
-        },
-        error: (err) => {
-          console.error('Could not get employeeIws:', err);
-          this.NameEmployeeIws = '';
-        }
-      });
-    }
-    this.visibleModal = true;
-  }
 
   readonly employeeIwss = computed(() => {
     return this.employeeIwsService.employeeIws()
@@ -79,6 +62,16 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       this.routerUtils.reloadComponent(true);
       this.userIwsStaffTPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldIwsStaff);
     });
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedEmployeeIws = event.data;
+
+      this.NameEmployeeIws = this.employeeIwss().find(emp => emp.id === this.selectedEmployeeIws)?.employeeLabel ?? '';
+    }
+    this.visibleModal = true;
   }
 
   onUserIwsStaffTPreferencesChanges(userIwsStaffTPreferences: any) {

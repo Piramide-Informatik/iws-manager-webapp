@@ -27,37 +27,16 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'delete' = 'create';
   selectedIwsCommission: number | null = null;
   OrderValueIwsCommission: string = '';
-  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      this.selectedIwsCommission = event.data;
-      this.iwsCommissionUtils.getIwsCommissionById(this.selectedIwsCommission!).subscribe({
-        next: (iwsCommission) => {
-          this.OrderValueIwsCommission = iwsCommission?.fromOrderValue?.toString() ?? '';
-        },
-        error: (err) => {
-          console.error('Could not get iwsCommission:', err);
-          this.OrderValueIwsCommission = '';
-        }
-      });
-    }
-    this.visibleModal = true;
-  }
 
   readonly commissions = computed(() => {
-    return this.iwsCommissionService.iwsCommissions().map(iwsCommission => ({
-      id: iwsCommission.id,
-      threshold: iwsCommission.fromOrderValue,
-      percentage: iwsCommission.commission,
-      minCommission: iwsCommission.minCommission,
-    }));
+    return this.iwsCommissionService.iwsCommissions();
   });
 
   datascommissions: IwsCommission[] = [];
   columnsHeaderFieldCommissions: Column[] = [];
   userIwsCommissionsPreferences: UserPreference = {};
   tableKey: string = 'IwsCommissions'
-  dataKeys = ['threshold', 'percentage', 'minCommission'];
+  dataKeys = ['fromOrderValue', 'commission', 'minCommission'];
 
   @ViewChild('dt2') dt2!: Table;
   private langSubscription!: Subscription;
@@ -83,10 +62,19 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
       this.datascommissions = data;
     },
     error: (err) => {
-      console.error('Error loading commissions:', err);
       this.datascommissions = [];
     }
   });
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedIwsCommission = event.data;
+
+      this.OrderValueIwsCommission = this.commissions().find(c => c.id === this.selectedIwsCommission)?.fromOrderValue?.toString() ?? '';
+    }
+    this.visibleModal = true;
   }
 
   onUserIwsCommissionsPreferencesChanges(userIwsCommissionsPreferences: any) {
@@ -96,7 +84,7 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   loadColHeadersCommissions(): void {
     this.columnsHeaderFieldCommissions = [
       {
-        field: 'threshold',
+        field: 'fromOrderValue',
         classesTHead: ['width-33'],
         type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.THRESHOLD')),
@@ -104,7 +92,7 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
         useSameAsEdit: true 
       },
       {
-        field: 'percentage',
+        field: 'commission',
         classesTHead: ['width-33'],
         type: 'double',
         header: this.translate.instant(_('IWS_COMMISSIONS.TABLE.PERCENTAGE')),
@@ -142,29 +130,7 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   }
 
   editIwsCommissions(iwsCommission: IwsCommission) {
-    const IwsCommissionToEdit: IwsCommission = {
-      id: iwsCommission.id,
-      fromOrderValue: iwsCommission.fromOrderValue,
-      commission: iwsCommission.commission,
-      minCommission: iwsCommission.minCommission,
-      createdAt: '',
-      updatedAt: '',
-      version: 0,
-    };
-    this.iwsCommissionUtils
-      .getIwsCommissionById(IwsCommissionToEdit.id)
-      .subscribe({
-        next: (fullIwsCommission) => {
-          if (fullIwsCommission) {
-            this.iwsCommissionStateService.setIwsCommissionToEdit(
-              fullIwsCommission
-            );
-          }
-        },
-        error: (err) => {
-          console.error('Error Id IwsCommission', err);
-        },
-      });
+    this.iwsCommissionStateService.setIwsCommissionToEdit(iwsCommission);
   }
 
   onIwsComissionDeleted() {

@@ -9,6 +9,14 @@
     input, p-select, p-datepicker, p-inputnumber {
         width: 100%;
     }
+
+    p-select {
+      min-width: 10%;
+    }
+
+    ::ng-deep .p-inputnumber-input {
+      width: 100%;
+    }
 }
 
 ::ng-deep .p-datepicker{
