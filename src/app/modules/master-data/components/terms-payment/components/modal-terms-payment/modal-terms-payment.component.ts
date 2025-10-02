@@ -29,7 +29,9 @@ export class ModalTermsPaymentComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isVisible'] && this.isVisible && this.modalType !== 'delete'){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 
