@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
@@ -20,6 +20,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
   public showOCCErrorModalSalutation = false;
   private readonly subscriptions = new Subscription();
   private readonly editSalutationSource = new BehaviorSubject<Salutation | null>(null);
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly salutationUtils: SalutationUtils,
@@ -49,7 +50,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.editSalutationForm = new FormGroup({
-      salutation: new FormControl('', [Validators.required])
+      salutation: new FormControl('')
     });
   }
 
@@ -64,6 +65,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
 
   private loadSalutationData(salutation: Salutation): void {
     this.editSalutationForm.patchValue({ salutation: salutation.name });
+    this.focusInputIfNeeded();
   }
 
   private loadSalutationAfterRefresh(salutationId: string): void {
@@ -144,6 +146,16 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
     if (this.currentSalutation?.id) {
       localStorage.setItem('selectedSalutationId', this.currentSalutation.id.toString());
       window.location.reload();
+    }
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentSalutation && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
     }
   }
 }
