@@ -15,7 +15,7 @@
             </div>
             <div class="text-form mb-2 flex">
                 <label for="content">{{ 'TEXT.LABEL.TEXT_VALUE' | translate }}</label>
-                <textarea pTextarea id="content" formControlName="content" rows="6"  style="resize: none"  
+                <textarea #firstInput pTextarea id="content" formControlName="content" rows="6"  style="resize: none"  
                 [ngClass]="{'ng-invalid': editTextForm.get('text')?.invalid && editTextForm.get('text')?.dirty && editTextForm.get('text')?.touched}" ></textarea>
                 <p-message severity="error" variant="simple" size="small" *ngIf="
                     editTextForm.get('text')?.invalid && 
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
-            <p-button size="small" type="submit" [loading]="isLoading" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+            <p-button size="small" type="submit" [loading]="isLoading" [disabled]="editTextForm.invalid || isLoading || !editTextForm.dirty" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
             iconPos="left" />
             <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" />
