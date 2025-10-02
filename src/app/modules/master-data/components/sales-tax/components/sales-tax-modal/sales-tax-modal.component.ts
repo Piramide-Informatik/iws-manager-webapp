@@ -26,7 +26,9 @@ export class SalesTaxModalComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.modalType === 'create'){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 
