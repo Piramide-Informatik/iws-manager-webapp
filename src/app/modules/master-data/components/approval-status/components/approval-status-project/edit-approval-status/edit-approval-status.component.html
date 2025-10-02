@@ -74,6 +74,7 @@
                     [label]="'BUTTONS.SAVE' | translate"
                     icon="pi pi-check"
                     iconPos="left"
+                    [loading]="isSaving"
                     [disabled]="editApprovalStatusForm.invalid || !editApprovalStatusForm.dirty || isSaving"/>
                 <p-button
                     type="button"
@@ -82,8 +83,8 @@
                     [label]="'BUTTONS.CANCEL' | translate"
                     icon="pi pi-times"
                     iconPos="left"
-                    (click)="clearForm()"
-                    (keydown.enter)="clearForm()"/>
+                    [disabled]="isSaving"
+                    (onClick)="clearForm()"/>
             </div>
         </div>
     </form>
@@ -95,4 +96,3 @@
   (close)="showOCCErrorModalApprovalStatus = false"
   (refresh)="onRefresh()">
 </app-occ-error-modal>
-<p-toast></p-toast>

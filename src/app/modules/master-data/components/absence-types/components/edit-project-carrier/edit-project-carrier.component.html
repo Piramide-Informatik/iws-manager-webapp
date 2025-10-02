@@ -42,7 +42,7 @@
                 </p-toggleswitch>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
-                <p-button size="small" type="submit" [loading]="isLoading" [disabled]="editProjectCarrierForm.invalid || isLoading" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                <p-button size="small" type="submit" [loading]="isLoading" [disabled]="editProjectCarrierForm.invalid || isLoading || !editProjectCarrierForm.dirty" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                 <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
             </div>
         </div>

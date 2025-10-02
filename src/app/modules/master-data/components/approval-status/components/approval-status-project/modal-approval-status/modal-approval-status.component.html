@@ -48,7 +48,7 @@
                 icon="pi pi-check"
                 iconPos="left"
                 [loading]="isLoading"
-                [disabled]="createApprovalStatusForm.invalid || isLoading"
+                [disabled]="createApprovalStatusForm.invalid || isLoading || !createApprovalStatusForm.dirty"
                 />
 
                 <p-button

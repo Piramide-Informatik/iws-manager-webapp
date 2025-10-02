@@ -1,17 +1,5 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  Input,
-  inject,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  OnChanges,
-  SimpleChanges,
-  OnDestroy,
-} from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
@@ -48,11 +36,7 @@ export class ModalApprovalStatusComponent
   errorMessage: string | null = null;
 
   readonly createApprovalStatusForm = new FormGroup({
-    status: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50),
-    ]),
+    status: new FormControl(''),
     order: new FormControl(null),
     isProject: new FormControl(false),
     isNetwork: new FormControl(false),
