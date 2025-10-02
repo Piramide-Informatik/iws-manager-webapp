@@ -84,7 +84,7 @@ export class RolModalComponent implements OnInit {
           summary: 'MESSAGE.ERROR',
           relatedEntity: testentity,
           detail: this.errorMessage?.includes('FOREIGN KEY')
-            ? 'MESSAGE.DELETE_ERROR_IN_USE'
+            ? 'MESSAGE.DELETE_ERROR_IN_USE_WITH_ENTITY'
             : 'MESSAGE.DELETE_FAILED'
         });
         console.error('Delete error:', error);
