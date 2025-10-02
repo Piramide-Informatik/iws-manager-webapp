@@ -26,6 +26,7 @@
         [projectStatusToDelete]="selectedProjectStatus"
         (isVisibleModel)="onModalVisibilityChange($event)"
         (toastMessage)="toastMessageDisplay($event)"
+        (projectStatusDeleted)="onDeleteProject()"
         #projectStatusModel>
     </app-model-project-status>
 </p-dialog>

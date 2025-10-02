@@ -25,6 +25,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   @Input() titleName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() titleCreated = new EventEmitter<void>();
+  @Output() titleDeleted = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{ severity: string, summary: string, detail: string }>();
 
   isLoading = false;
@@ -64,6 +65,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
         finalize(() => this.isLoading = false)
       ).subscribe({
         next: () => {
+          this.titleDeleted.emit();
           this.toastMessage.emit({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',

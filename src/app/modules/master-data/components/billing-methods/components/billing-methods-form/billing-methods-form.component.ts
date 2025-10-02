@@ -75,6 +75,8 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
           this.billingMethodForm.patchValue({
             name: this.invoiceTypeToEdit.name ?? ''
           });
+        } else {
+          this.clearForm();
         }
       })
     )

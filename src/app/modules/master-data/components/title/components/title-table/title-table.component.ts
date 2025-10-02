@@ -157,4 +157,8 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
       detail: this.translate.instant(_(message.detail)),
     });
   }
+
+  onDeleteTitle() {
+    this.titleStateService.clearTitle();
+  }
 }

@@ -37,6 +37,7 @@ export class ModalApprovalStatusComponent
   @Input() approvalStatusName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() approvalStatusCreated = new EventEmitter<void>();
+  @Output() approvalStatusDeleted = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
     summary: string;
@@ -135,6 +136,9 @@ export class ModalApprovalStatusComponent
       .subscribe({
         next: () => {
           onSuccess?.();
+          if (messages.success == 'MESSAGE.DELETE_SUCCESS') {
+            this.approvalStatusDeleted.emit();
+          }
           this.emitToast('success', messages.success);
           this.closeModal();
         },

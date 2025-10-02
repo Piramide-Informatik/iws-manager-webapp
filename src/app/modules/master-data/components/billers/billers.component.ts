@@ -93,6 +93,7 @@ export class BillersComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
     }
+    this.billerStateService.clearBiller();
   }
 
   onEditBiller(biller: Biller): void {

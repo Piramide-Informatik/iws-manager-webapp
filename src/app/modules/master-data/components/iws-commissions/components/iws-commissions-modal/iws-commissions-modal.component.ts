@@ -25,6 +25,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() iwsCommissionCreated = new EventEmitter<void>();
+  @Output() iwsCommissionDeleted = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
     summary: string;
@@ -83,7 +84,10 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
       .deleteIwsCommission(this.iwsCommissionToDelete)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
+        next: () => {
+          this.iwsCommissionDeleted.emit();
+          this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS')
+        },
         error: (error) =>
           this.handleErrorWithToast(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE'),
       });

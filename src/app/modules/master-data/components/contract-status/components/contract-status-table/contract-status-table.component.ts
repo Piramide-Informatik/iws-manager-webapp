@@ -77,6 +77,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   onContractStatusDeleted(contractStatus: any) {
     this.contractStatusUtils.deleteContractStatus(contractStatus.id).subscribe({
       next: () => {
+        this.contractStatusToEdit.emit(null);
         this.commonMessageService.showDeleteSucessfullMessage()
         this.visibleContractStatusModal = false;
       },

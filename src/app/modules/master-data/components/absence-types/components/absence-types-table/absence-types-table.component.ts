@@ -113,6 +113,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   onDeleteAbsenceType(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
     if(deleteEvent.status === 'success'){
+      this.absenceStateService.clearAbsenceType();
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(deleteEvent.status === 'error' && deleteEvent.error){
       if(deleteEvent.error.message === 'Cannot delete register: it is in use by other entities'){

@@ -171,7 +171,10 @@ export class StatesTableComponent implements OnInit, OnDestroy {
   }
 
   onConfirmStateDelete(message: { severity: string, summary: string, detail: string }) {
-      this.messageService.add({
+    if (message.severity === 'success') {
+      this.statesState.setStateToEdit(null);  
+    }
+    this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
       detail: this.translate.instant(_(message.detail)),

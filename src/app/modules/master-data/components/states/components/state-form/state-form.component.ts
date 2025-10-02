@@ -56,6 +56,8 @@ export class StateFormComponent implements OnInit, OnDestroy {
           this.state = state;
           this.editStateForm.patchValue(state);
           this.editStateForm.updateValueAndValidity();
+        } else {
+          this.clearForm();
         }
       })
     );

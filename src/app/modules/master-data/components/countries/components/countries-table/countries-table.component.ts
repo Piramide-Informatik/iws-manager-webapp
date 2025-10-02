@@ -151,6 +151,9 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   }
 
   onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
+    if (message.severity === 'success') {
+      this.countryStateService.clearCountry();
+    }
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),

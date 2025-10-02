@@ -163,6 +163,9 @@ export class SalutationTableComponent implements OnInit, OnDestroy {
   }
 
   onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void {
+    if (message.severity === 'success') {
+      this.salutationStateService.clearSalutation();
+    }
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
