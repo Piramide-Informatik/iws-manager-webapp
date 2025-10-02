@@ -90,6 +90,7 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   onDeletePromoter(event: {status: 'success' | 'error', error?: Error}): void {
     if(event.status === 'success'){
+      this.promoterStateService.clearPromoter();
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if(event.status === 'error') {
       this.commonMessageService.showErrorDeleteMessage();

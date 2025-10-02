@@ -81,6 +81,8 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
             text: this.payToEdit.text
           });
           this.focusInputIfNeeded();
+        } else {
+          this.clearForm();
         }
       })
     )

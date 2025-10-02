@@ -121,6 +121,7 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy, OnChan
   }
 
   onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
+    this.companyTypeStateService.setTypeOfCompanyTypeToEdit(null);
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),

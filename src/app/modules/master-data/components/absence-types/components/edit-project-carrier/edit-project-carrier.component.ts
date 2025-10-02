@@ -90,6 +90,8 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
             hours: this.absenceTypeToEdit.hours === 1
           });
           this.focusInputIfNeeded();
+        } else {
+          this.clearForm();
         }
       })
     )

@@ -132,4 +132,8 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
   editEmployeeIws(employeeIws: EmployeeIws) {
     this.employeeIwsStateService.setEmployeeIwsToEdit(employeeIws);
   }
+
+  onDeleteIwsStaffSucess() {
+    this.employeeIwsStateService.clearTitle()
+  }
 }

@@ -47,6 +47,8 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
           this.companyTypeEditForm.patchValue(companyType);
           this.focusInputIfNeeded();
           this.companyTypeEditForm.updateValueAndValidity();
+        } else {
+          this.clearForm();
         }
       })
     );

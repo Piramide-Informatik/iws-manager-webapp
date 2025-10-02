@@ -85,6 +85,7 @@ export class NetworksComponent implements OnInit, OnDestroy {
 
   onDeleteNetwork(event: {status: 'success' | 'error', error?: Error}) {
     if(event.status === 'success'){
+      this.networkStateService.clearNetwork();
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(event.status === 'error'){
       event.error?.message === 'Cannot delete register: it is in use by other entities' ?

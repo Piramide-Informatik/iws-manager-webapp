@@ -25,6 +25,7 @@
           [employeeIwsToDelete]="selectedEmployeeIws"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
+          (employeeIwsDeleted)="onDeleteIwsStaffSucess()"
           #titleModal
         ></app-iws-staff-modal>
       </p-dialog>

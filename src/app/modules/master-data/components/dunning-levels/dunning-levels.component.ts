@@ -81,6 +81,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
 
   onDeleteDunningLevel(event: {status: 'success' | 'error', error?: Error}) {
     if(event.status === 'success'){
+      this.selectedDunningLevelToEdit = null;
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if(event.status === 'error'){
       event.error?.message === 'Cannot delete register: it is in use by other entities' ?

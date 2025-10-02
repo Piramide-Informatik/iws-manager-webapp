@@ -96,6 +96,7 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
 
   onDeleteInvoiceType(event: {status: 'success' | 'error', error?: Error}): void {
     if(event.status === 'success'){
+      this.billingMethodStateService.clearInvoiceType();
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();

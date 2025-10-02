@@ -26,6 +26,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() employeeIwsName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() employeeIwsCreated = new EventEmitter<void>();
+  @Output() employeeIwsDeleted = new EventEmitter<void>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
     summary: string;
@@ -95,7 +96,10 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
       .deleteEmployeeIws(this.employeeIwsToDelete)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
+        next: () => {
+          this.employeeIwsDeleted.emit();
+          this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS');
+        },
         error: (error) =>
           this.handleOperationError(
             error,

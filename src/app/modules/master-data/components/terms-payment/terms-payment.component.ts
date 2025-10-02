@@ -89,6 +89,7 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
 
   deletePayCondition(event: {status: 'success' | 'error', error?: Error}) {
     if(event.status === 'success'){
+      this.payStateService.clearPayCondition();
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();

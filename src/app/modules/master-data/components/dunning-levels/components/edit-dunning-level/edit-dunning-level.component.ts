@@ -35,8 +35,12 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let dunningLevelChange = changes['selectedDunningLevel'];
     if (dunningLevelChange && !dunningLevelChange.firstChange) {
-      this.editDunningLevelForm.patchValue(dunningLevelChange.currentValue);
-      this.focusInputIfNeeded();
+      if (dunningLevelChange.currentValue == null) {
+        this.clearForm();
+      } else {
+        this.editDunningLevelForm.patchValue(dunningLevelChange.currentValue);
+        this.focusInputIfNeeded();
+      }
     }
   }
 

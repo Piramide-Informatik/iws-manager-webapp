@@ -127,4 +127,8 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   editProjectStatus(projectStatus: ProjectStatus){
     this.projectStatusStateService.setProjectStatusToEdit(projectStatus);
   }
+
+  onDeleteProject() {
+    this.projectStatusStateService.clearProjectStatus();
+  }
 }
