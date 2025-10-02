@@ -77,7 +77,7 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
           });
           this.focusInputIfNeeded();
         } else {
-          this.clearForm();
+          this.editProbablitiesForm.reset();
         }
       })
     )

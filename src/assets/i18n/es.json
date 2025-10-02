@@ -1106,7 +1106,8 @@
     "TITLE_FORM": "Editar Probabilidad de Ejecución",
     "MODAL": {
       "NEW": "Nueva Probabilidad de Ejecución",
-      "DELETE": "Eliminar Probabilidad de Ejecución"
+      "DELETE": "Eliminar Probabilidad de Ejecución",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar la Probabilidad de Ejecución "
     }
   },
   "TYPE_OF_COMPANIES": {
