@@ -2,19 +2,11 @@
 
 .title-form {
     label {
-        width: 120px;
-
+        width: 60px;
+        flex-shrink: 0;
     }
 
-    .input-message{
-        position: relative;
-        input {
-            width: 250px;
-        }
-        p-message{
-            position: absolute;
-            bottom: -20px;
-            left: 0px;
-        }
+    input {
+        width: 100%;
     }
 }

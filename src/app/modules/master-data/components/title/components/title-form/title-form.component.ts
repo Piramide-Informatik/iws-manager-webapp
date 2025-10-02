@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Title } from '../../../../../../Entities/title';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TitleStateService } from '../../utils/title-state.service';
@@ -21,6 +21,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   isSaving = false;
   private readonly subscriptions = new Subscription();
   private readonly editTitleSource = new BehaviorSubject<Title | null>(null);
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   constructor(
@@ -47,7 +48,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.editTitleForm = new FormGroup({
-      title: new FormControl('', [Validators.required])
+      title: new FormControl('')
     });
   }
 
@@ -62,6 +63,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
 
   private loadTitleData(title: Title): void {
     this.editTitleForm.patchValue({ title: title.name });
+    this.focusInputIfNeeded();
   }
 
   private loadTitleAfterRefresh(titleId: string): void {
@@ -151,5 +153,15 @@ export class TitleFormComponent implements OnInit, OnDestroy {
       control.markAsTouched();
       control.markAsDirty();
     });
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.currentTitle && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }
