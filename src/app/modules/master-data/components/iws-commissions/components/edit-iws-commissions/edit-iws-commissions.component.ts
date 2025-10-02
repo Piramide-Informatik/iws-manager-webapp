@@ -111,12 +111,6 @@ export class EditIwsCommissionsComponent implements OnInit {
         error: (err) => this.handleError(err),
       })
     );
-
-    console.log(
-      this.editCommissionForm.valid
-        ? this.editCommissionForm.value
-        : 'Formulario inválido'
-    );
   }
 
   private markAllAsTouched(): void {
@@ -144,7 +138,6 @@ export class EditIwsCommissionsComponent implements OnInit {
     ) {
       this.showOCCErrorModaEmployeeIws = true;
     } else {
-      console.error('Error saving iwsCommission:', err);
       this.messageService.add({
         severity: 'error',
         summary: this.translate.instant('MESSAGE.ERROR'),
