@@ -1,10 +1,8 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createSalutationForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form mb-6 flex align-items-center">
-                <label for="salutationName" class="block">
-                    {{ 'SALUTATION.FORM.NEW_SALUTATION' | translate }}
-                </label>
+            <div class="create-form">
+                <label for="salutationName" class="block">{{ 'SALUTATION.FORM.NEW_SALUTATION' | translate }}</label>
                 <input #salutationInput pInputText type="text" id="salutationName" formControlName="name" autocomplete="off"
                     [attr.aria-invalid]="createSalutationForm.get('name')?.invalid"
                     [attr.aria-describedby]="createSalutationForm.get('name')?.invalid ? 'salutationError' : null"

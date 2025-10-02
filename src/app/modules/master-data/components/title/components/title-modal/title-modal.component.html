@@ -1,7 +1,7 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createTitleForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form flex align-items-center mb-6">
+            <div class="create-form">
                 <label for="titleName" class="block">
                     {{ 'TITLE.FORM.NEW_TITLE' | translate }}
                 </label>

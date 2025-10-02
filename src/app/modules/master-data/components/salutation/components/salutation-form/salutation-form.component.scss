@@ -2,19 +2,11 @@
 
 .salutation-form {
     label {
-        width: 120px;
+        width: 70px;
+        flex-shrink: 0;
     }
 
-    .input-message {
-        position: relative;
-        input {
-            width: 250px;
-        }
-
-        p-message {
-            position: absolute;
-            left: 0;
-            bottom: -18px;
-        }
+    input {
+        width: 100%;
     }
 }

@@ -74,7 +74,7 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete' && event.data) {
-      const chanceFound = this.chanceService.chances().find(c => c.id == event.data);
+      const chanceFound = this.probabilities().find(c => c.id == event.data);
       if (chanceFound) {
         this.selectedChance = chanceFound;
       }

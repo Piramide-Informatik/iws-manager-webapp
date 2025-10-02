@@ -91,7 +91,7 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
           });
           this.focusInputIfNeeded();
         } else {
-          this.clearForm();
+          this.editProjectCarrierForm.reset();
         }
       })
     )
