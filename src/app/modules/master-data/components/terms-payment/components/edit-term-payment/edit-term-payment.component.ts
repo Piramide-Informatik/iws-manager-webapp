@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { PayConditionUtils } from '../../utils/pay-condition-utils';
 import { PayConditionStateService } from '../../utils/pay-condition-state.services';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -25,9 +25,9 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editTermPaymentForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      deadline: new FormControl('', [Validators.required]),
-      text: new FormControl('', [Validators.required]),
+      name: new FormControl(''),
+      deadline: new FormControl(''),
+      text: new FormControl(''),
     });
     this.setupPaySubscription();
     // Check if we need to load a pay condition after page refresh for OCC
@@ -82,7 +82,7 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
           });
           this.focusInputIfNeeded();
         } else {
-          this.clearForm();
+          this.editTermPaymentForm.reset();
         }
       })
     )

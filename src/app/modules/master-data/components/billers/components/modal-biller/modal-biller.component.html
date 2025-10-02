@@ -7,7 +7,7 @@
             </div>
             <div class="row">
                 <div class="col flex justify-content-center">
-                    <p-button class="save me-2" type="submit" [loading]="billerForm.invalid || isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="billerForm.invalid || isLoading || !billerForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                     <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="closeModal()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
