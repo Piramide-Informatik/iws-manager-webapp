@@ -197,6 +197,8 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
           this.focusInputIfNeeded();
           this.networkPartnerUtils.getNetworkPartnerByNetworkId(network.id).subscribe();
           this.isCreateButtonEnable = true;
+        } else {
+          this.clearForm();
         }
       })
     )

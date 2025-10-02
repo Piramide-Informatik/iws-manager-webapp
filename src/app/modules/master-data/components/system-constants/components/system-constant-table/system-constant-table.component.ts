@@ -106,6 +106,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
   onDeleteSystemConstant(event: {status: 'success' | 'error', error?: Error}) {
     if(event.status === 'success'){
+      this.selectedSystemConstantToEdit = null;
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if(event.status === 'error'){
       event.error?.message === 'Cannot delete register: it is in use by other entities' ?

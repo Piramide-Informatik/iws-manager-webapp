@@ -76,6 +76,8 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
             probability: this.chanceToEdit.probability
           });
           this.focusInputIfNeeded();
+        } else {
+          this.clearForm();
         }
       })
     )

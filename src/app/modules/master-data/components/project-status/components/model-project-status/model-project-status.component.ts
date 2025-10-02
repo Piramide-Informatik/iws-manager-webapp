@@ -20,6 +20,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
   @Input() projectStatusName: string | null = null;
   @Output() isVisibleModel = new EventEmitter<boolean>();
   @Output() projectStatusCreated = new EventEmitter<void>();
+  @Output() projectStatusDeleted = new EventEmitter<void>();
   @Output() toastMessage  = new EventEmitter<{severity: string, summary: string, detail: string}>();
 
   isLoading = false;
@@ -60,6 +61,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
       ).subscribe({
         next: () => {
           this.isLoading = false;
+          this.projectStatusDeleted.emit();
           this.toastMessage.emit({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',

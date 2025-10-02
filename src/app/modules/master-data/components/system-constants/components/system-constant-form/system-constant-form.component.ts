@@ -31,7 +31,11 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let systemConstantChange = changes['selectedSystemConstant'];
     if (systemConstantChange && !systemConstantChange.firstChange) {
-      this.editSystemConstantForm.patchValue(systemConstantChange.currentValue);
+      if (systemConstantChange.currentValue == null) {
+        this.clearForm();
+      } else {
+        this.editSystemConstantForm.patchValue(systemConstantChange.currentValue);
+      }
     }
   }
 

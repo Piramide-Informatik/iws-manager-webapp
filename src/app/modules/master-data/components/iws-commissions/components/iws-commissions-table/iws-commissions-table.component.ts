@@ -166,4 +166,8 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
         },
       });
   }
+
+  onIwsComissionDeleted() {
+    this.iwsCommissionStateService.clearTitle();
+  }
 }

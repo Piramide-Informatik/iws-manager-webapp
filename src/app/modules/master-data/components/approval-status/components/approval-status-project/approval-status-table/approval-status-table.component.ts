@@ -116,4 +116,8 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
       detail: this.translate.instant(_(message.detail)),
     });
   }
+
+  onDeleteApprovalStatus() {
+     this.approvalStatusStateService.clearApprovalStatus();
+  }
 }

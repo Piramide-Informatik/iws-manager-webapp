@@ -124,6 +124,8 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
           });
           this.vatRateUtils.getAllVatRatesByVatId(this.vatToEdit.id).subscribe();
           this.buttonsDisabledTableVatRate = false;
+        } else {
+          this.clearForm();
         }
       })
     )

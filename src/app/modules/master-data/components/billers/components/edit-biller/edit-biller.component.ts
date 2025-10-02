@@ -88,6 +88,8 @@ export class EditBillerComponent implements OnInit, OnDestroy {
             name: this.billerToEdit.name
           });
           this.focusInputIfNeeded();
+        } else {
+          this.clearForm();
         }
       })
     )

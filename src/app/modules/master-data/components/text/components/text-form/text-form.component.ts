@@ -76,6 +76,8 @@ export class TextFormComponent implements OnInit, OnDestroy {
             label: this.textToEdit.label,
             content: this.textToEdit.content
           });
+        } else {
+          this.clearForm();
         }
       })
     )

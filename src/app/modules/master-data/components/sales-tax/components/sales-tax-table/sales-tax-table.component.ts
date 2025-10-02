@@ -102,6 +102,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
 
   onDeleteVat(event: {status: 'success' | 'error', error?: Error}): void {
     if(event.status === 'success'){
+      this.salesTaxStateService.clearVat();
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();

@@ -106,6 +106,8 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
             city: this.promoterToEdit.city
           });
           this.focusInputIfNeeded();
+        } else {
+          this.clearForm();
         }
       })
     );

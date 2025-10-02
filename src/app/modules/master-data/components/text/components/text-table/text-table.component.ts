@@ -103,6 +103,7 @@ export class TextTableComponent implements OnInit, OnDestroy {
 
   onDeleteText(event: {status: 'success' | 'error', error?: Error}): void {
     if(event.status === 'success'){
+      this.textStateService.clearText();
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
