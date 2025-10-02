@@ -1,24 +1,22 @@
 <div class="container">
   <div class="row">
-    <div class>
-      <master-data-genaral-table [tableId]="tableKey" [tableValues]="salutations()"
-        [columns]="salutationDisplayedColumns" [userPreferences]="userSalutationPreferences" [dataKeys]="dataKeys"
-        (onColumnChanges)="onUserSalutationPreferencesChanges($event)"
-        (onCreateRegister)="handleTableEvents({ type: 'create' })"
-        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
-        (onEditRegister)="editSalutation($event)"></master-data-genaral-table>
-      <p-dialog [header]="modalType === 'create' 
-          ? ('SALUTATION.FORM.TITLE_FORM' | translate) 
-          : ('SALUTATION.DELETE.CONFIRMATION' | translate)" [modal]="true" [(visible)]="visibleModal"
-        (onShow)="onDialogShow()">
-        <app-salutation-modal [modalType]="modalType" [salutationName]="salutationName"
-          [salutationToDelete]="selectedSalutation" 
-          (isVisibleModal)="onModalVisibilityChange($event)" 
-          (confirmDelete)="onDeleteConfirm($event)"
-          #salutationModal>
-        </app-salutation-modal>
-      </p-dialog>
-    </div>
+    <master-data-genaral-table [tableId]="tableKey" [tableValues]="salutations()"
+      [columns]="salutationDisplayedColumns" [userPreferences]="userSalutationPreferences" [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserSalutationPreferencesChanges($event)"
+      (onCreateRegister)="handleTableEvents({ type: 'create' })"
+      (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+      (onEditRegister)="editSalutation($event)"></master-data-genaral-table>
+    <p-dialog [header]="modalType === 'create' 
+        ? ('SALUTATION.FORM.TITLE_FORM' | translate) 
+        : ('SALUTATION.DELETE.CONFIRMATION' | translate)" [modal]="true" [(visible)]="visibleModal"
+      (onShow)="onDialogShow()">
+      <app-salutation-modal [modalType]="modalType" [salutationName]="salutationName"
+        [salutationToDelete]="selectedSalutation" 
+        (isVisibleModal)="onModalVisibilityChange($event)" 
+        (confirmDelete)="onDeleteConfirm($event)"
+        #salutationModal>
+      </app-salutation-modal>
+    </p-dialog>
   </div>
 </div>
 <p-toast/>

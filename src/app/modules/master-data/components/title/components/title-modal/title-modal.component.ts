@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -32,11 +32,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   readonly createTitleForm = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50)
-    ])
+    name: new FormControl('')
   });
 
   ngOnInit(): void {

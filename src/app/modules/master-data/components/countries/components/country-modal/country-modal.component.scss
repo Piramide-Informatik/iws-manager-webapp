@@ -1,28 +1,15 @@
 .country-form {
   display: flex;
-  margin-bottom: 1rem;
-
-  label {
-    width: 140px;
-    font-weight: 500; 
-    margin-bottom: 0;
-    text-align: left; 
-  }
-
-  input {
-    max-width: 300px;
-    width: 100%;
-  }
-}
-
-.country-form-check {
-  display: flex;
   align-items: center;
   margin-bottom: 1rem;
 
   label {
-    width: 95px;
-    font-weight: 500;
-    text-align: left;
+    width: 100px;
+    text-align: left; 
+    flex-shrink: 0;
+  }
+
+  input {
+    width: 100%;
   }
 }

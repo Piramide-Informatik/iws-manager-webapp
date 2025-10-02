@@ -1,9 +1,9 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'TITLE.LABEL.EDIT_TITLE' | translate">
     <form [formGroup]="editTitleForm" (ngSubmit)="onSubmit()">
-        <div class="title-form flex align-items-center pb-4">
+        <div class="title-form flex align-items-center pb-2">
             <label for="title">{{ 'TITLE.LABEL.TITLE_LABEL' | translate }}</label>
             <div class="input-message">
-                <input pInputText type="text" id="title" formControlName="title" [ngClass]="{'ng-invalid ng-dirty': editTitleForm.get('title')?.invalid && 
+                <input #firstInput pInputText type="text" id="title" formControlName="title" [ngClass]="{'ng-invalid ng-dirty': editTitleForm.get('title')?.invalid && 
                 editTitleForm.get('title')?.touched}" autocomplete="off" />
                 <p-message severity="error" variant="simple" size="small" *ngIf="
                      editTitleForm.get('title')?.invalid && 
@@ -16,9 +16,9 @@
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
-                [disabled]="editTitleForm.invalid || !editTitleForm.dirty || isSaving" />
+                [disabled]="editTitleForm.invalid || !editTitleForm.dirty || isSaving" [loading]="isSaving" />
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (click)="clearForm()" (keydown.enter)="clearForm()" />
+                icon="pi pi-times" iconPos="left" (onClick)="clearForm()" [disabled]="isSaving" />
         </div>
     </form>
 </p-card>
@@ -28,4 +28,3 @@
   [reloadCurrentPage]="true"
   (close)="showOCCErrorModaTitle = false">
 </app-occ-error-modal>
-<p-toast></p-toast>

@@ -1,9 +1,14 @@
 .state-form{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
     label{
         width: 90px;
+        flex-shrink: 0;
     }
 
     input{
-        width: 150px;
+        width: 100%;
     }
 }
