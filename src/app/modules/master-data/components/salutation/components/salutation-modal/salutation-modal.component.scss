@@ -1,26 +1,15 @@
 .create-form {
     display: flex;
     align-items: center;
-    justify-content: center;
+    margin-bottom: 1rem;
     
     label {
-        width: auto;
-        font-weight: 500;
-        display: flex !important;
-        align-items: center;
-        height: 100%;
-        margin-bottom: 0 !important;
-        white-space: nowrap;
-        margin-top: 3px;
+        width: 70px;
+        flex-shrink: 0;
     }
 
     input {
-       flex: 1;
-       max-width: 300px;
+       width: 100%;
        margin-left: 1rem;
     }
-}
-
-strong {
-    display: inline;
 }
