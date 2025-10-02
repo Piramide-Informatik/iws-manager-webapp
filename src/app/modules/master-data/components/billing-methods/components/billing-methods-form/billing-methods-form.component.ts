@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InvoiceTypeUtils } from '../../utils/invoice-type-utils';
 import { InvoiceTypeStateService } from '../../utils/invoice-type-state.service';
@@ -17,6 +17,7 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
   private readonly invoiceTypeStateService = inject(InvoiceTypeStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public invoiceTypeToEdit: InvoiceType | null = null;
   public showOCCErrorModalInvoice = false;
   public isLoading: boolean = false;
@@ -75,8 +76,9 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
           this.billingMethodForm.patchValue({
             name: this.invoiceTypeToEdit.name ?? ''
           });
+          this.focusInputIfNeeded();
         } else {
-          this.clearForm();
+          this.billingMethodForm.reset();
         }
       })
     )
@@ -110,5 +112,15 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.invoiceTypeToEdit && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }
