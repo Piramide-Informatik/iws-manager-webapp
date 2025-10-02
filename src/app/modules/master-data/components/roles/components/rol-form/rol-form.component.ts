@@ -164,7 +164,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
     this.functions = [];
     this.existingRights = [];
     this.isSaving = false;
-    this.editRoleForm.reset();
+    this.editRoleForm.markAsPristine();
   }
 
   private handleError(err: any): void {
