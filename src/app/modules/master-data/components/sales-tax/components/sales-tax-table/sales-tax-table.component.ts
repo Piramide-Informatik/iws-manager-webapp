@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subscription, combineLatest, map, take } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
