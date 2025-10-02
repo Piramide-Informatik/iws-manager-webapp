@@ -6,6 +6,7 @@ import { emptyValidator } from '../../../types-of-companies/utils/empty.validato
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { StatesStateService } from '../../utils/states.state.service.service';
 
 @Component({
   selector: 'app-state-modal',
@@ -15,6 +16,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class StateModalComponent implements OnInit {
   private readonly stateUtils = inject(StateUtils);
+  private readonly stateStateService = inject(StatesStateService);
   @ViewChild('stateInput') stateInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() stateToDelete: number | null = null;
@@ -51,6 +53,7 @@ export class StateModalComponent implements OnInit {
       this.stateUtils.deleteState(this.stateToDelete).subscribe({
         next: () => {
           this.isStateLoading = false;
+          this.stateStateService.setStateToEdit(null);
           this.confirmStateDelete.emit({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
