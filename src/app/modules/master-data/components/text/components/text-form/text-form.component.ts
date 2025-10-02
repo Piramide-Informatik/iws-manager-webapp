@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Text } from '../../../../../../Entities/text';
 import { TextUtils } from '../../utils/text-utils';
@@ -17,6 +17,7 @@ export class TextFormComponent implements OnInit, OnDestroy {
   private readonly textStateService = inject(TextStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public textToEdit: Text | null = null;
   public showOCCErrorModalText = false;
   public isLoading: boolean = false;
@@ -76,8 +77,9 @@ export class TextFormComponent implements OnInit, OnDestroy {
             label: this.textToEdit.label,
             content: this.textToEdit.content
           });
+          this.focusInputIfNeeded();
         } else {
-          this.clearForm();
+          this.editTextForm.reset();
         }
       })
     )
@@ -111,5 +113,15 @@ export class TextFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.textToEdit && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }

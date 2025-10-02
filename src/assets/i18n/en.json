@@ -1111,7 +1111,8 @@
     "TITLE_FORM": "Edit Realization Probabilities",
     "MODAL": {
       "NEW": "New Realization Probabilities",
-      "DELETE": "Delete Realization Probabilities"
+      "DELETE": "Delete Realization Probabilities",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the realization probability "
     }
   },
   "TYPE_OF_COMPANIES": {

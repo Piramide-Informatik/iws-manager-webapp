@@ -4,7 +4,7 @@
       <div class="country-form">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
         <div class="input-message">
-          <input
+          <input #firstInput
             pInputText
             type="text"
             id="name"
@@ -12,7 +12,7 @@
             [ngClass]="{'ng-invalid ng-dirty': countryForm.get('name')?.invalid && countryForm.get('name')?.touched}"
             autocomplete="off"
           />
-          <p-message severity="error" variant="simple" size="small"
+          <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
             *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required')">
             {{ 'COUNTRIES.ERROR.COUNTRY_NAME_REQUIRED' | translate }}
           </p-message>
@@ -30,7 +30,7 @@
             [ngClass]="{'ng-invalid ng-dirty': countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched}"
             autocomplete="off"
           />
-          <p-message severity="error" variant="simple" size="small"
+          <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
             *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required')">
             {{ 'COUNTRIES.ERROR.ABBREVIATION_REQUIRED' | translate }}
           </p-message>
@@ -39,7 +39,7 @@
 
       <div class="country-form">
         <label for="isStandardChecked">{{ "COUNTRIES.LABEL.IS_STANDARD" | translate }}</label>
-        <p-toggleswitch formControlName="isStandard" class="flex">
+        <p-toggleswitch formControlName="isStandard" inputId="isStandardChecked" class="flex">
           <ng-template #handle let-checked="checked">
             <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
           </ng-template>
@@ -54,6 +54,7 @@
         icon="pi pi-check"
         iconPos="left"
         [disabled]="countryForm.invalid || !countryForm.dirty || isSaving"
+        [loading]="isSaving"
       ></p-button>
       <p-button
         type="button"
@@ -62,8 +63,8 @@
         [label]="'BUTTONS.CANCEL' | translate"
         icon="pi pi-times"
         iconPos="left"
-        (click)="clearForm()"
-        (keydown.enter)="clearForm()"
+        (onClick)="clearForm()"
+        [disabled]="isSaving"
       ></p-button>
     </div>
   </form>
@@ -75,4 +76,3 @@
   (close)="showOCCErrorModalCountry = false"
   (refresh)="onRefresh()">
 </app-occ-error-modal>
-<p-toast></p-toast>

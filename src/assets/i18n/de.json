@@ -1111,7 +1111,8 @@
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten",
     "MODAL": {
       "NEW": "Neu Realisierungswahrscheinlichkeit",
-      "DELETE": "Realisierungswahrscheinlichkeit löschen"
+      "DELETE": "Realisierungswahrscheinlichkeit löschen",
+      "CONFIRM_QUESTION": "Möchten Sie die Realisierungswahrscheinlichkeit wirklich löschen "
     }
   },
   "TYPE_OF_COMPANIES": {
