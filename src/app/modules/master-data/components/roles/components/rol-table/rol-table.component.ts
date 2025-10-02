@@ -110,11 +110,17 @@ export class RolTableComponent implements OnInit, OnDestroy {
     this.visibleModal = visible;
   }
 
-  onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
-      this.messageService.add({
+  /** handles message when trying to delete a role with a related entity */
+  onConfirmDelete(message: {severity: string, summary: string, detail: string, relatedEntity?: string}): void {
+    let finalDetail = this.translate.instant(_(message.detail));
+    if (message.relatedEntity) {
+        finalDetail = finalDetail + ': ' + message.relatedEntity;
+    }
+      
+    this.messageService.add({
         severity: message.severity,
         summary: this.translate.instant(_(message.summary)),
-        detail: this.translate.instant(_(message.detail)),
+        detail: finalDetail,
       });
     }
   

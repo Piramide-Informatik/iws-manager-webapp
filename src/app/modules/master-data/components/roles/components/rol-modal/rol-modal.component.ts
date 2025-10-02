@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, Input, inject, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { RoleUtils } from '../../utils/role-utils'; 
-import { of, Subscription } from 'rxjs';
+import { RoleUtils } from '../../utils/role-utils';
+import { finalize, of, Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { RoleStateService } from '../../utils/role-state.service';
 
@@ -22,7 +22,7 @@ export class RolModalComponent implements OnInit {
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() roleCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
+  @Output() confirmDelete = new EventEmitter<{ severity: string, summary: string, detail: string, relatedEntity?: string }>();
 
   @ViewChild('roleNameInput') roleNameInput!: ElementRef<HTMLInputElement>;
 
@@ -37,7 +37,7 @@ export class RolModalComponent implements OnInit {
     ])
   });
 
-  constructor( private readonly commonMessageService: CommonMessagesService) {}
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     this.resetForm();
@@ -63,10 +63,43 @@ export class RolModalComponent implements OnInit {
     if (!this.roleToDelete) return;
 
     this.startLoading();
-    this.roleUtils.deleteRole(this.roleToDelete).subscribe({
-      next: () => this.emitDeleteMessage('success'),
-      error: (error) => this.emitDeleteMessage('error', error)
+    const sub = this.roleUtils.deleteRole(this.roleToDelete).pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe({
+      next: () => {
+        this.confirmDelete.emit({
+          severity: 'success',
+          summary: 'MESSAGE.SUCCESS',
+          detail: 'MESSAGE.DELETE_SUCCESS'
+        });
+        this.closeAndReset();
+      },
+      error: (error) => {
+        // this.handleDeleteError(error);
+        this.errorMessage = error.error.message ?? 'a foreign key constraint fails';
+        const testentity = this.extractRelatedEntity(this.errorMessage!);
+        console.log("relatedEntity: ", testentity);
+        this.confirmDelete.emit({
+          severity: 'error',
+          summary: 'MESSAGE.ERROR',
+          relatedEntity: testentity,
+          detail: this.errorMessage?.includes('FOREIGN KEY')
+            ? 'MESSAGE.DELETE_ERROR_IN_USE'
+            : 'MESSAGE.DELETE_FAILED'
+        });
+        console.error('Delete error:', error);
+      }
     });
+    this.subscriptions.add(sub);
+  }
+
+  /** Gets the related entity from the error message when trying to delete a role */
+  private extractRelatedEntity(errorMessage: string): string {
+    const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
+    if (match && match[1]) {
+      return match[1];
+    }
+    return 'unknown entity';
   }
 
   onCancel(): void {
@@ -168,6 +201,6 @@ export class RolModalComponent implements OnInit {
   }
 
   private sendDeleteConfirmation(severity: string, summary: string, detail: string) {
-    this.confirmDelete.emit({severity, summary, detail});
+    this.confirmDelete.emit({ severity, summary, detail });
   }
 }
