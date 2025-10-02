@@ -61,7 +61,7 @@
     <div class="flex justify-content-center gap-2 mt-4">
         <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
             icon="pi pi-check" iconPos="left" [loading]="isLoading"
-            [disabled]="absenceTypeForm.invalid || isLoading" />
+            [disabled]="absenceTypeForm.invalid || isLoading || !absenceTypeForm.dirty" />
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />

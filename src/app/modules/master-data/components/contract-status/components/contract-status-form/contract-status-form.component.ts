@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ContractStatus } from '../../../../../../Entities/contractStatus';
 
 @Component({
@@ -10,8 +10,9 @@ import { ContractStatus } from '../../../../../../Entities/contractStatus';
 })
 export class ContractStatusFormComponent implements OnInit, OnChanges {
   @Input() contractStatus!: ContractStatus;
+  @Input() isLoading: boolean = false;
   contractStatusForm!: FormGroup;
-  @Output() contractStatusToEdit = new EventEmitter<any>();
+  @Output() contractStatusToEdit = new EventEmitter<ContractStatus>();
   @Output() cancelEditContractStatus = new EventEmitter<any>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   
@@ -30,7 +31,7 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.contractStatusForm = new FormGroup({
-      status: new FormControl('', [Validators.required])
+      status: new FormControl('')
     });
   }
 

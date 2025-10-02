@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ContractStatus } from '../../../../../../Entities/contractStatus';
 
 @Component({
@@ -15,14 +15,13 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   @Input() isVisible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedContractStatus: ContractStatus | null = null;
+  @Input() loadCreateDelete = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() contractStatusCreated = new EventEmitter<any>();
   @Output() contractStatusDeleted = new EventEmitter<ContractStatus>();
 
-  isContractStatusLoading = false;
-
   readonly createContractStatusForm = new FormGroup({
-    status: new FormControl('', [Validators.required])
+    status: new FormControl('')
   });
 
   ngOnInit(): void {
@@ -31,7 +30,9 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isVisible'] && this.isVisible){
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
     if(changes['isVisible'] && !this.isVisible){
       this.createContractStatusForm.reset();
@@ -43,10 +44,8 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   }
 
   onDeleteContractStatusConfirm(): void {
-    this.isContractStatusLoading = true;
     if (this.selectedContractStatus) {
       this.contractStatusDeleted.emit(this.selectedContractStatus);
-      this.isContractStatusLoading = false;
     }
   }
 
@@ -56,11 +55,9 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
     formValue.status = formValue.status?.trim();
     this.contractStatusCreated.emit(formValue);
     this.isVisibleModal.emit(false);
-    this.isContractStatusLoading = false;
   }
 
   handleClose(): void {
-    this.isContractStatusLoading = false;
     this.isVisibleModal.emit(false);
     this.createContractStatusForm.reset();
   }
