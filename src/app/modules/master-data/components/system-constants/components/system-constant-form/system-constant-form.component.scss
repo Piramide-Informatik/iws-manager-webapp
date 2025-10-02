@@ -6,14 +6,15 @@
   margin-bottom: 1rem;
   
   label {
-      width: 150px;
+    width: 130px;
+    flex-shrink: 0;
   }
-  .edit-input-container {
-    flex: 1;
-    margin-left: 1rem;
+  
+  input, p-inputnumber {
+    width: 100%;
+  }
 
-    input {
-      width: 70%;
-    }
+  ::ng-deep .p-inputnumber-input {
+    width: 100%;
   }
 }

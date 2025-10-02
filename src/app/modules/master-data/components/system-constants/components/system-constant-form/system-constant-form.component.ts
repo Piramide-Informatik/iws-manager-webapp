@@ -1,8 +1,9 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { System } from '../../../../../../Entities/system';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { SystemConstantUtils } from '../../utils/system-constant.utils';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-system-constant-form',
@@ -11,9 +12,9 @@ import { SystemConstantUtils } from '../../utils/system-constant.utils';
   styleUrl: './system-constant-form.component.scss'
 })
 export class SystemConstantFormComponent implements OnInit, OnChanges {
-
   @Input() selectedSystemConstant!: System | null;
   @Output() cancelAction = new EventEmitter();
+  @ViewChild('firstInput') firstInput!: InputNumber;
   private readonly systemConstantUtils = inject(SystemConstantUtils);
   editSystemConstantForm!: FormGroup;
   isLoading = false;
@@ -23,8 +24,8 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.editSystemConstantForm = new FormGroup({
       name: new FormControl({value: '', disabled: true}),
-      valueNum: new FormControl('', [Validators.pattern('^-?[0-9]+(.[0-9]+)?')]),
-      valueChar: new FormControl('', [Validators.pattern('^[a-zA-Z0-9]*$')]),
+      valueNum: new FormControl(null),
+      valueChar: new FormControl(''),
     });
   }
 
@@ -35,6 +36,7 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
         this.clearForm();
       } else {
         this.editSystemConstantForm.patchValue(systemConstantChange.currentValue);
+        this.focusInputIfNeeded();
       }
     }
   }
@@ -62,5 +64,15 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
     this.editSystemConstantForm.reset();
     this.selectedSystemConstant = null;
     this.cancelAction.emit(true);
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.selectedSystemConstant && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.input.nativeElement) {
+          this.firstInput.input.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }

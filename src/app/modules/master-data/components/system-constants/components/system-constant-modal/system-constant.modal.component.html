@@ -1,12 +1,12 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createSystemConstantForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mt-4 mb-2">
-            <div class="create-system-constant-form mb-2 flex">
+            <div class="create-system-constant-form">
                 <label for="name">{{ 'SYSTEM_CONSTANT.LABEL.CONSANT' | translate }}</label>
-                <div class="input-container">
-                  <input pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': createSystemConstantForm.get('name')?.invalid && 
+                <div class="input-message">
+                  <input #firstInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': createSystemConstantForm.get('name')?.invalid && 
                   createSystemConstantForm.get('name')?.dirty && createSystemConstantForm.get('name')?.touched}" autocomplete="off" />
-                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                  <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
                       createSystemConstantForm.get('name')?.invalid && 
                       createSystemConstantForm.get('name')?.dirty && 
                       createSystemConstantForm.get('name')!.hasError('required')
@@ -15,26 +15,26 @@
                   </p-message>   
                 </div>             
             </div>
-            <div class="create-system-constant-form mb-2 flex">
+            <div class="create-system-constant-form">
                 <label for="valuenum">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_NUMERIC' | translate }}</label>
-                <div class="input-container">
-                  <input pInputText type="text" id="valuenum" formControlName="valueNum" [ngClass]="{'ng-invalid': createSystemConstantForm.get('valueNum')?.invalid && 
-                  createSystemConstantForm.get('valueNum')?.dirty && createSystemConstantForm.get('valueNum')?.touched}" autocomplete="off" />
-                  <p-message severity="error" variant="simple" size="small" *ngIf="
-                      createSystemConstantForm.get('valueNum')?.invalid && 
-                      createSystemConstantForm.get('valueNum')?.dirty && 
-                      createSystemConstantForm.get('valueNum')!.hasError('pattern')
-                      ">
-                      {{ 'SYSTEM_CONSTANT.ERROR.ONLY_NUMBER_REQUIRED' | translate }}
-                  </p-message> 
+                <div class="input-message">
+                  <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+                    inputId="valuenum" formControlName="valueNum" autocomplete="off" [inputStyle]="{'text-align': 'right'}"  invalid="
+                    createSystemConstantForm.get('valueNum')?.invalid  
+                    && createSystemConstantForm.get('valueNum')?.dirty 
+                    || createSystemConstantForm.get('valueNum')?.touched"/>
+                    <p-message severity="error" variant="simple" size="small" *ngIf="
+                        createSystemConstantForm.get('valueNum')?.invalid && 
+                        createSystemConstantForm.get('valueNum')?.dirty
+                    ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
                 </div>
             </div>
-            <div class="create-system-constant-form mb-2 flex">
+            <div class="create-system-constant-form">
                 <label for="valuechar">{{ 'SYSTEM_CONSTANT.LABEL.VALUE_ALPHANUMERIC' | translate }}</label>
-                <div class="input-container">
+                <div class="input-message">
                   <input pInputText type="text" id="valuechar" formControlName="valueChar" [ngClass]="{'ng-invalid': createSystemConstantForm.get('valueChar')?.invalid && 
                   createSystemConstantForm.get('valueChar')?.dirty && createSystemConstantForm.get('valueChar')?.touched}" autocomplete="off" />
-                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                  <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
                       createSystemConstantForm.get('valueChar')?.invalid && 
                       createSystemConstantForm.get('valueChar')?.dirty && 
                       createSystemConstantForm.get('valueChar')!.hasError('pattern')
@@ -46,7 +46,7 @@
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button size="small" type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-                iconPos="left" [loading]="isLoading"  />
+                iconPos="left" [loading]="isLoading" [disabled]="createSystemConstantForm.invalid || isLoading || !createSystemConstantForm.dirty" />
             <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times" iconPos="left" [disabled]="isLoading" (onClick)="closeModal()" />
         </div>
