@@ -31,8 +31,9 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   showOCCErrorModalContractStatus = false;
   modalContractStatusType: 'create' | 'delete' = 'create';
   selectedContractStatus!: any;
+  loadCreateDelete: boolean = false;
   @Output() contractStatusToEdit = new EventEmitter<any>();
-
+  @Output() loadEdit = new EventEmitter<boolean>();
   @ViewChild('dt') dt!: Table;
 
   private langContractStatusSubscription!: Subscription;
@@ -65,23 +66,30 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   }
 
   onContractStatusCreated(contractStatus: any) {
+    this.loadCreateDelete = true;
     this.contractStatusUtils.addContractStatus(contractStatus).subscribe({
-      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
+      next: () => {
+        this.loadCreateDelete = false;
+        this.commonMessageService.showCreatedSuccesfullMessage()
+      },
       error: (err) => {
-        console.log(err);
+        this.loadCreateDelete = false;
         this.commonMessageService.showErrorCreatedMessage();
       }
     })
   }
 
   onContractStatusDeleted(contractStatus: any) {
+    this.loadCreateDelete = true;
     this.contractStatusUtils.deleteContractStatus(contractStatus.id).subscribe({
       next: () => {
+        this.loadCreateDelete = false;
         this.contractStatusToEdit.emit(null);
         this.commonMessageService.showDeleteSucessfullMessage()
         this.visibleContractStatusModal = false;
       },
       error: (err) => {
+        this.loadCreateDelete = false;
         if (err.message === 'Cannot delete register: it is in use by other entities') {
           this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
         } else {
@@ -98,12 +106,15 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   }
 
   editContractStatus(contractStatus: any) {
+    this.loadEdit.emit(true);
     this.contractStatusUtils.updateContractStatus(contractStatus).subscribe({
       next: () => {
+        this.loadEdit.emit(false);
         this.contractStatusToEdit.emit(null);
         this.commonMessageService.showEditSucessfullMessage();
       },
       error: (err) => {
+        this.loadEdit.emit(false);
         if (err.message === 'Version conflict: ContractStatus has been updated by another user') {
           this.showOCCErrorModalContractStatus = true;
         }
