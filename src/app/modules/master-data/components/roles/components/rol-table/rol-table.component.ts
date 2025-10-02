@@ -114,7 +114,7 @@ export class RolTableComponent implements OnInit, OnDestroy {
   onConfirmDelete(message: {severity: string, summary: string, detail: string, relatedEntity?: string}): void {
     let finalDetail = this.translate.instant(_(message.detail));
     if (message.relatedEntity) {
-        finalDetail = finalDetail + ': ' + message.relatedEntity;
+        finalDetail = finalDetail + message.relatedEntity;
     }
       
     this.messageService.add({
