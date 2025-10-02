@@ -498,8 +498,8 @@
       "PROJECT": "Project",
       "DATE": "Date",
       "INVOICE_NUMBER": "Invoice No.",
-      "NET_INVOICE": "Net Invoice Amount",
-      "GROSS_INVOICE": "Gross Invoice Amount",
+      "NET_INVOICE": "Net Amount",
+      "GROSS_INVOICE": "Gross Amount",
       "SHARE": "Share"
     },
     "DEPRECIATION_COLUMNS": {
