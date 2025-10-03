@@ -107,7 +107,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
           });
           this.focusInputIfNeeded();
         } else {
-          this.clearForm();
+          this.editProjectFunnelForm.reset();
         }
       })
     );
