@@ -10,6 +10,7 @@ import { UserStateService } from '../../utils/user-state.service';
 import { MessageService } from 'primeng/api';
 import { User } from '../../../../../../Entities/user';
 import { Column } from '../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-user-table',
@@ -64,7 +65,8 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly userStateService: UserStateService
+    private readonly userStateService: UserStateService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit() {
@@ -145,11 +147,7 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
+    this.commonMessageService.showCustomSeverityAndMessage(message.severity, message.summary, message.detail);
   }
 
   editUser(user: { id: number, username: string, name: string, active: boolean }) {

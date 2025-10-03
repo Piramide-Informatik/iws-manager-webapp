@@ -46,7 +46,12 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
 
     this.isLoading = true;
     const dunningLevel: Omit<ReminderLevel, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      ...this.dunningLevelForm.value
+      levelNo: this.dunningLevelForm.value.levelNo,
+      reminderTitle: this.dunningLevelForm.value.reminderTitle?.trim(),
+      fee: this.dunningLevelForm.value.fee,
+      interestRate: this.dunningLevelForm.value.interestRate,
+      payPeriod: this.dunningLevelForm.value.payPeriod,
+      reminderText: this.dunningLevelForm.value.reminderText?.trim()
     }
 
     this.dunningLevelUtils.createNewReminderLevel(dunningLevel).subscribe({

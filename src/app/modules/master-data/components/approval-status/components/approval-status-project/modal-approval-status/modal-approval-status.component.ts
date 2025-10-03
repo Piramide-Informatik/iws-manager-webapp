@@ -174,7 +174,7 @@ export class ModalApprovalStatusComponent
     'id' | 'createdAt' | 'updatedAt' | 'version'
   > {
     return {
-      status: this.createApprovalStatusForm.value.status?.trim() ?? '',
+      status: this.createApprovalStatusForm.value.status ? this.createApprovalStatusForm.value.status.trim() : '',
       sequenceNo: this.createApprovalStatusForm.value.order ?? 0,
       forProjects: this.createApprovalStatusForm.value.isProject ? 1 : 0,
       forNetworks: this.createApprovalStatusForm.value.isNetwork ? 1 : 0,

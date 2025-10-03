@@ -7,6 +7,7 @@ import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-types-of-companies-form',
@@ -25,7 +26,8 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   constructor(private readonly companyTypeServiceUtils: CompanyTypeUtils,
     private readonly typeOfCompanyStateService: TypeOfCompaniesStateService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnInit(): void {
@@ -67,7 +69,9 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
     if (this.companyTypeEditForm.invalid || !this.companyType || this.isSaving) return;
 
     this.isSaving = true;
-    const companyType = Object.assign(this.companyType, this.companyTypeEditForm.value);
+    const companyTypeEditFormValue = this.companyTypeEditForm.value;
+    companyTypeEditFormValue.name = companyTypeEditFormValue.name?.trim();
+    const companyType = Object.assign(this.companyType, companyTypeEditFormValue);
 
     this.subscriptions.add(
       this.companyTypeServiceUtils.updateCompanyType(companyType).subscribe({
@@ -79,11 +83,7 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
 
   private handleSaveSuccess(): void {
     this.isSaving = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.typeOfCompanyStateService.setTypeOfCompanyTypeToEdit(null);
     this.clearForm();
   }
@@ -95,11 +95,7 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
       this.showOCCErrorModalCompanyType = true;
       return;
     }
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.ERROR'),
-      detail: this.translate.instant('TYPE_OF_COMPANIES.MESSAGE.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
   }
 
   private loadCompanyTypeAfterRefresh(companyTypeId: string): void {

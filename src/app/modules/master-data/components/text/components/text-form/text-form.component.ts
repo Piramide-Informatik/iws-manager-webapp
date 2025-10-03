@@ -48,7 +48,7 @@ export class TextFormComponent implements OnInit, OnDestroy {
     const editedText: Text = {
       ...this.textToEdit,
       label: this.editTextForm.getRawValue().label,
-      content: this.editTextForm.value.content ?? ''
+      content: this.editTextForm.value.content?.trim() ?? ''
     }
 
     this.textUtils.updateText(editedText).subscribe({

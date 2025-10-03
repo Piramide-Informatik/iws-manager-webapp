@@ -37,7 +37,7 @@ export class ModalBillerComponent implements OnChanges {
     
     this.isLoading = true;
     const newBiller: Omit<Biller, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.billerForm.value.name?.trim() ?? ''
+      name: this.billerForm.value.name?.trim()
     }
 
     this.billerUtils.addBiller(newBiller).subscribe({

@@ -38,7 +38,7 @@ export class ModalBillingMethodsComponent implements OnChanges {
 
     this.isLoading = true;
     const newInvoiceType: Omit<InvoiceType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.invoiceTypeForm.value.name ?? ''
+      name: this.invoiceTypeForm.value.name?.trim()
     };
 
     this.invoiceTypeUtils.addInvoiceType(newInvoiceType).subscribe({

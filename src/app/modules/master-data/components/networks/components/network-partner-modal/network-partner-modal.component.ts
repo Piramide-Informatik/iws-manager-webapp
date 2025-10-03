@@ -89,6 +89,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     networkPartnerData.network = this.network;
     networkPartnerData.partner = this.customers().find(ct => ct.id == networkPartnerData.partner);
     networkPartnerData.contactperson = this.contactService.contactPersons().find( cp => cp.id == networkPartnerData.contactperson);
+    networkPartnerData.comment = networkPartnerData.comment?.trim()
     if (!this.selectedNetworkPartner) {
       this.networPartnerUtils.createNewNetworkPartner(networkPartnerData).subscribe({
         next: (created) => {

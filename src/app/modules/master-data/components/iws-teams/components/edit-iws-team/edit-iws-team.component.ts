@@ -122,7 +122,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
 
     const updateTeamIws: TeamIws = {
       ...this.currentTeamIws,
-      name: this.editTeamForm.value.name,
+      name: this.editTeamForm.value.name?.trim(),
       teamLeader: leaderObj
       ? ({ id: leaderObj.id, version: leaderObj.version } as EmployeeIws)
       : null,

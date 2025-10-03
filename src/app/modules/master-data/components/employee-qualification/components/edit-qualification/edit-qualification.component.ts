@@ -104,8 +104,8 @@ export class EditQualificationComponent implements OnInit {
     this.isSaving = true;
     const updateEmployeeCategory: EmployeeCategory = {
       ...this.currentEmployeeCategory,
-      title: this.editQualificationForm.value.qualification,
-      label: this.editQualificationForm.value.abbreviation,
+      title: this.editQualificationForm.value.qualification?.trim(),
+      label: this.editQualificationForm.value.abbreviation?.trim(),
     };
 
     this.subscriptions.add(

@@ -102,7 +102,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedNetwork: Network = {
       ...this.networkToEdit,
-      name: this.editNetworkForm.value.name
+      name: this.editNetworkForm.value.name?.trim()
     }
 
     this.networkUtils.updateNetwork(editedNetwork).subscribe({

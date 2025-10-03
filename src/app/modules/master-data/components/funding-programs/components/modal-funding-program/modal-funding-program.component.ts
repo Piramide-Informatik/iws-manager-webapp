@@ -35,7 +35,7 @@ export class ModalFundingProgramComponent {
 
     this.isLoading = true;
     const newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.fundingProgramForm.value.name ?? '',
+      name: this.fundingProgramForm.value.name?.trim(),
       defaultFundingRate: this.fundingProgramForm.value.defaultFundingRate ?? 0,
       defaultStuffFlat: this.fundingProgramForm.value.defaultStuffFlat ?? 0,
       defaultResearchShare: this.fundingProgramForm.value.defaultResearchShare ?? 0,

@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { Role } from '../../../../../../Entities/role';
 import { RoleService } from '../../../../../../Services/role.service';
 import { PasswordDirective } from 'primeng/password';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-edit-user-form',
@@ -42,6 +43,7 @@ export class EditUserFormComponent implements OnInit {
     private readonly userStateService: UserStateService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
@@ -170,10 +172,10 @@ export class EditUserFormComponent implements OnInit {
   private createUpdatedUser(): User {
     return {
       ...this.currentUser!,
-      username: this.editUserForm.value.username,
-      firstName: this.editUserForm.value.firstName,
-      lastName: this.editUserForm.value.lastName,
-      email: this.editUserForm.value.email,
+      username: this.editUserForm.value.username?.trim(),
+      firstName: this.editUserForm.value.firstName?.trim(),
+      lastName: this.editUserForm.value.lastName?.trim(),
+      email: this.editUserForm.value.email?.trim(),
       password: this.editUserForm.value.password,
       active: this.editUserForm.value.active,
       roles: this.editUserForm.value.role || []
@@ -226,22 +228,14 @@ export class EditUserFormComponent implements OnInit {
   }
   
   private handleSaveSuccess(savedUser: User): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.userStateService.setUserToEdit(null);
     this.clearForm();
   }
   
   private handleSaveError(error: any): void {
     console.error('Error saving user:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 

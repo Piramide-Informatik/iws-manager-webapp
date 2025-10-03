@@ -46,7 +46,7 @@ export class EditBillerComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedBiller: Biller = {
       ...this.billerToEdit,
-      name: this.editBillerForm.value.name ?? ''
+      name: this.editBillerForm.value.name?.trim()
     };
 
     this.billerUtils.updateBiller(editedBiller).subscribe({

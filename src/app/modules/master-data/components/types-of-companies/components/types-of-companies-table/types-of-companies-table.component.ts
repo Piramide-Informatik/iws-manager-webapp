@@ -10,6 +10,7 @@ import { CompanyTypeService } from '../../../../../../Services/company-type.serv
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.state.service';
 import { MessageService } from 'primeng/api';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-types-of-companies-table',
@@ -41,7 +42,8 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy, OnChan
   constructor(private readonly router: Router,
               private readonly userPreferenceService: UserPreferenceService, 
               private readonly translate: TranslateService,
-              private readonly companyTypeState: TypeOfCompaniesStateService ) { }
+              private readonly companyTypeState: TypeOfCompaniesStateService,
+              private readonly commonMessageService: CommonMessagesService ) { }
 
   ngOnInit() {
     this.companyTypeUtils.loadInitialData().subscribe();
@@ -122,10 +124,6 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy, OnChan
 
   onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
     this.companyTypeStateService.setTypeOfCompanyTypeToEdit(null);
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
+    this.commonMessageService.showCustomSeverityAndMessage(message.severity, message.summary, message.detail);
   }
 }

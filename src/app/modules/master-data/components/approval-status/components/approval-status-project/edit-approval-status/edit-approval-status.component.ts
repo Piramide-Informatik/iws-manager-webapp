@@ -104,7 +104,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
         this.isSaving = true;
         const updatedApprovalStatus: ApprovalStatus = {
           ...this.currentApprovalStatus,
-          status: this.editApprovalStatusForm.value.status,
+          status: this.editApprovalStatusForm.value.status?.trim(),
           sequenceNo: this.editApprovalStatusForm.value.order,
           forProjects: this.editApprovalStatusForm.value.forProject? 1 : 0,
           forNetworks: this.editApprovalStatusForm.value.forNetwork? 1 : 0,

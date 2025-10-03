@@ -132,7 +132,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
     this.isSaving = true;
     const updatedRole: Role = {
       ...this.currentRole,
-      name: this.editRoleForm.value.name,
+      name: this.editRoleForm.value.name?.trim(),
     };
     this.subscriptions.add(
       this.roleUtils.updateRole(updatedRole).subscribe({

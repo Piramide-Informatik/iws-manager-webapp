@@ -74,7 +74,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
     const formData: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = this.fundingForm.value;
     const editedFunding: FundingProgram = {
       ...this.fundingToEdit,
-      name: formData.name ?? '',
+      name: formData.name?.trim(),
       defaultFundingRate: formData.defaultFundingRate ?? 0,
       defaultStuffFlat: formData.defaultStuffFlat ?? 0,
       defaultResearchShare: formData.defaultResearchShare ?? 0,

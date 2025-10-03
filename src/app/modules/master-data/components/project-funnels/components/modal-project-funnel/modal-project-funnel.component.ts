@@ -50,14 +50,14 @@ export class ModalProjectFunnelComponent implements OnChanges {
 
     this.isLoading = true;
     const newPromoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      promoterNo: this.projectFunnelForm.value.promoterNo ?? '',
-      projectPromoter: this.projectFunnelForm.value.projectPromoter ?? '',
-      promoterName1: this.projectFunnelForm.value.promoterName1 ?? '',
-      promoterName2: this.projectFunnelForm.value.promoterName2 ?? '',
+      promoterNo: this.projectFunnelForm.value.promoterNo?.trim(),
+      projectPromoter: this.projectFunnelForm.value.projectPromoter?.trim(),
+      promoterName1: this.projectFunnelForm.value.promoterName1?.trim(),
+      promoterName2: this.projectFunnelForm.value.promoterName2?.trim(),
       country: this.getCountryById(this.projectFunnelForm.value.country ?? 0),
-      street: this.projectFunnelForm.value.street ?? '',
-      zipCode: this.projectFunnelForm.value.zipCode ?? '',
-      city: this.projectFunnelForm.value.city ?? ''
+      street: this.projectFunnelForm.value.street?.trim(),
+      zipCode: this.projectFunnelForm.value.zipCode?.trim(),
+      city: this.projectFunnelForm.value.city?.trim()
     }
 
     this.promoterUtils.addPromoter(newPromoter).subscribe({

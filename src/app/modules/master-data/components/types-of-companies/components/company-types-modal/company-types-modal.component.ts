@@ -5,6 +5,7 @@ import { emptyValidator } from '../../utils/empty.validator';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CompanyType } from '../../../../../../Entities/companyType';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-company-types-modal',
@@ -35,7 +36,8 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   });
 
   constructor(private readonly messageService: MessageService,
-              private readonly translateService: TranslateService
+              private readonly translateService: TranslateService,
+              private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
@@ -98,7 +100,7 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
     this.isLoading = true;
     this.errorMessage = null;
     const companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.companyTypeForm.value.name ?? ''
+      name: this.companyTypeForm.value.name?.trim() ?? ''
     };
 
     this.companyTypeUtils.createNewCompanyType(companyType).subscribe({
@@ -120,11 +122,7 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   }
 
   private onCreateCompanyTypeSuccessfully() {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translateService.instant('TYPE_OF_COMPANIES.MESSAGE.SUCCESS'),
-      detail: this.translateService.instant('TYPE_OF_COMPANIES.MESSAGE.CREATE_SUCCESS')
-    });
+    this.commonMessageService.showCreatedSuccesfullMessage();
   }
 
   closeModal(): void {

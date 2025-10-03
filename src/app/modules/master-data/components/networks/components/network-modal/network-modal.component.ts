@@ -45,7 +45,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
 
     this.isLoading = true;
     const newNetwork: Omit<Network, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.networkForm.value.name ?? ''
+      name: this.networkForm.value.name?.trim()
     }
 
     this.networkUtils.createNewNetwork(newNetwork).subscribe({

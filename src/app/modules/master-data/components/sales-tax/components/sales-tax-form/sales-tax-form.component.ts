@@ -95,7 +95,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedVat: Vat = {
       ...this.vatToEdit,
-      label: this.editSalesTaxForm.value.label
+      label: this.editSalesTaxForm.value.label?.trim()
     }
 
     this.vatUtils.updateVat(editedVat).subscribe({

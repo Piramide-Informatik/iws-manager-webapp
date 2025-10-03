@@ -83,5 +83,13 @@ export class CommonMessagesService {
       detail: this.translateService.instant('MESSAGE.DELETE_ERROR_IN_USE')
     })
   }
+
+  showCustomSeverityAndMessage(severity: string, message: string, detail: string) {
+    this.messageService.add({
+      severity: severity,
+      summary: this.translateService.instant(message),
+      detail: this.translateService.instant(detail)
+    })
+  }
   
 }

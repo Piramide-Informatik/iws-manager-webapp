@@ -48,7 +48,7 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedInvoiceType: InvoiceType = {
       ...this.invoiceTypeToEdit,
-      name: this.billingMethodForm.value.name ?? ''
+      name: this.billingMethodForm.value.name?.trim()
     }
 
     this.invoiceTypeUtils.updateInvoiceType(editedInvoiceType).subscribe({
