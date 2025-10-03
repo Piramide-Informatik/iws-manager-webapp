@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, EventEmitter, inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
@@ -27,6 +27,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  @Output() vatEdited = new EventEmitter<void>(); 
   public vatToEdit: Vat | null = null;
   public showOCCErrorModalVat = false;
   public isLoading: boolean = false;
@@ -100,6 +101,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
 
     this.vatUtils.updateVat(editedVat).subscribe({
       next: () => {
+        this.vatEdited.emit();
         this.isLoading = false;
         this.clearForm();
         this.commonMessageService.showEditSucessfullMessage();

@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { Subscription, combineLatest, map, take } from 'rxjs';
+import { Component, OnInit, OnDestroy, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { BehaviorSubject, Subscription, combineLatest, map, startWith, switchMap } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { Vat } from '../../../../../../Entities/vat';
-import { VatRate } from '../../../../../../Entities/vatRate';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { VatUtils } from '../../utils/vat-utils';
 import { VatService } from '../../../../../../Services/vat.service';
 import { VatStateService } from '../../utils/vat-state.service';
 import { VatRateUtils } from '../../utils/vat-rate-utils';
+import { Column } from '../../../../../../Entities/column';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-sales-tax-table',
@@ -17,13 +18,14 @@ import { VatRateUtils } from '../../utils/vat-rate-utils';
   templateUrl: './sales-tax-table.component.html',
   styleUrl: './sales-tax-table.component.scss'
 })
-export class SalesTaxTableComponent implements OnInit, OnDestroy {
+export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly salesTaxUtils = inject(VatUtils);
   private readonly salestTaxService = inject(VatService);
   private readonly salesTaxStateService = inject(VatStateService);
   private readonly vatRateUtils = inject(VatRateUtils);
-  salesTaxesColumns: any[] = [];
+  @Input() isEdited: boolean = false;
+  salesTaxesColumns: Column[] = [];
   isSalesTaxesChipVisible = false;
   userSalesTaxTablePreferences: UserPreference = {};
   tableKey: string = 'SalesTaxTable'
@@ -31,8 +33,13 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
   public modalType: 'create' | 'delete' = 'create';
   public isVisibleModal: boolean = false;
 
+  private readonly refreshTrigger$ = new BehaviorSubject<void>(undefined);
+
   readonly salesTaxesValues$ = combineLatest([
-    this.salestTaxService.getAllVats(),
+    this.refreshTrigger$.pipe(
+      startWith(undefined),
+      switchMap(() => this.salestTaxService.getAllVats())
+    ),
     this.vatRateUtils.getAllVatRates()
   ]).pipe(
     map(([vats, vatRates]) => {
@@ -44,6 +51,9 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
     })
   );
 
+  readonly salesTaxesValues = toSignal(this.salesTaxesValues$, { 
+    initialValue: [] 
+  });
 
   selectedVat!: Vat;
 
@@ -60,8 +70,12 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
       this.loadSalesTaxHeadersAndColumns();
       this.userSalesTaxTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.salesTaxesColumns);
     });
-    const salesTaxesRatesData: VatRate[] = [];
-    const salesTaxesData: Vat[] = [];
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['isEdited']){
+      this.refreshTrigger$.next();
+    }
   }
 
   onUserSalesTaxTablePreferencesChanges(userSalesTaxTablePreferences: any) {
@@ -72,7 +86,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
     this.salesTaxesColumns = this.loadColumnSalesTaxHeaders();
   }
 
-  loadColumnSalesTaxHeaders(): any[] {
+  loadColumnSalesTaxHeaders(): Column[] {
     return [
       {
         field: 'label',
@@ -100,21 +114,24 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
     this.modalType = event.type;
 
     if (event.type === 'delete' && event.data != null) {
-      this.salesTaxesValues$.pipe(take(1)).subscribe(salesTaxes => {
-        const foundVat = salesTaxes.find(st => st.id === event.data);
-        if (foundVat) {
-          this.selectedVat = foundVat;
-        }
-        this.isVisibleModal = true;
-      });
-    } else {
-      this.isVisibleModal = true;
+      const foundVat = this.salesTaxesValues().find(st => st.id === event.data);
+      if (foundVat) {
+        this.selectedVat = {
+          id: foundVat.id,
+          createdAt: foundVat.createdAt,
+          updatedAt: foundVat.updatedAt,
+          version: foundVat.version,
+          label: foundVat.label
+        };
+      }
     }
+    this.isVisibleModal = true;
   }
 
 
   onCreateVat(event: { created?: Vat, status: 'success' | 'error' }): void {
     if (event.created && event.status === 'success') {
+      this.refreshTrigger$.next()
       this.commonMessageService.showCreatedSuccesfullMessage();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
@@ -123,6 +140,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy {
 
   onDeleteVat(event: { status: 'success' | 'error', error?: Error }): void {
     if (event.status === 'success') {
+      this.refreshTrigger$.next()
       this.salesTaxStateService.clearVat();
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (event.status === 'error') {

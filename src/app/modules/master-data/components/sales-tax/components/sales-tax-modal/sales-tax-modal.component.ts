@@ -42,13 +42,13 @@ export class SalesTaxModalComponent implements OnChanges {
 
     this.vatUtils.addVat(newVat).subscribe({
       next: (created) => {
+        this.createVat.emit({created, status: 'success'});
         this.isLoading = false;
         this.closeModal();
-        this.createVat.emit({created, status: 'success'});
       },
       error: () => {
-        this.isLoading = false;
         this.createVat.emit({ status: 'error' });
+        this.isLoading = false;
       } 
     })
   }
@@ -58,13 +58,13 @@ export class SalesTaxModalComponent implements OnChanges {
     if (this.selectedVat) {
       this.vatUtils.deleteVat(this.selectedVat.id).subscribe({
         next: () => {
+          this.deleteVat.emit({status: 'success'});
           this.isLoading = false;
           this.closeModal();
-          this.deleteVat.emit({status: 'success'});
         },
         error: (error) => {
-          this.isLoading = false;
           this.deleteVat.emit({ status: 'error', error: error });
+          this.isLoading = false;
         }
       })
     }

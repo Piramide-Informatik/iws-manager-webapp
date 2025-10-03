@@ -1,10 +1,10 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <app-sales-tax-table></app-sales-tax-table>
+            <app-sales-tax-table [isEdited]="vatEdited"></app-sales-tax-table>
         </div>
         <div class="col-6">
-            <app-sales-tax-form></app-sales-tax-form>
+            <app-sales-tax-form (vatEdited)="vatEdited = !vatEdited"></app-sales-tax-form>
         </div>
     </div>
 </div>
