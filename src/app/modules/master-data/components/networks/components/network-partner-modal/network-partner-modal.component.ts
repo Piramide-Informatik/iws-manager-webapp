@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Network } from '../../../../../../Entities/network';
 import { CustomerUtils } from '../../../../../customer/utils/customer-utils';
@@ -7,6 +7,8 @@ import { CustomerService } from '../../../../../../Services/customer.service';
 import { ContactPersonService } from '../../../../../../Services/contact-person.service';
 import { NetworkPartner } from '../../../../../../Entities/network-partner';
 import { NetowrkPartnerUtils } from '../../utils/ network-partner.utils';
+import { InputNumber } from 'primeng/inputnumber';
+import { ContactPerson } from '../../../../../../Entities/contactPerson';
 
 @Component({
   selector: 'app-network-partner-modal',
@@ -29,7 +31,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   @Output() editNetworkPartner = new EventEmitter<{edited?: Network, status: 'success' | 'error'}>();
   @Output() deleteNetworkPartner = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @Output() cancelNetworkPartnerAction = new EventEmitter();
-  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('firstInput') firstInput!: InputNumber;
   public networkPartnerForm!: FormGroup;
   public isLoading = false;
   selectedCustomer = signal(0);
@@ -41,8 +43,10 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   readonly customers = computed(() => {
     return this.customerService.customers()
   });
+  private readonly contactsMap = new Map<number, ContactPerson>();
   readonly contacts = computed(() => {
     return this.contactService.contactPersons().map(ct => {
+      this.contactsMap.set(ct.id, ct);
       return {
         id: ct.id,
         name: `${ct.lastName} ${ct.firstName}`
@@ -56,7 +60,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     this.customerUtils.loadInitialData().subscribe();
     this.contactUtils.loadInitialData().subscribe();
     this.networkPartnerForm = new FormGroup({
-      partnerno: new FormControl(''),
+      partnerno: new FormControl(null),
       comment: new FormControl(''),
       partner: new FormControl(''),
       contactperson: new FormControl(''),
@@ -88,7 +92,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     const networkPartnerData = this.networkPartnerForm.value;
     networkPartnerData.network = this.network;
     networkPartnerData.partner = this.customers().find(ct => ct.id == networkPartnerData.partner);
-    networkPartnerData.contactperson = this.contactService.contactPersons().find( cp => cp.id == networkPartnerData.contactperson);
+    networkPartnerData.contactperson = this.contactsMap.get(networkPartnerData.contactperson);
     networkPartnerData.comment = networkPartnerData.comment?.trim()
     if (!this.selectedNetworkPartner) {
       this.networPartnerUtils.createNewNetworkPartner(networkPartnerData).subscribe({
@@ -150,8 +154,8 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   private focusInputIfNeeded(): void {
     if (this.isCreateMode && this.firstInput) {
       setTimeout(() => {
-        if (this.firstInput?.nativeElement) {
-          this.firstInput.nativeElement.focus();
+        if (this.firstInput?.input.nativeElement) {
+          this.firstInput.input.nativeElement.focus();
         }
       }, 200);
     }

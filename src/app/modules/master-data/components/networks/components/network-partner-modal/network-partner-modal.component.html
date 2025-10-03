@@ -1,17 +1,17 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="networkPartnerForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column mb-2 mt-4">
-            <div class="network-partner-form flex flex-row mb-4">
+            <div class="network-partner-form">
                 <label for="partnerno">{{ 'NETWORKS.PARTNER.NO' | translate }}</label>
-                <p-inputNumber class="p-inputnumber-input" inputId="partnerno" formControlName="partnerno" [inputStyle]="{'text-align': 'right'}"
+                <p-inputNumber #firstInput class="p-inputnumber-input" inputId="partnerno" formControlName="partnerno" [inputStyle]="{'text-align': 'right'}"
                 [max]="999999" [min]="0" [useGrouping]="false" locale="de-DE"/>
             </div>
-            <div class="network-partner-form flex flex-row mb-4">
+            <div class="network-partner-form">
                 <label for="comment">{{ 'NETWORKS.PARTNER.COMMENT' | translate }}</label>
-                <input #firstInput pInputText type="text" id="name" formControlName="comment" autocomplete="off" />
+                <input pInputText type="text" id="name" formControlName="comment" autocomplete="off" />
             </div>
 
-            <div class="network-partner-form flex flex-row mb-4">
+            <div class="network-partner-form">
                 <label for="comment">{{ 'NETWORKS.PARTNER.CUSTOMER' | translate }}</label>
                 <p-select 
                   [options]="customers()" 
@@ -34,7 +34,7 @@
                     </ng-template>
                 </p-select>
             </div>
-            <div class="network-partner-form flex flex-row mb-4">
+            <div class="network-partner-form">
                 <label for="comment">{{ 'NETWORKS.PARTNER.CONTACT' | translate }}</label>
                 <p-select 
                   [options]="contacts()" 
