@@ -18,7 +18,7 @@
             <p-button  type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
                 [disabled]="editProjectStatusForm.invalid || !editProjectStatusForm.dirty || isSaving" [loading]="isSaving"/>
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                icon="pi pi-times" iconPos="left" (click)="clearForm()" (keydown.enter)="clearForm()"/>
+                icon="pi pi-times" iconPos="left" (onClick)="clearForm()" [disabled]="isSaving" />
         </div>
     </form>
 </p-card>
@@ -28,4 +28,3 @@
     (close)="showOCCErrorModalProjectStatus = false"
     (refresh)="onRefresh()">
 </app-occ-error-modal>
-<p-toast></p-toast>

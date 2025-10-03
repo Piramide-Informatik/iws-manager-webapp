@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import {  finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -27,11 +27,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
   errorMessage: string | null = null;
 
   readonly createdProjectStatusForm = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50)
-    ])
+    name: new FormControl('')
   });
 
   ngOnInit(): void {
@@ -41,7 +37,9 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 

@@ -1,13 +1,4 @@
-import {
-  Component,
-  OnDestroy,
-  OnChanges,
-  OnInit,
-  ViewChild,
-  inject,
-  computed,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, OnDestroy, OnChanges, OnInit, ViewChild, inject, computed, SimpleChanges } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
@@ -36,38 +27,15 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
   selectedPublicHoliday: number | null = null;
   publicHolidayName: string = '';
 
-  handleTableEvents(event: { type: 'create' | 'delete'; data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'delete' && event.data) {
-      this.selectedPublicHoliday = event.data;
-      this.publicHolidayUtils
-        .getPublicHolidayById(this.selectedPublicHoliday!)
-        .subscribe({
-          next: (publicHoliday) => {
-            this.publicHolidayName = publicHoliday?.name ?? '';
-          },
-          error: (error) => {
-            console.error('Error fetching publicHoliday:', error);
-            this.publicHolidayName = '';
-          },
-        });
-    }
-    this.visibleModal = true;
-  }
-
   readonly publicHolidays = computed(() => {
-    return this.publicHolidayService.publicHolidays().map((publicHoliday) => ({
-      id: publicHoliday.id,
-      sort: publicHoliday.sequenceNo,
-      name: publicHoliday.name,
-    }));
+    return this.publicHolidayService.publicHolidays();
   });
 
   columnsHeaderFieldHoliday: Column[] = [];
   publicHolidayDisplayedColumns: Column[] = [];
   userHolidaysPreferences: UserPreference = {};
   tableKey: string = 'Holidays';
-  dataKeys = ['sort', 'name'];
+  dataKeys = ['sequenceNo', 'name'];
   holidayData: PublicHoliday[] = [];
 
   @ViewChild('dt2') dt2!: Table;
@@ -96,6 +64,16 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
           this.publicHolidayDisplayedColumns
         );
     });
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete'; data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'delete' && event.data) {
+      this.selectedPublicHoliday = event.data;
+
+      this.publicHolidayName = this.publicHolidays().find(holiday => holiday.id === this.selectedPublicHoliday)?.name ?? '';
+    }
+    this.visibleModal = true;
   }
 
   loadHolidayData(): void {
@@ -127,7 +105,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
   loadColHeadersHoliday(): void {
     this.columnsHeaderFieldHoliday = [
       {
-        field: 'sort',
+        field: 'sequenceNo',
         classesTHead: ['width-10'],
         useSameAsEdit: true,
         header: this.translate.instant(_('HOLIDAYS.TABLE.SORT')),
@@ -197,29 +175,6 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   editPublicHoliday(publicHoliday: PublicHoliday) {
-    const publicHolidayToEdit: PublicHoliday = {
-      id: publicHoliday.id,
-      name: publicHoliday.name,
-      sequenceNo: publicHoliday.sequenceNo,
-      isFixedDate: publicHoliday.isFixedDate,
-      date: publicHoliday.date,
-      createdAt: '',
-      updatedAt: '',
-      version: 0,
-    };
-    this.publicHolidayUtils
-      .getPublicHolidayById(publicHolidayToEdit.id)
-      .subscribe({
-        next: (fullPublicHoliday) => {
-          if (fullPublicHoliday) {
-            this.publicHolidayStateService.setPublicHolidayToEdit(
-              fullPublicHoliday
-            );
-          }
-        },
-        error: (err) => {
-          console.error('Error Id PublicHoliday', err);
-        },
-      });
+    this.publicHolidayStateService.setPublicHolidayToEdit(publicHoliday);
   }
 }

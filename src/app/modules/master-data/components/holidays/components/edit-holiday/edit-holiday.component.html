@@ -60,6 +60,7 @@
           icon="pi pi-check"
           class="p-button-sm"
           [loading]="isSaving"
+          [disabled]="editPublicHolidayForm.invalid || isSaving || !editPublicHolidayForm.dirty"
         ></p-button>
       </div>
     </div>

@@ -198,7 +198,8 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
           this.networkPartnerUtils.getNetworkPartnerByNetworkId(network.id).subscribe();
           this.isCreateButtonEnable = true;
         } else {
-          this.clearForm();
+          this.editNetworkForm.reset();
+          this.networkPartnerService.clearNetworkPartners();
         }
       })
     )
