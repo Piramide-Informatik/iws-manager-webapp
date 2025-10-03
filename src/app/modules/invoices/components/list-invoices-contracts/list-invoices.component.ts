@@ -126,7 +126,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     this.cols = [
           { 
             field: 'invoiceNumber', 
-            customClasses: ['align-right'], 
+            customClasses: ['align-right','date-font-style'], 
             routerLink: (row: any) => `./invoice-details/${row.invoiceNumber}`,
             header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))
           },
@@ -134,7 +134,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
           { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION'))},
           { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE'))},
           { field: 'iwsNumber', header: this.translate.instant(_('INVOICES.TABLE.NETWORK'))},
-          { field: 'orderNumber', header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER'))},
+          { field: 'orderNumber', customClasses: ['align-right','date-font-style'], header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER'))},
           { field: 'orderName', header: this.translate.instant(_('INVOICES.TABLE.ORDER_TITLE'))},
           { field: 'netAmount', customClasses: ['align-right'],  header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT'))},
           { field: 'value', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT'))},
