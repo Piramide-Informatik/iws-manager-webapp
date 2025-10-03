@@ -38,8 +38,10 @@ export class ModalProjectFunnelComponent implements OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.modalType === 'create'){
-      this.focusInputIfNeeded();
+    if(changes['visible'] && this.visible){
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 

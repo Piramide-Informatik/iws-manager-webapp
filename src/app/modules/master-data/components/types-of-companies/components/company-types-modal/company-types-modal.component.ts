@@ -44,7 +44,9 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.visible){
-      this.focusCompanyTypeInputIfNeeded();
+      setTimeout(() => {
+        this.focusCompanyTypeInputIfNeeded();
+      })
     }
   }
 
