@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
 import { Subscription } from 'rxjs';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
@@ -40,7 +40,7 @@ export class EditProjectStatusComponent implements OnInit {
 
   private initForm(): void {
     this.editProjectStatusForm = new FormGroup({
-      projectStatus: new FormControl('', [Validators.required])
+      projectStatus: new FormControl('')
     })
   }
   
@@ -113,8 +113,8 @@ export class EditProjectStatusComponent implements OnInit {
   private handleSaveSuccess(savedProjectStatus: ProjectStatus): void{
     this.messageService.add({
       severity: 'success',
-      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_SUCCESS')
+      summary: this.translate.instant('MESSAGE.SUCCESS'),
+      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
     });
     this.projectStatusStateService.setProjectStatusToEdit(null);
     this.clearForm();

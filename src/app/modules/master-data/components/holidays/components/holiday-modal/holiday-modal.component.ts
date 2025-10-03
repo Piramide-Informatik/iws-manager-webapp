@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -32,11 +32,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   errorMessage: string | null = null;
 
   readonly createdPublicHolidayForm = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50),
-    ]),
+    name: new FormControl(''),
     date: new FormControl(''),
     sequenceNo: new FormControl({value: null, disabled: true}),
   });
@@ -48,7 +44,9 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.visible) {
-      this.focusInputIfNeeded();
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
 
