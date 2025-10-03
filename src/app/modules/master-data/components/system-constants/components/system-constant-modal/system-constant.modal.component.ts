@@ -43,8 +43,11 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
     if(this.createSystemConstantForm.invalid || this.isLoading) return
 
     this.isLoading = true;
+    const createSystemConstantFormValue = this.createSystemConstantForm.value;
+    createSystemConstantFormValue.name = createSystemConstantFormValue.name?.trim();
+    createSystemConstantFormValue.valueChar = createSystemConstantFormValue.valueChar?.trim();
     const systemConstant: Omit<System, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      ...this.createSystemConstantForm.value
+      ...createSystemConstantFormValue
     }
 
     this.systemConstantUtils.createNewSystemConstant(systemConstant).subscribe({

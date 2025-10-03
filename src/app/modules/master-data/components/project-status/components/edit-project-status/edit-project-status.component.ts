@@ -90,7 +90,7 @@ export class EditProjectStatusComponent implements OnInit {
     this.isSaving = true;
     const updateProjectStatus: ProjectStatus = {
       ...this.currentProjectStatus,
-      name: this.editProjectStatusForm.value.projectStatus
+      name: this.editProjectStatusForm.value.projectStatus?.trim()
     };
 
     this.subscriptions.add(

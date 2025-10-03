@@ -7,6 +7,7 @@ import { TitleUtils } from '../../utils/title-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-title-form',
@@ -28,7 +29,8 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     private readonly titleUtils: TitleUtils,
     private readonly titleStateService: TitleStateService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnInit(): void {
@@ -98,7 +100,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     this.isSaving = true;
     const updatedTitle: Title = {
       ...this.currentTitle,
-      name: this.editTitleForm.value.title
+      name: this.editTitleForm.value.title?.trim()
     };
 
     this.subscriptions.add(
@@ -129,22 +131,14 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveSuccess(savedTitle: Title): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('TITLE.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.titleStateService.setTitleToEdit(null);
     this.clearForm();
   }
 
   private handleSaveError(error: any): void {
     console.error('Error saving title:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('TITLE.MESSAGE.ERROR'),
-      detail: this.translate.instant('TITLE.MESSAGE.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 

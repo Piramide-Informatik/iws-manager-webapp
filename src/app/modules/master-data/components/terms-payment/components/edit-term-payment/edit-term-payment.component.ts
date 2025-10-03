@@ -48,9 +48,9 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedPay: PayCondition = {
       ...this.payToEdit,
-      name: this.editTermPaymentForm.value.name,
+      name: this.editTermPaymentForm.value.name?.trim(),
       deadline: this.editTermPaymentForm.value.deadline,
-      text: this.editTermPaymentForm.value.text
+      text: this.editTermPaymentForm.value.text?.trim()
     };
 
     this.payConditionUtils.updatePayCondition(editedPay).subscribe({

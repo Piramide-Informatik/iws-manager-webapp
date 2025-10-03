@@ -116,6 +116,10 @@ export class RolTableComponent implements OnInit, OnDestroy {
     if (message.relatedEntity) {
         finalDetail = finalDetail + message.relatedEntity;
     }
+
+    if (message.severity === 'success') {
+      this.roleStateService.clearRole();
+    }
       
     this.messageService.add({
         severity: message.severity,

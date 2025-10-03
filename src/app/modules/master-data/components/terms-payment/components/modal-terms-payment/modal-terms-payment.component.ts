@@ -40,9 +40,9 @@ export class ModalTermsPaymentComponent implements OnChanges {
 
     this.isLoading = true;
     const newPayCondition: Omit<PayCondition, 'id' | 'createdAt'| 'updatedAt' | 'version'> = {
-      name: this.payConditionForm.value.name ?? '',
+      name: this.payConditionForm.value.name?.trim() ?? '',
       deadline: this.payConditionForm.value.deadline ?? 0,
-      text: this.payConditionForm.value.text ?? ''
+      text: this.payConditionForm.value.text?.trim() ?? ''
     }
 
     this.payConditionUtils.addPayCondition(newPayCondition).subscribe({

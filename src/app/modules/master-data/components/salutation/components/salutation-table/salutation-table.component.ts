@@ -11,6 +11,7 @@ import { SalutationStateService } from '../../utils/salutation-state.service';
 import { SalutationModalComponent } from '../salutation-modal/salutation-modal.component';
 import { MessageService } from 'primeng/api';
 import { Column } from '../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'master-data-salutation-table',
@@ -57,7 +58,8 @@ export class SalutationTableComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly salutationStateService: SalutationStateService
+    private readonly salutationStateService: SalutationStateService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
@@ -136,11 +138,9 @@ export class SalutationTableComponent implements OnInit, OnDestroy, OnChanges {
   onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void {
     if (message.severity === 'success') {
       this.salutationStateService.clearSalutation();
+      this.commonMessageService.showCreatedSuccesfullMessage()
+    } else {
+      this.commonMessageService.showErrorDeleteMessage()
     }
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
   }
 }

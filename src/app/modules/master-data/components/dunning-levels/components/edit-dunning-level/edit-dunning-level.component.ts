@@ -48,7 +48,15 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
     if(this.editDunningLevelForm.invalid || !this.editDunningLevelForm) return
     if (this.selectedDunningLevel === null) return;
     this.isLoading = true;
-    const dunningLevelData = Object.assign(this.selectedDunningLevel, this.editDunningLevelForm.value);
+    const dunningLevelFormData = {
+      levelNo: this.editDunningLevelForm.value.levelNo,
+      reminderTitle: this.editDunningLevelForm.value.reminderTitle?.trim(),
+      fee: this.editDunningLevelForm.value.fee,
+      interestRate: this.editDunningLevelForm.value.interestRate,
+      payPeriod: this.editDunningLevelForm.value.payPeriod,
+      reminderText: this.editDunningLevelForm.value.reminderText?.trim()
+    }
+    const dunningLevelData = Object.assign(this.selectedDunningLevel, dunningLevelFormData);
     this.dunningLevelUtils.updateReminderLevel(dunningLevelData).subscribe({
       next: () => {
         this.isLoading = false;

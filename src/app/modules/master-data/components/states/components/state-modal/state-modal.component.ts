@@ -80,7 +80,7 @@ export class StateModalComponent implements OnInit {
     if (this.shouldStatePreventSubmission()) return;
 
     this.prepareForStateSubmission();
-    const stateName = this.stateForm.value.name ?? '';
+    const stateName = this.stateForm.value.name?.trim() ?? '';
 
     this.stateUtils.stateExists(stateName).subscribe({
       next: (exists) => this.handleStateExistence(exists, stateName),

@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { Salutation } from '../../../../../../Entities/salutation';
 import { SalutationUtils } from '../../utils/salutation.utils';
 import { SalutationStateService } from '../../utils/salutation-state.service';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-salutation-form',
@@ -25,7 +26,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly salutationUtils: SalutationUtils,
     private readonly salutationStateService: SalutationStateService,
-    private readonly messageService: MessageService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly translate: TranslateService
   ) { }
 
@@ -100,7 +101,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
     this.isSaving = true;
     const updatedSalutation: Salutation = {
       ...this.currentSalutation,
-      name: this.editSalutationForm.value.salutation
+      name: this.editSalutationForm.value.salutation?.trim()
     };
 
     this.subscriptions.add(
@@ -112,11 +113,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveSuccess(savedSalutation: Salutation): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('SALUTATION.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('SALUTATION.MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.salutationStateService.setSalutationToEdit(null);
     this.clearForm();
   }
@@ -127,11 +124,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
       this.showOCCErrorModalSalutation = true;
       return;
     }
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('SALUTATION.MESSAGE.ERROR'),
-      detail: this.translate.instant('SALUTATION.MESSAGE.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 

@@ -63,14 +63,14 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedPromoter: Promoter = {
       ...this.promoterToEdit,
-      promoterNo: this.editProjectFunnelForm.value.promoterNo,
-      projectPromoter: this.editProjectFunnelForm.value.projectPromoter,
-      promoterName1: this.editProjectFunnelForm.value.promoterName1,
-      promoterName2: this.editProjectFunnelForm.value.promoterName2,
+      promoterNo: this.editProjectFunnelForm.value.promoterNo?.trim(),
+      projectPromoter: this.editProjectFunnelForm.value.projectPromoter?.trim(),
+      promoterName1: this.editProjectFunnelForm.value.promoterName1?.trim(),
+      promoterName2: this.editProjectFunnelForm.value.promoterName2?.trim(),
       country: this.getCountryById(this.editProjectFunnelForm.value.country ?? 0),
-      street: this.editProjectFunnelForm.value.street,
-      zipCode: this.editProjectFunnelForm.value.zipCode,
-      city: this.editProjectFunnelForm.value.city
+      street: this.editProjectFunnelForm.value.street?.trim(),
+      zipCode: this.editProjectFunnelForm.value.zipCode?.trim(),
+      city: this.editProjectFunnelForm.value.city?.trim()
     }
 
     this.promoterUtils.updatePromoter(editedPromoter).subscribe({

@@ -38,7 +38,7 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
   onSubmit(): void {
     if (this.contractStatusForm.valid) {
       const value = this.contractStatusForm.value;
-      this.contractStatus.status = value.status;
+      this.contractStatus.status = value.status?.trim();
       this.contractStatusToEdit.emit(this.contractStatus);
     }
   }

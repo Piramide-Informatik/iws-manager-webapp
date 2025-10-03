@@ -84,8 +84,8 @@ export class EditCountryComponent implements OnInit, OnDestroy {
     this.isSaving = true;
     const updatedCountry: Country = {
       ...this.currentCountry,
-      name: this.countryForm.value.name,
-      label: this.countryForm.value.abbreviation,
+      name: this.countryForm.value.name?.trim(),
+      label: this.countryForm.value.abbreviation?.trim(),
       isDefault: this.countryForm.value.isStandard
     };
 

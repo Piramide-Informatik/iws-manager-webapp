@@ -11,6 +11,7 @@ import { TitleStateService } from '../../utils/title-state.service';
 import { TitleModalComponent } from '../title-modal/title-modal.component';
 import { MessageService } from 'primeng/api';
 import { Column } from '../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-title-table',
@@ -21,7 +22,6 @@ import { Column } from '../../../../../../Entities/column';
 export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly titleUtils = new TitleUtils();
   private readonly titleService = inject(TitleService);
-  private readonly messageService = inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedTitle: number | null = null;
@@ -44,7 +44,10 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   private langTitleSubscription!: Subscription;
 
   constructor(private readonly userPreferenceService: UserPreferenceService,
-    private readonly translate: TranslateService, private readonly titleStateService: TitleStateService) { }
+              private readonly translate: TranslateService, 
+              private readonly titleStateService: TitleStateService,
+              private readonly messageService: MessageService,
+              private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit() {
     this.loadTitleHeadersAndColumns();
@@ -129,11 +132,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toastMessageDisplay(message: { severity: string, summary: string, detail: string }): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
+    this.commonMessageService.showCustomSeverityAndMessage(message.severity, message.summary, message.detail);
   }
 
   onDeleteTitle() {

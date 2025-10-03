@@ -199,7 +199,7 @@ export class EditHolidayComponent implements OnInit {
     this.isSaving = true;
     const updatePublicHoliday: PublicHoliday = {
       ...this.currentPublicHoliday,
-      name: this.editPublicHolidayForm.value.publicHoliday,
+      name: this.editPublicHolidayForm.value.publicHoliday?.trim(),
       date: this.editPublicHolidayForm.value.date
         ? momentFormatDate(
             momentCreateDate(this.editPublicHolidayForm.value.date as string)

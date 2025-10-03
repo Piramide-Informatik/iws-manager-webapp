@@ -38,8 +38,8 @@ export class TextModalComponent implements OnChanges {
     
     this.isLoading = true;
     const newText: Omit<Text, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      label: this.textForm.value.label ?? '',
-      content: this.textForm.value.content ?? ''
+      label: this.textForm.value.label?.trim() ?? '',
+      content: this.textForm.value.content?.trim() ?? ''
     }
 
     this.textUtils.addText(newText).subscribe({

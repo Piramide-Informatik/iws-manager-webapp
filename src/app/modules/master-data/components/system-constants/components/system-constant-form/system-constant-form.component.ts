@@ -45,7 +45,10 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
     if(this.editSystemConstantForm.invalid || !this.editSystemConstantForm) return
     if (this.selectedSystemConstant === null) return;
     this.isLoading = true;
-    const systemConstantData = Object.assign(this.selectedSystemConstant, this.editSystemConstantForm.value);
+    const systemConstantFormValue = this.editSystemConstantForm.value;
+    systemConstantFormValue.name = this.editSystemConstantForm.getRawValue().name;
+    systemConstantFormValue.valueChar = systemConstantFormValue.valueChar?.trim();
+    const systemConstantData = Object.assign(this.selectedSystemConstant, systemConstantFormValue);
     this.systemConstantUtils.updateSystemConstant(systemConstantData).subscribe({
       next: () => {
         this.isLoading = false;

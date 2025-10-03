@@ -37,7 +37,7 @@ export class SalesTaxModalComponent implements OnChanges {
     
     this.isLoading = true;
     const newVat: Omit<Vat, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      label: this.vatForm.value.label ?? ''
+      label: this.vatForm.value.label?.trim()
     }
 
     this.vatUtils.addVat(newVat).subscribe({

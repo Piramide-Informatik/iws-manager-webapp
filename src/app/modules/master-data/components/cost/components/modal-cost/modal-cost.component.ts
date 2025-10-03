@@ -40,7 +40,7 @@ export class ModalCostComponent implements OnChanges {
 
     this.isLoading = true;
     const newCostType: Omit<CostType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      type: this.costTypeForm.value.type ?? '',
+      type: this.costTypeForm.value.type?.trim(),
       sequenceNo: this.costTypeForm.value.sequenceNo ?? 0
     }
 

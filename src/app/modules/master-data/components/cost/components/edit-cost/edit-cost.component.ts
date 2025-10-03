@@ -49,7 +49,7 @@ export class EditCostComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const updatedCost: CostType = {
       ...this.costTypeToEdit,
-      type: this.costForm.value.type,
+      type: this.costForm.value.type?.trim(),
       sequenceNo: this.costForm.value.sequenceNo
     };
 

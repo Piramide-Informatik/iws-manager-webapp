@@ -12,6 +12,7 @@ import { State } from '../../../../../../Entities/state';
 import { StatesStateService } from '../../utils/states.state.service.service';
 import { MessageService } from 'primeng/api';
 import { Column } from '../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-states-table',
@@ -46,7 +47,8 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly statesState: StatesStateService
+    private readonly statesState: StatesStateService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit() {
@@ -116,12 +118,10 @@ export class StatesTableComponent implements OnInit, OnDestroy {
 
   onConfirmStateDelete(message: { severity: string, summary: string, detail: string }) {
     if (message.severity === 'success') {
-      this.statesState.setStateToEdit(null);  
+      this.statesState.setStateToEdit(null);
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
   }
 }

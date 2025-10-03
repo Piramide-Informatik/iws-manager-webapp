@@ -53,8 +53,8 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
       version: this.absenceTypeToEdit.version,
       createdAt: '',
       updatedAt: '',
-      name: this.editProjectCarrierForm.value.name,
-      label: this.editProjectCarrierForm.value.label,
+      name: this.editProjectCarrierForm.value.name?.trim(),
+      label: this.editProjectCarrierForm.value.label?.trim(),
       shareOfDay: this.editProjectCarrierForm.value.shareOfDay,
       isHoliday: this.editProjectCarrierForm.value.isHoliday ? 1 : 0,
       hours: this.editProjectCarrierForm.value.hours ? 1 : 0

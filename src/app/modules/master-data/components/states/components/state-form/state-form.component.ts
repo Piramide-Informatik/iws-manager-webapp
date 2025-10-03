@@ -7,6 +7,7 @@ import { StateUtils } from '../../utils/state-utils';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-state-form',
@@ -26,7 +27,8 @@ export class StateFormComponent implements OnInit, OnDestroy {
     private readonly stateServiceUtils: StateUtils,
     private readonly statesStateService: StatesStateService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnInit(): void {
@@ -102,7 +104,9 @@ export class StateFormComponent implements OnInit, OnDestroy {
       return;
     }
     this.isSaving = true;
-    const state = Object.assign(this.state, this.editStateForm.value);
+    const stateFormValue = this.editStateForm.value;
+    stateFormValue.name = stateFormValue.name?.trim();
+    const state = Object.assign(this.state, stateFormValue);
     this.subscriptions.add(
       this.stateServiceUtils.updateState(state).subscribe({
         next: (savedState) => this.handleSaveStateSuccess(savedState),
@@ -112,11 +116,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveStateSuccess(state: State): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.statesStateService.setStateToEdit(null);
     this.clearForm();
   }
@@ -130,11 +130,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
       this.isSaving = false;
       return;
     }
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('STATES.ERROR.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 
