@@ -9,10 +9,11 @@
       flex-shrink: 0;
     }
   
-    input, .p-inputnumber-input {
-      width: 70%;
+    input, p-inputnumber {
+      width: 100%;
     }
-  }
-  .custom-input {
-    width: 70% !important;
+
+    ::ng-deep .p-inputnumber-input {
+      width: 100%;
+    }
   }
