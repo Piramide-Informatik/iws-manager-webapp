@@ -1,16 +1,22 @@
 .network-partner-form {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
   
   label {
-      width:90px;
+    width: 90px;
+    flex-shrink: 0;
   }
   input, p-inputnumber {
-     flex: 1;
-     width: 70%;
+    width: 100%;
+  }
+
+  ::ng-deep .p-inputnumber-input {
+    width: 100%;
   }
 
   .p-select {
-    width: 70% !important;
+    min-width: 10%;
+    width: 100% !important;
   }
 }

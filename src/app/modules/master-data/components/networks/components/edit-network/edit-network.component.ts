@@ -11,6 +11,7 @@ import { Network } from '../../../../../../Entities/network';
 import { NetowrkPartnerUtils } from '../../utils/ network-partner.utils';
 import { NetworkPartnerService } from '../../../../../../Services/network-partner.service';
 import { NetworkPartner } from '../../../../../../Entities/network-partner';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'master-data-edit-network',
@@ -46,8 +47,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   });
 
   // Partner network
-  public partners!: any[];
-  public columsHeaderFieldPartner: any[] = [];
+  public columsHeaderFieldPartner: Column[] = [];
   userEditNetworkPreferences: UserPreference = {};
   tableKey: string = 'EditNetwork'
   dataKeys = ['no', 'customerNumber', 'partner'];
@@ -90,9 +90,9 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
 
   loadColHeadersPartner(): void {
     this.columsHeaderFieldPartner = [
-      { field: 'no', styles: {'width': 'auto'}, header: 'No' },
-      { field: 'customerNumber', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.CUSTOMER')) },
-      { field: 'partner', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.PARTNER')) },
+      { field: 'no', classesTHead: ['width-10'], header: 'No' },
+      { field: 'customerNumber', classesTHead: ['width-10'], header: this.translate.instant(_('NETWORKS.LABEL.CUSTOMER')) },
+      { field: 'partner', classesTHead: ['width-80'], header: this.translate.instant(_('NETWORKS.LABEL.PARTNER')) },
     ];
   }
 
