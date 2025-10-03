@@ -21,7 +21,7 @@ export class TextModalComponent implements OnChanges {
   public isLoading: boolean = false;
 
   public readonly textForm = new FormGroup({
-    label: new FormControl({ value: '', disabled: true }),
+    label: new FormControl(''),
     content: new FormControl('')
   });
 

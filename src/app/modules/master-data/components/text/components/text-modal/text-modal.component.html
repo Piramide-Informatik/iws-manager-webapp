@@ -3,11 +3,11 @@
         <div class="flex flex-column mt-4">
             <div class="text-form mb-2 flex align-items-center">
                 <label for="label">{{ 'TEXT.LABEL.TEXT_LABEL' | translate }}</label>
-                <input pInputText readonly [disabled]="true" type="text" id="label" formControlName="label" autocomplete="off" />
+                <input #firstInput pInputText type="text" id="label" formControlName="label" autocomplete="off" />
             </div>
             <div class="text-form mb-2 flex">
                 <label for="content">{{ 'TEXT.LABEL.TEXT_VALUE' | translate }}</label>
-                <textarea #firstInput pTextarea id="content" formControlName="content" rows="6"  style="resize: none"></textarea>
+                <textarea pTextarea id="content" formControlName="content" rows="6"  style="resize: none"></textarea>
             </div>
             <div class="row">
                 <div class="col flex justify-content-center">
