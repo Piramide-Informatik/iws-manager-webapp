@@ -2,7 +2,6 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { FormGroup, FormControl } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
 import { Salutation } from '../../../../../../Entities/salutation';
 import { SalutationUtils } from '../../utils/salutation.utils';
 import { SalutationStateService } from '../../utils/salutation-state.service';
