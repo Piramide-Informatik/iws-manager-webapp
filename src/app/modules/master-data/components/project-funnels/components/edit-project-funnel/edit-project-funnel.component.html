@@ -40,8 +40,11 @@
             </div>
             <div class="row">
                 <div class="col flex justify-content-center mt-4">
-                    <p-button class="save me-2" size="small" type="submit" [loading]="editProjectFunnelForm.invalid || isLoading" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="clearForm()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                    <p-button class="save me-2" size="small" type="submit" [loading]="isLoading" 
+                        [disabled]="editProjectFunnelForm.invalid || !editProjectFunnelForm.dirty" 
+                        [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" 
+                        (onClick)="clearForm()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
         </div>
