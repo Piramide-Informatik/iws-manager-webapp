@@ -135,6 +135,18 @@ export class EmployeeIwsService {
     );
   }
 
+  getAllEmployeeIwsSortedByLastname(): Observable<EmployeeIws[]> {
+    const url = `${this.apiUrl}/by-lastname/ordered-asc`;
+    return this.http.get<EmployeeIws[]>(url, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch employeeIws sorted');
+        console.error('Error fetching employeeIws sorted:', err);
+        return of([]);
+      })
+    );
+  }
+
   public refreshEmployeeIws(): void {
     this.loadInitialData();
   }

@@ -9,5 +9,5 @@ export interface TeamIws {
 
   teamiws?: string;
   name?: string
-  teamLeader?: EmployeeIws | null;
+  teamLeader: EmployeeIws | null;
 }

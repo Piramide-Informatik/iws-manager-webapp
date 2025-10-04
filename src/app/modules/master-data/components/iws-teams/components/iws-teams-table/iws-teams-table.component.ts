@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
 import { IwsTeamsModalComponent } from '../iws-teams-modal/iws-teams-modal.component';
+import { Column } from '../../../../../../Entities/column';
 
 @Component({
   selector: 'app-iws-teams-table',
@@ -44,7 +45,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     });
   });
 
-  columnsHeaderIwsTeams: any[] = [];
+  columnsHeaderIwsTeams: Column[] = [];
   userIwsTeamsPreferences: UserPreference = {};
   tableKey: string = 'IwsTeams';
   dataKeys = ['name','teamLeader'];
@@ -63,16 +64,14 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     
 
     this.loadColumnsIwsTeams();
-    this.userIwsTeamsPreferences =
-      this.userPreferenceService.getUserPreferences(
-        this.tableKey,
-        this.columnsHeaderIwsTeams
-      );
+    this.userIwsTeamsPreferences = this.userPreferenceService.getUserPreferences(
+      this.tableKey, 
+      this.columnsHeaderIwsTeams
+    );
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColumnsIwsTeams();
       this.routerUtils.reloadComponent(true);
-      this.userIwsTeamsPreferences =
-        this.userPreferenceService.getUserPreferences(
+      this.userIwsTeamsPreferences = this.userPreferenceService.getUserPreferences(
           this.tableKey,
           this.columnsHeaderIwsTeams
         );
@@ -90,10 +89,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   }
 
   onUserIwsTeamsPreferencesChanges(userIwsTeamsPreferences: any) {
-    localStorage.setItem(
-      'userPreferences',
-      JSON.stringify(userIwsTeamsPreferences)
-    );
+    localStorage.setItem('userPreferences', JSON.stringify(userIwsTeamsPreferences));
   }
 
   loadColumnsIwsTeams(): void {
@@ -143,7 +139,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   }
 
   editTeamIws(teamIws: { id: number; name: string | undefined; teamLeader: string; }): void {
-    const TeamIwsToEdit: TeamIws | null = this.mapTeamIws.get(teamIws.id) || null; 
+    const TeamIwsToEdit = this.mapTeamIws.get(teamIws.id) || null; 
     this.teamIwsStateService.setTeamIwsToEdit(TeamIwsToEdit);
   }
 }
