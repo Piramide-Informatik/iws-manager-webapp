@@ -66,7 +66,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadTeams() {
-    const sub = this.employeeIws.getAllEmployeeIwsSortedByFirstname().pipe(
+    const sub = this.employeeIws.getAllEmployeeIwsSortedByLastname().pipe(
       map(data => data.map(emp => ({
         id: emp.id,
         firstname: emp.firstname,
