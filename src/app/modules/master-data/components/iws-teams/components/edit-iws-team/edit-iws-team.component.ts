@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { TeamIws } from '../../../../../../Entities/teamIWS';
-import { BehaviorSubject, map, Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
 import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,12 +24,8 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   isSaving = false;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   private readonly subscriptions = new Subscription();
-  private readonly editTeamIwsSource = new BehaviorSubject<TeamIws | null>(
-    null
-  );
 
   constructor(
-    private readonly fb: FormBuilder,
     private readonly teamIwsUtils: TeamIwsUtils,
     private readonly teamIwsStateService: TeamIwsStateService,
     private readonly employeeIwsService: EmployeeIwsService,
@@ -37,7 +33,14 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
     private readonly translate: TranslateService
   ) {}
 
-  leaders: any[] = [];
+  leaders: { id: number; 
+    firstname: string | undefined; 
+    lastname: string | undefined;
+    fullName: string;
+    version: number;
+  }[] = [];
+
+  leadersMap = new Map<number, EmployeeIws>();
 
   ngOnInit(): void {
     this.initForm();
@@ -77,14 +80,17 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   }
 
   private loadTeams() {
-      const sub = this.employeeIwsService.getAllEmployeeIwsSortedByFirstname().pipe(
-      map(data => data.map(emp => ({
-        id: emp.id,
-        firstname: emp.firstname,
-        lastname: emp.lastname,
-        fullName: `${emp.lastname} ${emp.firstname} `,
-        version: emp.version
-      })))
+      const sub = this.employeeIwsService.getAllEmployeeIwsSortedByLastname().pipe(
+      map(data => data.map(emp => {
+        this.leadersMap.set(emp.id, emp);
+        return {
+          id: emp.id,
+          firstname: emp.firstname,
+          lastname: emp.lastname,
+          fullName: `${emp.lastname} ${emp.firstname} `,
+          version: emp.version
+        };
+      }))
     ).subscribe({
       next: (data) => (this.leaders = data),
       error: (err) => console.error('Error loading leaders', err),
@@ -118,14 +124,12 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
     this.isSaving = true;
 
     const selectedLeaderId = this.editTeamForm.value.teamLeader;
-    const leaderObj = this.leaders.find((l) => l.id === selectedLeaderId);
+    const leaderObj = this.leadersMap.get(selectedLeaderId) || null;
 
     const updateTeamIws: TeamIws = {
       ...this.currentTeamIws,
       name: this.editTeamForm.value.name?.trim(),
       teamLeader: leaderObj
-      ? ({ id: leaderObj.id, version: leaderObj.version } as EmployeeIws)
-      : null,
     };
     this.subscriptions.add(
       this.teamIwsUtils.updateTeamIws(updateTeamIws).subscribe({
@@ -153,7 +157,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
       summary: this.translate.instant('MESSAGE.SUCCESS'),
       detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
-    this.teamIwsStateService.setTeamIwsToEdit(null);
+    this.teamIwsStateService.clearTeamIws();
     this.resetForm(true);
   }
 
@@ -175,6 +179,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
 
   cancelEdit(): void {
     this.resetForm();
+    this.teamIwsStateService.clearTeamIws();
   }
 
   private resetForm(clearCommission = false): void {
@@ -186,10 +191,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
 
   onRefresh(): void {
     if (this.currentTeamIws?.id) {
-      localStorage.setItem(
-        'selectedTeamIwsId',
-        this.currentTeamIws.id.toString()
-      );
+      localStorage.setItem('selectedTeamIwsId', this.currentTeamIws.id.toString());
       window.location.reload();
     }
   }
