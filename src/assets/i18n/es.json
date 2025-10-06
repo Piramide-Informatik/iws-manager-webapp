@@ -12,10 +12,13 @@
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
       "BILLERS": "Datos Maestros - Facturadores",
       "BILLING_METHODS": "Datos Maestros - Métodos de Facturación",
-      "HOLIDAYS": "Datos Maestros - Días Festivos",
-      "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
       "DUNNING_LEVELS": "Datos Maestros - Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
+      "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
+      "HOLIDAYS": "Datos Maestros - Días Festivos",
+      "IWS_COMMISSIONS": "Datos Maestros - Comisiones de IWS",
+      "IWS_STAFF": "Datos Maestros - Personal de IWS",
+      "IWS_TEAMS": "Datos Maestros - Equipos de IWS",
       "NETWORKS": "Datos Maestros - Redes",
       "PROJECT_STATUS": "Datos Maestros - Estado del Proyecto",
       "PROJECT_FUNNELS": "Datos Maestros - Embudos de Proyecto",
@@ -149,11 +152,61 @@
     "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada."
   },
   "primeng_date": {
-    "dayNames": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-    "dayNamesShort": ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-    "dayNamesMin": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
-    "monthNames": ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-    "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+    "dayNames": [
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Sábado"
+    ],
+    "dayNamesShort": [
+      "Dom",
+      "Lun",
+      "Mar",
+      "Mié",
+      "Jue",
+      "Vie",
+      "Sáb"
+    ],
+    "dayNamesMin": [
+      "Do",
+      "Lu",
+      "Ma",
+      "Mi",
+      "Ju",
+      "Vi",
+      "Sá"
+    ],
+    "monthNames": [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre"
+    ],
+    "monthNamesShort": [
+      "Ene",
+      "Feb",
+      "Mar",
+      "Abr",
+      "May",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dic"
+    ]
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmación",
@@ -268,9 +321,9 @@
       "IS_INVOICE_RECIPIENT": "¿Es el destinatario de la factura?"
     },
     "MESSAGE": {
-      "UPDATE_SUCCESS":"Contacto actualizado exitosamente",
-      "CREATE_SUCCESS":"Contacto creado exitosamente",
-      "SUCCESS":"ÉXITO"
+      "UPDATE_SUCCESS": "Contacto actualizado exitosamente",
+      "CREATE_SUCCESS": "Contacto creado exitosamente",
+      "SUCCESS": "ÉXITO"
     }
   },
   "EMPLOYEE-CONTRACTS": {
@@ -322,7 +375,7 @@
       "FUNDING_RATE": "Tasa de Financiación"
     },
     "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto",
-    "REMOVE_PROJECTS_QUESTION":"¿Está seguro que desea eliminar el proyecto"
+    "REMOVE_PROJECTS_QUESTION": "¿Está seguro que desea eliminar el proyecto"
   },
   "ORDERS": {
     "FORM": {
@@ -342,7 +395,6 @@
       "IWS_EMPLOYEE": "Empleado IWS",
       "ORDER_VALUE": "Valor Estimado de la Orden"
     },
-
     "TABLE": {
       "ORDER_ID": "ID Orden",
       "ORDER_LABEL": "Sigla",
@@ -357,30 +409,28 @@
       "IWS_PERCENT": "IWS %",
       "IWS_PERCENT_VALUE": "IWS-Valor"
     },
-
-    "PROJECT":{
+    "PROJECT": {
       "PROJECT": "Proyecto",
       "SPONSOR_ID": "ID del Responsable del Proyecto",
       "SPONSOR": "Responsable del Proyecto",
       "START_DATE": "Fecha de Inicio",
       "END_DATE": "Fecha de Finalización"
     },
-
-     "COMMISSIONS": {
-    "FIXED_COMMISSION": "Fija comisión",
-    "MAX_COMMISSION": "Comisión máxima",
-    "FROM_VALUE": "Del valor",
-    "COMMISSION": "Comisión",
-    "MIN_COMMISSION": "Comisión mínima",
-    "ESTIMATED_IWS_COMMISSION": "Comisión IWS estimada",
-    "NEW": "Nuevo",
-    "TITLE_DIALOG_CREATE": "Nueva comisión IWS",
-    "TITLE_DIALOG_EDIT": "Editar comisión IWS",
-    "TITLE_DIALOG_DELETE": "Eliminar comisión IWS"
+    "COMMISSIONS": {
+      "FIXED_COMMISSION": "Fija comisión",
+      "MAX_COMMISSION": "Comisión máxima",
+      "FROM_VALUE": "Del valor",
+      "COMMISSION": "Comisión",
+      "MIN_COMMISSION": "Comisión mínima",
+      "ESTIMATED_IWS_COMMISSION": "Comisión IWS estimada",
+      "NEW": "Nuevo",
+      "TITLE_DIALOG_CREATE": "Nueva comisión IWS",
+      "TITLE_DIALOG_EDIT": "Editar comisión IWS",
+      "TITLE_DIALOG_DELETE": "Eliminar comisión IWS"
     },
     "ORDER_DIALOG_REMOVE": "Eliminar Orden",
-    "REMOVE_ORDERS_QUESTION":"¿Está seguro que desea eliminar la orden",
-    "REMOVE_ORDER_IWS_COMMISSION_QUESTION":"¿Está seguro que desea eliminar la comisión IWS "
+    "REMOVE_ORDERS_QUESTION": "¿Está seguro que desea eliminar la orden",
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "¿Está seguro que desea eliminar la comisión IWS "
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -404,7 +454,6 @@
     },
     "RECEIVABLES_DIALOG_REMOVE": "Eliminar Cuenta por Cobrar",
     "REMOVE_RECEIVABLES_QUESTION": "¿Está seguro que desea eliminar la cuenta por cobrar"
-
   },
   "INVOICES": {
     "TABLE": {
@@ -420,7 +469,7 @@
       "AMOUNT_GROSS": "Importe Bruto"
     },
     "INVOICES_DIALOG_REMOVE": "Eliminar factura",
-"REMOVE_INVOICES_QUESTION": "¿Está seguro que desea eliminar la factura"
+    "REMOVE_INVOICES_QUESTION": "¿Está seguro que desea eliminar la factura"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
@@ -453,8 +502,8 @@
       },
       "TITLE_DIALOG_REMOVE": "Eliminar Marco de Acuerdo",
       "TITLE_DIALOG_CREATE": "Nuevo Marco de Acuerdo",
-      "REMOVE_QUESTION":"¿Está seguro que desea eliminar el Marco de Acuerdo",
-      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"¿Está seguro que desea eliminar la comisión IWS "
+      "REMOVE_QUESTION": "¿Está seguro que desea eliminar el Marco de Acuerdo",
+      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "¿Está seguro que desea eliminar la comisión IWS "
     }
   },
   "CONTRACTS": {
@@ -492,11 +541,11 @@
       "INVOICE_DATE": "Fecha de Factura",
       "INVOICE_NET_OR_GROSS": "Neto o Bruto",
       "NET": "Neto",
-      "GROSS": "Bruto", 
+      "GROSS": "Bruto",
       "INVOICE_AMOUNT": "Importe de Factura",
       "IS_AFA": "Tiene Depreciación",
       "AFA_MONTHS": "Periodo de Depreciación (meses)",
-      "DESCRIPTION":"Descripción"
+      "DESCRIPTION": "Descripción"
     },
     "FORM_COMMISSION": {
       "DURATION_OF_USE": "Duración de uso (meses)"
@@ -551,11 +600,11 @@
       "DELETE_ABSENCE_TYPE": "Eliminar Tipo de Ausencia"
     },
     "DELETE": {
-    "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar el tipo de ausencia "
+      "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar el tipo de ausencia "
     },
     "MODAL": {
-    "NEW": "Nuevo Tipo de Ausencia",
-    "DELETE": "Eliminar Tipo de Ausencia"
+      "NEW": "Nuevo Tipo de Ausencia",
+      "DELETE": "Eliminar Tipo de Ausencia"
     }
   },
   "SALUTATION": {
@@ -628,23 +677,23 @@
     "MODAL_CREATE": {
       "CREATE_FORM": "Nuevo Estado de Aprobación"
     },
-    "ERROR" : {
+    "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Estado de Aprobación requerido",
-      "ORDER_REQUIRED" : "Orden requerido",
+      "ORDER_REQUIRED": "Orden requerido",
       "CHECKING_DUPLICATE": "Verificando duplicado",
-      "CREATION_FAILED":"Hubo un error durante la creacion del Estado de Aprobación."
+      "CREATION_FAILED": "Hubo un error durante la creacion del Estado de Aprobación."
     },
     "LABEL": {
-      "NAME":"Estado de Aprobación",
+      "NAME": "Estado de Aprobación",
       "IS_PROJECTS": "Aplica a Proyectos",
       "IS_NETWORKS": "Aplica a Redes"
     },
-    "MESSAGE":{
-      "SUCCESS":"ÉXITO",
-      "DELETE_SUCCESS":"Registro eliminado exitosamente.",
-      "ERROR":"ERROR",
-      "DELETE_ERROR_IN_USE":"No se puede eliminar el registro porque está en uso por otras entidades.",
-      "DELETE_FAILED":"No se pudo eliminar el registro."
+    "MESSAGE": {
+      "SUCCESS": "ÉXITO",
+      "DELETE_SUCCESS": "Registro eliminado exitosamente.",
+      "ERROR": "ERROR",
+      "DELETE_ERROR_IN_USE": "No se puede eliminar el registro porque está en uso por otras entidades.",
+      "DELETE_FAILED": "No se pudo eliminar el registro."
     }
   },
   "USERS": {
@@ -654,7 +703,7 @@
       "ACTIVE": "Activo"
     },
     "FORM": {
-      "USER_FORM":"Nuevo Usuario",
+      "USER_FORM": "Nuevo Usuario",
       "EDIT_TITLE": "Editar Usuario",
       "USERNAME": "Nombre de usuario",
       "FIRSTNAME": "Nombre",
@@ -666,11 +715,11 @@
       "AVAILABLE_ROLES": "Roles disponibles"
     },
     "DELETE": {
-      "CONFIRMATION":"Eliminar Usuario",
-      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Usuario",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
     },
-    "HEADER":{
-      "USERNAME":"Nombre de usuario",
+    "HEADER": {
+      "USERNAME": "Nombre de usuario",
       "NAME": "Nombre",
       "ACTIVE": "Activo"
     },
@@ -700,25 +749,24 @@
       "SELECT_MODULE": "Seleccione un módulo"
     },
     "DELETE": {
-      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar ",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
       "CONFIRMATION": "Eliminar Rol de Usuario"
-
     },
     "MODAL_CREATE": {
-      "CREATE_FORM" : "Nuevo Rol de Usuario"
+      "CREATE_FORM": "Nuevo Rol de Usuario"
     },
-    "MESSAGE":{
-      "SUCCESS":"ÉXITO",
-      "DELETE_SUCCESS":"Registro eliminado exitosamente.",
-      "ERROR":"ERROR",
-      "DELETE_ERROR_IN_USE":"No se puede eliminar el registro porque está en uso por otras entidades.",
-      "DELETE_FAILED":"No se pudo eliminar el registro.",
+    "MESSAGE": {
+      "SUCCESS": "ÉXITO",
+      "DELETE_SUCCESS": "Registro eliminado exitosamente.",
+      "ERROR": "ERROR",
+      "DELETE_ERROR_IN_USE": "No se puede eliminar el registro porque está en uso por otras entidades.",
+      "DELETE_FAILED": "No se pudo eliminar el registro.",
       "DELETE_ERROR_BY_USER": "No se puede eliminar el registro porque está en uso por otros Usuarios."
     },
-    "ERROR" : {
+    "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Rol requerido",
       "CHECKING_DUPLICATE": "Verificando duplicado",
-      "CREATION_FAILED":"Hubo un error durante la creacion de Rol"
+      "CREATION_FAILED": "Hubo un error durante la creacion de Rol"
     }
   },
   "HOLIDAYS": {
@@ -742,12 +790,12 @@
       "YEAR": "Año",
       "DATE": "Fecha"
     },
-    "FORM":{
+    "FORM": {
       "HOLIDAY_NAME": "Nuevo festivo"
     },
-    "DELETE":{
-      "CONFIRMATION":"Eliminar Festivo",
-      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar el festivo "
+    "DELETE": {
+      "CONFIRMATION": "Eliminar Festivo",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el festivo "
     },
     "ERROR": {
       "ALREADY_EXIST": "ya existe el registro",
@@ -756,15 +804,14 @@
       "EMPTY": "Vacío",
       "HOLIDAY_LABEL_REQUIRED": "El nombre del festivo es obligatorio."
     },
-    "MODAL":{
-      "NAME":"Festivo",
-      "DATE":"Fecha",
-      "ORDEN":"Orden"
+    "MODAL": {
+      "NAME": "Festivo",
+      "DATE": "Fecha",
+      "ORDEN": "Orden"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "No hay estados disponibles"
     }
-    
   },
   "FUNDING": {
     "TABLE": {
@@ -815,10 +862,10 @@
       "ABBREVIATION": "Abreviatura"
     },
     "DELETE": {
-      "CONFIRMATION":"Eliminar Calificación",
-      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Calificación",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
     },
-    "FORM":{
+    "FORM": {
       "QUALIFICATION_FORM": "Nueva Calificación"
     }
   },
@@ -852,12 +899,13 @@
       "CHOOSE_COLUMNS": "Elegir columnas",
       "NO_DATA": "No se encontraron empleados"
     },
-    "FORM":{
+    "FORM": {
       "IWS_STAFF_FORM": "Nuevo Empleado"
     },
-    "DELETE":{
-      "CONFIRMATION":"Eliminar Empleado",
-      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar el empleado "}
+    "DELETE": {
+      "CONFIRMATION": "Eliminar Empleado",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el empleado "
+    }
   },
   "SYSTEM_CONSTANT": {
     "TABLE_SYSTEM_CONSTANT": {
@@ -879,7 +927,7 @@
     "MODAL": {
       "NEW": "Crear Constantes del Sistema",
       "DELETE": "Eliminar Constantes del Sistema",
-      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar la constante de sistema "
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar la constante de sistema "
     }
   },
   "IWS_COMMISSIONS": {
@@ -896,8 +944,8 @@
       "NEW": "Nuevo Comisión"
     },
     "DELETE": {
-      "CONFIRMATION":"Eliminar Comisión",
-      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Comisión",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
     }
   },
   "IWS_TEAMS": {
@@ -912,10 +960,10 @@
       "SELECT_LEADER": "Seleccionar Líder"
     },
     "DELETE": {
-      "CONFIRMATION":"Eliminar Equipo",
-      "CONFIRM_QUESTION" : "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Equipo",
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
     },
-    "FORM":{
+    "FORM": {
       "IWS_TEAM_FORM": "Nuevo Equipo"
     }
   },
@@ -993,7 +1041,7 @@
     "MODAL": {
       "NEW": "Nuevo Texto",
       "DELETE": "Eliminar Texto",
-      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar el texto "
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el texto "
     }
   },
   "PROJECT_FUNNELS": {
@@ -1020,35 +1068,34 @@
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Estado del Proyecto",
     "EDIT_PROJECT_STATUS": "Editar Estado del Proyecto",
-    "MESSAGE":{
+    "MESSAGE": {
       "SUCCESS": "ÉXITO",
       "UPDATE_SUCCESS": "Actualización exitosa",
       "ERROR": "ERROR",
-      "UPDATE_FAILED":"Actualización fallida"
+      "UPDATE_FAILED": "Actualización fallida"
     },
-    "LABEL":{
-      "EDIT_PROJECT_STATUS":"Editar Estado del Proyecto",
-      "PROJECT_STATUS_LABEL":"Estado del Proyecto"
+    "LABEL": {
+      "EDIT_PROJECT_STATUS": "Editar Estado del Proyecto",
+      "PROJECT_STATUS_LABEL": "Estado del Proyecto"
     },
-    "ERROR":{
+    "ERROR": {
       "PROJECT_STATUS_LABEL_REQUIRED": "El estado del proyecto es requerido",
       "CREATION_FAILED": "Hubo un error durante la creacion del estado del proyecto.",
       "EMPTY": "El nombre del estado del proyecto tiene que tener al menos un caracter",
-      "ALREADY_EXISTS":"El registro ya existe"
+      "ALREADY_EXISTS": "El registro ya existe"
     },
-    "DELETE":{
-      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar ",
-      "CONFIRMATION":"Eliminar Estado del Proyecto"
+    "DELETE": {
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
+      "CONFIRMATION": "Eliminar Estado del Proyecto"
     },
-    "TABLE_PROJECT_STATUS":{
+    "TABLE_PROJECT_STATUS": {
       "PROJECT_STATUS_LABEL": "Estado del Proyecto",
-      "PROJECT_STATUS":"Estado del Proyecto"
+      "PROJECT_STATUS": "Estado del Proyecto"
     },
     "FORM": {
-      "PROJECT_STATUS_FORM":"Nuevo Estado del Proyecto",
-      "NEW_PROJECT_STATUS":"Estado del Proyecto"
+      "PROJECT_STATUS_FORM": "Nuevo Estado del Proyecto",
+      "NEW_PROJECT_STATUS": "Estado del Proyecto"
     }
-
   },
   "NETWORKS": {
     "LABEL": {
@@ -1061,7 +1108,7 @@
     "MODAL": {
       "NEW": "Nueva Red",
       "DELETE": "Eliminar Red",
-      "CONFIRM_QUESTION":"¿Está seguro de que desea eliminar la red ",
+      "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar la red ",
       "NEW_PARTNER": "Nuevo Socio",
       "EDIT_PARTNER": "Editar Socio",
       "DELETE_PARTNER": "Eliminar Socio",
@@ -1070,7 +1117,7 @@
     "PARTNER": {
       "NO": "No",
       "COMMENT": "Comentario",
-      "CUSTOMER":"Cliente",
+      "CUSTOMER": "Cliente",
       "CONTACT": "Contacto"
     }
   },
@@ -1112,7 +1159,7 @@
     "MODAL": {
       "NEW": "Nueva Condición de Pago",
       "DELETE": "Eliminar Condición de Pago",
-      "CONFIRM_QUESTION":"¿Está seguro que desea eliminar la Condición de Pago "
+      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar la Condición de Pago "
     }
   },
   "BILLERS": {
