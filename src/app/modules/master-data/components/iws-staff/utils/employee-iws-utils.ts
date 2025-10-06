@@ -134,4 +134,12 @@ export class EmployeeIwsUtils {
       })
     );
   }
+  getNextEmployeeNo(): Observable<number> {
+    return this.employeeIwsService.getNextEmployeeNo().pipe(
+      catchError(err => {
+        console.error('Error fetching next employee number:', err);
+        return throwError(() => new Error('Failed to load next employee number'));
+      })
+    );
+  }
 }

@@ -171,19 +171,20 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   loadProjectColHeaders(): void {
     this.cols = [
-      { field: 'projectLabel', header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL')) },
+      { field: 'projectLabel', header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL')), classesTHead: ['width-10']},
       {
         field: 'projectName',
         routerLink: (row: any) => `./projects-detail/${row.projectName}`,
-        header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME'))
+        header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME')),
+        classesTHead: ['width-40']
       },
-      { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM')) },
-      { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER')) },
-      { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL')) },
-      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.START_DATE')) },
-      { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.END_DATE')) },
-      { field: 'authDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.AUTH_DATE')) },
-      { field: 'fundingRate', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_RATE')) }
+      { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM')), classesTHead: ['width-10'] },
+      { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER')), classesTHead: ['width-10'] },
+      { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL')), classesTHead: ['width-15'] },
+      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.START_DATE')), classesTHead: ['width-10']  },
+      { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.END_DATE')), classesTHead: ['width-10']  },
+      { field: 'authDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.AUTH_DATE')), classesTHead: ['width-10']  },
+      { field: 'fundingRate', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_RATE')), classesTHead: ['width-10']  }
     ];
   }
 

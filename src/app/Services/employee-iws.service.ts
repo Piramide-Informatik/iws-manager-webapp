@@ -150,4 +150,17 @@ export class EmployeeIwsService {
   public refreshEmployeeIws(): void {
     this.loadInitialData();
   }
+
+  // GET NEXT EMPLOYEENO
+  getNextEmployeeNo(): Observable<number> {
+    const url = `${this.apiUrl}/next-employee-no`;
+    return this.http.get<number>(url, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch next employee number');
+        console.error('Error fetching next employee number:', err);
+        return of(0); // fallback por si algo falla
+      })
+    );
+}
 }
