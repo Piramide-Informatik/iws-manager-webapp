@@ -6,9 +6,9 @@
     "COUNTRIES": "Países",
     "TITLES": "Título",
     "SALUTATION": "Saludo",
-    "STATES": "Estados",
     "TYPE_OF_COMPANIES": "Tipos de Empresas",
     "MASTER_DATA": {
+      "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
       "BILLERS": "Datos Maestros - Facturadores",
       "BILLING_METHODS": "Datos Maestros - Métodos de Facturación",
@@ -28,6 +28,7 @@
       "ROLE": "Datos Maestros - Roles",
       "SYSTEM_CONSTANTS": "Datos Maestros - Constantes del Sistema",
       "SALES_TAX": "Datos Maestros - Impuesto sobre Ventas",
+      "STATES": "Datos Maestros - Estados",
       "TERMS_OF_PAYMENT": "Datos Maestros - Términos de Pago",
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",

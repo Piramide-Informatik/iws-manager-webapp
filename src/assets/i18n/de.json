@@ -6,9 +6,9 @@
     "COUNTRIES": "Länder",
     "TITLES": "Titel",
     "SALUTATION": "Anrede",
-    "STATES": "Bundesländer",
     "TYPE_OF_COMPANIES": "Unternehmensarten",
     "MASTER_DATA": {
+      "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
       "BILLERS": "Stammdaten - Rechnungsersteller",
       "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
@@ -28,6 +28,7 @@
       "ROLE": "Stammdaten - Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Stammdaten - Umsatzsteuer",
+      "STATES": "Stammdaten - Bundesländer",
       "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",

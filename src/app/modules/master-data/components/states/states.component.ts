@@ -11,6 +11,6 @@ export class StatesComponent implements OnInit{
    constructor(private readonly pageTitleService: PageTitleService) {}
 
   ngOnInit(): void {
-    this.pageTitleService.setTranslatedTitle('PAGETITLE.STATES');
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.STATES');
   }
 }
