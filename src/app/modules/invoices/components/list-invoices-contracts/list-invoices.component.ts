@@ -130,15 +130,15 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
             routerLink: (row: any) => `./invoice-details/${row.invoiceNumber}`,
             header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))
           },
-          { field: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE'))},
+          { field: 'date', type: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE'))},
           { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION'))},
           { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE'))},
           { field: 'iwsNumber', header: this.translate.instant(_('INVOICES.TABLE.NETWORK'))},
           { field: 'orderNumber', customClasses: ['align-right','date-font-style'], header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER'))},
           { field: 'orderName', header: this.translate.instant(_('INVOICES.TABLE.ORDER_TITLE'))},
-          { field: 'netAmount', customClasses: ['align-right'],  header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT'))},
-          { field: 'value', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT'))},
-          { field: 'totalAmount', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.AMOUNT_GROSS'))}
+          { field: 'netAmount', type: 'double', customClasses: ['align-right'],  header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT'))},
+          { field: 'value', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT'))},
+          { field: 'totalAmount', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.AMOUNT_GROSS'))}
         ];
   }
 
