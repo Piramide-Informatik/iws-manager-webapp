@@ -8,6 +8,7 @@ import { DunningLevelUtils } from './utils/dunning-level.utils';
 import { ReminderLevelService } from '../../../../Services/reminder-level.service';
 import { ReminderLevel } from '../../../../Entities/reminderLevel';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-dunning-levels',
@@ -35,10 +36,12 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService,
-    private readonly commonMessageService: CommonMessagesService
+    private readonly commonMessageService: CommonMessagesService,
+    private readonly pageTitleService: PageTitleService,
   ){}
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.DUNNING_LEVELS');
     this.dunningUtils.loadInitialData().subscribe();
     this.loadColHeaders();
     this.userDunningPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderField);
