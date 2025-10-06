@@ -11,6 +11,6 @@ export class SalutationComponent implements OnInit{
    constructor(private readonly pageTitleService: PageTitleService) {}
 
   ngOnInit(): void {
-    this.pageTitleService.setTranslatedTitle('PAGETITLE.SALUTATION');
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.SALUTATION');
   }
 }

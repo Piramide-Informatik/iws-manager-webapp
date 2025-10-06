@@ -5,7 +5,6 @@
     "NEW_CUSTOMER": "Nuevo Cliente",
     "COUNTRIES": "Países",
     "TITLES": "Título",
-    "SALUTATION": "Saludo",
     "TYPE_OF_COMPANIES": "Tipos de Empresas",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
@@ -28,6 +27,7 @@
       "ROLE": "Datos Maestros - Roles",
       "SYSTEM_CONSTANTS": "Datos Maestros - Constantes del Sistema",
       "SALES_TAX": "Datos Maestros - Impuesto sobre Ventas",
+      "SALUTATION": "Datos Maestros - Saludo",
       "STATES": "Datos Maestros - Estados",
       "TERMS_OF_PAYMENT": "Datos Maestros - Términos de Pago",
       "TEXTS": "Datos Maestros - Textos",

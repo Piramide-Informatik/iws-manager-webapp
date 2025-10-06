@@ -5,7 +5,6 @@
     "NEW_CUSTOMER": "New Customer",
     "COUNTRIES": "Countries",
     "TITLES": "Titles",
-    "SALUTATION": "Salutation",
     "TYPE_OF_COMPANIES": "Company Types",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
@@ -28,6 +27,7 @@
       "REALIZATION_PROBABILITIES": "Masterdata - Realization Probability",
       "SYSTEM_CONSTANTS": "Masterdata - System Constants",
       "SALES_TAX": "Masterdata - Sales Tax",
+      "SALUTATION": "Masterdata - Salutation",
       "STATES": "Masterdata - States",
       "TERMS_OF_PAYMENT": "Masterdata - Terms of Payment",
       "TEXTS": "Masterdata - Texts",

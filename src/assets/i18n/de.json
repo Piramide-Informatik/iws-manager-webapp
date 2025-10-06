@@ -5,7 +5,6 @@
     "NEW_CUSTOMER": "Neuer Kunde",
     "COUNTRIES": "Länder",
     "TITLES": "Titel",
-    "SALUTATION": "Anrede",
     "TYPE_OF_COMPANIES": "Unternehmensarten",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
@@ -28,6 +27,7 @@
       "ROLE": "Stammdaten - Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Stammdaten - Umsatzsteuer",
+      "SALUTATION": "Stammdaten - Anrede",
       "STATES": "Stammdaten - Bundesländer",
       "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
