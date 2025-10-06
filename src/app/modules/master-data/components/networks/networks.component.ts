@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../router-utils.service';
 import { Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ import { NetworkService } from '../../../../Services/network.service';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Network } from '../../../../Entities/network';
 import { NetworkStateService } from './utils/network-state.service';
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-networks',
@@ -16,11 +17,12 @@ import { NetworkStateService } from './utils/network-state.service';
   templateUrl: './networks.component.html',
   styles: ``
 })
-export class NetworksComponent implements OnInit, OnDestroy {
+export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
   private readonly networkUtils = inject(NetowrkUtils);
   private readonly networkService = inject(NetworkService);
   private readonly networkStateService = inject(NetworkStateService);
-  public columsHeaderFieldNetworks: any[] = [];
+  private readonly subscriptions = new Subscription();
+  public columsHeaderFieldNetworks: Column[] = [];
   userNetworksPreferences: UserPreference = {};
   tableKey: string = 'Networks'
   dataKeys = ['name'];
@@ -33,13 +35,13 @@ export class NetworksComponent implements OnInit, OnDestroy {
   visibleNetworksModal = false;
   modalType: 'create' | 'delete' = 'create';
   selectedNetwork!: Network;
-  
+
   constructor(
     private readonly translate: TranslateService,
     private readonly commonMessageService: CommonMessagesService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService
-  ){}
+  ) { }
 
   ngOnInit(): void {
     this.networkUtils.loadInitialData().subscribe();
@@ -55,13 +57,13 @@ export class NetworksComponent implements OnInit, OnDestroy {
   onUserNetworksPreferencesChanges(userNetworksPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userNetworksPreferences));
   }
-  
+
   loadColHeadersNetworks(): void {
     this.columsHeaderFieldNetworks = [
-      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')) },
+      { field: 'name', styles: { 'width': 'auto' }, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')) },
     ];
   }
-  
+
   ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
@@ -83,21 +85,38 @@ export class NetworksComponent implements OnInit, OnDestroy {
     this.visibleNetworksModal = isVisible;
   }
 
-  onDeleteNetwork(event: {status: 'success' | 'error', error?: Error}) {
-    if(event.status === 'success'){
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['networks']) {
+      this.prepareTableData();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.networks().length > 0) {
+      this.columsHeaderFieldNetworks = [
+        { field: 'name', header: 'Network' }
+      ];
+    }
+  }
+
+  onDeleteNetwork(event: { status: 'success' | 'error', error?: Error }) {
+    if (event.status === 'success') {
       this.networkStateService.clearNetwork();
       this.commonMessageService.showDeleteSucessfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       event.error?.message === 'Cannot delete register: it is in use by other entities' ?
         this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
         this.commonMessageService.showErrorDeleteMessage();
     }
   }
 
-  onCreateNetwork(event: { created?: Network, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+  onCreateNetwork(event: { created?: Network, status: 'success' | 'error' }): void {
+    if (event.created && event.status === 'success') {
+      const sub = this.networkService.loadInitialData().subscribe();
+      this.subscriptions.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }

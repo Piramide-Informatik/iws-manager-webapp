@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, 
 import { FormControl, FormGroup } from '@angular/forms';
 import { Network } from '../../../../../../Entities/network';
 import { NetowrkUtils } from '../../utils/ network.utils';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-network-modal',
@@ -20,6 +21,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public networkForm!: FormGroup;
   public isLoading = false;
+  private readonly subscriptions = new Subscription();
 
   public partners!: any[];
   public columsHeaderFieldPartner: any[] = [];
@@ -48,7 +50,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
       name: this.networkForm.value.name?.trim()
     }
 
-    this.networkUtils.createNewNetwork(newNetwork).subscribe({
+    const sub = this.networkUtils.createNewNetwork(newNetwork).subscribe({
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
@@ -58,7 +60,9 @@ export class NetworkModalComponent implements OnInit, OnChanges {
         this.isLoading = false;
         this.createNetwork.emit({ status: 'error' });
       } 
-    })
+    });
+
+    this.subscriptions.add(sub);
   }
 
   closeModal() {
