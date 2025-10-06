@@ -3,7 +3,6 @@
     "CUSTOMER_OVERVIEW": "Customer Overview",
     "CUSTOMER": "Customer - ",
     "NEW_CUSTOMER": "New Customer",
-    "COUNTRIES": "Countries",
     "TITLES": "Titles",
     "TYPE_OF_COMPANIES": "Company Types",
     "MASTER_DATA": {
@@ -13,6 +12,7 @@
       "BILLING_METHODS": "Masterdata - Billing Methods",
       "CONTRACT_STATUS": "Masterdata - Contract Status",
       "COSTS": "Masterdata - Costs",
+      "COUNTRIES": "Masterdata - Countries",
       "DUNNING_LEVELS": "Masterdata - Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",

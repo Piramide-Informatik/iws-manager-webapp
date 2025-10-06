@@ -3,7 +3,6 @@
     "CUSTOMER_OVERVIEW": "Kundenübersicht",
     "CUSTOMER": "kunde - ",
     "NEW_CUSTOMER": "Neuer Kunde",
-    "COUNTRIES": "Länder",
     "TITLES": "Titel",
     "TYPE_OF_COMPANIES": "Unternehmensarten",
     "MASTER_DATA": {
@@ -13,6 +12,7 @@
       "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
       "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
       "COSTS": "Stammdaten - Kostenarten",
+      "COUNTRIES": "Stammdaten - Länder",
       "DUNNING_LEVELS": "Stammdaten - Mahnungstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
