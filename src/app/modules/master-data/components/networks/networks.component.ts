@@ -1,4 +1,12 @@
-import { Component, computed, inject, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { 
+  Component, 
+  computed, 
+  inject, 
+  OnChanges, 
+  OnDestroy, 
+  OnInit, 
+  SimpleChanges 
+} from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../router-utils.service';
 import { Subscription } from 'rxjs';
@@ -99,14 +107,17 @@ export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onDeleteNetwork(event: { status: 'success' | 'error', error?: Error }) {
+  onDeleteNetwork(event: { status: 'success' | 'error', error?: any }) {
     if (event.status === 'success') {
       this.networkStateService.clearNetwork();
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (event.status === 'error') {
-      event.error?.message === 'Cannot delete register: it is in use by other entities' ?
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
+      const errorMessage = event.error.error.message;
+      if (errorMessage.includes('foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorMessage);
+      } else {
         this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 
