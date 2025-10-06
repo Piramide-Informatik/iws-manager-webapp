@@ -9,6 +9,7 @@
     "STATES": "Bundesländer",
     "TYPE_OF_COMPANIES": "Unternehmensarten",
     "MASTER_DATA": {
+      "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
       "BILLERS": "Stammdaten - Rechnungsersteller",
       "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",

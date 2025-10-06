@@ -9,6 +9,7 @@
     "STATES": "Estados",
     "TYPE_OF_COMPANIES": "Tipos de Empresas",
     "MASTER_DATA": {
+      "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
       "BILLERS": "Datos Maestros - Facturadores",
       "BILLING_METHODS": "Datos Maestros - Métodos de Facturación",

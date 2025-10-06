@@ -9,6 +9,7 @@
     "STATES": "States",
     "TYPE_OF_COMPANIES": "Company Types",
     "MASTER_DATA": {
+      "ABSENCE_TYPES": "Masterdata - Absence Types",
       "APPROVAL_STATUS": "Masterdata - Approval Status",
       "BILLERS": "Masterdata - Billers",
       "BILLING_METHODS": "Masterdata - Billing Methods",

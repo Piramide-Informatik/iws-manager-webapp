@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-absence-types',
@@ -6,6 +7,12 @@ import { Component } from '@angular/core';
   templateUrl: './absence-types.component.html',
   styleUrl: './absence-types.component.scss'
 })
-export class AbsenceTypesComponent {
+export class AbsenceTypesComponent implements OnInit{
+
+  constructor(private pageTitleService: PageTitleService) {}
+
+  ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.ABSENCE_TYPES');
+  }
 
 }
