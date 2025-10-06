@@ -99,14 +99,18 @@ export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onDeleteNetwork(event: { status: 'success' | 'error', error?: Error }) {
+  onDeleteNetwork(event: { status: 'success' | 'error', error?: any }) {
     if (event.status === 'success') {
       this.networkStateService.clearNetwork();
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (event.status === 'error') {
-      event.error?.message === 'Cannot delete register: it is in use by other entities' ?
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
+      const errorMessage = event.error.error.message;
+      if (errorMessage.includes('foreign key constraint fails')) {
+        const testentity = this.extractRelatedEntity(errorMessage!);
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(testentity);
+      } else {
         this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 
@@ -119,6 +123,14 @@ export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
+  }
+
+  private extractRelatedEntity(errorMessage: string): string {
+    const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
+    if (match && match[1]) {
+      return match[1];
+    }
+    return 'unknown entity';
   }
 
   onEditNetwork(network: Network): void {

@@ -84,6 +84,15 @@ export class CommonMessagesService {
     })
   }
 
+  showErrorDeleteMessageUsedByEntityWithName(entityName: string) {
+    const detailMessage = this.translateService.instant('MESSAGE.DELETE_ERROR_IN_USE_WITH_ENTITY');
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: detailMessage + ' ' + entityName
+    })
+  }
+
   showCustomSeverityAndMessage(severity: string, message: string, detail: string) {
     this.messageService.add({
       severity: severity,
