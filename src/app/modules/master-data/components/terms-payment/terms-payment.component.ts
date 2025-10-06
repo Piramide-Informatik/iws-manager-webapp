@@ -9,6 +9,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { PayConditionUtils } from './utils/pay-condition-utils';
 import { PayConditionService } from '../../../../Services/pay-condition.service';
 import { PayConditionStateService } from './utils/pay-condition-state.services';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-terms-payment',
@@ -36,10 +37,12 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+  private readonly pageTitleService: PageTitleService,
   ){}
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.TERMS_OF_PAYMENT');
     this.payConditionUtils.loadInitialData().subscribe()
 
     this.loadColHeadersTermsPayment();
