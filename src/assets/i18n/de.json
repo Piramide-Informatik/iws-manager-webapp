@@ -12,10 +12,13 @@
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
       "BILLERS": "Stammdaten - Rechnungsersteller",
       "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
-      "HOLIDAYS": "Stammdaten - Feiertage",
-      "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
       "DUNNING_LEVELS": "Stammdaten - Mahnungstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
+      "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
+      "HOLIDAYS": "Stammdaten - Feiertage",
+      "IWS_COMMISSIONS": "Stammdaten - IWS Provisionen",
+      "IWS_STAFF": "Stammdaten - IWS Mitarbeiter",
+      "IWS_TEAMS": "Stammdaten - IWS Teams",
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
       "PROJECT_FUNNELS": "Stammdaten - Projektträger",
@@ -149,11 +152,61 @@
     "SELECT_AT_LEAST_ONE": "Es muss mindestens eine Spalte ausgewählt sein."
   },
   "primeng_date": {
-    "dayNames": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
-    "dayNamesShort": ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
-    "dayNamesMin": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-    "monthNames": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
-    "monthNamesShort": ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+    "dayNames": [
+      "Sonntag",
+      "Montag",
+      "Dienstag",
+      "Mittwoch",
+      "Donnerstag",
+      "Freitag",
+      "Samstag"
+    ],
+    "dayNamesShort": [
+      "Son",
+      "Mon",
+      "Die",
+      "Mit",
+      "Don",
+      "Fre",
+      "Sam"
+    ],
+    "dayNamesMin": [
+      "So",
+      "Mo",
+      "Di",
+      "Mi",
+      "Do",
+      "Fr",
+      "Sa"
+    ],
+    "monthNames": [
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember"
+    ],
+    "monthNamesShort": [
+      "Jan",
+      "Feb",
+      "Mär",
+      "Apr",
+      "Mai",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Okt",
+      "Nov",
+      "Dez"
+    ]
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",
@@ -274,9 +327,9 @@
       "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
     },
     "MESSAGE": {
-      "UPDATE_SUCCESS":"Der Kontakt wurde erfolgreich aktualisiert",
-      "CREATE_SUCCESS":"Der Kontakt wurde erfolgreich erstellt",
-      "SUCCESS":"ERFOLG"
+      "UPDATE_SUCCESS": "Der Kontakt wurde erfolgreich aktualisiert",
+      "CREATE_SUCCESS": "Der Kontakt wurde erfolgreich erstellt",
+      "SUCCESS": "ERFOLG"
     }
   },
   "EMPLOYEE-CONTRACTS": {
@@ -328,10 +381,10 @@
       "FUNDING_RATE": "Fördersatz"
     },
     "PROJECTS_DIALOG_REMOVE": "Projekt löschen",
-    "REMOVE_PROJECTS_QUESTION":"Möchten Sie das Projekt wirklich löschen"
+    "REMOVE_PROJECTS_QUESTION": "Möchten Sie das Projekt wirklich löschen"
   },
   "ORDERS": {
-    "FORM":{
+    "FORM": {
       "ORDER_ID": "Auftrag-Nr.",
       "ORDER_LABEL": "Auftrag",
       "ORDER_TYPE": "Auftragsart",
@@ -362,7 +415,7 @@
       "IWS_PERCENT": "IWS %",
       "IWS_PERCENT_VALUE": "IWS-Wert"
     },
-    "PROJECT":{
+    "PROJECT": {
       "PROJECT": "Projekt",
       "SPONSOR_ID": "Projektträger ID",
       "SPONSOR": "Projektträger",
@@ -370,19 +423,19 @@
       "END_DATE": "Laufzeit Ende"
     },
     "COMMISSIONS": {
-    "FIXED_COMMISSION": "Fixe Provision",
-    "MAX_COMMISSION": "Max. Provision",
-    "FROM_VALUE": "ab Wert",
-    "COMMISSION": "Provision",
-    "MIN_COMMISSION": "Mindestprovision",
-    "ESTIMATED_IWS_COMMISSION": "Geschätzte IWS-Provision",
-    "TITLE_DIALOG_CREATE": "IWS Commission neu",
-    "TITLE_DIALOG_EDIT": "IWS Commission bearbeiten",
-    "TITLE_DIALOG_DELETE": "IWS Commission löschen"
+      "FIXED_COMMISSION": "Fixe Provision",
+      "MAX_COMMISSION": "Max. Provision",
+      "FROM_VALUE": "ab Wert",
+      "COMMISSION": "Provision",
+      "MIN_COMMISSION": "Mindestprovision",
+      "ESTIMATED_IWS_COMMISSION": "Geschätzte IWS-Provision",
+      "TITLE_DIALOG_CREATE": "IWS Commission neu",
+      "TITLE_DIALOG_EDIT": "IWS Commission bearbeiten",
+      "TITLE_DIALOG_DELETE": "IWS Commission löschen"
     },
     "ORDER_DIALOG_REMOVE": "Bestellung löschen",
-    "REMOVE_ORDERS_QUESTION":"Möchten Sie die Bestellung wirklich löschen",
-    "REMOVE_ORDER_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen "
+    "REMOVE_ORDERS_QUESTION": "Möchten Sie die Bestellung wirklich löschen",
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "Möchten Sie die IWS Commission löschen "
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -454,8 +507,8 @@
       },
       "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
       "TITLE_DIALOG_CREATE": "Rahmenvereinbarung erstellen",
-      "REMOVE_QUESTION":"Möchten Sie den Rahmenvertrag wirklich löschen",
-      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Möchten Sie die IWS Commission löschen"
+      "REMOVE_QUESTION": "Möchten Sie den Rahmenvertrag wirklich löschen",
+      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Möchten Sie die IWS Commission löschen"
     }
   },
   "CONTRACTS": {
@@ -497,7 +550,7 @@
       "INVOICE_AMOUNT": "Rechnungsbetrag",
       "IS_AFA": "AfA",
       "AFA_MONTHS": "AfA Dauer (Monate)",
-      "DESCRIPTION":"Beschreibung"
+      "DESCRIPTION": "Beschreibung"
     },
     "FORM_COMMISSION": {
       "DURATION_OF_USE": "Nutzungsdauer (Monate)"
@@ -552,11 +605,11 @@
       "DELETE_ABSENCE_TYPE": "Abwesenheitsart löschen"
     },
     "DELETE": {
-        "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
+      "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
     },
     "MODAL": {
-        "NEW": "Neue Abwesenheitsart",
-        "DELETE": "Abwesenheitsart löschen"
+      "NEW": "Neue Abwesenheitsart",
+      "DELETE": "Abwesenheitsart löschen"
     }
   },
   "SALUTATION": {
@@ -629,23 +682,23 @@
     "MODAL_CREATE": {
       "CREATE_FORM": "Neuer Bewilligungsstatus"
     },
-    "ERROR" : {
+    "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Genehmigungsstatus erforderlich",
-      "ORDER_REQUIRED" : "Bestellung erforderlich",
+      "ORDER_REQUIRED": "Bestellung erforderlich",
       "CHECKING_DUPLICATE": "Duplikatprüfung",
-      "CREATION_FAILED":"Beim Erstellen des Genehmigungsstatus ist ein Fehler aufgetreten."
+      "CREATION_FAILED": "Beim Erstellen des Genehmigungsstatus ist ein Fehler aufgetreten."
     },
     "LABEL": {
-      "NAME":"Bewilligungsstatus",
+      "NAME": "Bewilligungsstatus",
       "IS_PROJECTS": "Gilt für Projekte",
       "IS_NETWORKS": "Gilt für Netzwerke"
     },
-    "MESSAGE":{
-      "SUCCESS":"ERFOLG",
-      "DELETE_SUCCESS":"Datensatz erfolgreich gelöscht.",
-      "ERROR":"FEHLER",
-      "DELETE_ERROR_IN_USE":"Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
-      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden."
+    "MESSAGE": {
+      "SUCCESS": "ERFOLG",
+      "DELETE_SUCCESS": "Datensatz erfolgreich gelöscht.",
+      "ERROR": "FEHLER",
+      "DELETE_ERROR_IN_USE": "Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
+      "DELETE_FAILED": "Der Datensatz konnte nicht gelöscht werden."
     }
   },
   "USERS": {
@@ -655,7 +708,7 @@
       "ACTIVE": "Aktiv"
     },
     "FORM": {
-      "USER_FORM":"Neuer Benutzer",
+      "USER_FORM": "Neuer Benutzer",
       "EDIT_TITLE": "Benutzer bearbeiten",
       "USERNAME": "Benutzername",
       "FIRSTNAME": "Vorname",
@@ -667,11 +720,11 @@
       "AVAILABLE_ROLES": "Verfügbare Rollen"
     },
     "DELETE": {
-      "CONFIRMATION":"Benutzer löschen",
-      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Benutzer löschen",
+      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
     },
-    "HEADER":{
-      "USERNAME":"Benutzername",
+    "HEADER": {
+      "USERNAME": "Benutzername",
       "NAME": "Name",
       "ACTIVE": "Aktiv"
     },
@@ -704,21 +757,21 @@
       "CREATE_FORM": "Neue Rolle"
     },
     "DELETE": {
-      "CONFIRMATION":"Rolle löschen",
-      "CONFIRM_QUESTION":"Sind Sie sicher, dass Sie löschen möchten "
+      "CONFIRMATION": "Rolle löschen",
+      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie löschen möchten "
     },
-    "MESSAGE":{
-      "SUCCESS":"ERFOLG",
-      "DELETE_SUCCESS":"Datensatz erfolgreich gelöscht.",
-      "ERROR":"FEHLER",
-      "DELETE_ERROR_IN_USE":"Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
-      "DELETE_FAILED":"Der Datensatz konnte nicht gelöscht werden.",
+    "MESSAGE": {
+      "SUCCESS": "ERFOLG",
+      "DELETE_SUCCESS": "Datensatz erfolgreich gelöscht.",
+      "ERROR": "FEHLER",
+      "DELETE_ERROR_IN_USE": "Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird.",
+      "DELETE_FAILED": "Der Datensatz konnte nicht gelöscht werden.",
       "DELETE_ERROR_BY_USER": "Der Datensatz kann nicht gelöscht werden, da er von anderen Benutzer verwendet wird."
     },
-    "ERROR" : {
+    "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",
       "CHECKING_DUPLICATE": "Duplikatprüfung",
-      "CREATION_FAILED":"Beim Erstellen der Rolle ist ein Fehler aufgetreten"
+      "CREATION_FAILED": "Beim Erstellen der Rolle ist ein Fehler aufgetreten"
     }
   },
   "HOLIDAYS": {
@@ -742,12 +795,12 @@
       "YEAR": "Jahr",
       "DATE": "Datum"
     },
-    "FORM":{
+    "FORM": {
       "HOLIDAY_NAME": "Neuer Feiertag"
     },
-    "DELETE":{
-      "CONFIRMATION":"Feiertag löschen",
-      "CONFIRM_QUESTION":"Möchten Sie den Feiertag wirklich löschen? "
+    "DELETE": {
+      "CONFIRMATION": "Feiertag löschen",
+      "CONFIRM_QUESTION": "Möchten Sie den Feiertag wirklich löschen? "
     },
     "ERROR": {
       "ALREADY_EXIST": "Der Datensatz existiert bereits",
@@ -756,10 +809,10 @@
       "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten",
       "HOLIDAY_LABEL_REQUIRED": "Der Name des Feiertags ist erforderlich."
     },
-    "MODAL":{
-      "NAME":"Feiertag",
-      "DATE":"Datum",
-      "ORDEN":"Reihenfolge"
+    "MODAL": {
+      "NAME": "Feiertag",
+      "DATE": "Datum",
+      "ORDEN": "Reihenfolge"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "Keine Staaten verfügbar"
@@ -814,10 +867,10 @@
       "ABBREVIATION": "Kürzel"
     },
     "DELETE": {
-      "CONFIRMATION":"Qualifikation löschen",
-      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Qualifikation löschen",
+      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
     },
-    "FORM":{
+    "FORM": {
       "QUALIFICATION_FORM": "Neue Qualifikation"
     }
   },
@@ -851,12 +904,13 @@
       "CHOOSE_COLUMNS": "Spalten auswählen",
       "NO_DATA": "Keine Mitarbeiter gefunden."
     },
-    "FORM":{
+    "FORM": {
       "IWS_STAFF_FORM": "Neuer Mitarbeiter"
     },
-    "DELETE":{
-      "CONFIRMATION":"Mitarbeiter löschen",
-      "CONFIRM_QUESTION":"Möchten Sie wirklich löschen"}
+    "DELETE": {
+      "CONFIRMATION": "Mitarbeiter löschen",
+      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen"
+    }
   },
   "SYSTEM_CONSTANT": {
     "TABLE_SYSTEM_CONSTANT": {
@@ -878,7 +932,7 @@
     "MODAL": {
       "NEW": "Neu Systemkonstante",
       "DELETE": "Systemkonstante löschen",
-      "CONFIRM_QUESTION":"Möchten Sie die Systemkonstante wirklich löschen "
+      "CONFIRM_QUESTION": "Möchten Sie die Systemkonstante wirklich löschen "
     }
   },
   "IWS_COMMISSIONS": {
@@ -895,8 +949,8 @@
       "NEW": "Neue Provision"
     },
     "DELETE": {
-      "CONFIRMATION":"Provision löschen",
-      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Provision löschen",
+      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
     }
   },
   "IWS_TEAMS": {
@@ -911,10 +965,10 @@
       "SELECT_LEADER": "Teamleiter auswählen"
     },
     "DELETE": {
-      "CONFIRMATION":"Team löschen",
-      "CONFIRM_QUESTION" : "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Team löschen",
+      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
     },
-    "FORM":{
+    "FORM": {
       "IWS_TEAM_FORM": "Neues Team"
     }
   },
@@ -996,7 +1050,7 @@
     "MODAL": {
       "NEW": "Neu Text",
       "DELETE": "Text löschen",
-      "CONFIRM_QUESTION":"Möchten Sie den Text wirklich löschen "
+      "CONFIRM_QUESTION": "Möchten Sie den Text wirklich löschen "
     }
   },
   "PROJECT_FUNNELS": {
@@ -1023,34 +1077,33 @@
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Projektstatus",
     "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten",
-    "MESSAGE":{
+    "MESSAGE": {
       "SUCCESS": "ERFOLGREICH",
       "UPDATE_SUCCESS": "Aktualisierung erfolgreich",
       "ERROR": "FEHLER",
-      "UPDATE_FAILED":"Aktualisierung fehlgeschlagen"
-      },
-    "LABEL":{
-      "EDIT_PROJECT_STATUS":"Projektstatus bearbeiten",
-      "PROJECT_STATUS_LABEL":"Projektstatus"
-      },
-    "ERROR":{
+      "UPDATE_FAILED": "Aktualisierung fehlgeschlagen"
+    },
+    "LABEL": {
+      "EDIT_PROJECT_STATUS": "Projektstatus bearbeiten",
+      "PROJECT_STATUS_LABEL": "Projektstatus"
+    },
+    "ERROR": {
       "PROJECT_STATUS_LABEL_REQUIRED": "Der Projektstatus ist erforderlich",
       "CREATION_FAILED": "Bei der Erstellung des Projektstatus ist ein Fehler aufgetreten.",
       "EMPTY": "Der Name des Projektstatus muss aus mindestens einem Zeichen bestehen",
-      "ALREADY_EXISTS":"Der Datensatz existiert bereits"
-      },
-    "DELETE":{
-      "CONFIRM_QUESTION":"Sind Sie sicher, dass Sie Folgendes entfernen möchten",
-      "CONFIRMATION":"Projektstatus löschen Projekt"
-      },
-    "TABLE_PROJECT_STATUS":{
+      "ALREADY_EXISTS": "Der Datensatz existiert bereits"
+    },
+    "DELETE": {
+      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie Folgendes entfernen möchten",
+      "CONFIRMATION": "Projektstatus löschen Projekt"
+    },
+    "TABLE_PROJECT_STATUS": {
       "PROJECT_STATUS_LABEL": "Projektstatus",
-      "PROJECT_STATUS":"Projektstatus"
-      },
+      "PROJECT_STATUS": "Projektstatus"
+    },
     "FORM": {
-    "PROJECT_STATUS_FORM":"Neuer Projektstatus"
-    ,
-      "NEW_PROJECT_STATUS":"Projektstatus"
+      "PROJECT_STATUS_FORM": "Neuer Projektstatus",
+      "NEW_PROJECT_STATUS": "Projektstatus"
     }
   },
   "NETWORKS": {
@@ -1064,7 +1117,7 @@
     "MODAL": {
       "NEW": "Neues Netzwerk",
       "DELETE": "Netzwerk löschen",
-      "CONFIRM_QUESTION":"Möchten Sie das Netzwerk wirklich löschen ",
+      "CONFIRM_QUESTION": "Möchten Sie das Netzwerk wirklich löschen ",
       "NEW_PARTNER": "Neuer Partner",
       "EDIT_PARTNER": "Partner bearbeiten",
       "DELETE_PARTNER": "Partner löschen",
@@ -1073,7 +1126,7 @@
     "PARTNER": {
       "NO": "No",
       "COMMENT": "Kommentar",
-      "CUSTOMER":"Kunde",
+      "CUSTOMER": "Kunde",
       "CONTACT": "Kontakt"
     }
   },
@@ -1083,7 +1136,6 @@
       "CURRENT_TAX_RATE": "akt Steuersatz",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
     },
-    
     "TABLE_SALES_TAX_FORM": {
       "FROM_DATE": "ab Datum",
       "SENTENCE": "Satz",
@@ -1116,7 +1168,7 @@
     "MODAL": {
       "NEW": "Neu Zahlungsziel",
       "DELETE": "Zahlungsziel löschen",
-      "CONFIRM_QUESTION":"Möchten Sie die Zahlungsbedingungen wirklich löschen "
+      "CONFIRM_QUESTION": "Möchten Sie die Zahlungsbedingungen wirklich löschen "
     }
   },
   "BILLERS": {
@@ -1238,5 +1290,5 @@
     "OPTIONS": {
       "SELECT_NONE": "Ohne"
     }
-  }  
+  }
 }
