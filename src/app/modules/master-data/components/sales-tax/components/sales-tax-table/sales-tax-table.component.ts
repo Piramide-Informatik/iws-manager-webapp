@@ -25,6 +25,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly salesTaxStateService = inject(VatStateService);
   private readonly vatRateUtils = inject(VatRateUtils);
   @Input() isEdited: boolean = false;
+  @Input() vatRateIsEdited: boolean = false;
   salesTaxesColumns: Column[] = [];
   isSalesTaxesChipVisible = false;
   userSalesTaxTablePreferences: UserPreference = {};
@@ -34,13 +35,17 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
   public isVisibleModal: boolean = false;
 
   private readonly refreshTrigger$ = new BehaviorSubject<void>(undefined);
+  private readonly refreshVatRates$ = new BehaviorSubject<void>(undefined);
 
   readonly salesTaxesValues$ = combineLatest([
     this.refreshTrigger$.pipe(
       startWith(undefined),
       switchMap(() => this.salestTaxService.getAllVats())
     ),
-    this.vatRateUtils.getAllVatRates()
+    this.refreshVatRates$.pipe(
+      startWith(undefined),
+      switchMap(() => this.vatRateUtils.getAllVatRates())
+    )
   ]).pipe(
     map(([vats, vatRates]) => {
       const array = (vats ?? []).map(v => ({
@@ -75,6 +80,9 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isEdited']){
       this.refreshTrigger$.next();
+    }
+    if(changes['vatRateIsEdited']){
+      this.refreshVatRates$.next();
     }
   }
 
