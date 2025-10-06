@@ -104,7 +104,7 @@ export class CommonMessagesService {
 
   private extractRelatedEntity(errorMessage: string): string {
     const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
-    if (match && match[1]) {
+    if (match?.[1]) {
       return match[1];
     }
     return 'unknown entity';
