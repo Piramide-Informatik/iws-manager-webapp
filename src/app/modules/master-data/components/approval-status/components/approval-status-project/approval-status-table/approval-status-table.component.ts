@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild, OnDestroy, inject, computed } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { _, TranslateService } from "@ngx-translate/core";
+import { TranslateService } from "@ngx-translate/core";
 import { UserPreferenceService } from '../../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../../Entities/user-preference';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
 import { ApprovalStatusService } from '../../../../../../../Services/approval-status.service';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
-import { MessageService } from 'primeng/api';
 import { ModalApprovalStatusComponent } from '../modal-approval-status/modal-approval-status.component';
 import { ApprovalStatusStateService } from '../../../utils/approval-status-state.service';
 import { Column } from '../../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
 @Component({
   selector: 'app-approval-types-table',
   standalone: false,
@@ -19,7 +19,6 @@ import { Column } from '../../../../../../../Entities/column';
 export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   private readonly approvalStatusUtils = new ApprovalStatusUtils();
   private readonly approvalStatusService = inject(ApprovalStatusService);
-  private readonly messageService = inject(MessageService);
 
 
   visibleModal: boolean = false;
@@ -54,6 +53,7 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly approvalStatusStateService: ApprovalStatusStateService,
+    private readonly commonMessageService: CommonMessagesService
     ) { }
 
   ngOnInit() {
@@ -110,11 +110,11 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   }
 
   toastMessageDisplay(message: { severity: string, summary: string, detail: string }): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
+    this.commonMessageService.showCustomSeverityAndMessage(
+      message.severity,
+      message.summary,
+      message.detail
+    )
   }
 
   onDeleteApprovalStatus() {
