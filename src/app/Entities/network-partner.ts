@@ -9,7 +9,7 @@ export interface NetworkPartner {
   version: number;
 
   comment?: string;
-  contactperson?: ContactPerson;
+  contact?: ContactPerson;
   partner?: Customer;
   network?: Network;
   partnerno?: number;
