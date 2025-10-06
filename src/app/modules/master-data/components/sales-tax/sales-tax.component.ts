@@ -15,4 +15,6 @@ export class SalesTaxComponent implements OnInit {
   }
 
   vatEdited: boolean = false;
+
+  vatRateEdited: boolean = false;
 }

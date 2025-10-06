@@ -123,7 +123,7 @@ export class VatRateUtils {
     if (ratesForVat.length === 0) return undefined;
 
     const today = new Date();
-    const sortedRates = ratesForVat.sort(
+    const sortedRates = [...ratesForVat].sort(
       (a, b) => new Date(a.fromdate!).getTime() - new Date(b.fromdate!).getTime()
     );
 

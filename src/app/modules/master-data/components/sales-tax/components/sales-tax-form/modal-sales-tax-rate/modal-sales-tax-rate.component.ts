@@ -23,6 +23,7 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
   @Output() createVatRate = new EventEmitter<{created?: VatRate, status: 'success' | 'error'}>();
   @Output() deleteVatRate = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @Output() editVatRate = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() updatedVatRate = new EventEmitter<void>();
   @ViewChild('firstInput') firstInput!: DatePicker;
   private currentVat!: Vat | null;
   public isLoading: boolean = false;
@@ -81,6 +82,8 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
     this.vatRateUtils.addVatRate(newVatRate).subscribe({
       next: (created) => {
         this.isLoading = false;
+        this.vatRateUtils.getAllVatRatesByVatId(this.currentVat!.id).subscribe();
+        this.updatedVatRate.emit();
         this.closeModal();
         this.createVatRate.emit({created, status: 'success'});
       },
@@ -104,6 +107,8 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
     this.vatRateUtils.updateVatRate(editedVatRate).subscribe({
       next: () => {
         this.isLoading = false;
+        this.vatRateUtils.getAllVatRatesByVatId(this.currentVat!.id).subscribe();
+        this.updatedVatRate.emit();
         this.closeModal();
         this.editVatRate.emit({ status: 'success' });
       },
@@ -121,6 +126,7 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
         next: () => {
           this.isLoadingDelete = false;
           this.deleteVatRate.emit({status: 'success'});
+          this.vatRateUtils.getAllVatRatesByVatId(this.currentVat!.id).subscribe();
           this.closeModal();
           this.visibleModalDeleteConfirmVatRate = false;
           this.selectedVatRate = undefined;
