@@ -84,7 +84,8 @@ export class CommonMessagesService {
     })
   }
 
-  showErrorDeleteMessageUsedByEntityWithName(entityName: string) {
+  showErrorDeleteMessageUsedByEntityWithName(errorMessage: string) {
+    const entityName = this.extractRelatedEntity(errorMessage);
     const detailMessage = this.translateService.instant('MESSAGE.DELETE_ERROR_IN_USE_WITH_ENTITY');
     this.messageService.add({
       severity: 'error',
@@ -99,6 +100,14 @@ export class CommonMessagesService {
       summary: this.translateService.instant(message),
       detail: this.translateService.instant(detail)
     })
+  }
+
+  private extractRelatedEntity(errorMessage: string): string {
+    const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
+    if (match && match[1]) {
+      return match[1];
+    }
+    return 'unknown entity';
   }
   
 }

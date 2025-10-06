@@ -106,8 +106,8 @@ export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
     } else if (event.status === 'error') {
       const errorMessage = event.error.error.message;
       if (errorMessage.includes('foreign key constraint fails')) {
-        const testentity = this.extractRelatedEntity(errorMessage!);
-        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(testentity);
+        // const testentity = this.extractRelatedEntity(errorMessage);
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorMessage);
       } else {
         this.commonMessageService.showErrorDeleteMessage();
       }
@@ -123,14 +123,6 @@ export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
-  }
-
-  private extractRelatedEntity(errorMessage: string): string {
-    const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
-    if (match && match[1]) {
-      return match[1];
-    }
-    return 'unknown entity';
   }
 
   onEditNetwork(network: Network): void {
