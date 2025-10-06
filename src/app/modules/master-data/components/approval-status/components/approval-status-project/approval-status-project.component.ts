@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PageTitleService } from '../../../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-approval-status-project',
@@ -6,6 +7,12 @@ import { Component } from '@angular/core';
   templateUrl: './approval-status-project.component.html',
   styleUrl: './approval-status-project.component.scss'
 })
-export class ApprovalStatusProjectComponent {
+export class ApprovalStatusProjectComponent implements OnInit {
+
+  constructor(private readonly pageTitleService: PageTitleService) {}
+
+  ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.APPROVAL_STATUS');
+  }
 
 }
