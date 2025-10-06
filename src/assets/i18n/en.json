@@ -7,7 +7,27 @@
     "TITLES": "Titles",
     "SALUTATION": "Salutation",
     "STATES": "States",
-    "TYPE_OF_COMPANIES": "Company Types"
+    "TYPE_OF_COMPANIES": "Company Types",
+    "MASTER_DATA": {
+      "APPROVAL_STATUS": "Masterdata - Approval Status",
+      "BILLERS": "Masterdata - Billers",
+      "BILLING_METHODS": "Masterdata - Billing Methods",
+      "HOLIDAYS": "Masterdata - Holidays",
+      "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
+      "DUNNING_LEVELS": "Masterdata - Dunning Levels",
+      "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
+      "NETWORKS": "Masterdata - Networks",
+      "ROLE": "Masterdata - Role",
+      "PROJECT_STATUS": "Masterdata - Project Status",
+      "PROJECT_FUNNELS": "Masterdata - Project Responsible",
+      "REALIZATION_PROBABILITIES": "Masterdata - Realization Probability",
+      "SYSTEM_CONSTANTS": "Masterdata - System Constants",
+      "SALES_TAX": "Masterdata - Sales Tax",
+      "TERMS_OF_PAYMENT": "Masterdata - Terms of Payment",
+      "TEXTS": "Masterdata - Texts",
+      "TITLE": "Masterdata - Titles",
+      "USER": "Masterdata - User"
+    }
   },
   "ERROR": {
     "OCC": {
@@ -21,7 +41,7 @@
         "REFRESH": "Refresh",
         "REDIRECT": "Go to Main List"
       }
-    },  
+    },
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
     "NUMBER_MAX": "Max value 100 expected",
     "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
@@ -129,11 +149,61 @@
     "SELECT_AT_LEAST_ONE": "There must be at least one column selected."
   },
   "primeng_date": {
-    "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "dayNamesMin": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-    "monthNames": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    "monthNamesShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    "dayNames": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "dayNamesShort": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "dayNamesMin": [
+      "Su",
+      "Mo",
+      "Tu",
+      "We",
+      "Th",
+      "Fr",
+      "Sa"
+    ],
+    "monthNames": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "monthNamesShort": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmation",
@@ -256,8 +326,7 @@
     "MESSAGE": {
       "UPDATE_SUCCESS": "Contact Person was updated successfully",
       "CREATE_SUCCESS": "Contact Person was created successfully",
-      "SUCCESS":"SUCCESS"
-
+      "SUCCESS": "SUCCESS"
     }
   },
   "EMPLOYEE-CONTRACTS": {
@@ -309,7 +378,7 @@
       "FUNDING_RATE": "Funding Rate"
     },
     "PROJECTS_DIALOG_REMOVE": "Delete Project",
-    "REMOVE_PROJECTS_QUESTION":"Are you sure you want to delete the project"
+    "REMOVE_PROJECTS_QUESTION": "Are you sure you want to delete the project"
   },
   "ORDERS": {
     "FORM": {
@@ -343,7 +412,7 @@
       "IWS_PERCENT": "IWS %",
       "IWS_PERCENT_VALUE": "IWS-Value"
     },
-    "PROJECT":{
+    "PROJECT": {
       "PROJECT": "Project",
       "SPONSOR_ID": "Project sponsor ID",
       "SPONSOR": "Project sponsor",
@@ -351,19 +420,19 @@
       "END_DATE": "End date"
     },
     "COMMISSIONS": {
-    "FIXED_COMMISSION": "Fixed Commission",
-    "MAX_COMMISSION": "Max Commission",
-    "FROM_VALUE": "From Value",
-    "COMMISSION": "Commission",
-    "MIN_COMMISSION": "Minimum Commission",
-    "ESTIMATED_IWS_COMMISSION": "Estimated IWS Commission",
-    "TITLE_DIALOG_CREATE": "New IWS Commission",
-    "TITLE_DIALOG_EDIT": "Edit IWS Commission",
-    "TITLE_DIALOG_DELETE": "Delete IWS Commission"
+      "FIXED_COMMISSION": "Fixed Commission",
+      "MAX_COMMISSION": "Max Commission",
+      "FROM_VALUE": "From Value",
+      "COMMISSION": "Commission",
+      "MIN_COMMISSION": "Minimum Commission",
+      "ESTIMATED_IWS_COMMISSION": "Estimated IWS Commission",
+      "TITLE_DIALOG_CREATE": "New IWS Commission",
+      "TITLE_DIALOG_EDIT": "Edit IWS Commission",
+      "TITLE_DIALOG_DELETE": "Delete IWS Commission"
     },
     "ORDER_DIALOG_REMOVE": "Delete Order",
-    "REMOVE_ORDERS_QUESTION":"Are you sure you want to delete the order",
-    "REMOVE_ORDER_IWS_COMMISSION_QUESTION":"Are you sure you want to delete the IWS Commission "
+    "REMOVE_ORDERS_QUESTION": "Are you sure you want to delete the order",
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "Are you sure you want to delete the IWS Commission "
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -387,7 +456,6 @@
     },
     "RECEIVABLES_DIALOG_REMOVE": "Delete Receivable",
     "REMOVE_RECEIVABLES_QUESTION": "Are you sure you want to delete the receivable"
-
   },
   "INVOICES": {
     "TABLE": {
@@ -437,8 +505,8 @@
     },
     "TITLE_DIALOG_REMOVE": "Delete Framework Agreement",
     "TITLE_DIALOG_CREATE": "Create Framework Agreement",
-    "REMOVE_QUESTION":"Are you sure you want to delete the framework agreement",
-    "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION":"Are you sure you want to delete the IWS Commission "
+    "REMOVE_QUESTION": "Are you sure you want to delete the framework agreement",
+    "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Are you sure you want to delete the IWS Commission "
   },
   "CONTRACTS": {
     "FORM": {
@@ -479,7 +547,7 @@
       "INVOICE_AMOUNT": "Invoice amount",
       "IS_AFA": "Depreciation",
       "AFA_MONTHS": "Depreciation period (months)",
-      "DESCRIPTION":"Description"
+      "DESCRIPTION": "Description"
     },
     "FORM_COMMISSION": {
       "DURATION_OF_USE": "Duration of use (months)"
@@ -534,11 +602,11 @@
       "DELETE_ABSENCE_TYPE": "Delete Absence Type"
     },
     "DELETE": {
-    "CONFIRM_QUESTION": "Are you sure you want to delete the absence type "
+      "CONFIRM_QUESTION": "Are you sure you want to delete the absence type "
     },
     "MODAL": {
-    "NEW": "New Absence Type",
-    "DELETE": "Delete Absence Type"
+      "NEW": "New Absence Type",
+      "DELETE": "Delete Absence Type"
     }
   },
   "SALUTATION": {
@@ -611,23 +679,23 @@
     "MODAL_CREATE": {
       "CREATE_FORM": "New Approval Status"
     },
-    "ERROR" : {
+    "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Approval Status Required",
-      "ORDER_REQUIRED" : "Order Required",
+      "ORDER_REQUIRED": "Order Required",
       "CHECKING_DUPLICATE": "Checking for Duplicate",
-      "CREATION_FAILED":"There was an error creating the Approval Status."
+      "CREATION_FAILED": "There was an error creating the Approval Status."
     },
     "LABEL": {
-      "NAME":"Approval Status",
+      "NAME": "Approval Status",
       "IS_PROJECTS": "Applies to Projects",
       "IS_NETWORKS": "Applies to Networks"
     },
-    "MESSAGE":{
-      "SUCCESS":"SUCCESS",
-      "DELETE_SUCCESS":"Record successfully deleted.",
-      "ERROR":"ERROR",
-      "DELETE_ERROR_IN_USE":"The record cannot be deleted because it is in use by other entities.",
-      "DELETE_FAILED":"The record could not be deleted."
+    "MESSAGE": {
+      "SUCCESS": "SUCCESS",
+      "DELETE_SUCCESS": "Record successfully deleted.",
+      "ERROR": "ERROR",
+      "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
+      "DELETE_FAILED": "The record could not be deleted."
     }
   },
   "USERS": {
@@ -637,7 +705,7 @@
       "ACTIVE": "Active"
     },
     "FORM": {
-      "USER_FORM":"New User",
+      "USER_FORM": "New User",
       "EDIT_TITLE": "Edit User",
       "USERNAME": "Username",
       "FIRSTNAME": "First Name",
@@ -649,11 +717,11 @@
       "AVAILABLE_ROLES": "Available Roles"
     },
     "DELETE": {
-      "CONFIRMATION":"Delete User",
-      "CONFIRM_QUESTION" : "Are you sure you want to delete "
+      "CONFIRMATION": "Delete User",
+      "CONFIRM_QUESTION": "Are you sure you want to delete "
     },
-    "HEADER":{
-      "USERNAME":"Username",
+    "HEADER": {
+      "USERNAME": "Username",
       "NAME": "Name",
       "ACTIVE": "Active"
     },
@@ -686,21 +754,21 @@
       "CREATE_FORM": "New Role"
     },
     "DELETE": {
-      "CONFIRMATION":"Delete Role",
-      "CONFIRM_QUESTION":"Are you sure you want to delete "
+      "CONFIRMATION": "Delete Role",
+      "CONFIRM_QUESTION": "Are you sure you want to delete "
     },
-    "MESSAGE":{
-      "SUCCESS":"SUCCESS",
-      "DELETE_SUCCESS":"Record successfully deleted.",
-      "ERROR":"ERROR",
-      "DELETE_ERROR_IN_USE":"The record cannot be deleted because it is in use by other entities.",
-      "DELETE_FAILED":"The record could not be deleted.",
+    "MESSAGE": {
+      "SUCCESS": "SUCCESS",
+      "DELETE_SUCCESS": "Record successfully deleted.",
+      "ERROR": "ERROR",
+      "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
+      "DELETE_FAILED": "The record could not be deleted.",
       "DELETE_ERROR_BY_USER": "The record cannot be deleted because it is in use by User entities."
     },
-    "ERROR" : {
+    "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Required role",
       "CHECKING_DUPLICATE": "Checking duplicate",
-      "CREATION_FAILED":"There was an error during role creation"
+      "CREATION_FAILED": "There was an error during role creation"
     }
   },
   "HOLIDAYS": {
@@ -724,12 +792,12 @@
       "YEAR": "Year",
       "DATE": "Date"
     },
-    "FORM":{
+    "FORM": {
       "HOLIDAY_NAME": "New holiday"
     },
-    "DELETE":{
-      "CONFIRMATION":"Delete Holiday",
-      "CONFIRM_QUESTION":"Are you sure you want to delete the holiday "
+    "DELETE": {
+      "CONFIRMATION": "Delete Holiday",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the holiday "
     },
     "ERROR": {
       "ALREADY_EXIST": "The record already exists",
@@ -738,10 +806,10 @@
       "EMPTY": "The name of the holiday must have at least one character",
       "HOLIDAY_LABEL_REQUIRED": "The name of the holiday is required."
     },
-    "MODAL":{
-      "NAME":"Holiday",
-      "DATE":"Date",
-      "ORDEN":"Sort"
+    "MODAL": {
+      "NAME": "Holiday",
+      "DATE": "Date",
+      "ORDEN": "Sort"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "No states available"
@@ -796,10 +864,10 @@
       "ABBREVIATION": "Abbreviation"
     },
     "DELETE": {
-      "CONFIRMATION":"Delete Qualification",
-      "CONFIRM_QUESTION" : "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Qualification",
+      "CONFIRM_QUESTION": "Are you sure you want to delete "
     },
-    "FORM":{
+    "FORM": {
       "QUALIFICATION_FORM": "New Qualification"
     }
   },
@@ -833,12 +901,13 @@
       "CHOOSE_COLUMNS": "Choose columns",
       "NO_DATA": "No staff found"
     },
-    "FORM":{
+    "FORM": {
       "IWS_STAFF_FORM": "New Employee"
     },
-    "DELETE":{
-      "CONFIRMATION":"Delete Employee",
-      "CONFIRM_QUESTION":"Are you sure you want to delete "}
+    "DELETE": {
+      "CONFIRMATION": "Delete Employee",
+      "CONFIRM_QUESTION": "Are you sure you want to delete "
+    }
   },
   "SYSTEM_CONSTANT": {
     "TABLE_SYSTEM_CONSTANT": {
@@ -860,7 +929,7 @@
     "MODAL": {
       "NEW": "Create System Constant",
       "DELETE": "Delete System Constant",
-      "CONFIRM_QUESTION":"Are you sure you want to delete the system constant "
+      "CONFIRM_QUESTION": "Are you sure you want to delete the system constant "
     }
   },
   "IWS_COMMISSIONS": {
@@ -877,8 +946,8 @@
       "NEW": "New Commission"
     },
     "DELETE": {
-      "CONFIRMATION":"Delete Commission",
-      "CONFIRM_QUESTION" : "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Commission",
+      "CONFIRM_QUESTION": "Are you sure you want to delete "
     }
   },
   "IWS_TEAMS": {
@@ -893,10 +962,10 @@
       "SELECT_LEADER": "Select Leader"
     },
     "DELETE": {
-      "CONFIRMATION":"Delete Team",
-      "CONFIRM_QUESTION" : "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Team",
+      "CONFIRM_QUESTION": "Are you sure you want to delete "
     },
-    "FORM":{
+    "FORM": {
       "IWS_TEAM_FORM": "New Team"
     }
   },
@@ -978,7 +1047,7 @@
     "MODAL": {
       "NEW": "New Text",
       "DELETE": "Delete Text",
-      "CONFIRM_QUESTION":"Are you sure you want to delete the text "
+      "CONFIRM_QUESTION": "Are you sure you want to delete the text "
     }
   },
   "PROJECT_FUNNELS": {
@@ -1005,34 +1074,34 @@
   "PROJECT_STATUS": {
     "PROJECT_STATUS": "Project Status",
     "EDIT_PROJECT_STATUS": "Edit Project Status",
-    "MESSAGE":{
+    "MESSAGE": {
       "SUCCESS": "SUCCESS",
       "UPDATE_SUCCESS": "Update successful",
       "ERROR": "ERROR",
-      "UPDATE_FAILED":"Update failed"
-      },
-    "LABEL":{
-      "EDIT_PROJECT_STATUS":"Edit Project Status",
-      "PROJECT_STATUS_LABEL":"Project Status"
-      },
-    "ERROR":{
+      "UPDATE_FAILED": "Update failed"
+    },
+    "LABEL": {
+      "EDIT_PROJECT_STATUS": "Edit Project Status",
+      "PROJECT_STATUS_LABEL": "Project Status"
+    },
+    "ERROR": {
       "PROJECT_STATUS_LABEL_REQUIRED": "The project status is required",
       "CREATION_FAILED": "There was an error creating the project status.",
       "EMPTY": "The project status name must be at least one character",
-      "ALREADY_EXISTS":"The record already exists"
-      },
-    "DELETE":{
-      "CONFIRM_QUESTION":"Are you sure you want to delete",
-      "CONFIRMATION":"Delete Project Status Project"
-      },
-    "TABLE_PROJECT_STATUS":{
+      "ALREADY_EXISTS": "The record already exists"
+    },
+    "DELETE": {
+      "CONFIRM_QUESTION": "Are you sure you want to delete",
+      "CONFIRMATION": "Delete Project Status Project"
+    },
+    "TABLE_PROJECT_STATUS": {
       "PROJECT_STATUS_LABEL": "Project Status",
-      "PROJECT_STATUS":"Project Status"
-      },
+      "PROJECT_STATUS": "Project Status"
+    },
     "FORM": {
-      "PROJECT_STATUS_FORM":"New Project Status",
-      "NEW_PROJECT_STATUS":"Project Status"
-      }
+      "PROJECT_STATUS_FORM": "New Project Status",
+      "NEW_PROJECT_STATUS": "Project Status"
+    }
   },
   "NETWORKS": {
     "LABEL": {
@@ -1045,7 +1114,7 @@
     "MODAL": {
       "NEW": "New Network",
       "DELETE": "Delete Network",
-      "CONFIRM_QUESTION":"Are you sure you want to delete the network ",
+      "CONFIRM_QUESTION": "Are you sure you want to delete the network ",
       "NEW_PARTNER": "New Network Partner",
       "EDIT_PARTNER": "Edit Network Partner",
       "DELETE_PARTNER": "Delete Network Partner",
@@ -1054,7 +1123,7 @@
     "PARTNER": {
       "NO": "No",
       "COMMENT": "Comment",
-      "CUSTOMER":"Customer",
+      "CUSTOMER": "Customer",
       "CONTACT": "Contact"
     }
   },
@@ -1096,7 +1165,7 @@
     "MODAL": {
       "NEW": "New Term of Payment",
       "DELETE": "Delete Term of Payment",
-      "CONFIRM_QUESTION":"Are you sure you want to delete the Term of Payment "
+      "CONFIRM_QUESTION": "Are you sure you want to delete the Term of Payment "
     }
   },
   "BILLERS": {
