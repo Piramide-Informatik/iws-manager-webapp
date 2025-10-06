@@ -1,7 +1,7 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'NETWORKS.LABEL.EDIT_NETWORK' | translate ">
     <form [formGroup]="editNetworkForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column mb-2 mt-4">
-            <div class="network-form flex flex-row mb-4">
+            <div class="network-form">
                 <label for="name">{{ 'NETWORKS.LABEL.NETWORK' | translate }}</label>
                 <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
             </div>

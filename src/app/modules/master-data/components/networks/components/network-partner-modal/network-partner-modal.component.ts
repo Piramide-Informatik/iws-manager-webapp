@@ -17,7 +17,7 @@ import { ContactPerson } from '../../../../../../Entities/contactPerson';
   styleUrl: './network-partner-modal.component.scss'
 })
 export class NetworkPartnerModalComponent implements OnInit, OnChanges {
-  private readonly networPartnerUtils = inject(NetowrkPartnerUtils);
+  private readonly networkPartnerUtils = inject(NetowrkPartnerUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly contactUtils = inject(ContactUtils);
   private readonly customerService = inject(CustomerService);
@@ -38,8 +38,6 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   selectedContact = signal(0);
   isCreateButtonEnable = false;
 
-  public partners!: any[];
-  public columsHeaderFieldPartner: any[] = [];
   readonly customers = computed(() => {
     return this.customerService.customers()
   });
@@ -63,7 +61,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
       partnerno: new FormControl(null),
       comment: new FormControl(''),
       partner: new FormControl(''),
-      contactperson: new FormControl(''),
+      contact: new FormControl(''),
     });
   }
 
@@ -81,21 +79,24 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
         partnerno: this.selectedNetworkPartner?.partnerno,
         comment: this.selectedNetworkPartner?.comment,
         partner: this.selectedNetworkPartner?.partner?.id,
-        contactperson: this.selectedNetworkPartner?.contactperson?.id
+        contact: this.selectedNetworkPartner?.contact?.id
       });
     }
   }
 
   onSubmit(): void {
-    if(this.networkPartnerForm.invalid || this.isLoading) return
+    if(this.networkPartnerForm.invalid || this.isLoading || !this.network) return
     this.isLoading = true;
     const networkPartnerData = this.networkPartnerForm.value;
-    networkPartnerData.network = this.network;
-    networkPartnerData.partner = this.customers().find(ct => ct.id == networkPartnerData.partner);
-    networkPartnerData.contactperson = this.contactsMap.get(networkPartnerData.contactperson);
-    networkPartnerData.comment = networkPartnerData.comment?.trim()
     if (!this.selectedNetworkPartner) {
-      this.networPartnerUtils.createNewNetworkPartner(networkPartnerData).subscribe({
+      const newNetworkPartner: Omit<NetworkPartner, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+        partnerno: networkPartnerData.partnerno,
+        comment: networkPartnerData.comment?.trim(),
+        partner: this.customers().find(ct => ct.id == networkPartnerData.partner),
+        contact: this.contactsMap.get(networkPartnerData.contact),
+        network: this.network
+      }
+      this.networkPartnerUtils.createNewNetworkPartner(newNetworkPartner).subscribe({
         next: (created) => {
           this.isLoading = false;
           this.closeModal();
@@ -107,17 +108,22 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
         } 
       })
     } else {
-      networkPartnerData.id = this.selectedNetworkPartner.id;
-      networkPartnerData.createdAt = this.selectedNetworkPartner.createdAt;
-      networkPartnerData.updatedAt = this.selectedNetworkPartner.updatedAt;
-      networkPartnerData.version = this.selectedNetworkPartner.version;
-      this.networPartnerUtils.updateNetworkPartner(networkPartnerData).subscribe({
+      const editedNetworkPartner: NetworkPartner = {
+        ...this.selectedNetworkPartner,
+        partnerno: networkPartnerData.partnerno,
+        comment: networkPartnerData.comment?.trim(),
+        partner: this.customers().find(ct => ct.id == networkPartnerData.partner),
+        contact: this.contactsMap.get(networkPartnerData.contact),
+        network: this.network
+      }
+      this.networkPartnerUtils.updateNetworkPartner(editedNetworkPartner).subscribe({
         next: (edited) => {
           this.isLoading = false;
           this.closeModal();
           this.editNetworkPartner.emit({edited, status: 'success'});
         },
         error: (error) => {
+          this.isLoading = false;
           console.log(error)
           this.editNetworkPartner.emit({ status: 'error' });
         }
@@ -133,7 +139,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   onDeleteNetworkPartnerConfirm() {
     this.isLoading = true;
     if (this.selectedNetworkPartner) {
-      this.networPartnerUtils.deleteNetworkPartener(this.selectedNetworkPartner.id).subscribe({
+      this.networkPartnerUtils.deleteNetworkPartener(this.selectedNetworkPartner.id).subscribe({
         next: () => {
           this.isLoading = false;
           this.closeModal();

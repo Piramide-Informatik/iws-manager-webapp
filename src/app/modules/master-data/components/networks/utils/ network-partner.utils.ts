@@ -53,7 +53,7 @@ export class NetowrkPartnerUtils {
    * @param networkPartner - New network partner to be created
    * @returns Observable that completes when network partner is created
    */
-  createNewNetworkPartner(networkPartner: Omit<NetworkPartner, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Network> {
+  createNewNetworkPartner(networkPartner: Omit<NetworkPartner, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<NetworkPartner> {
     return this.networkPartnerService.addNetworkPartner(networkPartner);
   }
 

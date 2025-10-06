@@ -8,14 +8,15 @@
             </div>
             <div class="network-partner-form">
                 <label for="comment">{{ 'NETWORKS.PARTNER.COMMENT' | translate }}</label>
-                <input pInputText type="text" id="name" formControlName="comment" autocomplete="off" />
+                <input pInputText type="text" id="comment" formControlName="comment" autocomplete="off" />
             </div>
 
             <div class="network-partner-form">
-                <label for="comment">{{ 'NETWORKS.PARTNER.CUSTOMER' | translate }}</label>
+                <label for="customer">{{ 'NETWORKS.PARTNER.CUSTOMER' | translate }}</label>
                 <p-select 
                   [options]="customers()" 
                   class="search-box w-auto"
+                  inputId="customer"
                   [(ngModel)]="selectedCustomer" 
                   optionLabel="customername1" 
                   optionValue="id" 
@@ -35,7 +36,7 @@
                 </p-select>
             </div>
             <div class="network-partner-form">
-                <label for="comment">{{ 'NETWORKS.PARTNER.CONTACT' | translate }}</label>
+                <label for="contacts">{{ 'NETWORKS.PARTNER.CONTACT' | translate }}</label>
                 <p-select 
                   [options]="contacts()" 
                   class="search-box w-auto"
@@ -49,7 +50,7 @@
                   [appendTo]="'body'"
                   [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
                   [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
-                  formControlName="contactperson">
+                  formControlName="contact">
                     <ng-template #selectedItem let-selectedOption>
                         <div class="flex items-center gap-2">
                             <div>{{ selectedOption.name }}</div>
