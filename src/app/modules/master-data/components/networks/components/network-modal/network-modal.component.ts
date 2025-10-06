@@ -21,7 +21,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public networkForm!: FormGroup;
   public isLoading = false;
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   public partners!: any[];
   public columsHeaderFieldPartner: any[] = [];

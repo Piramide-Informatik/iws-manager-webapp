@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, computed, inject, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { RouterUtilsService } from '../../router-utils.service';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { Column } from '../../../../Entities/column';
   templateUrl: './networks.component.html',
   styles: ``
 })
-export class NetworksComponent implements OnInit, OnDestroy {
+export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
   private readonly networkUtils = inject(NetowrkUtils);
   private readonly networkService = inject(NetworkService);
   private readonly networkStateService = inject(NetworkStateService);
