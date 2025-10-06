@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import { TranslateService } from '@ngx-translate/core';
-import {  MessageService } from 'primeng/api';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'master-data-edit-project-status',
@@ -24,7 +24,7 @@ export class EditProjectStatusComponent implements OnInit {
   constructor(
     private readonly projectStatusUtils: ProjectStatusUtils,
     private readonly projectStatusStateService: ProjectStatusStateService,
-    private readonly messageService: MessageService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly translate: TranslateService
   ) {}
 
@@ -111,11 +111,7 @@ export class EditProjectStatusComponent implements OnInit {
   }
 
   private handleSaveSuccess(savedProjectStatus: ProjectStatus): void{
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.projectStatusStateService.setProjectStatusToEdit(null);
     this.clearForm();
   }
@@ -131,11 +127,7 @@ export class EditProjectStatusComponent implements OnInit {
 
   private handleSaveError(error: any): void {
     console.error('Error saving title:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('PROJECT_STATUS.MESSAGE.ERROR'),
-      detail: this.translate.instant('PROJECT_STATUS.MESSAGE.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 

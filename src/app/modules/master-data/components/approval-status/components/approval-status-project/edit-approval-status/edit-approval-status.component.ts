@@ -3,9 +3,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 import { Subscription } from 'rxjs';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
-import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { ApprovalStatusStateService } from '../../../utils/approval-status-state.service';
+import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-edit-approval-status',
@@ -24,7 +24,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   constructor(
     private readonly approvalStatusUtils: ApprovalStatusUtils,
     private readonly approvalStatusStateService: ApprovalStatusStateService,
-    private readonly messageService: MessageService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly translate: TranslateService
   ) { }
 
@@ -125,11 +125,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveSuccess(): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.approvalStatusStateService.setApprovalStatusToEdit(null);
     this.clearForm();
   }
@@ -145,11 +141,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
 
   private handleSaveError(error: any): void {
     console.error('Error saving approval status:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.UPDATE_FAILED')
-    });
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 
