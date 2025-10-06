@@ -3,7 +3,6 @@
     "CUSTOMER_OVERVIEW": "Lista de Clientes",
     "CUSTOMER": "Cliente - ",
     "NEW_CUSTOMER": "Nuevo Cliente",
-    "TYPE_OF_COMPANIES": "Tipos de Empresas",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
@@ -31,6 +30,7 @@
       "TERMS_OF_PAYMENT": "Datos Maestros - Términos de Pago",
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
+      "TYPE_OF_COMPANIES": "Datos Maestros - Tipos de Empresas",
       "USER": "Datos Maestros - Usuario"
     }
   },
