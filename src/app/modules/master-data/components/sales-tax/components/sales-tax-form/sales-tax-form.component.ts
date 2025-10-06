@@ -28,6 +28,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   @Output() vatEdited = new EventEmitter<void>(); 
+  @Output() vatRateEdited = new EventEmitter<void>(); 
   public vatToEdit: Vat | null = null;
   public showOCCErrorModalVat = false;
   public isLoading: boolean = false;
