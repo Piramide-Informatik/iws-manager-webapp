@@ -42,6 +42,8 @@ export class EditHolidayComponent implements OnInit {
 
   holidayForm!: FormGroup;
   bundeslands: State[] = [];
+  private statesModified = false;
+  private yearsModified = false;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -84,6 +86,7 @@ export class EditHolidayComponent implements OnInit {
         this.years = [...this.years, newYear].sort((a, b) =>
           a.year.localeCompare(b.year)
         );
+        this.yearsModified = true;
       },
       error: (err) => {
         console.error('Error adding new year:', err);
@@ -115,7 +118,13 @@ export class EditHolidayComponent implements OnInit {
       .getStatesByHolidayId(publicHolidayId)
       .subscribe((states) => {
         this.bundeslands = states;
+        this.statesModified = false;
+        this.yearsModified = false;
       });
+  }
+
+  onStateSelectionChange(): void {
+    this.statesModified = true;
   }
 
   saveSelections(publicHolidayId: number): void {
@@ -125,7 +134,7 @@ export class EditHolidayComponent implements OnInit {
     this.publicHolidayService
       .saveSelectedStates(publicHolidayId, selectedStateIds)
       .subscribe({
-        next: () => console.log('States saved successfully'),
+        next: () => {console.log('States saved successfully'); this.statesModified = false;},
         error: (err) => console.error('Error saving states:', err),
       });
   }
@@ -186,6 +195,10 @@ export class EditHolidayComponent implements OnInit {
     );
   }
 
+  get hasChanges(): boolean {
+    return this.editPublicHolidayForm.dirty || this.statesModified|| this.yearsModified;
+  }
+
   onSubmit(): void {
     if (
       this.editPublicHolidayForm.invalid ||
@@ -234,6 +247,8 @@ export class EditHolidayComponent implements OnInit {
       summary: this.translate.instant('MESSAGE.SUCCESS'),
       detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
+    this.statesModified = false; 
+    this.yearsModified = false; 
     this.publicHolidayStateService.setPublicHolidayToEdit(null);
     this.clearForm();
   }
@@ -273,6 +288,8 @@ export class EditHolidayComponent implements OnInit {
     this.isSaving = false;
     this.bundeslands = [];
     this.years = [];
+    this.statesModified = false;
+    this.yearsModified = false;
   }
 
   onRefresh(): void {
