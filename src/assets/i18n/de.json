@@ -7,7 +7,26 @@
     "TITLES": "Titel",
     "SALUTATION": "Anrede",
     "STATES": "Bundesländer",
-    "TYPE_OF_COMPANIES": "Unternehmensarten"
+    "TYPE_OF_COMPANIES": "Unternehmensarten",
+    "MASTER_DATA": {
+      "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
+      "BILLERS": "Stammdaten - Rechnungsersteller",
+      "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
+      "HOLIDAYS": "Stammdaten - Feiertage",
+      "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
+      "DUNNING_LEVELS": "Stammdaten - Mahnungstufen",
+      "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
+      "NETWORKS": "Stammdaten - Netzwerke",
+      "PROJECT_STATUS": "Stammdaten - Projektstatus",
+      "PROJECT_FUNNELS": "Stammdaten - Projektträger",
+      "REALIZATION_PROBABILITIES": "Stammdaten - Realisierungswahrscheinlichkeit",
+      "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
+      "SALES_TAX": "Stammdaten - Umsatzsteuer",
+      "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
+      "TEXTS": "Stammdaten - Texte",
+      "TITLE": "Stammdaten - Titel",
+      "USER": "Stammdaten - Benutzer"
+    }
   },
   "ERROR": {
     "OCC": {
