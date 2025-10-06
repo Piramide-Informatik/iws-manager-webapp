@@ -6,7 +6,6 @@
     "COUNTRIES": "Countries",
     "TITLES": "Titles",
     "SALUTATION": "Salutation",
-    "STATES": "States",
     "TYPE_OF_COMPANIES": "Company Types",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
@@ -29,6 +28,7 @@
       "REALIZATION_PROBABILITIES": "Masterdata - Realization Probability",
       "SYSTEM_CONSTANTS": "Masterdata - System Constants",
       "SALES_TAX": "Masterdata - Sales Tax",
+      "STATES": "Masterdata - States",
       "TERMS_OF_PAYMENT": "Masterdata - Terms of Payment",
       "TEXTS": "Masterdata - Texts",
       "TITLE": "Masterdata - Titles",
