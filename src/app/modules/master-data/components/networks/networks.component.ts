@@ -18,6 +18,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { Network } from '../../../../Entities/network';
 import { NetworkStateService } from './utils/network-state.service';
 import { Column } from '../../../../Entities/column';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-networks',
@@ -48,10 +49,12 @@ export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
     private readonly translate: TranslateService,
     private readonly commonMessageService: CommonMessagesService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly pageTitleService: PageTitleService
   ) { }
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.NETWORKS');
     this.networkUtils.loadInitialData().subscribe();
     this.loadColHeadersNetworks();
     this.userNetworksPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldNetworks);
