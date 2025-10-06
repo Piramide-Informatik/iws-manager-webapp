@@ -7,7 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
 import { PublicHoliday } from '../../../../../../Entities/publicholiday';
 import { State } from '../../../../../../Entities/state';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
@@ -21,6 +20,7 @@ import moment from 'moment';
 import { PublicHolidayService } from '../../../../../../Services/public-holiday.service';
 import { HolidayYearService } from '../../../../../../Services/holiday-year.service';
 import { HolidayYear } from '../../../../../../Entities/holidayYear';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-edit-holiday',
@@ -42,12 +42,14 @@ export class EditHolidayComponent implements OnInit {
 
   holidayForm!: FormGroup;
   bundeslands: State[] = [];
+  private statesModified = false;
+  private yearsModified = false;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly publicHolidayUtils: PublicHolidayUtils,
     private readonly publicHolidayStateService: PublicHolidayStateService,
-    private readonly messageService: MessageService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly translate: TranslateService,
     private readonly publicHolidayService: PublicHolidayService,
     private readonly holidayYearService: HolidayYearService
@@ -84,6 +86,7 @@ export class EditHolidayComponent implements OnInit {
         this.years = [...this.years, newYear].sort((a, b) =>
           a.year.localeCompare(b.year)
         );
+        this.yearsModified = true;
       },
       error: (err) => {
         console.error('Error adding new year:', err);
@@ -115,7 +118,13 @@ export class EditHolidayComponent implements OnInit {
       .getStatesByHolidayId(publicHolidayId)
       .subscribe((states) => {
         this.bundeslands = states;
+        this.statesModified = false;
+        this.yearsModified = false;
       });
+  }
+
+  onStateSelectionChange(): void {
+    this.statesModified = true;
   }
 
   saveSelections(publicHolidayId: number): void {
@@ -125,7 +134,7 @@ export class EditHolidayComponent implements OnInit {
     this.publicHolidayService
       .saveSelectedStates(publicHolidayId, selectedStateIds)
       .subscribe({
-        next: () => console.log('States saved successfully'),
+        next: () => {console.log('States saved successfully'); this.statesModified = false;},
         error: (err) => console.error('Error saving states:', err),
       });
   }
@@ -186,6 +195,10 @@ export class EditHolidayComponent implements OnInit {
     );
   }
 
+  get hasChanges(): boolean {
+    return this.editPublicHolidayForm.dirty || this.statesModified|| this.yearsModified;
+  }
+
   onSubmit(): void {
     if (
       this.editPublicHolidayForm.invalid ||
@@ -214,7 +227,7 @@ export class EditHolidayComponent implements OnInit {
         .subscribe({
           next: (savedPublicHoliday) => {
             this.saveSelections(savedPublicHoliday.id);
-            this.handleSaveSuccess(savedPublicHoliday);
+            this.handleSaveSuccess();
           },
           error: (err) => this.handleError(err),
         })
@@ -228,12 +241,10 @@ export class EditHolidayComponent implements OnInit {
     });
   }
 
-  private handleSaveSuccess(savedPublicHoliday: PublicHoliday): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
-    });
+  private handleSaveSuccess(): void {
+    this.commonMessageService.showEditSucessfullMessage();
+    this.statesModified = false; 
+    this.yearsModified = false; 
     this.publicHolidayStateService.setPublicHolidayToEdit(null);
     this.clearForm();
   }
@@ -252,11 +263,7 @@ export class EditHolidayComponent implements OnInit {
 
   private handleSaveError(error: any): void {
     console.error('Error saving title:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
-    });
+   this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 
@@ -273,6 +280,8 @@ export class EditHolidayComponent implements OnInit {
     this.isSaving = false;
     this.bundeslands = [];
     this.years = [];
+    this.statesModified = false;
+    this.yearsModified = false;
   }
 
   onRefresh(): void {
