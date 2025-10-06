@@ -1,11 +1,26 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  inject,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { TeamIwsService } from '../../../../../../Services/team-iws.service';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
-import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import {
+  momentCreateDate,
+  momentFormatDate,
+} from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-iws-staff-modal',
@@ -37,10 +52,17 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   errorMessage: string | null = null;
 
   readonly createEmployeeIwsForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    lastName: new FormControl('', [Validators.minLength(2), Validators.maxLength(50)]),
+    firstName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50),
+    ]),
+    lastName: new FormControl('', [
+      Validators.minLength(2),
+      Validators.maxLength(50),
+    ]),
     mail: new FormControl('', [Validators.email]),
-    employeeNo: new FormControl({value: null, disabled: true}),
+    employeeNo: new FormControl<number | null>({ value: null, disabled: true }),
     employeeLabel: new FormControl(''),
     startDate: new FormControl(''),
     endDate: new FormControl(''),
@@ -56,10 +78,13 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visibleModal'] && this.visibleModal){
+    if (changes['visibleModal'] && this.visibleModal) {
+      if (this.isCreateMode) {
+      this.loadNextEmployeeNo(); // cargar número al abrir modal
+    }
       setTimeout(() => {
         this.focusInputIfNeeded();
-      })
+      });
     }
   }
 
@@ -177,7 +202,10 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private getSanitizedEmployeeIwsValues(): Omit<EmployeeIws, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
+  private getSanitizedEmployeeIwsValues(): Omit<
+    EmployeeIws,
+    'id' | 'createdAt' | 'updatedAt' | 'version'
+  > {
     return {
       firstname: this.createEmployeeIwsForm.value.firstName?.trim() ?? '',
       lastname: this.createEmployeeIwsForm.value.lastName?.trim() ?? '',
@@ -192,7 +220,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
             momentCreateDate(this.createEmployeeIwsForm.value.endDate)
           )
         : '',
-      employeeNo: Number(this.createEmployeeIwsForm.value.employeeNo), // Pendiente llamar endpoint, ya hice el cambio en el backend atte: Rigo
+      employeeNo: Number(this.createEmployeeIwsForm.value.employeeNo),
       employeeLabel:
         this.createEmployeeIwsForm.value.employeeLabel?.trim() ?? '',
       teamIws: this.createEmployeeIwsForm.value.teamIws ?? null,
@@ -216,4 +244,16 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
       }, 300);
     }
   }
+
+  private loadNextEmployeeNo(): void {
+  const sub = this.employeeIwsUtils.getNextEmployeeNo().subscribe({
+    next: (nextNo) => {
+      if (nextNo != null) {
+        this.createEmployeeIwsForm.patchValue({ employeeNo: nextNo });
+      }
+    },
+    error: (err) => console.error('Error loading next employeeNo', err),
+  });
+  this.subscriptions.add(sub);
+}
 }

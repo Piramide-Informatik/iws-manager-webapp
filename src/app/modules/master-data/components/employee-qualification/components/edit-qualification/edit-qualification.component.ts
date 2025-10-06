@@ -5,7 +5,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { EmployeeCategoryStateService } from '../../utils/employee-category-state.service';
 import { EmployeeCategoryUtils } from '../../utils/employee-category-utils';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-edit-qualification',
@@ -26,7 +26,7 @@ export class EditQualificationComponent implements OnInit {
   constructor(
     private readonly employeeCategoryUtils: EmployeeCategoryUtils,
     private readonly employeeCategoryStateService: EmployeeCategoryStateService,
-    private readonly messageService: MessageService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly translate: TranslateService
   ) {}
 
@@ -127,11 +127,7 @@ export class EditQualificationComponent implements OnInit {
   }
 
   private handleSaveSuccess(savedEEmployeeCategory: EmployeeCategory): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.employeeCategoryStateService.setEmployeeCategoryToEdit(null);
     this.clearForm();
   }
@@ -150,11 +146,7 @@ export class EditQualificationComponent implements OnInit {
 
   private handleSaveError(error: any): void {
     console.error('Error saving EmployeeCategory:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
-    });
+    this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;
   }
 

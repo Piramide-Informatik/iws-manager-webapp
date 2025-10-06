@@ -60,7 +60,7 @@
           icon="pi pi-check"
           class="p-button-sm"
           [loading]="isSaving"
-          [disabled]="editPublicHolidayForm.invalid || isSaving || !editPublicHolidayForm.dirty"
+          [disabled]="editPublicHolidayForm.invalid || isSaving || !hasChanges"
         ></p-button>
       </div>
     </div>
@@ -95,7 +95,7 @@
             <td class="align-center">
               <p-toggleswitch
                 [(ngModel)]="bl.selected"
-                
+                (onChange)="onStateSelectionChange()"
               >
                 <ng-template #handle let-checked="checked">
                   <i
