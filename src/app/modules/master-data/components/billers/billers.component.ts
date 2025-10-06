@@ -9,6 +9,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { BillerUtils } from './utils/biller-utils';
 import { BillerService } from '../../../../Services/biller.service';
 import { BillerStateService } from './utils/biller-state.service';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-billers',
@@ -36,10 +37,12 @@ export class BillersComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly pageTitleService: PageTitleService
   ){}
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.BILLERS');
     this.billerUtils.loadInitialData().subscribe();
 
     this.loadColHeadersBillers();

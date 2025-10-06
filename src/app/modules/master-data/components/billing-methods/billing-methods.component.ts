@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-billing-methods',
@@ -6,6 +7,11 @@ import { Component } from '@angular/core';
   templateUrl: './billing-methods.component.html',
   styleUrl: './billing-methods.component.scss'
 })
-export class BillingMethodsComponent {
+export class BillingMethodsComponent implements OnInit{
+  constructor(private readonly pageTitleService: PageTitleService) { }
+
+  ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.BILLING_METHODS');
+  }
 
 }
