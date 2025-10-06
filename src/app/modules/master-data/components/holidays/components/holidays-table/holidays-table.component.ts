@@ -10,7 +10,7 @@ import { PublicHolidayService } from '../../../../../../Services/public-holiday.
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Column } from '../../../../../../Entities/column';
-
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 @Component({
   selector: 'app-holidays-table',
   standalone: false,
@@ -21,6 +21,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly publicHolidayUtils = new PublicHolidayUtils();
   private readonly publicHolidayService = inject(PublicHolidayService);
   private readonly messageService = inject(MessageService);
+  
 
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
@@ -45,7 +46,8 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly publicHolidayStateService: PublicHolidayStateService
+    private readonly publicHolidayStateService: PublicHolidayStateService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
@@ -156,7 +158,11 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
     summary: string;
     detail: string;
   }): void {
-      this.showToast(message);
+      this.commonMessageService.showCustomSeverityAndMessage(
+      message.severity,
+      message.summary,
+      message.detail
+    )
   }
 
 

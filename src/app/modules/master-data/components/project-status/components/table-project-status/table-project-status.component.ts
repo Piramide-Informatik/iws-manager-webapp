@@ -7,9 +7,9 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { ProjectStatusService } from '../../../../../../Services/project-status.service';
 import { ProjectStatusUtils } from '../../../../../../modules/master-data/components/project-status/utils/project-status-utils';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
-import { MessageService } from 'primeng/api';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 import { Column } from '../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-table-project-status',
@@ -23,7 +23,7 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   private readonly projectStatusStateService = inject(ProjectStatusStateService);
   private readonly projectStatusUtils = new ProjectStatusUtils();
   private readonly projectStatusService = inject(ProjectStatusService);
-  private readonly messageService = inject(MessageService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedProjectStatus: number | null = null;
@@ -108,20 +108,13 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
       this.selectedProjectStatus = null;
     }
   }
-  onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void{
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    })
-  }
 
   toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
+    this.commonMessageService.showCustomSeverityAndMessage(
+      message.severity,
+      message.summary,
+      message.detail
+    )
   }
 
   editProjectStatus(projectStatus: ProjectStatus){

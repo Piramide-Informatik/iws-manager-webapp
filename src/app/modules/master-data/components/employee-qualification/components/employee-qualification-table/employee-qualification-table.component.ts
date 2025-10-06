@@ -11,6 +11,7 @@ import { EmployeeCategoryUtils } from '../../utils/employee-category-utils';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-employee-qualification-table',
@@ -44,7 +45,8 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService,
-    private readonly employeeCategoryStateService: EmployeeCategoryStateService
+    private readonly employeeCategoryStateService: EmployeeCategoryStateService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
@@ -107,11 +109,11 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
   }
 
   toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail)),
-    });
+    this.commonMessageService.showCustomSeverityAndMessage(
+      message.severity,
+      message.summary,
+      message.detail
+    )
   }
 
   editEmployeeCategory(employeeCategory: EmployeeCategory) {
