@@ -84,12 +84,30 @@ export class CommonMessagesService {
     })
   }
 
+  showErrorDeleteMessageUsedByEntityWithName(errorMessage: string) {
+    const entityName = this.extractRelatedEntity(errorMessage);
+    const detailMessage = this.translateService.instant('MESSAGE.DELETE_ERROR_IN_USE_WITH_ENTITY');
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: detailMessage + ' ' + entityName
+    })
+  }
+
   showCustomSeverityAndMessage(severity: string, message: string, detail: string) {
     this.messageService.add({
       severity: severity,
       summary: this.translateService.instant(message),
       detail: this.translateService.instant(detail)
     })
+  }
+
+  private extractRelatedEntity(errorMessage: string): string {
+    const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
+    if (match?.[1]) {
+      return match[1];
+    }
+    return 'unknown entity';
   }
   
 }
