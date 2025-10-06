@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ContractStatusTableComponent } from './components/contract-status-table/contract-status-table.component';
 import { ContractStatusFormComponent } from './components/contract-status-form/contract-status-form.component';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-contract-status',
@@ -8,7 +9,7 @@ import { ContractStatusFormComponent } from './components/contract-status-form/c
   templateUrl: './contract-status.component.html',
   styleUrl: './contract-status.component.scss'
 })
-export class ContractStatusComponent {
+export class ContractStatusComponent implements OnInit{
 
   @ViewChild('contractTable')
   contractStatusTable!: ContractStatusTableComponent;
@@ -16,6 +17,12 @@ export class ContractStatusComponent {
   formContractStatus!: ContractStatusFormComponent;
   isLoading = false;
   selectedContractStatusToEdit: any;
+
+  constructor(private readonly pageTitleService: PageTitleService) {}
+
+  ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.CONTRACT_STATUS');
+  }
 
 
   onSelectedContractStatusToEdit(selectedContractStatusToEdit: any) {
