@@ -9,4 +9,6 @@ import { Component } from '@angular/core';
 export class SalesTaxComponent {
 
   vatEdited: boolean = false;
+
+  vatRateEdited: boolean = false;
 }
