@@ -3,10 +3,6 @@
     "CUSTOMER_OVERVIEW": "Customer Overview",
     "CUSTOMER": "Customer - ",
     "NEW_CUSTOMER": "New Customer",
-    "COUNTRIES": "Countries",
-    "TITLES": "Titles",
-    "SALUTATION": "Salutation",
-    "TYPE_OF_COMPANIES": "Company Types",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
       "APPROVAL_STATUS": "Masterdata - Approval Status",
@@ -14,6 +10,7 @@
       "BILLING_METHODS": "Masterdata - Billing Methods",
       "CONTRACT_STATUS": "Masterdata - Contract Status",
       "COSTS": "Masterdata - Costs",
+      "COUNTRIES": "Masterdata - Countries",
       "DUNNING_LEVELS": "Masterdata - Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
@@ -28,10 +25,12 @@
       "REALIZATION_PROBABILITIES": "Masterdata - Realization Probability",
       "SYSTEM_CONSTANTS": "Masterdata - System Constants",
       "SALES_TAX": "Masterdata - Sales Tax",
+      "SALUTATION": "Masterdata - Salutation",
       "STATES": "Masterdata - States",
       "TERMS_OF_PAYMENT": "Masterdata - Terms of Payment",
       "TEXTS": "Masterdata - Texts",
       "TITLE": "Masterdata - Titles",
+      "TYPE_OF_COMPANIES": "Masterdata - Company Types",
       "USER": "Masterdata - User"
     }
   },

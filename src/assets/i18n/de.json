@@ -3,10 +3,6 @@
     "CUSTOMER_OVERVIEW": "Kundenübersicht",
     "CUSTOMER": "kunde - ",
     "NEW_CUSTOMER": "Neuer Kunde",
-    "COUNTRIES": "Länder",
-    "TITLES": "Titel",
-    "SALUTATION": "Anrede",
-    "TYPE_OF_COMPANIES": "Unternehmensarten",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
@@ -14,6 +10,7 @@
       "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
       "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
       "COSTS": "Stammdaten - Kostenarten",
+      "COUNTRIES": "Stammdaten - Länder",
       "DUNNING_LEVELS": "Stammdaten - Mahnungstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
@@ -28,10 +25,12 @@
       "ROLE": "Stammdaten - Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Stammdaten - Umsatzsteuer",
+      "SALUTATION": "Stammdaten - Anrede",
       "STATES": "Stammdaten - Bundesländer",
       "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
+      "TYPE_OF_COMPANIES": "Stammdaten - Unternehmensarten",
       "USER": "Stammdaten - Benutzer"
     }
   },

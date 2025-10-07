@@ -10,6 +10,7 @@ import { Promoter } from '../../../../Entities/promoter';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { PromoterStateService } from './utils/promoter-state.service';
 import { Column } from '../../../../Entities/column';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-project-funnels',
@@ -38,10 +39,12 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly pageTitleService: PageTitleService
   ){}
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.PROJECT_FUNNELS');
     this.promoterUtils.loadInitialData().subscribe();
     this.loadColHeadersProjectFunnels();
     this.userProjectFunnelsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProjecFunnels);

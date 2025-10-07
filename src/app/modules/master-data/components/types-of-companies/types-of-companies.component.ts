@@ -11,6 +11,6 @@ export class TypesOfCompaniesComponent implements OnInit{
   constructor(private readonly pageTitleService: PageTitleService) {}
 
   ngOnInit(): void {
-    this.pageTitleService.setTranslatedTitle('PAGETITLE.TYPE_OF_COMPANIES');
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.TYPE_OF_COMPANIES');
   }
 }

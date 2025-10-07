@@ -11,6 +11,6 @@ export class TitleComponent implements OnInit {
   constructor(private readonly pageTitleService: PageTitleService) { }
 
   ngOnInit(): void {
-    this.pageTitleService.setTranslatedTitle('PAGETITLE.TITLES');
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.TITLE');
   }
 }

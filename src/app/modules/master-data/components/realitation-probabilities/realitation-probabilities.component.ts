@@ -10,6 +10,7 @@ import { ChanceStateService } from './utils/chance-state.service';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Column } from '../../../../Entities/column';
 import { Chance } from '../../../../Entities/chance';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-realitation-probabilities',
@@ -41,10 +42,12 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly routerUtils: RouterUtilsService
+    private readonly routerUtils: RouterUtilsService,
+    private readonly pageTitleService: PageTitleService,
   ){}
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.REALIZATION_PROBABILITIES');
     this.chanceUtils.loadInitialData().subscribe();
     this.loadColHeadersProbabilities();
     this.userRealitationProbabilitiesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
