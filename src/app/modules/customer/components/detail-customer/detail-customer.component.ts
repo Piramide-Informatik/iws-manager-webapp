@@ -101,10 +101,9 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   public readonly tableData = computed(() => {
     return this.contactPersons()
-      .sort((c1: ContactPerson, c2: ContactPerson) => new Date(c2.createdAt ?? '2021-01-01').getTime() - new Date(c1.createdAt ?? '2021-01-01').getTime())
       .map(contact => ({
         id: contact.id,
-        name: `${contact.firstName} ${contact.lastName}`,
+        name: `${contact.lastName} ${contact.firstName}`,
         function: contact.function ?? '',
         right: contact.forInvoicing
       }));
