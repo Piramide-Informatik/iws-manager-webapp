@@ -97,13 +97,15 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         header: this.translate.instant(_('IWS_TEAMS.LABEL.TEAM_NAME')),
-        styles: { width: '50%', 'min-width': '200px' },
+        styles: { 'min-width': '150px' },
+        classesTHead: ['width-50'],
         useSameAsEdit: true
       },
       {
         field: 'teamLeader',
         header: this.translate.instant(_('IWS_TEAMS.LABEL.TEAM_LEADER')),
-        styles: { width: '50%', 'min-width': '200px' },
+        styles: { 'min-width': '250px' },
+        classesTHead: ['width-50'],
       },
     ];
   }
