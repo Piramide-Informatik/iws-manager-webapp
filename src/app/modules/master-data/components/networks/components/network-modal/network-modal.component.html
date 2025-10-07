@@ -36,3 +36,10 @@
         </div>
     </div>
 </ng-template>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalNetwork"
+  [errorType]="occErrorType"
+  (close)="showOCCErrorModalNetwork = false"
+  [reloadCurrentPage]="true">
+</app-occ-error-modal>
