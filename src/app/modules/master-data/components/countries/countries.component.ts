@@ -11,6 +11,6 @@ export class CountriesComponent implements OnInit {
    constructor(private readonly pageTitleService: PageTitleService) {}
 
   ngOnInit(): void {
-    this.pageTitleService.setTranslatedTitle('PAGETITLE.COUNTRIES');
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.COUNTRIES');
   }
 }

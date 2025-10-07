@@ -9,7 +9,7 @@ import { PageTitleService } from '../../../../shared/services/page-title.service
 })
 export class AbsenceTypesComponent implements OnInit{
 
-  constructor(private pageTitleService: PageTitleService) {}
+  constructor(private readonly pageTitleService: PageTitleService) {}
 
   ngOnInit(): void {
     this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.ABSENCE_TYPES');
