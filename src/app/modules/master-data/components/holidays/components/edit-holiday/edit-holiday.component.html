@@ -3,7 +3,7 @@
   [header]="'HOLIDAYS.HEADER.EDIT_HOLIDAY' | translate"
 >
   <form [formGroup]="editPublicHolidayForm" (ngSubmit)="onSubmit()">
-    <div class="align-items-center mb-2">
+    <div class="magin-bottom-form">
       <div class="holiday-form mb-2">
         <label for="name">{{ "HOLIDAYS.LABEL.HOLIDAY_NAME" | translate }}</label>
         <input
@@ -96,6 +96,7 @@
               <p-toggleswitch
                 [(ngModel)]="bl.selected"
                 (onChange)="onStateSelectionChange()"
+                class="flex align-content-center justify-content-center"
               >
                 <ng-template #handle let-checked="checked">
                   <i
