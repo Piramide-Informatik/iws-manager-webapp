@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Network } from '../../../../../../Entities/network';
 import { NetowrkUtils } from '../../utils/ network.utils';
 import { Subscription } from 'rxjs';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-network-modal',
@@ -16,8 +17,8 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedNetwork!: Network | null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() createNetwork = new EventEmitter<{created?: Network, status: 'success' | 'error'}>();
-  @Output() deleteNetwork = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createNetwork = new EventEmitter<{ created?: Network, status: 'success' | 'error' }>();
+  @Output() deleteNetwork = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public networkForm!: FormGroup;
   public isLoading = false;
@@ -26,7 +27,10 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   public partners!: any[];
   public columsHeaderFieldPartner: any[] = [];
 
-  constructor(){}
+  public showOCCErrorModalNetwork = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
+  constructor() { }
 
   ngOnInit(): void {
     this.networkForm = new FormGroup({
@@ -35,7 +39,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.visible){
+    if (changes['visible'] && this.visible) {
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
@@ -43,7 +47,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if(this.networkForm.invalid || this.isLoading) return
+    if (this.networkForm.invalid || this.isLoading) return
 
     this.isLoading = true;
     const newNetwork: Omit<Network, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
@@ -54,12 +58,12 @@ export class NetworkModalComponent implements OnInit, OnChanges {
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.createNetwork.emit({created, status: 'success'});
+        this.createNetwork.emit({ created, status: 'success' });
       },
       error: () => {
         this.isLoading = false;
         this.createNetwork.emit({ status: 'error' });
-      } 
+      }
     });
 
     this.subscriptions.add(sub);
@@ -77,13 +81,21 @@ export class NetworkModalComponent implements OnInit, OnChanges {
         next: () => {
           this.isLoading = false;
           this.closeModal();
-          this.deleteNetwork.emit({status: 'success'});
+          this.deleteNetwork.emit({ status: 'success' });
         },
         error: (error) => {
           this.isLoading = false;
+          this.handleDeleteError(error);
           this.deleteNetwork.emit({ status: 'error', error: error });
         }
       })
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalNetwork = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 

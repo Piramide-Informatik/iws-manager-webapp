@@ -4,6 +4,7 @@ import { NetworkService } from '../../../../../Services/network.service';
 import { Network } from '../../../../../Entities/network';
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for network-related business logic and operations.
@@ -103,13 +104,12 @@ export class NetowrkUtils {
       take(1),
       switchMap((currentNetwork) => {
         if (!currentNetwork) {
-          return throwError(() => new Error('Network not found'));
+          return throwError(() => createNotFoundUpdateError('Network'));
         }
 
         if (currentNetwork.version !== network.version) {
-          return throwError(() => new Error('Conflict detected: network version mismatch'));
+          return throwError(() => createUpdateConflictError('Network'));
         }
-
         return this.networkService.updateNetwork(network);
       })
     );

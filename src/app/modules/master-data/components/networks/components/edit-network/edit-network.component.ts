@@ -12,6 +12,7 @@ import { NetowrkPartnerUtils } from '../../utils/ network-partner.utils';
 import { NetworkPartnerService } from '../../../../../../Services/network-partner.service';
 import { NetworkPartner } from '../../../../../../Entities/network-partner';
 import { Column } from '../../../../../../Entities/column';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'master-data-edit-network',
@@ -33,6 +34,8 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   public isLoading: boolean = false;
   modalNetworkPartnerType: 'create' | 'edit' | 'delete' = 'create';
   visibleNetworksPartnersModal = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
   selectedNetworkPartner!: NetworkPartner | null;
   isCreateButtonEnable = false;
   networksPartners = computed(() => {
@@ -57,7 +60,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService
-  ){}
+  ) { }
 
   ngOnInit(): void {
     this.editNetworkForm = new FormGroup({
@@ -70,7 +73,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
       this.loadNetworkAfterRefresh(savedNetworkId);
       localStorage.removeItem('selectedNetworkId');
     }
-    
+
     this.loadColHeadersPartner();
     this.userEditNetworkPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -97,7 +100,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if(this.editNetworkForm.invalid || !this.networkToEdit) return
+    if (this.editNetworkForm.invalid || !this.networkToEdit) return
 
     this.isLoading = true;
     const editedNetwork: Network = {
@@ -112,14 +115,18 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
         this.commonMessageService.showEditSucessfullMessage();
       },
       error: (error: Error) => {
-        this.isLoading = false;
-        if(error.message === 'Conflict detected: network version mismatch'){
-          this.showOCCErrorModalNetwork = true;
-        }else{
-          this.commonMessageService.showErrorEditMessage();
-        }
+        this.handleUpdateError(error);
       }
     });
+  }
+
+  handleUpdateError(error: Error) {
+
+    if (error instanceof OccError) {
+      this.showOCCErrorModalNetwork = true;
+      this.occErrorType = error.errorType
+    }
+    this.isLoading = false;
   }
 
   handleTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
@@ -129,14 +136,14 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
         .find(ntp => ntp.id == event.data.id);
       if (foundNetWorkPartnerToEdit) {
         this.selectedNetworkPartner = foundNetWorkPartnerToEdit;
-      }  
+      }
     }
     if (event.type === 'delete') {
       const foundNetWorkPartnerToDelete = this.networkPartnerService.networksPartner()
         .find(ntp => ntp.id == event.data);
       if (foundNetWorkPartnerToDelete) {
         this.selectedNetworkPartner = foundNetWorkPartnerToDelete;
-      }  
+      }
     }
     this.visibleNetworksPartnersModal = true;
   }
@@ -145,26 +152,26 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
     this.visibleNetworksPartnersModal = value;
   }
 
-  onCreateNetworkPartner(event: { created?: NetworkPartner, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+  onCreateNetworkPartner(event: { created?: NetworkPartner, status: 'success' | 'error' }): void {
+    if (event.created && event.status === 'success') {
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
-  onEditNetworkPartner(event: { edited?: NetworkPartner, status: 'success' | 'error'}): void {
-    if(event.edited && event.status === 'success'){
+  onEditNetworkPartner(event: { edited?: NetworkPartner, status: 'success' | 'error' }): void {
+    if (event.edited && event.status === 'success') {
       this.commonMessageService.showEditSucessfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorEditMessage();
     }
   }
 
-  onDeleteNetworkPartner(event: {status: 'success' | 'error', error?: Error}) {
-    if(event.status === 'success'){
+  onDeleteNetworkPartner(event: { status: 'success' | 'error', error?: Error }) {
+    if (event.status === 'success') {
       this.commonMessageService.showDeleteSucessfullMessage();
-    } else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       event.error?.message === 'Cannot delete register: it is in use by other entities' ?
         this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
         this.commonMessageService.showErrorDeleteMessage();
@@ -189,7 +196,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   private setupNetworkSubscription(): void {
     this.subscriptions.add(
       this.networkStateService.currentNetwork$.subscribe(network => {
-        if(network){
+        if (network) {
           this.networkToEdit = network;
           this.editNetworkForm.patchValue({
             name: this.networkToEdit.name
