@@ -27,7 +27,7 @@
 
       <div class="user-form mb-2">
         <label for="password">{{ "USERS.FORM.PASSWORD" | translate }}</label>
-        <p-password #passwordContainer formControlName="password" [feedback]="true" [toggleMask]="true" [placeholder]="'********'" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('password')?.invalid && 
+        <p-password #passwordContainer formControlName="password" [feedback]="true" [toggleMask]="true" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('password')?.invalid && 
         editUserForm.get('password')?.touched}" autocomplete="off" [weakLabel]="'USERS.PASSWORD_LABEL.WEAK' | translate" [mediumLabel]="'USERS.PASSWORD_LABEL.MEDIUM' | translate" 
         [strongLabel]="'USERS.PASSWORD_LABEL.STRONG' | translate" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate" inputId="password">
         </p-password>
