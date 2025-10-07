@@ -97,7 +97,7 @@ export class EditUserFormComponent implements OnInit {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      password: '',
+      password: user.password,
       active: user.active,
       role: user.roles || []
     });
