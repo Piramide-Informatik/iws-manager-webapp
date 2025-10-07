@@ -33,7 +33,7 @@ export class ContactPersonService {
 
   public loadInitialData(): Observable<ContactPerson[]> {
     this._loading.set(true);
-    return this.http.get<ContactPerson[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<ContactPerson[]>(`${this.apiUrl}/ordered-by-lastname`, this.httpOptions).pipe(
       tap({
         next: (persons) => {
           this._contactPersons.set(persons);
