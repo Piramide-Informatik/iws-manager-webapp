@@ -3,7 +3,6 @@
     "CUSTOMER_OVERVIEW": "Kundenübersicht",
     "CUSTOMER": "kunde - ",
     "NEW_CUSTOMER": "Neuer Kunde",
-    "TYPE_OF_COMPANIES": "Unternehmensarten",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
@@ -31,6 +30,7 @@
       "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
+      "TYPE_OF_COMPANIES": "Stammdaten - Unternehmensarten",
       "USER": "Stammdaten - Benutzer"
     }
   },

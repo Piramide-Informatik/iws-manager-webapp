@@ -3,7 +3,6 @@
     "CUSTOMER_OVERVIEW": "Customer Overview",
     "CUSTOMER": "Customer - ",
     "NEW_CUSTOMER": "New Customer",
-    "TYPE_OF_COMPANIES": "Company Types",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
       "APPROVAL_STATUS": "Masterdata - Approval Status",
@@ -31,6 +30,7 @@
       "TERMS_OF_PAYMENT": "Masterdata - Terms of Payment",
       "TEXTS": "Masterdata - Texts",
       "TITLE": "Masterdata - Titles",
+      "TYPE_OF_COMPANIES": "Masterdata - Company Types",
       "USER": "Masterdata - User"
     }
   },

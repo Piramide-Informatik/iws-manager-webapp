@@ -9,6 +9,7 @@ import { SystemConstantUtils } from '../../utils/system-constant.utils';
 import { SystemConstantService } from '../../../../../../Services/system-constant.service';
 import { System } from '../../../../../../Entities/system';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { PageTitleService } from '../../../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-system-constant-table',
@@ -18,7 +19,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
-  private readonly systemConstantUtils =  inject(SystemConstantUtils);
+  private readonly systemConstantUtils = inject(SystemConstantUtils);
   private readonly systemConstantService = inject(SystemConstantService);
   systemConstantsColumns: any[] = [];
   isSystemConstantsChipVisible = false;
@@ -47,11 +48,14 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   private langConstantsSubscription!: Subscription;
 
   constructor(private readonly router: Router,
-              private readonly userPreferenceService: UserPreferenceService, 
-              private readonly translate: TranslateService,
-              private readonly commonMessageService: CommonMessagesService ) { }
+    private readonly userPreferenceService: UserPreferenceService,
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService,
+    private readonly pageTitleService: PageTitleService,
+  ) { }
 
   ngOnInit() {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.SYSTEM_CONSTANTS');
     this.systemConstantUtils.loadInitialData().subscribe();
     this.loadHeadersAndColumns();
     this.userSystemConstantPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.systemConstantsColumns);
@@ -70,7 +74,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
   }
 
   loadColumnSystemConstantHeaders(): any[] {
-    return  [
+    return [
       {
         field: 'name',
         minWidth: 110,
@@ -86,7 +90,7 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langConstantsSubscription) {
       this.langConstantsSubscription.unsubscribe();
     }
@@ -96,25 +100,25 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
     this.visibleSystemConstantModal = isVisible;
   }
 
-  onCreateSystemConstant(event: {created?: System, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+  onCreateSystemConstant(event: { created?: System, status: 'success' | 'error' }): void {
+    if (event.created && event.status === 'success') {
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
-  onDeleteSystemConstant(event: {status: 'success' | 'error', error?: Error}) {
-    if(event.status === 'success'){
+  onDeleteSystemConstant(event: { status: 'success' | 'error', error?: Error }) {
+    if (event.status === 'success') {
       this.selectedSystemConstantToEdit = null;
       this.commonMessageService.showDeleteSucessfullMessage();
-    } else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       event.error?.message === 'Cannot delete register: it is in use by other entities' ?
         this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
         this.commonMessageService.showErrorDeleteMessage();
     }
   }
-  
+
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
     if (event.type === 'delete') {
