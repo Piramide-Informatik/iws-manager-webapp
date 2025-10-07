@@ -4,6 +4,7 @@ import { RoleUtils } from '../../utils/role-utils';
 import { finalize, of, Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { RoleStateService } from '../../utils/role-state.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-rol-modal',
@@ -15,6 +16,8 @@ export class RolModalComponent implements OnInit {
   private readonly roleUtils = inject(RoleUtils);
   private readonly roleStateService = inject(RoleStateService);
   private readonly subscriptions = new Subscription();
+  public showOCCErrorModalRole = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() roleToDelete: number | null = null;
@@ -75,7 +78,7 @@ export class RolModalComponent implements OnInit {
         this.closeAndReset();
       },
       error: (error) => {
-        // this.handleDeleteError(error);
+        this.handleDeleteError(error);
         this.errorMessage = error.error.message ?? 'a foreign key constraint fails';
         const testentity = this.extractRelatedEntity(this.errorMessage!);
         console.log("relatedEntity: ", testentity);
@@ -91,6 +94,13 @@ export class RolModalComponent implements OnInit {
       }
     });
     this.subscriptions.add(sub);
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalRole = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
   }
 
   /** Gets the related entity from the error message when trying to delete a role */
