@@ -85,10 +85,10 @@ export class RoleUtils {
             take(1),
             switchMap((currentRole) => {
                 if (!currentRole) {
-                    return throwError(() => createNotFoundUpdateError('Title'));
+                    return throwError(() => createNotFoundUpdateError('Role'));
                 }
                 if (currentRole.version !== role.version) {
-                    return throwError(() => createUpdateConflictError('Title'));
+                    return throwError(() => createUpdateConflictError('Role'));
                 }
                 return this.roleService.updateRole(role);
             }),

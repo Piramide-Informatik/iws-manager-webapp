@@ -17,7 +17,7 @@ import { FunctionUtils } from '../../utils/system-function-utils';
 import { Column } from '../../../../../../Entities/column';
 import { RightRoleUtils } from '../../utils/right-role-utils';
 import { RightRole } from '../../../../../../Entities/rightRole';
-import { OccErrorType } from '../../../../../shared/utils/occ-error';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 @Component({
   selector: 'app-rol-form',
   standalone: false,
@@ -171,10 +171,9 @@ export class RolFormComponent implements OnInit, OnDestroy {
 
   private handleError(err: any): void {
     console.log(err);
-    if (
-      err.message === 'Version conflict: role has been updated by another user'
-    ) {
+    if (err instanceof OccError) { 
       this.showOCCErrorModalRole = true;
+      this.occErrorType = err.errorType;
     } else {
       this.handleSaveError(err);
     }
