@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { IwsCommission } from '../../../../../../Entities/iws-commission ';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-iws-commissions-modal',
@@ -34,6 +35,8 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
 
   isLoading = false;
   errorMessage: string | null = null;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalIwsCommission = false;
 
   readonly createIwsCommissionForm = new FormGroup({
     fromOrderValue: new FormControl(null),
@@ -47,7 +50,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['isVisible'] && this.isVisible){
+    if (changes['isVisible'] && this.isVisible) {
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
@@ -90,11 +93,20 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
           this.iwsCommissionDeleted.emit();
           this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS')
         },
-        error: (error) =>
-          this.handleErrorWithToast(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE'),
+        error: (error) => {
+          this.handleDeleteError(error)
+          this.handleErrorWithToast(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE');
+        }
       });
 
     this.subscriptions.add(sub);
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalIwsCommission = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
   }
 
   onSubmit(): void {
@@ -147,7 +159,6 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
     });
 
     console.error('Operation error:', error);
-    this.closeModal();
   }
 
   private getErrorDetail(errorCode: string): string {

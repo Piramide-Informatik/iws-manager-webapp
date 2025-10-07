@@ -59,3 +59,10 @@
     </div>
   </div>
 </ng-template>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalIwsCommission"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalIwsCommission = false">
+</app-occ-error-modal>
