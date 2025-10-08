@@ -8,6 +8,7 @@ import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 @Component({
   selector: 'app-edit-iws-staff',
   standalone: false,
@@ -21,6 +22,7 @@ export class EditIwsStaffComponent implements OnInit {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   teams: any[] = [];
 
@@ -30,7 +32,7 @@ export class EditIwsStaffComponent implements OnInit {
     private readonly teamIwsService: TeamIwsService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -45,7 +47,7 @@ export class EditIwsStaffComponent implements OnInit {
 
   private initForm(): void {
     this.editIwsStaffForm = new FormGroup({
-      staffId: new FormControl({ value: null, disabled: true}),
+      staffId: new FormControl({ value: null, disabled: true }),
       shortName: new FormControl('', []),
       firstName: new FormControl('', []),
       lastName: new FormControl('', []),
@@ -65,7 +67,7 @@ export class EditIwsStaffComponent implements OnInit {
       })
     );
   }
-  
+
   private setupEmployeeIwsSubscription(): void {
     this.subscriptions.add(
       this.employeeIwsStateService.currentEmployeeIws$.subscribe(
@@ -134,7 +136,7 @@ export class EditIwsStaffComponent implements OnInit {
       startDate: momentFormatDate(this.editIwsStaffForm.value.staffSince),
       endDate: momentFormatDate(this.editIwsStaffForm.value.staffUntil),
       teamIws: this.editIwsStaffForm.value.team,
-      active: this.editIwsStaffForm.value.active ? 1 : 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+      active: this.editIwsStaffForm.value.active ? 1 : 0
     };
 
     this.subscriptions.add(
@@ -163,11 +165,12 @@ export class EditIwsStaffComponent implements OnInit {
     this.clearForm();
   }
 
-  private handleError(err: any): void {
-    if (err.message === 'Version conflict: EmployeeIws has been updated by another user') {
+  private handleError(error: any): void {
+    if (error instanceof OccError) {
       this.showOCCErrorModaEmployeeIws = true;
+      this.occErrorType = error.errorType;
     } else {
-      this.handleSaveError(err);
+      this.handleSaveError(error);
     }
     this.isSaving = false;
   }
