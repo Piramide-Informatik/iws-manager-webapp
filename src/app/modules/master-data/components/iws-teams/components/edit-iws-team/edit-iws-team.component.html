@@ -53,7 +53,7 @@
 </p-card>
 <app-occ-error-modal
     *ngIf="showOCCErrorModalTeamIws"
-    [useEmitter]="true"
-    (close)="showOCCErrorModalTeamIws = false"
-    (refresh)="onRefresh()">
+    [errorType]="occErrorType"
+    [reloadCurrentPage]="true"
+    (close)="showOCCErrorModalTeamIws = false">
 </app-occ-error-modal>

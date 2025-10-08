@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-iws-commissions',
@@ -21,13 +22,14 @@ export class EditIwsCommissionsComponent implements OnInit {
   @ViewChild('firstInput') firstInput!: InputNumber;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   constructor(
     private readonly iwsCommissionUtils: IwsCommissionUtils,
     private readonly iwsCommissionStateService: IwsCommissionStateService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -132,11 +134,10 @@ export class EditIwsCommissionsComponent implements OnInit {
   }
 
   private handleError(err: any): void {
-    if (
-      err.message ===
-      'Version conflict: IwsCommission has been updated by another user'
-    ) {
+    if (err instanceof OccError) {
+      console.log("tipo de error: ", err.errorType)
       this.showOCCErrorModaEmployeeIws = true;
+      this.occErrorType = err.errorType;
     } else {
       this.messageService.add({
         severity: 'error',

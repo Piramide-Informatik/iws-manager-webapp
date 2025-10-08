@@ -4,6 +4,7 @@ import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 import { EmployeeIwsService } from '../../../../../Services/employee-iws.service';
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for employeeIws-related business logic and operations.
@@ -118,16 +119,16 @@ export class EmployeeIwsUtils {
 
     return this.employeeIwsService.getEmployeeIwsById(employeeIws.id).pipe(
       take(1),
-      map((currentEmployeeIws) => {
+      switchMap((currentEmployeeIws) => {
         if (!currentEmployeeIws) {
-          throw new Error('EmployeeIws not found');
+          return throwError(() => createNotFoundUpdateError('IWS Employee'));
         }
         if (currentEmployeeIws.version !== employeeIws.version) {
-          throw new Error('Version conflict: EmployeeIws has been updated by another user');
+          return throwError(() => createUpdateConflictError('IWS Employee'));
         }
-        return employeeIws;
+        return this.employeeIwsService.updateEmployeeIws(employeeIws);
       }),
-      switchMap((validatedEmployeeIws: EmployeeIws) => this.employeeIwsService.updateEmployeeIws(validatedEmployeeIws)),
+      // switchMap((validatedEmployeeIws: EmployeeIws) => this.employeeIwsService.updateEmployeeIws(validatedEmployeeIws)),
       catchError((err) => {
         console.error('Error updating employeeIws:', err);
         return throwError(() => err);

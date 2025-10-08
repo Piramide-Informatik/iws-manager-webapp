@@ -60,3 +60,10 @@
         </div>
     </div>
 </ng-template>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalIwsTeams"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalIwsTeams = false">
+</app-occ-error-modal>

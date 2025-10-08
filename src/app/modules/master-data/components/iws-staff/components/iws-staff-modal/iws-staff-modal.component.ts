@@ -21,6 +21,7 @@ import {
   momentCreateDate,
   momentFormatDate,
 } from '../../../../../shared/utils/moment-date-utils';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-iws-staff-modal',
@@ -50,6 +51,8 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
 
   isLoading = false;
   errorMessage: string | null = null;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalIWSStaff = false;
 
   readonly createEmployeeIwsForm = new FormGroup({
     firstName: new FormControl('', [
@@ -80,8 +83,8 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visibleModal'] && this.visibleModal) {
       if (this.isCreateMode) {
-      this.loadNextEmployeeNo(); // cargar número al abrir modal
-    }
+        this.loadNextEmployeeNo(); // cargar número al abrir modal
+      }
       setTimeout(() => {
         this.focusInputIfNeeded();
       });
@@ -127,15 +130,24 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
           this.employeeIwsDeleted.emit();
           this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS');
         },
-        error: (error) =>
+        error: (error) => {
+          this.handleDeleteError(error);
           this.handleOperationError(
             error,
             'MESSAGE.DELETE_FAILED',
             'MESSAGE.DELETE_ERROR_IN_USE'
-          ),
+          );
+        },
       });
 
     this.subscriptions.add(sub);
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalIWSStaff = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
   }
 
   onSubmit(): void {
@@ -188,7 +200,6 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     console.error('Operation error:', error);
-    this.closeAndReset();
   }
 
   private getErrorDetail(errorCode: string): string {
@@ -212,13 +223,13 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
       mail: this.createEmployeeIwsForm.value.mail?.trim() ?? '',
       startDate: this.createEmployeeIwsForm.value.startDate
         ? momentFormatDate(
-            momentCreateDate(this.createEmployeeIwsForm.value.startDate)
-          )
+          momentCreateDate(this.createEmployeeIwsForm.value.startDate)
+        )
         : '',
       endDate: this.createEmployeeIwsForm.value.endDate
         ? momentFormatDate(
-            momentCreateDate(this.createEmployeeIwsForm.value.endDate)
-          )
+          momentCreateDate(this.createEmployeeIwsForm.value.endDate)
+        )
         : '',
       employeeNo: Number(this.createEmployeeIwsForm.value.employeeNo),
       employeeLabel:
@@ -246,14 +257,14 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadNextEmployeeNo(): void {
-  const sub = this.employeeIwsUtils.getNextEmployeeNo().subscribe({
-    next: (nextNo) => {
-      if (nextNo != null) {
-        this.createEmployeeIwsForm.patchValue({ employeeNo: nextNo });
-      }
-    },
-    error: (err) => console.error('Error loading next employeeNo', err),
-  });
-  this.subscriptions.add(sub);
-}
+    const sub = this.employeeIwsUtils.getNextEmployeeNo().subscribe({
+      next: (nextNo) => {
+        if (nextNo != null) {
+          this.createEmployeeIwsForm.patchValue({ employeeNo: nextNo });
+        }
+      },
+      error: (err) => console.error('Error loading next employeeNo', err),
+    });
+    this.subscriptions.add(sub);
+  }
 }

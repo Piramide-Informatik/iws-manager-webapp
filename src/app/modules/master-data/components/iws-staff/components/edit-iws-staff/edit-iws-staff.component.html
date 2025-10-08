@@ -126,7 +126,7 @@
 
 <app-occ-error-modal
     *ngIf="showOCCErrorModaEmployeeIws"
-    [useEmitter]="true"
+    [errorType]="occErrorType"
     (close)="showOCCErrorModaEmployeeIws = false"
-    (refresh)="onRefresh()">
+    [reloadCurrentPage]="true">
 </app-occ-error-modal>
