@@ -92,7 +92,7 @@
 
 <app-occ-error-modal
     *ngIf="showOCCErrorModalRole"
-    [useEmitter]="true"
+    [errorType]="occErrorType"
     (close)="showOCCErrorModalRole = false"
-    (refresh)="onRefresh()">
+    [reloadCurrentPage]="true">
 </app-occ-error-modal>

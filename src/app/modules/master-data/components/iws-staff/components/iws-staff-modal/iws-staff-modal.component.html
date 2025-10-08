@@ -133,3 +133,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalIWSStaff"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalIWSStaff = false">
+</app-occ-error-modal>
