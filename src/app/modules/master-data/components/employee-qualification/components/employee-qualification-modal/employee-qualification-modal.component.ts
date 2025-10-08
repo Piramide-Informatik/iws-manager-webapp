@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
 import { EmployeeCategoryStateService } from '../../utils/employee-category-state.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-employee-qualification-modal',
@@ -16,6 +17,8 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
   private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
   private readonly employeeCategoryStateService = inject(EmployeeCategoryStateService);
   private readonly subscriptions = new Subscription();
+  public showOCCErrorModalEmployeeCategory = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   @ViewChild('employeeCategoryInput')
   employeeCategoryInput!: ElementRef<HTMLInputElement>;
@@ -90,11 +93,20 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
           afterSuccess?.();
           this.showToastAndClose('success', successMessage);
         },
-        error: (error) =>
-          this.handleOperationError(error, failureMessage, inUseMessage),
+        error: (error) => {
+          this.handleDeleteError(error);
+          this.handleOperationError(error, failureMessage, inUseMessage);
+        }
       });
 
     this.subscriptions.add(sub);
+  }
+
+  private handleDeleteError(error: any): void {
+    if (error.error instanceof OccError  || error?.message.includes('404')) {
+      this.showOCCErrorModalEmployeeCategory = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
   }
 
   closeAndReset(): void {
@@ -140,11 +152,11 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
         (severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR'),
       detail,
     });
-    this.closeAndReset();
   }
 
   private showToastAndClose(severity: 'success' | 'error', detail: string): void {
     this.emitToastAndClose(severity, detail);
+    this.closeAndReset();
   }
 
   private handleOperationError(
