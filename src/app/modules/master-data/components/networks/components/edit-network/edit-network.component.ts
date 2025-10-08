@@ -150,6 +150,9 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
 
   onModalNetworkPartenerVisibilityChange(value: boolean) {
     this.visibleNetworksPartnersModal = value;
+    if (!value) {
+      this.selectedNetworkPartner = null;
+    }
   }
 
   onCreateNetworkPartner(event: { created?: NetworkPartner, status: 'success' | 'error' }): void {
