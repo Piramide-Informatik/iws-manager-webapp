@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import {
   Observable,
   catchError,
-  map,
   take,
   throwError,
   switchMap,
@@ -10,6 +9,7 @@ import {
 } from 'rxjs';
 import { IwsCommissionService } from '../../../../../Services/iws-commission.service';
 import { IwsCommission } from '../../../../../Entities/iws-commission ';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 export class IwsCommissionUtils {
@@ -52,7 +52,7 @@ export class IwsCommissionUtils {
       subscriber.complete();
     });
   }
-    //Delete a IwsCommission by ID after checking if it's used by any entity
+  //Delete a IwsCommission by ID after checking if it's used by any entity
   deleteIwsCommission(id: number): Observable<void> {
     return this.checkIwsCommissionUsage(id).pipe(
       switchMap((isUsed) => {
@@ -71,32 +71,31 @@ export class IwsCommissionUtils {
       })
     );
   }
-    //Checks if a IwsCommission is used by any entity
+  //Checks if a IwsCommission is used by any entity
   private checkIwsCommissionUsage(idIwsCommission: number): Observable<boolean> {
     return of(false);
   }
-    //Update a IwsCommission by ID and updates the internal IwsCommission signal
+  //Update a IwsCommission by ID and updates the internal IwsCommission signal
   updateIwsCommission(iwsCommission: IwsCommission): Observable<IwsCommission> {
-      if (!iwsCommission?.id) {
-        return throwError(() => new Error('Invalid iwsCommission data'));
-      }
-  
-      return this.iwsCommissionService.getIwsCommissionById(iwsCommission.id).pipe(
-        take(1),
-        map((currentIwsCommission) => {
-          if (!currentIwsCommission) {
-            throw new Error('iwsCommission not found');
-          }
-          if (currentIwsCommission.version !== iwsCommission.version) {
-            throw new Error('Version conflict: IwsCommission has been updated by another user');
-          }
-          return iwsCommission;
-        }),
-        switchMap((validatedIwsCommission: IwsCommission) => this.iwsCommissionService.updateIwsCommission(validatedIwsCommission)),
-        catchError((err) => {
-          console.error('Error updating employeeIws:', err);
-          return throwError(() => err);
-        })
-      );
+    if (!iwsCommission?.id) {
+      return throwError(() => new Error('Invalid iwsCommission data'));
     }
+
+    return this.iwsCommissionService.getIwsCommissionById(iwsCommission.id).pipe(
+      take(1),
+      switchMap((currentIwsCommission) => {
+        if (!currentIwsCommission) {
+          return throwError(() => createNotFoundUpdateError('Title'));
+        }
+        if (currentIwsCommission.version !== iwsCommission.version) {
+          return throwError(() => createUpdateConflictError('Title'));
+        }
+        return this.iwsCommissionService.updateIwsCommission(iwsCommission);
+      }),
+      catchError((err) => {
+        console.error('Error updating employeeIws:', err);
+        return throwError(() => err);
+      })
+    );
+  }
 }
