@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import {
     Observable,
     catchError,
-    map,
     take,
     throwError,
     switchMap,
