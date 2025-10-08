@@ -6,6 +6,7 @@ import { EmployeeCategoryStateService } from '../../utils/employee-category-stat
 import { EmployeeCategoryUtils } from '../../utils/employee-category-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-qualification',
@@ -20,6 +21,8 @@ export class EditQualificationComponent implements OnInit {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
   private readonly editEmployeeCategorySource =
     new BehaviorSubject<EmployeeCategory | null>(null);
 
@@ -28,7 +31,7 @@ export class EditQualificationComponent implements OnInit {
     private readonly employeeCategoryStateService: EmployeeCategoryStateService,
     private readonly commonMessageService: CommonMessagesService,
     private readonly translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -133,11 +136,10 @@ export class EditQualificationComponent implements OnInit {
   }
 
   private handleError(err: any): void {
-    if (
-      err.message ===
-      'Version conflict: EmployeeCategory has been updated by another user'
-    ) {
+    if (err instanceof OccError) {
+      console.log("tipo de error: ", err.errorType)
       this.showOCCErrorModalEmployeeCategory = true;
+      this.occErrorType = err.errorType;
     } else {
       this.handleSaveError(err);
     }

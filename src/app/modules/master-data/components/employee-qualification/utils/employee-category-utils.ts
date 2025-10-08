@@ -10,6 +10,7 @@ import {
 } from 'rxjs';
 import { EmployeeCategoryService } from '../../../../../Services/employee-category.service';
 import { EmployeeCategory } from '../../../../../Entities/employee-category ';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeCategoryUtils {
@@ -142,20 +143,16 @@ export class EmployeeCategoryUtils {
       .getEmployeeCategoryById(employeeCategory.id)
       .pipe(
         take(1),
-        map((currentProjectStatus) => {
+        switchMap((currentProjectStatus) => {
           if (!currentProjectStatus) {
-            throw new Error('employeeCategory not found');
+            return throwError(() => createNotFoundUpdateError('Employee Category'));
           }
           if (currentProjectStatus.version !== employeeCategory.version) {
-            throw new Error(
-              'Version conflict: employeeCategory has been updated by another user'
-            );
+            return throwError(() => createUpdateConflictError('Employee Category'));
+
           }
-          return employeeCategory;
+          return this.employeeCategoryService.updateEmployeeCategory(employeeCategory);
         }),
-        switchMap((validatedEmployeeCategory: EmployeeCategory) =>
-          this.employeeCategoryService.updateEmployeeCategory(validatedEmployeeCategory)
-        ),
         catchError((err) => {
           console.error('Error updating employeeCategory:', err);
           return throwError(() => err);
