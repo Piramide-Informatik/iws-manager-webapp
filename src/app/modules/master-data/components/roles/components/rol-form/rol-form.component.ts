@@ -17,6 +17,7 @@ import { FunctionUtils } from '../../utils/system-function-utils';
 import { Column } from '../../../../../../Entities/column';
 import { RightRoleUtils } from '../../utils/right-role-utils';
 import { RightRole } from '../../../../../../Entities/rightRole';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 @Component({
   selector: 'app-rol-form',
   standalone: false,
@@ -32,6 +33,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   modules: SystemModule[] = [];
   existingRights: RightRole[] = [];
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   selectedOrderCommission!: null;
   roles: Rol[] = [];
@@ -51,7 +53,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
     private readonly functionUtils: FunctionUtils,
     private readonly fb: FormBuilder,
     private readonly rightRoleUtils: RightRoleUtils
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -169,10 +171,9 @@ export class RolFormComponent implements OnInit, OnDestroy {
 
   private handleError(err: any): void {
     console.log(err);
-    if (
-      err.message === 'Version conflict: role has been updated by another user'
-    ) {
+    if (err instanceof OccError) { 
       this.showOCCErrorModalRole = true;
+      this.occErrorType = err.errorType;
     } else {
       this.handleSaveError(err);
     }
@@ -307,11 +308,11 @@ export class RolFormComponent implements OnInit, OnDestroy {
     });
   }
   onCancel(): void {
-  this.editRoleForm.patchValue({ selectedModule: null });
-  this.functions = [];
-  this.existingRights = [];
-  this.clearForm(); 
-}
+    this.editRoleForm.patchValue({ selectedModule: null });
+    this.functions = [];
+    this.existingRights = [];
+    this.clearForm();
+  }
 
   private calculateAccessRight(fn: SystemFunctionWithRights): number {
     let value = 0;

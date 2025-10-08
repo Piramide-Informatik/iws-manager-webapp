@@ -2,18 +2,19 @@ import { Injectable, inject } from "@angular/core";
 import { Observable, catchError, map, of, switchMap, take, throwError } from "rxjs";
 import { Role } from "../../../../../Entities/role";
 import { RoleService } from "../../../../../Services/role.service";
+import { createNotFoundUpdateError, createUpdateConflictError } from "../../../../shared/utils/occ-error";
 
 @Injectable({ providedIn: 'root' })
-export class RoleUtils { 
+export class RoleUtils {
     private readonly roleService = inject(RoleService);
-    
+
     loadInitialData(): Observable<Role[]> {
         return this.roleService.loadInitialData();
     }
     //Get a role by ID
     getRoleById(id: number): Observable<Role | undefined> {
         if (!id || id <= 0) {
-            return throwError(() => new  Error('Invalid role ID'));
+            return throwError(() => new Error('Invalid role ID'));
         }
         return this.roleService.getRoleById(id).pipe(
             catchError(err => {
@@ -29,13 +30,13 @@ export class RoleUtils {
             return throwError(() => new Error('ProjectStatus name cannot be empty'));
         }
         return this.roleService.addRole({
-                name: name?.trim()
+            name: name?.trim()
         });
     }
 
     //Check if an role already exists
     roleExists(name: string): Observable<boolean> {
-        
+
         return this.roleService.getAllRoles().pipe(
             map(role => role.some(
                 t => t.name.toLowerCase() === name.toLowerCase()
@@ -45,12 +46,12 @@ export class RoleUtils {
                 return throwError(() => new Error('Failed to check role existence'));
             })
         );
-        
+
     }
 
     //Refreshes role data
     refreshRoles(): Observable<void> {
-        return new Observable<void>(suscriber =>{
+        return new Observable<void>(suscriber => {
             this.roleService.refreshRoles();
             suscriber.next();
             suscriber.complete();
@@ -59,11 +60,11 @@ export class RoleUtils {
     //Delete a approvalStatus by Id
     deleteRole(id: number): Observable<void> {
         return this.checkApprovalStatusUsage(id).pipe(
-            switchMap((isUsed: boolean): Observable<void> => 
-            isUsed
-                ? throwError(() => new Error('Cannot delete register: it is in use by other entities'))
-                : this.roleService.deleteRole(id)
-        ),
+            switchMap((isUsed: boolean): Observable<void> =>
+                isUsed
+                    ? throwError(() => new Error('Cannot delete register: it is in use by other entities'))
+                    : this.roleService.deleteRole(id)
+            ),
             catchError(error => {
                 return throwError(() => error);
             })
@@ -82,16 +83,15 @@ export class RoleUtils {
         }
         return this.roleService.getRoleById(role.id).pipe(
             take(1),
-            map((currentRole) => {
+            switchMap((currentRole) => {
                 if (!currentRole) {
-                    throw new Error('Role not found');
+                    return throwError(() => createNotFoundUpdateError('Role'));
                 }
                 if (currentRole.version !== role.version) {
-                    throw new Error('Version conflict: role has been updated by another user');
+                    return throwError(() => createUpdateConflictError('Role'));
                 }
-                return role;
+                return this.roleService.updateRole(role);
             }),
-            switchMap((validatedRole: Role) => this.roleService.updateRole(validatedRole)),
             catchError((err) => {
                 console.error('Error updating role:', err);
                 return throwError(() => err);
@@ -100,10 +100,10 @@ export class RoleUtils {
     }
 
     getAllRoles(): Observable<Role[]> {
-            return this.roleService.getAllRoles().pipe(
-                catchError(() => throwError(() => new Error('Failed to load contacts')))
-            );
-        }
+        return this.roleService.getAllRoles().pipe(
+            catchError(() => throwError(() => new Error('Failed to load contacts')))
+        );
+    }
 
 }
 
