@@ -6,6 +6,7 @@ import { Subscription, Observable } from 'rxjs';
 import { TeamIws } from '../../../../../../Entities/teamIWS';
 import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-iws-teams-modal',
@@ -33,10 +34,12 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
 
   isLoading = false;
   errorMessage: string | null = null;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalIwsTeams = false;
 
   readonly createTeamIwsForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    teamLeader: new FormControl(null,[])
+    teamLeader: new FormControl(null, [])
   });
 
   ngOnInit(): void {
@@ -50,8 +53,8 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visibleModal'] && this.visibleModal){
-      setTimeout(()=>{
+    if (changes['visibleModal'] && this.visibleModal) {
+      setTimeout(() => {
         this.focusInputIfNeeded();
       })
     }
@@ -123,9 +126,19 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
             if (successDetail === 'MESSAGE.CREATE_SUCCESS') this.teamIwsCreated.emit();
             this.showToastAndClose('success', successDetail);
           },
-          error: (error) => this.handleErrorWithToast(error, errorDetail, inUseDetail),
+          error: (error) => {
+            this.handleDeleteError(error);
+            this.handleErrorWithToast(error, errorDetail, inUseDetail);
+          }
         })
     );
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalIwsTeams = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
   }
 
   private showToastAndClose(severity: string, detail: string): void {
@@ -143,7 +156,6 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
 
     this.toastMessage.emit({ severity: 'error', summary: 'MESSAGE.ERROR', detail });
     console.error('Operation error:', error);
-    this.closeModal();
   }
 
   private getErrorDetail(code: string): string {
@@ -158,9 +170,10 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getSanitizedTeamIwsValues(): Omit<TeamIws, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
-    return { 
+    return {
       name: this.createTeamIwsForm.value.name?.trim() ?? '',
-      teamLeader: this.createTeamIwsForm.value.teamLeader ?? null };
+      teamLeader: this.createTeamIwsForm.value.teamLeader ?? null
+    };
   }
 
   private resetForm(): void {

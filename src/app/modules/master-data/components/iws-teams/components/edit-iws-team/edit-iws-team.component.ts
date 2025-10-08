@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-iws-team',
@@ -16,8 +17,10 @@ import { EmployeeIws } from '../../../../../../Entities/employeeIws';
   templateUrl: './edit-iws-team.component.html',
   styleUrl: './edit-iws-team.component.scss',
 })
-export class EditIwsTeamComponent implements OnInit, OnDestroy  {
+export class EditIwsTeamComponent implements OnInit, OnDestroy {
   public showOCCErrorModalTeamIws = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
   currentTeamIws: TeamIws | null = null;
   editTeamForm!: FormGroup;
 
@@ -31,10 +34,11 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
     private readonly employeeIwsService: EmployeeIwsService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService
-  ) {}
+  ) { }
 
-  leaders: { id: number; 
-    firstname: string | undefined; 
+  leaders: {
+    id: number;
+    firstname: string | undefined;
     lastname: string | undefined;
     fullName: string;
     version: number;
@@ -80,7 +84,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
   }
 
   private loadTeams() {
-      const sub = this.employeeIwsService.getAllEmployeeIwsSortedByLastname().pipe(
+    const sub = this.employeeIwsService.getAllEmployeeIwsSortedByLastname().pipe(
       map(data => data.map(emp => {
         this.leadersMap.set(emp.id, emp);
         return {
@@ -96,7 +100,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
       error: (err) => console.error('Error loading leaders', err),
     });
     this.subscriptions.add(sub);
-    }
+  }
 
   private loadTeamIwsAfterRefresh(teamIwsId: string): void {
     this.isSaving = true;
@@ -163,10 +167,9 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy  {
 
   private handleError(err: any): void {
     this.isSaving = false;
-    if (
-      err.message === 'Version conflict: TeamIws has been updated by another user'
-    ) {
+    if (err instanceof OccError) {
       this.showOCCErrorModalTeamIws = true;
+      this.occErrorType = err.errorType;
     } else {
       console.error('Error saving teamIws:', err);
       this.messageService.add({
