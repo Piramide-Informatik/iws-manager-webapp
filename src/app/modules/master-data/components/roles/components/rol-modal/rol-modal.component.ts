@@ -80,16 +80,11 @@ export class RolModalComponent implements OnInit {
       error: (error) => {
         this.handleDeleteError(error);
         this.errorMessage = error.error.message ?? 'a foreign key constraint fails';
-        const testentity = this.extractRelatedEntity(this.errorMessage!);
-        console.log("relatedEntity: ", testentity);
-        this.confirmDelete.emit({
-          severity: 'error',
-          summary: 'MESSAGE.ERROR',
-          relatedEntity: testentity,
-          detail: this.errorMessage?.includes('FOREIGN KEY')
-            ? 'MESSAGE.DELETE_ERROR_IN_USE_WITH_ENTITY'
-            : 'MESSAGE.DELETE_FAILED'
-        });
+        if (this.errorMessage?.includes('foreign key constraint fails')) {
+          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(this.errorMessage!);
+          this.closeAndReset();
+          return;
+        }
         console.error('Delete error:', error);
       }
     });
@@ -101,15 +96,6 @@ export class RolModalComponent implements OnInit {
       this.showOCCErrorModalRole = true;
       this.occErrorType = 'DELETE_UNEXISTED';
     }
-  }
-
-  /** Gets the related entity from the error message when trying to delete a role */
-  private extractRelatedEntity(errorMessage: string): string {
-    const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
-    if (match && match[1]) {
-      return match[1];
-    }
-    return 'unknown entity';
   }
 
   onCancel(): void {
