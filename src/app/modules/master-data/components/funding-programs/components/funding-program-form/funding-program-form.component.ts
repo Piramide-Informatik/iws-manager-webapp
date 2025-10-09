@@ -5,6 +5,7 @@ import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramStateService } from '../../utils/funding-program-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-funding-program',
@@ -22,6 +23,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
   public showOCCErrorModaFunding = false;
   public isLoading: boolean = false;
   public fundingForm: FormGroup;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   constructor(private readonly fb: FormBuilder) {
     this.fundingForm = this.fb.group({
@@ -68,7 +70,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if(this.fundingForm.invalid || !this.fundingToEdit) return
+    if (this.fundingForm.invalid || !this.fundingToEdit) return
 
     this.isLoading = true;
     const formData: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = this.fundingForm.value;
@@ -89,9 +91,10 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: Funding Program has been updated by another user'){
+        if (error instanceof OccError) {
           this.showOCCErrorModaFunding = true;
-        }else{
+          this.occErrorType = error.errorType;
+        } else {
           this.commonMessageService.showErrorEditMessage();
         }
       }

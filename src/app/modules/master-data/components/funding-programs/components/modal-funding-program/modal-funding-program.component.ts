@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramStateService } from '../../utils/funding-program-state.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-modal-funding-program',
@@ -16,11 +17,13 @@ export class ModalFundingProgramComponent {
   @Input() selectedFunding!: FundingProgram | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() onCreateFundingProgram = new EventEmitter<{created?: FundingProgram, status: 'success' | 'error'}>();
-  @Output() onDeleteFundingProgram = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() onCreateFundingProgram = new EventEmitter<{ created?: FundingProgram, status: 'success' | 'error' }>();
+  @Output() onDeleteFundingProgram = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
+  public showOCCErrorModaFunding = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   public readonly fundingProgramForm = new FormGroup({
     name: new FormControl(''),
@@ -31,7 +34,7 @@ export class ModalFundingProgramComponent {
   })
 
   public onSubmit(): void {
-    if(this.fundingProgramForm.invalid || this.isLoading) return
+    if (this.fundingProgramForm.invalid || this.isLoading) return
 
     this.isLoading = true;
     const newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
@@ -46,11 +49,11 @@ export class ModalFundingProgramComponent {
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.onCreateFundingProgram.emit({created, status: 'success'})
+        this.onCreateFundingProgram.emit({ created, status: 'success' })
       },
       error: () => {
         this.isLoading = false;
-        this.onCreateFundingProgram.emit({status: 'error'})
+        this.onCreateFundingProgram.emit({ status: 'error' })
       }
     })
   }
@@ -63,14 +66,22 @@ export class ModalFundingProgramComponent {
           this.isLoading = false;
           this.fundingProgramStateService.clearFundingProgram();
           this.selectedFunding = undefined;
-          this.onDeleteFundingProgram.emit({status: 'success'});
+          this.onDeleteFundingProgram.emit({ status: 'success' });
           this.closeModal();
         },
         error: (error: Error) => {
           this.isLoading = false;
-          this.onDeleteFundingProgram.emit({status: 'error', error});
+          this.handleDeleteError(error);
+          this.onDeleteFundingProgram.emit({ status: 'error', error });
         }
       })
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModaFunding = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
