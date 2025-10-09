@@ -77,6 +77,7 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
         field: 'name',
         header: this.translate.instant(_('COUNTRIES.TABLE.NAME')),
         styles: { width: '120px' },
+        useSameAsEdit: true
       },
       {
         field: 'label',

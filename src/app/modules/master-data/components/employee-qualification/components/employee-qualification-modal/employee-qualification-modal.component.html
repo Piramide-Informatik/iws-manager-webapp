@@ -57,3 +57,7 @@
         </div>
     </div>
 </ng-template>
+
+<app-occ-error-modal *ngIf="showOCCErrorModalEmployeeCategory" [errorType]="occErrorType" [reloadCurrentPage]="true"
+    (close)="showOCCErrorModalEmployeeCategory = false">
+</app-occ-error-modal>

@@ -61,7 +61,7 @@ export class BillersComponent implements OnInit, OnDestroy {
 
   loadColHeadersBillers(): void {
     this.columsHeaderFieldBillers = [
-      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.BILLERS')) },
+      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('SIDEBAR.BILLERS')), useSameAsEdit: true },
     ];
   }
 

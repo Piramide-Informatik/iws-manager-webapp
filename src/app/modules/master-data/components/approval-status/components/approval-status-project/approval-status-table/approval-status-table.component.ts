@@ -77,7 +77,7 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   
   loadColHeaders(): void {
     this.cols = [
-      { field: 'status', header: this.translate.instant('APPROVAL_STATUS.TABLE.APPROVAL_STATUS') },
+      { field: 'status', header: this.translate.instant('APPROVAL_STATUS.TABLE.APPROVAL_STATUS'), useSameAsEdit: true },
       { field: 'sequenceNo', header: this.translate.instant('APPROVAL_STATUS.TABLE.ORDER') },
       { field: 'forProjects', header: this.translate.instant('APPROVAL_STATUS.TABLE.PROJECTS'), filter: { type: 'boolean' } },
       { field: 'forNetworks', header: this.translate.instant('APPROVAL_STATUS.TABLE.NETWORKS'), filter: { type: 'boolean' } }

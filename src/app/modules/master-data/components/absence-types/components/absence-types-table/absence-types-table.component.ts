@@ -77,7 +77,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'type', header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')) },
+      { field: 'type', header: this.translate.instant(_('ABSENCE_TYPES.LABEL.TYPE')), useSameAsEdit: true },
       { field: 'abbreviation', header: this.translate.instant(_('ABSENCE_TYPES.LABEL.ABBREVIATION')) },
       { field: 'fractionOfDay', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('ABSENCE_TYPES.LABEL.FRACTION_OF_DAY')) },
       { field: 'isVacation', filter:{ type: 'boolean'}, header: this.translate.instant(_('ABSENCE_TYPES.LABEL.IS_VACATION')) },
