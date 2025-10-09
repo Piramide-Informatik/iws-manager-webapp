@@ -5,6 +5,7 @@ import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FundingProgram } from '../../../../../Entities/fundingProgram';
 import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for fundingProgram-related business logic and operations.
@@ -140,16 +141,15 @@ export class FundingProgramUtils {
 
     return this.fundingProgramService.getFundingProgramById(fundingProgram.id).pipe(
       take(1),
-      map((currentFundingProgram) => {
+      switchMap((currentFundingProgram) => {
         if (!currentFundingProgram) {
-          throw new Error('Funding Program not found');
+          return throwError(() => createNotFoundUpdateError('Title'));
         }
         if (currentFundingProgram.version !== fundingProgram.version) {
-          throw new Error('Version conflict: Funding Program has been updated by another user');
+          return throwError(() => createUpdateConflictError('Title'));
         }
-        return fundingProgram;
+        return this.fundingProgramService.updateFundingProgram(fundingProgram);
       }),
-      switchMap((validatedFundingProgram: FundingProgram) => this.fundingProgramService.updateFundingProgram(validatedFundingProgram)),
       catchError((err) => {
         console.error('Error updating funding program:', err);
         return throwError(() => err);
