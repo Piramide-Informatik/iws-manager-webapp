@@ -119,8 +119,13 @@ export class PayConditionService {
   }
 
   getPayConditionById(id: number): Observable<PayCondition | undefined> {
-    return this.getAllPayConditions().pipe(
-      map(payConditions => payConditions.find(t => t.id === id))
+    return this.http.get<PayCondition>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch pay condition by id');
+        console.error(err);
+        return of(undefined as unknown as PayCondition);
+      })
     );
   }
 

@@ -115,8 +115,13 @@ export class CompanyTypeService {
   }
 
   getCompanyTypeById(id: number): Observable<CompanyType | undefined> {
-    return this.getAllCompanyTypes().pipe(
-      map(types => types.find(t => t.id === id))
+    return this.http.get<CompanyType>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch company type by id');
+        console.error(err);
+        return of(undefined as unknown as CompanyType);
+      })
     );
   }
 }

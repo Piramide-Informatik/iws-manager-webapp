@@ -119,8 +119,13 @@ export class InvoiceTypeService {
   }
 
   getInvoiceTypeById(id: number): Observable<InvoiceType | undefined> {
-    return this.getAllInvoiceTypes().pipe(
-      map(invoiceTypes => invoiceTypes.find(t => t.id === id))
+    return this.http.get<InvoiceType>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch invoice type by id');
+        console.error(err);
+        return of(undefined as unknown as InvoiceType);
+      })
     );
   }
 

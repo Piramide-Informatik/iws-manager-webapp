@@ -116,9 +116,14 @@ export class ProjectStatusService {
     }
 
     getProjectStatusById(id: number): Observable<ProjectStatus | undefined> {
-        return this.getAllProjectStatuses().pipe(
-            map(projectStatuses => projectStatuses.find(t => t.id === id))
-        );
+      return this.http.get<ProjectStatus>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+        tap(() => this._error.set(null)),
+        catchError(err => {
+          this._error.set('Failed to fetch project status by id');
+          console.error(err);
+          return of(undefined as unknown as ProjectStatus);
+        })
+      );
     }
 
     public refreshProjectStatuses(): void {

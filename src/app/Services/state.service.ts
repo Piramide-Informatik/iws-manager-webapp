@@ -95,8 +95,13 @@ export class StateService {
    * @throws Error when state not found or server error occurs
    */
   getStateById(id: number): Observable<State | undefined> {
-    return this.getAllStates().pipe(
-      map(states => states.find(t => t.id === id))
+    return this.http.get<State>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch state by id');
+        console.error(err);
+        return of(undefined as unknown as State);
+      })
     );
   }  
 

@@ -115,8 +115,13 @@ export class NetworkService {
   }
 
   getNetworkById(id: number): Observable<Network | undefined> {
-    return this.getAllNetworks().pipe(
-      map(nt => nt.find(t => t.id === id))
+    return this.http.get<Network>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch network by id');
+        console.error(err);
+        return of(undefined as unknown as Network);
+      })
     );
   }
 }

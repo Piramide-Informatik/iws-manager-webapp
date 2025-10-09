@@ -118,8 +118,13 @@ export class ContractStatusService {
   }
 
   getContractStatusById(id: number): Observable<ContractStatus | undefined> {
-    return this.getAllContractStatuses().pipe(
-      map(contractStatuses => contractStatuses.find(t => t.id === id))
+    return this.http.get<ContractStatus>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch contract status type by id');
+        console.error(err);
+        return of(undefined as unknown as ContractStatus);
+      })
     );
   }
 

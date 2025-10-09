@@ -118,8 +118,13 @@ export class TitleService {
   }
 
   getTitleById(id: number): Observable<Title | undefined> {
-    return this.getAllTitles().pipe(
-      map(titles => titles.find(t => t.id === id))
+    return this.http.get<Title>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch title by id');
+        console.error(err);
+        return of(undefined as unknown as Title);
+      })
     );
   }
 

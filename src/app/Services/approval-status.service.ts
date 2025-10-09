@@ -117,9 +117,14 @@ export class ApprovalStatusService {
     }
 
     getApprovalStatusById (id: number): Observable<ApprovalStatus | undefined> {
-        return this.getAllApprovalStatuses().pipe(
-            map(statuses => statuses.find(status => status.id === id))
-        );
+      return this.http.get<ApprovalStatus>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+        tap(() => this._error.set(null)),
+        catchError(err => {
+          this._error.set('Failed to fetch approval status by id');
+          console.error(err);
+          return of(undefined as unknown as ApprovalStatus);
+        })
+      );
     }
 
     public refreshApprovalStatuses(): void {
