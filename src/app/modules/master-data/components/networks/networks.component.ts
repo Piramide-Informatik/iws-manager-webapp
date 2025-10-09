@@ -71,7 +71,7 @@ export class NetworksComponent implements OnInit, OnDestroy, OnChanges {
 
   loadColHeadersNetworks(): void {
     this.columsHeaderFieldNetworks = [
-      { field: 'name', styles: { 'width': 'auto' }, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')) },
+      { field: 'name', styles: { 'width': 'auto' }, header: this.translate.instant(_('NETWORKS.LABEL.NETWORK')), useSameAsEdit: true },
     ];
   }
 

@@ -61,6 +61,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
         field: 'name',
         styles: { width: 'auto' },
         header: this.translate.instant(_('FUNDING.TABLE.PROGRAM')),
+        useSameAsEdit: true
       },
       {
         field: 'defaultFundingRate',

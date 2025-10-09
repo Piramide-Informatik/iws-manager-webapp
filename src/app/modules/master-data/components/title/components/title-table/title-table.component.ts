@@ -83,7 +83,8 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
     this.titleColumns = [
       {
         field: 'name',
-        header: this.translate.instant(_('TITLE.TABLE_TITLE.TITLE'))
+        header: this.translate.instant(_('TITLE.TABLE_TITLE.TITLE')),
+        useSameAsEdit: true
       }
     ];
   }

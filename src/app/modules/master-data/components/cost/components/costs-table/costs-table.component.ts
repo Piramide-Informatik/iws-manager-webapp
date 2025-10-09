@@ -71,6 +71,7 @@ export class CostsTableComponent implements OnInit, OnDestroy {
         field: 'name',
         styles: { width: 'auto' },
         header: this.translate.instant(_('COSTS.TABLE.NAME')),
+        useSameAsEdit: true
       },
       {
         field: 'sort',

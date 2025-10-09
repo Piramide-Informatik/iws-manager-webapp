@@ -74,7 +74,8 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     this.cols = [
       {
         field: 'name',
-        header: this.translate.instant(_('STATES.TABLE.STATE'))
+        header: this.translate.instant(_('STATES.TABLE.STATE')),
+        useSameAsEdit: true
       }
     ];
   }

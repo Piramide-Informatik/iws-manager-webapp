@@ -61,7 +61,7 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   loadColHeadersProjectFunnels(): void {
     this.columsHeaderFieldProjecFunnels = [
-      { field: 'promoterNo', classesTHead: ['width-10'],header: 'Nr'},
+      { field: 'promoterNo', classesTHead: ['width-10'],header: 'Nr', useSameAsEdit: true},
       { field: 'projectPromoter',  header: this.translate.instant(_('PROJECT_FUNNELS.TABLE.PROJECT_SPONSOR')) },
     ];
   }

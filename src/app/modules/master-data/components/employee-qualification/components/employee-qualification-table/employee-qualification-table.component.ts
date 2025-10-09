@@ -86,6 +86,7 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
         field: 'title',
         classesTHead: ['width-50'],
         header: this.translate.instant(_('EMPLOYEE_QUALIFICATION.LABEL.QUALIFICATION')),
+        useSameAsEdit: true
       },
       {
         field: 'label',
