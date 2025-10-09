@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { EmployeeCategory } from '../Entities/employee-category ';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({

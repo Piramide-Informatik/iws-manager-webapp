@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "../../environments/environment";
-import { catchError, map, Observable, of, tap } from "rxjs";
+import { catchError, Observable, of, tap } from "rxjs";
 import { User } from "../Entities/user";
 import { Role } from "../Entities/role";
 

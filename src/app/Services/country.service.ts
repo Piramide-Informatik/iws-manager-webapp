@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, finalize, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, finalize, of, tap, throwError } from 'rxjs';
 import { Country } from '../Entities/country';
 import { environment } from '../../environments/environment';
 

@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { PublicHoliday } from '../Entities/publicholiday';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, of, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { State } from '../Entities/state';
 
