@@ -98,3 +98,9 @@
     </div>
   </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModaFunding"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModaFunding = false">
+</app-occ-error-modal>
