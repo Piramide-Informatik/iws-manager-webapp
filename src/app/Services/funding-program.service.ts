@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { FundingProgram } from '../Entities/fundingProgram';
 
@@ -119,8 +119,13 @@ export class FundingProgramService {
   }
 
   getFundingProgramById(id: number): Observable<FundingProgram | undefined> {
-    return this.getAllFundingPrograms().pipe(
-      map(fundingPrograms => fundingPrograms.find(t => t.id === id))
+    return this.http.get<FundingProgram>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch funding program by id');
+        console.error(err);
+        return of(undefined as unknown as FundingProgram);
+      })
     );
   }
 

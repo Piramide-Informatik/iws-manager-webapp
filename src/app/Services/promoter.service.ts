@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Promoter } from '../Entities/promoter';
 
@@ -117,8 +117,13 @@ export class PromoterService {
   }
 
   getPromoterById(id: number): Observable<Promoter | undefined> {
-    return this.getAllPromoters().pipe(
-      map(promoters => promoters.find(t => t.id === id))
+    return this.http.get<Promoter>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch promoter by id');
+        console.error(err);
+        return of(undefined as unknown as Promoter);
+      })
     );
   }
 

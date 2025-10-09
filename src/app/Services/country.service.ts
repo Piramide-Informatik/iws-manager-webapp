@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, finalize, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, finalize, of, tap, throwError } from 'rxjs';
 import { Country } from '../Entities/country';
 import { environment } from '../../environments/environment';
 
@@ -88,8 +88,13 @@ export class CountryService {
    * @throws Error when country not found or server error occurs
    */
   getCountryById(id: number): Observable<Country | undefined> {
-    return this.getAllCountries().pipe(
-      map(countries => countries.find(t => t.id === id))
+    return this.http.get<Country>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch country by id');
+        console.error(err);
+        return of(undefined as unknown as Country);
+      })
     );
   }  
 

@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { EmployeeCategory } from '../Entities/employee-category ';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -136,9 +136,14 @@ import { environment } from '../../environments/environment';
     }
 
     getEmployeeCategoryById(id: number): Observable<EmployeeCategory | undefined> {
-        return this.getAllEmployeeCategories().pipe(
-            map(employeeCategories => employeeCategories.find(ec => ec.id === id))
-        );
+      return this.http.get<EmployeeCategory>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+        tap(() => this._error.set(null)),
+        catchError(err => {
+          this._error.set('Failed to fetch employee category by id');
+          console.error(err);
+          return of(undefined as unknown as EmployeeCategory);
+        })
+      );
     }
 
     public refreshEmployeeCategories(): void {

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "../../environments/environment";
-import { catchError, map, Observable, of, tap } from "rxjs";
+import { catchError, Observable, of, tap } from "rxjs";
 import { User } from "../Entities/user";
 import { Role } from "../Entities/role";
 
@@ -116,9 +116,14 @@ export class UserService {
     }
 
     getUserById(id: number): Observable<User | undefined> {
-        return this.getAllUser().pipe(
-            map(user => user.find(u => u.id === id))
-        );
+      return this.http.get<User>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+        tap(() => this._error.set(null)),
+        catchError(err => {
+          this._error.set('Failed to fetch user by id');
+          console.error(err);
+          return of(undefined as unknown as User);
+        })
+      );
     }
 
     assignRole(userId: number, roleIds: number[]): Observable<User> {

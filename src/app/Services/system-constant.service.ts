@@ -100,7 +100,13 @@ export class SystemConstantService {
   }
 
   getSystemConstantById(id: number): Observable<System | undefined> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get<System>(url, this.httpOptions)
+    return this.http.get<System>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch system constant by id');
+        console.error(err);
+        return of(undefined as unknown as System);
+      })
+    );
   }
 }

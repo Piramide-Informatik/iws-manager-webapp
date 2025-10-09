@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { Role } from "../Entities/role";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, catchError, map, of, tap } from "rxjs";
+import { Observable, catchError, of, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -116,10 +116,15 @@ export class RoleService {
     }
 
     getRoleById (id: number): Observable<Role | undefined> {
-            return this.getAllRoles().pipe(
-                map(roles => roles.find(role => role.id === id))
-            );
-        }
+      return this.http.get<Role>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+        tap(() => this._error.set(null)),
+        catchError(err => {
+          this._error.set('Failed to fetch role by id');
+          console.error(err);
+          return of(undefined as unknown as Role);
+        })
+      );
+    }
 
     public refreshRoles(): void {
         this.loadInitialData();

@@ -101,7 +101,13 @@ export class ReminderLevelService {
   }
 
   getReminderLevelById(id: number): Observable<ReminderLevel | undefined> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get<ReminderLevel>(url, this.httpOptions)
+    return this.http.get<ReminderLevel>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch reminder level by id');
+        console.error(err);
+        return of(undefined as unknown as ReminderLevel);
+      })
+    );
   }
 }

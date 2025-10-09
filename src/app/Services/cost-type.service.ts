@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CostType } from '../Entities/costType';
 
@@ -118,8 +118,13 @@ export class CostTypeService {
   }
 
   getCostTypeById(id: number): Observable<CostType | undefined> {
-    return this.getAllCostTypes().pipe(
-      map(costTypes => costTypes.find(t => t.id === id))
+    return this.http.get<CostType>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch cost type by id');
+        console.error(err);
+        return of(undefined as unknown as CostType);
+      })
     );
   }
 

@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Salutation } from '../Entities/salutation';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -117,8 +117,13 @@ export class SalutationService {
   }
   
   getSalutationById(id: number): Observable<Salutation | undefined> {
-    return this.getAllSalutations().pipe(
-      map(salutations => salutations.find(t => t.id === id))
+    return this.http.get<Salutation>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch salutation by id');
+        console.error(err);
+        return of(undefined as unknown as Salutation);
+      })
     );
   }  
 

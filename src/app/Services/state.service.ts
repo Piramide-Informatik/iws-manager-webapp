@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { State } from '../Entities/state';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, map, of, tap, throwError  } from 'rxjs';
+import { Observable, catchError, of, tap, throwError  } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -95,8 +95,13 @@ export class StateService {
    * @throws Error when state not found or server error occurs
    */
   getStateById(id: number): Observable<State | undefined> {
-    return this.getAllStates().pipe(
-      map(states => states.find(t => t.id === id))
+    return this.http.get<State>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch state by id');
+        console.error(err);
+        return of(undefined as unknown as State);
+      })
     );
   }  
 

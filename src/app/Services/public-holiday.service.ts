@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { PublicHoliday } from '../Entities/publicholiday';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, of, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { State } from '../Entities/state';
 
@@ -116,10 +116,15 @@ export class PublicHolidayService {
     }
 
     getPublicHolidayById(id: number): Observable<PublicHoliday | undefined> {
-            return this.getAllPublicHolidays().pipe(
-                map(publicHolidays => publicHolidays.find(p => p.id === id))
-            );
-        }
+      return this.http.get<PublicHoliday>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+        tap(() => this._error.set(null)),
+        catchError(err => {
+          this._error.set('Failed to fetch public holiday by id');
+          console.error(err);
+          return of(undefined as unknown as PublicHoliday);
+        })
+      );
+    }
     
     public refreshProjectStatuses(): void {
         this.loadInitialData();
