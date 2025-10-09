@@ -78,7 +78,8 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy, OnChan
       {
         field: 'name',
         minWidth: 110,
-        header: this.translate.instant(_('TYPE_OF_COMPANIES.TABLE_TYPE_OF_COMPANIES.COMPANY_TYPE'))
+        header: this.translate.instant(_('TYPE_OF_COMPANIES.TABLE_TYPE_OF_COMPANIES.COMPANY_TYPE')),
+        useSameAsEdit: true
       }
     ];
   }

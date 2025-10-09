@@ -97,7 +97,8 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
     this.projectColumns = [
       {
         field: 'name',
-        header: this.translate.instant(_('PROJECT_STATUS.TABLE_PROJECT_STATUS.PROJECT_STATUS'))
+        header: this.translate.instant(_('PROJECT_STATUS.TABLE_PROJECT_STATUS.PROJECT_STATUS')),
+        useSameAsEdit: true
       }
     ];
   }

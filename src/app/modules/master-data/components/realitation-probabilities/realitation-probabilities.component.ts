@@ -64,7 +64,7 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
   
   loadColHeadersProbabilities(): void {
     this.columsHeaderFieldProbabilities = [
-      { field: 'probability', type: 'double', header: this.translate.instant(_('SIDEBAR.REALIZATION_PROBABILITIES')), customClasses: ['align-right'] },
+      { field: 'probability', type: 'double', header: this.translate.instant(_('SIDEBAR.REALIZATION_PROBABILITIES')), customClasses: ['align-right'], useSameAsEdit: true },
     ];
   }
   

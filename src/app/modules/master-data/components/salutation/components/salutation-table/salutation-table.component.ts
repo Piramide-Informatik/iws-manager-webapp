@@ -83,7 +83,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy, OnChanges {
 
   loadSalutationHeaders(): void {
     this.salutationColumns = [
-      { field: 'name', header: this.translate.instant(_('SALUTATION.TABLE.SALUTATION')) }
+      { field: 'name', header: this.translate.instant(_('SALUTATION.TABLE.SALUTATION')), useSameAsEdit: true }
     ];
   }
 
