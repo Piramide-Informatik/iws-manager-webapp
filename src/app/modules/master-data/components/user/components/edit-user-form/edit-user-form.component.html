@@ -106,7 +106,7 @@
 </p-card>
 <app-occ-error-modal
     *ngIf="showOCCErrorModaUser"
-    [useEmitter]="true"
-    (close)="showOCCErrorModaUser = false"
-    (refresh)="onRefresh()">
+    [errorType]="occErrorType"
+    [reloadCurrentPage]="true"
+    (close)="showOCCErrorModaUser = false">
 </app-occ-error-modal>

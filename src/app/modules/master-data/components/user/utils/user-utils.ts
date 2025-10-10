@@ -1,9 +1,10 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, map, take, throwError, switchMap, of, tap} from "rxjs";
+import { Observable, catchError, map, take, throwError, switchMap, of, tap } from "rxjs";
 import { User } from "../../../../../Entities/user";
 import { RoleUtils } from "../../roles/utils/role-utils";
 import { UserService } from "../../../../../Services/user.service";
 import { Role } from "../../../../../Entities/role";
+import { createNotFoundUpdateError, createUpdateConflictError } from "../../../../shared/utils/occ-error";
 
 @Injectable({
     providedIn: 'root'
@@ -16,17 +17,17 @@ export class UserUtils {
     loadInitialData(): Observable<User[]> {
         return this.userService.loadInitialData();
     }
-    
+
 
     getUseryId(id: number): Observable<User | undefined> {
         if (!id || id <= 0) {
             return throwError(() => new Error('Invalid user ID'));
         }
-    
+
         return this.userService.getUserById(id).pipe(
             catchError(err => {
-            console.error('Error fetching user:', err);
-            return throwError(() => new Error('Failed to load user'));
+                console.error('Error fetching user:', err);
+                return throwError(() => new Error('Failed to load user'));
             })
         );
     }
@@ -48,7 +49,7 @@ export class UserUtils {
             subscriber.complete();
         });
     }
-    
+
     deleteUser(id: number): Observable<void> {
         return this.userService.deleteUser(id).pipe(
             catchError(error => throwError(() => error))
@@ -59,28 +60,27 @@ export class UserUtils {
         if (!user?.id) {
             return throwError(() => new Error('Invalid user data'));
         }
-    
+
         return this.userService.getUserById(user.id).pipe(
             take(1),
-            map((currentUser) => {
+            switchMap((currentUser) => {
                 if (!currentUser) {
-                throw new Error('User not found');
+                    return throwError(() => createNotFoundUpdateError('User'));
                 }
                 if (currentUser.version !== user.version) {
-                    throw new Error('Version conflict: User has been updated by another user');
+                    return throwError(() => createUpdateConflictError('User'));
                 }
-                return user;
+                return this.userService.updateUser(user);
             }),
-            switchMap((validatedUser: User) => this.userService.updateUser(validatedUser)),
             catchError((err) => {
-            console.error('Error updating user:', err);
-            return throwError(() => err);
+                console.error('Error updating user:', err);
+                return throwError(() => err);
             })
         );
     }
 
     assignRole(userId: number, rolesIds: number[]): Observable<User> {
-        if(!userId || userId <= 0) {
+        if (!userId || userId <= 0) {
             return throwError(() => new Error('Invalid user Id'));
         }
         return this.userService.assignRole(userId, rolesIds);
@@ -95,8 +95,8 @@ export class UserUtils {
             tap({
                 next: () => this._error = null,
                 error: (err) => {
-                this._error = 'Failed to fetch roles by user';
-                console.error('Error fetching roles for user:', err);
+                    this._error = 'Failed to fetch roles by user';
+                    console.error('Error fetching roles for user:', err);
                 }
             }),
             catchError(() => of([]))
