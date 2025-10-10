@@ -3,6 +3,7 @@ import { CostTypeUtils } from '../../utils/cost-type-utils';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CostType } from '../../../../../../Entities/costType';
 import { CostTypeStateService } from '../../utils/cost-type-state.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-modal-cost',
@@ -17,18 +18,20 @@ export class ModalCostComponent implements OnChanges {
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() onCreateCostType = new EventEmitter<{created?: CostType, status: 'success' | 'error'}>();
-  @Output() onDeleteCostType = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() onCreateCostType = new EventEmitter<{ created?: CostType, status: 'success' | 'error' }>();
+  @Output() onDeleteCostType = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalCost = false;
   public readonly costTypeForm = new FormGroup({
     type: new FormControl(''),
     sequenceNo: new FormControl(null)
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.visible){
+    if (changes['visible'] && this.visible) {
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
@@ -36,7 +39,7 @@ export class ModalCostComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    if(this.costTypeForm.invalid || this.isLoading) return
+    if (this.costTypeForm.invalid || this.isLoading) return
 
     this.isLoading = true;
     const newCostType: Omit<CostType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
@@ -48,11 +51,11 @@ export class ModalCostComponent implements OnChanges {
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.onCreateCostType.emit({created, status: 'success'});
+        this.onCreateCostType.emit({ created, status: 'success' });
       },
       error: () => {
         this.isLoading = false;
-        this.onCreateCostType.emit({status: 'error'});
+        this.onCreateCostType.emit({ status: 'error' });
       }
     })
   }
@@ -68,19 +71,28 @@ export class ModalCostComponent implements OnChanges {
 
   onDeleteCostTypeConfirm(): void {
     this.isLoading = true;
-    if(this.selectedCostType){
+    if (this.selectedCostType) {
       this.costTypeUtils.deleteCostType(this.selectedCostType.id).subscribe({
         next: () => {
           this.isLoading = false;
           this.costTypeStateService.clearCostType();
-          this.onDeleteCostType.emit({status: 'success'});
+          this.onDeleteCostType.emit({ status: 'success' });
           this.closeModal();
         },
         error: (errorResponse) => {
           this.isLoading = false;
-          this.onDeleteCostType.emit({status: 'error', error: errorResponse});
+          this.handleDeleteError(errorResponse);
+          this.onDeleteCostType.emit({ status: 'error', error: errorResponse });
         }
       });
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalCost = true;
+      alert('Error: ' + error.message);
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
