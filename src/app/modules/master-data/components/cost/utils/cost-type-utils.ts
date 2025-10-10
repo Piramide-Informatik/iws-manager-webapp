@@ -3,7 +3,7 @@ import { Observable, catchError, map, take, throwError, switchMap, of } from 'rx
 import { CostTypeService } from '../../../../../Services/cost-type.service';
 import { CostType } from '../../../../../Entities/costType';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
-import { createUpdateConflictError } from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for costType-related business logic and operations.
@@ -108,10 +108,10 @@ export class CostTypeUtils {
       take(1),
       switchMap((currentCostType) => {
         if (!currentCostType) {
-          return throwError(() => createNotFoundUpdateError('Title'));
+          return throwError(() => createNotFoundUpdateError('Cost Type'));
         }
         if (currentCostType.version !== costType.version) {
-          return throwError(() => createUpdateConflictError('Title'));
+          return throwError(() => createUpdateConflictError('Cost Type'));
         }
         return this.costTypeService.updateCostType(costType);
       }),
@@ -121,8 +121,4 @@ export class CostTypeUtils {
       })
     );
   }
-}
-
-function createNotFoundUpdateError(arg0: string): any {
-  throw new Error('Function not implemented.');
 }
