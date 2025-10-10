@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { PasswordDirective } from 'primeng/password';
 import { TranslateService } from '@ngx-translate/core';
 import { UserStateService } from '../../utils/user-state.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-user-modal',
@@ -32,17 +33,19 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
 
   isLoading = false;
   errorMessage: string | null = null;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalUser = false;
 
   readonly createUserForm = new FormGroup({
     username: new FormControl(''),
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     password: new FormControl(''),
-    email: new FormControl('',  [Validators.email]),
+    email: new FormControl('', [Validators.email]),
     active: new FormControl(false),
   });
 
-  constructor(private readonly translate: TranslateService) {}
+  constructor(private readonly translate: TranslateService) { }
 
   ngOnInit(): void {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -54,7 +57,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visibleModal'] && this.visibleModal){
+    if (changes['visibleModal'] && this.visibleModal) {
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
@@ -100,7 +103,6 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     console.error('Operation error:', error);
-    this.closeAndReset();
   }
 
   onDeleteConfirm(): void {
@@ -111,12 +113,21 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
-      error: (error) => this.handleOperationError(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE')
+      error: (error) => {
+        this.handleDeleteError(error);
+        this.handleOperationError(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE')
+      }
     });
 
     this.subscriptions.add(sub);
   }
 
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalUser = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
+  }
 
   onSubmit(): void {
     if (this.createUserForm.invalid || this.isLoading) return;
