@@ -49,7 +49,7 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaCost"
-  (close)="showOCCErrorModaCost = false"
-  [useEmitter]="true"
-  (refresh)="onRefresh()">
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModaCost = false">
 </app-occ-error-modal>

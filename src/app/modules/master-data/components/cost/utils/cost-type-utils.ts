@@ -3,6 +3,7 @@ import { Observable, catchError, map, take, throwError, switchMap, of } from 'rx
 import { CostTypeService } from '../../../../../Services/cost-type.service';
 import { CostType } from '../../../../../Entities/costType';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for costType-related business logic and operations.
@@ -88,8 +89,8 @@ export class CostTypeUtils {
    */
   private checkCostTypeUsage(idCostType: number): Observable<boolean> {
     return this.orderUtils.getAllOrders().pipe(
-        map(orders => orders.some(order => order.orderType?.id === idCostType)),
-        catchError(() => of(false))
+      map(orders => orders.some(order => order.orderType?.id === idCostType)),
+      catchError(() => of(false))
     );
   }
 
@@ -105,16 +106,15 @@ export class CostTypeUtils {
 
     return this.costTypeService.getCostTypeById(costType.id).pipe(
       take(1),
-      map((currentCostType) => {
+      switchMap((currentCostType) => {
         if (!currentCostType) {
-          throw new Error('Cost Type not found');
+          return throwError(() => createNotFoundUpdateError('Cost Type'));
         }
         if (currentCostType.version !== costType.version) {
-          throw new Error('Version conflict: Cost Type has been updated by another user');
+          return throwError(() => createUpdateConflictError('Cost Type'));
         }
-        return costType;
+        return this.costTypeService.updateCostType(costType);
       }),
-      switchMap((validatedCostType: CostType) => this.costTypeService.updateCostType(validatedCostType)),
       catchError((err) => {
         console.error('Error updating costType:', err);
         return throwError(() => err);
