@@ -103,10 +103,12 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       },
       {
         field: 'mail',
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
       {
         field: 'active',
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.LABEL.ACTIVE')),
         filter: { type: 'boolean' }
       },
