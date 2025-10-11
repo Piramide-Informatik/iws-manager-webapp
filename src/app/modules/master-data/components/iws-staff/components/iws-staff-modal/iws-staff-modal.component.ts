@@ -22,6 +22,7 @@ import {
   momentFormatDate,
 } from '../../../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-iws-staff-modal',
@@ -32,6 +33,7 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly employeeIwsUtils = inject(EmployeeIwsUtils);
   private readonly teamIwsService = inject(TeamIwsService);
+  private readonly commonMessagesService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
 
   teams: any[] = [];
@@ -128,6 +130,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe({
         next: () => {
           this.employeeIwsDeleted.emit();
+          this.commonMessagesService.showDeleteSucessfullMessage();
           this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS');
         },
         error: (error) => {
