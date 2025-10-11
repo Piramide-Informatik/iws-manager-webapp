@@ -72,7 +72,7 @@
         <!-- Botones -->
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate"
-                icon="pi pi-check" iconPos="left"
+                icon="pi pi-check" iconPos="left" [loading]="isSaving"
                 [disabled]="editRoleForm.invalid || !editRoleForm.dirty || isSaving"></p-button>
 
             <p-button type="button"
