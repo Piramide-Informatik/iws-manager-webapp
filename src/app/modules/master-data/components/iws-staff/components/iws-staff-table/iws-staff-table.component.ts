@@ -85,6 +85,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       {
         field: 'employeeNo',
         classesTHead: ['fix-width'],
+        useSameAsEdit: true,
         header: this.translate.instant(_('IWS_STAFF.TABLE.STAFF_NUMBER')),
       },
       {
@@ -145,6 +146,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       const sub = this.employeeIwsService.loadInitialData().subscribe();
       this.langSubscription.add(sub);
       this.prepareTableData();
+      this.commonMessageService.showCreatedSuccesfullMessage();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
