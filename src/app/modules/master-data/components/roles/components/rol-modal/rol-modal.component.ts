@@ -24,7 +24,7 @@ export class RolModalComponent implements OnInit {
   @Input() roleName: string | null = null;
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() roleCreated = new EventEmitter<void>();
+  @Output() roleCreated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() confirmDelete = new EventEmitter<{ severity: string, summary: string, detail: string, relatedEntity?: string }>();
 
   @ViewChild('roleNameInput') roleNameInput!: ElementRef<HTMLInputElement>;
@@ -151,7 +151,7 @@ export class RolModalComponent implements OnInit {
       next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
       error: () => this.commonMessageService.showErrorCreatedMessage(),
       complete: () => {
-        this.roleCreated.emit();
+        this.roleCreated.emit({ status: 'success' });
         this.closeAndReset();
         this.stopLoading()
       }
