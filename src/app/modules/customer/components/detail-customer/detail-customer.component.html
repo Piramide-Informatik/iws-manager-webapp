@@ -156,9 +156,15 @@
     @if(customerId){ 
       <div class="flex flex-row gap-3 align-items-center my-2">
         <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
-        <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: 'auto' }">
+        <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" 
+          id="new-contact-person"  
+          [modal]="true" 
+          [(visible)]="visible" 
+          [style]="{ width: 'auto' }"
+          (onHide)="closeDialog = !closeDialog">
           <app-contact (onVisibility)="closeVisibility($event)" 
             [visible]="visible"
+            [closeModal]="closeDialog"
             [modalType]="modalType" 
             [currentContact]="currentContactPerson"
             (onOperationContact)="updateContactList($event)"

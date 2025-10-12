@@ -32,6 +32,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
   @Input() currentContact!: ContactPerson | null;
   @Input() visible = false;
+  @Input() closeModal = false;
   @Output() onVisibility = new EventEmitter<boolean>();
   @Output() onOperationContact = new EventEmitter<number>();
 
@@ -72,6 +73,10 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['modalType'] && (this.modalType === 'edit' || this.modalType === 'delete')) {
       this.setupContactPersonSubscription();
+    }
+
+    if(changes['closeModal'] && this.contactForm){
+      this.handleClose();
     }
   }
 

@@ -32,6 +32,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public showDeleteCustomerModal = false;
   public isLoadingCustomer = false;
   public errorMessage: string = '';
+  public closeDialog = false;
 
   private readonly customerStateService = inject(CustomerStateService);
   public currentCustomerToEdit: Customer | null = null;
@@ -493,7 +494,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
   createCustomer() {
     if (this.formDetailCustomer.invalid) return;
-    
+
     this.isSaving = true;
     const newCustomer = this.buildCustomerFromForm();
 
