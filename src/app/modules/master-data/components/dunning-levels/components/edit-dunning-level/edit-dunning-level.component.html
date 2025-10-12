@@ -49,3 +49,8 @@
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalDunningLevel"
+  (close)="showOCCErrorModalDunningLevel = false"
+  [useEmitter]="true">
+</app-occ-error-modal>

@@ -18,6 +18,7 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
   private readonly dunningLevelUtils = inject(DunningLevelUtils);
   editDunningLevelForm!: FormGroup;
   isLoading = false;
+  public showOCCErrorModalDunningLevel = false;
 
   constructor( private readonly commonMessageService: CommonMessagesService) {}
 
@@ -66,9 +67,23 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
       error: (error) => {
         console.log(error)
         this.isLoading = false;
-        this.commonMessageService.showErrorEditMessage();
+        if(error.message === 'Conflict detected: reminder Level version mismatch'){
+          this.showOCCErrorModalDunningLevel = true;
+        }else{
+          this.commonMessageService.showErrorEditMessage();
+        }
       }
     });
+  }
+
+  public loadDunningLevel(dunningLevelId: number) {
+    this.dunningLevelUtils.getReminderLevelServiceById(dunningLevelId).subscribe( dunningLevel => {
+      if (dunningLevel) {
+        this.selectedDunningLevel = dunningLevel;
+        this.editDunningLevelForm.patchValue(this.selectedDunningLevel);
+        this.focusInputIfNeeded();
+      }
+    })
   }
 
   public clearForm(): void {
