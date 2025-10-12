@@ -178,7 +178,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         next: (customer) => {
           if (customer) {
             const formData = {
-              customerNo: customer?.id,
+              customerNo: customer?.customerno,
               companyText1: customer?.customername1,
               companyText2: customer?.customername2,
               selectedCountry: customer?.country?.id,
@@ -301,7 +301,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
   private loadCustomerFormData(customer: Customer): void {
     this.formDetailCustomer.patchValue({
-      customerNo: customer.id,
+      customerNo: customer.customerno,
       companyText1: customer.customername1,
       companyText2: customer.customername2,
       selectedCountry: customer.country?.id,
@@ -492,11 +492,9 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.visible = visibility;
   }
   createCustomer() {
-    if (this.formDetailCustomer.invalid) {
-      console.error('Form is invalid');
-      return;
-    }
-
+    if (this.formDetailCustomer.invalid) return;
+    
+    this.isSaving = true;
     const newCustomer = this.buildCustomerFromForm();
 
     this.subscriptions.add(
@@ -545,12 +543,14 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private handleSuccess(customer: Customer): void {
+    this.isSaving = false;
     this.commonMessageService.showCreatedSuccesfullMessage();
     this.clearForm();
     this.router.navigate(['../customer-details', customer.id], { relativeTo: this.activatedRoute });
   }
 
   private handleError(err: any): void {
+    this.isSaving = false;
     console.error('Error creating customer:', err);
     this.commonMessageService.showErrorCreatedMessage();
   }

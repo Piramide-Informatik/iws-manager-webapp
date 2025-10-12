@@ -118,7 +118,7 @@
         <div class="field">
           <label for="weekWorkingHours">{{ 'CUSTOMERS.FORM.ENTREPRENEURIAL_WEEKLY_WORKING_HOURS' | translate }}</label>
           <p-inputNumber class="p-inputnumber-input" inputId="weekWorkingHours" formControlName="weekWorkingHours" [inputStyle]="{'text-align': 'right'}"
-          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <div class="field">
@@ -134,13 +134,13 @@
         <div class="field">
           <label for="maxHoursMonth">{{ 'CUSTOMERS.FORM.MAX_HOURS_MONTH' | translate }}</label>
           <p-inputNumber class="p-inputnumber-input" inputId="maxHoursMonth" formControlName="maxHoursMonth" [inputStyle]="{'text-align': 'right'}"
-          mode="decimal"[max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          mode="decimal"[max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <div class="field">
           <label for="maxHoursYear">{{ 'CUSTOMERS.FORM.MAX_HOURS_YEAR' | translate }}</label>
           <p-inputNumber class="p-inputnumber-input" inputId="maxHoursYear" formControlName="maxHoursYear" [inputStyle]="{'text-align': 'right'}"
-          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
         </div>
 
         <p-floatlabel variant="on">
@@ -156,7 +156,7 @@
     @if(customerId){ 
       <div class="flex flex-row gap-3 align-items-center my-2">
         <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
-        <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
+        <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" id="new-contact-person"  [modal]="true" [(visible)]="visible" [style]="{ width: 'auto' }">
           <app-contact (onVisibility)="closeVisibility($event)" 
             [visible]="visible"
             [modalType]="modalType" 
@@ -180,16 +180,16 @@
     <br>
     <div class="form-row flex flex-wrap gap-3 justify-content-center py-3">
       @if(customerId){
-        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-            iconPos="left" (onClick)="onSubmit()" />
-        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" [loading]="isSaving"
+            iconPos="left" (onClick)="onSubmit()" [disabled]="formDetailCustomer.invalid || !formDetailCustomer.dirty" />
+        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" [disabled]="isSaving"
           iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="showDeleteCustomerModal = true" />    
       }@else{
-        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-            iconPos="left" (onClick)="createCustomer()" />
+        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" [loading]="isSaving"
+            iconPos="left" (onClick)="createCustomer()" [disabled]="formDetailCustomer.invalid || !formDetailCustomer.dirty" />
       }
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-          iconPos="left" routerLink="/customers"/>
+          iconPos="left" routerLink="/customers" [disabled]="isSaving" />
     </div>
   </div>
 </div>
