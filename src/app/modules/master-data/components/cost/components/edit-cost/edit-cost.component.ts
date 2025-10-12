@@ -5,6 +5,7 @@ import { CostTypeStateService } from '../../utils/cost-type-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
 import { CostType } from '../../../../../../Entities/costType';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-cost',
@@ -22,8 +23,9 @@ export class EditCostComponent implements OnInit, OnDestroy {
   public showOCCErrorModaCost = false;
   public isLoading: boolean = false;
   public costForm!: FormGroup;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
-  constructor(private readonly fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.costForm = this.fb.group({
@@ -44,7 +46,7 @@ export class EditCostComponent implements OnInit, OnDestroy {
   }
 
   updateCost(): void {
-    if(this.costForm.invalid || !this.costTypeToEdit) return;
+    if (this.costForm.invalid || !this.costTypeToEdit) return;
 
     this.isLoading = true;
     const updatedCost: CostType = {
@@ -61,9 +63,11 @@ export class EditCostComponent implements OnInit, OnDestroy {
       },
       error: (error: Error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: Cost Type has been updated by another user'){
+        if (error instanceof OccError) {
+          console.log('OCC Error occurred:', error);
           this.showOCCErrorModaCost = true;
-        }else{
+          this.occErrorType = error.errorType;
+        } else {
           this.commonMessageService.showErrorEditMessage();
         }
       }
@@ -74,9 +78,9 @@ export class EditCostComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.costTypeStateService.currentCostType$.subscribe(cost => {
         this.costTypeToEdit = cost;
-        if(cost){
+        if (cost) {
           this.loadCostType(cost);
-        }else{
+        } else {
           this.costForm.reset();
           this.costTypeToEdit = null;
         }
