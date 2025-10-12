@@ -3,14 +3,25 @@
         <div class="align-items-center display mb-2 mt-4">
             <div class="approvalstatus-form">
                 <label for="status">{{ "APPROVAL_STATUS.LABEL.NAME" | translate}}</label>
-                <input
+                <div class="input-message">
+                  <input
                     #approvalStatusNameInput
                     pInputText
                     type="text"
                     id="status"
                     formControlName="status"
                     autocomplete="off"
+                    [ngClass]="{'ng-invalid': createApprovalStatusForm.get('status')?.invalid && 
+                      createApprovalStatusForm.get('status')?.dirty && createApprovalStatusForm.get('status')?.touched}"
                     />
+                  <p-message severity="error" class="error-field" variant="simple" size="small" *ngIf="
+                      createApprovalStatusForm.get('status')?.invalid && 
+                      createApprovalStatusForm.get('status')?.dirty && 
+                      createApprovalStatusForm.get('status')!.hasError('required')
+                      ">
+                      {{ 'APPROVAL_STATUS.ERROR.APPROVAL_STATUS_REQUIRED' | translate }}
+                  </p-message>
+                </div>
             </div>
             <div class="approvalstatus-form">
                 <label for="order">{{ "Orden" }}</label>
