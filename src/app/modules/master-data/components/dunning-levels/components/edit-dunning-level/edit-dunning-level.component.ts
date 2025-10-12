@@ -69,6 +69,8 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
         this.isLoading = false;
         if(error.message === 'Conflict detected: reminder Level version mismatch'){
           this.showOCCErrorModalDunningLevel = true;
+          this.commonMessageService.showConflictMessage();
+          return;
         }else{
           this.commonMessageService.showErrorEditMessage();
         }

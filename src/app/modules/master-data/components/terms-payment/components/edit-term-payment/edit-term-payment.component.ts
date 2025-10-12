@@ -63,6 +63,8 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         if(error.message === 'Version conflict: pay condition has been updated by another user'){
           this.showOCCErrorModaPay = true;
+          this.commonMessageService.showConflictMessage();
+          return;
         }else {
           this.commonMessageService.showErrorEditMessage();
         }
