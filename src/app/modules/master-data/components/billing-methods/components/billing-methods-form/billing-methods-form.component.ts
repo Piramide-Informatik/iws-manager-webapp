@@ -62,7 +62,6 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
         if(error.message === 'Version conflict: Invoice Type has been updated by another user'){
           this.showOCCErrorModalInvoice = true;
           this.commonMessageService.showConflictMessage();
-          return;
         }else{
           this.commonMessageService.showErrorEditMessage();
         }
