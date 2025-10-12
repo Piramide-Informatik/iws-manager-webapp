@@ -64,7 +64,8 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         minWidth: 110,
-        header: this.translate.instant(_('BILLING_METHODS.TABLE_BILLING_METHODS.BILLING_TYPE'))
+        header: this.translate.instant(_('BILLING_METHODS.TABLE_BILLING_METHODS.BILLING_TYPE')),
+        useSameAsEdit: true
       }
     ];
   }

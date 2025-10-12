@@ -93,7 +93,7 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaFunding"
-  (close)="showOCCErrorModaFunding = false"
-  [useEmitter]="true"
-  (refresh)="onRefresh()">
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModaFunding = false">
 </app-occ-error-modal>

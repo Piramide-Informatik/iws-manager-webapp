@@ -59,7 +59,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.columsHeaderField = [
-      { field: 'levelNo', classesTHead: ['width-10'], header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')), customClasses: ['align-right']  },
+      { field: 'levelNo', classesTHead: ['width-10'], header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DUNNING_LEVEL')), customClasses: ['align-right'], useSameAsEdit: true  },
       { field: 'reminderTitle',  header: this.translate.instant(_('DUNNING_LEVELS.LABEL.DESIGNATION')) },
     ];
   }

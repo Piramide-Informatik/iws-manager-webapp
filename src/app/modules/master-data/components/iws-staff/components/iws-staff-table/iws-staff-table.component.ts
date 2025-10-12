@@ -89,6 +89,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
         field: 'employeeLabel',
         classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.SHORT_NAME')),
+        useSameAsEdit: true
       },
       {
         field: 'firstname',

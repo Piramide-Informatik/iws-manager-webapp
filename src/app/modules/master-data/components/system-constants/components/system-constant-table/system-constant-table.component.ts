@@ -79,7 +79,8 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
         field: 'name',
         minWidth: 110,
         classesTHead: ['proportional-width'],
-        header: this.translate.instant(_('SYSTEM_CONSTANT.TABLE_SYSTEM_CONSTANT.CONSTANT'))
+        header: this.translate.instant(_('SYSTEM_CONSTANT.TABLE_SYSTEM_CONSTANT.CONSTANT')),
+        useSameAsEdit: true
       },
       {
         field: 'value',

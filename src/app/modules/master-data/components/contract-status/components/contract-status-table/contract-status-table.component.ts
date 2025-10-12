@@ -140,7 +140,8 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       {
         field: 'status',
         minWidth: 110,
-        header: this.translate.instant(_('CONTRACT_STATUS.TABLE_CONTRACT_STATUS.CONTRACT_STATUS'))
+        header: this.translate.instant(_('CONTRACT_STATUS.TABLE_CONTRACT_STATUS.CONTRACT_STATUS')),
+        useSameAsEdit: true
       }
     ];
   }

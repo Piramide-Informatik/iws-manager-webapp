@@ -64,7 +64,7 @@ export class TextTableComponent implements OnInit, OnDestroy {
 
   loadTextHeaders(): void {
     this.textColumns = [
-      { field: 'label', minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT_LABEL')) },
+      { field: 'label', minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT_LABEL')), useSameAsEdit: true },
       { field: 'content', customClasses: ['nowrap-row'], minWidth: 110, header: this.translate.instant(_('TEXT.TABLE_TEXT.TEXT')) }
     ];
   }
