@@ -44,7 +44,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() employeeIwsName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() employeeIwsCreated = new EventEmitter<{ status: 'success'}>();
-  @Output() employeeIwsDeleted = new EventEmitter<void>();
+  @Output() employeeIwsDeleted = new EventEmitter<{ status: 'success' | 'error', error?: any }>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
     summary: string;
@@ -126,20 +126,19 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
 
     const sub = this.employeeIwsUtils
       .deleteEmployeeIws(this.employeeIwsToDelete)
-      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {
-          this.employeeIwsDeleted.emit();
+          this.isLoading = false;
+          this.employeeIwsDeleted.emit( { status: 'success' });
           this.commonMessagesService.showDeleteSucessfullMessage();
           this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS');
         },
         error: (error) => {
           this.handleDeleteError(error);
-          this.handleOperationError(
-            error,
-            'MESSAGE.DELETE_FAILED',
-            'MESSAGE.DELETE_ERROR_IN_USE'
-          );
+          if(error.error.message.includes('a foreign key constraint fails')){
+            this.isVisibleModal.emit(false);
+          }
+          this.employeeIwsDeleted.emit({ status: 'error', error: error});
         },
       });
 
