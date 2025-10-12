@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, map, take, throwError, switchMap, of, tap } from "rxjs";
+import { Observable, catchError, take, throwError, switchMap, of, tap } from "rxjs";
 import { User } from "../../../../../Entities/user";
 import { RoleUtils } from "../../roles/utils/role-utils";
 import { UserService } from "../../../../../Services/user.service";
