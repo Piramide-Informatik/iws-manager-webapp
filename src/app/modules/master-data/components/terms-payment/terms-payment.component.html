@@ -9,6 +9,8 @@
         tableTitle="TERMS_OF_PAYMENT.TERMS_OF_PAYMENT"
         [userPreferences]="userTermsPaymentPreferences"
         [dataKeys]="dataKeys"
+        [sortField]="'name'" 
+        [sortOrder]="1"
         (onColumnChanges)="onUserTermsPaymentPreferencesChanges($event)"
         (onCreateRegister)="handleTableEvents({ type: 'create' })"
         (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
@@ -21,8 +23,10 @@
           : ('TERMS_OF_PAYMENT.MODAL.DELETE' | translate)"
         [modal]="true"
         [(visible)]="isVisibleModal"
+        (onHide)="onModalTermsPaymentClose()"
       >
         <app-modal-terms-payment
+          #termsPaymentModal
           [modalType]="modalType"
           [isVisible]="isVisibleModal"
           [termPayment]="termPayment"

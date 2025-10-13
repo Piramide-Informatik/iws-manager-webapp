@@ -70,10 +70,6 @@ export class CustomerUtils {
      * @returns Observable that completes when customer is created
      */
     createNewCustomer(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Customer> {
-        if (!customer.customername1?.trim()) {
-            return throwError(() => new Error('Customer name cannot be empty'));
-        }
-
         return this.customerService.addCustomer(customer);
     }
 

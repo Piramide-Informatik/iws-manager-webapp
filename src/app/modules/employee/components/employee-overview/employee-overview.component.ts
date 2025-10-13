@@ -127,24 +127,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   }
 
   redirectToEmployeeDetails() {
-    this.router.navigate(['employee-details'], { 
-      relativeTo: this.route,
-      state: { customer: this.customer, employee: {} } 
-    });
-  }
-
-  searchEmployee(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement?.value) {
-      this.dt2.filterGlobal(inputElement.value, 'contains');
-    }
-  }
-
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
+    this.router.navigate(['employee-details'], { relativeTo: this.route });
   }
 
   handleEmployeeTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
@@ -220,11 +203,4 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     );
   }
 
-  private handleMessages(severity: string, summary: string, detail: string): void {
-    this.messageService.add({
-      severity,
-      summary: this.translate.instant(summary),
-      detail: this.translate.instant(detail)
-    });
-  }
 }

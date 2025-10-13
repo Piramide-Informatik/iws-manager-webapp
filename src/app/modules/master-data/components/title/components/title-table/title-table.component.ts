@@ -31,6 +31,7 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
   readonly titles = computed(() => {
     return this.titleService.titles();
   });
+  @ViewChild('titleModal') dialog!: TitleModalComponent;
 
   titleColumns: Column[] = [];
   titleDisplayedColumns: Column[] = [];
@@ -138,5 +139,11 @@ export class TitleTableComponent implements OnInit, OnDestroy, OnChanges {
 
   onDeleteTitle() {
     this.titleStateService.clearTitle();
+  }
+
+  onModalTitleClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
+    }
   }
 }

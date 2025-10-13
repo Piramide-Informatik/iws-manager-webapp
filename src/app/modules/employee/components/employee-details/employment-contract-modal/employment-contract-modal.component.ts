@@ -43,7 +43,8 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   visibleEmployeeContractEntityModal = false;
   public showOCCErrorModalContract = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
-  public isSaving = false;
+  public isLoadingDelete = false;
+  public isInvalid = false;
   public redirectRoute = "";
 
   constructor(
@@ -58,11 +59,12 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
       } else {
         this.fillEmploymentContractForm();
       }
-      if (this.firstInputForm && this.isCreateMode) {
-        setTimeout(() => {
-          this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
-        }, 300)
-      }
+    }
+
+    if(changes['visible'] && this.visible){
+      setTimeout(() => {
+        this.focusInputNeeded();
+      })
     }
   }
 
@@ -77,14 +79,14 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   private initFormEmploymentContract(): void {
     this.employmentContractForm = new FormGroup({
       startDate: new FormControl(''),
-      salaryPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      hoursPerWeek: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      workShortTime: new FormControl('', [Validators.min(0), Validators.max(100.00), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      specialPayment: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      maxHoursPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      maxHoursPerDay: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      hourlyRate: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      hourlyRealRate: new FormControl('', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
+      salaryPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999.99)]),
+      hoursPerWeek: new FormControl('', [Validators.min(0), Validators.max(999.99)]),
+      workShortTime: new FormControl('', [Validators.min(0), Validators.max(100)]),
+      specialPayment: new FormControl('', [Validators.min(0), Validators.max(99999.99)]),
+      maxHoursPerMonth: new FormControl('', [Validators.min(0), Validators.max(999.99)]),
+      maxHoursPerDay: new FormControl('', [Validators.min(0), Validators.max(99999.99)]),
+      hourlyRate: new FormControl('', [Validators.min(0), Validators.max(100)]),
+      hourlyRealRate: new FormControl('', [Validators.min(0), Validators.max(100)]),
     });
 
     this.disableFormControls();
@@ -169,6 +171,8 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
     const hourlyRate = totalMonthlyCompensation / monthlyHours;
 
+    this.isInvalid = hourlyRate > 100;
+
     this.employmentContractForm.get('hourlyRate')?.setValue(
       this.roundToTwoDecimals(hourlyRate),
       { emitEvent: false }
@@ -250,18 +254,18 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
   removeEmploymentContract() {
     if (this.employmentContract) {
-      this.isLoading = true;
+      this.isLoadingDelete = true;
       const id = this.employmentContract.id || this.employmentContract
       this.employmentContractUtils.deleteEmploymentContract(id).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.isVisibleModal.emit(false);
           this.onEmployeeContractDeleted.emit(id);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.visibleEmployeeContractEntityModal = false;
         },
         error: (error) => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.visibleEmployeeContractEntityModal = false;
           this.commonMessageService.showErrorDeleteMessage();
           if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
@@ -289,7 +293,6 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
     }
 
     this.commonMessageService.showErrorEditMessage();
-    this.isSaving = false;
   }
 
   private buildCustomerFromSource(source: any): any {
@@ -353,5 +356,13 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
           this.handleUpdateError(err)
         }
       }));
+  }
+
+  private focusInputNeeded(): void {
+    if (this.firstInputForm && this.isCreateMode) {
+      setTimeout(() => {
+        this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
+      }, 200)
+    }
   }
 }
