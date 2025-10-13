@@ -157,13 +157,17 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onDeleteVat(event: { status: 'success' | 'error', error?: Error }): void {
+  onDeleteVat(event: { status: 'success' | 'error', error?: any }): void {
     if (event.status === 'success') {
       this.refreshTrigger$.next()
       this.salesTaxStateService.clearVat();
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (event.status === 'error') {
+      if (event.error.error.message.includes('foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
+      } else {
       this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 

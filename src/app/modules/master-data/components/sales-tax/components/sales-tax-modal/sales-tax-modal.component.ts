@@ -69,6 +69,9 @@ export class SalesTaxModalComponent implements OnChanges {
         },
         error: (error) => {
           this.handleOccDeleteError(error);
+          if (error.error.message.includes('a foreign key constraint fails')) {
+            this.closeModal();
+          }
           this.deleteVat.emit({ status: 'error', error: error });
           this.isLoading = false;
         }

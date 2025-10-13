@@ -71,17 +71,7 @@ export class VatUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteVat(id: number): Observable<void> {
-    return this.checkVatUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.vatService.deleteVat(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.vatService.deleteVat(id);
   }
 
   /**
