@@ -24,7 +24,7 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
 
 
   public readonly chanceForm = new FormGroup({
-    probability: new FormControl(null, [Validators.max(100.00), this.duplicateProbabilityValidator.bind(this)])
+    probability: new FormControl(null, [Validators.max(100), this.duplicateProbabilityValidator.bind(this)])
   });
 
   ngOnChanges(changes: SimpleChanges): void {
