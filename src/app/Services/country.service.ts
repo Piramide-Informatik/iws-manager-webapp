@@ -28,7 +28,13 @@ export class CountryService {
     })
   };
 
-  constructor() {}
+  constructor() {
+    this.loadInitialData();
+  }
+
+  private sortAlphabetically(list: Country[]): Country[] {
+      return [...list].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+    }
 
   public loadInitialData(): Observable<Country[]> {
     this._loading.set(true);
@@ -53,7 +59,7 @@ export class CountryService {
     return this.http.post<Country>(this.apiUrl, country, this.httpOptions).pipe(
       tap({
         next: (newCountry) => {
-          this._countries.update(countries => [...countries, newCountry]);
+          this._countries.update(countries => this.sortAlphabetically([...countries, newCountry]));
           this._error.set(null);
         },
         error: (err) => {
@@ -112,7 +118,7 @@ export class CountryService {
       tap({
         next: (res) => {
           this._countries.update(countries =>
-            countries.map(t => t.id === res.id ? res : t)
+            this.sortAlphabetically(countries.map(t => t.id === res.id ? res : t))
           );
           this._error.set(null);
         },
