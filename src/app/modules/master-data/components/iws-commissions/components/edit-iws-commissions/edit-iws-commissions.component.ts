@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
 import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-edit-iws-commissions',
@@ -28,6 +29,7 @@ export class EditIwsCommissionsComponent implements OnInit {
     private readonly iwsCommissionUtils: IwsCommissionUtils,
     private readonly iwsCommissionStateService: IwsCommissionStateService,
     private readonly messageService: MessageService,
+    private readonly commonMessagesService: CommonMessagesService,
     private readonly translate: TranslateService
   ) { }
 
@@ -109,8 +111,14 @@ export class EditIwsCommissionsComponent implements OnInit {
 
     this.subscriptions.add(
       this.iwsCommissionUtils.updateIwsCommission(updateIwsCommission).subscribe({
-        next: (savedCommission) => this.handleSaveSuccess(savedCommission),
-        error: (err) => this.handleError(err),
+        next: (savedCommission) => {
+          this.commonMessagesService.showEditSucessfullMessage();
+          this.handleSaveSuccess(savedCommission);
+        },
+        error: (err) => {
+          this.commonMessagesService.showErrorEditMessage();
+          this.handleError(err);
+        },
       })
     );
   }
