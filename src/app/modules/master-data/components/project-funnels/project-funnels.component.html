@@ -20,6 +20,7 @@
         [modal]="true"
         [(visible)]="isVisibleModal"
         [style]="{ width: '35rem' }"
+        (onHide)="onModalProjectFunnelsClose()"
         >
         <app-modal-project-funnel
           [visible]="isVisibleModal"
@@ -28,6 +29,7 @@
           (isVisibleModal)="isVisibleModal = $event"
           (createPromoter)="onCreatePromoter($event)"
           (deletePromoter)="onDeletePromoter($event)"
+          #projectFunnelsModal
         ></app-modal-project-funnel>
       </p-dialog>
     </div>
