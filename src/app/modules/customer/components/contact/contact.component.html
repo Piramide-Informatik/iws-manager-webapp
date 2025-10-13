@@ -94,7 +94,7 @@
                 type="submit"
                 size="small"
                 [disabled]="contactForm.invalid || !contactForm.dirty || isLoading || isSaving"
-                [loading]="isLoading || isSaving"
+                [loading]=" isSaving"
               ></p-button>
               @if (modalType==='edit') {
                 <p-button
@@ -104,10 +104,8 @@
                   [label]="'BUTTONS.DELETE' | translate"
                   icon="pi pi-trash"
                   iconPos="left"
-                  (click)="onDeleteContactPersonEntity()"
-                  (keypress)="onDeleteContactPersonEntity()"
-                  [loading]="isLoading"
-                  [disabled]="isLoading"
+                  (onClick)="onDeleteContactPersonEntity()"
+                  [disabled]="isSaving"
                 />
               }
               <p-button 
@@ -116,8 +114,8 @@
                 size="small"
                 [label]="'BUTTONS.CANCEL' | translate" 
                 icon="pi pi-times"  
-                (keydown.enter)="handleClose()" 
-                (click)="handleClose()" 
+                (onClick)="handleClose()" 
+                [disabled]="isSaving || isLoading"
                 />
              </div>
         </form>

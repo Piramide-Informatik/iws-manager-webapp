@@ -148,6 +148,7 @@
     "UPDATE_FAILED": "The record could not be updated.",
     "CREATE_FAILED": "The record could not be created.",
     "DELETE_FAILED": "The record could not be deleted.",
+    "CONFLICT": "Version Conflict",
     "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
     "DELETE_ERROR_IN_USE_WITH_ENTITY": "The record cannot be deleted because it is in use by other entities: ",
     "RECORD_ALREADY_EXISTS": "The record already exists.",
