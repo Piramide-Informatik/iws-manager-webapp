@@ -69,17 +69,17 @@ export class CostTypeUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteCostType(id: number): Observable<void> {
-    return this.checkCostTypeUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
+    // return this.checkCostTypeUsage(id).pipe(
+    //   switchMap(isUsed => {
+    //     if (isUsed) {
+    //       return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+        // }
         return this.costTypeService.deleteCostType(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    //   }),
+    //   catchError(error => {
+    //     return throwError(() => error);
+    //   })
+    // );
   }
 
   /**

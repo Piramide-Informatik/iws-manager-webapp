@@ -91,12 +91,12 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     this.visibleCostTypeModal = true;
   }
 
-  onCostTypeDelete(deleteEvent: { status: 'success' | 'error', error?: Error }): void {
+  onCostTypeDelete(deleteEvent: { status: 'success' | 'error', error?: any }): void {
     if (deleteEvent.status === 'success') {
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (deleteEvent.status === 'error' && deleteEvent.error) {
-      if (deleteEvent.error?.toString().includes('it is in use by other entities')) {
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      if (deleteEvent.error.error.message.includes('a foreign key constraint')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(deleteEvent.error.error.message);
       } else {
         this.commonMessageService.showErrorDeleteMessage();
       }
