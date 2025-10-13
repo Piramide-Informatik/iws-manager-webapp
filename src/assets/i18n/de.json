@@ -609,9 +609,7 @@
     "DELETE": {
       "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
     },
-    "ERROR": {
-      "NAME_REQUIRED": "Name ist erforderlich"
-    },
+    
     "MODAL": {
       "NEW": "Neue Abwesenheitsart",
       "DELETE": "Abwesenheitsart löschen"
