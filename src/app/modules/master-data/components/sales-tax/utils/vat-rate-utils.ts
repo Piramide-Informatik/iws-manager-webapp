@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { VatRateService } from '../../../../../Services/vat-rate.service';
 import { VatRate } from '../../../../../Entities/vatRate';
 import { Vat } from '../../../../../Entities/vat';
