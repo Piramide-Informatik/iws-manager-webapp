@@ -20,8 +20,10 @@
           : ('BILLING_METHODS.MODAL.DELETE' | translate)" 
       [modal]="true" 
       [(visible)]="visibleModal"
+      (onHide)="onModalBillingMethodClose()"
       >
         <app-modal-billing-methods
+          #billingMethodModal
           [modalType]="modalType"
           [visible]="visibleModal"
           [selectedInvoiceType]="selectedInvoiceType"

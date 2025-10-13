@@ -28,8 +28,10 @@
         : ('DUNNING_LEVELS.MODAL.DELETE' | translate)" 
       [modal]="true" 
       [(visible)]="visibleDunningLevelModal"
+      (onHide)="onModalDunningLevelClose()"
     >
       <app-dunning-level-modal
+        #dunnigLevelModal
         [modalType]="modalType"
         [visible]="visibleDunningLevelModal"
         [selectedDunningLevel]="selectedDunningLevel"
