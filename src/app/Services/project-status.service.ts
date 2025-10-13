@@ -31,6 +31,12 @@ export class ProjectStatusService {
         this.loadInitialData()
     }
 
+    private sortAlphabetically(list: ProjectStatus[]): ProjectStatus[] {
+    return [...list].sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+        );
+    }
+
     public loadInitialData(): Observable<ProjectStatus[]> {
         this._loading.set(true);
         return this.http.get<ProjectStatus[]>(this.apiUrl, this.httpOptions).pipe(
@@ -54,7 +60,7 @@ export class ProjectStatusService {
         return this.http.post<ProjectStatus>(this.apiUrl, projectStatus, this.httpOptions).pipe(
             tap({
                 next: (newProjectStatus) => {
-                    this._projectStatuses.update(projectStatuses => [...projectStatuses, newProjectStatus]);
+                    this._projectStatuses.update(projectStatuses => this.sortAlphabetically([...projectStatuses, newProjectStatus]));
                     this._error.set(null);
                 },
                 error: (err) => {
@@ -73,7 +79,7 @@ export class ProjectStatusService {
             tap({
                 next: (res) => {
                     this._projectStatuses.update(projectStatuses =>
-                        projectStatuses.map(t=> t.id === res.id ? res : t)
+                        this.sortAlphabetically(projectStatuses.map(t=> t.id === res.id ? res : t))
                     );
                     this._error.set(null);
                 },
