@@ -50,6 +50,7 @@
     "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet.",
     "NUMBER_MAX": "Maximalwert 100 erwartet",
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
+    "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet"
   },
   "MENU": {
@@ -610,6 +611,7 @@
     "DELETE": {
       "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
     },
+    
     "MODAL": {
       "NEW": "Neue Abwesenheitsart",
       "DELETE": "Abwesenheitsart löschen"

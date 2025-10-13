@@ -114,9 +114,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
 
   loadColIwsProvisionHeaders(): void {
     this.cols = [
-      { field: 'fromOrderValue', styles: { width: 'auto' }, customClasses: ['align-right'], header: this.translate.instant('FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.FROM_VALUE')},
-      { field: 'commission', styles: { width: 'auto' }, customClasses: ['align-right'], header: this.translate.instant('FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.COMMISSION') },
-      { field: 'minCommission', styles: { width: 'auto' }, customClasses: ['align-right'], header: this.translate.instant('FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.MIN_COMMISSION') }
+      { field: 'fromOrderValue', type: 'double' , styles: { width: 'auto' }, customClasses: ['align-right'], header: this.translate.instant('FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.FROM_VALUE')},
+      { field: 'commission', type: 'double', styles: { width: 'auto' }, customClasses: ['align-right'], header: this.translate.instant('FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.COMMISSION') },
+      { field: 'minCommission', type: 'double', styles: { width: 'auto' }, customClasses: ['align-right'], header: this.translate.instant('FRAMEWORK-AGREEMENTS.DETAIL.FORM_TABLE_IWS_COMMISSION.MIN_COMMISSION') }
     ];
   }
 

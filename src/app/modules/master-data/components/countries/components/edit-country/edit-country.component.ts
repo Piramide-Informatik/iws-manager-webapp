@@ -6,6 +6,7 @@ import { CountryStateService } from '../../utils/country-state.service';
 import { CountryUtils } from '../../utils/country-util';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-edit-country',
@@ -25,7 +26,9 @@ export class EditCountryComponent implements OnInit, OnDestroy {
     private readonly countryUtils: CountryUtils,
     private readonly countryStateService: CountryStateService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+        private readonly commonMessageService: CommonMessagesService,
+    
   ) {}
 
   ngOnInit(): void {
@@ -98,11 +101,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveSuccess(): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('COUNTRIES.MESSAGE.SUCCESS'),
-      detail: this.translate.instant('COUNTRIES.MESSAGE.UPDATE_SUCCESS')
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.countryStateService.setCountryToEdit(null);
     this.clearForm();
   }

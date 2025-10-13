@@ -9,6 +9,7 @@ import { Country } from '../../../../../../Entities/country';
 import { CountryStateService } from '../../utils/country-state.service';
 import { CountryModalComponent } from '../country-modal/country-modal.component';
 import { MessageService } from 'primeng/api';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-countries-table',
@@ -37,7 +38,8 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
-    private readonly countryStateService: CountryStateService
+    private readonly countryStateService: CountryStateService,
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +58,8 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   readonly countries = computed(() => {
     return this.countryService.countries();
   });
+
+  @ViewChild('countryModal') dialog!: CountryModalComponent;
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
@@ -124,11 +128,17 @@ export class CountriesTableComponent implements OnInit, OnDestroy {
   onConfirmDelete(message: {severity: string, summary: string, detail: string}): void {
     if (message.severity === 'success') {
       this.countryStateService.clearCountry();
+      this.commonMessageService.showDeleteSucessfullMessage()
     }
     this.messageService.add({
       severity: message.severity,
       summary: this.translate.instant(_(message.summary)),
       detail: this.translate.instant(_(message.detail)),
     });
+  }
+  onModalCountriesClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
+    }
   }
 }
