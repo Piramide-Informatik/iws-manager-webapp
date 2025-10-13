@@ -32,3 +32,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalBillingMethod"
+  [errorType]="occErrorBillingMethodType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalBillingMethod = false">
+</app-occ-error-modal>

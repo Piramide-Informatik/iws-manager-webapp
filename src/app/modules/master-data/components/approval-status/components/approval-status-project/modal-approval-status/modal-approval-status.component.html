@@ -103,3 +103,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalApprovalStatus"
+  [errorType]="occErrorApprovalStatusType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalApprovalStatus = false">
+</app-occ-error-modal>
