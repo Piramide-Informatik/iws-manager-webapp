@@ -84,7 +84,6 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     this.stateModalType = event.type;
     if (event.type === 'delete' && event.data) {
       this.selectedState = event.data;
-
       this.stateName = this.states().find(state => state.id === this.selectedState)?.name ?? '';
     }
     this.visibleStateModal = true;
@@ -94,15 +93,17 @@ export class StatesTableComponent implements OnInit, OnDestroy {
     this.stateStateService.setStateToEdit(state);
   }
 
-  onVisibleModal(visible: boolean) {
-    this.visibleStateModal = visible;
-  }
-
   onModalVisibilityChange(visible: boolean): void {
     this.visibleStateModal = visible;
     if (!visible) {
       this.selectedState = null;
+      this.stateName = '';
     }
+  }
+
+  onModalHide(): void {
+    this.selectedState = null;
+    this.stateName = '';
   }
 
   onDialogShow() {
