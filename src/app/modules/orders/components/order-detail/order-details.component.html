@@ -20,14 +20,17 @@
         <p-button class="order_PDF" size="small" [label]="'BUTTONS.GENERATE_PDF_ORDER' | translate"
           icon="pi pi-file-pdf" iconPos="right" [style]="{ background: '#656565' }" />
       </div>
-      <div class="col-8">
+      <div class="col-4 flex justify-content-center">
         <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
           [loading]="isLoading" (onClick)="onSubmit()" />
-        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-          iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="visibleOrderDeleteModal = true;"/>
+        @if(currentOrder){
+          <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+            iconPos="left" [disabled]="isLoading" [style]="{ background: '#ef4444' }" (onClick)="visibleOrderDeleteModal = true;"/>
+        }
         <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-          iconPos="left" (onClick)="goBackListOrders()" />
+          iconPos="left" [disabled]="isLoading" (onClick)="goBackListOrders()" />
       </div>
+      <div class="col-4"></div>
     </div>
   </div>
 </div>

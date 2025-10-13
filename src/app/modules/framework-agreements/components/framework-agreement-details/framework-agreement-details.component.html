@@ -10,21 +10,13 @@
         </div>
     </div>
 
-    <div class="buttons">
-        <div class="row">
-            <div class="col-4">
-                
-            </div>
-            <div class="col-8">
-                <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-                    iconPos="left" (onClick)="onSubmit()" [loading]="isLoading" />
-                <p-button class="delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-                    iconPos="left" (onClick)="this.visibleFrameworkAgreementModalEntity = true;"/>
-                <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-                    iconPos="left" (onClick)="goBackFrameworksAgreement()"/>
-
-            </div>
-        </div>
+    <div class="flex justify-content-center my-4" >
+        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+            iconPos="left" (onClick)="onSubmit()" [loading]="isLoading" />
+        <p-button class="delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+            iconPos="left" [disabled]="isLoading" (onClick)="this.visibleFrameworkAgreementModalEntity = true;"/>
+        <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+            iconPos="left" [disabled]="isLoading" (onClick)="goBackFrameworksAgreement()"/>
     </div>
 </div>
 <p-dialog 
@@ -43,7 +35,7 @@
           [loading]="isFrameworkAgreementEntityLoading"/>
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times" iconPos="left" (onClick)="this.visibleFrameworkAgreementModalEntity = false;"
-          [loading]="isFrameworkAgreementEntityLoading"/>
+          [disabled]="isFrameworkAgreementEntityLoading"/>
     </div>
   </div>
 </p-dialog>
