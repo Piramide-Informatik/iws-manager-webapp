@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../router-utils.service';
@@ -9,6 +9,7 @@ import { ReminderLevelService } from '../../../../Services/reminder-level.servic
 import { ReminderLevel } from '../../../../Entities/reminderLevel';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
+import { DunningLevelModalComponent } from './components/dunning-level-modal/dunning-level-modal.component';
 
 @Component({
   selector: 'app-dunning-levels',
@@ -31,6 +32,7 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
     return this.reminderLevelService.reminders();
   });
   private langSubscription!: Subscription;
+  @ViewChild('dunnigLevelModal') dunningLevelDialog!: DunningLevelModalComponent;
 
   constructor(
     private readonly translate: TranslateService,
@@ -110,5 +112,11 @@ export class DunningLevelsComponent implements OnInit, OnDestroy {
 
   onCancelEdit(value: any) {
     this.selectedDunningLevelToEdit = null;
+  }
+
+  onModalDunningLevelClose() {
+    if (this.dunningLevelDialog) {
+      this.dunningLevelDialog.closeModal();
+    }
   }
 }
