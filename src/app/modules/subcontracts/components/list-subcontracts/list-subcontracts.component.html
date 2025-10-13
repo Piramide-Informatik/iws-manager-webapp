@@ -23,6 +23,8 @@
     [customer]="customer"
     [modalSubcontractType]="subContractModalType"
     [isVisibleModal]="visibleSubcontractModal"
+    [isLoading]="isCreating"
+    [isLoadingDelete]="isDeletingSubcontract"
     (createdSubContract)="onCreateFrameworkAgreement($event)"
     (deletedSubContract)="onDeleteFrameworkAgreement($event)"
     (visibleModal)="onModalVisible($event)"

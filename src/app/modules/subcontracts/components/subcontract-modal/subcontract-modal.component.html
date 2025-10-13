@@ -99,9 +99,9 @@
     </div>
     <div class="buttons-container flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left"/>
+        iconPos="left" [loading]="isLoading" [disabled]="createSubcontractForm.invalid || !createSubcontractForm.dirty" />
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
-        (onClick)="closeModal()" />
+        (onClick)="closeModal()" [disabled]="isLoading" />
     </div>
   </form>
 </ng-container>
@@ -113,9 +113,9 @@
     </p>
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="onSubcontractDeleteConfirm()" severity="danger"/>
+        iconPos="left" [loading]="isLoadingDelete" (onClick)="onSubcontractDeleteConfirm()" severity="danger"/>
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="closeModal()"/>
+        iconPos="left" [disabled]="isLoadingDelete" (onClick)="closeModal()"/>
     </div>
   </div>
 </ng-template>
