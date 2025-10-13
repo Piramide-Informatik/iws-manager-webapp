@@ -140,9 +140,20 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
   onCreateVat(event: { created?: Vat, status: 'success' | 'error' }): void {
     if (event.created && event.status === 'success') {
       this.refreshTrigger$.next()
+      const sub = this.salesTaxUtils.loadInitialData().subscribe();
+      this.langSalesTaxSubscription.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.salesTaxesValues().length > 0) {
+      this.salesTaxesColumns = [
+        { field: 'name', header: 'Sales Tax' }
+      ];
     }
   }
 
