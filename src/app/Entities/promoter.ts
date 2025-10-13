@@ -12,7 +12,7 @@ export interface Promoter {
   projectPromoter? : string;
   promoterName1?: string;
   promoterName2?: string;
-  promoterNo?: string;
+  promoterNo?: string | null;
   street?: string;
   zipCode?: string;
 }

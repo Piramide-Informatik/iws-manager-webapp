@@ -51,6 +51,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   subcontractName: string = '';
 
   isDeletingSubcontract: boolean = false;
+  isCreating = false;
 
   subContractModalType: 'create' | 'delete' = 'create';
 
@@ -177,13 +178,15 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   onCreateFrameworkAgreement(data: any) {
     this.subcontractsUtils.createNewSubcontract(data).subscribe({
       next: (createdSubContract) => {
+        this.isCreating = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
+        this.visibleSubcontractModal = false;
         setTimeout(() => {
-          this.visibleSubcontractModal = false;
           this.navigationToEdit(createdSubContract.id);
-        }, 2000)
+        }, 1000)
       },
       error: (error) => {
+        this.isCreating = false;
         console.log(error);
         this.commonMessageService.showErrorCreatedMessage();
       }

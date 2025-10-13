@@ -31,6 +31,10 @@ export class ChanceService {
     this.loadInitialData();
   }
 
+  private sortAlphabetically(list: Chance[]): Chance[] {
+  return [...list].sort((a, b) => (a.probability ?? 0) - (b.probability ?? 0));
+}
+
   loadInitialData(): Observable<Chance[]> {
     this._loading.set(true);
     return this.http.get<Chance[]>(this.apiUrl, this.httpOptions).pipe(
@@ -60,7 +64,7 @@ export class ChanceService {
     return this.http.post<Chance>(this.apiUrl, chance, this.httpOptions).pipe(
       tap({
         next: (newChance) => {
-          this._chances.update(chances => [...chances, newChance]);
+          this._chances.update(chances => this.sortAlphabetically([...chances, newChance]));
           this._error.set(null);
         },
         error: (err) => {
@@ -120,7 +124,7 @@ export class ChanceService {
       tap({
         next: (res) => {
           this._chances.update(chances =>
-            chances.map(t => t.id === res.id ? res : t)
+            this.sortAlphabetically(chances.map(t => t.id === res.id ? res : t))
           );
           this._error.set(null);
         },

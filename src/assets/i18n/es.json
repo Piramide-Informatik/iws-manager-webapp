@@ -50,7 +50,8 @@
     "NUMBER_FORMAT_ERROR": "Se espera un número con el siguiente formato 1.234,56.",
     "NUMBER_MAX": "Se espera un valor máximo de 100",
     "NUMBER_BETWEEN_0_1": "valores entre 0 - 1",
-    "NUMBER_MAX_12": "Se espera un valor máximo de 12"
+    "NUMBER_MAX_12": "Se espera un valor máximo de 12",
+    "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe"
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -147,6 +148,7 @@
     "UPDATE_FAILED": "No se pudo actualizar el registro.",
     "CREATE_FAILED": "No se pudo crear el registro.",
     "DELETE_FAILED": "No se pudo eliminar el registro.",
+    "CONFLICT": "No se pudo editar existe un conflicto de versiones.",
     "DELETE_ERROR_IN_USE": "No se puede eliminar el registro porque está en uso por otras entidades.",
     "DELETE_ERROR_IN_USE_WITH_ENTITY": "No se puede eliminar el registro porque está en uso por otras entidades: ",
     "RECORD_ALREADY_EXISTS": "El registro ya existe.",

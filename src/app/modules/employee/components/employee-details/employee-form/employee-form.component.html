@@ -82,13 +82,13 @@
 
   <div class="form-row flex flex-wrap gap-3 justify-content-center">
     <p-button type="submit" class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-      iconPos="left" [loading]="isLoading"/>
+      iconPos="left" [loading]="isLoading" [disabled]="employeeForm.invalid || !employeeForm.dirty" />
     @if (currentEmployee) {
     <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left"
-      [style]="{ background: '#ef4444' }" (onClick)="showModalDelete()" />
+      [style]="{ background: '#ef4444' }" (onClick)="showModalDelete()" [disabled]="isLoading" />
     }
     <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
-      (onClick)="goBack()" />
+      (onClick)="goBack()" [disabled]="isLoading" />
   </div>
 </form>
 <p-dialog [header]="('EMPLOYEE.LABELS.DELETE_EMPLOYEE' | translate)" [modal]="true"

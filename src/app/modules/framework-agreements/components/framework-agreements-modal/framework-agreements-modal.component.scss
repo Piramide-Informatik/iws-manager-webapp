@@ -18,7 +18,6 @@
   label {
     width: 170px !important;
     flex-shrink: 0;
-    font-weight: normal;
   }
 
   input,
@@ -26,6 +25,10 @@
   p-select,
   p-datepicker {
     width: 100% !important;
+  }
+
+  ::ng-deep .p-inputnumber-input {
+    width: 100%;
   }
 }
 
