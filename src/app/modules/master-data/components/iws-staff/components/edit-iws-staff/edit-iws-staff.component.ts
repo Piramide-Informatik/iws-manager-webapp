@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 @Component({
   selector: 'app-edit-iws-staff',
   standalone: false,
@@ -31,7 +32,8 @@ export class EditIwsStaffComponent implements OnInit {
     private readonly employeeIwsStateService: EmployeeIwsStateService,
     private readonly teamIwsService: TeamIwsService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly commonMessagesService: CommonMessagesService
   ) { }
 
   ngOnInit(): void {
@@ -162,6 +164,7 @@ export class EditIwsStaffComponent implements OnInit {
       detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
     });
     this.employeeIwsStateService.setEmployeeIwsToEdit(null);
+    this.commonMessagesService.showEditSucessfullMessage();
     this.clearForm();
   }
 

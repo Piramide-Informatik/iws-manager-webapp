@@ -7,6 +7,8 @@
           [columns]="cols"
           [userPreferences]="userStatesPreferences"
           [dataKeys]="dataKeys"
+          [sortField]="'name'" 
+          [sortOrder]="1"
           (onColumnChanges)="onUserStatesPreferencesChanges($event)"
           (onCreateRegister)="handleStateTableEvents({ type: 'create' })"
           (onDeleteRegister)="handleStateTableEvents({ type: 'delete', data: $event })"
@@ -19,12 +21,14 @@
         [modal]="true" 
         [(visible)]="visibleStateModal" 
         (onShow)="onDialogShow()"
+        (onHide)="onModalHide()"
         >
           <app-state-modal
+            [isVisibleModal]="visibleStateModal"
             [modalType]="stateModalType"
             [stateName]="stateName"
             [stateToDelete]="selectedState"
-            (isVisibleModal)="onModalVisibilityChange($event)"
+            (isVisibleModalChange)="onModalVisibilityChange($event)"
             (confirmStateDelete)="onConfirmStateDelete($event)"
             #stateModal
           ></app-state-modal>

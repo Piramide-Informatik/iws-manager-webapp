@@ -64,7 +64,7 @@
     <div class="order_input order_name mb-2">
       <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
       <p-inputNumber class="p-inputnumber-input" id="invoiceAmount" formControlName="invoiceAmount" 
-        mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="false" [inputStyle]="{'text-align': 'right'}"
+        mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
         [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" 
       />
     </div>

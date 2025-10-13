@@ -29,19 +29,15 @@
           formControlName="startDate"
           [showIcon]="true"
           [showClear]="true"
-          dateFormat="dd.mm.yy"
-          [ngClass]="{'ng-invalid': ContractDetailsForm.get('startDate')?.invalid && ContractDetailsForm.get('startDate')?.dirty && ContractDetailsForm.get('startDate')?.touched}">
+          dateFormat="dd.mm.yy">
         </p-datepicker>
-        <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('startDate')?.invalid && ContractDetailsForm.get('startDate')?.dirty">
-          {{ 'ERROR.DATE_FORMAT_ERROR' | translate }}
-        </p-message>
       </div>
       <div class="contract_input">
         <label for="salaryPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
         <div class="input-message">
           <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off"
-            [ngClass]="{'ng-invalid': ContractDetailsForm.get('salaryPerMonth')?.invalid && ContractDetailsForm.get('salaryPerMonth')?.dirty && ContractDetailsForm.get('salaryPerMonth')?.touched}" />
+             />
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('salaryPerMonth')?.invalid && ContractDetailsForm.get('salaryPerMonth')?.dirty && ContractDetailsForm.get('salaryPerMonth')!.hasError('pattern')">
             {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
           </p-message>
@@ -103,45 +99,49 @@
       </div>
       <div class="contract_input">
         <label for="hourlyRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
-        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRate" formControlName="hourlyRate" autocomplete="off"
-          [ngClass]="{'ng-invalid': ContractDetailsForm.get('hourlyRate')?.invalid && ContractDetailsForm.get('hourlyRate')?.dirty && ContractDetailsForm.get('hourlyRate')?.touched}" />
-        <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hourlyRate')?.invalid && ContractDetailsForm.get('hourlyRate')?.dirty && ContractDetailsForm.get('hourlyRate')!.hasError('pattern')">
-          {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
-        </p-message>
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [max]="100" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRate" formControlName="hourlyRate" autocomplete="off"
+             invalid="ContractDetailsForm.getRawValue().hourlyRate > 100" />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.getRawValue().hourlyRate > 100" >
+            {{ 'ERROR.NUMBER_MAX' | translate }}
+          </p-message>
+        </div>
       </div>
       <div class="contract_input">
         <label for="hourlyRealRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_REAL_RATE' | translate }}</label>
-        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRealRate" formControlName="hourlyRealRate" autocomplete="off"
-          [ngClass]="{'ng-invalid': ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')?.touched}" />
-        <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')!.hasError('pattern')">
-          {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
-        </p-message>
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [max]="100" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRealRate" formControlName="hourlyRealRate" autocomplete="off"
+             />
+          <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')!.hasError('pattern')">
+            {{ 'ERROR.NUMBER_MAX' | translate }}
+          </p-message>
+        </div>
       </div>
     </div>
     <div class="buttons-container flex justify-content-center gap-3 mt-4">
-      <p-button class="save" type="submit" [loading]="isEmployeeContractLoading" [disabled]="!ContractDetailsForm.valid || !currentCustomer" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+      <p-button class="save" type="submit" [loading]="isLoading" [disabled]="ContractDetailsForm.invalid || !ContractDetailsForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
       <ng-container *ngIf="currentEmploymentContractEntity">
-        <p-button class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="this.visiblEmployeeContractModal = true;" />
+        <p-button class="delete" size="small" [disabled]="isLoading" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="this.visiblEmployeeContractModal = true;" />
       </ng-container>
-      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" (onClick)="closeModal()"/>      
+      <p-button class="cancel" size="small" [disabled]="isLoading" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" (onClick)="closeModal()"/>      
     </div>
   </form>
 </ng-container>
 <ng-template #deleteTemplate>
   <div class="confirmation-content mt-4">
     <p *ngIf="currentEmploymentContractEntity" class="mb-4">
-      {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }} <strong class="stronglock mt-1">"{{ currentEmploymentContractEntity.id }}"</strong>?
+      {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }} <strong class="stronglock mt-1">"{{ currentEmploymentContractEntity.employee?.employeeno }}"</strong>?
     </p>
 
     <div class="flex justify-content-center gap-3">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
         icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContractEntity()"
-        [loading]="isEmployeeContractLoading" 
+        [loading]="isLoadingDelete" 
       />
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-        icon="pi pi-times" iconPos="left" (onClick)="closeModal()"
+        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete"
       />
     </div>
   </div>
@@ -159,15 +159,15 @@
 >
   <div class="confirmation-content mt-4 dialog-container">
     <p *ngIf="currentEmploymentContractEntity"  class="mb-4 dialog-title">
-      {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }}<strong class="stronglock mt-1">"{{ currentEmploymentContractEntity.id }}"</strong>?
+      {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }}<strong class="stronglock mt-1">"{{ currentEmploymentContractEntity.employee?.employeeno }}"</strong>?
     </p>
 
     <div class="flex justify-content-center gap-3 buttons-container">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
         icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContractEntity()"
-        [loading]="isEmployeeContractLoading" 
+        [loading]="isLoadingDelete" 
       />
-      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" [disabled]="isLoadingDelete"
         icon="pi pi-times" iconPos="left" (onClick)="this.visiblEmployeeContractModal = false;"
       />
     </div>

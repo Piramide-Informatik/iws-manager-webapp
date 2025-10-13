@@ -18,6 +18,7 @@
     : ('PROJECT_STATUS.DELETE.CONFIRMATION' | translate)" 
     [modal]="true" 
     [(visible)]="visibleModal"
+    (onHide)="onModalProjectStatusClose()"
     >
     <app-model-project-status
         [modalType]="modalType"
