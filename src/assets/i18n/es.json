@@ -147,6 +147,7 @@
     "UPDATE_FAILED": "No se pudo actualizar el registro.",
     "CREATE_FAILED": "No se pudo crear el registro.",
     "DELETE_FAILED": "No se pudo eliminar el registro.",
+    "CONFLICT": "No se pudo editar existe un conflicto de versiones.",
     "DELETE_ERROR_IN_USE": "No se puede eliminar el registro porque está en uso por otras entidades.",
     "DELETE_ERROR_IN_USE_WITH_ENTITY": "No se puede eliminar el registro porque está en uso por otras entidades: ",
     "RECORD_ALREADY_EXISTS": "El registro ya existe.",
