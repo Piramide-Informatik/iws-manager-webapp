@@ -1,4 +1,4 @@
-import { Component, inject, computed, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, computed, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../router-utils.service';
@@ -11,6 +11,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { PromoterStateService } from './utils/promoter-state.service';
 import { Column } from '../../../../Entities/column';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
+import { ModalProjectFunnelComponent } from './components/modal-project-funnel/modal-project-funnel.component';
 
 @Component({
   selector: 'app-project-funnels',
@@ -35,7 +36,7 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
   readonly projectFunnels = computed(() => {
     return this.promoterService.promoters();
   });
-
+  @ViewChild('projectFunnelsModal') dialog!: ModalProjectFunnelComponent;
   constructor(
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
@@ -102,5 +103,11 @@ export class ProjectFunnelsComponent implements OnInit, OnDestroy {
 
   onEditPromoter(promoter: Promoter): void {
     this.promoterStateService.setPromoterToEdit(promoter);
+  }
+
+  onModalProjectFunnelsClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
+    }
   }
 }

@@ -19,6 +19,7 @@
         : ('TEXT.MODAL.DELETE' | translate)"
         [modal]="true"
         [(visible)]="isVisibleModal"
+        (onHide)="onModalTextClose()"
         >
           <app-text-modal
             [visible]="isVisibleModal"
@@ -27,6 +28,7 @@
             (isVisibleModal)="isVisibleModal = $event"
             (createText)="onCreateText($event)"
             (deleteText)="onDeleteText($event)"
+            #titleModel
           ></app-text-modal>
       </p-dialog>
     </div>

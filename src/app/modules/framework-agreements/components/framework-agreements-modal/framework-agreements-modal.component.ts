@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, inject, Output, EventEmitter, Input, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 import { FundingProgramUtils } from '../../../master-data/components/funding-programs/utils/funding-program-utils';
 import { ContractStatusUtils } from '../../../master-data/components/contract-status/utils/contract-status-utils';
@@ -19,9 +19,11 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
   @Input() customer: any
   @Input() modalType: any
   @Input() isLoading = false;
+  @Input() visible = false;
   @Output() deletedFrameworkAgreement = new EventEmitter();
   @Output() createdFrameworkAgreement = new EventEmitter();
   @Output() visibleModal = new EventEmitter();
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly contractStatusUtils = inject(ContractStatusUtils);
@@ -57,6 +59,12 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
       if (modalTypeValue === 'create') {
         this.ngOnInit()
       }
+    }
+
+    if(changes['visible'] && this.visible){
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
     }
   }
   
@@ -103,9 +111,20 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
   
   closeModal() {
     this.visibleModal.emit(false);
+    this.basicContractCreateForm.reset();
   }
   
   private findById<T extends { id: number }>(items: T[], id: number): T | null {
     return id === 0 ? null : items.find(item => item.id === id) ?? null;
+  }
+
+  private focusInputIfNeeded(): void {
+    if (this.isCreateFrameworkAgreementMode && this.firstInput) {
+      setTimeout(() => {
+        if (this.firstInput?.nativeElement) {
+          this.firstInput.nativeElement.focus();
+        }
+      }, 200);
+    }
   }
 }

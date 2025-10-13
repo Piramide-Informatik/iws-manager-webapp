@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../router-utils.service';
@@ -10,6 +10,7 @@ import { PayConditionUtils } from './utils/pay-condition-utils';
 import { PayConditionService } from '../../../../Services/pay-condition.service';
 import { PayConditionStateService } from './utils/pay-condition-state.services';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
+import { ModalTermsPaymentComponent } from './components/modal-terms-payment/modal-terms-payment.component';
 
 @Component({
   selector: 'app-terms-payment',
@@ -33,6 +34,8 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
   readonly termsPayment = computed(() => {
     return this.payConditionService.payConditions();
   });
+
+  @ViewChild('termsPaymentModal') dialog!: ModalTermsPaymentComponent;
   
   constructor(
     private readonly translate: TranslateService,
@@ -101,5 +104,11 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
 
   editPayCondition(payCondition: PayCondition): void {
     this.payStateService.setPayConditionToEdit(payCondition);
+  }
+
+  onModalTermsPaymentClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
+    }
   }
 }

@@ -8,6 +8,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { Subscription } from 'rxjs';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { Country } from '../../../../../../Entities/country';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'master-data-edit-project-funnel',
@@ -22,6 +23,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
   private readonly countryUtils = inject(CountryUtils);
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('NumInput') NumInput!: InputNumber;
   private promoterToEdit: Promoter | null = null;
   public showOCCErrorModaPromoter = false;
   public isLoading: boolean = false;
@@ -46,7 +48,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   
   private initForm(): void {
     this.editProjectFunnelForm = new FormGroup({
-      promoterNo: new FormControl(''),
+      promoterNo: new FormControl<string | null>(''),
       projectPromoter: new FormControl(''),
       promoterName1: new FormControl(''),
       promoterName2: new FormControl(''),
@@ -63,7 +65,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedPromoter: Promoter = {
       ...this.promoterToEdit,
-      promoterNo: this.editProjectFunnelForm.value.promoterNo?.trim(),
+      promoterNo: this.editProjectFunnelForm.value.promoterNo?.toString() || null,
       projectPromoter: this.editProjectFunnelForm.value.projectPromoter?.trim(),
       promoterName1: this.editProjectFunnelForm.value.promoterName1?.trim(),
       promoterName2: this.editProjectFunnelForm.value.promoterName2?.trim(),
@@ -77,7 +79,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
       next: () => {
         this.isLoading = false;
         this.clearForm();
-        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.commonMessageService.showEditSucessfullMessage();
       },
       error: (error: Error) => {
         this.isLoading = false;

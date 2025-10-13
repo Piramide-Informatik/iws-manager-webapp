@@ -15,14 +15,14 @@
        ? ('FRAMEWORK-AGREEMENTS.TITLE_DIALOG_CREATE' | translate) 
        : ('FRAMEWORK-AGREEMENTS.TITLE_DIALOG_REMOVE' | translate)" 
     [modal]="true"
-    (onHide)="onModalHide()"
     [(visible)]="visibleFrameworkAgreementModal" 
-    [style]="{ width: '45rem' }"
+    [style]="{ width: 'auto' }"
   >
     <app-framework-agreements-modal
       [selectedFrameworkAgreement]="selectedFrameworkAgreement"
       [customer]="customer"
       [modalType]="modalFrameworkAgreementType"
+      [visible]="visibleFrameworkAgreementModal"
       [isLoading]="isFrameworkAgreementLoading"
       (createdFrameworkAgreement)="onCreateFrameworkAgreement($event)"
       (deletedFrameworkAgreement)="onDeleteFrameworkAgreement($event)"

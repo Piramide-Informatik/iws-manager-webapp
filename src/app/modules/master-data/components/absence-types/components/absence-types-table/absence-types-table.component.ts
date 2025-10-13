@@ -11,6 +11,7 @@ import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
 import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 import { Column } from '../../../../../../Entities/column';
 import { AbsenceTypeStateService } from '../../utils/absence-type-state.service';
+import { ModalAbsenceTypesComponent } from '../modal-absence-types/modal-absence-types.component';
 
 @Component({
   selector: 'app-absence-types-table',
@@ -45,6 +46,7 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
   dataKeys = ['type', 'abbreviation', 'fractionOfDay', 'isVacation', 'canBeBooked'];
 
   @ViewChild('dt2') dt2!: Table;
+  @ViewChild('abscenceTypeModal') abscenceTypeDialog!: ModalAbsenceTypesComponent;
 
   private langSubscription!: Subscription;
 
@@ -147,5 +149,10 @@ export class AbsenceTypesTableComponent implements OnInit, OnDestroy {
       isHoliday: absenceType.isVacation ? 1 : 0,
       hours: absenceType.canBeBooked ? 1 : 0
     })
+  }
+  onModalAbscenceTypeClose() {
+    if (this.abscenceTypeDialog) {
+      this.abscenceTypeDialog.closeModal();
+    }
   }
 }
