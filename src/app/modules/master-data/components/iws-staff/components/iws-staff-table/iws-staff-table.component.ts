@@ -137,8 +137,17 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     this.employeeIwsStateService.setEmployeeIwsToEdit(employeeIws);
   }
 
-  onDeleteIwsStaffSucess() {
-    this.employeeIwsStateService.clearTitle()
+  onDeleteIwsStaff(event: { status: 'success' | 'error', error?: any }) {
+    if (event.status === 'success') {
+      this.employeeIwsStateService.clearTitle()
+    } else if (event.status === 'error') {
+      const errorMessage = event.error.error.message;
+      if (errorMessage.includes('foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorMessage);
+      } else {
+        this.commonMessageService.showErrorDeleteMessage();
+      }
+    }
   }
 
   onCreateEmployeeIws(event: { status: 'success' | 'error' }): void {
