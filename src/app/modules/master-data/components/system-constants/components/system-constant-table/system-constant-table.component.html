@@ -26,6 +26,7 @@
       : ('SYSTEM_CONSTANT.MODAL.DELETE' | translate)" 
     [modal]="true" 
     [(visible)]="visibleSystemConstantModal"
+    (onHide)="onModalSystemConstantClose()"
   >
     <app-system-constant-modal
       [modalType]="modalType"
@@ -34,6 +35,7 @@
       (isVisibleModal)="onModalVisibilityChange($event)"
       (createSystemConstant)="onCreateSystemConstant($event)"
       (deleteSystemConstant)="onDeleteSystemConstant($event)"
+      #systemConstantModal
     ></app-system-constant-modal>
   </p-dialog>
 </div>

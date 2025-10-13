@@ -26,6 +26,13 @@ export class SystemConstantService {
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
 
+  private sortAlphabetically(list: System[]): System[] {
+    return [...list].sort((a, b) => {
+        const systemA = a.name || '';
+        const systemB = b.name || '';
+        return systemA.localeCompare(systemB, undefined, { sensitivity: 'base' });
+      });
+  }
 
   public loadInitialData(): Observable<System[]> {
     this._loading.set(true);
@@ -50,7 +57,7 @@ export class SystemConstantService {
     return this.http.post<System>(this.apiUrl, systemConstant, this.httpOptions).pipe(
       tap({
         next: (newSystemConstant) => {
-          this._systems.update(systems => [...systems, newSystemConstant]);
+          this._systems.update(systems => this.sortAlphabetically([...systems, newSystemConstant]));
           this._error.set(null);
         },
         error: (err) => {
@@ -68,7 +75,7 @@ export class SystemConstantService {
       tap({
         next: (res) => {
           this._systems.update(systems => 
-            systems.map(sc => sc.id === res.id ? res : sc)
+            this.sortAlphabetically(systems.map(sc => sc.id === res.id ? res : sc))
           );
           this._error.set(null);
         },

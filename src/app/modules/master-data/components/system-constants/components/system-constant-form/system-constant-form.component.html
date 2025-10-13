@@ -52,3 +52,10 @@
         </div>
     </form>
 </p-card>
+<app-occ-error-modal
+*ngIf="showOCCErrorModaSystem"
+[errorType]="occErrorType"
+[reloadCurrentPage]="true"
+(close)="showOCCErrorModaSystem = false"
+>
+</app-occ-error-modal>
