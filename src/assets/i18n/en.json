@@ -612,6 +612,9 @@
     "MODAL": {
       "NEW": "New Absence Type",
       "DELETE": "Delete Absence Type"
+    },
+    "ERROR": {
+      "NAME_REQUIRED": "Name is required"
     }
   },
   "SALUTATION": {

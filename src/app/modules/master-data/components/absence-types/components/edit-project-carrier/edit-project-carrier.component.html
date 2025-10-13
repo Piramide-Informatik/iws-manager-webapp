@@ -2,8 +2,25 @@
     <form [formGroup]="editProjectCarrierForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
             <div class="absence-form">
-                <label for="name">{{ 'ABSENCE_TYPES.LABEL.TYPE' | translate }}</label>
-                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+              <label for="name">{{ 'ABSENCE_TYPES.LABEL.TYPE' | translate }}</label>
+              <div class="input-message">
+                <input #firstInput
+                  pInputText
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  [ngClass]="{'ng-invalid': editProjectCarrierForm.get('name')?.invalid && 
+                    editProjectCarrierForm.get('name')?.dirty && editProjectCarrierForm.get('name')?.touched}"
+                  autocomplete="off"
+                />
+                <p-message severity="error" class="error-abscence-type-field" variant="simple" size="small" *ngIf="
+                    editProjectCarrierForm.get('name')?.invalid && 
+                    editProjectCarrierForm.get('name')?.dirty && 
+                    editProjectCarrierForm.get('name')!.hasError('required')
+                    ">
+                    {{ 'ABSENCE_TYPES.ERROR.NAME_REQUIRED' | translate }}
+                </p-message>
+              </div> 
             </div>
             <div class="absence-form">
                 <label for="label">{{ 'ABSENCE_TYPES.LABEL.ABBREVIATION' | translate }}</label>

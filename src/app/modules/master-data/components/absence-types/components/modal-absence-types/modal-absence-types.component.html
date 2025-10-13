@@ -3,13 +3,24 @@
     <div class="create-form my-4">
       <div class="absence-form">
         <label for="name">{{ "ABSENCE_TYPES.LABEL.TYPE" | translate }}</label>
-        <input #firstInput
-          pInputText
-          type="text"
-          id="name"
-          formControlName="name"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input #firstInput
+            pInputText
+            type="text"
+            id="name"
+            formControlName="name"
+            [ngClass]="{'ng-invalid': absenceTypeForm.get('name')?.invalid && 
+              absenceTypeForm.get('name')?.dirty && absenceTypeForm.get('name')?.touched}"
+            autocomplete="off"
+          />
+          <p-message severity="error" class="error-abscence-type-field" variant="simple" size="small" *ngIf="
+              absenceTypeForm.get('name')?.invalid && 
+              absenceTypeForm.get('name')?.dirty && 
+              absenceTypeForm.get('name')!.hasError('required')
+              ">
+              {{ 'ABSENCE_TYPES.ERROR.NAME_REQUIRED' | translate }}
+          </p-message>
+        </div> 
       </div>
 
       <div class="absence-form">

@@ -604,6 +604,9 @@
     "DELETE": {
       "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar el tipo de ausencia "
     },
+    "ERROR": {
+      "NAME_REQUIRED": "Nombre es requerido"
+    },
     "MODAL": {
       "NEW": "Nuevo Tipo de Ausencia",
       "DELETE": "Eliminar Tipo de Ausencia"

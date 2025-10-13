@@ -18,8 +18,10 @@
     [modal]="true" 
     [(visible)]="visibleModal" 
     [style]="{ width: '35rem' }"
+    (onHide)="onModalAbscenceTypeClose()"
   >
     <app-modal-absence-types
+      #abscenceTypeModal
       [modalType]="modalType"
       [selectedAbsenceType]="selectedAbsenceType"
       [visible]="visibleModal"
