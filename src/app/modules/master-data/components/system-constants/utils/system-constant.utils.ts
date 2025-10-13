@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
 import { System } from '../../../../../Entities/system';
 import { SystemConstantService } from '../../../../../Services/system-constant.service';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for system-constant related business logic and operations.
@@ -65,11 +66,11 @@ export class SystemConstantUtils {
       take(1),
       switchMap((currentSystemConstant) => {
         if (!currentSystemConstant) {
-          return throwError(() => new Error('System Constant not found'));
+          return throwError(() => createNotFoundUpdateError('System Constant'));
         }
 
         if (currentSystemConstant.version !== systemConstant.version) {
-          return throwError(() => new Error('Conflict detected: system constant version mismatch'));
+          return throwError(() => createNotFoundUpdateError('system constant'));
         }
 
         return this.systemConstantService.updateSystemConstant(systemConstant);
