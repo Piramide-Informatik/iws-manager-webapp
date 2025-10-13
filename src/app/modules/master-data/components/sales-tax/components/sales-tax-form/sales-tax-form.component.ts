@@ -185,9 +185,20 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
 
   onCreateVatRate(event: { created?: VatRate, status: 'success' | 'error'}): void {
     if(event.created && event.status === 'success'){
+      const sub = this.vatRateService.loadInitialData().subscribe();
+      this.subscriptions.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.vatRates().length > 0) {
+      this.salesTaxRatesColumns = [
+        { field: 'name', header: 'Sales Tax Rate' }
+      ];
     }
   }
 
