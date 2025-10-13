@@ -3,6 +3,7 @@ import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
 import { VatRateService } from '../../../../../Services/vat-rate.service';
 import { VatRate } from '../../../../../Entities/vatRate';
 import { Vat } from '../../../../../Entities/vat';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for vatRate-related business logic and operations.
@@ -99,16 +100,15 @@ export class VatRateUtils {
 
     return this.vatRateService.getVatRateById(vatRate.id).pipe(
       take(1),
-      map((currentVatRate) => {
+      switchMap((currentVatRate) => {
         if (!currentVatRate) {
-          throw new Error('VatRate not found');
+          return throwError(() => createNotFoundUpdateError('VatRate'));
         }
         if (currentVatRate.version !== vatRate.version) {
-          throw new Error('Version conflict: VatRate has been updated by another user');
+          return throwError(() => createUpdateConflictError('VatRate'));
         }
-        return vatRate;
+        return this.vatRateService.updateVatRate(vatRate);
       }),
-      switchMap((validatedVatRate: VatRate) => this.vatRateService.updateVatRate(validatedVatRate)),
       catchError((err) => {
         console.error('Error updating vatRate:', err);
         return throwError(() => err);

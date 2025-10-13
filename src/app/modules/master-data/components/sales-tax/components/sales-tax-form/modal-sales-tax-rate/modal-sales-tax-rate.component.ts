@@ -6,6 +6,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VatStateService } from '../../../utils/vat-state.service';
 import { Vat } from '../../../../../../../Entities/vat';
 import { momentCreateDate, momentFormatDate } from '../../../../../../shared/utils/moment-date-utils';
+import { OccError, OccErrorType } from '../../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-modal-sales-tax-rate',
@@ -16,13 +18,14 @@ import { momentCreateDate, momentFormatDate } from '../../../../../../shared/uti
 export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
   private readonly vatRateUtils = inject(VatRateUtils);
   private readonly vatStateService = inject(VatStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   @Input() selectedVatRate!: VatRate | undefined;
   @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() createVatRate = new EventEmitter<{ status: 'success' | 'error'}>();
-  @Output() deleteVatRate = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
-  @Output() editVatRate = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createVatRate = new EventEmitter<{ status: 'success' | 'error' }>();
+  @Output() deleteVatRate = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
+  @Output() editVatRate = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @Output() updatedVatRate = new EventEmitter<void>();
   @ViewChild('firstInput') firstInput!: DatePicker;
   private currentVat!: Vat | null;
@@ -30,11 +33,13 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
   public isLoadingDelete: boolean = false;
   public visibleModalDeleteConfirmVatRate: boolean = false;
   public vatRateForm!: FormGroup;
+  public showOCCErrorModalTaxRate = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   ngOnInit(): void {
     this.initForm();
     this.vatStateService.currentVat$.subscribe(vat => {
-      if(vat){
+      if (vat) {
         this.currentVat = vat;
       }
     });
@@ -42,18 +47,18 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
 
   private initForm(): void {
     this.vatRateForm = new FormGroup({
-    fromdate: new FormControl(),
-    rate: new FormControl(null, [Validators.max(100.00)])
-  });
+      fromdate: new FormControl(),
+      rate: new FormControl(null, [Validators.max(100.00)])
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visibleModal'] && this.visibleModal){
-      setTimeout(()=>{
+    if (changes['visibleModal'] && this.visibleModal) {
+      setTimeout(() => {
         this.focusInputIfNeeded();
       })
     }
-    if((changes['selectedVatRate'] || changes['visibleModal']) && this.visibleModal && this.selectedVatRate && this.modalType === 'edit'){
+    if ((changes['selectedVatRate'] || changes['visibleModal']) && this.visibleModal && this.selectedVatRate && this.modalType === 'edit') {
       this.vatRateForm.patchValue({
         fromdate: momentCreateDate(this.selectedVatRate.fromdate),
         rate: this.selectedVatRate.rate
@@ -62,12 +67,12 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if(this.vatRateForm.invalid || this.isLoading || !this.currentVat) return
+    if (this.vatRateForm.invalid || this.isLoading || !this.currentVat) return
 
     this.isLoading = true;
-    if(this.modalType === 'create'){
+    if (this.modalType === 'create') {
       this.createNewVatRate();
-    }else if(this.modalType === 'edit'){
+    } else if (this.modalType === 'edit') {
       this.updateVatRate();
     }
   }
@@ -85,17 +90,19 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
         this.vatRateUtils.getAllVatRatesByVatId(this.currentVat!.id).subscribe();
         this.updatedVatRate.emit();
         this.closeModal();
-        this.createVatRate.emit({status: 'success'});
+        this.createVatRate.emit({ status: 'success' });
+        this.commonMessageService.showCreatedSuccesfullMessage();
       },
       error: () => {
         this.isLoading = false;
-        this.createVatRate.emit({status: 'error'})
+        this.createVatRate.emit({ status: 'error' })
+        this.commonMessageService.showErrorCreatedMessage();
       }
     });
   }
 
   private updateVatRate(): void {
-    if(!this.selectedVatRate) return
+    if (!this.selectedVatRate) return
 
     const editedVatRate: VatRate = {
       ...this.selectedVatRate,
@@ -114,9 +121,17 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
       },
       error: (error: Error) => {
         this.isLoading = false;
+        this.handleOccError(error);
         this.editVatRate.emit({ status: 'error', error });
       }
     });
+  }
+
+  handleOccError(error: Error) {
+    if (error instanceof OccError) {
+      this.showOCCErrorModalTaxRate = true;
+      this.occErrorType = error.errorType;
+    }
   }
 
   public onDeleteConfirm(): void {
@@ -125,7 +140,7 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
       this.vatRateUtils.deleteVatRate(this.selectedVatRate.id).subscribe({
         next: () => {
           this.isLoadingDelete = false;
-          this.deleteVatRate.emit({status: 'success'});
+          this.deleteVatRate.emit({ status: 'success' });
           this.vatRateUtils.getAllVatRatesByVatId(this.currentVat!.id).subscribe();
           this.closeModal();
           this.visibleModalDeleteConfirmVatRate = false;
@@ -133,7 +148,7 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
         },
         error: (error: Error) => {
           this.isLoadingDelete = false;
-          this.deleteVatRate.emit({status: 'error', error});
+          this.deleteVatRate.emit({ status: 'error', error });
         }
       })
     }
