@@ -11,6 +11,7 @@ import { MessageService } from 'primeng/api';
 import { User } from '../../../../../../Entities/user';
 import { Column } from '../../../../../../Entities/column';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { UserModalComponent } from '../user-modal/user-modal.component';
 
 @Component({
   selector: 'app-user-table',
@@ -50,6 +51,8 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
   });
+
+  @ViewChild('userModal') dialog!: UserModalComponent;
 
   userColumns: Column[] = [];
   userDisplayedColumns: Column[] = [];
@@ -153,5 +156,11 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
   editUser(user: { id: number, username: string, name: string, active: boolean }) {
     const userToEdit = this.usersMap.get(user.id) ?? null;
     this.userStateService.setUserToEdit(userToEdit);
+  }
+
+  onModalUserClose() {
+    if (this.dialog) {
+      this.dialog.closeAndReset();
+    }
   }
 }
