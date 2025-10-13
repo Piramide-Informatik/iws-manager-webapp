@@ -75,6 +75,7 @@ export class RolModalComponent implements OnInit {
           summary: 'MESSAGE.SUCCESS',
           detail: 'MESSAGE.DELETE_SUCCESS'
         });
+        this.commonMessageService.showDeleteSucessfullMessage();
         this.closeAndReset();
       },
       error: (error) => {
