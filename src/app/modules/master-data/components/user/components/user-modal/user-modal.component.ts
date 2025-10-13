@@ -94,13 +94,13 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
     const errorMessage = error?.error?.message || error?.message || '';
     this.errorMessage = errorMessage;
 
-    let detail = defaultDetail;
+    let detail : string;
 
     // Check for role assignment error
     if (errorMessage.includes('is assigned to') && errorMessage.includes('role(s)')) {
       const roleMatch = errorMessage.match(/assigned to (\d+) role\(s\)/);
-      if (roleMatch && roleMatch[1]) {
-        const roleCount = roleMatch[1];
+      const roleCount = roleMatch?.[1];
+      if (roleCount) {
         // Translate the message with the role count parameter
         const translatedMessage = this.translate.instant('MESSAGE.DELETE_ERROR_ROLES_ASSIGNED', { count: roleCount });
         detail = translatedMessage;

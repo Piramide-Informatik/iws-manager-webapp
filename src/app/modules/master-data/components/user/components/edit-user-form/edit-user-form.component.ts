@@ -240,10 +240,10 @@ export class EditUserFormComponent implements OnInit {
   }
 
   private markAllAsTouched(): void {
-    Object.values(this.editUserForm.controls).forEach((control) => {
-      control.markAsTouched();
+    this.editUserForm.markAllAsTouched();
+    for (const control of Object.values(this.editUserForm.controls)) {
       control.markAsDirty();
-    });
+    }
   }
 
   private handleError(err: any): void {
