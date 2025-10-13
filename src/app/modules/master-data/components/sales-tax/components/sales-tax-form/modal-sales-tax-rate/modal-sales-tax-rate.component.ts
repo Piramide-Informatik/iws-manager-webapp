@@ -148,9 +148,16 @@ export class ModalSalesTaxRateComponent implements OnInit, OnChanges {
         },
         error: (error: Error) => {
           this.isLoadingDelete = false;
+          this.handleDeleteOccError(error);
           this.deleteVatRate.emit({ status: 'error', error });
         }
       })
+    }
+  }
+  handleDeleteOccError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalTaxRate = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
