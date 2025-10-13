@@ -120,4 +120,10 @@ export class ApprovalStatusTableComponent implements OnInit, OnDestroy {
   onDeleteApprovalStatus() {
      this.approvalStatusStateService.clearApprovalStatus();
   }
+
+  onModalApprovalStatusClose() {
+    if (this.approvalStatusModalComponent) {
+      this.approvalStatusModalComponent.onCancel();
+    }
+  }
 }

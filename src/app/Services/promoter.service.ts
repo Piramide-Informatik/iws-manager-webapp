@@ -31,6 +31,14 @@ export class PromoterService {
     this.loadInitialData();
   }
 
+  private sortAlphabetically(list: Promoter[]): Promoter[] {
+      return [...list].sort((a, b) => {
+        const projectPA = a.promoterNo || '';
+        const projectPB = b.promoterNo || '';
+        return projectPA.localeCompare(projectPB, undefined, { sensitivity: 'base' });
+      });
+    }
+
   public loadInitialData(): Observable<Promoter[]> {
     this._loading.set(true);
     return this.http.get<Promoter[]>(this.apiUrl, this.httpOptions).pipe(
@@ -54,7 +62,7 @@ export class PromoterService {
     return this.http.post<Promoter>(this.apiUrl, promoter, this.httpOptions).pipe(
       tap({
         next: (newPromoter) => {
-          this._promoters.update(promoters => [...promoters, newPromoter]);
+          this._promoters.update(promoters => this.sortAlphabetically([...promoters, newPromoter]));
           this._error.set(null);
         },
         error: (err) => {
@@ -73,7 +81,7 @@ export class PromoterService {
       tap({
         next: (res) => {
           this._promoters.update(promoters =>
-            promoters.map(t => t.id === res.id ? res : t)
+            this.sortAlphabetically(promoters.map(t => t.id === res.id ? res : t))
           );
           this._error.set(null);
         },
