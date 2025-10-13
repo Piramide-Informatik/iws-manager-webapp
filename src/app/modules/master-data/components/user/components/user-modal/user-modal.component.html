@@ -94,3 +94,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+    *ngIf="showOCCErrorModalUser"
+    [errorType]="occErrorType"
+    [reloadCurrentPage]="true"
+    (close)="showOCCErrorModalUser = false">
+</app-occ-error-modal>
