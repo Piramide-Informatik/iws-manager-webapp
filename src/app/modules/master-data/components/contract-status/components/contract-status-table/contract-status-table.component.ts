@@ -117,6 +117,8 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
         this.loadEdit.emit(false);
         if (err.message === 'Version conflict: ContractStatus has been updated by another user') {
           this.showOCCErrorModalContractStatus = true;
+          this.commonMessageService.showConflictMessage();
+          return;
         }
         this.commonMessageService.showErrorEditMessage();
       }

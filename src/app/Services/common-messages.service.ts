@@ -51,6 +51,14 @@ export class CommonMessagesService {
     });
   }
 
+  showConflictMessage() {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('MESSAGE.CONFLICT')
+    });
+  }
+
   showErrorDeleteMessage() {
     this.messageService.add({
       severity: 'error',

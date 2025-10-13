@@ -44,6 +44,7 @@ export class SalutationTableComponent implements OnInit, OnDestroy, OnChanges {
   readonly salutations = computed(() => {
     return this.salutationService.salutations();
   });
+  @ViewChild('salutationModal') dialog!: SalutationModalComponent;
 
   handleTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
     this.modalType = event.type;
@@ -138,9 +139,15 @@ export class SalutationTableComponent implements OnInit, OnDestroy, OnChanges {
   onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void {
     if (message.severity === 'success') {
       this.salutationStateService.clearSalutation();
-      this.commonMessageService.showCreatedSuccesfullMessage()
+      this.commonMessageService.showDeleteSucessfullMessage()
     } else {
       this.commonMessageService.showErrorDeleteMessage()
+    }
+  }
+
+  onModalSalutationClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
     }
   }
 }
