@@ -16,13 +16,15 @@
   [header]="getModalHeader()"
   [modal]="true" 
   [(visible)]="visibleSubcontractModal"
-  [style]="{ width: '45rem' }"
+  [style]="{ width: 'auto' }"
   >
   <app-subcontract-modal
     [selectedSubContract]="selectedSubcontract"
     [customer]="customer"
     [modalSubcontractType]="subContractModalType"
     [isVisibleModal]="visibleSubcontractModal"
+    [isLoading]="isCreating"
+    [isLoadingDelete]="isDeletingSubcontract"
     (createdSubContract)="onCreateFrameworkAgreement($event)"
     (deletedSubContract)="onDeleteFrameworkAgreement($event)"
     (visibleModal)="onModalVisible($event)"
