@@ -108,12 +108,12 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteFundingProgram(deleteEvent: { status: 'success' | 'error', error?: Error }): void {
+  onDeleteFundingProgram(deleteEvent: { status: 'success' | 'error', error?: any }): void {
     if (deleteEvent.status === 'success') {
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (deleteEvent.status === 'error' && deleteEvent.error) {
-      if (deleteEvent.error.message === 'Cannot delete register: it is in use by other entities') {
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      if (deleteEvent.error.error.message.includes('a foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(deleteEvent.error.error.message);
       } else {
         this.commonMessageService.showErrorDeleteMessage();
       }

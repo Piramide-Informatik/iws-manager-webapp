@@ -92,17 +92,18 @@ export class FundingProgramUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteFundingProgram(id: number): Observable<void> {
-    return this.checkFundingProgramUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.fundingProgramService.deleteFundingProgram(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.fundingProgramService.deleteFundingProgram(id);
+    // return this.checkFundingProgramUsage(id).pipe(
+    //   switchMap(isUsed => {
+    //     if (isUsed) {
+    //       return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+    //     }
+    //     return this.fundingProgramService.deleteFundingProgram(id);
+    //   }),
+    //   catchError(error => {
+    //     return throwError(() => error);
+    //   })
+    // );
   }
 
   /**
