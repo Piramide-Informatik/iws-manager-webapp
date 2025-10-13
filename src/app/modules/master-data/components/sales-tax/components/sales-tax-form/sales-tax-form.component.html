@@ -54,6 +54,6 @@
 <app-occ-error-modal
   *ngIf="showOCCErrorModalVat"
   (close)="showOCCErrorModalVat = false"
-  [useEmitter]="true"
-  (refresh)="onRefresh()">
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true">
 </app-occ-error-modal>
