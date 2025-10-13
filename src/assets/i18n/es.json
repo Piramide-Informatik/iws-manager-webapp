@@ -928,7 +928,7 @@
       "ONLY_ALPHANUMERIC_REQUIRED": "Ingrese solo valores alfanumericos"
     },
     "MODAL": {
-      "NEW": "Crear Constantes del Sistema",
+      "NEW": "Nueva Constante del Sistema",
       "DELETE": "Eliminar Constantes del Sistema",
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar la constante de sistema "
     }
@@ -994,6 +994,10 @@
       "ERROR": "ERROR",
       "UPDATE_SUCCESS": "Actualización exitosa",
       "UPDATE_FAILED": "Actualización fallida"
+    },
+    "MODAL_CREATE": {
+      "CREATE_FORM": "Crear País",
+      "NEW_COUNTRY": "Nuevo País"
     },
     "DELETE": {
       "CONFIRMATION": "Eliminar País",

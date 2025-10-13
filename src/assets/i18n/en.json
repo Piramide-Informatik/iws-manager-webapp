@@ -933,7 +933,7 @@
       "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters."
     },
     "MODAL": {
-      "NEW": "Create System Constant",
+      "NEW": "New System Constant",
       "DELETE": "Delete System Constant",
       "CONFIRM_QUESTION": "Are you sure you want to delete the system constant "
     }
