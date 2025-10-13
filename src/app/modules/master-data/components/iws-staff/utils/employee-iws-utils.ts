@@ -73,18 +73,9 @@ export class EmployeeIwsUtils {
  * @param id - ID of the employeeIws to delete
  * @returns Observable that completes when the deletion is done
  */
+
   deleteEmployeeIws(id: number): Observable<void> {
-    return this.checkEmployeeIwsUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.employeeIwsService.deleteEmployeeIws(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.employeeIwsService.deleteEmployeeIws(id)
   }
 
   /**
@@ -128,7 +119,6 @@ export class EmployeeIwsUtils {
         }
         return this.employeeIwsService.updateEmployeeIws(employeeIws);
       }),
-      // switchMap((validatedEmployeeIws: EmployeeIws) => this.employeeIwsService.updateEmployeeIws(validatedEmployeeIws)),
       catchError((err) => {
         console.error('Error updating employeeIws:', err);
         return throwError(() => err);
