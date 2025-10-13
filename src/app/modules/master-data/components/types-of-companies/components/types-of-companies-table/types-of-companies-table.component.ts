@@ -2,14 +2,12 @@ import { Component, ViewChild, OnInit, OnDestroy, computed, SimpleChanges, injec
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { CompanyTypeService } from '../../../../../../Services/company-type.service';
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.state.service';
-import { MessageService } from 'primeng/api';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
@@ -22,7 +20,6 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy, OnChan
   private readonly companyTypeUtils = new CompanyTypeUtils();
   private readonly companyTypeService = inject(CompanyTypeService);
   private readonly companyTypeStateService = inject(TypeOfCompaniesStateService);
-  private readonly messageService = inject(MessageService);
   typeOfCompaniesColumns: any[] = [];
   isTypeOfCompaniesChipVisible = false;
   userTypesOfCompaniesPreferences: UserPreference = {};
@@ -39,10 +36,8 @@ export class TypesOfCompaniesTableComponent implements OnInit, OnDestroy, OnChan
 
   private langTypeOfCompaniesSubscription!: Subscription;
 
-  constructor(private readonly router: Router,
-              private readonly userPreferenceService: UserPreferenceService, 
+  constructor(private readonly userPreferenceService: UserPreferenceService, 
               private readonly translate: TranslateService,
-              private readonly companyTypeState: TypeOfCompaniesStateService,
               private readonly commonMessageService: CommonMessagesService ) { }
 
   ngOnInit() {
