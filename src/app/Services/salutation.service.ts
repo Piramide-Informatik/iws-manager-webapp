@@ -32,6 +32,10 @@ export class SalutationService {
     this.loadInitialData();
   }
 
+  private sortAlphabetically(list: Salutation[]): Salutation[] {
+    return [...list].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+  }
+
   loadInitialData(): Observable<Salutation[]> {
     this._loading.set(true);
     return this.http.get<Salutation[]>(this.apiUrl, this.httpOptions).pipe(
@@ -55,7 +59,7 @@ export class SalutationService {
     return this.http.post<Salutation>(this.apiUrl, salutation, this.httpOptions).pipe(
       tap({
         next: (newSalutation) => {
-          this._salutations.update(salutations => [...salutations, newSalutation]);
+          this._salutations.update(salutations => this.sortAlphabetically([...salutations, newSalutation]));
           this._error.set(null);
         },
         error: (err) => {
@@ -73,7 +77,9 @@ export class SalutationService {
       tap({
         next: (res) => {
           this._salutations.update(salutations =>
-            salutations.map(t => t.id === res.id ? res : t)
+            this.sortAlphabetically(
+              salutations.map(t => t.id === res.id ? res : t)
+            )
           );
           this._error.set(null);
         },
