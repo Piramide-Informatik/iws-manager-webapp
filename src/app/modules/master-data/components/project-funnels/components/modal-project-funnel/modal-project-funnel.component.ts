@@ -5,6 +5,7 @@ import { Promoter } from '../../../../../../Entities/promoter';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CountryUtils } from '../../../countries/utils/country-util';
 import { Country } from '../../../../../../Entities/country';
+import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-modal-project-funnel',
@@ -22,12 +23,13 @@ export class ModalProjectFunnelComponent implements OnChanges {
   @Output() createPromoter = new EventEmitter<{created?: Promoter, status: 'success' | 'error'}>();
   @Output() deletePromoter = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('NumInput') NumInput!: InputNumber;
   public isLoading: boolean = false;
 
   public countries = toSignal( this.countryUtils.getCountriesSortedByName(), { initialValue: [] } )
 
   public readonly projectFunnelForm = new FormGroup({
-    promoterNo: new FormControl(''),
+    promoterNo: new FormControl<string | null>(null),
     projectPromoter: new FormControl(''),
     promoterName1: new FormControl(''),
     promoterName2: new FormControl(''),
@@ -50,7 +52,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
 
     this.isLoading = true;
     const newPromoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      promoterNo: this.projectFunnelForm.value.promoterNo?.trim(),
+      promoterNo: this.projectFunnelForm.value.promoterNo?.toString() || null,
       projectPromoter: this.projectFunnelForm.value.projectPromoter?.trim(),
       promoterName1: this.projectFunnelForm.value.promoterName1?.trim(),
       promoterName2: this.projectFunnelForm.value.promoterName2?.trim(),

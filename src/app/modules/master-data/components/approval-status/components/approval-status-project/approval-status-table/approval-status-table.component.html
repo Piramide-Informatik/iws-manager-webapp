@@ -20,7 +20,8 @@
             : ('APPROVAL_STATUS.DELETE.CONFIRMATION' | translate)" 
           [modal]="true" 
           [(visible)]="visibleModal"
-          (onShow)="onDialogShow()" 
+          (onShow)="onDialogShow()"
+          (onHide)="onModalApprovalStatusClose()"
         >
           <app-modal-approval-status
             #approvalStatusModal

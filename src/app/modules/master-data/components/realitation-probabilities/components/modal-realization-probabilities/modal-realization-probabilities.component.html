@@ -10,10 +10,23 @@
                 chanceForm.get('probability')?.invalid  
                 && chanceForm.get('probability')?.dirty 
                 || chanceForm.get('probability')?.touched"/>
-            <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
-                chanceForm.get('probability')?.invalid && 
-                chanceForm.get('probability')?.dirty
-            ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              [showTransitionOptions]="'0ms'" 
+              size="small" 
+              *ngIf="isMaxError">
+              {{ 'ERROR.NUMBER_MAX' | translate }}
+            </p-message>
+
+            <p-message 
+              severity="error" 
+              variant="simple" 
+              [showTransitionOptions]="'0ms'" 
+              size="small" 
+              *ngIf="isDuplicateProbability">
+              {{ 'ERROR.DUPLICATE_PROBABILITY' | translate }}
+            </p-message>
         </div>
       </div>
     </div>

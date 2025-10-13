@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { Salutation } from '../../../../Entities/salutation';
 import { SalutationService } from '../../../../Services/salutation.service';
@@ -32,6 +32,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   @Input() modalType: 'create' | 'delete' | 'edit' = 'create';
   @Input() currentContact!: ContactPerson | null;
   @Input() visible = false;
+  @Input() closeModal = false;
   @Output() onVisibility = new EventEmitter<boolean>();
   @Output() onOperationContact = new EventEmitter<number>();
 
@@ -73,6 +74,10 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     if (changes['modalType'] && (this.modalType === 'edit' || this.modalType === 'delete')) {
       this.setupContactPersonSubscription();
     }
+
+    if(changes['closeModal'] && this.contactForm){
+      this.handleClose();
+    }
   }
 
   ngOnDestroy(): void {
@@ -81,7 +86,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   initForm(): void {
     this.contactForm = new FormGroup({
-      lastName: new FormControl('', [Validators.required]),
+      lastName: new FormControl(''),
       firstName: new FormControl(''),
       salutation: new FormControl(this.selectedSalutation),
       title: new FormControl(this.selectedTitle),
@@ -104,16 +109,19 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   private handleCreateContact(): void {
     if (this.shouldPreventSubmission()) return;
 
-    this.prepareForSubmission();
+    this.isSaving = true;
     const newContact = this.getContactFormValues();
 
     const createSub = this.contactUtils.createNewContactPerson(newContact).subscribe({
       next: () => {
+        this.isSaving = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.onOperationContact.emit(this.currentCustomer.id);
         this.handleClose();
       },
       error: (err) => {
+        console.log(err)
+        this.isSaving = false;
         this.commonMessageService.showErrorCreatedMessage();
       }
     });
@@ -169,11 +177,6 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     return this.contactForm.invalid || this.isLoading || this.isSaving;
   }
 
-  private prepareForSubmission(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
-  }
-
   private getContactFormValues(): Omit<ContactPerson, 'id'> {
     return {
       lastName: this.contactForm.value.lastName?.trim() ?? '',
@@ -188,12 +191,11 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   handleClose(): void {
-    this.isLoading = false;
-    this.isSaving = false;
     this.errorMessage = null;
     this.onVisibility.emit(false);
     this.contactForm.markAsUntouched();
     this.contactForm.markAsPristine();
+    this.contactForm.reset();
     this.visibleDeleteContactPersonEntity = false;
   }
 
@@ -201,15 +203,16 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     this.isLoading = true;
     if (this.currentContact) {
       this.contactUtils.deleteContactPerson(this.currentContact.id).pipe(
-        switchMap(() => this.contactUtils.refreshContactsPersons()),
-        finalize(() => this.isLoading = false)
+        switchMap(() => this.contactUtils.refreshContactsPersons())
       ).subscribe({
         next: () => {
+          this.isLoading = false;
           this.onOperationContact.emit(this.currentCustomer.id);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.handleClose();
         },
         error: (error) => {
+          this.isLoading = false;
           this.errorMessage = error.message ?? 'Failed to delete contact person';
           console.error('Delete error:', error);
           this.handleDeleteError(error);

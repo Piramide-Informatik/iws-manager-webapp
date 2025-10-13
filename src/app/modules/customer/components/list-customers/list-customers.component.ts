@@ -60,11 +60,10 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   // User Preferences
   userListCustomerPreferences: UserPreference = {};
   tableKey: string = 'ListCustomers';
-  dataKeys = ['id', 'companyName', 'nameLine2', 'kind', 'land', 'place', 'contact'];
+  dataKeys = ['customerno', 'customername1', 'customername2', 'companytype', 'country', 'city', 'contact'];
 
   // Component States
   public countries!: any[];
-  public selectedCountries: any[] = [];
   public companyTypes: any[] = [];
   public isLoadingCustomer = false;
   customerType: 'create' | 'delete' = 'create';
@@ -142,11 +141,12 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   private initializeTableData(): void {
     this.customerData = this.customers.map(customer => ({
       id: customer.id,
-      companyName: customer.customername1,
-      nameLine2: customer.customername2,
-      kind: customer.companytype?.name ?? '',
-      land: customer.country?.name ?? '',
-      place: customer.city,
+      customerno: customer.customerno,
+      customername1: customer.customername1,
+      customername2: customer.customername2,
+      companytype: customer.companytype,
+      country: customer.country,
+      city: customer.city,
       contact: this.contacts[customer.id] ?? '',
     }));
 
@@ -188,10 +188,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   }
 
   onUserListCustomerPreferencesChanges(userListCustomerPreferences: any) {
-    localStorage.setItem(
-      'userPreferences',
-      JSON.stringify(userListCustomerPreferences)
-    );
+    localStorage.setItem('userPreferences', JSON.stringify(userListCustomerPreferences));
   }
 
   handleCustomerTableEvents(event: { type: 'create' | 'delete', data?: any }): void {
@@ -199,14 +196,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     if (event.type === 'delete' && event.data) {
       this.selectedCustomer = event.data;
 
-      this.customerUtils.getCustomerById(this.selectedCustomer!).subscribe({
-        next: (customer) => {
-          this.customerName = customer?.customername1 ?? '';
-        },
-        error: (err) => {
-          this.customerName = '';
-        }
-      });
+      this.customerName = this.customers.find(customer => customer.id === this.selectedCustomer)?.customername1 ?? '';
     }
     this.visibleCustomerModal = true;
   }
@@ -214,37 +204,37 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   loadColHeaders(): void {
     this.cols = [
       {
-        field: 'id',
+        field: 'customerno',
         classesTHead: ['fix-width'],
         customClasses: ['align-right','date-font-style'],
         header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')),
       },
       {
-        field: 'companyName',
+        field: 'customername1',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_NAME')),
         routerLink: (row: any) => `./customer-details/${row.id}`
       },
       {
-        field: 'nameLine2',
+        field: 'customername2',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2')),
       },
       {
-        field: 'kind',
+        field: 'companytype.name',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.COMPANY_TYPE')),
         filter: { type: 'multiple', data: this.companyTypes },
       },
 
       {
-        field: 'land',
+        field: 'country.name',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.COUNTRY_NAME')),
         filter: { type: 'multiple', data: this.countries },
       },
       {
-        field: 'place',
+        field: 'city',
         minWidth: 110,
         header: this.translate.instant(_('CUSTOMERS.TABLE.CITY')),
       },
@@ -262,46 +252,21 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
-    }
-  }
-
-  filterByCountry() {
-    if (this.selectedCountries && this.selectedCountries.length > 0) {
-      const countriesNames: string[] = this.selectedCountries.map(
-        (country) => country.nameCountry
-      );
-      this.dt2.filter(countriesNames, 'land', 'in');
-    } else {
-      this.dt2.filter(null, 'land', 'in');
-    }
-  }
-
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => { });
-    });
-  }
-
-  goToCustomerDetails(currentCustomer: Customer) {
-    this.customerUtils.getCustomerById(currentCustomer.id).subscribe({
-      next: (fullCustomer) => {
-        if (fullCustomer) {
-          this.customerStateService.setCustomerToEdit(fullCustomer);
-        }
-      },
-      error: (err) => {
-        console.error('Error al cargar el customer para editar:', err);
-      }
-    });
+  goToCustomerDetails(currentCustomer: {
+    id: number;
+    customerno: number | undefined;
+    customername1: string | undefined;
+    customername2: string | undefined;
+    companytype: CompanyType | null;
+    country: Country | null;
+    city: string | undefined;
+    contact: string;
+  }) {
+    const fullCustomer = this.customers.find(customer => customer.id === currentCustomer.id) ?? null;
+    this.customerStateService.setCustomerToEdit(fullCustomer);
 
     this.router.navigate(['customer-details', currentCustomer.id], {
       relativeTo: this.route,
-      state: { customer: currentCustomer.id, customerData: currentCustomer },
     });
   }
 

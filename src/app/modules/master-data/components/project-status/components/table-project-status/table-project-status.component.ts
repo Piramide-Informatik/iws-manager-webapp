@@ -10,6 +10,7 @@ import { ProjectStatus } from '../../../../../../Entities/projectStatus';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 import { Column } from '../../../../../../Entities/column';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { ModelProjectStatusComponent } from '../model-project-status/model-project-status.component';
 
 @Component({
   selector: 'app-table-project-status',
@@ -28,10 +29,13 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
   modalType: 'create' | 'delete' = 'create';
   selectedProjectStatus: number | null = null;
   projectStatusName: string = '';
-  
+  @ViewChild('projectStatusModel') ModalProjectStatusComponent!: ModelProjectStatusComponent;
+
   readonly projectStatuses = computed(()=>{
     return this.projectStatusService.projectStatuses();
   });
+
+  @ViewChild('projectStatusModel') dialog!: ModelProjectStatusComponent;
 
   projectColumns: Column[] = [];
   projectStatusDisplayedColumns: Column[] = [];
@@ -124,5 +128,11 @@ export class TableProjectStatusComponent implements OnInit, OnDestroy, OnChanges
 
   onDeleteProject() {
     this.projectStatusStateService.clearProjectStatus();
+  }
+  
+  onModalProjectStatusClose() {
+    if (this.dialog) {
+      this.dialog.closeModel();
+    }
   }
 }
