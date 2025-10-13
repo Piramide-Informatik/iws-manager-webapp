@@ -102,10 +102,8 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    if (this.createSubcontractForm.invalid) {
-      console.error('Form is invalid');
-      return;
-    }
+    if (this.createSubcontractForm.invalid) return;
+    
     const newSubcontract = this.buildSubcontractFromForm();
     this.createdSubContract.emit(newSubcontract);
   }

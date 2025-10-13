@@ -2,7 +2,7 @@
   <form [formGroup]="createSubcontractForm" (ngSubmit)="onSubmit()">
     <div class="sub-contractor-form align-items-center mb-2 mt-4">
       <div class="form-container flex align-items-center mb-6">
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="contractTitle">{{ 'SUB-CONTRACTS.FORM.ORDER_TITLE' | translate }}</label>
           <input #inputText
             pInputText
@@ -12,7 +12,7 @@
             autocomplete="off"
           />
         </div>
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="contractor">{{ 'SUB-CONTRACTS.FORM.CONTRACTOR' | translate }}</label>
           <p-select
             inputId="contractor"
@@ -24,7 +24,7 @@
             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           ></p-select>
         </div>
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="invoiceNumber">{{ 'SUB-CONTRACTS.FORM.INVOICE_NUMBER' | translate }}</label>
           <input
             pInputText
@@ -34,7 +34,7 @@
             autocomplete="off"
           />
         </div>
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="invoiceDate">{{ 'SUB-CONTRACTS.FORM.INVOICE_DATE' | translate }}</label>
           <p-datepicker
             inputId="invoiceDate"
@@ -44,7 +44,7 @@
             dateFormat="dd.mm.yy"
           ></p-datepicker>
         </div> 
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="netOrGross">{{ 'SUB-CONTRACTS.FORM.INVOICE_NET_OR_GROSS' | translate }}</label>
           <p-select
             inputId="netOrGross"
@@ -55,9 +55,9 @@
             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           ></p-select>
         </div>
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
-          <p-inputNumber 
+          <p-inputnumber 
             id="invoiceAmount" 
             formControlName="invoiceAmount" 
             mode="decimal" 
@@ -67,9 +67,10 @@
             [minFractionDigits]="2" 
             [maxFractionDigits]="2" 
             locale="de-DE" 
+            [inputStyle]="{'text-align': 'right'}"
           />
         </div>
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="afa">{{ 'SUB-CONTRACTS.FORM.IS_AFA' | translate }}</label>
           <p-checkbox
             inputId="afa"
@@ -77,7 +78,7 @@
             binary="true"
           ></p-checkbox>
         </div>
-        <div class="sub_contract_input order_name mb-2">
+        <div class="sub_contract_input">
           <label for="afaDurationMonths">{{ 'SUB-CONTRACTS.FORM.AFA_MONTHS' | translate }}</label>
           <p-inputnumber
             inputId="afaDurationMonths"
@@ -85,7 +86,7 @@
             autocomplete="off"
           />
         </div>
-        <div class="sub_contract_input order_name mb-2 flex">
+        <div class="sub_contract_input align-items-start">
           <label for="description">{{ 'SUB-CONTRACTS.FORM.DESCRIPTION' | translate }}</label>
           <textarea
             id="description"
