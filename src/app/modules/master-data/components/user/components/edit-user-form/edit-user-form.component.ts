@@ -10,6 +10,7 @@ import { Role } from '../../../../../../Entities/role';
 import { RoleService } from '../../../../../../Services/role.service';
 import { PasswordDirective } from 'primeng/password';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-user-form',
@@ -27,7 +28,7 @@ export class EditUserFormComponent implements OnInit {
   private readonly roleService = inject(RoleService);
 
   allRoles: Role [] = [];
-
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   userRoles: Role[] = [];
 
   availableRoless: Role[] = [];
@@ -218,9 +219,10 @@ export class EditUserFormComponent implements OnInit {
   }
 
   private handleError(err: any): void {
-    if (err.message === 'Version conflict: User has been updated by another user') {
-      console.log(" show OCC error modal");
-      this.showOCCErrorModaUser = true;
+    if (err instanceof OccError) {
+          console.log("tipo de error: ", err.errorType)
+          this.showOCCErrorModaUser = true;
+          this.occErrorType = err.errorType;
     } else {
       this.handleSaveError(err);
     }

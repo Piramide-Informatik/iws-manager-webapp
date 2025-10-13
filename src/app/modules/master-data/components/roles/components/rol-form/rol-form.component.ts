@@ -18,6 +18,7 @@ import { Column } from '../../../../../../Entities/column';
 import { RightRoleUtils } from '../../utils/right-role-utils';
 import { RightRole } from '../../../../../../Entities/rightRole';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 @Component({
   selector: 'app-rol-form',
   standalone: false,
@@ -52,7 +53,8 @@ export class RolFormComponent implements OnInit, OnDestroy {
     private readonly moduleUtils: ModuleUtils,
     private readonly functionUtils: FunctionUtils,
     private readonly fb: FormBuilder,
-    private readonly rightRoleUtils: RightRoleUtils
+    private readonly rightRoleUtils: RightRoleUtils,
+    private readonly commonMessagesService: CommonMessagesService
   ) { }
 
   ngOnInit(): void {
@@ -141,6 +143,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
         next: (savedRole) => {
           this.currentRole = savedRole;
           this.saveRights(savedRole);
+          this.commonMessagesService.showEditSucessfullMessage();
         },
         error: (err) => this.handleError(err),
       })
