@@ -135,8 +135,13 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
     this.iwsCommissionStateService.setIwsCommissionToEdit(iwsCommission);
   }
 
-  onIwsComissionDeleted() {
-    this.iwsCommissionStateService.clearTitle();
+  onIwsComissionDeleted(event?: {status: 'success' | 'error'}) {
+    if (event?.status === 'success') {
+      this.commonMessageService.showDeleteSucessfullMessage();
+      this.iwsCommissionStateService.clearTitle();
+    }else if(event?.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
+    }
   }
 
   onCreateIWSCommission(event: { status: 'success' | 'error'}) {
