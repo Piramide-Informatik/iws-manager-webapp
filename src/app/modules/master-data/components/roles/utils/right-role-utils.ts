@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import {
   Observable,
   catchError,
-  map,
   take,
   throwError,
   switchMap,
@@ -10,6 +9,7 @@ import {
 } from 'rxjs';
 import { RightRoleService } from '../../../../../Services/rightrole.service';
 import { RightRole } from '../../../../../Entities/rightRole';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 export class RightRoleUtils {
@@ -81,20 +81,15 @@ export class RightRoleUtils {
 
     return this.rightRoleService.getRightRoleById(rightRole.id).pipe(
       take(1),
-      map((currentRightRole) => {
+      switchMap((currentRightRole) => {
         if (!currentRightRole) {
-          throw new Error('RightRole not found');
+          return throwError(() => createNotFoundUpdateError('RightRole'));
         }
         if (currentRightRole.version !== rightRole.version) {
-          throw new Error(
-            'Version conflict: RightRole has been updated by another user'
-          );
+          return throwError(() => createUpdateConflictError('RightRole'));
         }
-        return rightRole;
+        return this.rightRoleService.updateRightRole(rightRole);
       }),
-      switchMap((validatedRightRole: RightRole) =>
-        this.rightRoleService.updateRightRole(validatedRightRole)
-      ),
       catchError((err) => {
         console.error('Error updating RightRole:', err);
         return throwError(() => err);
@@ -116,11 +111,11 @@ export class RightRoleUtils {
   }
 
   saveAll(rightRoles: RightRole[]): Observable<RightRole[]> {
-  return this.rightRoleService.saveAll(rightRoles).pipe(
-    catchError((err) => {
-      console.error("Error saving all RightRoles:", err);
-      return throwError(() => new Error("Failed to save RightRoles"));
-    })
-  );
-}
+    return this.rightRoleService.saveAll(rightRoles).pipe(
+      catchError((err) => {
+        console.error("Error saving all RightRoles:", err);
+        return throwError(() => new Error("Failed to save RightRoles"));
+      })
+    );
+  }
 }
