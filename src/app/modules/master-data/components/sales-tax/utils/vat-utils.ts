@@ -3,6 +3,7 @@ import { Observable, catchError, map, take, throwError, switchMap, of } from 'rx
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { VatService } from '../../../../../Services/vat.service';
 import { Vat } from '../../../../../Entities/vat';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for vat-related business logic and operations.
@@ -110,16 +111,15 @@ export class VatUtils {
 
     return this.vatService.getVatById(vat.id).pipe(
       take(1),
-      map((currentVat) => {
+      switchMap((currentVat) => {
         if (!currentVat) {
-          throw new Error('Vat not found');
+          return throwError(() => createNotFoundUpdateError('Vat'));
         }
         if (currentVat.version !== vat.version) {
-          throw new Error('Version conflict: Vat has been updated by another user');
+          return throwError(() => createUpdateConflictError('Vat'));
         }
-        return vat;
+        return this.vatService.updateVat(vat);
       }),
-      switchMap((validatedVat: Vat) => this.vatService.updateVat(validatedVat)),
       catchError((err) => {
         console.error('Error updating vat:', err);
         return throwError(() => err);
