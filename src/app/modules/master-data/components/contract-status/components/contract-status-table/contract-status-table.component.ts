@@ -26,7 +26,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   contractStatusColumns: any[] = [];
   userContractStatusPreferences: UserPreference = {};
   tableKey: string = 'ContractStatus'
-  dataKeys = ['contractStatus'];
+  dataKeys = ['status'];
   visibleContractStatusModal: boolean = false;
   showOCCErrorModalContractStatus = false;
   modalContractStatusType: 'create' | 'delete' = 'create';
