@@ -69,7 +69,7 @@
             [showSourceControls]="false"
             [showTargetControls]="false"
             [metaKeySelection]="false"
-            [style]="{ height: '170px' }"
+            [style]="{ height: '200px' }"
             (onMoveToTarget)="onRolesChange()"
             (onMoveToSource)="onRolesChange()"
             (onMoveAllToSource)="onRolesChange()"
@@ -106,7 +106,7 @@
 </p-card>
 <app-occ-error-modal
     *ngIf="showOCCErrorModaUser"
-    [useEmitter]="true"
-    (close)="showOCCErrorModaUser = false"
-    (refresh)="onRefresh()">
+    [errorType]="occErrorType"
+    [reloadCurrentPage]="true"
+    (close)="showOCCErrorModaUser = false">
 </app-occ-error-modal>
