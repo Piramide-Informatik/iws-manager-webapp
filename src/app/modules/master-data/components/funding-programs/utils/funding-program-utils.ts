@@ -143,10 +143,10 @@ export class FundingProgramUtils {
       take(1),
       switchMap((currentFundingProgram) => {
         if (!currentFundingProgram) {
-          return throwError(() => createNotFoundUpdateError('Title'));
+          return throwError(() => createNotFoundUpdateError('Funding Program'));
         }
         if (currentFundingProgram.version !== fundingProgram.version) {
-          return throwError(() => createUpdateConflictError('Title'));
+          return throwError(() => createUpdateConflictError('Funding Program'));
         }
         return this.fundingProgramService.updateFundingProgram(fundingProgram);
       }),
