@@ -7,6 +7,8 @@
           [columns]="columsHeaderField"
           [userPreferences]="userDunningPreferences"
           [dataKeys]="dataKeys"
+          [sortField]="'levelNo'" 
+          [sortOrder]="1"
           (onColumnChanges)="onUserDunningPreferencesChanges($event)"
           (onCreateRegister)="handleTableEvents({ type: 'create' })"
           (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
@@ -26,8 +28,10 @@
         : ('DUNNING_LEVELS.MODAL.DELETE' | translate)" 
       [modal]="true" 
       [(visible)]="visibleDunningLevelModal"
+      (onHide)="onModalDunningLevelClose()"
     >
       <app-dunning-level-modal
+        #dunnigLevelModal
         [modalType]="modalType"
         [visible]="visibleDunningLevelModal"
         [selectedDunningLevel]="selectedDunningLevel"
