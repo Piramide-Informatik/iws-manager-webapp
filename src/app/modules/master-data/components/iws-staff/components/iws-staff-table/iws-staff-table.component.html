@@ -23,6 +23,7 @@
           [visibleModal]="visibleModal"
           [employeeIwsName]="NameEmployeeIws"
           [employeeIwsToDelete]="selectedEmployeeIws"
+          (employeeIwsCreated)="onCreateEmployeeIws($event)"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
           (employeeIwsDeleted)="onDeleteIwsStaffSucess()"

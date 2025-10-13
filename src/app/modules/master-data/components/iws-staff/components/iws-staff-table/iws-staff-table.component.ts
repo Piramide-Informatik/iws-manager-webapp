@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
 import { Column } from '../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 @Component({
   selector: 'app-iws-staff-table',
   templateUrl: './iws-staff-table.component.html',
@@ -47,6 +48,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService,
     private readonly employeeIwsStateService: EmployeeIwsStateService,
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   ngOnDestroy(): void {
@@ -83,6 +85,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       {
         field: 'employeeNo',
         classesTHead: ['fix-width'],
+        useSameAsEdit: true,
         header: this.translate.instant(_('IWS_STAFF.TABLE.STAFF_NUMBER')),
       },
       {
@@ -103,10 +106,12 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       },
       {
         field: 'mail',
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.TABLE.EMAIL')),
       },
       {
         field: 'active',
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('IWS_STAFF.LABEL.ACTIVE')),
         filter: { type: 'boolean' }
       },
@@ -134,5 +139,29 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
 
   onDeleteIwsStaffSucess() {
     this.employeeIwsStateService.clearTitle()
+  }
+
+  onCreateEmployeeIws(event: { status: 'success' | 'error' }): void {
+    if (event.status === 'success') {
+      const sub = this.employeeIwsService.loadInitialData().subscribe();
+      this.langSubscription.add(sub);
+      this.prepareTableData();
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    } else if (event.status === 'error') {
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.employeeIwss().length > 0) {
+      this.columnsHeaderFieldIwsStaff = [
+        { field: 'employeeNo', header: 'employeeNo' },
+        { field: 'employeeLabel', header: 'employeeLabel' },
+        { field: 'firstname', header: 'firstname' },
+        { field: 'lastname', header: 'lastname' },
+        { field: 'mail', header: 'mail' },
+        { field: 'active', header: 'active' },
+      ];
+    }
   }
 }
