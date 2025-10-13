@@ -10,6 +10,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { InvoiceTypeUtils } from '../../utils/invoice-type-utils';
 import { InvoiceTypeService } from '../../../../../../Services/invoice-type.service';
 import { InvoiceTypeStateService } from '../../utils/invoice-type-state.service';
+import { ModalBillingMethodsComponent } from '../modal-billing-methods/modal-billing-methods.component';
 
 @Component({
   selector: 'app-billing-methods-table',
@@ -31,6 +32,7 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
   selectedInvoiceType!: InvoiceType | undefined;
 
   @ViewChild('dt') dt!: Table;
+  @ViewChild('billingMethodModal') billingMethodDialog!: ModalBillingMethodsComponent;
 
   private langBillingMethodsSubscription!: Subscription;
   readonly billingMethodsValues = computed(() => {
@@ -106,5 +108,11 @@ export class BillingMethodsTableComponent implements OnInit, OnDestroy {
 
   onEditInvoiceType(invoiceType: InvoiceType): void {
     this.billingMethodStateService.setInvoiceTypeToEdit(invoiceType);
+  }
+
+  onModalBillingMethodClose() {
+    if (this.billingMethodDialog) {
+      this.billingMethodDialog.closeModal();
+    }
   }
 }

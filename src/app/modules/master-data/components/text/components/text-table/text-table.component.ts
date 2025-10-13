@@ -11,6 +11,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { TextUtils } from '../../utils/text-utils';
 import { TextService } from '../../../../../../Services/text.service';
 import { TextStateService } from '../../utils/text-state.service';
+import { TextModalComponent } from '../text-modal/text-modal.component';
 
 @Component({
   selector: 'app-text-table',
@@ -40,6 +41,8 @@ export class TextTableComponent implements OnInit, OnDestroy {
   readonly texts = computed(() => {
     return this.textService.texts();
   });
+
+  @ViewChild('titleModel') dialog!: TextModalComponent;
 
   constructor(private readonly router: Router, private readonly userPreferenceService: UserPreferenceService, private readonly translate: TranslateService ) { }
 
@@ -112,5 +115,11 @@ export class TextTableComponent implements OnInit, OnDestroy {
 
   onEditText(text: Text): void {
     this.textStateService.setTextToEdit(text);
+  }
+
+  onModalTextClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
+    }
   }
 }

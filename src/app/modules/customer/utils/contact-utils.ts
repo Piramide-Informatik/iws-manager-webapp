@@ -46,13 +46,10 @@ export class ContactUtils {
    * @returns Observable that completes when contact person is created
    */
   createNewContactPerson(contact: Omit<ContactPerson, 'id'>): Observable<void> {
-    if (!contact.lastName?.trim()) {
-      return throwError(() => new Error('Last name cannot be empty'));
-    }
 
     return this.contactPersonService.addContactPerson({
       firstName: contact.firstName?.trim() ?? '',
-      lastName: contact.lastName.trim(),
+      lastName: contact.lastName?.trim() ?? '',
       forInvoicing: contact.forInvoicing ?? 0,
       function: contact.function?.trim() ?? '',
       salutation: contact.salutation,

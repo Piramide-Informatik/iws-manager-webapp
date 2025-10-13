@@ -133,6 +133,8 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   private handleError(err: any): void {
     if (err.message === 'Version conflict: approvalStatus has been updated by another user') {
       this.showOCCErrorModalApprovalStatus = true;
+      this.commonMessageService.showConflictMessage();
+      return;
     } else {
       this.handleSaveError(err);
     }
