@@ -50,7 +50,8 @@
     "NUMBER_FORMAT_ERROR": "Se espera un número con el siguiente formato 1.234,56.",
     "NUMBER_MAX": "Se espera un valor máximo de 100",
     "NUMBER_BETWEEN_0_1": "valores entre 0 - 1",
-    "NUMBER_MAX_12": "Se espera un valor máximo de 12"
+    "NUMBER_MAX_12": "Se espera un valor máximo de 12",
+    "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe"
   },
   "MENU": {
     "DASHBOARD": "Panel",

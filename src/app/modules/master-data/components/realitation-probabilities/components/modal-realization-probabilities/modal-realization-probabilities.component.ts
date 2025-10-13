@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ChanceUtils } from '../../utils/chance-utils';
 import { Chance } from '../../../../../../Entities/chance';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
 
 @Component({
@@ -20,18 +20,46 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
   @Output() deleteChance = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: InputNumber;
   public isLoading: boolean = false;
+  private existingChances: Chance[] = [];
+
 
   public readonly chanceForm = new FormGroup({
-    probability: new FormControl(null, [Validators.max(100.00)])
+    probability: new FormControl(null, [Validators.max(100.00), this.duplicateProbabilityValidator.bind(this)])
   });
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible && this.isCreateMode) {
+      this.loadExistingChances();
       setTimeout(()=> {
         this.focusInputIfNeeded();
       })
     }
   } 
+
+  private loadExistingChances(): void {
+    this.chanceUtils.getAllChances().subscribe({
+      next: (chances) => {
+        this.existingChances = chances;
+        this.chanceForm.get('probability')?.updateValueAndValidity();
+      },
+      error: (err) => {
+        console.error('Error loading chances:', err);
+      }
+    });
+  }
+
+  private duplicateProbabilityValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value || !this.isCreateMode) {
+      return null;
+    }
+
+    const probability = Number(control.value);
+    const isDuplicate = this.existingChances.some(
+      chance => Number(chance.probability) === probability
+    );
+
+    return isDuplicate ? { duplicate: true } : null;
+  }
 
   public onSubmit(): void {
     if(this.chanceForm.invalid || this.isLoading) return
@@ -78,6 +106,16 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
 
   get isCreateMode(): boolean {
     return this.modalType === 'create';
+  }
+
+  get isDuplicateProbability(): boolean {
+    const control = this.chanceForm.get('probability');
+    return !!(control?.hasError('duplicate') && (control?.dirty || control?.touched));
+  }
+
+  get isMaxError(): boolean {
+    const control = this.chanceForm.get('probability');
+    return !!(control?.hasError('max') && (control?.dirty || control?.touched));
   }
 
   private focusInputIfNeeded(): void {
