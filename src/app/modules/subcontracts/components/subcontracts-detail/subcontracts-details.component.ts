@@ -24,7 +24,9 @@ export class SubcontractsDetailsComponent implements OnInit, OnDestroy {
   currentSubcontract!: Subcontract;
 
   visibleSubcontractModal: boolean = false;
-  isLoading: boolean = false;
+  isLoadingDelete: boolean = false;
+  isLoadingEdit = false;
+  isDirty = false;
 
   public showOCCErrorModalSubcontract = false;
   public redirectRoute = "";
@@ -70,22 +72,18 @@ export class SubcontractsDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate([path], { relativeTo: this.activatedRoute });
   }
 
-  setLoadingOperation(loading: boolean): void {
-    this.isLoading = loading;
-  }
-
   public onSubcontractDeleteConfirm() {
-    this.isLoading = true;
+    this.isLoadingDelete = true;
     if (this.currentSubcontract) {
       this.subcontractUtils.deleteSubcontract(this.currentSubcontract.id).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.visibleSubcontractModal = false;
           this.commonMessageService.showDeleteSucessfullMessage();
           this.goBackListSubcontracts();
         },
         error: (error) => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.handleDeleteError(error);
         }
       });

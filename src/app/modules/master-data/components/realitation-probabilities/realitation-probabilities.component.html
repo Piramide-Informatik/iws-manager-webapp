@@ -19,7 +19,8 @@
           ? ('REALIZATION_PROBABILITIES.MODAL.NEW' | translate) 
           : ('REALIZATION_PROBABILITIES.MODAL.DELETE' | translate)" 
           [modal]="true" 
-          [(visible)]="visibleModal">
+          [(visible)]="visibleModal"
+          (onHide)="onModalRealizationProbabilitiesClose()">
           <app-modal-realization-probabilities
             [modalType]="modalType"
             [selectedChance]="selectedChance"
@@ -27,6 +28,7 @@
             (isVisibleModal)="visibleModal = $event"
             (createChance)="onCreateChance($event)"
             (deleteChance)="onDeleteChance($event)"
+            #realizationProbabilitiesModal
           ></app-modal-realization-probabilities>
         </p-dialog>
       </div>

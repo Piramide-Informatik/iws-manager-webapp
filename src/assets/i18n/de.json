@@ -50,6 +50,7 @@
     "NUMBER_FORMAT_ERROR": "Es wird eine Zahl im Format 1.234,56 erwartet.",
     "NUMBER_MAX": "Maximalwert 100 erwartet",
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
+    "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet"
   },
   "MENU": {
@@ -152,7 +153,9 @@
     "DELETE_ERROR_IN_USE_WITH_ENTITY": "Der Datensatz kann nicht gelöscht werden, da er von anderen Entitäten verwendet wird: ",
     "RECORD_ALREADY_EXISTS": "Der Datensatz existiert bereits.",
     "DELETE_ERROR_WITH_RECORDS": "Der Datensatz kann nicht gelöscht werden, weil verknüpfte Datensätze vorhanden sind.",
-    "SELECT_AT_LEAST_ONE": "Es muss mindestens eine Spalte ausgewählt sein."
+    "SELECT_AT_LEAST_ONE": "Es muss mindestens eine Spalte ausgewählt sein.",
+    "DELETE_ERROR_ROLES_ASSIGNED": "Benutzer kann nicht gelöscht werden, da er {{count}} Rolle(n) zugewiesen ist",
+    "DELETE_ERROR_HAS_ROLES": "Benutzer kann nicht gelöscht werden, da ihm Rollen zugewiesen sind"
   },
   "primeng_date": {
     "dayNames": [
@@ -610,6 +613,7 @@
     "DELETE": {
       "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
     },
+    
     "MODAL": {
       "NEW": "Neue Abwesenheitsart",
       "DELETE": "Abwesenheitsart löschen"

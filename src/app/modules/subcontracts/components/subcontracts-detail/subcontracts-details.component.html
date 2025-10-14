@@ -4,7 +4,10 @@
     @if(subcontractId){
       <!-- Sección izquierda: Datos del subcontrato -->
       <div class="col-md-6">
-        <app-subcontract (onLoadingOperation)="setLoadingOperation($event)" [subcontractToEdit]="currentSubcontract"></app-subcontract>
+        <app-subcontract (onLoadingUpdate)="isLoadingEdit = $event" 
+          [subcontractToEdit]="currentSubcontract"
+          (formDirty)="isDirty = $event"
+        ></app-subcontract>
       </div>
       <!-- Sección derecha: Asignaciones -->
       <div class="col-md-6">
@@ -34,8 +37,8 @@
           icon="pi pi-check"
           iconPos="left"
           (onClick)="onSubmit()"
-          [loading]="isLoading"
-          [disabled]="isLoading"
+          [loading]="isLoadingEdit"
+          [disabled]="!isDirty"
         ></p-button>
         @if(subcontractId){
         <p-button
@@ -44,6 +47,7 @@
           [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash"
           iconPos="left"
+          [disabled]="isLoadingEdit"
           (onClick)="visibleSubcontractModal = true"
         ></p-button>
         }
@@ -54,6 +58,7 @@
           icon="pi pi-times"
           iconPos="left"
           (onClick)="goBackListSubcontracts()"
+          [disabled]="isLoadingEdit"
         ></p-button>
       </div>
     </div>
@@ -67,10 +72,10 @@
     </p>
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="onSubcontractDeleteConfirm()" severity="danger" [loading]="isLoading"
-          [disabled]="isLoading"/>
+        iconPos="left" (onClick)="onSubcontractDeleteConfirm()" severity="danger" [loading]="isLoadingDelete"
+        />
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="this.visibleSubcontractModal = false;" [disabled]="isLoading"/>
+        iconPos="left" (onClick)="this.visibleSubcontractModal = false;" [disabled]="isLoadingDelete"/>
     </div>
   </div>
 </p-dialog>

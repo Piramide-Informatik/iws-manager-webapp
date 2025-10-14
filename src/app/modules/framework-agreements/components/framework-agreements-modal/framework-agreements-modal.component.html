@@ -9,7 +9,7 @@
         </div>
         <div class="order_input_fa mb-2">
             <label for="orderLabel">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.FRAMEWORK_AGREEMENT' | translate }}</label>
-            <input #inputText pInputText type="text" id="orderLabel" formControlName="contractLabel" autocomplete="off" />
+            <input #firstInput pInputText type="text" id="orderLabel" formControlName="contractLabel" autocomplete="off" />
         </div>
         <div class="order_input_fa mb-2">
             <label for="orderDate">{{ 'FRAMEWORK-AGREEMENTS.DETAIL.FORM.DATE' | translate }}</label>
@@ -72,9 +72,9 @@
     </div>
     <div class="buttons-fa-container  flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left" [loading]="isLoading" />
+        iconPos="left" [loading]="isLoading" [disabled]="basicContractCreateForm.invalid || !basicContractCreateForm.dirty" />
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
-        (onClick)="closeModal()" [loading]="isLoading"/>
+        (onClick)="closeModal()" [disabled]="isLoading"/>
     </div>
   </form>
 </ng-container> 
@@ -89,7 +89,7 @@
           icon="pi pi-trash" iconPos="left" (onClick)="onFrameworkAgreementDeleteConfirm()" severity="danger" 
           [loading]="isLoading"/>
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-          icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [loading]="isLoading"/>
+          icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading"/>
     </div>
   </div>
 </ng-template>
