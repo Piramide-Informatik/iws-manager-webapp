@@ -13,7 +13,8 @@
       <app-salutation-modal [modalType]="modalType" [salutationName]="salutationName"
         [salutationToDelete]="selectedSalutation" 
         (isVisibleModal)="onModalVisibilityChange($event)" 
-        (confirmDelete)="onDeleteConfirm($event)"
+        (onDeleteSalutation)="onDeleteConfirm($event)"
+        (onCreateSalutation)="onSalutationCreate($event)"
         #salutationModal>
       </app-salutation-modal>
     </p-dialog>
