@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, 
 import { AbsenceType } from '../../../../../../Entities/absenceType';
 import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-modal-absence-types',
@@ -18,7 +19,8 @@ export class ModalAbsenceTypesComponent implements OnChanges {
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createAbsenceType = new EventEmitter<{created?: AbsenceType, status: 'success' | 'error'}>();
   @Output() deleteAbsenceTypeEvent = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
-  
+  public occErrorAbscenseType: OccErrorType = 'UPDATE_UNEXISTED';
+  showOCCErrorModalAbscenseType = false;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
@@ -76,6 +78,10 @@ export class ModalAbsenceTypesComponent implements OnChanges {
         error: (error: Error) => {
           this.isLoading = false;
           this.deleteAbsenceTypeEvent.emit({status: 'error', error});
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalAbscenseType = true;
+            this.occErrorAbscenseType = 'DELETE_UNEXISTED';
+          }
         }
       })
     }

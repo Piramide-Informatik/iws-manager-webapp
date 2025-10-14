@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, 
 import { FormControl, FormGroup } from '@angular/forms';
 import { InvoiceTypeUtils } from '../../utils/invoice-type-utils';
 import { InvoiceType } from '../../../../../../Entities/invoiceType';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-modal-billing-methods',
@@ -24,6 +25,8 @@ export class ModalBillingMethodsComponent implements OnChanges {
   public readonly invoiceTypeForm = new FormGroup({
     name: new FormControl('')
   })
+  public showOCCErrorModalBillingMethod = false;
+  public occErrorBillingMethodType: OccErrorType = 'UPDATE_UNEXISTED';
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.visible){
@@ -65,6 +68,10 @@ export class ModalBillingMethodsComponent implements OnChanges {
         },
         error: (error) => {
           this.isLoading = false;
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalBillingMethod = true;
+            this.occErrorBillingMethodType = 'DELETE_UNEXISTED';
+          }
           this.deleteInvoiceType.emit({ status: 'error', error: error });
         }
       })

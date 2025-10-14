@@ -1,8 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalutationUtils } from '../../utils/salutation.utils';
 import { of } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { Salutation } from '../../../../../../Entities/salutation';
+import { SalutationStateService } from '../../utils/salutation-state.service';
 
 @Component({
   selector: 'app-salutation-modal',
@@ -10,19 +13,26 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   templateUrl: './salutation-modal.component.html',
   styleUrl: './salutation-modal.component.scss'
 })
-export class SalutationModalComponent implements OnInit {
+export class SalutationModalComponent implements OnChanges {
   private readonly salutationUtils = inject(SalutationUtils);
+  private readonly salutationStateService = inject(SalutationStateService);
   @ViewChild('salutationInput') salutationInput!: ElementRef<HTMLInputElement>;
-
+  @Input() selectedSalutation!: Salutation | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() salutationToDelete: number | null = null;
   @Input() salutationName: string | null = null;
+  @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() salutationCreated = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<{ severity: string, summary: string, detail: string }>();
+  @Output() onCreateSalutation = new EventEmitter<{ created?: Salutation, status: 'success' | 'error' }>();
+  @Output() onDeleteSalutation = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
 
   isLoading = false;
   errorMessage: string | null = null;
+  public showOCCErrorModaFunding = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalSalutation = false;
 
   readonly createSalutationForm = new FormGroup({
     name: new FormControl('', [
@@ -34,8 +44,12 @@ export class SalutationModalComponent implements OnInit {
 
   constructor(private readonly commonMessageService: CommonMessagesService) {}
 
-  ngOnInit(): void {
-    this.resetForm();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visible'] && this.visible) {
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      })
+    }
   }
 
   get isCreateMode(): boolean {
@@ -47,37 +61,27 @@ export class SalutationModalComponent implements OnInit {
     if(this.salutationToDelete){
       this.salutationUtils.deleteSalutation(this.salutationToDelete).subscribe({
         next: () => {
-          this.handleDeletion({
-            severity: 'success',
-            summary: 'MESSAGE.SUCCESS',
-            detail: 'MESSAGE.DELETE_SUCCESS'
-          });
+          this.isLoading = false;
+          this.salutationStateService.clearSalutation();
+          this.onDeleteSalutation.emit({ status: 'success' });
+          this.closeModal();
         },
-        error: (error) => {
-          const errorMessage = error.message.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED';
-          this.handleDeletion({
-            severity: 'error',
-            summary: 'MESSAGE.ERROR',
-            detail: errorMessage,
-            error
-          });
+        error: (errorResponse) => {
+          this.isLoading = false;
+          this.handleDeleteError(errorResponse);
+          this.onDeleteSalutation.emit({ status: 'error', error: errorResponse });
         }
       });
     }
   } 
 
-  private handleDeletion({ severity, summary, detail, error }: { severity: string; summary: string; detail: string; error?: any }): void {
-    this.isLoading = false;
-    if(error) {
-      this.errorMessage = error.message ?? 'Failed to delete salutation';
-      console.error('Delete error:', error);
+  handleDeleteError(error: Error) {
+    console.log(error)
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalSalutation = true;
+      alert('Error: ' + error.message);
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
-    this.confirmDelete.emit({
-      severity,
-      summary,
-      detail
-    }); 
-    this.closeModal();
   }
 
   onSubmit(): void {
@@ -153,7 +157,7 @@ export class SalutationModalComponent implements OnInit {
         if (this.salutationInput?.nativeElement) {
           this.salutationInput.nativeElement.focus(); 
         }
-      }, 150); 
+      }, 250); 
     }
   }
 }
