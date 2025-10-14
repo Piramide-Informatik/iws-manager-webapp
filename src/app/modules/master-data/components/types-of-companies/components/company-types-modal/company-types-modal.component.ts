@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { emptyValidator } from '../../utils/empty.validator';
@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-company-types-modal',
@@ -23,10 +24,12 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() companyTypeCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
+  @Output() confirmDelete = new EventEmitter<{ severity: string, summary: string, detail: string }>();
 
   isLoading = false;
   errorMessage: string | null = null;
+  public showOCCErrorModalCompanyType = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   readonly companyTypeForm = new FormGroup({
     name: new FormControl('', [
@@ -36,16 +39,16 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   });
 
   constructor(private readonly messageService: MessageService,
-              private readonly translateService: TranslateService,
-              private readonly commonMessageService: CommonMessagesService
-  ) {}
+    private readonly translateService: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
+  ) { }
 
   ngOnInit(): void {
     this.companyTypeForm.reset();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.visible){
+    if (changes['visible'] && this.visible) {
       setTimeout(() => {
         this.focusCompanyTypeInputIfNeeded();
       })
@@ -58,9 +61,10 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
 
   onCompanyDeleteConfirm(): void {
     this.isLoading = true;
-    if(this.companyTypeToDelete){
+    if (this.companyTypeToDelete) {
       this.companyTypeUtils.deleteCompanyType(this.companyTypeToDelete).subscribe({
         next: () => {
+          this.closeModal();
           this.handleDeletionCompanyType({
             severity: 'success',
             summary: 'MESSAGE.SUCCESS',
@@ -68,6 +72,7 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
           });
         },
         error: (error) => {
+          this.handleOCCDeleteError(error);
           this.handleDeletionCompanyType({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
@@ -76,12 +81,18 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
         }
       });
     }
-  }  
+  }
 
-  handleDeletionCompanyType(message: {severity: string, summary: string, detail?: string, error?: any}): void {
+  private handleOCCDeleteError(error: any) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalCompanyType = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
+  }
+
+  handleDeletionCompanyType(message: { severity: string, summary: string, detail?: string, error?: any }): void {
     this.isLoading = false;
     console.log("DELETE ERROR:", message.error);
-    this.closeModal();
     if (message.error.error.message.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(message.error.error.message)
     }
@@ -105,7 +116,7 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
       next: () => {
         this.isLoading = false;
         this.onCreateCompanyTypeSuccessfully();
-        this.closeModal();      
+        this.closeModal();
       },
       error: (err) => {
         this.isLoading = false;
@@ -132,9 +143,9 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
     if (this.isCreateMode && this.companyTypeInput) {
       setTimeout(() => {
         if (this.companyTypeInput?.nativeElement) {
-          this.companyTypeInput.nativeElement.focus(); 
+          this.companyTypeInput.nativeElement.focus();
         }
-      }, 200); 
+      }, 200);
     }
   }
 }
