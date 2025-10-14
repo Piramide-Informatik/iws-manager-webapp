@@ -136,14 +136,26 @@ export class SalutationTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onDeleteConfirm(message: {severity: string, summary: string, detail: string}): void {
-    if (message.severity === 'success') {
-      this.salutationStateService.clearSalutation();
-      this.commonMessageService.showDeleteSucessfullMessage()
-    } else {
-      this.commonMessageService.showErrorDeleteMessage()
+  onDeleteConfirm(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+    if (deleteEvent.status === 'success') {
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else if (deleteEvent.status === 'error' && deleteEvent.error) {
+      if (deleteEvent.error?.toString().includes('it is in use by other entities')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      } else {
+        this.commonMessageService.showErrorDeleteMessage();
+      }
     }
+    this.visibleModal = false;
   }
+
+  onSalutationCreate(event: { created?: Salutation, status: 'success' | 'error'}): void {
+      if(event.created && event.status === 'success'){
+        this.commonMessageService.showCreatedSuccesfullMessage();
+      }else if(event.status === 'error'){
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    }
 
   onModalSalutationClose() {
     if (this.dialog) {

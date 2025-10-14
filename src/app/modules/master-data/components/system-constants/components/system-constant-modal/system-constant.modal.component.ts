@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, 
 import { FormControl, FormGroup } from '@angular/forms';
 import { SystemConstantUtils } from '../../utils/system-constant.utils';
 import { System } from '../../../../../../Entities/system';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-system-constant-modal',
@@ -20,7 +21,8 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public createSystemConstantForm!: FormGroup;
   public isLoading = false;
-
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalSystem = false;
   constructor(){}
 
   ngOnInit(): void {
@@ -72,11 +74,19 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
           this.closeModal();
           this.deleteSystemConstant.emit({status: 'success'});
         },
-        error: (error) => {
+        error: (errorResponse) => {
           this.isLoading = false;
-          this.deleteSystemConstant.emit({ status: 'error', error: error });
+          this.handleDeleteError(errorResponse);
+          this.deleteSystemConstant.emit({ status: 'error', error: errorResponse });
         }
       })
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalSystem = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 

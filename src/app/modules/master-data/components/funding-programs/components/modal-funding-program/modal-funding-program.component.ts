@@ -69,9 +69,12 @@ export class ModalFundingProgramComponent {
           this.onDeleteFundingProgram.emit({ status: 'success' });
           this.closeModal();
         },
-        error: (error: Error) => {
+        error: (error) => {
           this.isLoading = false;
           this.handleDeleteError(error);
+          if (error.error.message.includes('a foreign key constraint fails')) {
+            this.closeModal();
+          }
           this.onDeleteFundingProgram.emit({ status: 'error', error });
         }
       })

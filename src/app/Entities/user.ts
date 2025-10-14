@@ -9,7 +9,7 @@ export interface User{
     username: string;
     password?: string;
     active?: boolean;
-    email?: string;
+    email?: string | null;
     firstName?: string;
     lastName?: string;
     roles?: Role[] | null;

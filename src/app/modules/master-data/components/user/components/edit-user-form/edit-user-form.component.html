@@ -97,8 +97,7 @@
           icon="pi pi-times"
           iconPos="left"
           [disabled]="isSaving"
-          (click)="clearForm()" 
-          (keydown.enter)="clearForm()"
+          (onClick)="onCancel()" 
         />
       </div>
     </div>
