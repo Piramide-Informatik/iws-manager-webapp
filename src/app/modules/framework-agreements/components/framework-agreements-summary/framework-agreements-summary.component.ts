@@ -45,7 +45,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   visibleFrameworkAgreementModal = false;
   isFrameworkAgreementLoading = false;
   selectedFrameworkAgreement: any = undefined;
-  modalFrameworkAgreementType: any = 'create';
+  modalFrameworkAgreementType: 'create' | 'delete' = 'create';
 
   constructor(private readonly commonMessageService: CommonMessagesService) { }
 
@@ -204,12 +204,12 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.visibleFrameworkAgreementModal = false;
           this.navigationToEdit(createdContract.id);
-        }, 2000)
+        }, 1000)
       },
       error: (error) => {
         console.log(error);
-        this.commonMessageService.showErrorCreatedMessage();
         this.isFrameworkAgreementLoading = false;
+        this.commonMessageService.showErrorCreatedMessage();
       }
     });
   }
@@ -219,7 +219,6 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   }
 
   onDeleteFrameworkAgreement(data: any) {
-    console.log(data);
     this.frameworkAgreementUtils.deleteFrameworkAgreement(data.id).subscribe({
       next: () => {
         this.frameworkAgreements = this.frameworkAgreements.filter(fa => fa.id != data.id);
@@ -244,9 +243,5 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
   onModalVisible(value: boolean) {
     this.visibleFrameworkAgreementModal = value;
-  }
-
-  onModalHide() {
-    this.modalFrameworkAgreementType = '';
   }
 }

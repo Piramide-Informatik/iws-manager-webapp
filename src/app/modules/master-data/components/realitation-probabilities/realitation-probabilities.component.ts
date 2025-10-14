@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../router-utils.service';
@@ -11,6 +11,7 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { Column } from '../../../../Entities/column';
 import { Chance } from '../../../../Entities/chance';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
+import { ModalRealizationProbabilitiesComponent } from './components/modal-realization-probabilities/modal-realization-probabilities.component';
 
 @Component({
   selector: 'app-realitation-probabilities',
@@ -31,7 +32,8 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
     return this.chanceService.chances();
   });
 
-  // Configuration table
+  @ViewChild('realizationProbabilitiesModal') dialog!: ModalRealizationProbabilitiesComponent;
+
   public columsHeaderFieldProbabilities: Column[] = [];
   userRealitationProbabilitiesPreferences: UserPreference = {};
   tableKey: string = 'RealitationProbabilities'
@@ -108,5 +110,11 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
 
   onEditChance(chance: Chance): void {
     this.chanceStateService.setChanceToEdit(chance);
+  }
+
+  onModalRealizationProbabilitiesClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
+    }
   }
 }

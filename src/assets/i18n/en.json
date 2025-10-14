@@ -50,7 +50,8 @@
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
     "NUMBER_MAX": "Max value 100 expected",
     "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
-    "NUMBER_MAX_12": "Max value 12 expected"
+    "NUMBER_MAX_12": "Max value 12 expected",
+    "DUPLICATE_PROBABILITY": "This probability already exists"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -152,7 +153,9 @@
     "DELETE_ERROR_IN_USE_WITH_ENTITY": "The record cannot be deleted because it is in use by other entities: ",
     "RECORD_ALREADY_EXISTS": "The record already exists.",
     "DELETE_ERROR_WITH_RECORDS": "The record cannot be deleted because it has associated records.",
-    "SELECT_AT_LEAST_ONE": "There must be at least one column selected."
+    "SELECT_AT_LEAST_ONE": "There must be at least one column selected.",
+    "DELETE_ERROR_ROLES_ASSIGNED": "Cannot delete user because they are assigned to {{count}} role(s)",
+    "DELETE_ERROR_HAS_ROLES": "Cannot delete user because they have assigned roles"
   },
   "primeng_date": {
     "dayNames": [
