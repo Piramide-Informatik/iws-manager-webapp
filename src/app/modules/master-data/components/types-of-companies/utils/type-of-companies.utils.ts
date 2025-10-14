@@ -4,6 +4,7 @@ import { CompanyType } from '../../../../../Entities/companyType';
 import { CompanyTypeService } from '../../../../../Services/company-type.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for company-type-related business logic and operations.
@@ -105,11 +106,11 @@ export class CompanyTypeUtils {
       take(1),
       switchMap((currentCompanyType) => {
         if (!currentCompanyType) {
-          return throwError(() => new Error('Company type not found'));
+          return throwError(() => createNotFoundUpdateError('Company Type'));
         }
 
         if (currentCompanyType.version !== companyType.version) {
-          return throwError(() => new Error('Conflict detected: company type version mismatch'));
+          return throwError(() => createUpdateConflictError('Company Type'));
         }
 
         return this.companyTypeService.updateCompanyType(companyType);
