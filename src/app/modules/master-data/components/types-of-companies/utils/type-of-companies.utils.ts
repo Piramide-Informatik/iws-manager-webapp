@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, filter, map, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
 import { CompanyType } from '../../../../../Entities/companyType';
 import { CompanyTypeService } from '../../../../../Services/company-type.service';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
@@ -71,18 +70,6 @@ export class CompanyTypeUtils {
   }
 
   /**
-   * Checks if a company type is used by any customer.
-   * @param id - ID of the company type to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkCompanyTypeUsage(id: number): Observable<boolean> {
-    return this.customerUtils.getAllCustomers().pipe(
-      map(customers => customers.some(customer => customer.companytype?.id === id)),
-      catchError(() => of(false))
-    );
-  }
-
-  /**
  * Updates a company type by ID and updates the internal titles signal.
  * @param id - ID of the company type to update
  * @returns Observable that completes when the update is done
@@ -106,28 +93,5 @@ export class CompanyTypeUtils {
         return this.companyTypeService.updateCompanyType(companyType);
       })
     );
-  }
-
-  private waitForUpdatedCompanyType(id: number, observer: any) {
-    return toObservable(this.companyTypeService.companyTypes).pipe(
-      map(companyTypes => companyTypes.find(ct => ct.id === id)),
-      filter(updated => !!updated),
-      take(1)
-    ).subscribe({
-      next: (updatedCompanyType) => {
-        observer.next(updatedCompanyType);
-        observer.complete();
-      },
-      error: (err) => observer.error(err)
-    });
-  }
-
-  private listenForUpdateErrors(observer: any) {
-    return toObservable(this.companyTypeService.error).pipe(
-      filter(error => !!error),
-      take(1)
-    ).subscribe({
-      next: (err) => observer.error(err)
-    });
   }
 }

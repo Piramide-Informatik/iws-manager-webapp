@@ -51,7 +51,7 @@
 </ng-template>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalCompanyType"
-  (close)="showOCCErrorModalCompanyType = false"
   [errorType]="occErrorType"
-  [reloadCurrentPage]="true">
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalCompanyType = false">
 </app-occ-error-modal>

@@ -2,8 +2,6 @@ import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, Elem
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
 import { emptyValidator } from '../../utils/empty.validator';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
@@ -24,12 +22,11 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() companyTypeCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<{ severity: string, summary: string, detail: string }>();
-
-  isLoading = false;
-  errorMessage: string | null = null;
+  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
   public showOCCErrorModalCompanyType = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  isLoading = false;
+  errorMessage: string | null = null;
 
   readonly companyTypeForm = new FormGroup({
     name: new FormControl('', [
@@ -38,10 +35,7 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
     ])
   });
 
-  constructor(private readonly messageService: MessageService,
-    private readonly translateService: TranslateService,
-    private readonly commonMessageService: CommonMessagesService
-  ) { }
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
     this.companyTypeForm.reset();
@@ -52,6 +46,9 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
       setTimeout(() => {
         this.focusCompanyTypeInputIfNeeded();
       })
+    }
+    if(changes['visible'] && !this.visible){
+      this.companyTypeForm.reset();
     }
   }
 
@@ -92,7 +89,6 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
 
   handleDeletionCompanyType(message: { severity: string, summary: string, detail?: string, error?: any }): void {
     this.isLoading = false;
-    console.log("DELETE ERROR:", message.error);
     if (message.error.error.message.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(message.error.error.message)
       this.closeModal();
@@ -116,8 +112,9 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
     this.companyTypeUtils.createNewCompanyType(companyType).subscribe({
       next: () => {
         this.isLoading = false;
-        this.onCreateCompanyTypeSuccessfully();
-        this.closeModal();
+        this.companyTypeUtils.loadInitialData().subscribe();
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.closeModal();      
       },
       error: (err) => {
         this.isLoading = false;
@@ -128,11 +125,6 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
 
   private handleError(messageKey: string, error: any) {
     this.errorMessage = messageKey;
-    console.error('Error:', error);
-  }
-
-  private onCreateCompanyTypeSuccessfully() {
-    this.commonMessageService.showCreatedSuccesfullMessage();
   }
 
   closeModal(): void {
