@@ -47,7 +47,7 @@ export class RolTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly userPreferenceService: UserPreferenceService,
     private readonly roleStateService: RoleStateService,
-    private readonly commonMessageService : CommonMessagesService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly translate: TranslateService) { }
 
   ngOnInit() {
@@ -141,8 +141,14 @@ export class RolTableComponent implements OnInit, OnDestroy {
     this.roleStateService.setRoleToEdit(role);
   }
 
+  onCloseModal(): void {
+    if (this.rolModalComponent) {
+      this.rolModalComponent?.closeAndReset();
+    }
+  }
+
   onCreateRole(event: { status: 'success' | 'error' }): void {
-    if ( event.status === 'success') {
+    if (event.status === 'success') {
       const sub = this.roleService.loadInitialData().subscribe();
       this.langSubscription.add(sub);
       this.prepareTableData();
