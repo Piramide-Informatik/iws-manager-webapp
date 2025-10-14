@@ -5,6 +5,7 @@ import { SalutationService } from '../../../../../Services/salutation.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for salutation-related business logic and operations.
@@ -149,14 +150,16 @@ export class SalutationUtils {
       take(1),
       switchMap((currentSalutation) => {
         if (!currentSalutation) {
-          return throwError(() => new Error('Salutation not found'));
+          return throwError(() => createNotFoundUpdateError('Salutation'))
         }
-
         if (currentSalutation.version !== salutation.version) {
-          return throwError(() => new Error('Conflict detected: salutation version mismatch'));
+          return throwError(() => createUpdateConflictError('Salutation'));
         }
-
         return this.salutationService.updateSalutation(salutation);
+      }),
+      catchError((err) => {
+        console.error('Error updating costType:', err);
+        return throwError(() => err);
       })
     );
   }

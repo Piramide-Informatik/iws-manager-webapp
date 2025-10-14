@@ -28,7 +28,7 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
   @Input() employeeCategoryName: string | null = null;
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() employeeCategoryCreated = new EventEmitter<void>();
+  @Output() employeeCategoryCreated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
     summary: string;
@@ -92,10 +92,12 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
           this.employeeCategoryStateService.clearEmployeeCategory();
           afterSuccess?.();
           this.showToastAndClose('success', successMessage);
+          this.employeeCategoryCreated.emit({ status: 'success' });
         },
         error: (error) => {
           this.handleDeleteError(error);
           this.handleOperationError(error, failureMessage, inUseMessage);
+          this.employeeCategoryCreated.emit({ status: 'error' });
         }
       });
 
@@ -135,8 +137,7 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
       this.employeeCategoryUtils.addEmployeeCategory(EmployeeCategoryData),
       'MESSAGE.CREATE_SUCCESS',
       'MESSAGE.CREATE_FAILED',
-      undefined,
-      () => this.employeeCategoryCreated.emit()
+      undefined
     );
   }
 

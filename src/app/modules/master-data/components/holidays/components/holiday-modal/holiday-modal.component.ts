@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 @Component({
   selector: 'app-holiday-modal',
   standalone: false,
@@ -30,6 +31,8 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
 
   isLoading = false;
   errorMessage: string | null = null;
+  showOCCErrorModalHoliday = false;
+  public occErrorHolidayType: OccErrorType = 'UPDATE_UNEXISTED';
 
   readonly createdPublicHolidayForm = new FormGroup({
     name: new FormControl(''),
@@ -87,6 +90,10 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
           },
           error: (error) => {
             this.isLoading = false;
+            if (error instanceof OccError || error?.message.includes('404')) {
+              this.showOCCErrorModalHoliday = true;
+              this.occErrorHolidayType = 'DELETE_UNEXISTED';
+            }
             this.errorMessage =
               error.message ?? 'Failed to delete publicHoliday';
             this.toastMessage.emit({
