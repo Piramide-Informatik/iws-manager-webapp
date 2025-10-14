@@ -86,3 +86,9 @@
     </div>
   </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalAbscenseType"
+  [errorType]="occErrorAbscenseType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalAbscenseType = false">
+</app-occ-error-modal>

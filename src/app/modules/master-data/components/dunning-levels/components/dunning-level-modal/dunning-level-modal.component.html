@@ -67,3 +67,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalDunningLEvel"
+  [errorType]="occErrorDunningLevelType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalDunningLEvel = false">
+</app-occ-error-modal>

@@ -6,7 +6,7 @@ import { Salutation } from '../../../../../../Entities/salutation';
 import { SalutationUtils } from '../../utils/salutation.utils';
 import { SalutationStateService } from '../../utils/salutation-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 @Component({
   selector: 'app-salutation-form',
   templateUrl: './salutation-form.component.html',
@@ -17,6 +17,8 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
   currentSalutation: Salutation | null = null;
   editSalutationForm!: FormGroup;
   isSaving = false;
+  public isLoading: boolean = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalSalutation = false;
   private readonly subscriptions = new Subscription();
   private readonly editSalutationSource = new BehaviorSubject<Salutation | null>(null);
@@ -103,28 +105,24 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
       name: this.editSalutationForm.value.salutation?.trim()
     };
 
-    this.subscriptions.add(
+    
       this.salutationUtils.updateSalutation(updatedSalutation).subscribe({
-        next: (savedSalutation) => this.handleSaveSuccess(savedSalutation),
-        error: (err) => this.handleSaveError(err)
+        next: () => {
+          this.isLoading = false;
+          this.clearForm();
+          this.commonMessageService.showEditSucessfullMessage();
+        },
+        error: (error: Error) => {
+          this.isLoading = false;
+          if (error instanceof OccError) {
+            console.log('OCC Error occurred:', error);
+            this.showOCCErrorModalSalutation = true;
+            this.occErrorType = error.errorType;
+          } else {
+            this.commonMessageService.showErrorEditMessage();
+          }
+          }
       })
-    );
-  }
-
-  private handleSaveSuccess(savedSalutation: Salutation): void {
-    this.commonMessageService.showEditSucessfullMessage();
-    this.salutationStateService.setSalutationToEdit(null);
-    this.clearForm();
-  }
-
-  private handleSaveError(error: any): void {
-    console.error('Error saving salutation:', error);
-    if (error instanceof Error && error.message?.includes('version mismatch')) {
-      this.showOCCErrorModalSalutation = true;
-      return;
-    }
-    this.commonMessageService.showErrorEditMessage();
-    this.isSaving = false;
   }
 
   private markAllAsTouched(): void {
