@@ -17,6 +17,6 @@
 <app-occ-error-modal
   *ngIf="showOCCErrorModaBiller"
   (close)="showOCCErrorModaBiller = false"
-  [useEmitter]="true"
-  (refresh)="onRefresh()">
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true">
 </app-occ-error-modal>

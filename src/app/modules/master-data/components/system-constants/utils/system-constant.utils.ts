@@ -70,7 +70,7 @@ export class SystemConstantUtils {
         }
 
         if (currentSystemConstant.version !== systemConstant.version) {
-          return throwError(() => createNotFoundUpdateError('system constant'));
+          return throwError(() => createUpdateConflictError('system constant'));
         }
 
         return this.systemConstantService.updateSystemConstant(systemConstant);
