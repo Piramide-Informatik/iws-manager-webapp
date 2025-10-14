@@ -35,7 +35,7 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalText"
-  (close)="showOCCErrorModalText = false"
-  [useEmitter]="true"
-  (refresh)="onRefresh()">
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalText = false">
 </app-occ-error-modal>
