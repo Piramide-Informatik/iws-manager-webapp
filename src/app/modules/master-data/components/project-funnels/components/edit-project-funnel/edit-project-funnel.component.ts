@@ -1,4 +1,11 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PromoterUtils } from '../../utils/promoter-utils';
 import { CountryUtils } from '../../../countries/utils/country-util';
@@ -9,12 +16,13 @@ import { Subscription } from 'rxjs';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { Country } from '../../../../../../Entities/country';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'master-data-edit-project-funnel',
   standalone: false,
   templateUrl: './edit-project-funnel.component.html',
-  styleUrl: './edit-project-funnel.component.scss'
+  styleUrl: './edit-project-funnel.component.scss',
 })
 export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   private readonly promoterUtils = inject(PromoterUtils);
@@ -27,9 +35,12 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   private promoterToEdit: Promoter | null = null;
   public showOCCErrorModaPromoter = false;
   public isLoading: boolean = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public editProjectFunnelForm!: FormGroup;
 
-  public countries = toSignal( this.countryUtils.getCountriesSortedByName(), { initialValue: [] } )
+  public countries = toSignal(this.countryUtils.getCountriesSortedByName(), {
+    initialValue: [],
+  });
 
   ngOnInit(): void {
     this.initForm();
@@ -45,7 +56,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-  
+
   private initForm(): void {
     this.editProjectFunnelForm = new FormGroup({
       promoterNo: new FormControl<string | null>(''),
@@ -58,22 +69,25 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
       city: new FormControl(''),
     });
   }
-  
+
   onSubmit(): void {
-    if(this.editProjectFunnelForm.invalid || !this.promoterToEdit) return 
+    if (this.editProjectFunnelForm.invalid || !this.promoterToEdit) return;
 
     this.isLoading = true;
     const editedPromoter: Promoter = {
       ...this.promoterToEdit,
-      promoterNo: this.editProjectFunnelForm.value.promoterNo?.toString() || null,
+      promoterNo:
+        this.editProjectFunnelForm.value.promoterNo?.toString() || null,
       projectPromoter: this.editProjectFunnelForm.value.projectPromoter?.trim(),
       promoterName1: this.editProjectFunnelForm.value.promoterName1?.trim(),
       promoterName2: this.editProjectFunnelForm.value.promoterName2?.trim(),
-      country: this.getCountryById(this.editProjectFunnelForm.value.country ?? 0),
+      country: this.getCountryById(
+        this.editProjectFunnelForm.value.country ?? 0
+      ),
       street: this.editProjectFunnelForm.value.street?.trim(),
       zipCode: this.editProjectFunnelForm.value.zipCode?.trim(),
-      city: this.editProjectFunnelForm.value.city?.trim()
-    }
+      city: this.editProjectFunnelForm.value.city?.trim(),
+    };
 
     this.promoterUtils.updatePromoter(editedPromoter).subscribe({
       next: () => {
@@ -82,20 +96,21 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
         this.commonMessageService.showEditSucessfullMessage();
       },
       error: (error: Error) => {
-        this.isLoading = false;
-        if(error.message === 'Version conflict: Promoter has been updated by another user'){
+        if (error instanceof OccError) {
+          console.log('OCC Error occurred:', error);
           this.showOCCErrorModaPromoter = true;
-        }else{
+          this.occErrorType = error.errorType;
+        } else {
           this.commonMessageService.showErrorEditMessage();
         }
-      }
+      },
     });
   }
 
   private setupPromoterSubscription(): void {
     this.subscriptions.add(
-      this.promoterStateService.currentPromoter$.subscribe(promoter => {
-        if(promoter){
+      this.promoterStateService.currentPromoter$.subscribe((promoter) => {
+        if (promoter) {
           this.promoterToEdit = promoter;
           this.editProjectFunnelForm.patchValue({
             promoterNo: this.promoterToEdit.promoterNo,
@@ -105,7 +120,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
             country: this.promoterToEdit.country?.id,
             street: this.promoterToEdit.street,
             zipCode: this.promoterToEdit.zipCode,
-            city: this.promoterToEdit.city
+            city: this.promoterToEdit.city,
           });
           this.focusInputIfNeeded();
         } else {
@@ -127,13 +142,13 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.isLoading = false;
-        }
+        },
       })
     );
   }
 
   private getCountryById(id: number): Country | null {
-    return id !== 0 ? this.countries().find(c => c.id === id) ?? null : null;
+    return id !== 0 ? this.countries().find((c) => c.id === id) ?? null : null;
   }
 
   public clearForm(): void {
@@ -144,7 +159,10 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
 
   public onRefresh(): void {
     if (this.promoterToEdit?.id) {
-      localStorage.setItem('selectedPromoterId', this.promoterToEdit.id.toString());
+      localStorage.setItem(
+        'selectedPromoterId',
+        this.promoterToEdit.id.toString()
+      );
       window.location.reload();
     }
   }
