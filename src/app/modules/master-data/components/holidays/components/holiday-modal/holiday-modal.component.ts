@@ -49,7 +49,11 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     if(changes['visible'] && this.visible) {
       setTimeout(() => {
         this.focusInputIfNeeded();
-      })
+      });
+    }
+    
+    if (changes['visible'] && this.visible && this.isCreateMode) {
+      this.resetForm();
     }
   }
 
@@ -194,11 +198,13 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
 
   closeModel(): void {
     this.isVisibleModel.emit(false);
-    this.createdPublicHolidayForm.reset();
+    this.resetForm();
   }
 
   private resetForm(): void {
     this.createdPublicHolidayForm.reset();
+    this.createdPublicHolidayForm.markAsPristine();
+    this.createdPublicHolidayForm.markAsUntouched();
   }
 
   private focusInputIfNeeded() {
