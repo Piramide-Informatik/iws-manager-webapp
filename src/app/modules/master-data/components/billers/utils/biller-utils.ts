@@ -3,6 +3,7 @@ import { Observable, catchError, map, take, throwError, switchMap, of } from 'rx
 import { BillerService } from '../../../../../Services/biller.service';
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { Biller } from '../../../../../Entities/biller';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for biller-related business logic and operations.
@@ -110,16 +111,15 @@ export class BillerUtils {
 
     return this.billerService.getBillerById(biller.id).pipe(
       take(1),
-      map((currentBiller) => {
+      switchMap((currentBiller) => {
         if (!currentBiller) {
-          throw new Error('Biller not found');
+          return throwError(() => createNotFoundUpdateError('Biller'));
         }
         if (currentBiller.version !== biller.version) {
-          throw new Error('Version conflict: Biller has been updated by another user');
+          return throwError(() => createUpdateConflictError('Biller'));
         }
-        return biller;
+        return this.billerService.updateBiller(biller);
       }),
-      switchMap((validatedBiller: Biller) => this.billerService.updateBiller(validatedBiller)),
       catchError((err) => {
         console.error('Error updating biller:', err);
         return throwError(() => err);
