@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
 import { Column } from '../../../../../../Entities/column';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-iws-commissions-table',
@@ -45,6 +46,7 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService,
+    private readonly commonMessageService: CommonMessagesService,
     private readonly iwsCommissionStateService: IwsCommissionStateService
   ) {}
 
@@ -133,7 +135,34 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
     this.iwsCommissionStateService.setIwsCommissionToEdit(iwsCommission);
   }
 
-  onIwsComissionDeleted() {
-    this.iwsCommissionStateService.clearTitle();
+  onIwsComissionDeleted(event?: {status: 'success' | 'error'}) {
+    if (event?.status === 'success') {
+      this.commonMessageService.showDeleteSucessfullMessage();
+      this.iwsCommissionStateService.clearTitle();
+    }else if(event?.status === 'error'){
+      this.commonMessageService.showErrorDeleteMessage();
+    }
+  }
+
+  onCreateIWSCommission(event: { status: 'success' | 'error'}) {
+    if (event.status === 'success') {
+      const sub = this.iwsCommissionService.loadInitialData().subscribe();
+      this.langSubscription.add(sub);
+      this.prepareTableData();
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }
+    else{
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.commissions().length > 0) {
+      this.columnsHeaderFieldCommissions = [
+        { field: 'fromOrderValue', header: 'From Order Value' },
+        { field: 'commission', header: 'Commission' },
+        { field: 'minCommission', header: 'Min Commission' }
+      ];
+    }
   }
 }
