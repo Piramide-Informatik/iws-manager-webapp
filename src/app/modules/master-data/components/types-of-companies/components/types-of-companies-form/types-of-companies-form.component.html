@@ -32,6 +32,8 @@
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalCompanyType"
+  [useEmitter]="occErrorType === 'UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
   (close)="showOCCErrorModalCompanyType = false"
   [errorType]="occErrorType"
   [reloadCurrentPage]="true">
