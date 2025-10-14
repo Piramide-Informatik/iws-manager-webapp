@@ -44,8 +44,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
   public employeeSelectOptions: { employeeNo: number, employeeId: number }[] = [];
+  public isInvalidForm = false;
 
-  public isEmployeeContractLoading: boolean = false;
+  public isLoading: boolean = false;
+  public isLoadingDelete: boolean = false;
   public visiblEmployeeContractModal: boolean = false;
   private readonly employeesMap: Map<number, Employee> = new Map();
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
@@ -67,12 +69,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       this.ContractDetailsForm.reset();
     }
     if (changes['visibleModal'] && this.visibleModal && this.isCreateMode) {
-      if (this.firstInputForm) {
-        setTimeout(() => {
-          this.firstInputForm.focus();
-          this.firstInputForm.show();
-        }, 300)
-      }
+      setTimeout(() => {
+        if (this.firstInputForm) {
+          setTimeout(() => {
+            this.firstInputForm.focus();
+            this.firstInputForm.show();
+          }, 300)
+        }
+      })
     }
   }
 
@@ -143,13 +147,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       lastName: new FormControl('', []),
       startDate: new FormControl('', []),
       salaryPerMonth: new FormControl(null, [Validators.min(0), Validators.max(99999.99)]),
-      hoursPerWeek: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      workShortTime: new FormControl(null, [Validators.min(0), Validators.max(100.00)]),
-      specialPayment: new FormControl(null, [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]),
-      maxHoursPerMonth: new FormControl(null, []),
+      hoursPerWeek: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
+      workShortTime: new FormControl(null, [Validators.min(0), Validators.max(100)]),
+      specialPayment: new FormControl(null, [Validators.min(0), Validators.max(99999.99)]),
+      maxHoursPerMonth: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
       maxHoursPerDay: new FormControl(null, []),
-      hourlyRate: new FormControl(null, []),
-      hourlyRealRate: new FormControl(null)
+      hourlyRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
+      hourlyRealRate: new FormControl(null, [Validators.min(0), Validators.max(100)])
     });
 
     this.disableFormControls();
@@ -254,6 +258,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     const hourlyRate = totalMonthlyCompensation / monthlyHours;
 
+    this.isInvalidForm = hourlyRate > 100;
+
     this.ContractDetailsForm.get('hourlyRate')?.setValue(
       this.roundToTwoDecimals(hourlyRate),
       { emitEvent: false }
@@ -273,9 +279,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   createWorkContract() {
-    if (this.ContractDetailsForm.invalid || this.isEmployeeContractLoading) return;
+    if (this.ContractDetailsForm.invalid || this.isLoading) return;
 
-    this.isEmployeeContractLoading = true;
+    this.isLoading = true;
     this.errorMsg = null;
 
     if (!this.currentCustomer) {
@@ -325,14 +331,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     this.employeeContractUtils.createNewEmploymentContract(newWorkContract).subscribe({
       next: (createdContract) => {
-        this.isEmployeeContractLoading = false;
+        this.isLoading = false;
         this.onContractCreated.emit(createdContract);
         this.isVisibleModal.emit(false);
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.ContractDetailsForm.reset();
       },
       error: (error) => {
-        this.isEmployeeContractLoading = false;
+        this.isLoading = false;
         this.errorMsg = error.message;
         this.isVisibleModal.emit(false);
         this.commonMessageService.showErrorCreatedMessage();
@@ -358,10 +364,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       hourlyRealRate: this.ContractDetailsForm.getRawValue().hourlyRealRate
     }
 
-    this.isEmployeeContractLoading = true;
+    this.isLoading = true;
     this.employeeContractUtils.updateEmploymentContract(updatedEmployment).subscribe({
       next: (updated: EmploymentContract) => {
-        this.isEmployeeContractLoading = false;
+        this.isLoading = false;
         this.onContractUpdated.emit(updated);
         this.closeModal();
         this.commonMessageService.showEditSucessfullMessage();
@@ -378,7 +384,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.commonMessageService.showErrorEditMessage();
-    this.isEmployeeContractLoading = false;
+    this.isLoading = false;
   }
 
   get isCreateMode(): boolean {
@@ -392,17 +398,17 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   deleteEmployeeContractEntity() {
     if (this.currentEmploymentContractEntity) {
-      this.isEmployeeContractLoading = true;
+      this.isLoadingDelete = true;
       this.employeeContractUtils.deleteEmploymentContract(this.currentEmploymentContractEntity.id).subscribe({
         next: () => {
-          this.isEmployeeContractLoading = false;
+          this.isLoadingDelete = false;
           this.visiblEmployeeContractModal = false;
           this.isVisibleModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();
           this.deletedEmployeeContract.emit(this.currentEmploymentContractEntity);
         },
         error: (error) => {
-          this.isEmployeeContractLoading = false;
+          this.isLoadingDelete = false;
           this.commonMessageService.showErrorDeleteMessage();
           if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
             this.visiblEmployeeContractModal = false;

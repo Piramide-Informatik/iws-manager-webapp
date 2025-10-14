@@ -25,6 +25,8 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   @Input() customer: Customer | undefined;
   @Input() modalSubcontractType: 'create' | 'delete' = 'create';
   @Input() isVisibleModal: boolean = false;
+  @Input() isLoading = false;
+  @Input() isLoadingDelete = false;
   @Output() deletedSubContract = new EventEmitter();
   @Output() createdSubContract = new EventEmitter();
   @Output() visibleModal = new EventEmitter();
@@ -53,8 +55,11 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['isVisibleModal'] && this.isVisibleModal && this.modalSubcontractType !== 'delete'){
-      this.firstInputFocus();
+    if(changes['isVisibleModal'] && this.isVisibleModal){
+      setTimeout(() => {
+        this.firstInputFocus();
+        this.createSubcontractForm.get('netOrGross')?.setValue(this.optionsNetOrGross[0].value)
+      })
     }
 
     let modalVisibleChange = changes['isVisibleModal'];
@@ -75,7 +80,7 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       contractor: new FormControl(''),
       invoiceNumber: new FormControl(''),
       invoiceDate: new FormControl(''),
-      netOrGross: new FormControl(this.optionsNetOrGross[0].value), // default: 'net'
+      netOrGross: new FormControl(this.optionsNetOrGross[0].value), // default: 'gross'
       invoiceAmount: new FormControl(''),
       afa: new FormControl(false), // checkbox
       afaDurationMonths: new FormControl({ value: null, disabled: true }), // solo si afa = true
@@ -102,10 +107,9 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    if (this.createSubcontractForm.invalid) {
-      console.error('Form is invalid');
-      return;
-    }
+    if (this.createSubcontractForm.invalid) return;
+
+    this.isLoading = true;
     const newSubcontract = this.buildSubcontractFromForm();
     this.createdSubContract.emit(newSubcontract);
   }
@@ -122,7 +126,8 @@ export class SubContractModalComponent implements OnInit, OnChanges {
     });
   }
 
-  private buildSubcontractFromForm() {
+  private buildSubcontractFromForm(): Omit<Subcontract, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
+    // controlNetOrGross == true -> invoiceNet, false -> invoiceGross
     const controlNetOrGross: boolean =  this.createSubcontractForm.value.netOrGross === 'net';
     return {
       contractTitle: this.createSubcontractForm.value.contractTitle,
@@ -134,10 +139,7 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       isAfa: this.createSubcontractForm.value.afa,
       afamonths: this.createSubcontractForm.value.afa ? this.createSubcontractForm.value.afaDurationMonths : 0,
       description: this.createSubcontractForm.value.description,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      version: 0,
-      customer: this.customer,
+      customer: this.customer ?? null,
       invoiceGross: controlNetOrGross ? 0 : this.createSubcontractForm.value.invoiceAmount,
       invoiceNet: controlNetOrGross ? this.createSubcontractForm.value.invoiceAmount : 0,
       note: '',
@@ -151,6 +153,7 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   onSubcontractDeleteConfirm() {
+    this.isLoadingDelete = true;
     this.deletedSubContract.emit(this.selectedSubContract);  
   }
 

@@ -50,7 +50,8 @@
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
     "NUMBER_MAX": "Max value 100 expected",
     "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
-    "NUMBER_MAX_12": "Max value 12 expected"
+    "NUMBER_MAX_12": "Max value 12 expected",
+    "DUPLICATE_PROBABILITY": "This probability already exists"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -147,6 +148,7 @@
     "UPDATE_FAILED": "The record could not be updated.",
     "CREATE_FAILED": "The record could not be created.",
     "DELETE_FAILED": "The record could not be deleted.",
+    "CONFLICT": "Version Conflict",
     "DELETE_ERROR_IN_USE": "The record cannot be deleted because it is in use by other entities.",
     "DELETE_ERROR_IN_USE_WITH_ENTITY": "The record cannot be deleted because it is in use by other entities: ",
     "RECORD_ALREADY_EXISTS": "The record already exists.",

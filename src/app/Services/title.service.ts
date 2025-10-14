@@ -5,7 +5,7 @@ import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TitleService {
   private readonly http = inject(HttpClient);
@@ -14,15 +14,13 @@ export class TitleService {
   private readonly httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    })
+      Accept: 'application/json',
+    }),
   };
-
 
   private readonly _titles = signal<Title[]>([]);
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
-
 
   public titles = this._titles.asReadonly();
   public loading = this._loading.asReadonly();
@@ -32,6 +30,11 @@ export class TitleService {
     this.loadInitialData();
   }
 
+  private sortAlphabetically(list: Title[]): Title[] {
+    return [...list].sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+    );
+  }
   public loadInitialData(): Observable<Title[]> {
     this._loading.set(true);
     return this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
@@ -43,7 +46,7 @@ export class TitleService {
         error: (err) => {
           this._error.set('Failed to load titles');
           console.error('Error loading titles:', err);
-        }
+        },
       }),
       catchError(() => of([])),
       tap(() => this._loading.set(false))
@@ -51,18 +54,20 @@ export class TitleService {
   }
 
   // CREATE
-  addTitle(title: Omit<Title, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Title> {
+  addTitle(
+    title: Omit<Title, 'id' | 'createdAt' | 'updatedAt' | 'version'>
+  ): Observable<Title> {
     return this.http.post<Title>(this.apiUrl, title, this.httpOptions).pipe(
       tap({
         next: (newTitle) => {
-          this._titles.update(titles => [...titles, newTitle]);
+          this._titles.update((titles) => this.sortAlphabetically([...titles, newTitle]));
           this._error.set(null);
         },
         error: (err) => {
           this._error.set('Failed to add title');
           console.error('Error adding title:', err);
         },
-        finalize: () => this._loading.set(false)
+        finalize: () => this._loading.set(false),
       })
     );
   }
@@ -73,15 +78,15 @@ export class TitleService {
     return this.http.put<Title>(url, updatedTitle, this.httpOptions).pipe(
       tap({
         next: (res) => {
-          this._titles.update(titles =>
-            titles.map(t => t.id === res.id ? res : t)
+          this._titles.update((titles) =>
+            this.sortAlphabetically(titles.map((t) => (t.id === res.id ? res : t)))
           );
           this._error.set(null);
         },
         error: (err) => {
           this._error.set('Failed to update title');
           console.error('Error updating title:', err);
-        }
+        },
       })
     );
   }
@@ -92,15 +97,13 @@ export class TitleService {
     return this.http.delete<void>(url, this.httpOptions).pipe(
       tap({
         next: () => {
-          this._titles.update(titles =>
-            titles.filter(t => t.id !== id)
-          );
+          this._titles.update((titles) => titles.filter((t) => t.id !== id));
           this._error.set(null);
         },
         error: (err) => {
           this._error.set('Failed to delete title');
           console.error('Error deleting title:', err);
-        }
+        },
       })
     );
   }
@@ -109,7 +112,7 @@ export class TitleService {
   getAllTitles(): Observable<Title[]> {
     return this.http.get<Title[]>(this.apiUrl, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
-      catchError(err => {
+      catchError((err) => {
         this._error.set('Failed to fetch titles');
         console.error('Error fetching titles:', err);
         return of([]);
@@ -120,7 +123,7 @@ export class TitleService {
   getTitleById(id: number): Observable<Title | undefined> {
     return this.http.get<Title>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
-      catchError(err => {
+      catchError((err) => {
         this._error.set('Failed to fetch title by id');
         console.error(err);
         return of(undefined as unknown as Title);
