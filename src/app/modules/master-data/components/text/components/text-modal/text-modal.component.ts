@@ -2,6 +2,8 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, 
 import { Text } from '../../../../../../Entities/text';
 import { TextUtils } from '../../utils/text-utils';
 import { FormControl, FormGroup } from '@angular/forms';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { TextStateService } from '../../utils/text-state.service';
 
 @Component({
   selector: 'app-text-modal',
@@ -11,6 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class TextModalComponent implements OnChanges {
   private readonly textUtils = inject(TextUtils);
+  private readonly textStateService = inject(TextStateService);
   @Input() visible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedText!: Text;
@@ -19,7 +22,8 @@ export class TextModalComponent implements OnChanges {
   @Output() deleteText = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public isLoading: boolean = false;
-
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalText = false;
   public readonly textForm = new FormGroup({
     label: new FormControl(''),
     content: new FormControl('')
@@ -61,14 +65,24 @@ export class TextModalComponent implements OnChanges {
       this.textUtils.deleteText(this.selectedText.id).subscribe({
         next: () => {
           this.isLoading = false;
+          this.textStateService.clearText();
           this.closeModal();
           this.deleteText.emit({status: 'success'});
         },
-        error: (error) => {
+        error: (errorResponse) => {
           this.isLoading = false;
-          this.deleteText.emit({ status: 'error', error: error });
+          this.handleDeleteError(errorResponse);
+          this.deleteText.emit({ status: 'error', error: errorResponse });
         }
       })
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    console.error('Error deleting text:', error);
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalText = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 

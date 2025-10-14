@@ -6,6 +6,8 @@ import { ChanceStateService } from '../../utils/chance-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+
 
 @Component({
   selector: 'master-data-edit-realization-probabilities',
@@ -23,6 +25,8 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
   public isLoading: boolean = false;
   @ViewChild('firstInput') firstInput!: InputNumber;
   public editProbablitiesForm!: FormGroup;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
 
   ngOnInit(): void {
     this.editProbablitiesForm = new FormGroup({
@@ -58,8 +62,10 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
       },
       error: (error: Error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: chance has been updated by another user'){
+        if(error instanceof OccError){
+          console.log('OCC Error occurred:', error);
           this.showOCCErrorModalChance = true;
+          this.occErrorType = error.errorType;
         }else{
           this.commonMessageService.showErrorEditMessage();
         }
