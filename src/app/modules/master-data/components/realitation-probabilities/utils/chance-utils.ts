@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, of } from 'rxjs';
 import { ChanceService } from '../../../../../Services/chance.service';
 import { Chance } from '../../../../../Entities/chance';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for chance-related business logic and operations.
@@ -87,16 +88,15 @@ export class ChanceUtils {
 
     return this.chanceService.getChanceById(chance.id).pipe(
       take(1),
-      map((currentChance) => {
+      switchMap((currentChance) => {
         if (!currentChance) {
-          throw new Error('chance not found');
+          return throwError(() => createNotFoundUpdateError('chance'));
+
         }
         if (currentChance.version !== chance.version) {
-          throw new Error('Version conflict: chance has been updated by another user');
-        }
-        return chance;
+          return throwError(() => createUpdateConflictError('chance'));        }
+        return this.chanceService.updateChance(chance);
       }),
-      switchMap((validatedChance: Chance) => this.chanceService.updateChance(validatedChance)),
       catchError((err) => {
         console.error('Error updating chance:', err);
         return throwError(() => err);
