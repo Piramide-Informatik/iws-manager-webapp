@@ -1,7 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../../../../Entities/user';
-import { BehaviorSubject, forkJoin, Observable, Subscription, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  forkJoin,
+  Observable,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import { UserStateService } from '../../utils/user-state.service';
 import { UserUtils } from '../../utils/user-utils';
 import { TranslateService } from '@ngx-translate/core';
@@ -27,7 +39,7 @@ export class EditUserFormComponent implements OnInit {
   private readonly editUserSource = new BehaviorSubject<User | null>(null);
   private readonly roleService = inject(RoleService);
 
-  allRoles: Role [] = [];
+  allRoles: Role[] = [];
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   userRoles: Role[] = [];
 
@@ -51,18 +63,26 @@ export class EditUserFormComponent implements OnInit {
     this.initForm();
     this.setupUserSubscription();
     const savedProjectStatusId = localStorage.getItem('selectedUserId');
-    if (savedProjectStatusId){
+    if (savedProjectStatusId) {
       this.loadTitleAfterRefresh(savedProjectStatusId);
       localStorage.removeItem('selectedUserId');
     }
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
-      this.passwordContainer.weakLabel = this.translate.instant('USERS.PASSWORD_LABEL.WEAK');
-      this.passwordContainer.mediumLabel = this.translate.instant('USERS.PASSWORD_LABEL.MEDIUM');
-      this.passwordContainer.strongLabel = this.translate.instant('USERS.PASSWORD_LABEL.STRONG');
-      this.passwordContainer.promptLabel = this.translate.instant('USERS.PASSWORD_LABEL.ENTER_PASSWORD');
+      this.passwordContainer.weakLabel = this.translate.instant(
+        'USERS.PASSWORD_LABEL.WEAK'
+      );
+      this.passwordContainer.mediumLabel = this.translate.instant(
+        'USERS.PASSWORD_LABEL.MEDIUM'
+      );
+      this.passwordContainer.strongLabel = this.translate.instant(
+        'USERS.PASSWORD_LABEL.STRONG'
+      );
+      this.passwordContainer.promptLabel = this.translate.instant(
+        'USERS.PASSWORD_LABEL.ENTER_PASSWORD'
+      );
     });
   }
-  
+
   private initForm(): void {
     this.editUserForm = new FormGroup({
       username: new FormControl(''),
@@ -77,15 +97,19 @@ export class EditUserFormComponent implements OnInit {
   }
 
   onRolesChange(): void {
-    this.userRoles = [...this.userRoles].sort((a, b) => a.name.localeCompare(b.name));
-    this.availableRoless = [...this.availableRoless].sort((a, b) => a.name.localeCompare(b.name));
+    this.userRoles = [...this.userRoles].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    this.availableRoless = [...this.availableRoless].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
     this.editUserForm.get('role')?.setValue(this.userRoles);
     this.editUserForm.get('role')?.markAsDirty();
   }
 
   private setupUserSubscription(): void {
     this.subscriptions.add(
-      this.userStateService.currentUser$.subscribe(user => {
+      this.userStateService.currentUser$.subscribe((user) => {
         this.currentUser = user;
         user ? this.loadUserData(user) : this.clearForm();
       })
@@ -100,15 +124,16 @@ export class EditUserFormComponent implements OnInit {
       email: user.email,
       password: user.password,
       active: user.active,
-      role: user.roles || []
+      role: user.roles || [],
     });
 
     this.focusInputIfNeeded();
 
-    const roles$: Observable<{ allRoles: Role[]; userRoles: Role[] }> = forkJoin({
-      allRoles: this.roleService.getAllRoles(),
-      userRoles: this.userUtils.getRolesByUser(user.id)
-    });
+    const roles$: Observable<{ allRoles: Role[]; userRoles: Role[] }> =
+      forkJoin({
+        allRoles: this.roleService.getAllRoles(),
+        userRoles: this.userUtils.getRolesByUser(user.id),
+      });
 
     this.addSubscription(
       roles$,
@@ -122,13 +147,12 @@ export class EditUserFormComponent implements OnInit {
         this.allRoles = allRoles;
         this.userRoles = userRoles;
 
-        this.availableRoless = allRoles.filter((role: Role) =>
-          !userRoles.some((ur: Role) => ur.id === role.id)
+        this.availableRoless = allRoles.filter(
+          (role: Role) => !userRoles.some((ur: Role) => ur.id === role.id)
         );
       }
     );
   }
-
 
   private loadTitleAfterRefresh(userId: string): void {
     this.isSaving = true;
@@ -142,7 +166,7 @@ export class EditUserFormComponent implements OnInit {
         },
         error: () => {
           this.isSaving = false;
-        }
+        },
       })
     );
   }
@@ -179,7 +203,7 @@ export class EditUserFormComponent implements OnInit {
       email: this.editUserForm.value.email?.trim(),
       password: this.editUserForm.value.password,
       active: this.editUserForm.value.active,
-      roles: this.editUserForm.value.role || []
+      roles: this.editUserForm.value.role || [],
     };
   }
 
@@ -187,54 +211,58 @@ export class EditUserFormComponent implements OnInit {
     this.addSubscription(
       this.userUtils.updateUsers(user).pipe(
         switchMap((savedUser: User) => {
-        const roleIds = this.userRoles.map(role => role.id);
-        return this.userUtils.assignRole(savedUser.id, roleIds);
-      })),
+          const roleIds = this.userRoles.map((role) => role.id);
+          return this.userUtils.assignRole(savedUser.id, roleIds);
+        })
+      ),
       (savedUser) => this.handleSaveSuccess(savedUser)
     );
   }
 
   private assignUserRoles(user: User): void {
-    const roleIds = this.userRoles.map(role => role.id);
+    const roleIds = this.userRoles.map((role) => role.id);
     this.addSubscription(
       this.userUtils.assignRole(user.id, roleIds),
       (savedUser) => this.handleSaveSuccess(savedUser)
     );
   }
 
-  private addSubscription(observable: Observable<any>, nextHandler: (value: any) => void): void {
+  private addSubscription(
+    observable: Observable<any>,
+    nextHandler: (value: any) => void
+  ): void {
     this.subscriptions.add(
       observable.subscribe({
         next: nextHandler,
-        error: (err) => this.handleError(err)
+        error: (err) => this.handleError(err),
       })
     );
   }
 
   private markAllAsTouched(): void {
-    Object.values(this.editUserForm.controls).forEach(control => {
-      control.markAsTouched();
+    this.editUserForm.markAllAsTouched();
+    for (const control of Object.values(this.editUserForm.controls)) {
       control.markAsDirty();
-    });
+    }
   }
 
   private handleError(err: any): void {
     if (err instanceof OccError) {
-          console.log("tipo de error: ", err.errorType)
-          this.showOCCErrorModaUser = true;
-          this.occErrorType = err.errorType;
+      console.log('tipo de error: ', err.errorType);
+      this.showOCCErrorModaUser = true;
+      this.occErrorType = err.errorType;
     } else {
       this.handleSaveError(err);
     }
     this.isSaving = false;
   }
-  
+
   private handleSaveSuccess(savedUser: User): void {
     this.commonMessageService.showEditSucessfullMessage();
     this.userStateService.setUserToEdit(null);
     this.clearForm();
   }
-  
+
   private handleSaveError(error: any): void {
     console.error('Error saving user:', error);
     this.commonMessageService.showErrorEditMessage();
@@ -260,5 +288,11 @@ export class EditUserFormComponent implements OnInit {
         }
       }, 200);
     }
+  }
+  onCancel(): void {
+    // Restablece el formulario y el estado actual
+    this.clearForm();
+    // Indica que ya no se está editando ningún usuario
+    this.userStateService.setUserToEdit(null);
   }
 }
