@@ -15,7 +15,7 @@ export class CompanyTypeUtils {
   private readonly companyTypeService = inject(CompanyTypeService);
   private readonly customerUtils = inject(CustomerUtils);
 
-  loadInitialData(): Observable<CompanyType[]>  {
+  loadInitialData(): Observable<CompanyType[]> {
     return this.companyTypeService.loadInitialData();
   }
 
@@ -66,18 +66,8 @@ export class CompanyTypeUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteCompanyType(id: number): Observable<void> {
-    return this.checkCompanyTypeUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
+    return this.companyTypeService.deleteCompanyType(id);
 
-        return this.companyTypeService.deleteCompanyType(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
   }
 
   /**

@@ -68,11 +68,9 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
           });
         },
         error: (error) => {
-          const errorMessage = error.message.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED';
           this.handleDeletionCompanyType({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
-            detail: errorMessage,
             error: error
           });
         }
@@ -80,17 +78,17 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
     }
   }  
 
-  handleDeletionCompanyType(message: {severity: string, summary: string, detail: string, error?: any}): void {
+  handleDeletionCompanyType(message: {severity: string, summary: string, detail?: string, error?: any}): void {
     this.isLoading = false;
+    console.log("DELETE ERROR:", message.error);
     this.closeModal();
-    if (message.error) {
-      this.errorMessage = message.error.message ?? 'Failed to delete company type';
-      console.error('Deletion error:', message.error);
+    if (message.error.error.message.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(message.error.error.message)
     }
     this.confirmDelete.emit({
       severity: message.severity,
       summary: message.summary,
-      detail: message.detail
+      detail: message.detail!
     });
   }
 
