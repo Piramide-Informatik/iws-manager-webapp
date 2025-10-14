@@ -4,6 +4,7 @@ import { CompanyType } from '../../../../../Entities/companyType';
 import { CompanyTypeService } from '../../../../../Services/company-type.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for company-type-related business logic and operations.
@@ -14,7 +15,7 @@ export class CompanyTypeUtils {
   private readonly companyTypeService = inject(CompanyTypeService);
   private readonly customerUtils = inject(CustomerUtils);
 
-  loadInitialData(): Observable<CompanyType[]>  {
+  loadInitialData(): Observable<CompanyType[]> {
     return this.companyTypeService.loadInitialData();
   }
 
@@ -65,18 +66,8 @@ export class CompanyTypeUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteCompanyType(id: number): Observable<void> {
-    return this.checkCompanyTypeUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
+    return this.companyTypeService.deleteCompanyType(id);
 
-        return this.companyTypeService.deleteCompanyType(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
   }
 
   /**
@@ -105,11 +96,11 @@ export class CompanyTypeUtils {
       take(1),
       switchMap((currentCompanyType) => {
         if (!currentCompanyType) {
-          return throwError(() => new Error('Company type not found'));
+          return throwError(() => createNotFoundUpdateError('Company Type'));
         }
 
         if (currentCompanyType.version !== companyType.version) {
-          return throwError(() => new Error('Conflict detected: company type version mismatch'));
+          return throwError(() => createUpdateConflictError('Company Type'));
         }
 
         return this.companyTypeService.updateCompanyType(companyType);

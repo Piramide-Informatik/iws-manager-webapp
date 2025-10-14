@@ -8,6 +8,7 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { ContractStatusUtils } from '../../utils/contract-status-utils';
 import { ContractStatusService } from '../../../../../../Services/contract-status.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   dataKeys = ['status'];
   visibleContractStatusModal: boolean = false;
   showOCCErrorModalContractStatus = false;
+  occErrorContractStatusType: OccErrorType = 'UPDATE_UNEXISTED';
   modalContractStatusType: 'create' | 'delete' = 'create';
   selectedContractStatus!: any;
   loadCreateDelete: boolean = false;
@@ -90,6 +92,10 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.loadCreateDelete = false;
+        if (err instanceof OccError || err?.message.includes('404')) {
+          this.showOCCErrorModalContractStatus = true;
+          this.occErrorContractStatusType = 'DELETE_UNEXISTED';
+        }
         if (err.message === 'Cannot delete register: it is in use by other entities') {
           this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
         } else {
@@ -116,6 +122,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       error: (err) => {
         this.loadEdit.emit(false);
         if (err.message === 'Version conflict: ContractStatus has been updated by another user') {
+          this.occErrorContractStatusType = 'UPDATE_UNEXISTED';
           this.showOCCErrorModalContractStatus = true;
           this.commonMessageService.showConflictMessage();
           return;

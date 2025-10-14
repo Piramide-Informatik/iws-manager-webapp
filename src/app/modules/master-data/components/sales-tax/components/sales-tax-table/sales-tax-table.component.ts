@@ -140,19 +140,34 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
   onCreateVat(event: { created?: Vat, status: 'success' | 'error' }): void {
     if (event.created && event.status === 'success') {
       this.refreshTrigger$.next()
+      const sub = this.salesTaxUtils.loadInitialData().subscribe();
+      this.langSalesTaxSubscription.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
-  onDeleteVat(event: { status: 'success' | 'error', error?: Error }): void {
+  private prepareTableData() {
+    if (this.salesTaxesValues().length > 0) {
+      this.salesTaxesColumns = [
+        { field: 'name', header: 'Sales Tax' }
+      ];
+    }
+  }
+
+  onDeleteVat(event: { status: 'success' | 'error', error?: any }): void {
     if (event.status === 'success') {
       this.refreshTrigger$.next()
       this.salesTaxStateService.clearVat();
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (event.status === 'error') {
+      if (event.error.error.message.includes('foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
+      } else {
       this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 

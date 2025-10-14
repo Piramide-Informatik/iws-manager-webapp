@@ -84,6 +84,9 @@ export class BillersComponent implements OnInit, OnDestroy {
 
   onCreateBiller(event: { created?: Biller, status: 'success' | 'error'}): void {
     if(event.created && event.status === 'success'){
+      const sub = this.billersService.loadInitialData().subscribe();
+      this.langSubscription.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
@@ -101,5 +104,13 @@ export class BillersComponent implements OnInit, OnDestroy {
 
   onEditBiller(biller: Biller): void {
     this.billerStateService.setBillerToEdit(biller);
+  }
+
+  private prepareTableData() {
+    if (this.billers().length > 0) {
+      this.columsHeaderFieldBillers = [
+        { field: 'name', header: 'Biller' }
+      ];
+    }
   }
 }

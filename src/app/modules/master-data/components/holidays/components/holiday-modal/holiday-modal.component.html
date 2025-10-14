@@ -136,3 +136,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalHoliday"
+  [errorType]="occErrorHolidayType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalHoliday = false">
+</app-occ-error-modal>

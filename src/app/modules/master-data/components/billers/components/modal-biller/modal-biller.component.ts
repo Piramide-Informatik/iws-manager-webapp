@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, 
 import { BillerUtils } from '../../utils/biller-utils';
 import { Biller } from '../../../../../../Entities/biller';
 import { FormControl, FormGroup } from '@angular/forms';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-modal-biller',
@@ -15,17 +16,19 @@ export class ModalBillerComponent implements OnChanges {
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedBiller!: Biller;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() createBiller = new EventEmitter<{created?: Biller, status: 'success' | 'error'}>();
-  @Output() deleteBiller = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createBiller = new EventEmitter<{ created?: Biller, status: 'success' | 'error' }>();
+  @Output() deleteBiller = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public isLoading: boolean = false;
+  public showOCCErrorModaBiller = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   public readonly billerForm = new FormGroup({
     name: new FormControl('')
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.modalType === 'create'){
+    if (changes['visible'] && this.modalType === 'create') {
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
@@ -33,8 +36,8 @@ export class ModalBillerComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    if(this.billerForm.invalid || this.isLoading) return 
-    
+    if (this.billerForm.invalid || this.isLoading) return
+
     this.isLoading = true;
     const newBiller: Omit<Biller, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       name: this.billerForm.value.name?.trim()
@@ -44,12 +47,12 @@ export class ModalBillerComponent implements OnChanges {
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.createBiller.emit({created, status: 'success'});
+        this.createBiller.emit({ created, status: 'success' });
       },
       error: () => {
         this.isLoading = false;
         this.createBiller.emit({ status: 'error' });
-      } 
+      }
     })
   }
 
@@ -59,13 +62,21 @@ export class ModalBillerComponent implements OnChanges {
       next: () => {
         this.isLoading = false;
         this.closeModal();
-        this.deleteBiller.emit({status: 'success'});
+        this.deleteBiller.emit({ status: 'success' });
       },
       error: (errorDeleteBiller) => {
         this.isLoading = false;
+        this.handleOCCDeleteError(errorDeleteBiller)
         this.deleteBiller.emit({ status: 'error', error: errorDeleteBiller });
-      } 
+      }
     })
+  }
+
+  private handleOCCDeleteError(error: any): void {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModaBiller = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
   }
 
   get isCreateMode(): boolean {

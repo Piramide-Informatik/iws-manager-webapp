@@ -73,3 +73,9 @@
     </div>
   </div>
 </p-dialog>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalTaxRate"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalTaxRate = false">
+</app-occ-error-modal>
