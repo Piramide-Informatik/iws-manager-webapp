@@ -41,7 +41,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     password: new FormControl(''),
-    email: new FormControl('', [Validators.email]),
+    email: new FormControl<string | null>(null, [Validators.email]),
     active: new FormControl(false),
   });
 
@@ -90,19 +90,38 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleOperationError(error: any, defaultDetail: string, inUseDetail?: string): void {
-    this.errorMessage = error?.message ?? defaultDetail;
+    // Extract the actual error message from nested structure
+    const errorMessage = error?.error?.message || error?.message || '';
+    this.errorMessage = errorMessage;
 
-    const detail = this.errorMessage?.includes('it is in use by other entities')
-      ? inUseDetail ?? defaultDetail
-      : this.getErrorDetail(this.errorMessage ?? '');
+    let detail : string;
+
+    // Check for role assignment error
+    if (errorMessage.includes('is assigned to') && errorMessage.includes('role(s)')) {
+      const roleMatch = errorMessage.match(/assigned to (\d+) role\(s\)/);
+      const roleCount = roleMatch?.[1];
+      if (roleCount) {
+        // Translate the message with the role count parameter
+        const translatedMessage = this.translate.instant('MESSAGE.DELETE_ERROR_ROLES_ASSIGNED', { count: roleCount });
+        detail = translatedMessage;
+      } else {
+        detail = 'MESSAGE.DELETE_ERROR_HAS_ROLES';
+      }
+    } 
+    // Check for general "in use" error
+    else if (errorMessage.includes('it is in use by other entities')) {
+      detail = inUseDetail ?? defaultDetail;
+    } 
+    // Check for other specific error codes
+    else {
+      detail = this.getErrorDetail(errorMessage);
+    }
 
     this.toastMessage.emit({
       severity: 'error',
       summary: 'MESSAGE.ERROR',
       detail
     });
-
-    console.error('Operation error:', error);
   }
 
   onDeleteConfirm(): void {
@@ -167,7 +186,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
       username: this.createUserForm.value.username?.trim() ?? '',
       firstName: this.createUserForm.value.firstName?.trim() ?? '',
       lastName: this.createUserForm.value.lastName?.trim() ?? '',
-      email: this.createUserForm.value.email?.trim() ?? '',
+      email: this.createUserForm.value.email?.trim() ?? null,
       password: this.createUserForm.value.password?.trim() ?? '',
       active: this.createUserForm.value.active ?? false
     };
