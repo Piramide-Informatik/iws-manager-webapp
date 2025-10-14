@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
+import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
 import { FundingProgramService } from '../../../../../Services/funding-program.service';
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
@@ -92,41 +92,7 @@ export class FundingProgramUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteFundingProgram(id: number): Observable<void> {
-    return this.checkFundingProgramUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.fundingProgramService.deleteFundingProgram(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Checks if a funding program is used by any customer contacts or employees.
-   * @param idFunProgram - ID of the funding program to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkFundingProgramUsage(idFunProgram: number): Observable<boolean> {
-    return forkJoin([
-      this.projectUtils.getAllProjects().pipe(
-        map(projects => projects.some(project => project.fundingProgram?.id === idFunProgram)),
-        catchError(() => of(false))
-      ),
-      this.orderUtils.getAllOrders().pipe(
-        map(orders => orders.some(order => order.fundingProgram?.id === idFunProgram)),
-        catchError(() => of(false))
-      ),
-      this.basicContractUtils.getAllFrameworkAgreements().pipe(
-        map(basicContracts => basicContracts.some(basicContract => basicContract.fundingProgram?.id === idFunProgram)),
-        catchError(() => of(false))
-      )
-    ] as const).pipe(
-      map(([usedInProjects, usedInOrders, usedInBasicContracts]) => usedInProjects || usedInOrders || usedInBasicContracts)
-    );
+    return this.fundingProgramService.deleteFundingProgram(id);
   }
 
   /**
@@ -143,10 +109,10 @@ export class FundingProgramUtils {
       take(1),
       switchMap((currentFundingProgram) => {
         if (!currentFundingProgram) {
-          return throwError(() => createNotFoundUpdateError('Title'));
+          return throwError(() => createNotFoundUpdateError('Funding Program'));
         }
         if (currentFundingProgram.version !== fundingProgram.version) {
-          return throwError(() => createUpdateConflictError('Title'));
+          return throwError(() => createUpdateConflictError('Funding Program'));
         }
         return this.fundingProgramService.updateFundingProgram(fundingProgram);
       }),

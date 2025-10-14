@@ -47,7 +47,12 @@
 
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times" iconPos="left" (onClick)="closeStateModal()" [disabled]="isStateLoading" />
-
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalState"
+  [errorType]="occErrorStateType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalState = false">
+</app-occ-error-modal>

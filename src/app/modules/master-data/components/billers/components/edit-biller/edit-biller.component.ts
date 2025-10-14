@@ -5,6 +5,7 @@ import { BillerStateService } from '../../utils/biller-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
 import { Biller } from '../../../../../../Entities/biller';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'master-data-edit-biller',
@@ -21,7 +22,8 @@ export class EditBillerComponent implements OnInit, OnDestroy {
   private billerToEdit: Biller | null = null;
   public showOCCErrorModaBiller = false;
   public isLoading: boolean = false;
-  editBillerForm!: FormGroup; 
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  editBillerForm!: FormGroup;
 
   ngOnInit(): void {
     this.editBillerForm = new FormGroup({
@@ -41,7 +43,7 @@ export class EditBillerComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if(this.editBillerForm.invalid || !this.billerToEdit) return
+    if (this.editBillerForm.invalid || !this.billerToEdit) return
 
     this.isLoading = true;
     const editedBiller: Biller = {
@@ -57,13 +59,18 @@ export class EditBillerComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: Biller has been updated by another user'){
-          this.showOCCErrorModaBiller = true;
-        }else{
-          this.commonMessageService.showErrorEditMessage();
-        }
+        this.handleOccError(error);
+        this.commonMessageService.showErrorEditMessage();
       }
     });
+  }
+
+  private handleOccError(error: any): void {
+    if (error instanceof OccError) {
+      console.log("tipo de error: ", error.errorType)
+      this.showOCCErrorModaBiller = true;
+      this.occErrorType = error.errorType;
+    }
   }
 
   public onRefresh(): void {
@@ -82,7 +89,7 @@ export class EditBillerComponent implements OnInit, OnDestroy {
   private setupBillerSubscription(): void {
     this.subscriptions.add(
       this.billerStateService.currentBiller$.subscribe(biller => {
-        if(biller){
+        if (biller) {
           this.billerToEdit = biller;
           this.editBillerForm.patchValue({
             name: this.billerToEdit.name

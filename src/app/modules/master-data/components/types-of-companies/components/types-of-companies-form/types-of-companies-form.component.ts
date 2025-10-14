@@ -20,8 +20,9 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   isSaving = false;
   public showOCCErrorModalCompanyType = false;
   private readonly subscriptions = new Subscription();
-  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
+  @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(private readonly companyTypeServiceUtils: CompanyTypeUtils,
     private readonly typeOfCompanyStateService: TypeOfCompaniesStateService,
@@ -90,9 +91,7 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
     this.isSaving = false;
     if (error instanceof OccError) {
       this.showOCCErrorModalCompanyType = true;
-      console.log(error.errorType)
       this.occErrorType = error.errorType;
-      return;
     }
     this.commonMessageService.showErrorEditMessage();
   }

@@ -41,12 +41,11 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   public optionsNetOrGross!: { label: string, value: string }[];
   @ViewChild('inputText') firstInput!: ElementRef;
   isLoading = false;
-  @Output() public onLoadingOperation = new EventEmitter<boolean>();
-
+  @Output() public onLoadingUpdate = new EventEmitter<boolean>();
+  @Output() formDirty = new EventEmitter<boolean>();
   mode: 'create' | 'edit' = 'create';
   @Input() subcontractToEdit!: Subcontract | null;
   private readonly customerId: number = this.route.snapshot.params['id'];
-  // subcontractId!: number;
   private contractors: Contractor[] = [];
   public contractorsName = toSignal(
     this.contractorUtils.getAllContractorsByCustomerId(this.customerId).pipe(
@@ -56,6 +55,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
       })
     )
   );
+  private previousDirtyState = false;
 
   public currentCustomer!: Customer | undefined;
 
@@ -68,6 +68,9 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     this.initForm();
     this.checkboxAfaChange();
     this.firstInputFocus();
+    this.subcontractForm.valueChanges.subscribe(() => {
+      this.checkDirtyState();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -86,13 +89,22 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  private checkDirtyState(): void {
+    const currentDirty = this.subcontractForm.dirty;
+    
+    if (currentDirty !== this.previousDirtyState) {
+      this.previousDirtyState = currentDirty;
+      this.formDirty.emit(currentDirty);
+    }
+  }
+
   private initForm(): void {
     this.subcontractForm = new FormGroup({
       contractTitle: new FormControl(''),
       contractor: new FormControl(''),
       invoiceNumber: new FormControl(''),
       invoiceDate: new FormControl(''),
-      netOrGross: new FormControl(this.optionsNetOrGross[0].value), // default: 'net'
+      netOrGross: new FormControl(''),
       invoiceAmount: new FormControl(''),
       afa: new FormControl(false), // checkbox
       afaDurationMonths: new FormControl({ value: null, disabled: true }), // solo si afa = true
@@ -123,50 +135,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   onSubmit(): void {
     if (this.mode === 'edit') {
       this.updateSubcontract();
-    } else {
-      this.createSubcontract();
     }
-  }
-
-  private createSubcontract(): void {
-    if (this.subcontractForm.invalid) {
-      console.error('Form is invalid');
-      return;
-    }
-    this.isLoading = true;
-    this.onLoadingOperation.emit(this.isLoading);
-    const newSubcontract = this.buildSubcontractFromForm();
-    this.subscriptions.add(
-      this.subcontractUtils.createNewSubcontract(newSubcontract).subscribe({
-        next: (response: Subcontract) => this.handleCreateSuccess(response),
-        error: (error) => this.handleErrorCreated(error)
-      })
-    );
-  }
-
-  private buildSubcontractFromForm(): Omit<Subcontract, 'id'> {
-    // controlNetOrGross == true -> invoiceNet, false -> invoiceGross 
-    const controlNetOrGross: boolean = this.subcontractForm.value.netOrGross === 'net';
-    return {
-      contractTitle: this.subcontractForm.value.contractTitle,
-      contractor: this.subcontractForm.value.contractor ? this.getContractorById(this.subcontractForm.value.contractor) : null,
-      invoiceNo: this.subcontractForm.value.invoiceNumber,
-      invoiceDate: momentFormatDate(this.subcontractForm.value.invoiceDate),
-      netOrGross: controlNetOrGross,
-      invoiceAmount: this.subcontractForm.value.invoiceAmount,
-      isAfa: this.subcontractForm.value.afa,
-      afamonths: this.subcontractForm.value.afa ? this.subcontractForm.value.afaDurationMonths : 0,
-      description: this.subcontractForm.value.description,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      version: 0,
-      customer: this.currentCustomer ?? null,
-      invoiceGross: controlNetOrGross ? 0 : this.subcontractForm.value.invoiceAmount,
-      invoiceNet: controlNetOrGross ? this.subcontractForm.value.invoiceAmount : 0,
-      note: '',
-      projectCostCenter: null,//falta
-      date: '',
-    };
   }
 
   private getContractorById(contractorId: number): Contractor | null {
@@ -174,19 +143,15 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateSubcontract(): void {
-    if (this.subcontractForm.invalid) {
-      console.error('Form is invalid');
-      return;
-    }
+    if (this.subcontractForm.invalid) return;
+
     this.isLoading = true;
-    this.onLoadingOperation.emit(this.isLoading);
+    this.onLoadingUpdate.emit(this.isLoading);
     const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
 
     if (subcontractUpdated.netOrGross === this.subcontractToEdit?.netOrGross) {
       this.updateOnlySubcontract(subcontractUpdated);
     } else {
-      console.log('pasa 2: before', this.subcontractToEdit)
-      console.log('pasa 2: after', subcontractUpdated)
       this.updateSubcontractWithProjects(subcontractUpdated);
     }
   }
@@ -264,24 +229,9 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  private handleCreateSuccess(response: Subcontract): void {
-    this.isLoading = false;
-    this.onLoadingOperation.emit(this.isLoading);
-    this.commonMessageService.showCreatedSuccesfullMessage();
-    this.subcontractForm.reset();
-    this.router.navigate(['.', response.id], { relativeTo: this.route });
-  }
-
-  private handleErrorCreated(error: any): void {
-    this.isLoading = false;
-    this.onLoadingOperation.emit(this.isLoading);
-    console.error('Error create subcontract:', error);
-    this.commonMessageService.showErrorCreatedMessage();
-  }
-
   private handleUpdateSubcontractError(error: Error): void {
     this.isLoading = false;
-    this.onLoadingOperation.emit(this.isLoading);
+    this.onLoadingUpdate.emit(this.isLoading);
 
     if (error instanceof OccError) {
       this.showOCCErrorModalSubcontract = true;
@@ -294,7 +244,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
 
   private handleUpdateSubcontractSuccess(updated: Subcontract): void {
     this.isLoading = false;
-    this.onLoadingOperation.emit(this.isLoading);
+    this.onLoadingUpdate.emit(this.isLoading);
     this.subcontractStateService.notifySubcontractUpdate(updated);
     this.commonMessageService.showEditSucessfullMessage();
     this.subcontractToEdit = updated;

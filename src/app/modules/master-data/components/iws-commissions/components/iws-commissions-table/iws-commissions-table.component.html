@@ -25,7 +25,8 @@
           [iwsCommissionToDelete]="selectedIwsCommission"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
-          (iwsCommissionDeleted)="onIwsComissionDeleted()"
+          (iwsCommissionDeleted)="onIwsComissionDeleted($event)"
+          (iwsCommissionCreated)="onCreateIWSCommission($event)"
         ></app-iws-commissions-modal>
       </p-dialog>
   </div>

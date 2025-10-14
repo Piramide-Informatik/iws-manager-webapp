@@ -10,6 +10,7 @@ import { SystemConstantService } from '../../../../../../Services/system-constan
 import { System } from '../../../../../../Entities/system';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { PageTitleService } from '../../../../../../shared/services/page-title.service';
+import { SystemConstantModalComponent } from '../system-constant-modal/system-constant.modal.component';
 
 @Component({
   selector: 'app-system-constant-table',
@@ -44,6 +45,8 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
       }
     });
   });
+
+  @ViewChild('systemConstantModal') dialog!: SystemConstantModalComponent;
 
   private langConstantsSubscription!: Subscription;
 
@@ -140,5 +143,11 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
 
   onCancelEdit(value: any) {
     this.selectedSystemConstantToEdit = null;
+  }
+
+  onModalSystemConstantClose() {
+    if (this.dialog) {
+      this.dialog.closeModal();
+    }
   }
 }

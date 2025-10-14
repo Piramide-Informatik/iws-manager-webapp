@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StateUtils } from '../../utils/state-utils';
 import { of } from 'rxjs';
@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { StatesStateService } from '../../utils/states.state.service.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-state-modal',
@@ -14,19 +15,24 @@ import { StatesStateService } from '../../utils/states.state.service.service';
   templateUrl: './state-modal.component.html',
   styleUrl: './state-modal.component.scss'
 })
-export class StateModalComponent implements OnInit {
+export class StateModalComponent implements OnInit, OnChanges {
   private readonly stateUtils = inject(StateUtils);
   private readonly stateStateService = inject(StatesStateService);
   @ViewChild('stateInput') stateInput!: ElementRef<HTMLInputElement>;
+  
+  @Input() isVisibleModal: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() stateToDelete: number | null = null;
   @Input() stateName: string | null = null;
-  @Output() isVisibleModal = new EventEmitter<boolean>();
+  
+  @Output() isVisibleModalChange = new EventEmitter<boolean>();
   @Output() stateCreated = new EventEmitter<void>();
   @Output() confirmStateDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
+  
   isStateLoading = false;
   errorStateMessage: string | null = null;
-
+  showOCCErrorModalState = false;
+  occErrorStateType: OccErrorType = 'UPDATE_UNEXISTED';
   readonly stateForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -34,13 +40,24 @@ export class StateModalComponent implements OnInit {
     ])
   });
 
-  constructor(private readonly messageService: MessageService,
-              private readonly translateService: TranslateService,
-              private readonly commonMessageService: CommonMessagesService
+  constructor(
+    private readonly messageService: MessageService,
+    private readonly translateService: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
   ) {}
 
   ngOnInit(): void {
     this.stateForm.reset();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isVisibleModal'] && !changes['isVisibleModal'].currentValue) {
+      this.resetModal();
+    }
+    
+    if (changes['isVisibleModal'] && changes['isVisibleModal'].currentValue) {
+      this.focusStateInputIfNeeded();
+    }
   }
 
   get isStateCreateMode(): boolean {
@@ -63,6 +80,10 @@ export class StateModalComponent implements OnInit {
         },
         error: (error) => {
           this.isStateLoading = false;
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalState = true;
+            this.occErrorStateType = 'DELETE_UNEXISTED';
+          }
           this.errorStateMessage = error.message ?? 'Failed to delete state';
           console.error('Delete error:', error);
           this.confirmStateDelete.emit({
@@ -105,7 +126,7 @@ export class StateModalComponent implements OnInit {
         summary: this.translateService.instant('MESSAGE.ERROR'),
         detail: this.translateService.instant(this.errorStateMessage)
       });
-      this.isStateLoading = false
+      this.isStateLoading = false;
       this.handleStateClose();
       return;
     } 
@@ -113,10 +134,10 @@ export class StateModalComponent implements OnInit {
       next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
       error: () => this.commonMessageService.showErrorCreatedMessage(),
       complete: () => {
-        this.isStateLoading = false
+        this.isStateLoading = false;
         this.handleStateClose();
       }
-    })
+    });
   }
 
   private handleStateError(messageKey: string, error: any) {
@@ -134,18 +155,22 @@ export class StateModalComponent implements OnInit {
   }
 
   handleStateClose(): void {
-    this.isStateLoading = false;
-    this.isVisibleModal.emit(false);
-    this.stateForm.reset();
+    this.closeStateModal();
   }
 
   closeStateModal(): void {
-    this.isVisibleModal.emit(false);
-    this.stateForm.reset();
+    this.isVisibleModalChange.emit(false);
+    this.resetModal();
   }
 
   onCancel(): void {
-    this.handleStateClose();
+    this.closeStateModal();
+  }
+
+  private resetModal(): void {
+    this.stateForm.reset();
+    this.errorStateMessage = null;
+    this.isStateLoading = false;
   }
 
   public focusStateInputIfNeeded() {
