@@ -69,8 +69,12 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     if(changes['visible'] && this.visible){
       setTimeout(() => {
         this.focusInputIfNeeded();
-      })
+      });
     }
+    
+    if (changes['visible'] && this.visible && this.modalType === 'create') {
+      this.resetForm();
+    } 
     let selectNetworkPartnerChange = changes['selectedNetworkPartner'];
     if (selectNetworkPartnerChange && !selectNetworkPartnerChange.firstChange) {
       this.selectedNetworkPartner = selectNetworkPartnerChange.currentValue;
@@ -132,7 +136,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   }
 
   closeModal() {
-    this.networkPartnerForm.reset();
+    this.resetForm();
     this.isVisibleModal.emit(false);
   }
 
@@ -165,5 +169,13 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
         }
       }, 200);
     }
+  }
+
+  private resetForm(): void {
+    this.networkPartnerForm.reset();
+    this.selectedCustomer.set(0);
+    this.selectedContact.set(0);
+    this.networkPartnerForm.markAsPristine();
+    this.networkPartnerForm.markAsUntouched();
   }
 }

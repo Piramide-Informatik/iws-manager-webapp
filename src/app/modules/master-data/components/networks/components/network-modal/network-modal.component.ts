@@ -42,7 +42,11 @@ export class NetworkModalComponent implements OnInit, OnChanges {
     if (changes['visible'] && this.visible) {
       setTimeout(() => {
         this.focusInputIfNeeded();
-      })
+      });
+    }
+    
+    if (changes['visible'] && this.visible && this.isCreateMode) {
+      this.resetForm();
     }
   }
 
@@ -70,7 +74,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   }
 
   closeModal() {
-    this.networkForm.reset();
+    this.resetForm();
     this.isVisibleModal.emit(false);
   }
 
@@ -111,5 +115,11 @@ export class NetworkModalComponent implements OnInit, OnChanges {
         }
       }, 200);
     }
+  }
+
+  private resetForm(): void {
+    this.networkForm.reset();
+    this.networkForm.markAsPristine();
+    this.networkForm.markAsUntouched();
   }
 }

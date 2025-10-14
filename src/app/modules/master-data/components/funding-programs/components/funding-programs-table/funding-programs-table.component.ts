@@ -39,7 +39,7 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     private readonly fundingProgramUtils: FundingProgramUtils,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fundingProgramUtils.loadInitialData().subscribe();
@@ -97,27 +97,38 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     this.visibleModal = visible;
   }
 
-  onCreateFundingProgram(event: { created?: FundingProgram, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+  onCreateFundingProgram(event: { created?: FundingProgram, status: 'success' | 'error' }): void {
+    if (event.created && event.status === 'success') {
+      const sub = this.fundingProgramUtils.loadInitialData().subscribe();
+      this.langSubscription.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
-  onDeleteFundingProgram(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
-    if(deleteEvent.status === 'success'){
+  onDeleteFundingProgram(deleteEvent: { status: 'success' | 'error', error?: any }): void {
+    if (deleteEvent.status === 'success') {
       this.commonMessageService.showDeleteSucessfullMessage();
-    }else if(deleteEvent.status === 'error' && deleteEvent.error){
-      if(deleteEvent.error.message === 'Cannot delete register: it is in use by other entities'){
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
-      }else{
+    } else if (deleteEvent.status === 'error' && deleteEvent.error) {
+      if (deleteEvent.error.error.message.includes('a foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(deleteEvent.error.error.message);
+      } else {
         this.commonMessageService.showErrorDeleteMessage();
       }
     }
   }
-  
+
   editFundingProgram(fundingProgram: FundingProgram): void {
     this.fundingStateService.setFundingProgramToEdit(fundingProgram);
+  }
+
+  private prepareTableData() {
+    if (this.fundingPrograms().length > 0) {
+      this.columnsHeaderFieldFundingProgram = [
+        { field: 'name', header: 'Funding Program' }
+      ];
+    }
   }
 }
