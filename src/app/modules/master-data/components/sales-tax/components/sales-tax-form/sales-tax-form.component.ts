@@ -152,7 +152,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   public onRefresh(): void {
     if (this.vatToEdit?.id) {
       localStorage.setItem('selectedVatId', this.vatToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
