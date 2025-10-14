@@ -92,17 +92,18 @@ export class FundingProgramUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteFundingProgram(id: number): Observable<void> {
-    return this.checkFundingProgramUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.fundingProgramService.deleteFundingProgram(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.fundingProgramService.deleteFundingProgram(id);
+    // return this.checkFundingProgramUsage(id).pipe(
+    //   switchMap(isUsed => {
+    //     if (isUsed) {
+    //       return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+    //     }
+    //     return this.fundingProgramService.deleteFundingProgram(id);
+    //   }),
+    //   catchError(error => {
+    //     return throwError(() => error);
+    //   })
+    // );
   }
 
   /**
@@ -143,10 +144,10 @@ export class FundingProgramUtils {
       take(1),
       switchMap((currentFundingProgram) => {
         if (!currentFundingProgram) {
-          return throwError(() => createNotFoundUpdateError('Title'));
+          return throwError(() => createNotFoundUpdateError('Funding Program'));
         }
         if (currentFundingProgram.version !== fundingProgram.version) {
-          return throwError(() => createUpdateConflictError('Title'));
+          return throwError(() => createUpdateConflictError('Funding Program'));
         }
         return this.fundingProgramService.updateFundingProgram(fundingProgram);
       }),
