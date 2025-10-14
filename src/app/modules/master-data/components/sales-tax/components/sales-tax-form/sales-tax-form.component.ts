@@ -194,16 +194,27 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
     this.visibleModal = true;
   }
 
-  onCreateVatRate(event: { created?: VatRate, status: 'success' | 'error' }): void {
-    if (event.created && event.status === 'success') {
+  onCreateVatRate(event: { created?: VatRate, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      const sub = this.vatRateService.loadInitialData().subscribe();
+      this.subscriptions.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
-  onDeleteVatRate(deleteEvent: { status: 'success' | 'error', error?: Error }): void {
-    if (deleteEvent.status === 'success') {
+  private prepareTableData() {
+    if (this.vatRates().length > 0) {
+      this.salesTaxRatesColumns = [
+        { field: 'name', header: 'Sales Tax Rate' }
+      ];
+    }
+  }
+
+  onDeleteVatRate(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+    if(deleteEvent.status === 'success'){
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (deleteEvent.status === 'error' && deleteEvent.error) {
       if (deleteEvent.error.message === 'Cannot delete register: it is in use by other entities') {

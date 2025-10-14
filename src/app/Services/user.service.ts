@@ -30,6 +30,10 @@ export class UserService {
         this.loadInitialData().subscribe();
     }
 
+    private sortAlphabetically(list: User[]): User[] {
+        return [...list].sort((a, b) => a.username.localeCompare(b.username, undefined, { sensitivity: 'base' }));
+    }
+
     public loadInitialData(): Observable<User[]> {
         this._loading.set(true);
         return this.http.get<User[]>(this.apiUrl, this.httpOptions).pipe(
@@ -53,7 +57,7 @@ export class UserService {
         return this.http.post<User>(this.apiUrl, user, this.httpOptions).pipe(
             tap({
             next: (newUser) => {
-                this._users.update(users => [...users, newUser]);
+                this._users.update(users => this.sortAlphabetically([...users, newUser]));
                 this._error.set(null);
             },
             error: (err) => {
@@ -72,7 +76,7 @@ export class UserService {
             tap({
             next: (res) => {
                 this._users.update(users =>
-                users.map(u => u.id === res.id ? res : u)
+                this.sortAlphabetically(users.map(u => u.id === res.id ? res : u))
             );
                 this._error.set(null);
             },

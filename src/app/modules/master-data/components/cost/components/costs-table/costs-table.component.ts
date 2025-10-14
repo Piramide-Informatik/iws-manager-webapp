@@ -48,7 +48,7 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     private readonly userPreferenceService: UserPreferenceService,
     private readonly routerUtils: RouterUtilsService,
     private readonly commonMessageService: CommonMessagesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.costTypeUtils.loadInitialData().subscribe()
@@ -91,12 +91,12 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     this.visibleCostTypeModal = true;
   }
 
-  onCostTypeDelete(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+  onCostTypeDelete(deleteEvent: { status: 'success' | 'error', error?: any }): void {
     if (deleteEvent.status === 'success') {
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (deleteEvent.status === 'error' && deleteEvent.error) {
-      if (deleteEvent.error?.toString().includes('it is in use by other entities')) {
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      if (deleteEvent.error.error.message.includes('a foreign key constraint')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(deleteEvent.error.error.message);
       } else {
         this.commonMessageService.showErrorDeleteMessage();
       }
@@ -104,11 +104,22 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     this.visibleCostTypeModal = false;
   }
 
-  onCostTypeCreate(event: { created?: CostType, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+  onCostTypeCreate(event: { created?: CostType, status: 'success' | 'error' }): void {
+    if (event.created && event.status === 'success') {
+      const sub = this.costTypeUtils.loadInitialData().subscribe();
+      this.langSubscription.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.costsUI().length > 0) {
+      this.columnsHeaderFieldCosts = [
+        { field: 'name', header: 'Cost' }
+      ];
     }
   }
 
@@ -122,7 +133,7 @@ export class CostsTableComponent implements OnInit, OnDestroy {
     this.visibleCostTypeModal = visible;
   }
 
-  editCostType(costType: {id: number, type: string, sequenceNo: number}): void {
+  editCostType(costType: { id: number, type: string, sequenceNo: number }): void {
     const costTypeToEdit = this.costTypesMap.get(costType.id) ?? null;
     this.costTypeStateService.setCostTypeToEdit(costTypeToEdit);
   }

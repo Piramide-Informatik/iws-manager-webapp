@@ -18,6 +18,7 @@
           : ('USERS.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
         [(visible)]="visibleModal" 
+        (onHide)="onModalUserClose()"
       >
         <app-user-modal
           [modalType]="modalType"
@@ -26,6 +27,7 @@
           [userToDelete]="selectedUser"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
+          #userModal
         ></app-user-modal>
       </p-dialog>
     </div>
