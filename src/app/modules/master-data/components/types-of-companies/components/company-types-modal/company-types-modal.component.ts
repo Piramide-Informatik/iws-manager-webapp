@@ -95,6 +95,7 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
     console.log("DELETE ERROR:", message.error);
     if (message.error.error.message.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(message.error.error.message)
+      this.closeModal();
     }
     this.confirmDelete.emit({
       severity: message.severity,
