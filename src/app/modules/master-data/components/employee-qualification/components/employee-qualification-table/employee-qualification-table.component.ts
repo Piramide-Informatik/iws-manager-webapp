@@ -47,7 +47,7 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
     private readonly routerUtils: RouterUtilsService,
     private readonly employeeCategoryStateService: EmployeeCategoryStateService,
     private readonly commonMessageService: CommonMessagesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadColHeaders();
@@ -109,7 +109,7 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
+  toastMessageDisplay(message: { severity: string, summary: string, detail: string }): void {
     this.commonMessageService.showCustomSeverityAndMessage(
       message.severity,
       message.summary,
@@ -125,4 +125,21 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
     return this.modalType === 'create';
   }
 
+  onCreateEmployeeCategory(event: { status: 'success' | 'error' }) {
+    if (event.status === 'success') {
+      const sub = this.employeeCategoryService.loadInitialData().subscribe();
+      this.langSubscription.add(sub);
+      this.prepareTableData();
+    } else if (event.status === 'error') {
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.employeeCategories().length > 0) {
+      this.columsHeaderFieldEmployee = [
+        { field: 'name', header: 'Employee' }
+      ];
+    }
+  }
 }
