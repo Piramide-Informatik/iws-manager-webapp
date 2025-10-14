@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-types-of-companies-form',
@@ -21,6 +22,8 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   isSaving = false;
   public showOCCErrorModalCompanyType = false;
   private readonly subscriptions = new Subscription();
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(private readonly companyTypeServiceUtils: CompanyTypeUtils,
@@ -91,9 +94,9 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   private handleSaveError(error: any): void {
     this.isSaving = false;
     console.error('Error saving companyType:', error);
-    if (error instanceof Error && error.message?.includes('version mismatch')) {
+    if (error instanceof OccError) {
       this.showOCCErrorModalCompanyType = true;
-      return;
+      this.occErrorType = error.errorType;
     }
     this.commonMessageService.showErrorEditMessage();
   }
