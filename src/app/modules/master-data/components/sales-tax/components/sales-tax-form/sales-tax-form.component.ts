@@ -12,6 +12,7 @@ import { Column } from '../../../../../../Entities/column';
 import { VatRateService } from '../../../../../../Services/vat-rate.service';
 import { VatRateUtils } from '../../utils/vat-rate-utils';
 import { VatRate } from '../../../../../../Entities/vatRate';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-sales-tax-form',
@@ -27,13 +28,13 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
-  @Output() vatEdited = new EventEmitter<void>(); 
-  @Output() vatRateEdited = new EventEmitter<void>(); 
+  @Output() vatEdited = new EventEmitter<void>();
+  @Output() vatRateEdited = new EventEmitter<void>();
   public vatToEdit: Vat | null = null;
   public showOCCErrorModalVat = false;
   public isLoading: boolean = false;
   public editSalesTaxForm!: FormGroup;
-  
+
   // Configure table VatRate (SalesTaxRate)
   private readonly vatRateService = inject(VatRateService);
   private readonly vatRateUtils = inject(VatRateUtils);
@@ -42,6 +43,8 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   tableKey: string = 'SalesTaxForm'
   dataKeys = ['fromdate', 'rate'];
   modalType: 'create' | 'delete' | 'edit' = 'create';
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
   visibleModal: boolean = false;
   buttonsDisabledTableVatRate: boolean = true;
   selectedVatRate!: VatRate | undefined;
@@ -76,7 +79,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
     localStorage.setItem('userPreferences', JSON.stringify(userSalesTaxFormPreferences));
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langSalesTaxRateSubscription) {
       this.langSalesTaxRateSubscription.unsubscribe();
     }
@@ -87,7 +90,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   loadSalesTaxRateHeadersAndColumns() {
     this.salesTaxRatesColumns = [
       { field: 'fromdate', minWidth: 110, type: 'date', header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')) },
-      { field: 'rate', type: 'double', customClasses: ['align-right'],minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')) }
+      { field: 'rate', type: 'double', customClasses: ['align-right'], minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')) }
     ];
   }
 
@@ -109,19 +112,27 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       },
       error: (error: Error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: Vat has been updated by another user'){
+        this.handleOCCUpdateError(error);
+        if (error.message === 'Version conflict: Vat has been updated by another user') {
           this.showOCCErrorModalVat = true;
-        }else{
+        } else {
           this.commonMessageService.showErrorEditMessage();
         }
       }
     });
   }
 
+  private handleOCCUpdateError(error: Error) {
+    if (error instanceof OccError) {
+      this.showOCCErrorModalVat = true;
+      this.occErrorType = error.errorType;
+    }
+  }
+
   private setupVatSubscription(): void {
     this.subscriptions.add(
       this.vatStateService.currentVat$.subscribe(vat => {
-        if(vat){
+        if (vat) {
           this.vatToEdit = vat;
           this.editSalesTaxForm.patchValue({
             label: this.vatToEdit.label,
@@ -141,7 +152,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   public onRefresh(): void {
     if (this.vatToEdit?.id) {
       localStorage.setItem('selectedVatId', this.vatToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
@@ -176,7 +187,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       this.selectedVatRate = this.vatRateService.vatRates().find(vr => vr.id == event.data);
     }
 
-    if(event.type === 'edit' && event.data){
+    if (event.type === 'edit' && event.data) {
       this.selectedVatRate = event.data;
     }
 
@@ -189,7 +200,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       this.subscriptions.add(sub);
       this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
@@ -205,23 +216,23 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   onDeleteVatRate(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
     if(deleteEvent.status === 'success'){
       this.commonMessageService.showDeleteSucessfullMessage();
-    }else if(deleteEvent.status === 'error' && deleteEvent.error){
-      if(deleteEvent.error.message === 'Cannot delete register: it is in use by other entities'){
+    } else if (deleteEvent.status === 'error' && deleteEvent.error) {
+      if (deleteEvent.error.message === 'Cannot delete register: it is in use by other entities') {
         this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
-      }else{
+      } else {
         this.commonMessageService.showErrorDeleteMessage();
       }
     }
   }
 
-  onEditVatRate(event: {status: 'success' | 'error', error?: Error}): void {
-    if(event.status === 'success'){
+  onEditVatRate(event: { status: 'success' | 'error', error?: Error }): void {
+    if (event.status === 'success') {
       this.commonMessageService.showEditSucessfullMessage();
-    }else if(event.status === 'error' && event.error){
-      if(event.error.message === 'Version conflict: VatRate has been updated by another user'){
+    } else if (event.status === 'error' && event.error) {
+      if (event.error.message === 'Version conflict: VatRate has been updated by another user') {
         this.visibleModal = false;
         this.showOCCErrorModalVat = true;
-      }else{
+      } else {
         this.commonMessageService.showErrorEditMessage();
       }
     }
