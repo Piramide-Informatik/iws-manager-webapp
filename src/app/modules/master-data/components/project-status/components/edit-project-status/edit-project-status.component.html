@@ -23,8 +23,9 @@
     </form>
 </p-card>
 <app-occ-error-modal
-    *ngIf="showOCCErrorModalProjectStatus"
-    [useEmitter]="true"
-    (close)="showOCCErrorModalProjectStatus = false"
-    (refresh)="onRefresh()">
+  *ngIf="showOCCErrorModalProjectStatus"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalProjectStatus = false"
+  >
 </app-occ-error-modal>

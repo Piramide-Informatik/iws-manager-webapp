@@ -3,6 +3,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import {  finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+
 
 @Component({
   selector: 'app-model-project-status',
@@ -23,9 +26,13 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
   @Output() projectStatusDeleted = new EventEmitter<void>();
   @Output() toastMessage  = new EventEmitter<{severity: string, summary: string, detail: string}>();
 
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalProjectStatus = false;
   isLoading = false;
   errorMessage: string | null = null;
 
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
+  
   readonly createdProjectStatusForm = new FormGroup({
     name: new FormControl('')
   });
@@ -69,7 +76,8 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete projectStatus';
+          this.handleEntityRelatedError(error);
+          this.handleOccDeleteError(error);
           this.toastMessage.emit({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
@@ -77,11 +85,21 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
             ? 'MESSAGE.DELETE_FAILED_IN_USE' 
             : 'MESSAGE.DELETE_FAILED'
           });
-        console.error('Error deleting projectStatus:', error);
-        this.closeModel();
         }
       });
       this.subscriptions.add(sub);
+    }
+  }
+  private handleEntityRelatedError(error: any): void {
+    if(error.error?.message?.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    }
+  }
+
+  private handleOccDeleteError(error: any): void {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalProjectStatus= true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
