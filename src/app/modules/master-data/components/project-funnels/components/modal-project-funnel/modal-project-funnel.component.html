@@ -70,3 +70,10 @@
     </div>
   </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalPromoter"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalPromoter = false"
+  >
+</app-occ-error-modal>
