@@ -64,6 +64,8 @@
 </p-card>
 <app-occ-error-modal
     *ngIf="showOCCErrorModaEmployeeIws"
+    [useEmitter]="occErrorType==='UPDATE_UPDATED'"
+    (refresh)="onRefresh()"
     [errorType]="occErrorType"
     (close)="showOCCErrorModaEmployeeIws = false"
     [reloadCurrentPage]="true">

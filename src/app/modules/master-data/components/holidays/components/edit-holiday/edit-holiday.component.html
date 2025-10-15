@@ -171,6 +171,7 @@
 
 <app-occ-error-modal
     *ngIf="showOCCErrorModalPublicHoliday"
+    [errorType]="occErrorHolidayType"
     [useEmitter]="true"
     (close)="showOCCErrorModalPublicHoliday = false"
     (refresh)="onRefresh()">

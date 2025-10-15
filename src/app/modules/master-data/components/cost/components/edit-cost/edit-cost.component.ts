@@ -122,7 +122,7 @@ export class EditCostComponent implements OnInit, OnDestroy {
   public onRefresh(): void {
     if (this.costTypeToEdit?.id) {
       localStorage.setItem('selectedCostTypeId', this.costTypeToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

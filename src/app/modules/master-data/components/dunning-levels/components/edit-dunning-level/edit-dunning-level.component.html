@@ -51,5 +51,6 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalDunningLevel"
+  [errorType]="occErrorDunningLevelType"
   (close)="showOCCErrorModalDunningLevel = false">
 </app-occ-error-modal>

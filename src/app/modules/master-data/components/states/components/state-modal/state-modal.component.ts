@@ -84,6 +84,11 @@ export class StateModalComponent implements OnInit, OnChanges {
             this.showOCCErrorModalState = true;
             this.occErrorStateType = 'DELETE_UNEXISTED';
           }
+          const errorStateMessage = error.error.message ?? '';
+          if (errorStateMessage.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorStateMessage);
+            return;
+          }
           this.errorStateMessage = error.message ?? 'Failed to delete state';
           console.error('Delete error:', error);
           this.confirmStateDelete.emit({
