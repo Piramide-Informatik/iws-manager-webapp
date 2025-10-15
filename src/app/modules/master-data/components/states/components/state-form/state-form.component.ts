@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-state-form',
@@ -21,6 +22,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
   editStateForm!: FormGroup;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  public occErrorStateType: OccErrorType = 'UPDATE_UPDATED';
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -123,12 +125,9 @@ export class StateFormComponent implements OnInit, OnDestroy {
 
   private handleSaveStateError(error: any): void {
     console.error('Error saving state:', error);
-    if (error instanceof Error && 
-        (error.message?.includes('version mismatch') || 
-         error.message === 'Version conflict: State has been updated by another user')) {
+    if (error instanceof OccError) { 
       this.showOCCErrorModaState = true;
-      this.isSaving = false;
-      return;
+      this.occErrorStateType = error.errorType;
     }
     this.commonMessageService.showErrorEditMessage();
     this.isSaving = false;

@@ -21,6 +21,7 @@ import { PublicHolidayService } from '../../../../../../Services/public-holiday.
 import { HolidayYearService } from '../../../../../../Services/holiday-year.service';
 import { HolidayYear } from '../../../../../../Entities/holidayYear';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-holiday',
@@ -44,6 +45,7 @@ export class EditHolidayComponent implements OnInit {
   bundeslands: State[] = [];
   private statesModified = false;
   private yearsModified = false;
+  public occErrorHolidayType: OccErrorType = 'UPDATE_UPDATED';
 
   constructor(
     private readonly fb: FormBuilder,
@@ -250,15 +252,11 @@ export class EditHolidayComponent implements OnInit {
   }
 
   private handleError(err: any): void {
-    if (
-      err.message ===
-      'Version conflict: PublicHoliday has been updated by another user'
-    ) {
+    if (err instanceof OccError) { 
       this.showOCCErrorModalPublicHoliday = true;
-    } else {
-      this.handleSaveError(err);
+      this.occErrorHolidayType = err.errorType;
     }
-    this.isSaving = false;
+    this.handleSaveError(err);
   }
 
   private handleSaveError(error: any): void {

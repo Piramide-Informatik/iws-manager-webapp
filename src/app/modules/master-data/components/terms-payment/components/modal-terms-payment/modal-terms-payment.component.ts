@@ -3,6 +3,7 @@ import { PayConditionUtils } from '../../utils/pay-condition-utils';
 import { PayCondition } from '../../../../../../Entities/payCondition';
 import { FormControl, FormGroup } from '@angular/forms';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-modal-terms-payment',
@@ -29,6 +30,8 @@ export class ModalTermsPaymentComponent implements OnChanges {
   });
   showOCCErrorModalTermsOfPayment = false;
   occErrorTermsOfPaymentType: OccErrorType = 'UPDATE_UNEXISTED';
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isVisible'] && this.isVisible && this.modalType !== 'delete'){
@@ -74,6 +77,11 @@ export class ModalTermsPaymentComponent implements OnChanges {
         if (error instanceof OccError || error?.message.includes('404')) {
           this.showOCCErrorModalTermsOfPayment = true;
           this.occErrorTermsOfPaymentType = 'DELETE_UNEXISTED';
+        }
+        const errorTermsPaymentMessage = error.error.message ?? '';
+        if (errorTermsPaymentMessage.includes('foreign key constraint fails')) {
+          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorTermsPaymentMessage);
+          return;
         }
         this.deletePayCondition.emit({ status: 'error', error });
       }

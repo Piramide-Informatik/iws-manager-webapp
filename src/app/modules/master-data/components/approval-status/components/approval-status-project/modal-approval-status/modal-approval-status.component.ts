@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 import { OccError, OccErrorType } from '../../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-modal-approval-status',
@@ -43,6 +44,8 @@ export class ModalApprovalStatusComponent
     isProject: new FormControl(false),
     isNetwork: new FormControl(false),
   });
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   get isCreateMode(): boolean {
     return this.modalType === 'create';
@@ -161,8 +164,13 @@ export class ModalApprovalStatusComponent
     const detail = this.errorMessage?.includes('it is in use by other entities')
       ? inUseDetail ?? defaultDetail
       : this.getErrorDetail(this.errorMessage ?? '');
-
-    this.emitToast('error', detail);
+    const errorApprovalStatusMessage = error.error.message ?? '';  
+    if (errorApprovalStatusMessage.includes('foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorApprovalStatusMessage);
+    } else {
+      this.emitToast('error', detail);
+    }
+    
 
     console.error('Operation error:', error);
     this.closeModal();

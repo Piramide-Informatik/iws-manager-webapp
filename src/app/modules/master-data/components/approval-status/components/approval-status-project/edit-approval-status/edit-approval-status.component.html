@@ -92,6 +92,7 @@
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalApprovalStatus"
+  [errorType]="occErrorApprovalStatus"
   [useEmitter]="true"
   (close)="showOCCErrorModalApprovalStatus = false"
   (refresh)="onRefresh()">
