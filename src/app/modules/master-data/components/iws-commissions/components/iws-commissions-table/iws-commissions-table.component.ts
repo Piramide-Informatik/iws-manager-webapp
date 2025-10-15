@@ -13,6 +13,7 @@ import { Table } from 'primeng/table';
 import { IwsCommissionStateService } from '../../utils/iws-commision-state.service';
 import { Column } from '../../../../../../Entities/column';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { IwsCommissionsModalComponent } from '../iws-commissions-modal/iws-commissions-modal.component';
 
 @Component({
   selector: 'app-iws-commissions-table',
@@ -40,6 +41,7 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
   dataKeys = ['fromOrderValue', 'commission', 'minCommission'];
 
   @ViewChild('dt2') dt2!: Table;
+  @ViewChild('iwsCommissionsModal') iwsCommissionsModal!: IwsCommissionsModalComponent;
   private langSubscription!: Subscription;
 
   constructor(
@@ -142,6 +144,10 @@ export class IwsCommissionsTableComponent implements OnInit, OnDestroy {
     }else if(event?.status === 'error'){
       this.commonMessageService.showErrorDeleteMessage();
     }
+  }
+
+  onClose() {
+    this.iwsCommissionsModal.onCancel();
   }
 
   onCreateIWSCommission(event: { status: 'success' | 'error'}) {

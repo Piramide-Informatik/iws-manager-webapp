@@ -17,8 +17,11 @@
       ('COSTS.MODAL.DELETE_COST_TYPE' | translate) : 
       ('COSTS.MODAL.CREATE_COST_TYPE' | translate)" 
     [modal]="true" 
-    [(visible)]="visibleCostTypeModal">
+    [(visible)]="visibleCostTypeModal"
+    (onHide)="onCloseModal()"
+    >
     <app-modal-cost
+      #costTypeModal
       [modalType]="modalType"
       [visible]="visibleCostTypeModal"
       [selectedCostType]="selectedCostType"

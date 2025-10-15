@@ -18,6 +18,7 @@
         [modal]="true" 
         [(visible)]="visibleModal" 
         (onShow)="onDialogShow()"
+        (onHide)="onClose()"
       >
         <app-iws-teams-modal
           [modalType]="modalType"
@@ -26,7 +27,7 @@
           [visibleModal]="visibleModal"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
-          #titleModal
+          #iwsTeamsModal
         ></app-iws-teams-modal>
       </p-dialog>
   </div>
