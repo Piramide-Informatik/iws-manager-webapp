@@ -5,6 +5,7 @@ import { PayConditionStateService } from '../../utils/pay-condition-state.servic
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
 import { PayCondition } from '../../../../../../Entities/payCondition';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'master-data-edit-term-payment',
@@ -22,6 +23,7 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
   public showOCCErrorModaPay = false;
   public isLoading: boolean = false;
   public editTermPaymentForm!: FormGroup;
+  public occErrorTermPaymentType: OccErrorType = 'UPDATE_UPDATED';
 
   ngOnInit(): void {
     this.editTermPaymentForm = new FormGroup({
@@ -61,12 +63,12 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
       },
       error: (error: Error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: pay condition has been updated by another user'){
+        if (error instanceof OccError) { 
           this.showOCCErrorModaPay = true;
-          this.commonMessageService.showConflictMessage();
-        }else {
-          this.commonMessageService.showErrorEditMessage();
+          this.occErrorTermPaymentType = error.errorType;
         }
+        this.commonMessageService.showErrorEditMessage();
+        this.isLoading = false;
       }
     });
   }

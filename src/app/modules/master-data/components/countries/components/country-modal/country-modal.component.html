@@ -96,3 +96,10 @@
     </div>
   </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalCountry"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalCountry = false"
+  >
+</app-occ-error-modal>

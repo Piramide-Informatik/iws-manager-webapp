@@ -5,6 +5,7 @@ import { PromoterService } from '../../../../../Services/promoter.service';
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { ReceivableUtils } from '../../../../receivables/utils/receivable-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for promoter-related business logic and operations.
@@ -74,17 +75,7 @@ export class PromoterUtils {
  * @returns Observable that completes when the deletion is done
  */
   deletePromoter(id: number): Observable<void> {
-    return this.checkPromoterUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.promoterService.deletePromoter(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.promoterService.deletePromoter(id);
   }
 
   /**
@@ -123,14 +114,14 @@ export class PromoterUtils {
 
     return this.promoterService.getPromoterById(promoter.id).pipe(
       take(1),
-      map((currentPromoter) => {
+      switchMap((currentPromoter) => {
         if (!currentPromoter) {
-          throw new Error('Promoter not found');
+          return throwError(() => createNotFoundUpdateError('Promoter'))
         }
         if (currentPromoter.version !== promoter.version) {
-          throw new Error('Version conflict: Promoter has been updated by another user');
+          return throwError(() => createUpdateConflictError('ProjectStatus'));
         }
-        return promoter;
+        return this.promoterService.updatePromoter(promoter);
       }),
       switchMap((validatedPromoter: Promoter) => this.promoterService.updatePromoter(validatedPromoter)),
       catchError((err) => {

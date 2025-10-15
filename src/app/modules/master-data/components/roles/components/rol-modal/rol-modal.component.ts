@@ -135,7 +135,7 @@ export class RolModalComponent implements OnInit {
     this.isLoading = false;
   }
 
-  private closeAndReset(): void {
+  public closeAndReset(): void {
     this.stopLoading();
     this.isVisibleModal.emit(false);
     this.resetForm();

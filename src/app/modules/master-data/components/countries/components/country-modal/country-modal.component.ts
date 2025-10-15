@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CountryUtils } from '../../utils/country-util';
 import { of } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-country-modal',
@@ -23,6 +24,8 @@ export class CountryModalComponent implements OnInit {
   
   isLoading = false;
   errorMessage: string | null = null;
+  public showOCCErrorModalCountry = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   constructor(private readonly commonMessageService: CommonMessagesService) {}
 
@@ -73,16 +76,26 @@ export class CountryModalComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete country';
-          console.error('Delete error:', error);
+          this.handleEntityRelatedError(error);
+          this.handleOccDeleteError(error);
           this.confirmDelete.emit({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
             detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
           });
-          this.closeModal();
         }
       });
+    }
+  }
+  private handleEntityRelatedError(error: any): void {
+    if(error.error?.message?.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    }
+  }
+  private handleOccDeleteError(error: any): void {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalCountry = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
   private handleCountryExistence(

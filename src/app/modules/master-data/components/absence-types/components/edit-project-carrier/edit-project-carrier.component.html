@@ -50,6 +50,7 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaAbsence"
+  [errorType]="occErrorAbscenceType"
   (close)="showOCCErrorModaAbsence = false"
   [useEmitter]="true"
   (refresh)="onRefresh()">

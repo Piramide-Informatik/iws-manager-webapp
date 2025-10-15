@@ -3,6 +3,7 @@ import { Observable, catchError, map, of, switchMap, take, throwError } from 'rx
 import { StateService } from '../../../../../Services/state.service';
 import { State } from '../../../../../Entities/state';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for state-related business logic and operations.
@@ -138,14 +139,12 @@ export class StateUtils {
     return this.stateService.getStateById(state.id).pipe(
       take(1),
       switchMap((currentState) => {
-        if(!currentState) {
-          return throwError(() => new Error('State not found'));
+        if (!currentState) {
+          return throwError(() => createNotFoundUpdateError('State'));
         }
-
         if (currentState.version !== state.version) {
-          return throwError(() => new Error('Conflict detected: state version mismatch'));
+          return throwError(() => createUpdateConflictError('State'));
         }
-
         return this.stateService.updateState(state);
       })
     );
