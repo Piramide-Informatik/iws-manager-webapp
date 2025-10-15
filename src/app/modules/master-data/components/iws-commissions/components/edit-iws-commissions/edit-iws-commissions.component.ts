@@ -171,10 +171,10 @@ export class EditIwsCommissionsComponent implements OnInit {
   onRefresh(): void {
     if (this.currentIwsCommission?.id) {
       localStorage.setItem(
-        'selectedPublicHolidayId',
+        'selectedIwsCommissionId',
         this.currentIwsCommission.id.toString()
       );
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

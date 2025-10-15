@@ -6,6 +6,7 @@ import { ProjectStatusStateService } from '../../utils/project-status-state.serv
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'master-data-edit-project-status',
@@ -15,6 +16,8 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class EditProjectStatusComponent implements OnInit {
   public showOCCErrorModalProjectStatus = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+    public isLoading: boolean = false;
   currentProjectStatus: ProjectStatus | null = null;
   editProjectStatusForm!: FormGroup;
   isSaving = false;
@@ -95,8 +98,20 @@ export class EditProjectStatusComponent implements OnInit {
 
     this.subscriptions.add(
       this.projectStatusUtils.updateProjectStatus(updateProjectStatus).subscribe({
-        next: (savedProjectStatus) => this.handleSaveSuccess(savedProjectStatus),
-        error: (err) => this.handleError(err)
+        next:() =>{
+          this.isLoading = false;
+          this.clearForm();
+          this.commonMessageService.showEditSucessfullMessage();
+        },
+        error: (error: Error) => {
+                  if (error instanceof OccError) {
+                  console.log('OCC Error occurred:', error);
+                  this.showOCCErrorModalProjectStatus = true;
+                  this.occErrorType = error.errorType;
+                }else {
+                  this.commonMessageService.showErrorEditMessage();
+                }
+          }
       })
     );
   }

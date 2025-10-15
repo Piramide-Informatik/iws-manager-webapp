@@ -41,3 +41,10 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalProjectStatus"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalProjectStatus = false"
+  >
+</app-occ-error-modal>
