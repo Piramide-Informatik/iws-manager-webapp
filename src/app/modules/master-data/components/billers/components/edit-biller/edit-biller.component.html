@@ -16,6 +16,8 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaBiller"
+  [useEmitter]="occErrorType==='UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
   (close)="showOCCErrorModaBiller = false"
   [errorType]="occErrorType"
   [reloadCurrentPage]="true">
