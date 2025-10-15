@@ -18,8 +18,10 @@
       : ('SALES_TAX.MODAL.DELETE' | translate)"
       [modal]="true"
       [(visible)]="isVisibleModal"
+      (onHide)="onCloseModal()"
       >
       <app-sales-tax-modal
+        #vatModal
         [visible]="isVisibleModal"
         [modalType]="modalType"
         [selectedVat]="selectedVat"
