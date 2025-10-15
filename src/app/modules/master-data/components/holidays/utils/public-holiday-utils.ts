@@ -2,6 +2,7 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
 import { PublicHoliday } from '../../../../../Entities/publicholiday';
 import { PublicHolidayService } from '../../../../../Services/public-holiday.service';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 
 @Injectable({ providedIn: 'root' })
@@ -104,14 +105,14 @@ export class PublicHolidayUtils {
             }
             return this.publicHolidayService.getPublicHolidayById(publicHoliday.id).pipe(
                 take(1),
-                map((currentPublicHoliday) => {
+                switchMap((currentPublicHoliday) => {
                     if (!currentPublicHoliday) {
-                        throw new Error('PublicHoliday not found');
+                      return throwError(() => createNotFoundUpdateError('Holiday'));
                     }
                     if (currentPublicHoliday.version !== publicHoliday.version) {
-                        throw new Error('Version conflict: PublicHoliday has been updated by another user');
+                      return throwError(() => createUpdateConflictError('Holiday'));
                     }
-                    return publicHoliday;
+                    return this.publicHolidayService.updatePublicHoliday(publicHoliday);
                 }),
                 switchMap((validatedPublicHoliday: PublicHoliday) => this.publicHolidayService.updatePublicHoliday(validatedPublicHoliday)),
                 catchError((err) => {

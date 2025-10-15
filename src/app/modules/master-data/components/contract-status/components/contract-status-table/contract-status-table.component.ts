@@ -96,8 +96,9 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
           this.showOCCErrorModalContractStatus = true;
           this.occErrorContractStatusType = 'DELETE_UNEXISTED';
         }
-        if (err.message === 'Cannot delete register: it is in use by other entities') {
-          this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+        const errorAbscenceTypeMessage = err.error.message ?? '';
+        if (errorAbscenceTypeMessage.includes('foreign key constraint fails')) {
+          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorAbscenceTypeMessage);
         } else {
           this.commonMessageService.showErrorDeleteMessage();
         }
@@ -121,14 +122,12 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.loadEdit.emit(false);
-        if (err.message === 'Version conflict: ContractStatus has been updated by another user') {
-          this.occErrorContractStatusType = 'UPDATE_UNEXISTED';
+        if (err instanceof OccError) { 
           this.showOCCErrorModalContractStatus = true;
-          this.commonMessageService.showConflictMessage();
-          return;
+          this.occErrorContractStatusType = err.errorType;
         }
         this.commonMessageService.showErrorEditMessage();
-      }
+        }
     })
   }
 

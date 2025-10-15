@@ -2,6 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { Observable, catchError, map, of, switchMap, take, throwError } from "rxjs";
 import { ApprovalStatus } from "../../../../../Entities/approvalStatus";
 import { ApprovalStatusService } from "../../../../../Services/approval-status.service";
+import { createNotFoundUpdateError, createUpdateConflictError } from "../../../../shared/utils/occ-error";
 
 @Injectable({ providedIn: 'root' })
 export class ApprovalStatusUtils {
@@ -76,16 +77,15 @@ export class ApprovalStatusUtils {
             }
             return this.approvalStatusService.getApprovalStatusById(approvalStatus.id).pipe(
                 take(1),
-                map((currentApprovalStatus) => {
+                switchMap((currentApprovalStatus) => {
                     if (!currentApprovalStatus) {
-                        throw new Error('ApprovalStatus not found');
+                      return throwError(() => createNotFoundUpdateError('ApprovalStatus'));
                     }
                     if (currentApprovalStatus.version !== approvalStatus.version) {
-                        throw new Error('Version conflict: approvalStatus has been updated by another user');
+                      return throwError(() => createUpdateConflictError('ApprovalStatus'));
                     }
-                    return approvalStatus;
+                    return this.approvalStatusService.updateApprovalStatus(approvalStatus);
                 }),
-                switchMap((validatedApprovalStatus: ApprovalStatus) => this.approvalStatusService.updateApprovalStatus(validatedApprovalStatus)),
                 catchError((err) => {
                     console.error('Error updating approvalStatus:', err);
                     return throwError(() => err);
