@@ -4,6 +4,7 @@ import { ReminderLevel } from '../../../../../../Entities/reminderLevel';
 import { DunningLevelUtils } from '../../utils/dunning-level.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-dunning-level',
@@ -19,7 +20,7 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
   editDunningLevelForm!: FormGroup;
   isLoading = false;
   public showOCCErrorModalDunningLevel = false;
-
+  public occErrorDunningLevelType: OccErrorType = 'UPDATE_UPDATED';
   constructor( private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
@@ -67,12 +68,11 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
       error: (error) => {
         console.log(error)
         this.isLoading = false;
-        if(error.message === 'Conflict detected: reminder Level version mismatch'){
+        if (error instanceof OccError) { 
           this.showOCCErrorModalDunningLevel = true;
-          this.commonMessageService.showConflictMessage();
-        }else{
-          this.commonMessageService.showErrorEditMessage();
+          this.occErrorDunningLevelType = error.errorType;
         }
+        this.commonMessageService.showErrorEditMessage();
       }
     });
   }

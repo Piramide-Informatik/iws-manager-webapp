@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 @Component({
   selector: 'app-holiday-modal',
   standalone: false,
@@ -39,6 +40,8 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     date: new FormControl(''),
     sequenceNo: new FormControl({value: null, disabled: true}),
   });
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -93,6 +96,11 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
             if (error instanceof OccError || error?.message.includes('404')) {
               this.showOCCErrorModalHoliday = true;
               this.occErrorHolidayType = 'DELETE_UNEXISTED';
+            }
+            const errorHolidayMessage = error.error.message ?? '';
+            if (errorHolidayMessage.includes('foreign key constraint fails')) {
+              this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorHolidayMessage);
+              return;
             }
             this.errorMessage =
               error.message ?? 'Failed to delete publicHoliday';
