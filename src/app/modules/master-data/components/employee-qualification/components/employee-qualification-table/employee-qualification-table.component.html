@@ -18,6 +18,7 @@
             : ('EMPLOYEE_QUALIFICATION.DELETE.CONFIRMATION' | translate)" 
             [modal]="true" 
             [(visible)]="visibleModal"
+            (onHide)="onCloseModal()"
         >
             <app-employee-qualification-modal
             [modalType]="modalType"
@@ -27,7 +28,7 @@
             (isVisibleModal)="onModalVisibilityChange($event)"
             (toastMessage)="toastMessageDisplay($event)"
             (employeeCategoryCreated)="onCreateEmployeeCategory($event)"
-            #titleModal
+            #employeeQualificationModal
             ></app-employee-qualification-modal>
         </p-dialog>
         </div>
