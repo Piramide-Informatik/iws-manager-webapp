@@ -3,7 +3,13 @@
         <div class="flex flex-column mb-2 px-4">
             <div class="project-funnel-form mb-2">
                 <label for="promoterNo">{{ 'PROJECT_FUNNELS.FORM.PROJECT_SPONSOR_ID' | translate }}</label>
-                <p-inputnumber #NumInput mode="decimal" [min]="0" id="promoterNo" formControlName="promoterNo" [inputStyle]="{'text-align': 'right'}" autocomplete="off" [format]="false"/>
+                <input
+                    pInputText
+                    type="text"
+                    id="promoterNo"
+                    formControlName="promoterNo"
+                    autocomplete="off"
+                />
             </div>
             <div class="project-funnel-form mb-2">
                 <label for="projectPromoter">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>

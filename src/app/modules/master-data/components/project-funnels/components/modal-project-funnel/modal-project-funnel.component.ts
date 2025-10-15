@@ -25,7 +25,6 @@ export class ModalProjectFunnelComponent implements OnChanges {
   @Output() createPromoter = new EventEmitter<{created?: Promoter, status: 'success' | 'error'}>();
   @Output() deletePromoter = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('NumInput') NumInput!: InputNumber;
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalPromoter = false;

@@ -31,7 +31,6 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
   private readonly countryUtils = inject(CountryUtils);
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('NumInput') NumInput!: InputNumber;
   private promoterToEdit: Promoter | null = null;
   public showOCCErrorModaPromoter = false;
   public isLoading: boolean = false;
