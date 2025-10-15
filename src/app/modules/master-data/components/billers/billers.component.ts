@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../router-utils.service';
@@ -10,6 +10,7 @@ import { BillerUtils } from './utils/biller-utils';
 import { BillerService } from '../../../../Services/biller.service';
 import { BillerStateService } from './utils/biller-state.service';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
+import { ModalBillerComponent } from './components/modal-biller/modal-biller.component';
 
 @Component({
   selector: 'app-billers',
@@ -21,6 +22,7 @@ export class BillersComponent implements OnInit, OnDestroy {
   private readonly billerUtils = inject(BillerUtils);
   private readonly billersService = inject(BillerService);
   private readonly billerStateService = inject(BillerStateService);
+  @ViewChild('billerModal') billerModalDialog!: ModalBillerComponent;
   public columsHeaderFieldBillers: any[] = [];
   userBillersPreferences: UserPreference = {};
   tableKey: string = 'Billers'
@@ -102,6 +104,9 @@ export class BillersComponent implements OnInit, OnDestroy {
     this.billerStateService.clearBiller();
   }
 
+  onCloseModal(): void {
+    this.billerModalDialog.closeModal();
+  }
   onEditBiller(biller: Biller): void {
     this.billerStateService.setBillerToEdit(biller);
   }
