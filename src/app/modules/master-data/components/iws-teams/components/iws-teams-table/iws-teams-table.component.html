@@ -26,6 +26,7 @@
           [visibleModal]="visibleModal"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
+          (createTeamIws)="createTeamIws($event)"
           #titleModal
         ></app-iws-teams-modal>
       </p-dialog>

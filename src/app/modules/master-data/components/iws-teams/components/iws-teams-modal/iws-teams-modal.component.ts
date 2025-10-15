@@ -30,6 +30,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() teamIwsCreated = new EventEmitter<void>();
+  @Output() createTeamIws = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() toastMessage = new EventEmitter<{ severity: string; summary: string; detail: string }>();
 
   isLoading = false;
@@ -123,10 +124,12 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
         .subscribe({
           next: () => {
             this.teamIwsStateService.clearTeamIws();
+            this.createTeamIws.emit({ status: 'success' });
             if (successDetail === 'MESSAGE.CREATE_SUCCESS') this.teamIwsCreated.emit();
             this.showToastAndClose('success', successDetail);
           },
           error: (error) => {
+            this.createTeamIws.emit({ status: 'error' });
             this.handleDeleteError(error);
             this.handleErrorWithToast(error, errorDetail, inUseDetail);
           }
