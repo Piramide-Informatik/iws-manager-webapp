@@ -17,6 +17,7 @@
           : ('IWS_STAFF.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
         [(visible)]="visibleModal"
+        (onHide)="onCloseModal()"
       >
         <app-iws-staff-modal
           [modalType]="modalType"
@@ -27,7 +28,7 @@
           (isVisibleModal)="onModalVisibilityChange($event)"
           (toastMessage)="toastMessageDisplay($event)"
           (employeeIwsDeleted)="onDeleteIwsStaff($event)"
-          #titleModal
+          #iwsStaffModal
         ></app-iws-staff-modal>
       </p-dialog>
   </div>

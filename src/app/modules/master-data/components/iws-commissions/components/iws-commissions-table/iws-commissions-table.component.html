@@ -17,8 +17,10 @@
           : ('IWS_COMMISSIONS.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
         [(visible)]="visibleModal"
+        (onHide)="onClose()"
       >
         <app-iws-commissions-modal
+          #iwsCommissionsModal
           [modalType]="modalType"
           [isVisible]="visibleModal"
           [iwsCommissionName]="OrderValueIwsCommission"

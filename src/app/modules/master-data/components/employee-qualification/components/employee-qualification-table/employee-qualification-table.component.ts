@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { EmployeeQualificationModalComponent } from '../employee-qualification-modal/employee-qualification-modal.component';
 
 @Component({
   selector: 'app-employee-qualification-table',
@@ -39,6 +40,7 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
   dataKeys = ['title', 'label'];
 
   @ViewChild('dt2') dt2!: Table;
+  @ViewChild('employeeQualificationModal') employeeQualificationModal!: EmployeeQualificationModalComponent;
   private langSubscription!: Subscription;
 
   constructor(
@@ -107,6 +109,10 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
     if (!visible) {
       this.selectedEmployeeQualification = null;
     }
+  }
+
+  onCloseModal() {
+    this.employeeQualificationModal.onCancel();
   }
 
   toastMessageDisplay(message: { severity: string, summary: string, detail: string }): void {

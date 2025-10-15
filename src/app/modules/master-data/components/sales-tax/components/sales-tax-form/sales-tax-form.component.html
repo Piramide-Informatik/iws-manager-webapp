@@ -37,8 +37,11 @@
         ('SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.NEW' | translate) : 
         ('SALES_TAX.TABLE_SALES_TAX_FORM.MODAL_SALES_TAX_RATE.EDIT' | translate)"
       [modal]="true"
-      [(visible)]="visibleModal">
+      [(visible)]="visibleModal"
+      (onHide)="onCloseModal()"
+      >
       <app-modal-sales-tax-rate
+        #vatRateModal
         [modalType]="modalType"
         [visibleModal]="visibleModal"
         [selectedVatRate]="selectedVatRate"
