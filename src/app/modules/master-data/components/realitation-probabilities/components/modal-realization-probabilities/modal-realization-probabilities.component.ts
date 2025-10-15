@@ -3,6 +3,8 @@ import { ChanceUtils } from '../../utils/chance-utils';
 import { Chance } from '../../../../../../Entities/chance';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { ChanceStateService } from '../../utils/chance-state.service';
 
 @Component({
   selector: 'app-modal-realization-probabilities',
@@ -12,6 +14,7 @@ import { InputNumber } from 'primeng/inputnumber';
 })
 export class ModalRealizationProbabilitiesComponent implements OnChanges {
   private readonly chanceUtils = inject(ChanceUtils);
+  private readonly chanceStateService = inject(ChanceStateService);
   @Input() selectedChance!: Chance;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible: boolean = false;
@@ -21,7 +24,8 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
   @ViewChild('firstInput') firstInput!: InputNumber;
   public isLoading: boolean = false;
   private existingChances: Chance[] = [];
-
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalChance = false;
 
   public readonly chanceForm = new FormGroup({
     probability: new FormControl(null, [Validators.max(100), this.duplicateProbabilityValidator.bind(this)])
@@ -88,14 +92,23 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
       this.chanceUtils.deleteChance(this.selectedChance.id).subscribe({
         next: () => {
           this.isLoading = false;
-          this.closeModal();
+          this.chanceStateService.clearChance();
           this.deleteChance.emit({status: 'success'});
+          this.closeModal();
         },
-        error: (error: Error) => {
+        error: (errorResponse) => {
           this.isLoading = false;
-          this.deleteChance.emit({status: 'error', error});
+          this.handleDeleteError(errorResponse);
+          this.deleteChance.emit({status: 'error', error:errorResponse});
         }
       })
+    }
+  }
+
+  handleDeleteError(error: Error) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalChance = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 

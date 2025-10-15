@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DunningLevelUtils } from '../../utils/dunning-level.utils';
 import { ReminderLevel } from '../../../../../../Entities/reminderLevel';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-dunning-level-modal',
@@ -21,6 +23,10 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
   @ViewChild('firstInput') firstInput!: InputNumber;
   public dunningLevelForm!: FormGroup;
   public isLoading = false;
+  showOCCErrorModalDunningLEvel = false;
+  occErrorDunningLevelType: OccErrorType = 'UPDATE_UNEXISTED';
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
     this.dunningLevelForm = new FormGroup({
@@ -83,6 +89,15 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
         },
         error: (error) => {
           this.isLoading = false;
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalDunningLEvel = true;
+            this.occErrorDunningLevelType = 'DELETE_UNEXISTED';
+          }
+          const errorDunningLevelMessage = error.error.message ?? '';
+          if (errorDunningLevelMessage.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorDunningLevelMessage);
+            return;
+          }
           this.deleteDunningLevel.emit({ status: 'error', error: error });
         }
       })

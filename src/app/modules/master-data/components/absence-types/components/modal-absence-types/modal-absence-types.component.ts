@@ -2,6 +2,8 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, 
 import { AbsenceType } from '../../../../../../Entities/absenceType';
 import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-modal-absence-types',
@@ -18,7 +20,8 @@ export class ModalAbsenceTypesComponent implements OnChanges {
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createAbsenceType = new EventEmitter<{created?: AbsenceType, status: 'success' | 'error'}>();
   @Output() deleteAbsenceTypeEvent = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
-  
+  public occErrorAbscenseType: OccErrorType = 'UPDATE_UNEXISTED';
+  showOCCErrorModalAbscenseType = false;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
@@ -30,6 +33,8 @@ export class ModalAbsenceTypesComponent implements OnChanges {
     isHoliday: new FormControl(false),
     hours: new FormControl(false),
   });
+
+  constructor (private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
@@ -73,9 +78,18 @@ export class ModalAbsenceTypesComponent implements OnChanges {
           this.closeModal();
           this.deleteAbsenceTypeEvent.emit({status: 'success'});
         },
-        error: (error: Error) => {
+        error: (error) => {
           this.isLoading = false;
           this.deleteAbsenceTypeEvent.emit({status: 'error', error});
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalAbscenseType = true;
+            this.occErrorAbscenseType = 'DELETE_UNEXISTED';
+            return;
+          }
+          const errorAbscenceTypeMessage = error.error.message ?? '';
+          if (errorAbscenceTypeMessage.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorAbscenceTypeMessage);
+          }
         }
       })
     }

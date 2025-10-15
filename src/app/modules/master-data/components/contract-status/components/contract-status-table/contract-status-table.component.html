@@ -36,7 +36,7 @@
 </div>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalContractStatus"
-  [useEmitter]="true"
-  (close)="showOCCErrorModalContractStatus = false"
-  (refresh)="onContractStatusRefresh()">
+  [errorType]="occErrorContractStatusType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalContractStatus = false">
 </app-occ-error-modal>

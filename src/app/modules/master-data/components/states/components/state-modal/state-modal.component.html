@@ -50,3 +50,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalState"
+  [errorType]="occErrorStateType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalState = false">
+</app-occ-error-modal>

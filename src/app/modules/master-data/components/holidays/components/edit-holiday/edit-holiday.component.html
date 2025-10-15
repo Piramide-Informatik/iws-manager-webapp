@@ -4,7 +4,7 @@
 >
   <form [formGroup]="editPublicHolidayForm" (ngSubmit)="onSubmit()">
     <div class="magin-bottom-form">
-      <div class="holiday-form mb-2">
+      <div class="holiday-form mb-3">
         <label for="name">{{ "HOLIDAYS.LABEL.HOLIDAY_NAME" | translate }}</label>
         <input
           pInputText
@@ -164,12 +164,14 @@
       (click)="addYear(selectedPublicHolidayId)"
       (keydown.enter)="addYear(selectedPublicHolidayId)"
       (keydown.space)="addYear(selectedPublicHolidayId)"
+      [disabled]="!selectedPublicHolidayId"
     ></p-button>
   </div>
 </p-card>
 
 <app-occ-error-modal
     *ngIf="showOCCErrorModalPublicHoliday"
+    [errorType]="occErrorHolidayType"
     [useEmitter]="true"
     (close)="showOCCErrorModalPublicHoliday = false"
     (refresh)="onRefresh()">
