@@ -6,6 +6,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CountryUtils } from '../../../countries/utils/country-util';
 import { Country } from '../../../../../../Entities/country';
 import { InputNumber } from 'primeng/inputnumber';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-modal-project-funnel',
@@ -25,7 +27,8 @@ export class ModalProjectFunnelComponent implements OnChanges {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   @ViewChild('NumInput') NumInput!: InputNumber;
   public isLoading: boolean = false;
-
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalPromoter = false;
   public countries = toSignal( this.countryUtils.getCountriesSortedByName(), { initialValue: [] } )
 
   public readonly projectFunnelForm = new FormGroup({
@@ -38,6 +41,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
     zipCode: new FormControl(''),
     city: new FormControl('')
   });
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.visible){
@@ -81,14 +85,28 @@ export class ModalProjectFunnelComponent implements OnChanges {
       this.promoterUtils.deletePromoter(this.selectedProjectFunnels.id).subscribe({
         next: () => {
           this.isLoading = false;
-          this.closeModal();
           this.deletePromoter.emit({status: 'success'});
+          this.closeModal();
         },
         error: (error) => {
           this.isLoading = false;
+          this.handleEntityRelatedError(error);
+          this.handleOccDeleteError(error);
           this.deletePromoter.emit({ status: 'error', error });
         } 
       })
+    }
+  }
+  private handleEntityRelatedError(error: any): void {
+    if(error.error?.message?.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    }
+  }
+
+  private handleOccDeleteError(error: any): void {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalPromoter= true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
