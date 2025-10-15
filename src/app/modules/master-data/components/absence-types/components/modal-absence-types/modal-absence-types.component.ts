@@ -89,7 +89,6 @@ export class ModalAbsenceTypesComponent implements OnChanges {
           const errorAbscenceTypeMessage = error.error.message ?? '';
           if (errorAbscenceTypeMessage.includes('foreign key constraint fails')) {
             this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorAbscenceTypeMessage);
-            return;
           }
         }
       })
