@@ -7,7 +7,7 @@ import { CountryUtils } from '../../utils/country-util';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 @Component({
   selector: 'app-edit-country',
   templateUrl: './edit-country.component.html',
@@ -21,7 +21,9 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public showOCCErrorModalCountry = false;
-  
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public isLoading: boolean = false;
+
   constructor(
     private readonly countryUtils: CountryUtils,
     private readonly countryStateService: CountryStateService,
@@ -94,9 +96,20 @@ export class EditCountryComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.countryUtils.updateCountry(updatedCountry).subscribe({
-        next: () => this.handleSaveSuccess(),
-        error: (err) => this.handleSaveError(err)
-      })
+        next: () => {
+          this.isLoading = false;
+          this.clearForm();
+          this.commonMessageService.showEditSucessfullMessage();
+        },
+        error: (error: Error) => {
+          if (error instanceof OccError) {
+          console.log('OCC Error occurred:', error);
+          this.showOCCErrorModalCountry = true;
+          this.occErrorType = error.errorType;
+        }else {
+          this.commonMessageService.showErrorEditMessage();
+        }
+  }})
     );
   }
 
