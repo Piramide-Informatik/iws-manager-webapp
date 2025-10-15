@@ -4,6 +4,7 @@ import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 import { ContractStatus } from '../../../../../Entities/contractStatus';
 import { ContractStatusService } from '../../../../../Services/contract-status.service';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for contractStatus-related business logic and operations.
@@ -114,16 +115,15 @@ export class ContractStatusUtils {
 
     return this.contractStatusService.getContractStatusById(contractStatus.id).pipe(
       take(1),
-      map((currentContractStatus) => {
+      switchMap((currentContractStatus) => {
         if (!currentContractStatus) {
-          throw new Error('ContractStatus not found');
+            return throwError(() => createNotFoundUpdateError('Role'));
         }
         if (currentContractStatus.version !== contractStatus.version) {
-          throw new Error('Version conflict: ContractStatus has been updated by another user');
+            return throwError(() => createUpdateConflictError('Role'));
         }
-        return contractStatus;
+        return this.contractStatusService.updateContractStatus(contractStatus);
       }),
-      switchMap((validatedContractStatus: ContractStatus) => this.contractStatusService.updateContractStatus(validatedContractStatus)),
       catchError((err) => {
         console.error('Error updating contractStatus:', err);
         return throwError(() => err);

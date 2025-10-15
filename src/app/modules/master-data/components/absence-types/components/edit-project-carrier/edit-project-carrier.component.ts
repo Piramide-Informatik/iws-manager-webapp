@@ -5,6 +5,7 @@ import { AbsenceTypeStateService } from '../../utils/absence-type-state.service'
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
 import { AbsenceType } from '../../../../../../Entities/absenceType';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-project-carrier',
@@ -21,6 +22,7 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
   public showOCCErrorModaAbsence = false;
   public isLoading: boolean = false;
   public editProjectCarrierForm!: FormGroup;
+  public occErrorAbscenceType: OccErrorType = 'UPDATE_UPDATED';
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
@@ -66,16 +68,19 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
         this.clearForm();
         this.commonMessageService.showEditSucessfullMessage();
       },
-      error: (error: Error) => {
-        this.isLoading = false;
-        if(error.message === 'Version conflict: absence type has been updated by another user'){
-          this.showOCCErrorModaAbsence = true;
-        }else{
-          this.commonMessageService.showErrorEditMessage();
-        }
-      }
+      error: (error: Error) => this.handleAbsenceTypeEditError(error),
     });
   }
+
+  private handleAbsenceTypeEditError(err: any): void {
+      console.log(err);
+      if (err instanceof OccError) { 
+        this.showOCCErrorModaAbsence = true;
+        this.occErrorAbscenceType = err.errorType;
+      }
+      this.commonMessageService.showErrorEditMessage();
+      this.isLoading = false;
+    }
 
   private setupAbsenceTypeSubscription(): void {
     this.subscriptions.add(
