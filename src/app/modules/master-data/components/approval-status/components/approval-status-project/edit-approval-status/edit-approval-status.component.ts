@@ -6,6 +6,7 @@ import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { ApprovalStatusStateService } from '../../../utils/approval-status-state.service';
 import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-edit-approval-status',
@@ -19,6 +20,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   isSaving = false;
   private readonly subscriptions = new Subscription();
   public showOCCErrorModalApprovalStatus = false;
+   public occErrorApprovalStatus: OccErrorType = 'UPDATE_UPDATED';
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -131,14 +133,11 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   }
 
   private handleError(err: any): void {
-    if (err.message === 'Version conflict: approvalStatus has been updated by another user') {
+    if (err instanceof OccError) { 
       this.showOCCErrorModalApprovalStatus = true;
-      this.commonMessageService.showConflictMessage();
-      return;
-    } else {
-      this.handleSaveError(err);
+      this.occErrorApprovalStatus = err.errorType;
     }
-    this.isSaving = false;
+    this.handleSaveError(err);
   }
 
   private handleSaveError(error: any): void {

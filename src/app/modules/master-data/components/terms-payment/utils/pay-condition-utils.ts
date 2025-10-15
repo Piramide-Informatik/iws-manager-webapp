@@ -3,6 +3,7 @@ import { Observable, catchError, map, take, throwError, switchMap, of } from 'rx
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { PayCondition } from '../../../../../Entities/payCondition';
 import { PayConditionService } from '../../../../../Services/pay-condition.service';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for payCondition-related business logic and operations.
@@ -110,16 +111,15 @@ export class PayConditionUtils {
 
     return this.payConditionService.getPayConditionById(payCondition.id).pipe(
       take(1),
-      map((currentPayCondition) => {
+      switchMap((currentPayCondition) => {
         if (!currentPayCondition) {
-          throw new Error('pay condition not found');
+            return throwError(() => createNotFoundUpdateError('TermsPayment'));
         }
         if (currentPayCondition.version !== payCondition.version) {
-          throw new Error('Version conflict: pay condition has been updated by another user');
+            return throwError(() => createUpdateConflictError('Role'));
         }
-        return payCondition;
+        return this.payConditionService.updatePayCondition(payCondition);
       }),
-      switchMap((validatedPayCondition: PayCondition) => this.payConditionService.updatePayCondition(validatedPayCondition)),
       catchError((err) => {
         console.error('Error updating pay condition:', err);
         return throwError(() => err);

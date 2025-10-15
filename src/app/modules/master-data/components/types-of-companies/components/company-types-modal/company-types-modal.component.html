@@ -49,3 +49,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalCompanyType"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalCompanyType = false">
+</app-occ-error-modal>
