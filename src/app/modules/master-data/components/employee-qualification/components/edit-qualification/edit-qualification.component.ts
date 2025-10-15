@@ -41,7 +41,7 @@ export class EditQualificationComponent implements OnInit {
     );
     if (savedEmployeeCategoryId) {
       this.loadEmployeeCategoryAfterRefresh(savedEmployeeCategoryId);
-      localStorage.removeItem('selectedEmployeeCategoryId');
+      localStorage.removeItem('selectedEmployeeCategoryIwsId');
     }
   }
 
@@ -163,10 +163,10 @@ export class EditQualificationComponent implements OnInit {
   onRefresh(): void {
     if (this.currentEmployeeCategory?.id) {
       localStorage.setItem(
-        'selectedEmployeeCategoryId',
+        'selectedEmployeeCategoryIwsId',
         this.currentEmployeeCategory.id.toString()
       );
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
