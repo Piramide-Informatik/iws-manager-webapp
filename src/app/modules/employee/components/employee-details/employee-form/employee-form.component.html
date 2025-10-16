@@ -20,17 +20,17 @@
 
       <div class="field">
         <label for="employeeFirstName">{{ 'EMPLOYEE.FORM.FIRST_NAME' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="employeeFirstName" id="employeeFirstName" />
+        <input class="col-md-6" type="text" pInputText formControlName="employeeFirstName" id="employeeFirstName" autocomplete="off"/>
       </div>
 
       <div class="field">
         <label for="employeeLastName">{{ 'EMPLOYEE.FORM.LAST_NAME' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName" />
+        <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName" autocomplete="off"/>
       </div>
 
       <div class="field">
         <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="employeeEmail" id="employeeEmail" />
+        <input class="col-md-6" type="text" pInputText formControlName="employeeEmail" id="employeeEmail" autocomplete="off"/>
       </div>
     </div>
 
@@ -75,7 +75,7 @@
 
       <div class="field">
         <label for="qualificationKMUi">{{ 'EMPLOYEE.FORM.QUALIFICATION_KMU_I' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="qualificationKMUi" id="qualificationKMUi" />
+        <input class="col-md-6" type="text" pInputText formControlName="qualificationKMUi" id="qualificationKMUi" autocomplete="off"/>
       </div>
     </div>
   </div>
@@ -101,7 +101,7 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="onEmployeeDeleteConfirm()" severity="danger" [loading]="isLoading"
+        iconPos="left" (onClick)="onEmployeeDeleteConfirm()" severity="danger" [loading]="isLoadingDelete"
         [disabled]="isLoading" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
