@@ -98,6 +98,17 @@ export class CustomerService {
         );
     }
 
+    getNextCustomerNumber(): Observable<number | null> {
+        return this.http.get<number>(`${this.apiUrl}/next-customer-no`, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch customer number');
+                console.error(err);
+                return of(null);
+            })
+        );
+    }
+
     // UPDATE
     updateCustomer(updatedCustomer: Customer): Observable<Customer> {
         const url = `${this.apiUrl}/${updatedCustomer.id}`;

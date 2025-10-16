@@ -160,6 +160,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
+    this.loadNextCustomerNo();
     this.firstInputFocus();
     this.setupCustomerSubscription();
 
@@ -349,7 +350,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     return {
       ...this.currentCustomerToEdit!,
-      customerno: formValue.customerNo,
+      customerno: this.formDetailCustomer.getRawValue().customerNo,
       customername1: formValue.companyText1,
       customername2: formValue.companyText2,
       country: this.buildCountryEntity(formValue.selectedCountry),
@@ -507,11 +508,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     )
   }
 
-  private buildCustomerFromForm(): Omit<Customer, 'id'> {
+  private buildCustomerFromForm(): Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
     const formValues = this.formDetailCustomer.value;
 
     return {
-      version: 0,
       city: formValues.city,
       companytype: formValues.selectedTypeCompany
         ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }
@@ -522,7 +522,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       country: formValues.selectedCountry
         ? { id: formValues.selectedCountry, version: 0, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
         : null,
-      customerno: formValues.customerNo,
+      customerno: this.formDetailCustomer.getRawValue().customerNo,
       customername1: formValues.companyText1,
       customername2: formValues.companyText2,
       email1: formValues.invoiceEmail,
@@ -538,9 +538,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       street: formValues.street,
       taxno: formValues.taxNumber,
       taxoffice: formValues.headcount,
-      zipcode: formValues.postalCode,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      zipcode: formValues.postalCode
     };
   }
 
@@ -576,6 +574,18 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     }
   }
 
+  private loadNextCustomerNo(): void {
+    const sub = this.customerUtils.getNextCustomerNumber().subscribe({
+      next: (nextNo) => {
+        if (nextNo != null) {
+          this.formDetailCustomer.patchValue({ customerNo: nextNo });
+        }
+      },
+      error: (err) => console.error('Error loading next customerNo', err),
+    });
+    this.subscriptions.add(sub);
+  }
+  
   private handleErrorDelete(error: any): void {
     if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
       this.showOCCModalCustomer = true;
