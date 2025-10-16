@@ -17,6 +17,10 @@
   width: 100%;
 }
 
+::ng-deep .p-select {
+  min-width: 50px;
+}
+
 .iws-form-check {
   display: flex;
   align-items: center;
