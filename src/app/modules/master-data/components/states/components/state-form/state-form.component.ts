@@ -65,7 +65,6 @@ export class StateFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  // MODIFICADO: Mejorar el manejo de localStorage
   private loadStateAfterRefresh(): void {
     const savedStateId = localStorage.getItem('selectedStateId');
     if (savedStateId) {
@@ -88,7 +87,6 @@ export class StateFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // MODIFICADO: Usar globalThis.location.reload() para consistencia
   public onRefresh(): void {
     if (this.state?.id) {
       localStorage.setItem('selectedStateId', this.state.id.toString());
@@ -127,13 +125,12 @@ export class StateFormComponent implements OnInit, OnDestroy {
     this.clearForm();
   }
 
-  // MODIFICADO: Mejorar manejo de errores OCC
   private handleSaveStateError(error: any): void {
     this.isSaving = false;
     if (error instanceof OccError) { 
       this.showOCCErrorModaState = true;
       this.occErrorStateType = error.errorType;
-      this.commonMessageService.showErrorEditMessage(); // Toast para error OCC
+      this.commonMessageService.showErrorEditMessage(); 
     } else {
       console.error('Error saving state:', error);
       this.commonMessageService.showErrorEditMessage();

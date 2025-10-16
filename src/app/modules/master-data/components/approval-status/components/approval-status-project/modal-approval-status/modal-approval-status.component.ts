@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms'; // Asegúrate de importar FormControl
+import { FormGroup, FormControl } from '@angular/forms'; 
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
@@ -44,7 +44,7 @@ export class ModalApprovalStatusComponent
     status: new FormControl(''),
     order: new FormControl(null),
     isProject: new FormControl(false),
-    isNetwork: new FormControl(false), // CORREGIDO: Cambiado de Control a FormControl
+    isNetwork: new FormControl(false), 
   });
 
   get isCreateMode(): boolean {
@@ -144,12 +144,10 @@ export class ModalApprovalStatusComponent
             if (error instanceof OccError) {
               this.showOCCErrorModalApprovalStatus = true;
               this.occErrorApprovalStatusType = error.errorType;
-              // TOAST PARA ERROR OCC DE ELIMINACIÓN
               this.commonMessageService.showErrorDeleteMessage();
             } else if (error?.message.includes('404')) {
               this.showOCCErrorModalApprovalStatus = true;
               this.occErrorApprovalStatusType = 'DELETE_UNEXISTED';
-              // TOAST PARA ERROR 404 DE ELIMINACIÓN
               this.commonMessageService.showErrorDeleteMessage();
             } else {
               this.handleOperationError(error, messages.fail, messages.inUse);

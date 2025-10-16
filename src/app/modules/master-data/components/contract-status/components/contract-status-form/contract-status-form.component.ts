@@ -16,7 +16,7 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
   @Input() isLoading: boolean = false;
   
   contractStatusForm!: FormGroup;
-  @Output() contractStatusToEdit = new EventEmitter<ContractStatus | null>(); // Cambiado a ContractStatus | null
+  @Output() contractStatusToEdit = new EventEmitter<ContractStatus | null>();
   @Output() cancelEditContractStatus = new EventEmitter<any>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
@@ -44,8 +44,6 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
     this.contractStatusForm = new FormGroup({
       status: new FormControl('', [Validators.required])
     });
-
-    // Cargar contract status después del refresh para OCC
     this.loadContractStatusAfterRefresh();
   }
 
@@ -62,7 +60,7 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
         next: () => {
           this.isLoading = false;
           this.commonMessageService.showEditSucessfullMessage();
-          this.contractStatusToEdit.emit(null); // Esto ahora es válido
+          this.contractStatusToEdit.emit(null);
           this.contractStatusForm.reset();
         },
         error: (err) => {

@@ -33,7 +33,6 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   selectedContractStatus!: any;
   loadCreateDelete: boolean = false;
   
-  // Variables OCC para DELETE
   public showOCCErrorModalDelete = false;
   public occErrorDeleteType: OccErrorType = 'DELETE_UNEXISTED';
   
@@ -96,7 +95,6 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       error: (err) => {
         this.loadCreateDelete = false;
         
-        // Manejar error OCC para DELETE
         if (err instanceof OccError) {
           this.showOCCErrorModalDelete = true;
           this.occErrorDeleteType = err.errorType;
