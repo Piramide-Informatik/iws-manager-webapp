@@ -1,5 +1,4 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Employee } from '../../../../Entities/employee';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,11 +12,12 @@ import { Customer } from '../../../../Entities/customer';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Column } from '../../../../Entities/column';
 import { Title } from '@angular/platform-browser';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-employee-overview',
   standalone: false,
-  providers: [MessageService],
   templateUrl: './employee-overview.component.html',
   styleUrl: './employee-overview.component.scss'
 })
@@ -43,9 +43,10 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   visibleEmployeeModal: boolean = false;
   isLoading = false;
   errorMessage: string = '';
+  showOCCErrorModaEmployee = false;
+  public occErrorType: OccErrorType = 'DELETE_UNEXISTED';
 
   constructor(
-    private readonly messageService: MessageService,
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
@@ -185,13 +186,16 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete employee';
-          if(error.message.includes('Cannot be deleted because have associated employment contracts')){
-            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          this.visibleEmployeeModal = false;
+          if(error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED'){
+            this.showOCCErrorModaEmployee = true;
+            this.commonMessageService.showErrorDeleteMessage();
+            this.occErrorType = 'DELETE_UNEXISTED';
+          }else if(error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
           }else{
             this.commonMessageService.showErrorDeleteMessage();
           }
-          console.error('Delete error:', error);
         }
       });
     }

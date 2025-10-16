@@ -24,11 +24,6 @@ export class EmployeeCategoryUtils {
     employeeCategory: Omit<EmployeeCategory, 'id' | 'createdAt' | 'updatedAt' | 'version'>
   ): Observable<EmployeeCategory> {
     const trimmedTitle = employeeCategory.title?.trim();
-    if (!trimmedTitle) {
-      return throwError(
-        () => new Error('EmployeeCategory name cannot be empty')
-      );
-    }
 
     return this.employeeCategoryExists(trimmedTitle).pipe(
       switchMap((exists) => {
