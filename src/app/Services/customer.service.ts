@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { Customer } from '../Entities/customer';
 import { environment } from '../../environments/environment';
 import { ContactPerson } from '../Entities/contactPerson';
@@ -111,7 +111,6 @@ export class CustomerService {
                 },
                 error: (err) => {
                     this._error.set('Failed to update customer');
-                    console.error('Error updating customer:', err);
                 }
             })
         )
@@ -133,14 +132,6 @@ export class CustomerService {
                 }
             })
         )
-    }
-
-    // ERROR HANDLING
-    private handleError(error: HttpErrorResponse) {
-        const errorMessage = error.error?.message ??
-            error.statusText ??
-            'Unknown server error';
-        return throwError(() => new Error(errorMessage));
     }
 
     // GET CONTACTS BY CUSTOMER ID
