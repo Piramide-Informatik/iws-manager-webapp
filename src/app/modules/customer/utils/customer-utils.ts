@@ -108,6 +108,10 @@ export class CustomerUtils {
         );
     }
 
+    getNextCustomerNumber(): Observable<number | null> {
+        return this.customerService.getNextCustomerNumber();
+    }
+
     /**
      * Refreshes customers data
      * @returns Observable that completes when refresh is done
