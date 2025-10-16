@@ -68,7 +68,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public contactPersons = signal<ContactPerson[]>([]);
   public loadingContacts = signal<boolean>(false);
   public errorContacts = signal<string | null>(null);
-  public showOCCErrorModalCustomer = false;
+  public showOCCModalCustomer = false;
 
   public companyTypes = toSignal(
     this.companyTypeUtils.getCompanyTypeSortedByName().pipe(
@@ -443,7 +443,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.isSaving = false;
 
     if (error instanceof OccError) {
-      this.showOCCErrorModalCustomer = true;
+      this.showOCCModalCustomer = true;
       this.occErrorType = error.errorType;
     }
 
@@ -570,17 +570,21 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoadingCustomer = false;
           this.showDeleteCustomerModal = false;
-          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
-            this.showOCCErrorModalCustomer = true;
-            this.occErrorType = 'DELETE_UNEXISTED';
-            this.commonMessageService.showErrorDeleteMessage();
-          } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
-            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
+          this.handleErrorDelete(error);
         }
       });
+    }
+  }
+
+  private handleErrorDelete(error: any): void {
+    if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+      this.showOCCModalCustomer = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+      this.commonMessageService.showErrorDeleteMessage();
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
