@@ -1,18 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, catchError, forkJoin, map, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
 import { ContactPerson } from '../../../Entities/contactPerson';
-import { ContactUtils } from './contact-utils';
-import { EmployeeUtils } from '../../employee/utils/employee.utils';
-import { ContractorUtils } from '../../contractor/utils/contractor-utils';
-import { SubcontractUtils } from '../../subcontracts/utils/subcontracts-utils';
-import { EmploymentContractUtils } from '../../employee/utils/employment-contract-utils';
-import { ProjectUtils } from '../../projects/utils/project.utils';
-import { OrderUtils } from '../../orders/utils/order-utils';
-import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
-import { InvoiceUtils } from '../../invoices/utils/invoice.utils';
-import { FrameworkAgreementsUtils } from '../../framework-agreements/utils/framework-agreement.util';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
@@ -22,16 +12,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../shar
  */
 export class CustomerUtils {
     private readonly customerService = inject(CustomerService);
-    private readonly contactUtils = inject(ContactUtils);
-    private readonly employeeUtils = inject(EmployeeUtils);
-    private readonly contractorUtils = inject(ContractorUtils);
-    private readonly subcontractUtils = inject(SubcontractUtils);
-    private readonly employmentContractUtils = inject(EmploymentContractUtils);
-    private readonly projectUtils = inject(ProjectUtils);
-    private readonly orderUtils = inject(OrderUtils);
-    private readonly receivableUtils = inject(ReceivableUtils);
-    private readonly invoiceUtils = inject(InvoiceUtils);
-    private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
 
     loadInitialData(): Observable<Customer[]> {
       return this.customerService.loadInitialData();
@@ -130,100 +110,7 @@ export class CustomerUtils {
      * @returns Observable that completes when the deletion is done
      */
     deleteCustomer(id: number): Observable<void> {
-        // Definimos todas las verificaciones como Observables
-        const checks = [
-            this.employeeUtils.getAllEmployeesByCustomerId(id).pipe(
-                take(1),
-                map(employees => ({
-                    valid: employees.length === 0,
-                    error: 'Cannot be deleted because have associated employees'
-                }))
-            ),
-            this.subcontractUtils.getAllSubcontractsByCustomerId(id).pipe(
-                take(1),
-                map(subcontracts => ({
-                    valid: subcontracts.length === 0,
-                    error: 'Cannot be deleted because have associated subcontracts'
-                }))
-            ),
-            this.contractorUtils.getAllContractorsByCustomerId(id).pipe(
-                take(1),
-                map(contractors => ({
-                    valid: contractors.length === 0,
-                    error: 'Cannot be deleted because have associated contractors'
-                }))
-            ),
-            this.employmentContractUtils.getAllContractsByCustomerId(id).pipe(
-                take(1),
-                map(contracts => ({
-                    valid: contracts.length === 0,
-                    error: 'Cannot be deleted because have associated employment contracts'
-                }))
-            ),
-            this.projectUtils.getAllProjectByCustomerId(id).pipe(
-                take(1),
-                map(projects => ({
-                    valid: projects.length === 0,
-                    error: 'Cannot be deleted because have associated projects'
-                }))
-            ),
-            this.orderUtils.getAllOrdersByCustomerId(id).pipe(
-                take(1),
-                map(orders => ({
-                    valid: orders.length === 0,
-                    error: 'Cannot be deleted because have associated orders'
-                }))
-            ),
-            this.receivableUtils.getAllReceivableByCustomerId(id).pipe(
-                take(1),
-                map(receivables => ({
-                    valid: receivables.length === 0,
-                    error: 'Cannot be deleted because have associated receivables'
-                }))
-            ),
-            this.invoiceUtils.getAllInvoicesByCustomerId(id).pipe(
-                take(1),
-                map(invoices => ({
-                    valid: invoices.length === 0,
-                    error: 'Cannot be deleted because have associated invoices'
-                }))
-            ),
-            this.frameworkUtils.getAllFrameworkAgreementsByCustomerId(id).pipe(
-                take(1),
-                map(frameworks => ({
-                    valid: frameworks.length === 0,
-                    error: 'Cannot be deleted because have associated framework agreements'
-                }))
-            )
-        ];
-
-        // Ejecutamos todas las verificaciones en paralelo
-        return forkJoin(checks).pipe(
-            // Verificamos si alguna validación falló
-            switchMap(results => {
-                const failedCheck = results.find(r => !r.valid);
-                if (failedCheck) {
-                    return throwError(() => new Error(failedCheck.error));
-                }
-                
-                // Si todas pasaron, verificamos los contactos
-                return this.getContactsByCustomerId(id).pipe(take(1));
-            }),
-            // Manejo de contactos
-            switchMap((contacts: ContactPerson[]) => {
-                if (contacts.length === 0) {
-                    return this.customerService.deleteCustomer(id);
-                }
-                return forkJoin(
-                    contacts.map(contact => 
-                        this.contactUtils.deleteContactPerson(contact.id)
-                    )
-                ).pipe(
-                    switchMap(() => this.customerService.deleteCustomer(id))
-                );
-            }),
-            catchError(err => throwError(() => new Error(err.message || 'Error deleting customer and contacts')))
-        );
+        return this.customerService.deleteCustomer(id)
     }
 
     /**
