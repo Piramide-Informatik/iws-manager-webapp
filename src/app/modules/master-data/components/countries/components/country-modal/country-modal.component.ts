@@ -31,8 +31,6 @@ export class CountryModalComponent implements OnInit {
 
   readonly createCountryForm = new FormGroup({
     name: new FormControl('', [
-      
-      Validators.minLength(2),
       Validators.maxLength(50)
     ]),
     abbreviation: new FormControl('', [
@@ -110,14 +108,6 @@ export class CountryModalComponent implements OnInit {
       this.isLoading = false;
       return;
     }
-    // Validación de campos vacíos
-  if (!name?.trim() && !label?.trim()) {
-    this.isLoading = false;
-    this.errorMessage = 'COUNTRY.ERROR.EMPTY_FIELDS';
-    this.commonMessageService.showErrorCreatedMessage();
-    this.handleClose(); // cerrar modal si quieres
-    return;
-  }
     this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
       next: () => {
         this.commonMessageService.showCreatedSuccesfullMessage();
@@ -136,8 +126,7 @@ export class CountryModalComponent implements OnInit {
     
   }
   private shouldPreventSubmission(): boolean {
-    console.log(this.createCountryForm.invalid, this.isLoading);
-    return this.createCountryForm.invalid || this.isLoading;
+    return this.createCountryForm.invalid || this.isLoading || this.isSaveDisabled;
   }
 
   private prepareForSubmission(): void {
@@ -185,4 +174,11 @@ export class CountryModalComponent implements OnInit {
       }, 150);
     }
   }
+  get isSaveDisabled(): boolean {
+  const nameValue = this.createCountryForm.get('name')?.value?.trim();
+  const abbreviationValue = this.createCountryForm.get('abbreviation')?.value?.trim();
+  const hasAtLeastOneField = !!nameValue || !!abbreviationValue;
+  
+  return this.createCountryForm.invalid || this.isLoading || !hasAtLeastOneField;
+}
 }
