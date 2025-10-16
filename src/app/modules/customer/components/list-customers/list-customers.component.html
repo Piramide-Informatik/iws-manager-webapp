@@ -29,3 +29,9 @@
     </div>
   </p-dialog>
 </div>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalCustomer"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalCustomer = false">
+</app-occ-error-modal>
