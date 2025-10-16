@@ -154,7 +154,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   onRefresh(): void {
     if (this.currentCountry?.id) {
       localStorage.setItem('selectedCountryId', this.currentCountry.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
