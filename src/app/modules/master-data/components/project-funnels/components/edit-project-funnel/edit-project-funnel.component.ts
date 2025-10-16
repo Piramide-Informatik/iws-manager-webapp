@@ -15,7 +15,6 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { Subscription } from 'rxjs';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { Country } from '../../../../../../Entities/country';
-import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
@@ -31,7 +30,6 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
   private readonly countryUtils = inject(CountryUtils);
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('NumInput') NumInput!: InputNumber;
   private promoterToEdit: Promoter | null = null;
   public showOCCErrorModaPromoter = false;
   public isLoading: boolean = false;
