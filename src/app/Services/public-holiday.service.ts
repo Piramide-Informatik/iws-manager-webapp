@@ -142,6 +142,18 @@ export class PublicHolidayService {
         );
     }
 
+    getHolidaySequence(): Observable<Number> {
+        const url = `${this.apiUrl}/next-sequence-no `;
+        return this.http.get<Number>(url, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch next sequence for publicHoliday');
+                console.error('Error fetching next sequence for publicHoliday:', err);
+                return of(0);
+            })
+        );
+    }
+
     saveSelectedStates(holidayId: number, stateIds: number[]): Observable<void> {
     const url = `${this.apiUrl}/${holidayId}/states`;
     return this.http.post<void>(url, stateIds, this.httpOptions).pipe( 
