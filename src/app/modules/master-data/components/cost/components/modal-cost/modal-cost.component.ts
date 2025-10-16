@@ -91,7 +91,6 @@ export class ModalCostComponent implements OnChanges {
   handleDeleteError(error: Error) {
     if (error instanceof OccError || error?.message.includes('404')) {
       this.showOCCErrorModalCost = true;
-      alert('Error: ' + error.message);
       this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
