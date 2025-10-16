@@ -36,7 +36,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() deletedEmployeeContract = new EventEmitter<EmploymentContract>();
-  @Output() onContractCreated = new EventEmitter<EmploymentContract>();
+  @Output() onContractCreated = new EventEmitter<boolean>();
   @Output() onContractUpdated = new EventEmitter<EmploymentContract>();
 
   @ViewChild('pSelect') firstInputForm!: Select;
@@ -303,14 +303,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   private _doCreateWorkContract() {
     const raw = this.ContractDetailsForm.getRawValue();
     const startDate = raw.startDate ? momentFormatDate(raw.startDate) : '';
-    const salaryPerMonth = Number(raw.salaryPerMonth ?? 0);
-    const hoursPerWeek = Number(raw.hoursPerWeek ?? 0);
-    const workShortTime = Number(raw.workShortTime ?? 0);
-    const specialPayment = Number(raw.specialPayment ?? 0);
-    const maxHoursPerMonth = Number(raw.maxHoursPerMonth ?? 0);
-    const maxHoursPerDay = Number(raw.maxHoursPerDay ?? 0);
-    const hourlyRate = Number(raw.hourlyRate ?? 0);
-    const hourlyRealRate = Number(raw.hourlyRealRate ?? 0);
+    const salaryPerMonth = raw.salaryPerMonth ?? 0;
+    const hoursPerWeek = raw.hoursPerWeek ?? 0;
+    const workShortTime = raw.workShortTime ?? 0;
+    const specialPayment = raw.specialPayment ?? 0;
+    const maxHoursPerMonth = raw.maxHoursPerMonth ?? 0;
+    const maxHoursPerDay = raw.maxHoursPerDay ?? 0;
+    const hourlyRate = raw.hourlyRate ?? 0;
+    const hourlyRealRate = raw.hourlyRealRate ?? 0;
     const emp = this.employeesMap.get(raw.employeNro);
     const employeeObj = emp ? buildEmployee(emp, { includeEmptyDates: true }) : null;
     const customerObj = this.currentCustomer ? buildCustomer(this.currentCustomer, { includeEmptyDates: true }) : null;
@@ -330,9 +330,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     };
 
     this.employeeContractUtils.createNewEmploymentContract(newWorkContract).subscribe({
-      next: (createdContract) => {
+      next: () => {
+        this.onContractCreated.emit(true);
         this.isLoading = false;
-        this.onContractCreated.emit(createdContract);
         this.isVisibleModal.emit(false);
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.ContractDetailsForm.reset();
@@ -367,8 +367,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.isLoading = true;
     this.employeeContractUtils.updateEmploymentContract(updatedEmployment).subscribe({
       next: (updated: EmploymentContract) => {
-        this.isLoading = false;
         this.onContractUpdated.emit(updated);
+        this.isLoading = false;
         this.closeModal();
         this.commonMessageService.showEditSucessfullMessage();
       },
@@ -377,14 +377,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleSaveError(error: any): void {
+    this.isLoading = false;
+    this.commonMessageService.showErrorEditMessage();
     if (error instanceof OccError) {
       this.showOCCErrorModalContract = true;
       this.occErrorType = error.errorType;
-      return;
     }
-
-    this.commonMessageService.showErrorEditMessage();
-    this.isLoading = false;
   }
 
   get isCreateMode(): boolean {
