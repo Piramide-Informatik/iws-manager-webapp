@@ -218,9 +218,9 @@
 </p-dialog>
 
 <app-occ-error-modal
-  *ngIf="showOCCErrorModalCustomer"
+  *ngIf="showOCCModalCustomer"
   [errorType]="occErrorType"
   [redirectRoute]="'/customers'"
-  (onClose)="showOCCErrorModalCustomer = false">
+  (onClose)="showOCCModalCustomer = false">
 </app-occ-error-modal>
 <p-toast></p-toast>

@@ -161,7 +161,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
         'selectedPromoterId',
         this.promoterToEdit.id.toString()
       );
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

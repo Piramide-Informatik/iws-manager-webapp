@@ -114,7 +114,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
   onRefresh(): void {
     if (this.currentTitle?.id) {
       localStorage.setItem('selectedTitleId', this.currentTitle.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

@@ -149,7 +149,7 @@ export class EditProjectStatusComponent implements OnInit {
   onRefresh(): void {
     if (this.currentProjectStatus?.id) {
       localStorage.setItem('selectedProjectStatusId', this.currentProjectStatus.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

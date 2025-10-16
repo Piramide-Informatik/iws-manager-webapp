@@ -40,12 +40,11 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
 
   readonly createEmployeeCategoryForm = new FormGroup({
     qualification: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
+      Validators.minLength(1),
       Validators.maxLength(50),
     ]),
     abbreviation: new FormControl('', [
-      Validators.minLength(2),
+      Validators.minLength(1),
       Validators.maxLength(50),
     ]),
   });

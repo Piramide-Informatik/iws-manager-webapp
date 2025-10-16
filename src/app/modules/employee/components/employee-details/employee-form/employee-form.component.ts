@@ -15,6 +15,7 @@ import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-employee-form',
@@ -42,6 +43,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   // Modal delete
   public visibleEmployeeModalDelete: boolean = false;
   public isLoading = false;
+  public isLoadingDelete = false;
   public customer: any;
 
   public salutations = toSignal(
@@ -285,26 +287,27 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   onEmployeeDeleteConfirm() {
-    this.isLoading = true;
+    this.isLoadingDelete = true;
     if (this.currentEmployee?.id) {
       this.employeeUtils.deleteEmployee(this.currentEmployee.id).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.visibleEmployeeModalDelete = false;
           this.commonMessageService.showDeleteSucessfullMessage();
           this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
         },
         error: (error) => {
-          this.isLoading = false;
-          console.error('Failed to delete employee:', error.message);
+          this.isLoadingDelete = false;
+          this.visibleEmployeeModalDelete = false;
           if (error.message.includes('Cannot be deleted because have associated employment contracts')) {
             this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
           } else if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
             this.showOCCErrorModaEmployee = true;
+            this.commonMessageService.showErrorDeleteMessage();
             this.occErrorType = 'DELETE_UNEXISTED';
-            this.visibleEmployeeModalDelete = false;
             this.occRoute = "/customers/employees/" + this.currentEmployee?.customer?.id;
-            return;
+          }else if(error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
           } else {
             this.commonMessageService.showErrorDeleteMessage();
           }
@@ -314,7 +317,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private handleUpdateEmployeeError(error: any): void {
-
+    this.commonMessageService.showErrorEditMessage();
     if (error instanceof OccError) {
       this.showOCCErrorModaEmployee = true;
       this.occErrorType = error.errorType;

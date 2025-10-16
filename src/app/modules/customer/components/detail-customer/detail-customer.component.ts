@@ -20,6 +20,7 @@ import { Title } from '@angular/platform-browser';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Column } from '../../../../Entities/column';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-detail-customer',
@@ -67,7 +68,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   public contactPersons = signal<ContactPerson[]>([]);
   public loadingContacts = signal<boolean>(false);
   public errorContacts = signal<string | null>(null);
-  public showOCCErrorModalCustomer = false;
+  public showOCCModalCustomer = false;
 
   public companyTypes = toSignal(
     this.companyTypeUtils.getCompanyTypeSortedByName().pipe(
@@ -159,6 +160,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
+    this.loadNextCustomerNo();
     this.firstInputFocus();
     this.setupCustomerSubscription();
 
@@ -348,7 +350,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     return {
       ...this.currentCustomerToEdit!,
-      customerno: formValue.customerNo,
+      customerno: this.formDetailCustomer.getRawValue().customerNo,
       customername1: formValue.companyText1,
       customername2: formValue.companyText2,
       country: this.buildCountryEntity(formValue.selectedCountry),
@@ -431,22 +433,22 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveSuccess(savedCustomer: Customer): void {
+    this.formDetailCustomer.markAsPristine();
+    this.formDetailCustomer.markAsUntouched();
     this.commonMessageService.showEditSucessfullMessage();
     this.customerStateService.setCustomerToEdit(savedCustomer);
     this.isSaving = false;
   }
 
   private handleSaveError(error: any): void {
-    console.error('Error saving customer:', error);
+    this.isSaving = false;
 
     if (error instanceof OccError) {
-      this.showOCCErrorModalCustomer = true;
+      this.showOCCModalCustomer = true;
       this.occErrorType = error.errorType;
-      return;
     }
 
     this.commonMessageService.showErrorEditMessage();
-    this.isSaving = false;
   }
 
 
@@ -506,11 +508,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     )
   }
 
-  private buildCustomerFromForm(): Omit<Customer, 'id'> {
+  private buildCustomerFromForm(): Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
     const formValues = this.formDetailCustomer.value;
 
     return {
-      version: 0,
       city: formValues.city,
       companytype: formValues.selectedTypeCompany
         ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }
@@ -521,7 +522,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       country: formValues.selectedCountry
         ? { id: formValues.selectedCountry, version: 0, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
         : null,
-      customerno: formValues.customerNo,
+      customerno: this.formDetailCustomer.getRawValue().customerNo,
       customername1: formValues.companyText1,
       customername2: formValues.companyText2,
       email1: formValues.invoiceEmail,
@@ -537,9 +538,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       street: formValues.street,
       taxno: formValues.taxNumber,
       taxoffice: formValues.headcount,
-      zipcode: formValues.postalCode,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      zipcode: formValues.postalCode
     };
   }
 
@@ -568,30 +567,34 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isLoadingCustomer = false;
-          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
-            this.showOCCErrorModalCustomer = true;
-            this.occErrorType = 'DELETE_UNEXISTED';
-            this.showDeleteCustomerModal = false;
-            return;
-          }
-
-          if (error.message.includes('have associated employees') ||
-            error.message.includes('have associated contractors') ||
-            error.message.includes('have associated subcontracts') ||
-            error.message.includes('have associated employment contracts') ||
-            error.message.includes('have associated projects') ||
-            error.message.includes('have associated orders') ||
-            error.message.includes('have associated receivables') ||
-            error.message.includes('have associated invoices') ||
-            error.message.includes('have associated framework agreements')) {
-            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
-          this.errorMessage = error.message ?? 'Failed to delete customer';
-          console.error('Delete error:', error);
+          this.showDeleteCustomerModal = false;
+          this.handleErrorDelete(error);
         }
       });
+    }
+  }
+
+  private loadNextCustomerNo(): void {
+    const sub = this.customerUtils.getNextCustomerNumber().subscribe({
+      next: (nextNo) => {
+        if (nextNo != null) {
+          this.formDetailCustomer.patchValue({ customerNo: nextNo });
+        }
+      },
+      error: (err) => console.error('Error loading next customerNo', err),
+    });
+    this.subscriptions.add(sub);
+  }
+  
+  private handleErrorDelete(error: any): void {
+    if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+      this.showOCCModalCustomer = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+      this.commonMessageService.showErrorDeleteMessage();
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
