@@ -24,3 +24,12 @@
         </div>
     </form>
 </p-card>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalContractStatus"
+  [useEmitter]="occErrorContractStatusType === 'UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
+  [errorType]="occErrorContractStatusType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalContractStatus = false">
+</app-occ-error-modal>

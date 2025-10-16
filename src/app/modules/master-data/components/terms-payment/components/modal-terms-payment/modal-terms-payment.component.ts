@@ -77,6 +77,7 @@ export class ModalTermsPaymentComponent implements OnChanges {
         if (error instanceof OccError || error?.message.includes('404')) {
           this.showOCCErrorModalTermsOfPayment = true;
           this.occErrorTermsOfPaymentType = 'DELETE_UNEXISTED';
+          this.deletePayCondition.emit({ status: 'error', error });
         }
         const errorTermsPaymentMessage = error.error.message ?? '';
         if (errorTermsPaymentMessage.includes('foreign key constraint fails')) {

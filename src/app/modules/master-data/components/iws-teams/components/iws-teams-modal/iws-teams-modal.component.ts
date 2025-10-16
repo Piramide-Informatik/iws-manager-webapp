@@ -7,6 +7,7 @@ import { TeamIws } from '../../../../../../Entities/teamIWS';
 import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-iws-teams-modal',
@@ -18,6 +19,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly teamIwsStateService = inject(TeamIwsStateService);
   private readonly teamIwsUtils = inject(TeamIwsUtils);
   private readonly employeeIws = inject(EmployeeIwsService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
 
   leaders: any[] = [];
@@ -30,6 +32,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() teamIwsCreated = new EventEmitter<void>();
+  @Output() createTeamIws = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() toastMessage = new EventEmitter<{ severity: string; summary: string; detail: string }>();
 
   isLoading = false;
@@ -123,7 +126,10 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
         .subscribe({
           next: () => {
             this.teamIwsStateService.clearTeamIws();
-            if (successDetail === 'MESSAGE.CREATE_SUCCESS') this.teamIwsCreated.emit();
+            if (successDetail === 'MESSAGE.CREATE_SUCCESS') {
+              this.teamIwsCreated.emit();
+              this.createTeamIws.emit({ status: 'success' });
+            }
             this.showToastAndClose('success', successDetail);
           },
           error: (error) => {
