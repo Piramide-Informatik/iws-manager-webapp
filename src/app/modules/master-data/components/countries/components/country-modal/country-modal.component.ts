@@ -31,12 +31,9 @@ export class CountryModalComponent implements OnInit {
 
   readonly createCountryForm = new FormGroup({
     name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
       Validators.maxLength(50)
     ]),
     abbreviation: new FormControl('', [
-      Validators.required,
       Validators.maxLength(10)
     ]),
     isStandard: new FormControl(false)
@@ -117,6 +114,8 @@ export class CountryModalComponent implements OnInit {
       },
       error: () => {
         this.commonMessageService.showErrorCreatedMessage();
+        this.isLoading = false;
+        this.handleClose();
       },
       complete: () => {
         this.countryCreated.emit();
@@ -127,7 +126,7 @@ export class CountryModalComponent implements OnInit {
     
   }
   private shouldPreventSubmission(): boolean {
-    return this.createCountryForm.invalid || this.isLoading;
+    return this.createCountryForm.invalid || this.isLoading || this.isSaveDisabled;
   }
 
   private prepareForSubmission(): void {
@@ -175,4 +174,11 @@ export class CountryModalComponent implements OnInit {
       }, 150);
     }
   }
+  get isSaveDisabled(): boolean {
+  const nameValue = this.createCountryForm.get('name')?.value?.trim();
+  const abbreviationValue = this.createCountryForm.get('abbreviation')?.value?.trim();
+  const hasAtLeastOneField = !!nameValue || !!abbreviationValue;
+  
+  return this.createCountryForm.invalid || this.isLoading || !hasAtLeastOneField;
+}
 }

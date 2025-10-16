@@ -16,6 +16,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
   private readonly publicHolidayStateService = inject(PublicHolidayStateService);
+  private readonly commonMessageService = inject(CommonMessagesService); 
   private readonly subscriptions = new Subscription();
   @ViewChild('publicHolidayInput') publicHolidayInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -33,7 +34,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = false;
   errorMessage: string | null = null;
   showOCCErrorModalHoliday = false;
-  public occErrorHolidayType: OccErrorType = 'UPDATE_UNEXISTED';
+  public occErrorHolidayType: OccErrorType = 'DELETE_UNEXISTED';
 
   readonly createdPublicHolidayForm = new FormGroup({
     name: new FormControl(''),
@@ -41,7 +42,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     sequenceNo: new FormControl({value: null, disabled: true}),
   });
 
-  constructor(private readonly commonMessageService: CommonMessagesService) {}
+  constructor() {} 
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -87,39 +88,48 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
               summary: 'MESSAGE.SUCCESS',
               detail: 'MESSAGE.DELETE_SUCCESS',
             });
-            // Notify the state that the holiday has been eliminated
             this.publicHolidayStateService.setPublicHolidayToEdit(null);
             this.closeModel();
           },
           error: (error) => {
             this.isLoading = false;
-            if (error instanceof OccError || error?.message.includes('404')) {
+            if (error instanceof OccError) { 
+              this.showOCCErrorModalHoliday = true;
+              this.occErrorHolidayType = error.errorType;
+              this.commonMessageService.showErrorDeleteMessage();
+            } else if (error?.message.includes('404')) {
               this.showOCCErrorModalHoliday = true;
               this.occErrorHolidayType = 'DELETE_UNEXISTED';
+              this.commonMessageService.showErrorDeleteMessage(); 
+            } else {
+              const errorHolidayMessage = error.error.message ?? '';
+              if (errorHolidayMessage.includes('foreign key constraint fails')) {
+                this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorHolidayMessage);
+              } else {
+                this.errorMessage = error.message ?? 'Failed to delete publicHoliday';
+                this.toastMessage.emit({
+                  severity: 'error',
+                  summary: 'MESSAGE.ERROR',
+                  detail: this.errorMessage?.includes('it is in use by other entities')
+                    ? 'MESSAGE.DELETE_FAILED_IN_USE'
+                    : 'MESSAGE.DELETE_FAILED',
+                });
+              }
+              console.error('Error deleting publicHoliday:', error);
+              this.closeModel();
             }
-            const errorHolidayMessage = error.error.message ?? '';
-            if (errorHolidayMessage.includes('foreign key constraint fails')) {
-              this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorHolidayMessage);
-              return;
-            }
-            this.errorMessage =
-              error.message ?? 'Failed to delete publicHoliday';
-            this.toastMessage.emit({
-              severity: 'error',
-              summary: 'MESSAGE.ERROR',
-              detail: this.errorMessage?.includes(
-                'it is in use by other entities'
-              )
-                ? 'MESSAGE.DELETE_FAILED_IN_USE'
-                : 'MESSAGE.DELETE_FAILED',
-            });
-            console.error('Error deleting publicHoliday:', error);
-            this.closeModel();
           },
         });
       this.subscriptions.add(sub);
     }
   }
+  public onRefresh(): void {
+    if (this.publicHolidayToDelete) {
+      localStorage.setItem('selectedPublicHolidayId', this.publicHolidayToDelete.toString());
+      globalThis.location.reload();
+    }
+  }
+
   onSubmit(): void {
     if (this.shouldPreventSubmission()) return;
 
@@ -149,8 +159,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleError(error: any): void {
-    this.errorMessage =
-      error?.message ?? 'HOLIDAYS.ERROR.CREATION_FAILED';
+    this.errorMessage = error?.message ?? 'HOLIDAYS.ERROR.CREATION_FAILED';
 
     const detail = this.getErrorDetail(error.message);
 

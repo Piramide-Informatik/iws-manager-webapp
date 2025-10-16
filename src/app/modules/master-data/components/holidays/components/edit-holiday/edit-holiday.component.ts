@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -29,7 +29,7 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
   templateUrl: './edit-holiday.component.html',
   styleUrls: ['./edit-holiday.component.scss'],
 })
-export class EditHolidayComponent implements OnInit {
+export class EditHolidayComponent implements OnInit, OnDestroy {
   years: HolidayYear[] = [];
   selectedPublicHolidayId!: number;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
@@ -60,13 +60,11 @@ export class EditHolidayComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.setupPublicHolidaySubscription();
-    const savedPublicHolidayId = localStorage.getItem(
-      'selectedPublicHolidayId'
-    );
-    if (savedPublicHolidayId) {
-      this.loadPublicHolidayAfterRefresh(savedPublicHolidayId);
-      localStorage.removeItem('selectedPublicHolidayId');
-    }
+    this.loadPublicHolidayAfterRefresh();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   loadYears(publicHolidayId: number): void {
@@ -131,12 +129,15 @@ export class EditHolidayComponent implements OnInit {
 
   saveSelections(publicHolidayId: number): void {
     const selectedStateIds = this.bundeslands
-      .filter((bl) => bl.selected) // we only use "selected"
-      .map((bl) => bl.id); // we only send the ids
+      .filter((bl) => bl.selected)
+      .map((bl) => bl.id);
     this.publicHolidayService
       .saveSelectedStates(publicHolidayId, selectedStateIds)
       .subscribe({
-        next: () => {console.log('States saved successfully'); this.statesModified = false;},
+        next: () => {
+          console.log('States saved successfully'); 
+          this.statesModified = false;
+        },
         error: (err) => console.error('Error saving states:', err),
       });
   }
@@ -149,6 +150,7 @@ export class EditHolidayComponent implements OnInit {
       isFixedDate: new FormControl(true),
     });
   }
+
   private setupPublicHolidaySubscription(): void {
     this.subscriptions.add(
       this.publicHolidayStateService.currentPublicHoliday$.subscribe(
@@ -161,6 +163,7 @@ export class EditHolidayComponent implements OnInit {
       )
     );
   }
+
   private loadPublicHolidayData(publicHoliday: PublicHoliday): void {
     this.editPublicHolidayForm.patchValue({
       publicHoliday: publicHoliday.name,
@@ -176,29 +179,32 @@ export class EditHolidayComponent implements OnInit {
     this.focusInputIfNeeded();
   }
 
-  private loadPublicHolidayAfterRefresh(publicHolidayId: string): void {
-    this.isSaving = true;
-    this.subscriptions.add(
-      this.publicHolidayUtils
-        .getPublicHolidayById(Number(publicHolidayId))
-        .subscribe({
-          next: (publicHoliday) => {
-            if (publicHoliday) {
-              this.publicHolidayStateService.setPublicHolidayToEdit(
-                publicHoliday
-              );
-            }
-            this.isSaving = false;
-          },
-          error: () => {
-            this.isSaving = false;
-          },
-        })
-    );
+  private loadPublicHolidayAfterRefresh(): void {
+    const savedPublicHolidayId = localStorage.getItem('selectedPublicHolidayId');
+    if (savedPublicHolidayId) {
+      this.isSaving = true;
+      this.subscriptions.add(
+        this.publicHolidayUtils
+          .getPublicHolidayById(Number(savedPublicHolidayId))
+          .subscribe({
+            next: (publicHoliday) => {
+              if (publicHoliday) {
+                this.publicHolidayStateService.setPublicHolidayToEdit(publicHoliday);
+              }
+              this.isSaving = false;
+              localStorage.removeItem('selectedPublicHolidayId');
+            },
+            error: () => {
+              this.isSaving = false;
+              localStorage.removeItem('selectedPublicHolidayId');
+            },
+          })
+      );
+    }
   }
 
   get hasChanges(): boolean {
-    return this.editPublicHolidayForm.dirty || this.statesModified|| this.yearsModified;
+    return this.editPublicHolidayForm.dirty || this.statesModified || this.yearsModified;
   }
 
   onSubmit(): void {
@@ -244,6 +250,7 @@ export class EditHolidayComponent implements OnInit {
   }
 
   private handleSaveSuccess(): void {
+    this.isSaving = false;
     this.commonMessageService.showEditSucessfullMessage();
     this.statesModified = false; 
     this.yearsModified = false; 
@@ -252,22 +259,25 @@ export class EditHolidayComponent implements OnInit {
   }
 
   private handleError(err: any): void {
+    this.isSaving = false;
     if (err instanceof OccError) { 
       this.showOCCErrorModalPublicHoliday = true;
       this.occErrorHolidayType = err.errorType;
+      this.commonMessageService.showErrorEditMessage();
+    } else {
+      this.commonMessageService.showErrorEditMessage();
     }
-    this.handleSaveError(err);
   }
 
   private handleSaveError(error: any): void {
-    console.error('Error saving title:', error);
-   this.commonMessageService.showErrorEditMessage();
+    console.error('Error saving holiday:', error);
     this.isSaving = false;
   }
 
   get bundeslandsArray(): FormArray {
     return this.holidayForm.get('bundeslands') as FormArray;
   }
+
   getControl(index: number): FormControl {
     return this.bundeslandsArray.at(index) as FormControl;
   }
@@ -282,17 +292,13 @@ export class EditHolidayComponent implements OnInit {
     this.yearsModified = false;
   }
 
-  onRefresh(): void {
+  public onRefresh(): void {
     if (this.currentPublicHoliday?.id) {
       localStorage.setItem(
         'selectedPublicHolidayId',
         this.currentPublicHoliday.id.toString()
       );
-      window.location.reload();
-    }
-
-    if (this.selectedPublicHolidayId) {
-      this.loadYears(this.selectedPublicHolidayId);
+      globalThis.location.reload();
     }
   }
 
