@@ -87,6 +87,7 @@ export class CountryModalComponent implements OnInit {
   private handleEntityRelatedError(error: any): void {
     if(error.error?.message?.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+      this.closeModal();
     }
   }
   private handleOccDeleteError(error: any): void {
