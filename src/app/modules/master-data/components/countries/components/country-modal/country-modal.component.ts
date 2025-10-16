@@ -126,14 +126,7 @@ export class CountryModalComponent implements OnInit {
     
   }
   private shouldPreventSubmission(): boolean {
-    //console.log(this.createCountryForm.invalid, this.isLoading);
-    //return this.createCountryForm.invalid || this.isLoading;
-  const nameValue = this.createCountryForm.get('name')?.value?.trim();
-  const abbreviationValue = this.createCountryForm.get('abbreviation')?.value?.trim();
-  
-  const hasAtLeastOneField = !!nameValue || !!abbreviationValue;
-  
-  return this.createCountryForm.invalid || this.isLoading || !hasAtLeastOneField;
+    return this.createCountryForm.invalid || this.isLoading || this.isSaveDisabled;
   }
 
   private prepareForSubmission(): void {
