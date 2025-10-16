@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { EmployeeCategoryStateService } from '../../utils/employee-category-state.service';
