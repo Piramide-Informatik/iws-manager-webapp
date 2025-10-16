@@ -63,7 +63,7 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
 
   loadColHeadersTermsPayment(): void {
     this.columsHeaderFieldTermsPayment = [
-      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERMS_OF_PAYMENT')) },
+      { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERMS_OF_PAYMENT')), useSameAsEdit: true },
       { field: 'deadline', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERM_OF_PAYMENT')), customClasses: ['align-right'] },
     ];
   }
