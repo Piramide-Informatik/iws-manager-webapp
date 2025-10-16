@@ -4,9 +4,11 @@
     "CUSTOMER": "Cliente - ",
     "NEW_CUSTOMER": "Nuevo Cliente",
     "CUSTOMERS": {
+      "BASIC_CONTRACTS": " - Contratos Básicos",
       "CONTRACTORS": " - Contratistas",
       "DETAILS": " - Detalles",
-      "EMPLOYEES": " - Empleados"
+      "EMPLOYEES": " - Empleados",
+      "ORDERS": " - Pedidos"
     },
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",

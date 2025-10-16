@@ -3,9 +3,11 @@
     "CUSTOMER_OVERVIEW": "Customer Overview",
     "CUSTOMER": "Customer - ",
     "CUSTOMERS": {
+      "BASIC_CONTRACTS": " - Basic Contracts",
       "CONTRACTORS": " - Contractors",
       "DETAILS": " - Details",
-      "EMPLOYEES": " - Employees"
+      "EMPLOYEES": " - Employees",
+      "ORDERS": " - Orders"
     },
     "NEW_CUSTOMER": "New Customer",
     "MASTER_DATA": {

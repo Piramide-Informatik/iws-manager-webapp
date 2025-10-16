@@ -3,9 +3,11 @@
     "CUSTOMER_OVERVIEW": "Kundenübersicht",
     "CUSTOMER": "kunde - ",
     "CUSTOMERS": {
+      "BASIC_CONTRACTS": " - Rahmenverträge",
       "CONTRACTORS": " - Auftragnehmer",
       "DETAILS": " - Details",
-      "EMPLOYEES": " - Mitarbeiter"
+      "EMPLOYEES": " - Mitarbeiter",
+      "ORDERS": " - Aufträge"
     },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
