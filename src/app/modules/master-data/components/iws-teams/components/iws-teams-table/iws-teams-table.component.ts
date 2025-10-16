@@ -154,15 +154,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
       case 'MESSAGE.DELETE_FAILED':
         this.commonMessageService.showErrorDeleteMessage();        
         break;
-    
-      default:
-        break;
     }
-    // this.messageService.add({
-    //   severity: message.severity,
-    //   summary: this.translate.instant(_(message.summary)),
-    //   detail: this.translate.instant(_(message.detail)),
-    // });
   }
 
   createTeamIws(event: { status: 'success' | 'error' }): void {
