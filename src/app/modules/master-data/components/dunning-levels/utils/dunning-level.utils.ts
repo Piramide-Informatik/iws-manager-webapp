@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
 import { ReminderLevelService } from '../../../../../Services/reminder-level.service';
 import { ReminderLevel } from '../../../../../Entities/reminderLevel';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for reminder-level-related business logic and operations.
@@ -65,11 +66,10 @@ export class DunningLevelUtils {
       take(1),
       switchMap((currentReminderLevel) => {
         if (!currentReminderLevel) {
-          return throwError(() => new Error('Reminder Level not found'));
+          return throwError(() => createNotFoundUpdateError('AbsenceType'));
         }
-
         if (currentReminderLevel.version !== reminderLevel.version) {
-          return throwError(() => new Error('Conflict detected: reminder Level version mismatch'));
+          return throwError(() => createUpdateConflictError('AbsenceType'));
         }
 
         return this.reminderLevelService.updateReminderLevel(reminderLevel);

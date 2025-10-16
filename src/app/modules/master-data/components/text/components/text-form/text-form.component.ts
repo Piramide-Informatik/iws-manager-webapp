@@ -5,6 +5,7 @@ import { TextUtils } from '../../utils/text-utils';
 import { TextStateService } from '../../utils/text-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-text-form',
@@ -22,6 +23,7 @@ export class TextFormComponent implements OnInit, OnDestroy {
   public showOCCErrorModalText = false;
   public isLoading: boolean = false;
   public editTextForm!: FormGroup;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   ngOnInit(): void {
     this.editTextForm = new FormGroup({
@@ -59,8 +61,9 @@ export class TextFormComponent implements OnInit, OnDestroy {
       },
       error: (error: Error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: Text has been updated by another user'){
+        if(error instanceof OccError){
           this.showOCCErrorModalText = true;
+          this.occErrorType = error.errorType;
         }else{
           this.commonMessageService.showErrorEditMessage();
         }

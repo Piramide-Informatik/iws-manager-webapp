@@ -27,7 +27,7 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalChance"
-  (close)="showOCCErrorModalChance = false"
-  [useEmitter]="true"
-  (refresh)="onRefresh()">
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalChance = false">
 </app-occ-error-modal>

@@ -79,6 +79,10 @@ export class FundingProgramsTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCloseModal() {
+    this.fundingProgramModalComponent.closeModal(); 
+  }
+
   onDialogShow() {
     if (this.modalType === 'create' && this.fundingProgramModalComponent) {
       this.fundingProgramModalComponent.focusInputIfNeeded();

@@ -3,6 +3,7 @@ import { Observable, catchError, map, take, throwError, switchMap, of } from 'rx
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { InvoiceType } from '../../../../../Entities/invoiceType';
 import { InvoiceTypeService } from '../../../../../Services/invoice-type.service';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for invoiceType-related business logic and operations.
@@ -110,16 +111,15 @@ export class InvoiceTypeUtils {
 
     return this.invoiceTypeService.getInvoiceTypeById(invoiceType.id).pipe(
       take(1),
-      map((currentInvoiceType) => {
+      switchMap((currentInvoiceType) => {
         if (!currentInvoiceType) {
-          throw new Error('Invoice Type not found');
+            return throwError(() => createNotFoundUpdateError('BillingMethod'));
         }
         if (currentInvoiceType.version !== invoiceType.version) {
-          throw new Error('Version conflict: Invoice Type has been updated by another user');
+            return throwError(() => createUpdateConflictError('BillingMethod'));
         }
-        return invoiceType;
+        return this.invoiceTypeService.updateInvoiceType(invoiceType);
       }),
-      switchMap((validatedInvoiceType: InvoiceType) => this.invoiceTypeService.updateInvoiceType(validatedInvoiceType)),
       catchError((err) => {
         console.error('Error updating invoice type:', err);
         return throwError(() => err);

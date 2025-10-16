@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { StatesStateService } from '../../utils/states.state.service.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-state-modal',
@@ -30,7 +31,8 @@ export class StateModalComponent implements OnInit, OnChanges {
   
   isStateLoading = false;
   errorStateMessage: string | null = null;
-
+  showOCCErrorModalState = false;
+  occErrorStateType: OccErrorType = 'UPDATE_UNEXISTED';
   readonly stateForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -78,6 +80,15 @@ export class StateModalComponent implements OnInit, OnChanges {
         },
         error: (error) => {
           this.isStateLoading = false;
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalState = true;
+            this.occErrorStateType = 'DELETE_UNEXISTED';
+          }
+          const errorStateMessage = error.error.message ?? '';
+          if (errorStateMessage.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorStateMessage);
+            return;
+          }
           this.errorStateMessage = error.message ?? 'Failed to delete state';
           console.error('Delete error:', error);
           this.confirmStateDelete.emit({

@@ -5,6 +5,7 @@ import { InvoiceTypeStateService } from '../../utils/invoice-type-state.service'
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
 import { InvoiceType } from '../../../../../../Entities/invoiceType';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-billing-methods-form',
@@ -22,6 +23,7 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
   public showOCCErrorModalInvoice = false;
   public isLoading: boolean = false;
   billingMethodForm!: FormGroup;
+  public occErrorBillingMethodType: OccErrorType = 'UPDATE_UPDATED';
 
   constructor(){ }
 
@@ -59,12 +61,11 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
       },
       error: (error: Error) => {
         this.isLoading = false;
-        if(error.message === 'Version conflict: Invoice Type has been updated by another user'){
+        if (error instanceof OccError) { 
           this.showOCCErrorModalInvoice = true;
-          this.commonMessageService.showConflictMessage();
-        }else{
-          this.commonMessageService.showErrorEditMessage();
+          this.occErrorBillingMethodType = error.errorType;
         }
+        this.commonMessageService.showErrorEditMessage();
       }
     });
   }

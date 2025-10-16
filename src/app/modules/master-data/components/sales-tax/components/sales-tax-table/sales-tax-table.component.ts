@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription, combineLatest, map, startWith, switchMap } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
@@ -11,6 +11,7 @@ import { VatStateService } from '../../utils/vat-state.service';
 import { VatRateUtils } from '../../utils/vat-rate-utils';
 import { Column } from '../../../../../../Entities/column';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { SalesTaxModalComponent } from '../sales-tax-modal/sales-tax-modal.component';
 
 @Component({
   selector: 'app-sales-tax-table',
@@ -24,6 +25,7 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
   private readonly salestTaxService = inject(VatService);
   private readonly salesTaxStateService = inject(VatStateService);
   private readonly vatRateUtils = inject(VatRateUtils);
+  @ViewChild('vatModal') vatModal!: SalesTaxModalComponent;
   @Input() isEdited: boolean = false;
   @Input() vatRateIsEdited: boolean = false;
   salesTaxesColumns: Column[] = [];
@@ -136,23 +138,41 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
     this.isVisibleModal = true;
   }
 
+  onCloseModal(): void {
+    this.vatModal.closeModal();
+  }
 
   onCreateVat(event: { created?: Vat, status: 'success' | 'error' }): void {
     if (event.created && event.status === 'success') {
       this.refreshTrigger$.next()
+      const sub = this.salesTaxUtils.loadInitialData().subscribe();
+      this.langSalesTaxSubscription.add(sub);
+      this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
-  onDeleteVat(event: { status: 'success' | 'error', error?: Error }): void {
+  private prepareTableData() {
+    if (this.salesTaxesValues().length > 0) {
+      this.salesTaxesColumns = [
+        { field: 'name', header: 'Sales Tax' }
+      ];
+    }
+  }
+
+  onDeleteVat(event: { status: 'success' | 'error', error?: any }): void {
     if (event.status === 'success') {
       this.refreshTrigger$.next()
       this.salesTaxStateService.clearVat();
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (event.status === 'error') {
+      if (event.error.error.message.includes('foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
+      } else {
       this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 

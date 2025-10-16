@@ -1,9 +1,20 @@
 import { inject } from '@angular/core';
-import { Observable, catchError, map, of, switchMap, take, throwError } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  map,
+  of,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
 import { CountryService } from '../../../../../Services/country.service';
 import { Country } from '../../../../../Entities/country';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
-
+import {
+  createNotFoundUpdateError,
+  createUpdateConflictError,
+} from '../../../../shared/utils/occ-error';
 /**
  * Utility class for country-related business logic and operations.
  * Works with CountryService's reactive signals while providing additional functionality.
@@ -23,7 +34,7 @@ export class CountryUtils {
     }
 
     return this.countryService.getCountryById(id).pipe(
-      catchError(err => {
+      catchError((err) => {
         return throwError(() => new Error('Failed to load country'));
       })
     );
@@ -34,16 +45,17 @@ export class CountryUtils {
    * @param name - Name for the new country
    * @returns Observable that completes when country is created
    */
-  createNewCountry(nameC: string, labelC: string, isDefaultC: boolean): Observable<Country> {
-    if (!nameC?.trim()) {
-      return throwError(() => new Error('Country name cannot be empty'));
-    }
+  createNewCountry(
+    nameC: string,
+    labelC: string,
+    isDefaultC: boolean
+  ): Observable<Country> {
 
     return this.countryService.addCountry({
-        name: nameC.trim(),
-        label: labelC.trim(),
-        isDefault: isDefaultC
-      });
+      name: nameC.trim(),
+      label: labelC.trim(),
+      isDefault: isDefaultC,
+    });
   }
 
   /**
@@ -53,10 +65,10 @@ export class CountryUtils {
    */
   countryExists(name: string): Observable<boolean> {
     return this.countryService.getAllCountries().pipe(
-      map(countries => countries.some(
-        c => c.name.toLowerCase() === name.toLowerCase()
-      )),
-      catchError(err => {
+      map((countries) =>
+        countries.some((c) => c.name.toLowerCase() === name.toLowerCase())
+      ),
+      catchError((err) => {
         return throwError(() => new Error('Failed to check country existence'));
       })
     );
@@ -68,8 +80,10 @@ export class CountryUtils {
    */
   getCountriesSortedByName(): Observable<Country[]> {
     return this.countryService.getAllCountries().pipe(
-      map(countries => [...countries].sort((a, b) => a.name.localeCompare(b.name))),
-      catchError(err => {
+      map((countries) =>
+        [...countries].sort((a, b) => a.name.localeCompare(b.name))
+      ),
+      catchError((err) => {
         return throwError(() => new Error('Failed to sort countries'));
       })
     );
@@ -80,7 +94,7 @@ export class CountryUtils {
    * @returns Observable that completes when refresh is done
    */
   refreshCountries(): Observable<void> {
-    return new Observable<void>(subscriber => {
+    return new Observable<void>((subscriber) => {
       this.countryService.refreshCountries();
       subscriber.next();
       subscriber.complete();
@@ -88,22 +102,12 @@ export class CountryUtils {
   }
 
   /**
- * Deletes a country by ID and updates the internal countries signal.
- * @param id - ID of the country to delete
- * @returns Observable that completes when the deletion is done
- */
+   * Deletes a country by ID and updates the internal countries signal.
+   * @param id - ID of the country to delete
+   * @returns Observable that completes when the deletion is done
+   */
   deleteCountry(id: number): Observable<void> {
-    return this.checkCountryUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.countryService.deleteCountry(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.countryService.deleteCountry(id);
   }
 
   /**
@@ -113,30 +117,32 @@ export class CountryUtils {
    */
   private checkCountryUsage(id: number): Observable<boolean> {
     return this.customerUtils.getAllCustomers().pipe(
-      map(customers => customers.some(customer => customer.country?.id === id)),
+      map((customers) =>
+        customers.some((customer) => customer.country?.id === id)
+      ),
       catchError(() => of(false))
     );
   }
 
   /**
- * Updates a country by ID and updates the internal countries signal.
- * @param country - Country object with updated data
- * @returns Observable that completes when the update is done
- */
+   * Updates a country by ID and updates the internal countries signal.
+   * @param country - Country object with updated data
+   * @returns Observable that completes when the update is done
+   */
   updateCountry(country: Country): Observable<Country> {
-    if(!country.id) {
+    if (!country.id) {
       return throwError(() => new Error('Invalid country data'));
     }
 
     return this.countryService.getCountryById(country.id).pipe(
       take(1),
       switchMap((currentCountry) => {
-        if(!currentCountry) {
-          return throwError(() => new Error('Country not found'));
+        if (!currentCountry) {
+          return throwError(() => createNotFoundUpdateError('Country'));
         }
 
         if (currentCountry.version !== country.version) {
-          return throwError(() => new Error('Conflict detected: country version mismatch'));
+          return throwError(() => createUpdateConflictError('Country'));
         }
 
         return this.countryService.updateCountry(country);

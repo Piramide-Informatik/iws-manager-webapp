@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CountryUtils } from '../../utils/country-util';
 import { of } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-country-modal',
@@ -23,17 +24,18 @@ export class CountryModalComponent implements OnInit {
   
   isLoading = false;
   errorMessage: string | null = null;
+  public showOCCErrorModalCountry = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   readonly createCountryForm = new FormGroup({
     name: new FormControl('', [
-      Validators.required,
+      
       Validators.minLength(2),
       Validators.maxLength(50)
     ]),
     abbreviation: new FormControl('', [
-      Validators.required,
       Validators.maxLength(10)
     ]),
     isStandard: new FormControl(false)
@@ -73,16 +75,26 @@ export class CountryModalComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message ?? 'Failed to delete country';
-          console.error('Delete error:', error);
+          this.handleEntityRelatedError(error);
+          this.handleOccDeleteError(error);
           this.confirmDelete.emit({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
             detail: this.errorMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
           });
-          this.closeModal();
         }
       });
+    }
+  }
+  private handleEntityRelatedError(error: any): void {
+    if(error.error?.message?.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    }
+  }
+  private handleOccDeleteError(error: any): void {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalCountry = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
   private handleCountryExistence(
@@ -98,12 +110,22 @@ export class CountryModalComponent implements OnInit {
       this.isLoading = false;
       return;
     }
+    // Validación de campos vacíos
+  if (!name?.trim() && !label?.trim()) {
+    this.isLoading = false;
+    this.errorMessage = 'COUNTRY.ERROR.EMPTY_FIELDS';
+    this.commonMessageService.showErrorCreatedMessage();
+    this.handleClose(); // cerrar modal si quieres
+    return;
+  }
     this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
       next: () => {
         this.commonMessageService.showCreatedSuccesfullMessage();
       },
       error: () => {
         this.commonMessageService.showErrorCreatedMessage();
+        this.isLoading = false;
+        this.handleClose();
       },
       complete: () => {
         this.countryCreated.emit();
@@ -114,6 +136,7 @@ export class CountryModalComponent implements OnInit {
     
   }
   private shouldPreventSubmission(): boolean {
+    console.log(this.createCountryForm.invalid, this.isLoading);
     return this.createCountryForm.invalid || this.isLoading;
   }
 

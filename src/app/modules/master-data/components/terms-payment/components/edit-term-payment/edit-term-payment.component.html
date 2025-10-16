@@ -24,6 +24,7 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaPay"
+  [errorType]="occErrorTermPaymentType"
   (close)="showOCCErrorModaPay = false"
   [useEmitter]="true"
   (refresh)="onRefresh()">

@@ -51,6 +51,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   dataKeys = ['name','teamLeader'];
 
   @ViewChild('dt2') dt2!: Table;
+  @ViewChild('iwsTeamsModal') iwsTeamsModal!: IwsTeamsModalComponent;
   private langSubscription!: Subscription;
 
   constructor(
@@ -120,6 +121,10 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     if (this.modalType === 'create' && this.iwsTeamsModalComponent) {
       this.iwsTeamsModalComponent.focusInputIfNeeded();
     }
+  }
+
+  onClose() {
+    this.iwsTeamsModal.onCancel();
   }
   onModalVisibilityChange(visible: boolean): void {
     this.visibleModal = visible;

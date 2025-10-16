@@ -2,6 +2,7 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
 import { ProjectStatus} from  '../../../../../Entities/projectStatus';
 import { ProjectStatusService } from '../../../../../Services/project-status.service';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectStatusUtils {
@@ -97,17 +98,7 @@ export class ProjectStatusUtils {
 
     //Deletes a projectStatus by ID
     deleteProjectStatus(id: number): Observable<void> {
-        return this.checkProjectStatusUsage(id).pipe(
-            switchMap(isUsed => {
-                if (isUsed) {
-                    return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-                }
-                return this.projectStatusService.deleteProjectStatus(id);
-            }),
-            catchError(error => {
-                return throwError(() => error);
-            })
-        );
+        return this.projectStatusService.deleteProjectStatus(id);
     }
     //Checks if a projectStatus is used by any entity
     private checkProjectStatusUsage(idProjectStatus: number): Observable<boolean> {
@@ -122,19 +113,15 @@ export class ProjectStatusUtils {
         }
         return this.projectStatusService.getProjectStatusById(projectStatus.id).pipe(
             take(1),
-            map((currentProjectStatus) => {
+            switchMap((currentProjectStatus) => {
+                console.log('Current ProjectStatus from server:', currentProjectStatus);
                 if (!currentProjectStatus) {
-                    throw new Error('ProjectStatus not found');
+                    return throwError(() => createNotFoundUpdateError('ProjectStatus'));
                 }
                 if (currentProjectStatus.version !== projectStatus.version) {
-                    throw new Error('Version conflict: ProjectStatus has been updated by another user');
+                    return throwError(() => createUpdateConflictError('ProjectStatus'));
                 }
-                return projectStatus;
-            }),
-            switchMap((validatedProjectStatus: ProjectStatus) => this.projectStatusService.updateProjectStatus(validatedProjectStatus)),
-            catchError((err) => {
-                console.error('Error updating projectStatus:', err);
-                return throwError(() => err);
+                return this.projectStatusService.updateProjectStatus(projectStatus);
             })
         );
     }

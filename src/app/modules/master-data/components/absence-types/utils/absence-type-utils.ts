@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, take, throwError, switchMap, of } from 'rxjs';
 import { AbsenceTypeService } from '../../../../../Services/absence-type.service';
 import { AbsenceType } from '../../../../../Entities/absenceType';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for absenceType-related business logic and operations.
@@ -124,16 +125,15 @@ export class AbsenceTypeUtils {
 
     return this.absenceTypeService.getAbsenceTypeById(absenceType.id).pipe(
       take(1),
-      map((currentAbsenceType) => {
+      switchMap((currentAbsenceType) => {
         if (!currentAbsenceType) {
-          throw new Error('absence type not found');
+          return throwError(() => createNotFoundUpdateError('AbsenceType'));
         }
         if (currentAbsenceType.version !== absenceType.version) {
-          throw new Error('Version conflict: absence type has been updated by another user');
+          return throwError(() => createUpdateConflictError('AbsenceType'));
         }
-        return absenceType;
+        return this.absenceTypeService.updateAbsenceType(absenceType);
       }),
-      switchMap((validatedAbsenceType: AbsenceType) => this.absenceTypeService.updateAbsenceType(validatedAbsenceType)),
       catchError((err) => {
         console.error('Error updating absence type:', err);
         return throwError(() => err);
