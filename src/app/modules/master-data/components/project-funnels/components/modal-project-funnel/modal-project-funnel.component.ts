@@ -5,7 +5,6 @@ import { Promoter } from '../../../../../../Entities/promoter';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CountryUtils } from '../../../countries/utils/country-util';
 import { Country } from '../../../../../../Entities/country';
-import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 

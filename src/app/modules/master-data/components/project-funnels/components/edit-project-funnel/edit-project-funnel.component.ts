@@ -15,7 +15,6 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { Subscription } from 'rxjs';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { Country } from '../../../../../../Entities/country';
-import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
