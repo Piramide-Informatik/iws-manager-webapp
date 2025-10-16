@@ -136,8 +136,6 @@ export class EmployeeQualificationTableComponent implements OnInit, OnDestroy {
       const sub = this.employeeCategoryService.loadInitialData().subscribe();
       this.langSubscription.add(sub);
       this.prepareTableData();
-    } else if (event.status === 'error') {
-      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 
