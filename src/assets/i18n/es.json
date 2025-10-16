@@ -8,7 +8,11 @@
       "CONTRACTORS": " - Contratistas",
       "DETAILS": " - Detalles",
       "EMPLOYEES": " - Empleados",
-      "ORDERS": " - Pedidos"
+      "EMPLOYMENT_CONTRACTS": " - Contratos Laborales",
+      "ORDERS": " - Pedidos",
+      "PROJECTS": " - Proyectos",
+      "RECEIVABLES": " - Cuentas por Cobrar",
+      "SUBCONTRACTS": " - Subcontratos"
     },
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",

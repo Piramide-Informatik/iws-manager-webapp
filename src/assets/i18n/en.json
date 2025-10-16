@@ -3,11 +3,15 @@
     "CUSTOMER_OVERVIEW": "Customer Overview",
     "CUSTOMER": "Customer - ",
     "CUSTOMERS": {
-      "BASIC_CONTRACTS": " - Basic Contracts",
+      "BASIC_CONTRACTS": " - Framework Agreements",
       "CONTRACTORS": " - Contractors",
       "DETAILS": " - Details",
       "EMPLOYEES": " - Employees",
-      "ORDERS": " - Orders"
+      "EMPLOYMENT_CONTRACTS": " - Employment Contracts",
+      "ORDERS": " - Orders",
+      "PROJECTS": " - Projects",
+      "RECEIVABLES": " - Receivables",
+      "SUBCONTRACTS": " - Subcontracts"
     },
     "NEW_CUSTOMER": "New Customer",
     "MASTER_DATA": {

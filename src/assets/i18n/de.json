@@ -7,7 +7,11 @@
       "CONTRACTORS": " - Auftragnehmer",
       "DETAILS": " - Details",
       "EMPLOYEES": " - Mitarbeiter",
-      "ORDERS": " - Aufträge"
+      "EMPLOYMENT_CONTRACTS": " - Arbeitsverträge",
+      "ORDERS": " - Aufträge",
+      "PROJECTS": " - Projekte",
+      "RECEIVABLES": " - Forderungen",
+      "SUBCONTRACTS": " - Unteraufträge"
     },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
