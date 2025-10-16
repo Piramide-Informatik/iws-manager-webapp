@@ -31,12 +31,11 @@ export class CountryModalComponent implements OnInit {
 
   readonly createCountryForm = new FormGroup({
     name: new FormControl('', [
-      Validators.required,
+      
       Validators.minLength(2),
       Validators.maxLength(50)
     ]),
     abbreviation: new FormControl('', [
-      Validators.required,
       Validators.maxLength(10)
     ]),
     isStandard: new FormControl(false)
@@ -111,12 +110,22 @@ export class CountryModalComponent implements OnInit {
       this.isLoading = false;
       return;
     }
+    // Validación de campos vacíos
+  if (!name?.trim() && !label?.trim()) {
+    this.isLoading = false;
+    this.errorMessage = 'COUNTRY.ERROR.EMPTY_FIELDS';
+    this.commonMessageService.showErrorCreatedMessage();
+    this.handleClose(); // cerrar modal si quieres
+    return;
+  }
     this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
       next: () => {
         this.commonMessageService.showCreatedSuccesfullMessage();
       },
       error: () => {
         this.commonMessageService.showErrorCreatedMessage();
+        this.isLoading = false;
+        this.handleClose();
       },
       complete: () => {
         this.countryCreated.emit();
@@ -127,6 +136,7 @@ export class CountryModalComponent implements OnInit {
     
   }
   private shouldPreventSubmission(): boolean {
+    console.log(this.createCountryForm.invalid, this.isLoading);
     return this.createCountryForm.invalid || this.isLoading;
   }
 

@@ -50,9 +50,6 @@ export class CountryUtils {
     labelC: string,
     isDefaultC: boolean
   ): Observable<Country> {
-    if (!nameC?.trim()) {
-      return throwError(() => new Error('Country name cannot be empty'));
-    }
 
     return this.countryService.addCountry({
       name: nameC.trim(),

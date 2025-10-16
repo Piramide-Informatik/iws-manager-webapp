@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { RouterUtilsService } from '../../../../router-utils.service';
@@ -10,6 +10,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { CostType } from '../../../../../../Entities/costType';
 import { CostTypeStateService } from '../../utils/cost-type-state.service';
 import { Column } from '../../../../../../Entities/column';
+import { ModalCostComponent } from '../modal-cost/modal-cost.component';
 
 @Component({
   selector: 'app-costs-table',
@@ -21,6 +22,7 @@ export class CostsTableComponent implements OnInit, OnDestroy {
   private readonly costTypeUtils = new CostTypeUtils();
   private readonly costTypeService = inject(CostTypeService);
   private readonly costTypeStateService = inject(CostTypeStateService);
+  @ViewChild('costTypeModal') costTypeModalDialog!: ModalCostComponent;
   columnsHeaderFieldCosts: Column[] = [];
   userCostTablePreferences: UserPreference = {};
   tableKey: string = 'CostTable'
@@ -59,6 +61,10 @@ export class CostsTableComponent implements OnInit, OnDestroy {
       this.routerUtils.reloadComponent(true);
       this.userCostTablePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columnsHeaderFieldCosts);
     });
+  }
+
+  onCloseModal(): void {
+    this.costTypeModalDialog.closeModal();
   }
 
   onUserCostTablePreferencesChanges(userCostTablePreferences: any) {
