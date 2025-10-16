@@ -37,11 +37,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
     this.initForm();
     this.setupStateSubscription();
     // Check if we need to load a state after page refresh
-    const savedStateId = localStorage.getItem('selectedStateId');
-    if (savedStateId) {
-      this.loadStateAfterRefresh(savedStateId);
-      localStorage.removeItem('selectedStateId');
-    }
+    this.loadStateAfterRefresh();
   }
 
   ngOnDestroy(): void {
@@ -69,27 +65,34 @@ export class StateFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  private loadStateAfterRefresh(stateId: string): void {
-    this.isSaving = true;
-    this.subscriptions.add(
-      this.stateServiceUtils.getStateById(Number(stateId)).subscribe({
-        next: (state) => {
-          if (state) {
-            this.statesStateService.setStateToEdit(state);
+  // MODIFICADO: Mejorar el manejo de localStorage
+  private loadStateAfterRefresh(): void {
+    const savedStateId = localStorage.getItem('selectedStateId');
+    if (savedStateId) {
+      this.isSaving = true;
+      this.subscriptions.add(
+        this.stateServiceUtils.getStateById(Number(savedStateId)).subscribe({
+          next: (state) => {
+            if (state) {
+              this.statesStateService.setStateToEdit(state);
+            }
+            this.isSaving = false;
+            localStorage.removeItem('selectedStateId');
+          },
+          error: () => {
+            this.isSaving = false;
+            localStorage.removeItem('selectedStateId');
           }
-          this.isSaving = false;
-        },
-        error: () => {
-          this.isSaving = false;
-        }
-      })
-    );
+        })
+      );
+    }
   }
 
-  onRefresh(): void {
+  // MODIFICADO: Usar globalThis.location.reload() para consistencia
+  public onRefresh(): void {
     if (this.state?.id) {
       localStorage.setItem('selectedStateId', this.state.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
@@ -118,19 +121,23 @@ export class StateFormComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveStateSuccess(state: State): void {
+    this.isSaving = false;
     this.commonMessageService.showEditSucessfullMessage();
     this.statesStateService.setStateToEdit(null);
     this.clearForm();
   }
 
+  // MODIFICADO: Mejorar manejo de errores OCC
   private handleSaveStateError(error: any): void {
-    console.error('Error saving state:', error);
+    this.isSaving = false;
     if (error instanceof OccError) { 
       this.showOCCErrorModaState = true;
       this.occErrorStateType = error.errorType;
+      this.commonMessageService.showErrorEditMessage(); // Toast para error OCC
+    } else {
+      console.error('Error saving state:', error);
+      this.commonMessageService.showErrorEditMessage();
     }
-    this.commonMessageService.showErrorEditMessage();
-    this.isSaving = false;
   }
 
   private markAllFieldsAsTouched(): void {

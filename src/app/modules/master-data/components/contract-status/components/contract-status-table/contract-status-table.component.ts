@@ -8,8 +8,8 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { ContractStatusUtils } from '../../utils/contract-status-utils';
 import { ContractStatusService } from '../../../../../../Services/contract-status.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { ContractStatus } from '../../../../../../Entities/contractStatus';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
-
 
 @Component({
   selector: 'app-contract-status-table',
@@ -29,12 +29,15 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   tableKey: string = 'ContractStatus'
   dataKeys = ['status'];
   visibleContractStatusModal: boolean = false;
-  showOCCErrorModalContractStatus = false;
-  occErrorContractStatusType: OccErrorType = 'UPDATE_UNEXISTED';
   modalContractStatusType: 'create' | 'delete' = 'create';
   selectedContractStatus!: any;
   loadCreateDelete: boolean = false;
-  @Output() contractStatusToEdit = new EventEmitter<any>();
+  
+  // Variables OCC para DELETE
+  public showOCCErrorModalDelete = false;
+  public occErrorDeleteType: OccErrorType = 'DELETE_UNEXISTED';
+  
+  @Output() contractStatusToEdit = new EventEmitter<ContractStatus | null>();
   @Output() loadEdit = new EventEmitter<boolean>();
   @ViewChild('dt') dt!: Table;
 
@@ -92,15 +95,19 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.loadCreateDelete = false;
-        if (err instanceof OccError || err?.message.includes('404')) {
-          this.showOCCErrorModalContractStatus = true;
-          this.occErrorContractStatusType = 'DELETE_UNEXISTED';
-        }
-        const errorAbscenceTypeMessage = err.error.message ?? '';
-        if (errorAbscenceTypeMessage.includes('foreign key constraint fails')) {
-          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorAbscenceTypeMessage);
-        } else {
+        
+        // Manejar error OCC para DELETE
+        if (err instanceof OccError) {
+          this.showOCCErrorModalDelete = true;
+          this.occErrorDeleteType = err.errorType;
           this.commonMessageService.showErrorDeleteMessage();
+        } else {
+          const errorAbscenceTypeMessage = err.error.message ?? '';
+          if (errorAbscenceTypeMessage.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorAbscenceTypeMessage);
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
         }
         this.visibleContractStatusModal = false;
       }
@@ -109,7 +116,6 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
 
   selectContractStatusToEdit(contractStatus: any) {
     this.contractStatusToEdit.emit(contractStatus);
-    localStorage.setItem('currentContractStatusToEdit', contractStatus.id);
   }
 
   editContractStatus(contractStatus: any) {
@@ -122,17 +128,9 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.loadEdit.emit(false);
-        if (err instanceof OccError) { 
-          this.showOCCErrorModalContractStatus = true;
-          this.occErrorContractStatusType = err.errorType;
-        }
         this.commonMessageService.showErrorEditMessage();
-        }
+      }
     })
-  }
-
-  onContractStatusRefresh() {
-    window.location.reload();
   }
 
   onUserContractStatusPreferencesChanges(userContractStatusPreferences: any) {
