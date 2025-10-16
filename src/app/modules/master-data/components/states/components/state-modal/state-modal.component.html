@@ -52,6 +52,8 @@
 </ng-template>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalState"
+  [useEmitter]="occErrorStateType === 'DELETE_UNEXISTED'"
+  (refresh)="onRefresh()"
   [errorType]="occErrorStateType"
   [reloadCurrentPage]="true"
   (close)="showOCCErrorModalState = false">

@@ -5,7 +5,6 @@ import { Promoter } from '../../../../../../Entities/promoter';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CountryUtils } from '../../../countries/utils/country-util';
 import { Country } from '../../../../../../Entities/country';
-import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
@@ -25,7 +24,6 @@ export class ModalProjectFunnelComponent implements OnChanges {
   @Output() createPromoter = new EventEmitter<{created?: Promoter, status: 'success' | 'error'}>();
   @Output() deletePromoter = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('NumInput') NumInput!: InputNumber;
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalPromoter = false;

@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-edit-iws-team',
@@ -33,7 +34,8 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
     private readonly teamIwsStateService: TeamIwsStateService,
     private readonly employeeIwsService: EmployeeIwsService,
     private readonly messageService: MessageService,
-    private readonly translate: TranslateService
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
   leaders: {
@@ -156,11 +158,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
 
   private handleSaveSuccess(savedTeamIws: TeamIws): void {
     this.isSaving = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: this.translate.instant('MESSAGE.SUCCESS'),
-      detail: this.translate.instant('MESSAGE.UPDATE_SUCCESS'),
-    });
+    this.commonMessageService.showEditSucessfullMessage();
     this.teamIwsStateService.clearTeamIws();
     this.resetForm(true);
   }
@@ -171,12 +169,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
       this.showOCCErrorModalTeamIws = true;
       this.occErrorType = err.errorType;
     } else {
-      console.error('Error saving teamIws:', err);
-      this.messageService.add({
-        severity: 'error',
-        summary: this.translate.instant('MESSAGE.ERROR'),
-        detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
-      });
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 
