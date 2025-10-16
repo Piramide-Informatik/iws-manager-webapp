@@ -103,6 +103,8 @@
 </p-card>
 <app-occ-error-modal
     *ngIf="showOCCErrorModaUser"
+    [useEmitter]="occErrorType==='UPDATE_UPDATED'"
+    (refresh)="onRefresh()"
     [errorType]="occErrorType"
     [reloadCurrentPage]="true"
     (close)="showOCCErrorModaUser = false">
