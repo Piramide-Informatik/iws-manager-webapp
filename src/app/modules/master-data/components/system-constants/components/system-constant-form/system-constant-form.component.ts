@@ -40,6 +40,11 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
       valueNum: new FormControl(null),
       valueChar: new FormControl(''),
     });
+     const savedSystemConstantId = localStorage.getItem('selectedSystemConstantId');
+    if (savedSystemConstantId) {
+      this.loadSystemConstantAfterRefresh(savedSystemConstantId);
+      localStorage.removeItem('selectedSystemConstantId');
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -107,4 +112,32 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
       }, 200);
     }
   }
+  public onRefresh(): void {
+  if (this.selectedSystemConstant?.id) {
+    localStorage.setItem(
+      'selectedSystemConstantId',
+      this.selectedSystemConstant.id.toString()
+    );
+    globalThis.location.reload();
+  }
+}
+
+private loadSystemConstantAfterRefresh(systemConstantId: string): void {
+  this.isLoading = true;
+  this.systemConstantUtils
+    .getSystemConstantById(Number(systemConstantId))
+    .subscribe({
+      next: (systemConstant) => {
+        if (systemConstant) {
+          this.selectedSystemConstant = systemConstant;
+          this.editSystemConstantForm.patchValue(systemConstant);
+          this.focusInputIfNeeded();
+        }
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+}
 }
