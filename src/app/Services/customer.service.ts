@@ -111,7 +111,6 @@ export class CustomerService {
                 },
                 error: (err) => {
                     this._error.set('Failed to update customer');
-                    console.error('Error updating customer:', err);
                 }
             })
         )
@@ -133,14 +132,6 @@ export class CustomerService {
                 }
             })
         )
-    }
-
-    // ERROR HANDLING
-    private handleError(error: HttpErrorResponse) {
-        const errorMessage = error.error?.message ??
-            error.statusText ??
-            'Unknown server error';
-        return throwError(() => new Error(errorMessage));
     }
 
     // GET CONTACTS BY CUSTOMER ID
