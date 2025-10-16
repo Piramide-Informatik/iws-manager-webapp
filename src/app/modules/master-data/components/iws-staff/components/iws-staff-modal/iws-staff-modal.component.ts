@@ -58,12 +58,11 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
 
   readonly createEmployeeIwsForm = new FormGroup({
     firstName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
+      Validators.minLength(1),
       Validators.maxLength(50),
     ]),
     lastName: new FormControl('', [
-      Validators.minLength(2),
+      Validators.minLength(1),
       Validators.maxLength(50),
     ]),
     mail: new FormControl('', [Validators.email]),
