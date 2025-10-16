@@ -22,6 +22,8 @@ import { PageTitleService } from '../../../../shared/services/page-title.service
 import { CompanyTypeUtils } from '../../../master-data/components/types-of-companies/utils/type-of-companies.utils';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-list-customers',
@@ -72,7 +74,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
   visibleCustomerModal: boolean = false;
   isLoading = false;
   errorMessage: string = '';
-
+  showOCCErrorModalCustomer = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public customers!: Customer[];
 
   constructor(private readonly commonMessageService: CommonMessagesService) { }
@@ -293,21 +296,16 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isLoadingCustomer = false;
-          this.errorMessage = error.message ?? 'Failed to delete customer';
-          if(error.message.includes('have associated employees') || 
-             error.message.includes('have associated contractors') ||
-             error.message.includes('have associated subcontracts') ||
-             error.message.includes('have associated employment contracts') ||
-             error.message.includes('have associated projects') ||
-             error.message.includes('have associated orders') ||
-             error.message.includes('have associated receivables') ||
-             error.message.includes('have associated invoices') ||
-             error.message.includes('have associated framework agreements')){
-              this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
+          this.visibleCustomerModal = false;
+          if(error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED'){
+            this.showOCCErrorModalCustomer = true;
+            this.occErrorType = 'DELETE_UNEXISTED';
+            this.commonMessageService.showErrorDeleteMessage();
+          } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
           } else {
             this.commonMessageService.showErrorDeleteMessage();
           }
-          console.error('Delete error:', error);
         }
       });
     }
