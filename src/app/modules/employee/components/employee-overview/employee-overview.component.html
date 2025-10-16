@@ -34,3 +34,9 @@
   </p-dialog>
 </div>
 <p-toast/>
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModaEmployee" 
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModaEmployee = false">
+</app-occ-error-modal>
