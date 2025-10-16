@@ -51,6 +51,9 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalDunningLevel"
+  [useEmitter]="occErrorDunningLevelType === 'UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
   [errorType]="occErrorDunningLevelType"
+  [reloadCurrentPage]="true"
   (close)="showOCCErrorModalDunningLevel = false">
 </app-occ-error-modal>

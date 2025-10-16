@@ -4,7 +4,7 @@ import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 import { ContractStatus } from '../../../../../Entities/contractStatus';
 import { ContractStatusService } from '../../../../../Services/contract-status.service';
-import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for contractStatus-related business logic and operations.
@@ -70,12 +70,21 @@ export class ContractStatusUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteContractStatus(id: number): Observable<void> {
-    return this.checkContractStatusUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+    return this.getContractStatusById(id).pipe(
+      take(1),
+      switchMap((currentContractStatus) => {
+        if (!currentContractStatus) {
+          return throwError(() => createNotFoundDeleteError('Contract status'));
         }
-        return this.contractStatusService.deleteContractStatus(id);
+        
+        return this.checkContractStatusUsage(id).pipe(
+          switchMap(isUsed => {
+            if (isUsed) {
+              return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+            }
+            return this.contractStatusService.deleteContractStatus(id);
+          })
+        );
       }),
       catchError(error => {
         return throwError(() => error);
@@ -117,10 +126,10 @@ export class ContractStatusUtils {
       take(1),
       switchMap((currentContractStatus) => {
         if (!currentContractStatus) {
-            return throwError(() => createNotFoundUpdateError('Role'));
+            return throwError(() => createNotFoundUpdateError('Contract status'));
         }
         if (currentContractStatus.version !== contractStatus.version) {
-            return throwError(() => createUpdateConflictError('Role'));
+            return throwError(() => createUpdateConflictError('Contract status'));
         }
         return this.contractStatusService.updateContractStatus(contractStatus);
       }),

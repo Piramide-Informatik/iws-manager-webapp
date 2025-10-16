@@ -3,7 +3,7 @@ import { Observable, catchError, map, of, switchMap, take, throwError } from 'rx
 import { StateService } from '../../../../../Services/state.service';
 import { State } from '../../../../../Entities/state';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
-import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError} from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for state-related business logic and operations.
@@ -95,20 +95,33 @@ export class StateUtils {
   }
 
   /**
- * Deletes a state by ID and updates the internal states signal.
- * @param id - ID of the state to delete
- * @returns Observable that completes when the deletion is done
- */
+   * Deletes a state by ID and updates the internal states signal.
+   * @param id - ID of the state to delete
+   * @returns Observable that completes when the deletion is done
+   */
   deleteState(id: number): Observable<void> {
-    return this.checkStateUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+    return this.getStateById(id).pipe(
+      switchMap((currentState) => {
+        if (!currentState) {
+          return throwError(() => createNotFoundDeleteError('State'));
         }
-
-        return this.stateService.deleteState(id);
+        
+        return this.checkStateUsage(id).pipe(
+          switchMap(isUsed => {
+            if (isUsed) {
+              return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
+            }
+            return this.stateService.deleteState(id);
+          })
+        );
       }),
       catchError(error => {
+        if (error.name === 'OccError') {
+          return throwError(() => error);
+        }
+        if (error.status === 404) {
+          return throwError(() => createNotFoundDeleteError('State'));
+        }
         return throwError(() => error);
       })
     );
@@ -127,10 +140,10 @@ export class StateUtils {
   }
 
   /**
- * Updates a state by ID and updates the internal states signal.
- * @param id - ID of the state to update
- * @returns Observable that completes when the update is done
- */
+   * Updates a state by ID and updates the internal states signal.
+   * @param state - State object to update
+   * @returns Observable that completes when the update is done
+   */
   updateState(state: State): Observable<State> {
     if (!state?.id) {
       return throwError(() => new Error('Invalid state data'));
