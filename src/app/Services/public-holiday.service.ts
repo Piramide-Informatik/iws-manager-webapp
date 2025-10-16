@@ -142,9 +142,9 @@ export class PublicHolidayService {
         );
     }
 
-    getHolidaySequence(): Observable<Number> {
+    getHolidaySequence(): Observable<number> {
         const url = `${this.apiUrl}/next-sequence-no `;
-        return this.http.get<Number>(url, this.httpOptions).pipe(
+        return this.http.get<number>(url, this.httpOptions).pipe(
             tap(() => this._error.set(null)),
             catchError(err => {
                 this._error.set('Failed to fetch next sequence for publicHoliday');

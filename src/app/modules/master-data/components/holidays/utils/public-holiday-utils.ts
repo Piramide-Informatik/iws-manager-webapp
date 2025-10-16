@@ -7,7 +7,6 @@ import {
     createUpdateConflictError, 
     createNotFoundDeleteError 
 } from '../../../../shared/utils/occ-error';
-import { NumberSymbol } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
 export class PublicHolidayUtils {
@@ -75,7 +74,7 @@ export class PublicHolidayUtils {
     }
 
     //Gets next sequence No for public holiday
-    getPublicHolidaysSequenceSort(): Observable<Number> {
+    getPublicHolidaysSequenceSort(): Observable<number> {
         return this.publicHolidayService.getHolidaySequence().pipe(
             catchError(err => {
                 console.error('Error sorting publicHolidays:', err);
