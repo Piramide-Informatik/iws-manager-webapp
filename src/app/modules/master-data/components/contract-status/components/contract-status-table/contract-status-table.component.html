@@ -34,9 +34,11 @@
     </p-dialog>
   </div>
 </div>
+
+<!-- Agregar occ-error-modal para DELETE -->
 <app-occ-error-modal
-  *ngIf="showOCCErrorModalContractStatus"
-  [errorType]="occErrorContractStatusType"
+  *ngIf="showOCCErrorModalDelete"
+  [errorType]="occErrorDeleteType"
   [reloadCurrentPage]="true"
-  (close)="showOCCErrorModalContractStatus = false">
+  (close)="showOCCErrorModalDelete = false">
 </app-occ-error-modal>
