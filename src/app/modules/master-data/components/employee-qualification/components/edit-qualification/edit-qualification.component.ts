@@ -47,7 +47,7 @@ export class EditQualificationComponent implements OnInit {
 
   private initForm(): void {
     this.editQualificationForm = new FormGroup({
-      qualification: new FormControl('', [Validators.required]),
+      qualification: new FormControl(''),
       abbreviation: new FormControl(''),
     });
   }
