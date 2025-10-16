@@ -146,7 +146,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   }
 
   private shouldPreventSubmission(): boolean {
-    return this.createTitleForm.invalid || this.isLoading;
+    return this.createTitleForm.invalid || this.isLoading || this.isSaveDisabled;
   }
 
   private prepareForSubmission(): void {
@@ -186,4 +186,9 @@ export class TitleModalComponent implements OnInit, OnDestroy {
       }, 150);
     }
   }
+
+  get isSaveDisabled(): boolean {
+  const nameValue = this.createTitleForm.get('name')?.value?.trim();  
+  return this.createTitleForm.invalid || this.isLoading || !nameValue;
+}
 }

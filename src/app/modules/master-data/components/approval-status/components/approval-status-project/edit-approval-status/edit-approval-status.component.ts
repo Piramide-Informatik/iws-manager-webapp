@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 import { Subscription } from 'rxjs';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
-import { TranslateService } from '@ngx-translate/core';
 import { ApprovalStatusStateService } from '../../../utils/approval-status-state.service';
 import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../../shared/utils/occ-error';
@@ -15,141 +14,120 @@ import { OccError, OccErrorType } from '../../../../../../shared/utils/occ-error
   styleUrl: './edit-approval-status.component.scss',
 })
 export class EditApprovalStatusComponent implements OnInit, OnDestroy {
-  currentApprovalStatus: ApprovalStatus | null = null;
-  editApprovalStatusForm!: FormGroup;
-  isSaving = false;
-  private readonly subscriptions = new Subscription();
-  public showOCCErrorModalApprovalStatus = false;
-   public occErrorApprovalStatus: OccErrorType = 'UPDATE_UPDATED';
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  
+  public currentApprovalStatus: ApprovalStatus | null = null;
+  public showOCCErrorModalApprovalStatus = false;
+  public isLoading: boolean = false;
+  public occErrorApprovalStatus: OccErrorType = 'UPDATE_UPDATED';
+  
+  editApprovalStatusForm!: FormGroup;
+  private readonly subscriptions = new Subscription();
 
   constructor(
     private readonly approvalStatusUtils: ApprovalStatusUtils,
     private readonly approvalStatusStateService: ApprovalStatusStateService,
-    private readonly commonMessageService: CommonMessagesService,
-    private readonly translate: TranslateService
+    private readonly commonMessageService: CommonMessagesService
   ) { }
 
-  
   ngOnInit(): void {
-    this.initForm();
+    this.editApprovalStatusForm = new FormGroup({
+      status: new FormControl('', [Validators.required]),
+      order: new FormControl(null, [Validators.required]),
+      forProject: new FormControl(false),
+      forNetwork: new FormControl(false),
+    });
+    
     this.setupApprovalStatusSubscription();
-    // Check if we need to load a approval status after page refresh
-    const savedApprovalStatusId = localStorage.getItem('selectedApprovalStatusId');
-    if (savedApprovalStatusId) {
-      this.loadApprovalStatusAfterRefresh(savedApprovalStatusId);
-      localStorage.removeItem('selectedApprovalStatusId');
-    }
+    this.loadApprovalStatusAfterRefresh();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  private initForm(): void {
-    this.editApprovalStatusForm = new FormGroup({
-      status: new FormControl(''),
-      order: new FormControl(null),
-      forProject: new FormControl(false),
-      forNetwork: new FormControl(false),
+  onSubmit(): void {
+    if (this.editApprovalStatusForm.invalid || !this.currentApprovalStatus) return;
+    
+    this.isLoading = true;
+    const updatedApprovalStatus: ApprovalStatus = {
+      ...this.currentApprovalStatus,
+      status: this.editApprovalStatusForm.value.status?.trim(),
+      sequenceNo: this.editApprovalStatusForm.value.order,
+      forProjects: this.editApprovalStatusForm.value.forProject ? 1 : 0,
+      forNetworks: this.editApprovalStatusForm.value.forNetwork ? 1 : 0,
+    };
+
+    this.approvalStatusUtils.updateApprovalStatus(updatedApprovalStatus).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.clearForm();
+        this.commonMessageService.showEditSucessfullMessage();
+      },
+      error: (error: Error) => {
+        this.isLoading = false;
+        if (error instanceof OccError) { 
+          this.showOCCErrorModalApprovalStatus = true;
+          this.occErrorApprovalStatus = error.errorType;
+          this.commonMessageService.showErrorEditMessage();
+        } else {
+          this.commonMessageService.showErrorEditMessage();
+        }
+      }
     });
   }
 
   private setupApprovalStatusSubscription(): void {
     this.subscriptions.add(
-      this.approvalStatusStateService.currentApprovalStatus$.subscribe(status => {
-        this.currentApprovalStatus = status;
-        status ? this.loadApprovalStatusData(status) : this.clearForm();
-      })
-    );
-  }
-
-  private loadApprovalStatusData(status: ApprovalStatus): void {
-      this.editApprovalStatusForm.patchValue({
-        status: status.status,
-        order: status.sequenceNo,
-        forProject: !!status.forProjects,
-        forNetwork: !!status.forNetworks,
-      });
-      this.focusInputIfNeeded();
-    }
-
-  clearForm(): void {
-    this.editApprovalStatusForm.reset();
-    this.currentApprovalStatus = null;
-    this.isSaving = false;
-  }
-
-  private loadApprovalStatusAfterRefresh(approvalStatusId: string): void {
-    this.isSaving = true;
-    this.subscriptions.add(
-      this.approvalStatusUtils.getApprovalStatusById(Number(approvalStatusId)).subscribe({
-        next: (status) => {
-          if (status) {
-            this.approvalStatusStateService.setApprovalStatusToEdit(status);
-          }
-          this.isSaving = false;
-        },
-        error: () => {
-          this.isSaving = false;
+      this.approvalStatusStateService.currentApprovalStatus$.subscribe(approvalStatus => {
+        if (approvalStatus) {
+          this.currentApprovalStatus = approvalStatus;
+          this.editApprovalStatusForm.patchValue({
+            status: this.currentApprovalStatus.status ?? '',
+            order: this.currentApprovalStatus.sequenceNo,
+            forProject: !!this.currentApprovalStatus.forProjects,
+            forNetwork: !!this.currentApprovalStatus.forNetworks,
+          });
+          this.focusInputIfNeeded();
+        } else {
+          this.editApprovalStatusForm.reset();
         }
       })
     );
   }
 
-  onSubmit(): void {
-    if (this.editApprovalStatusForm.invalid || !this.currentApprovalStatus || this.isSaving) {
-          this.markAllAsTouched();
-          return;
-        }
-    
-        this.isSaving = true;
-        const updatedApprovalStatus: ApprovalStatus = {
-          ...this.currentApprovalStatus,
-          status: this.editApprovalStatusForm.value.status?.trim(),
-          sequenceNo: this.editApprovalStatusForm.value.order,
-          forProjects: this.editApprovalStatusForm.value.forProject? 1 : 0,
-          forNetworks: this.editApprovalStatusForm.value.forNetwork? 1 : 0,
-        };
-        this.subscriptions.add(
-          this.approvalStatusUtils.updateApprovalStatus(updatedApprovalStatus).subscribe({
-            next: () => this.handleSaveSuccess(),
-            error: (err) => this.handleError(err)
-          })
-        );
-  }
-
-  private markAllAsTouched(): void {
-    Object.values(this.editApprovalStatusForm.controls).forEach(control => {
-      control.markAsTouched();
-      control.markAsDirty();
-    });
-  }
-
-  private handleSaveSuccess(): void {
-    this.commonMessageService.showEditSucessfullMessage();
-    this.approvalStatusStateService.setApprovalStatusToEdit(null);
-    this.clearForm();
-  }
-
-  private handleError(err: any): void {
-    if (err instanceof OccError) { 
-      this.showOCCErrorModalApprovalStatus = true;
-      this.occErrorApprovalStatus = err.errorType;
-    }
-    this.handleSaveError(err);
-  }
-
-  private handleSaveError(error: any): void {
-    console.error('Error saving approval status:', error);
-    this.commonMessageService.showErrorEditMessage();
-    this.isSaving = false;
-  }
-
-  onRefresh(): void {
+  public onRefresh(): void {
     if (this.currentApprovalStatus?.id) {
-      localStorage.setItem('selectedCountryId', this.currentApprovalStatus.id.toString());
-      window.location.reload();
+      localStorage.setItem('selectedApprovalStatusId', this.currentApprovalStatus.id.toString());
+      globalThis.location.reload();
+    }
+  }
+
+  public clearForm(): void {
+    this.editApprovalStatusForm.reset();
+    this.approvalStatusStateService.clearApprovalStatus();
+    this.currentApprovalStatus = null;
+  }
+
+  private loadApprovalStatusAfterRefresh(): void {
+    const savedApprovalStatusId = localStorage.getItem('selectedApprovalStatusId');
+    if (savedApprovalStatusId) {
+      this.isLoading = true;
+      this.subscriptions.add(
+        this.approvalStatusUtils.getApprovalStatusById(Number(savedApprovalStatusId)).subscribe({
+          next: (approvalStatus) => {
+            if (approvalStatus) {
+              this.approvalStatusStateService.setApprovalStatusToEdit(approvalStatus);
+            }
+            this.isLoading = false;
+            localStorage.removeItem('selectedApprovalStatusId');
+          },
+          error: () => {
+            this.isLoading = false;
+            localStorage.removeItem('selectedApprovalStatusId');
+          }
+        })
+      );
     }
   }
 
