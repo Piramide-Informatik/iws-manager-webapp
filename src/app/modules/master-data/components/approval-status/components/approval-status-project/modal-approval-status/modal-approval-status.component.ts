@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl} from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms'; 
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
@@ -18,6 +18,7 @@ export class ModalApprovalStatusComponent
 {
   private readonly approvalStatusUtils = inject(ApprovalStatusUtils);
   private readonly subscriptions = new Subscription();
+  private readonly commonMessageService = inject(CommonMessagesService);
 
   @ViewChild('approvalStatusNameInput')
   approvalStatusNameInput!: ElementRef<HTMLInputElement>;
@@ -33,8 +34,9 @@ export class ModalApprovalStatusComponent
     summary: string;
     detail: string;
   }>();
+  
   showOCCErrorModalApprovalStatus = false;
-  public occErrorApprovalStatusType: OccErrorType = 'UPDATE_UNEXISTED';
+  public occErrorApprovalStatusType: OccErrorType = 'DELETE_UNEXISTED';
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -42,10 +44,8 @@ export class ModalApprovalStatusComponent
     status: new FormControl(''),
     order: new FormControl(null),
     isProject: new FormControl(false),
-    isNetwork: new FormControl(false),
+    isNetwork: new FormControl(false), 
   });
-
-  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   get isCreateMode(): boolean {
     return this.modalType === 'create';
@@ -100,6 +100,14 @@ export class ModalApprovalStatusComponent
     this.closeModal();
   }
 
+  // MÉTODO: Para manejar refresh después de error OCC
+  public onRefresh(): void {
+    if (this.approvalStatusToDelete) {
+      localStorage.setItem('selectedApprovalStatusId', this.approvalStatusToDelete.toString());
+      globalThis.location.reload();
+    }
+  }
+
   // ========================
   //  PRIVATE HELPERS
   // ========================
@@ -131,15 +139,22 @@ export class ModalApprovalStatusComponent
           this.emitToast('success', messages.success);
           this.closeModal();
         },
-        error: (error) =>
-        {
+        error: (error) => {
           if (messages.fail.includes('DELETE')) {
-            if (error instanceof OccError || error?.message.includes('404')) {
+            if (error instanceof OccError) {
+              this.showOCCErrorModalApprovalStatus = true;
+              this.occErrorApprovalStatusType = error.errorType;
+              this.commonMessageService.showErrorDeleteMessage();
+            } else if (error?.message.includes('404')) {
               this.showOCCErrorModalApprovalStatus = true;
               this.occErrorApprovalStatusType = 'DELETE_UNEXISTED';
+              this.commonMessageService.showErrorDeleteMessage();
+            } else {
+              this.handleOperationError(error, messages.fail, messages.inUse);
             }
-          }  
-          this.handleOperationError(error, messages.fail, messages.inUse)
+          } else {
+            this.handleOperationError(error, messages.fail, messages.inUse);
+          }
         }
       });
 
@@ -164,6 +179,7 @@ export class ModalApprovalStatusComponent
     const detail = this.errorMessage?.includes('it is in use by other entities')
       ? inUseDetail ?? defaultDetail
       : this.getErrorDetail(this.errorMessage ?? '');
+    
     const errorApprovalStatusMessage = error.error.message ?? '';  
     if (errorApprovalStatusMessage.includes('foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorApprovalStatusMessage);

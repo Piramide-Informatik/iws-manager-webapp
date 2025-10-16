@@ -92,11 +92,11 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
           if (error instanceof OccError || error?.message.includes('404')) {
             this.showOCCErrorModalDunningLEvel = true;
             this.occErrorDunningLevelType = 'DELETE_UNEXISTED';
+            this.deleteDunningLevel.emit({ status: 'error', error: error });
           }
           const errorDunningLevelMessage = error.error.message ?? '';
           if (errorDunningLevelMessage.includes('foreign key constraint fails')) {
             this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorDunningLevelMessage);
-            return;
           }
           this.deleteDunningLevel.emit({ status: 'error', error: error });
         }
