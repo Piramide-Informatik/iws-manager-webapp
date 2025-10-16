@@ -2,6 +2,11 @@
   "PAGETITLE": {
     "CUSTOMER_OVERVIEW": "Kundenübersicht",
     "CUSTOMER": "kunde - ",
+    "CUSTOMERS": {
+      "CONTRACTORS": " - Auftragnehmer",
+      "DETAILS": " - Details",
+      "EMPLOYEES": " - Mitarbeiter"
+    },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",

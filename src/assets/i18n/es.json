@@ -3,6 +3,11 @@
     "CUSTOMER_OVERVIEW": "Lista de Clientes",
     "CUSTOMER": "Cliente - ",
     "NEW_CUSTOMER": "Nuevo Cliente",
+    "CUSTOMERS": {
+      "CONTRACTORS": " - Contratistas",
+      "DETAILS": " - Detalles",
+      "EMPLOYEES": " - Empleados"
+    },
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
