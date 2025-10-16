@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { BillerService } from '../../../../../Services/biller.service';
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { Biller } from '../../../../../Entities/biller';
@@ -71,32 +71,7 @@ export class BillerUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteBiller(id: number): Observable<void> {
-    return this.checkBillerUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.billerService.deleteBiller(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Checks if a biller is used by any invoice.
-   * @param idBiller - ID of the biller to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkBillerUsage(idBiller: number): Observable<boolean> {
-    return this.invoiceUtils.getAllInvoices().pipe(
-      map(invoices => invoices.some(invoice => invoice.biller?.id === idBiller)),
-      catchError(err => {
-        console.error('Error checking biller usage:', err);
-        return of(false);
-      })
-    );
+    return this.billerService.deleteBiller(id);
   }
 
   /**

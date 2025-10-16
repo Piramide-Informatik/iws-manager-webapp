@@ -1,7 +1,7 @@
 @if(modalType==='create' || modalType==='edit'){
     <div class="modal-content-contact">
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-            <div class="form-row spacer">
+            <div class="form-row">
                 <label for="lastName">{{ 'CONTACT.FORM.LAST_NAME' | translate }}</label>
                 <input 
                     type="text" 
@@ -14,7 +14,7 @@
                 >
             </div>
     
-            <div class="form-row spacer">
+            <div class="form-row">
                 <label for="firstName">{{ 'CONTACT.FORM.FIRST_NAME' | translate }}</label>
                 <input 
                     type="firstName" 
@@ -26,7 +26,7 @@
                 >
             </div>
     
-            <div class="form-row spacer">
+            <div class="form-row">
                 <label for="salutation">{{ 'CONTACT.FORM.SALUTATION' | translate }}</label>
                 <p-select formControlName="salutation" 
                     id="salutation"
@@ -38,7 +38,7 @@
                 />
             </div>
     
-            <div class="form-row spacer">
+            <div class="form-row">
                 <label for="title">{{ 'CONTACT.FORM.TITLE' | translate }}</label>
                 <p-select formControlName="title" 
                     id="title"
@@ -50,7 +50,7 @@
                 />
             </div>
     
-            <div class="form-row spacer">
+            <div class="form-row">
                 <label for="function">{{ 'CONTACT.FORM.FUNCTION' | translate }}</label>
                 <input 
                     type="text" 
@@ -62,7 +62,7 @@
                 >
             </div>
     
-            <div class="form-row spacer">
+            <div class="form-row">
                 <label for="emailAddress">{{ 'CONTACT.FORM.EMAIL_ADDRESS' | translate }}</label>
                 <input 
                     type="text" 
@@ -74,10 +74,10 @@
                 >
             </div>
     
-            <div class="form-row-invoice">
-                <label for="isInvoiceRecipient" class="invoice-label">{{ 'CONTACT.LABELS.INVOICE' | translate }}</label>
+            <div class="form-row">
+                <label for="isInvoiceRecipient">{{ 'CONTACT.LABELS.INVOICE' | translate }}</label>
                 <div class="checkbox-container">
-                    <p-toggleswitch formControlName="isInvoiceRecipient" class="flex">
+                    <p-toggleswitch formControlName="isInvoiceRecipient" inputId="isInvoiceRecipient" class="flex">
                         <ng-template #handle let-checked="checked">
                             <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                         </ng-template>

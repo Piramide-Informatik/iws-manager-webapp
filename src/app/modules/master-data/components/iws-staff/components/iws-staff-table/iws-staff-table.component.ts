@@ -13,6 +13,7 @@ import { Table } from 'primeng/table';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
 import { Column } from '../../../../../../Entities/column';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { IwsStaffModalComponent } from '../iws-staff-modal/iws-staff-modal.component';
 @Component({
   selector: 'app-iws-staff-table',
   templateUrl: './iws-staff-table.component.html',
@@ -41,6 +42,7 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
 
 
   @ViewChild('dt2') dt2!: Table;
+  @ViewChild('iwsStaffModal') iwsStaffModalDialog!: IwsStaffModalComponent;
   private langSubscription!: Subscription;
 
   constructor(
@@ -147,6 +149,12 @@ export class IwsStaffTableComponent implements OnInit, OnDestroy {
       } else {
         this.commonMessageService.showErrorDeleteMessage();
       }
+    }
+  }
+
+  onCloseModal() {
+    if (this.iwsStaffModalDialog){
+      this.iwsStaffModalDialog.onCancel(); //corregir
     }
   }
 

@@ -2,7 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { Observable, catchError, map, of, switchMap, take, throwError } from "rxjs";
 import { ApprovalStatus } from "../../../../../Entities/approvalStatus";
 import { ApprovalStatusService } from "../../../../../Services/approval-status.service";
-import { createNotFoundUpdateError, createUpdateConflictError } from "../../../../shared/utils/occ-error";
+import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError } from "../../../../shared/utils/occ-error";
 
 @Injectable({ providedIn: 'root' })
 export class ApprovalStatusUtils {
@@ -53,12 +53,21 @@ export class ApprovalStatusUtils {
 
     //Delete a approvalStatus by Id
     deleteApprovalStatus(id: number): Observable<void> {
-        return this.checkApprovalStatusUsage(id).pipe(
-            switchMap((isUsed: boolean): Observable<void> => 
-            isUsed
-                ? throwError(() => new Error('Cannot delete register: it is in use by other entities'))
-                : this.approvalStatusService.deleteApprovalStatus(id)
-        ),
+        return this.getApprovalStatusById(id).pipe(
+            take(1),
+            switchMap((currentApprovalStatus) => {
+                if (!currentApprovalStatus) {
+                    return throwError(() => createNotFoundDeleteError('Approval status'));
+                }
+                
+                return this.checkApprovalStatusUsage(id).pipe(
+                    switchMap((isUsed: boolean): Observable<void> => 
+                        isUsed
+                            ? throwError(() => new Error('Cannot delete register: it is in use by other entities'))
+                            : this.approvalStatusService.deleteApprovalStatus(id)
+                    )
+                );
+            }),
             catchError(error => {
                 return throwError(() => error);
             })
@@ -92,6 +101,4 @@ export class ApprovalStatusUtils {
                 })
             );
         }
-
-
 }

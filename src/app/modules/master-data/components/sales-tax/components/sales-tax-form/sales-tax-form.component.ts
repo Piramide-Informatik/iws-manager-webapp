@@ -13,6 +13,7 @@ import { VatRateService } from '../../../../../../Services/vat-rate.service';
 import { VatRateUtils } from '../../utils/vat-rate-utils';
 import { VatRate } from '../../../../../../Entities/vatRate';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { ModalSalesTaxRateComponent } from './modal-sales-tax-rate/modal-sales-tax-rate.component';
 
 @Component({
   selector: 'app-sales-tax-form',
@@ -28,6 +29,7 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly translate = inject(TranslateService);
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('vatRateModal') vatRateModal!: ModalSalesTaxRateComponent;
   @Output() vatEdited = new EventEmitter<void>();
   @Output() vatRateEdited = new EventEmitter<void>();
   public vatToEdit: Vat | null = null;
@@ -211,6 +213,10 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
         { field: 'name', header: 'Sales Tax Rate' }
       ];
     }
+  }
+
+  onCloseModal(): void {
+    this.vatRateModal.closeModal();
   }
 
   onDeleteVatRate(deleteEvent: {status: 'success' | 'error', error?: Error}): void {

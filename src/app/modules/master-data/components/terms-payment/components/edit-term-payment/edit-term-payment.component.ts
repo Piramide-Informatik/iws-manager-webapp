@@ -32,12 +32,7 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
       text: new FormControl(''),
     });
     this.setupPaySubscription();
-    // Check if we need to load a pay condition after page refresh for OCC
-    const savedPayId = localStorage.getItem('selectedPayId');
-    if (savedPayId) {
-      this.loadPayAfterRefresh(savedPayId);
-      localStorage.removeItem('selectedPayId');
-    }
+    this.loadPayAfterRefresh();
   }
 
   ngOnDestroy(): void {
@@ -45,33 +40,34 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if(this.editTermPaymentForm.invalid || !this.payToEdit) return
+  if(this.editTermPaymentForm.invalid || !this.payToEdit) return
 
-    this.isLoading = true;
-    const editedPay: PayCondition = {
-      ...this.payToEdit,
-      name: this.editTermPaymentForm.value.name?.trim(),
-      deadline: this.editTermPaymentForm.value.deadline,
-      text: this.editTermPaymentForm.value.text?.trim()
-    };
+  this.isLoading = true;
+  const editedPay: PayCondition = {
+    ...this.payToEdit,
+    name: this.editTermPaymentForm.value.name?.trim(),
+    deadline: this.editTermPaymentForm.value.deadline,
+    text: this.editTermPaymentForm.value.text?.trim()
+  };
 
-    this.payConditionUtils.updatePayCondition(editedPay).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.clearForm();
-        this.commonMessageService.showEditSucessfullMessage();
-      },
-      error: (error: Error) => {
-        this.isLoading = false;
-        if (error instanceof OccError) { 
-          this.showOCCErrorModaPay = true;
-          this.occErrorTermPaymentType = error.errorType;
-        }
+  this.payConditionUtils.updatePayCondition(editedPay).subscribe({
+    next: () => {
+      this.isLoading = false;
+      this.clearForm();
+      this.commonMessageService.showEditSucessfullMessage();
+    },
+    error: (error: Error) => {
+      this.isLoading = false;
+      if (error instanceof OccError) { 
+        this.showOCCErrorModaPay = true;
+        this.occErrorTermPaymentType = error.errorType;
         this.commonMessageService.showErrorEditMessage();
-        this.isLoading = false;
+      } else {
+        this.commonMessageService.showErrorEditMessage();
       }
-    });
-  }
+    }
+  });
+}
 
   private setupPaySubscription(): void {
     this.subscriptions.add(
@@ -94,7 +90,7 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
   public onRefresh(): void {
     if (this.payToEdit?.id) {
       localStorage.setItem('selectedPayId', this.payToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
@@ -104,21 +100,26 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
     this.payToEdit = null;
   }
 
-  private loadPayAfterRefresh(payId: string): void {
-    this.isLoading = true;
-    this.subscriptions.add(
-      this.payConditionUtils.getPayConditionById(Number(payId)).subscribe({
-        next: (payCondition) => {
-          if (payCondition) {
-            this.payConditionStateService.setPayConditionToEdit(payCondition);
+  private loadPayAfterRefresh(): void {
+    const savedPayId = localStorage.getItem('selectedPayId');
+    if (savedPayId) {
+      this.isLoading = true;
+      this.subscriptions.add(
+        this.payConditionUtils.getPayConditionById(Number(savedPayId)).subscribe({
+          next: (payCondition) => {
+            if (payCondition) {
+              this.payConditionStateService.setPayConditionToEdit(payCondition);
+            }
+            this.isLoading = false;
+            localStorage.removeItem('selectedPayId');
+          },
+          error: () => {
+            this.isLoading = false;
+            localStorage.removeItem('selectedPayId');
           }
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
-        }
-      })
-    );
+        })
+      );
+    }
   }
 
   private focusInputIfNeeded(): void {

@@ -21,9 +21,11 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
   isLoading = false;
   public showOCCErrorModalDunningLevel = false;
   public occErrorDunningLevelType: OccErrorType = 'UPDATE_UPDATED';
-  constructor( private readonly commonMessageService: CommonMessagesService) {}
+  
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
+    this.loadDunningLevelAfterRefresh();
     this.editDunningLevelForm = new FormGroup({
       levelNo: new FormControl(null),
       reminderTitle: new FormControl(''),
@@ -76,9 +78,24 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
       }
     });
   }
+  public onRefresh(): void {
+    if (this.selectedDunningLevel?.id) {
+      localStorage.setItem('selectedDunningLevelId', this.selectedDunningLevel.id.toString());
+      globalThis.location.reload();
+    }
+  }
+
+  private loadDunningLevelAfterRefresh(): void {
+    const savedDunningLevelId = localStorage.getItem('selectedDunningLevelId');
+    if (savedDunningLevelId) {
+      const dunningLevelId = Number(savedDunningLevelId);
+      this.loadDunningLevel(dunningLevelId);
+      localStorage.removeItem('selectedDunningLevelId');
+    }
+  }
 
   public loadDunningLevel(dunningLevelId: number) {
-    this.dunningLevelUtils.getReminderLevelServiceById(dunningLevelId).subscribe( dunningLevel => {
+    this.dunningLevelUtils.getReminderLevelServiceById(dunningLevelId).subscribe(dunningLevel => {
       if (dunningLevel) {
         this.selectedDunningLevel = dunningLevel;
         this.editDunningLevelForm.patchValue(this.selectedDunningLevel);
