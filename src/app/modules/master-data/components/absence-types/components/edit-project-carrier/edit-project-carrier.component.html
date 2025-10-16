@@ -50,8 +50,9 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModaAbsence"
+  [useEmitter]="occErrorAbscenceType === 'UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
   [errorType]="occErrorAbscenceType"
-  (close)="showOCCErrorModaAbsence = false"
-  [useEmitter]="true"
-  (refresh)="onRefresh()">
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModaAbsence = false">
 </app-occ-error-modal>

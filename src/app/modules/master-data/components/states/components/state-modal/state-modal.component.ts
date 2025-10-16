@@ -18,6 +18,8 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 export class StateModalComponent implements OnInit, OnChanges {
   private readonly stateUtils = inject(StateUtils);
   private readonly stateStateService = inject(StatesStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  
   @ViewChild('stateInput') stateInput!: ElementRef<HTMLInputElement>;
   
   @Input() isVisibleModal: boolean = false;
@@ -32,7 +34,8 @@ export class StateModalComponent implements OnInit, OnChanges {
   isStateLoading = false;
   errorStateMessage: string | null = null;
   showOCCErrorModalState = false;
-  occErrorStateType: OccErrorType = 'UPDATE_UNEXISTED';
+  occErrorStateType: OccErrorType = 'DELETE_UNEXISTED'; 
+  
   readonly stateForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -42,9 +45,8 @@ export class StateModalComponent implements OnInit, OnChanges {
 
   constructor(
     private readonly messageService: MessageService,
-    private readonly translateService: TranslateService,
-    private readonly commonMessageService: CommonMessagesService
-  ) {}
+    private readonly translateService: TranslateService
+  ) {} 
 
   ngOnInit(): void {
     this.stateForm.reset();
@@ -80,25 +82,37 @@ export class StateModalComponent implements OnInit, OnChanges {
         },
         error: (error) => {
           this.isStateLoading = false;
-          if (error instanceof OccError || error?.message.includes('404')) {
+          if (error instanceof OccError) { 
+            this.showOCCErrorModalState = true;
+            this.occErrorStateType = error.errorType;
+            this.commonMessageService.showErrorDeleteMessage(); 
+          } else if (error?.message.includes('404')) {
             this.showOCCErrorModalState = true;
             this.occErrorStateType = 'DELETE_UNEXISTED';
+            this.commonMessageService.showErrorDeleteMessage(); 
+          } else {
+            const errorStateMessage = error.error.message ?? '';
+            if (errorStateMessage.includes('foreign key constraint fails')) {
+              this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorStateMessage);
+            } else {
+              this.errorStateMessage = error.message ?? 'Failed to delete state';
+              console.error('Delete error:', error);
+              this.confirmStateDelete.emit({
+                severity: 'error',
+                summary: 'MESSAGE.ERROR',
+                detail: this.errorStateMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
+              });
+            }
+            this.closeStateModal();
           }
-          const errorStateMessage = error.error.message ?? '';
-          if (errorStateMessage.includes('foreign key constraint fails')) {
-            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorStateMessage);
-            return;
-          }
-          this.errorStateMessage = error.message ?? 'Failed to delete state';
-          console.error('Delete error:', error);
-          this.confirmStateDelete.emit({
-            severity: 'error',
-            summary: 'MESSAGE.ERROR',
-            detail: this.errorStateMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
-          });
-          this.closeStateModal();
         }
       });
+    }
+  }
+  public onRefresh(): void {
+    if (this.stateToDelete) {
+      localStorage.setItem('selectedStateId', this.stateToDelete.toString());
+      globalThis.location.reload();
     }
   }
 

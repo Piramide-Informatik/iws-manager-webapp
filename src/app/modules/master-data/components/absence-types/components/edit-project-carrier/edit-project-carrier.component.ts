@@ -18,7 +18,7 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
   private readonly absenceTypeStateService = inject(AbsenceTypeStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
-  public absenceTypeToEdit: AbsenceType| null = null;
+  public absenceTypeToEdit: AbsenceType | null = null;
   public showOCCErrorModaAbsence = false;
   public isLoading: boolean = false;
   public editProjectCarrierForm!: FormGroup;
@@ -31,15 +31,10 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
       label: new FormControl(''),
       shareOfDay: new FormControl(null, [Validators.min(0), Validators.max(1.0)]),
       isHoliday: new FormControl(false),
-      hours: new FormControl(false), // can be Booked
+      hours: new FormControl(false),
     });
     this.setupAbsenceTypeSubscription();
-    // Check if we need to load an absence type after page refresh for OCC
-    const savedAbsenceTypeId = localStorage.getItem('selectedAbsenceTypeId');
-    if (savedAbsenceTypeId) {
-      this.loadAbsenceTypeAfterRefresh(savedAbsenceTypeId);
-      localStorage.removeItem('selectedAbsenceTypeId');
-    }
+    this.loadAbsenceTypeAfterRefresh();
   }
 
   ngOnDestroy(): void {
@@ -73,14 +68,15 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
   }
 
   private handleAbsenceTypeEditError(err: any): void {
-      console.log(err);
-      if (err instanceof OccError) { 
-        this.showOCCErrorModaAbsence = true;
-        this.occErrorAbscenceType = err.errorType;
-      }
+    this.isLoading = false;
+    if (err instanceof OccError) { 
+      this.showOCCErrorModaAbsence = true;
+      this.occErrorAbscenceType = err.errorType;
       this.commonMessageService.showErrorEditMessage();
-      this.isLoading = false;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
     }
+  }
 
   private setupAbsenceTypeSubscription(): void {
     this.subscriptions.add(
@@ -105,7 +101,7 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
   public onRefresh(): void {
     if (this.absenceTypeToEdit?.id) {
       localStorage.setItem('selectedAbsenceTypeId', this.absenceTypeToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
@@ -115,21 +111,26 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
     this.absenceTypeToEdit = null;
   }
 
-  private loadAbsenceTypeAfterRefresh(absenceTypeId: string): void {
-    this.isLoading = true;
-    this.subscriptions.add(
-      this.absenceTypeUtils.getAbsenceTypeById(Number(absenceTypeId)).subscribe({
-        next: (absenceType) => {
-          if (absenceType) {
-            this.absenceTypeStateService.setAbsenceTypeToEdit(absenceType);
+  private loadAbsenceTypeAfterRefresh(): void {
+    const savedAbsenceTypeId = localStorage.getItem('selectedAbsenceTypeId');
+    if (savedAbsenceTypeId) {
+      this.isLoading = true;
+      this.subscriptions.add(
+        this.absenceTypeUtils.getAbsenceTypeById(Number(savedAbsenceTypeId)).subscribe({
+          next: (absenceType) => {
+            if (absenceType) {
+              this.absenceTypeStateService.setAbsenceTypeToEdit(absenceType);
+            }
+            this.isLoading = false;
+            localStorage.removeItem('selectedAbsenceTypeId');
+          },
+          error: () => {
+            this.isLoading = false;
+            localStorage.removeItem('selectedAbsenceTypeId');
           }
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
-        }
-      })
-    );
+        })
+      );
+    }
   }
 
   private focusInputIfNeeded(): void {

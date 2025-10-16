@@ -105,6 +105,8 @@
 </ng-template>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalApprovalStatus"
+  [useEmitter]="occErrorApprovalStatusType === 'DELETE_UNEXISTED'"
+  (refresh)="onRefresh()"
   [errorType]="occErrorApprovalStatusType"
   [reloadCurrentPage]="true"
   (close)="showOCCErrorModalApprovalStatus = false">

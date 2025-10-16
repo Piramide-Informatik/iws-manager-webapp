@@ -138,6 +138,8 @@
 </ng-template>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalHoliday"
+  [useEmitter]="occErrorHolidayType === 'DELETE_UNEXISTED'"
+  (refresh)="onRefresh()"
   [errorType]="occErrorHolidayType"
   [reloadCurrentPage]="true"
   (close)="showOCCErrorModalHoliday = false">
