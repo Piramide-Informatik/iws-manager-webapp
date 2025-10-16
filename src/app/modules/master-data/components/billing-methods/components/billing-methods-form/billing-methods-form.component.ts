@@ -32,12 +32,7 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
       name: new FormControl('', [Validators.required])
     });
     this.setupInvoiceTypeSubscription();
-    // Check if we need to load an invoice type after page refresh for OCC
-    const savedInvoiceTypeId = localStorage.getItem('selectedInvoiceTypeId');
-    if (savedInvoiceTypeId) {
-      this.loadInvoiceTypeAfterRefresh(savedInvoiceTypeId);
-      localStorage.removeItem('selectedInvoiceTypeId');
-    }
+    this.loadInvoiceTypeAfterRefresh();
   }
 
   ngOnDestroy(): void {
@@ -45,30 +40,31 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.billingMethodForm.invalid || !this.invoiceTypeToEdit) return
+  if (this.billingMethodForm.invalid || !this.invoiceTypeToEdit) return
+  this.isLoading = true;
+  const editedInvoiceType: InvoiceType = {
+    ...this.invoiceTypeToEdit,
+    name: this.billingMethodForm.value.name?.trim()
+  }
 
-    this.isLoading = true;
-    const editedInvoiceType: InvoiceType = {
-      ...this.invoiceTypeToEdit,
-      name: this.billingMethodForm.value.name?.trim()
-    }
-
-    this.invoiceTypeUtils.updateInvoiceType(editedInvoiceType).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.clearForm();
-        this.commonMessageService.showEditSucessfullMessage();
-      },
-      error: (error: Error) => {
-        this.isLoading = false;
-        if (error instanceof OccError) { 
-          this.showOCCErrorModalInvoice = true;
-          this.occErrorBillingMethodType = error.errorType;
-        }
+  this.invoiceTypeUtils.updateInvoiceType(editedInvoiceType).subscribe({
+    next: () => {
+      this.isLoading = false;
+      this.clearForm();
+      this.commonMessageService.showEditSucessfullMessage();
+    },
+    error: (error: Error) => {
+      this.isLoading = false;
+      if (error instanceof OccError) { 
+        this.showOCCErrorModalInvoice = true;
+        this.occErrorBillingMethodType = error.errorType;
+        this.commonMessageService.showErrorEditMessage();
+      } else {
         this.commonMessageService.showErrorEditMessage();
       }
-    });
-  }
+    }
+  });
+}
 
   private setupInvoiceTypeSubscription(): void {
     this.subscriptions.add(
@@ -89,7 +85,7 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
   public onRefresh(): void {
     if (this.invoiceTypeToEdit?.id) {
       localStorage.setItem('selectedInvoiceTypeId', this.invoiceTypeToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
@@ -99,21 +95,26 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
     this.invoiceTypeToEdit = null;
   }
 
-  private loadInvoiceTypeAfterRefresh(invoiceTypeId: string): void {
-    this.isLoading = true;
-    this.subscriptions.add(
-      this.invoiceTypeUtils.getInvoiceTypeById(Number(invoiceTypeId)).subscribe({
-        next: (invoiceType) => {
-          if (invoiceType) {
-            this.invoiceTypeStateService.setInvoiceTypeToEdit(invoiceType);
+  private loadInvoiceTypeAfterRefresh(): void {
+    const savedInvoiceTypeId = localStorage.getItem('selectedInvoiceTypeId');
+    if (savedInvoiceTypeId) {
+      this.isLoading = true;
+      this.subscriptions.add(
+        this.invoiceTypeUtils.getInvoiceTypeById(Number(savedInvoiceTypeId)).subscribe({
+          next: (invoiceType) => {
+            if (invoiceType) {
+              this.invoiceTypeStateService.setInvoiceTypeToEdit(invoiceType);
+            }
+            this.isLoading = false;
+            localStorage.removeItem('selectedInvoiceTypeId');
+          },
+          error: () => {
+            this.isLoading = false;
+            localStorage.removeItem('selectedInvoiceTypeId');
           }
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
-        }
-      })
-    );
+        })
+      );
+    }
   }
 
   private focusInputIfNeeded(): void {

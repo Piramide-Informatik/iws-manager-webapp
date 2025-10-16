@@ -21,8 +21,10 @@
         : ('BILLERS.MODAL.DELETE' | translate)"
         [modal]="true"
         [(visible)]="isVisibleModal"
+        (onHide)="onCloseModal()"
         >
           <app-modal-biller
+            #billerModal
             [visible]="isVisibleModal"
             [modalType]="modalType"
             [selectedBiller]="biller"

@@ -27,6 +27,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   private readonly networkPartnerUtils = inject(NetowrkPartnerUtils);
   private readonly networkPartnerService = inject(NetworkPartnerService);
   private readonly subscriptions = new Subscription();
+  
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public editNetworkForm!: FormGroup;
   networkToEdit: Network | null = null;
@@ -34,7 +35,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   public isLoading: boolean = false;
   modalNetworkPartnerType: 'create' | 'edit' | 'delete' = 'create';
   visibleNetworksPartnersModal = false;
-  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public occErrorType: OccErrorType = 'UPDATE_UPDATED';
 
   selectedNetworkPartner!: NetworkPartner | null;
   isCreateButtonEnable = false;
@@ -68,11 +69,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
     });
     this.setupNetworkSubscription();
     // Check if we need to load a network after page refresh for OCC
-    const savedNetworkId = localStorage.getItem('selectedNetworkId');
-    if (savedNetworkId) {
-      this.loadNetworkAfterRefresh(savedNetworkId);
-      localStorage.removeItem('selectedNetworkId');
-    }
+    this.loadNetworkAfterRefresh();
 
     this.loadColHeadersPartner();
     this.userEditNetworkPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
@@ -121,12 +118,14 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   }
 
   handleUpdateError(error: Error) {
-
+    this.isLoading = false;
     if (error instanceof OccError) {
       this.showOCCErrorModalNetwork = true;
-      this.occErrorType = error.errorType
+      this.occErrorType = error.errorType;
+      this.commonMessageService.showErrorEditMessage(); 
+    } else {
+      this.commonMessageService.showErrorEditMessage();
     }
-    this.isLoading = false;
   }
 
   handleTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
@@ -184,7 +183,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   public onRefresh(): void {
     if (this.networkToEdit?.id) {
       localStorage.setItem('selectedNetworkId', this.networkToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 
@@ -215,21 +214,26 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
     )
   }
 
-  private loadNetworkAfterRefresh(networkId: string): void {
-    this.isLoading = true;
-    this.subscriptions.add(
-      this.networkUtils.getNetworkById(Number(networkId)).subscribe({
-        next: (network) => {
-          if (network) {
-            this.networkStateService.setNetworkToEdit(network);
+  private loadNetworkAfterRefresh(): void {
+    const savedNetworkId = localStorage.getItem('selectedNetworkId');
+    if (savedNetworkId) {
+      this.isLoading = true;
+      this.subscriptions.add(
+        this.networkUtils.getNetworkById(Number(savedNetworkId)).subscribe({
+          next: (network) => {
+            if (network) {
+              this.networkStateService.setNetworkToEdit(network);
+            }
+            this.isLoading = false;
+            localStorage.removeItem('selectedNetworkId');
+          },
+          error: () => {
+            this.isLoading = false;
+            localStorage.removeItem('selectedNetworkId');
           }
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
-        }
-      })
-    );
+        })
+      );
+    }
   }
 
   public focusInputIfNeeded(): void {

@@ -10,10 +10,15 @@
                         type="text"
                         id="status"
                         formControlName="status"
-                        [ngClass]="{'ng-invalid ng-dirty': editApprovalStatusForm.get('status')?.invalid && editApprovalStatusForm.get('status')?.touched}"
+                        [ngClass]="{'ng-invalid': editApprovalStatusForm.get('status')?.invalid && 
+                         editApprovalStatusForm.get('status')?.dirty && 
+                         editApprovalStatusForm.get('status')?.touched}"
                         autocomplete="off" />
-                    <p-message severity="error" variant="simple" size="small"
-                        *ngIf="editApprovalStatusForm.get('status')?.invalid && editApprovalStatusForm.get('status')?.touched && editApprovalStatusForm.get('status')!.hasError('required')">
+                    <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
+                        *ngIf="editApprovalStatusForm.get('status')?.invalid && 
+                         editApprovalStatusForm.get('status')?.dirty && 
+                         editApprovalStatusForm.get('status')?.touched && 
+                         editApprovalStatusForm.get('status')!.hasError('required')">
                         {{ 'APPROVAL_STATUS.ERROR.APPROVAL_STATUS_REQUIRED' | translate }}
                     </p-message>
                 </div>
@@ -27,12 +32,17 @@
                         inputId="order"
                         [useGrouping]="true"
                         formControlName="order"
-                        [ngClass]="{'ng-invalid ng-dirty': editApprovalStatusForm.get('order')?.invalid && editApprovalStatusForm.get('order')?.touched}"
+                        [ngClass]="{'ng-invalid': editApprovalStatusForm.get('order')?.invalid && 
+                         editApprovalStatusForm.get('order')?.dirty && 
+                         editApprovalStatusForm.get('order')?.touched}"
                         autocomplete="off"
                         [inputStyle]="{'text-align': 'right'}" 
                     />
-                    <p-message severity="error" variant="simple" size="small"
-                        *ngIf="editApprovalStatusForm.get('order')?.invalid && editApprovalStatusForm.get('order')?.touched && editApprovalStatusForm.get('order')!.hasError('required')">
+                    <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
+                        *ngIf="editApprovalStatusForm.get('order')?.invalid && 
+                         editApprovalStatusForm.get('order')?.dirty && 
+                         editApprovalStatusForm.get('order')?.touched && 
+                         editApprovalStatusForm.get('order')!.hasError('required')">
                         {{ 'APPROVAL_STATUS.ERROR.ORDER_REQUIRED' | translate }}
                     </p-message>
                 </div>
@@ -74,8 +84,8 @@
                     [label]="'BUTTONS.SAVE' | translate"
                     icon="pi pi-check"
                     iconPos="left"
-                    [loading]="isSaving"
-                    [disabled]="editApprovalStatusForm.invalid || !editApprovalStatusForm.dirty || isSaving"/>
+                    [loading]="isLoading"
+                    [disabled]="editApprovalStatusForm.invalid || !editApprovalStatusForm.dirty || isLoading"/>
                 <p-button
                     type="button"
                     class="cancel"
@@ -83,7 +93,7 @@
                     [label]="'BUTTONS.CANCEL' | translate"
                     icon="pi pi-times"
                     iconPos="left"
-                    [disabled]="isSaving"
+                    [disabled]="isLoading"
                     (onClick)="clearForm()"/>
             </div>
         </div>
@@ -92,8 +102,9 @@
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalApprovalStatus"
+  [useEmitter]="occErrorApprovalStatus === 'UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
   [errorType]="occErrorApprovalStatus"
-  [useEmitter]="true"
-  (close)="showOCCErrorModalApprovalStatus = false"
-  (refresh)="onRefresh()">
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalApprovalStatus = false">
 </app-occ-error-modal>
