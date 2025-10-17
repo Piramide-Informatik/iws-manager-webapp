@@ -103,14 +103,11 @@ export class NetworkPartnerService {
   getNetworkPartnerById(networkNumberId: number): Observable<NetworkPartner | undefined>  {
     const url = `${this.apiUrl}/${networkNumberId}`;
     return this.http.get<NetworkPartner>(url, this.httpOptions).pipe(
-      tap({
-        next: (res) => {
-          this._error.set(null);
-        },
-        error: (err) => {
-          this._error.set('Failed to get network partner');
-          console.error('Error getting network partner:', err);
-        }
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch network by id');
+        console.error(err);
+        return of(undefined as unknown as NetworkPartner);
       })
     );
   }

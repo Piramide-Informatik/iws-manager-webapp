@@ -104,6 +104,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
         // Translate the message with the role count parameter
         const translatedMessage = this.translate.instant('MESSAGE.DELETE_ERROR_ROLES_ASSIGNED', { count: roleCount });
         detail = translatedMessage;
+        this.closeAndReset();
       } else {
         detail = 'MESSAGE.DELETE_ERROR_HAS_ROLES';
       }

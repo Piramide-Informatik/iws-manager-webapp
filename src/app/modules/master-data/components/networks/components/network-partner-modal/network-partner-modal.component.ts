@@ -9,6 +9,7 @@ import { NetworkPartner } from '../../../../../../Entities/network-partner';
 import { NetowrkPartnerUtils } from '../../utils/ network-partner.utils';
 import { InputNumber } from 'primeng/inputnumber';
 import { ContactPerson } from '../../../../../../Entities/contactPerson';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-network-partner-modal',
@@ -31,6 +32,8 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   @Output() editNetworkPartner = new EventEmitter<{edited?: Network, status: 'success' | 'error'}>();
   @Output() deleteNetworkPartner = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
   @Output() cancelNetworkPartnerAction = new EventEmitter();
+  showOCCErrorModalNetworkPartner = false;
+  public occErrorNetworkPartnerType: OccErrorType = 'UPDATE_UPDATED';
   @ViewChild('firstInput') firstInput!: InputNumber;
   public networkPartnerForm!: FormGroup;
   public isLoading = false;
@@ -129,6 +132,10 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
         error: (error) => {
           this.isLoading = false;
           console.log(error)
+          if (error instanceof OccError) {
+            this.showOCCErrorModalNetworkPartner = true;
+            this.occErrorNetworkPartnerType = error.errorType;
+          }
           this.editNetworkPartner.emit({ status: 'error' });
         }
       });
@@ -151,6 +158,10 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
         },
         error: (error) => {
           this.isLoading = false;
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalNetworkPartner = true;
+            this.occErrorNetworkPartnerType = 'DELETE_UNEXISTED';
+          }
           this.deleteNetworkPartner.emit({ status: 'error', error: error });
         }
       })
