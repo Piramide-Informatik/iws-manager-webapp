@@ -87,9 +87,9 @@ export class SystemConstantFormComponent implements OnInit, OnChanges {
           console.log(error);
           this.isLoading = false;
           if (error instanceof OccError) {
-            console.log('OCC Error occurred:', error);
             this.showOCCErrorModaSystem = true;
             this.occErrorType = error.errorType;
+            this.commonMessageService.showErrorEditMessage();
           } else {
             this.commonMessageService.showErrorEditMessage();
           }
