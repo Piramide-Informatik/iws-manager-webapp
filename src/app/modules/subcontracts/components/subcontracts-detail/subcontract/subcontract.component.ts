@@ -225,7 +225,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
 
   private updateTitle(name: string): void {
     this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.SUBCONTRACTS')}`
     );
   }
 
