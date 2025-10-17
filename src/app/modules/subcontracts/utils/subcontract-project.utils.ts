@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { SubcontractProjectService } from '../../../Services/subcontract-project.service';
 import { SubcontractProject } from '../../../Entities/subcontract-project';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -47,7 +48,7 @@ export class SubcontractProjectUtils {
     return this.subcontractProjectService.addSubcontractProject(subcontractProject);
   }
 
- 
+
   /**
   * Deletes a subcontract project by ID and updates the internal subcontracts project signal.
   * @param id - ID of the subcontract project to delete
@@ -76,14 +77,18 @@ export class SubcontractProjectUtils {
       take(1),
       switchMap((currentSubcontractProject) => {
         if (!currentSubcontractProject) {
-          return throwError(() => new Error('Subcontract project not found'));
+          return throwError(() => createNotFoundUpdateError('SubcontractProject'));
         }
 
         if (currentSubcontractProject.version !== subcontractProject.version) {
-          return throwError(() => new Error('Conflict detected: subcontract project version mismatch'));
+          return throwError(() => createUpdateConflictError('SubcontractProject'));
         }
 
         return this.subcontractProjectService.updateSubcontractProject(subcontractProject);
+      }),
+      catchError((error) => {
+        console.error('Error updating subcontract project', error);
+        return throwError(() => error);
       })
     );
   }
