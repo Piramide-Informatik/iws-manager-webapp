@@ -145,7 +145,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   private initForm(): void {
     this.editPublicHolidayForm = new FormGroup({
       publicHoliday: new FormControl('', [Validators.required]),
-      date: new FormControl('', [Validators.required]),
+      date: new FormControl(''),
       sequenceNo: new FormControl({value: null, disabled: true}),
       isFixedDate: new FormControl(true),
     });

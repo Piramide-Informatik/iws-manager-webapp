@@ -3,6 +3,7 @@ import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
 import { Network } from '../../../../../Entities/network';
 import { NetworkPartnerService } from '../../../../../Services/network-partner.service';
 import { NetworkPartner } from '../../../../../Entities/network-partner';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for network-partner-related business logic and operations.
@@ -80,11 +81,11 @@ export class NetowrkPartnerUtils {
       take(1),
       switchMap((currentNetworkPartner) => {
         if (!currentNetworkPartner) {
-          return throwError(() => new Error('Network partner not found'));
+          return throwError(() => createNotFoundUpdateError('NetworkPartner'));
         }
 
         if (currentNetworkPartner.version !== networkPartner.version) {
-          return throwError(() => new Error('Conflict detected: network partner version mismatch'));
+          return throwError(() => createUpdateConflictError('NetworkPartner'));
         }
 
         return this.networkPartnerService.updateNetworkPartner(networkPartner);

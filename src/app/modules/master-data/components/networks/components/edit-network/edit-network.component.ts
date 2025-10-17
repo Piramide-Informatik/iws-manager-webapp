@@ -90,7 +90,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
 
   loadColHeadersPartner(): void {
     this.columsHeaderFieldPartner = [
-      { field: 'no', classesTHead: ['width-10'], header: 'No' },
+      { field: 'no', classesTHead: ['width-10'], header: 'No', useSameAsEdit: true },
       { field: 'customerNumber', classesTHead: ['width-10'], header: this.translate.instant(_('NETWORKS.LABEL.CUSTOMER')) },
       { field: 'partner', classesTHead: ['width-80'], header: this.translate.instant(_('NETWORKS.LABEL.PARTNER')) },
     ];

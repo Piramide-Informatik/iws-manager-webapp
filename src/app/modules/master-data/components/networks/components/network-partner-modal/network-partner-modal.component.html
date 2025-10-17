@@ -86,3 +86,9 @@
         </div>
     </div>
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalNetworkPartner"
+  [errorType]="occErrorNetworkPartnerType"
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalNetworkPartner = false">
+</app-occ-error-modal>
