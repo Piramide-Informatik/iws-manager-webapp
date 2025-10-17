@@ -103,17 +103,7 @@ export class SalutationUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteSalutation(id: number): Observable<void> {
-    return this.checkSalutationUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.salutationService.deleteSalutation(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.salutationService.deleteSalutation(id);
   }
 
   /**

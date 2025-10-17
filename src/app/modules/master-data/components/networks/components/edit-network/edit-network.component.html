@@ -14,6 +14,8 @@
                 nameNewButton="NETWORKS.LABEL.NEW_PARTNER"
                 [userPreferences]="userEditNetworkPreferences"
                 [dataKeys]="dataKeys"
+                [sortField]="'no'" 
+                [sortOrder]="1"
                 (onColumnChanges)="onUserEditNetworkPreferencesChanges($event)"
                 (onCreateRegister)="handleTableEvents({ type: 'create' })"
                 (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"

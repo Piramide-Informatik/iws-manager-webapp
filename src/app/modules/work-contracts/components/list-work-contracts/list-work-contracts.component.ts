@@ -11,6 +11,7 @@ import { Column } from '../../../../Entities/column';
 import { CustomerStateService } from '../../../customer/utils/customer-state.service';
 import { Title } from '@angular/platform-browser';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { Customer } from '../../../../Entities/customer';
 
 @Component({
   selector: 'app-list-work-contracts',
@@ -29,6 +30,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   currentContract!: EmploymentContract | undefined;
   public employmentContracts!: EmploymentContract[];
+  private currentCustomer!: Customer;
 
   // Configuration modal
   modalType: 'create' | 'delete' | 'edit' = 'create';
@@ -51,6 +53,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
         .pipe(
           switchMap(customer => {
             if (customer) {
+              this.currentCustomer = customer;
               this.updateTitle(customer?.customername1!);
               return this.employmentContractUtils.getAllContractsByCustomerIdSortedByEmployeeNo(customer.id);
             } else {
@@ -58,7 +61,10 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
               if (customerId) {
                 return this.customerUtils.getCustomerById(customerId).pipe(
                   switchMap(c => {
-                    if (c) this.updateTitle(c.customername1!);
+                    if (c) {
+                      this.currentCustomer = c;
+                      this.updateTitle(c.customername1!)
+                    };
                     return this.employmentContractUtils.getAllContractsByCustomerIdSortedByEmployeeNo(customerId);
                   })
                 );
@@ -135,10 +141,11 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     this.currentContract = undefined;
   }
 
-  onCreateEmployeeContract(newEmployeeContract: EmploymentContract) {
-    if (newEmployeeContract) {
-      this.employmentContracts.unshift(newEmployeeContract);
-    }
+  onCreateEmployeeContract() {
+    this.employmentContractUtils.getAllContractsByCustomerIdSortedByEmployeeNo(this.currentCustomer.id)
+      .subscribe(contracts => {
+        this.employmentContracts = contracts;
+      });
   }
 
   onUpdateEmployeeContract(updatedEmployeeContract: EmploymentContract) {
@@ -151,7 +158,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
 
   private updateTitle(name: string): void {
     this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYMENT_CONTRACTS')}`
     );
   }
 }

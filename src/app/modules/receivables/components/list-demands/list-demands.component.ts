@@ -117,7 +117,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
   }
 
   private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`);
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.RECEIVABLES')}`);
   }
 
   openDeleteModal(id: any) {

@@ -68,18 +68,21 @@ export class SalutationModalComponent implements OnChanges {
         },
         error: (errorResponse) => {
           this.isLoading = false;
+          this.handleEntityRelatedError(errorResponse)
           this.handleDeleteError(errorResponse);
-          this.onDeleteSalutation.emit({ status: 'error', error: errorResponse });
         }
       });
     }
   } 
-
-  handleDeleteError(error: Error) {
-    console.log(error)
+  private handleEntityRelatedError(error: any): void {
+    if(error.error?.message?.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+      this.closeModal();
+    }
+  }
+  private handleDeleteError(error: any):void {
     if (error instanceof OccError || error?.message.includes('404')) {
       this.showOCCErrorModalSalutation = true;
-      alert('Error: ' + error.message);
       this.occErrorType = 'DELETE_UNEXISTED';
     }
   }

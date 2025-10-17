@@ -98,7 +98,6 @@ export class EmploymentContractService {
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch employment contract by id');
-        console.error(err);
         return of(undefined as unknown as EmploymentContract);
       })
     );
