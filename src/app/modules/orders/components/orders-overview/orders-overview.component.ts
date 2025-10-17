@@ -122,6 +122,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
       this.orderUtils.deleteOrder(this.selectedOrder.id).subscribe({
         next: () => {
           this.commonMessage.showDeleteSucessfullMessage();
+          this.isOrderLoading = false;
+          this.visibleOrderModal = false;
           this.orders = this.orders.filter(order => order.id != this.selectedOrder?.id);
         },
         error: (ordersError) => {
