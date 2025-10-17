@@ -25,8 +25,14 @@
     [isVisibleModal]="visibleSubcontractModal"
     [isLoading]="isCreating"
     [isLoadingDelete]="isDeletingSubcontract"
-    (createdSubContract)="onCreateFrameworkAgreement($event)"
-    (deletedSubContract)="onDeleteFrameworkAgreement($event)"
+    (createdSubContract)="onCreateSubcontract($event)"
+    (deletedSubContract)="onDeleteSubcontract($event)"
     (visibleModal)="onModalVisible($event)"
   ></app-subcontract-modal>
 </p-dialog>
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalSubcontract" 
+  [errorType]="errorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalSubcontract = false">
+</app-occ-error-modal>

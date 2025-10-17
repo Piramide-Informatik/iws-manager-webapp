@@ -232,7 +232,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   private handleUpdateSubcontractError(error: Error): void {
     this.isLoading = false;
     this.onLoadingUpdate.emit(this.isLoading);
-
+    this.commonMessageService.showErrorEditMessage();
     if (error instanceof OccError) {
       this.showOCCErrorModalSubcontract = true;
       this.occErrorType = error.errorType;
