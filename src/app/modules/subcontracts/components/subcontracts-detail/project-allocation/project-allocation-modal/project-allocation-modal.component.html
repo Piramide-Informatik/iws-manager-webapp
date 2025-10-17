@@ -82,5 +82,9 @@
     </div>
   </div> 
 </p-dialog>
-<app-occ-error-modal *ngIf="showOCCErrorSubcontractProject" (onClose)="showOCCErrorSubcontractProject = false">
+<app-occ-error-modal 
+    *ngIf="showOCCErrorSubcontractProject" 
+    [reloadCurrentPage]="true"
+    [errorType]="occErrorType"
+    (onClose)="showOCCErrorSubcontractProject = false">
 </app-occ-error-modal>
