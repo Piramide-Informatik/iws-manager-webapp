@@ -285,14 +285,12 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   }
 
   private handleUpdateError(error: Error): void {
+    this.commonMessageService.showErrorEditMessage();
     if (error instanceof OccError) {
       this.showOCCErrorModalContract = true;
       this.redirectRoute = "/customers/employees/" + this.currentEmployee.customer?.id + "/employee-details/" + this.currentEmployee.id;
       this.occErrorType = error.errorType;
-      return;
     }
-
-    this.commonMessageService.showErrorEditMessage();
   }
 
   private buildCustomerFromSource(source: any): any {
