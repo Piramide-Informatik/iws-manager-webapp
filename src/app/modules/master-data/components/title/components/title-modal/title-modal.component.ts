@@ -4,6 +4,7 @@ import { TitleUtils } from '../../utils/title-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-title-modal',
@@ -31,6 +32,8 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string | null = null;
 
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
+  
   readonly createTitleForm = new FormGroup({
     name: new FormControl('')
   });
@@ -70,20 +73,19 @@ export class TitleModalComponent implements OnInit, OnDestroy {
           this.closeModal();
         },
         error: (error) => {
+          this.isLoading = false;
+          this.handleEntityRelatedError(error)
           this.handleDeleteError(error);
-          this.errorMessage = error.message ?? 'Failed to delete title';
-          this.toastMessage.emit({
-            severity: 'error',
-            summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities')
-              ? 'MESSAGE.DELETE_ERROR_IN_USE'
-              : 'MESSAGE.DELETE_FAILED'
-          });
-          console.error('Delete error:', error);
         }
       });
 
       this.subscriptions.add(sub);
+    }
+  }
+  private handleEntityRelatedError(error: any): void {
+    if(error.error?.message?.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+      this.closeModal();
     }
   }
 

@@ -124,19 +124,7 @@ export class TitleUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteTitle(id: number): Observable<void> {
-    return this.checkTitleUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.titleService.deleteTitle(id).pipe(
-          // }),
-          catchError(error => {
-            return throwError(() => error);
-          })
-        );
-      })
-    );
+    return this.titleService.deleteTitle(id)      
   }
 
   /**
