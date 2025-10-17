@@ -64,6 +64,7 @@ export class TextFormComponent implements OnInit, OnDestroy {
         if(error instanceof OccError){
           this.showOCCErrorModalText = true;
           this.occErrorType = error.errorType;
+          this.commonMessageService.showErrorEditMessage();
         }else{
           this.commonMessageService.showErrorEditMessage();
         }

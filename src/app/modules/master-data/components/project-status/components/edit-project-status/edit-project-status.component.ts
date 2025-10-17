@@ -108,6 +108,7 @@ export class EditProjectStatusComponent implements OnInit {
                   console.log('OCC Error occurred:', error);
                   this.showOCCErrorModalProjectStatus = true;
                   this.occErrorType = error.errorType;
+                  this.commonMessageService.showErrorEditMessage();
                 }else {
                   this.commonMessageService.showErrorEditMessage();
                 }

@@ -1,52 +1,34 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
   <ng-template #title>{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.TABLE_NAME' | translate }}</ng-template>
 
-  <master-data-genaral-table
-    [tableId]="tableKey"
-    [tableValues]="subcontractsYear"
-    [columns]="depreciationColumns"
-    [userPreferences]="userDepreciationPreferences"
-    [dataKeys]="dataKeys"
-    (onColumnChanges)="onUserDepreciationPreferencesChanges($event)"
-    (onCreateRegister)="showModal('new')"
+  <master-data-genaral-table [tableId]="tableKey" [tableValues]="subcontractsYear" [columns]="depreciationColumns"
+    [userPreferences]="userDepreciationPreferences" [dataKeys]="dataKeys"
+    (onColumnChanges)="onUserDepreciationPreferencesChanges($event)" (onCreateRegister)="showModal('new')"
     (onEditRegister)="showModal('edit', $event.id)"
-    (onDeleteRegister)="showModal('delete', $event)"
-  ></master-data-genaral-table>
+    (onDeleteRegister)="showModal('delete', $event)"></master-data-genaral-table>
 </p-card>
 
 <div class="card">
   <p-dialog
     [header]="modalType === 'delete' ?  ('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_YEAR' | translate)  : 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.MODAL_TITLE_' + modalType.toUpperCase() | translate"
-    (onHide)="closeModal()"
-    [modal]="true"
-    [(visible)]="visibleModal"
-    [style]="{ width: 'auto' }"
-  >
+    (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: 'auto' }">
     <ng-container *ngIf="modalType !== 'delete'; else deleteTemplate">
       <hr class="mt-0" />
       <form [formGroup]="depreciationForm" (ngSubmit)="onSubmit()">
         <div class="form-item-container flex gap-4 mb-3">
           <label for="year" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
-          <p-datepicker #datePicker
-            formControlName="year"
-            inputId="year"
-            view="year"
-            dateFormat="yy"
-            appendTo="body"
-            showIcon
-            showClear
-          />
+          <p-datepicker #datePicker formControlName="year" inputId="year" view="year" dateFormat="yy" appendTo="body"
+            showIcon showClear />
         </div>
         <div class="form-item-container flex gap-4 mb-3">
-          <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.FORM_COMMISSION.DURATION_OF_USE' | translate }}</label>
+          <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.FORM_COMMISSION.DURATION_OF_USE' | translate
+            }}</label>
           <div class="input-message">
-            <p-inputnumber [inputStyle]="{'text-align': 'right'}"
-              inputId="months" [min]="0" [max]="12" [useGrouping]="true"
-              formControlName="months"
-              autocomplete="off" invalid="
+            <p-inputnumber [inputStyle]="{'text-align': 'right'}" inputId="months" [min]="0" [max]="12"
+              [useGrouping]="true" formControlName="months" autocomplete="off" invalid="
               depreciationForm.get('months')?.invalid  
               && depreciationForm.get('months')?.dirty 
-              || depreciationForm.get('months')?.touched"/>
+              || depreciationForm.get('months')?.touched" />
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
               depreciationForm.get('months')?.invalid && 
               depreciationForm.get('months')?.dirty
@@ -54,44 +36,22 @@
           </div>
         </div>
         <div class="form-item-container flex gap-4 mb-3">
-          <label for="depreciationAmount" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' | translate }}</label>
-          <p-inputnumber
-            inputId="depreciationAmount"
-            formControlName="depreciationAmount"
-            autocomplete="off"
-            mode="decimal" [max]="99999.99" [min]="0"
-            locale="de-DE"
-            [inputStyle]="{'text-align': 'right'}"
-            [minFractionDigits]="2"
-            [maxFractionDigits]="2"
-            [useGrouping]="true"
-            [disabled]="true"
-            readonly
-          />
+          <label for="depreciationAmount" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR' |
+            translate }}</label>
+          <p-inputnumber inputId="depreciationAmount" formControlName="depreciationAmount" autocomplete="off"
+            mode="decimal" [max]="99999.99" [min]="0" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" [useGrouping]="true" [disabled]="true" readonly />
         </div>
         <div class="flex justify-content-center gap-2">
-          <p-button
-            [label]="'BUTTONS.SAVE' | translate"
-            icon="pi pi-check"
-            iconPos="left"
-            size="small"
-            type="submit"
-            [loading]="isLoading"
-            [disabled]="isLoading || depreciationForm.invalid"
-          ></p-button>
+          <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" size="small" type="submit"
+            [loading]="isLoading" [disabled]="isLoading || depreciationForm.invalid"></p-button>
           @if(selectedSubcontractYear) {
-            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" (onClick)="visibleSubcontractYearModal = true;" />
+          <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+            (onClick)="visibleSubcontractYearModal = true;" />
           }
-          <p-button
-            [label]="'BUTTONS.CANCEL' | translate"
-            class="cancel"
-            icon="pi pi-times"
-            iconPos="left"
-            size="small"
-            (click)="closeModal()"
-            (keydown.enter)="closeModal()"
-          ></p-button>
+          <p-button [label]="'BUTTONS.CANCEL' | translate" class="cancel" icon="pi pi-times" iconPos="left" size="small"
+            (click)="closeModal()" (keydown.enter)="closeModal()"></p-button>
         </div>
       </form>
     </ng-container>
@@ -99,13 +59,14 @@
       <div class="confirmation-content mb-2 mt-4">
         <p class="mb-4">
           {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_YEAR_QUESTION' | translate }}
-          <strong class="stronglock mt-1">"{{ selectedSubcontractYear?.year  | date:'yyyy'  }}"</strong>?
+          <strong class="stronglock mt-1">"{{ selectedSubcontractYear?.year | date:'yyyy' }}"</strong>?
         </p>
-    
+
         <div class="flex justify-content-center gap-2">
           <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" (onClick)="removeSubcontractYear()" />
-    
+            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+            (onClick)="removeSubcontractYear()" />
+
           <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
             iconPos="left" (onClick)="closeModal()" />
         </div>
@@ -113,27 +74,29 @@
     </ng-template>
   </p-dialog>
 </div>
-<app-occ-error-modal *ngIf="showOCCErrorModalDepreciation" (onClose)="showOCCErrorModalDepreciation = false">
-</app-occ-error-modal>
-<p-dialog
-    [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_YEAR' | translate"
-    [modal]="true"
-    [(visible)]="visibleSubcontractYearModal"
-    [style]="{ width: 'auto' }"
-  >
-    <div class="confirmation-content mb-2 mt-4 subcontractYearModalContainer">
-      <p class="mb-4 subcontractYearModalQuestionContainer">
-        {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_YEAR_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ selectedSubcontractYear?.year  | date:'yyyy'  }}"</strong>?
-      </p>
-  
-      <div class="flex justify-content-center gap-2 subcontractYearModalButtonContainer">
-        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-          iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" (onClick)="removeSubcontractYear()" />
-  
-        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-          iconPos="left" (onClick)="visibleSubcontractYearModal = false;" />
-      </div>
-    </div>
-  </p-dialog>
 
+<p-dialog [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_YEAR' | translate" [modal]="true"
+  [(visible)]="visibleSubcontractYearModal" [style]="{ width: 'auto' }">
+  <div class="confirmation-content mb-2 mt-4 subcontractYearModalContainer">
+    <p class="mb-4 subcontractYearModalQuestionContainer">
+      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_YEAR_QUESTION' | translate }}
+      <strong class="stronglock mt-1">"{{ selectedSubcontractYear?.year | date:'yyyy' }}"</strong>?
+    </p>
+
+    <div class="flex justify-content-center gap-2 subcontractYearModalButtonContainer">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+        (onClick)="removeSubcontractYear()" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="visibleSubcontractYearModal = false;" />
+    </div>
+  </div>
+</p-dialog>
+
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalSubcontractYear" 
+  [errorType]="occErrorType" 
+  [reloadCurrentPage]="true"
+  (close)="showOCCErrorModalSubcontractYear = false">
+</app-occ-error-modal>

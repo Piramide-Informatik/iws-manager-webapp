@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { SubcontractYearService } from '../../../Services/subcontract-year.service';
 import { SubcontractYear } from '../../../Entities/subcontract-year';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -58,7 +59,7 @@ export class SubcontractYearUtils {
     return this.subcontractYearService.addSubcontractYear(subcontractYear);
   }
 
- 
+
   /**
   * Deletes a subcontract year by ID and updates the internal subcontracts year signal.
   * @param id - ID of the subcontract year to delete
@@ -87,11 +88,11 @@ export class SubcontractYearUtils {
       take(1),
       switchMap((currentSubcontractYear) => {
         if (!currentSubcontractYear) {
-          return throwError(() => new Error('Subcontract year not found'));
+          return throwError(() => createNotFoundUpdateError('SubcontractYear'));
         }
 
         if (currentSubcontractYear.version !== subcontractYear.version) {
-          return throwError(() => new Error('Conflict detected: subcontract year version mismatch'));
+          return throwError(() => createUpdateConflictError('SubcontractYear'));
         }
 
         return this.subcontractYearService.updateSubcontractYear(subcontractYear);
