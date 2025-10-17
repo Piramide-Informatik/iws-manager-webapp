@@ -25,7 +25,10 @@
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalSalutation"
+  [useEmitter]="occErrorType==='UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
   [useEmitter]="true"
+  [errorType]="occErrorType"
   (close)="showOCCErrorModalSalutation = false"
   (refresh)="onRefresh()">
 </app-occ-error-modal>
