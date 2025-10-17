@@ -108,7 +108,12 @@ export class FrameworkAgreementService {
    */
   getAllFrameworkAgreementsByCustomerIdSortedByContractNo(customerId: number): Observable<BasicContract[]> {
     return this.http.get<BasicContract[]>(`${this.apiUrl}/by-customer/${customerId}/ordered-by-contractno`, this.httpOptions).pipe(
-      tap(() => this._error.set(null)),
+      tap({
+        next: (frameworks) =>{
+          this._frameworkAgreements.set(frameworks);
+          this._error.set(null);
+        }
+      }),
       catchError(err => {
         this._error.set('Failed to fetch basic contracts sorted');
         console.error('Error fetching basic contracts sorted:', err);

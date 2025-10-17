@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <app-order (onIsLoading)="setLoading($event)" [contractToEdit]="currentBasicContract" [typeForm]="modeForm"></app-order>
+            <app-order (onIsLoading)="setLoading($event)" [contractToEdit]="currentBasicContract"></app-order>
         </div>
         <div class="col-md-6">
             <div class="mb-2">
@@ -32,10 +32,10 @@
     <div class="flex justify-content-center gap-2 buttons-container">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash" iconPos="left" (onClick)="onFrameworkAgreementDeleteConfirm()" severity="danger" 
-          [loading]="isFrameworkAgreementEntityLoading"/>
+          [loading]="isLoadingDelete"/>
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times" iconPos="left" (onClick)="this.visibleFrameworkAgreementModalEntity = false;"
-          [disabled]="isFrameworkAgreementEntityLoading"/>
+          [disabled]="isLoadingDelete"/>
     </div>
   </div>
 </p-dialog>

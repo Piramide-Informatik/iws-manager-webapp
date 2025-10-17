@@ -7,6 +7,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { BasicContract } from '../../../../Entities/basicContract';
 import { momentFormatDate } from '../../../shared/utils/moment-date-utils';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Customer } from '../../../../Entities/customer';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-framework-agreements-modal',
@@ -14,22 +19,26 @@ import { toSignal } from '@angular/core/rxjs-interop';
   templateUrl: './framework-agreements-modal.component.html',
   styleUrl: './framework-agreements-modal.component.scss'
 })
-export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {  
-  @Input() selectedFrameworkAgreement: any
-  @Input() customer: any
-  @Input() modalType: any
-  @Input() isLoading = false;
+export class FrameworkAgreementsModalComponent implements OnInit, OnChanges { 
+  @Input() selectedFrameworkAgreement: BasicContract | undefined;
+  @Input() customer!: Customer;
+  @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible = false;
-  @Output() deletedFrameworkAgreement = new EventEmitter();
-  @Output() createdFrameworkAgreement = new EventEmitter();
-  @Output() visibleModal = new EventEmitter();
+  @Output() visibleModal = new EventEmitter<boolean>();
+  @Output() showOCCErrorModalFA = new EventEmitter<boolean>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly contractStatusUtils = inject(ContractStatusUtils);
   private readonly employeeIwsUtils = inject(EmployeeIwsUtils);
   private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   
+  public isLoading = false;
+  public isLoadingDelete = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public basicContractCreateForm!: FormGroup;
   public readonly fundingPrograms = toSignal(
     this.fundingProgramUtils.getAllFundingPrograms(), { initialValue: [] }
@@ -43,28 +52,18 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
   
   ngOnInit(): void {
     this.initOrderForm();
-    this.frameworkUtils.getNextContractNumber().subscribe(lastContractNo => {
-      if(lastContractNo){
-        this.basicContractCreateForm.patchValue({
-          contractNo: lastContractNo
-        })
-      }
-    })
   }
   
   ngOnChanges(changes: SimpleChanges): void {
-    let modalTypeChanges = changes['modalType'];
-    if (modalTypeChanges && !modalTypeChanges.firstChange) {
-      let modalTypeValue = modalTypeChanges.currentValue;
-      if (modalTypeValue === 'create') {
-        this.ngOnInit()
-      }
-    }
-
     if(changes['visible'] && this.visible){
+      this.getNextContractNumber();
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
+    }
+
+    if(changes['visible'] && !this.visible && this.basicContractCreateForm){
+      this.basicContractCreateForm.reset();
     }
   }
   
@@ -87,26 +86,65 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
   }
   
   onSubmit() {
-    if (this.basicContractCreateForm.invalid) return
+    if (this.basicContractCreateForm.invalid || !this.customer) return
     
-    if (this.customer) {
-      const newBasicContract: Omit<BasicContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-        contractNo: this.basicContractCreateForm.getRawValue().contractNo,
-        contractLabel: this.basicContractCreateForm.value.contractLabel,
-        date: momentFormatDate(this.basicContractCreateForm.value.date),
-        contractTitle: this.basicContractCreateForm.value.contractTitle,
-        confirmationDate: this.basicContractCreateForm.value.confirmationDate,
-        fundingProgram: this.findById(this.fundingPrograms(), this.basicContractCreateForm.value.fundingProgram ?? 0),
-        contractStatus: this.findById(this.contractStatus(), this.basicContractCreateForm.value.contractStatus ?? 0),
-        employeeIws: this.findById(this.employeeIws(), this.basicContractCreateForm.value.employeeIws),
-        customer: this.customer
-      }
-      this.createdFrameworkAgreement.emit(newBasicContract);
+    this.isLoading = true;
+    const newBasicContract: Omit<BasicContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      contractNo: this.basicContractCreateForm.getRawValue().contractNo,
+      contractLabel: this.basicContractCreateForm.value.contractLabel,
+      date: momentFormatDate(this.basicContractCreateForm.value.date),
+      contractTitle: this.basicContractCreateForm.value.contractTitle,
+      confirmationDate: this.basicContractCreateForm.value.confirmationDate,
+      fundingProgram: this.findById(this.fundingPrograms(), this.basicContractCreateForm.value.fundingProgram ?? 0),
+      contractStatus: this.findById(this.contractStatus(), this.basicContractCreateForm.value.contractStatus ?? 0),
+      employeeIws: this.findById(this.employeeIws(), this.basicContractCreateForm.value.employeeIws),
+      customer: this.customer
     }
+    
+    this.frameworkUtils.createNewFrameworkAgreement(newBasicContract).subscribe({
+      next: (createdContract) => {
+        this.isLoading = false;
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.visibleModal.emit(false);
+        setTimeout(() => {
+          this.navigationToEdit(createdContract.id);
+        }, 500)
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    });
+  }
+
+  private navigationToEdit(id: number): void {
+    this.router.navigate(['./framework-agreement-details', id], { relativeTo: this.route });
   }
   
   onFrameworkAgreementDeleteConfirm() {
-    this.deletedFrameworkAgreement.emit(this.selectedFrameworkAgreement);  
+    if(this.selectedFrameworkAgreement){
+      this.isLoadingDelete = true;
+      this.frameworkUtils.deleteFrameworkAgreement(this.selectedFrameworkAgreement.id).subscribe({
+        next: () => {
+          this.isLoadingDelete = false;
+          this.commonMessageService.showDeleteSucessfullMessage();
+          this.closeModal();
+        },
+        error: (error) => {
+          this.isLoadingDelete = false;
+          this.closeModal();
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalFA.emit(true);
+            this.occErrorType = 'DELETE_UNEXISTED';
+            this.commonMessageService.showErrorDeleteMessage();
+          } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+          } else {
+            this.commonMessageService.showErrorDeleteMessage();
+          }
+        }
+      }) 
+    }
   }
   
   closeModal() {
@@ -126,5 +164,15 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
         }
       }, 200);
     }
+  }
+
+  private getNextContractNumber(): void {
+    this.frameworkUtils.getNextContractNumber().subscribe(lastContractNo => {
+      if(lastContractNo){
+        this.basicContractCreateForm.patchValue({
+          contractNo: lastContractNo
+        })
+      }
+    })
   }
 }

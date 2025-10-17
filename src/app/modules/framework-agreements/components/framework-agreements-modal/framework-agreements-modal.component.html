@@ -87,9 +87,9 @@
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash" iconPos="left" (onClick)="onFrameworkAgreementDeleteConfirm()" severity="danger" 
-          [loading]="isLoading"/>
+          [loading]="isLoadingDelete"/>
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-          icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading"/>
+          icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete"/>
     </div>
   </div>
 </ng-template>
