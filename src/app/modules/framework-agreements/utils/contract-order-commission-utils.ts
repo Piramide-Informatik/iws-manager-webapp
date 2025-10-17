@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { ContractOrderCommission } from '../../../Entities/contractOrderCommission';
 import { ContractOrderCommissionService } from '../../../Services/contract-order-commission.service';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';

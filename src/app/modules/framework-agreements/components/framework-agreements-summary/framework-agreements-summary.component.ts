@@ -5,11 +5,10 @@ import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
-import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { FrameworkAgreementsUtils } from '../../utils/framework-agreement.util';
 import { Column } from '../../../../Entities/column';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
-import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { OccErrorType } from '../../../shared/utils/occ-error';
 import { Title } from '@angular/platform-browser';
 import { CustomerStateService } from '../../../customer/utils/customer-state.service';
 import { Customer } from '../../../../Entities/customer';
@@ -52,7 +51,7 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   modalFrameworkAgreementType: 'create' | 'delete' = 'create';
   customerId = '';
 
-  constructor(private readonly commonMessageService: CommonMessagesService) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.loadFrameworkAgreementsColHeaders();
