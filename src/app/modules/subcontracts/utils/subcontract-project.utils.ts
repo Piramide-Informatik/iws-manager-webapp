@@ -55,12 +55,7 @@ export class SubcontractProjectUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteSubcontractProject(id: number): Observable<void> {
-    return this.subcontractProjectService.deleteSubcontractProject(id).pipe(
-      catchError(error => {
-        console.log('Error delete subcontract project', error)
-        return throwError(() => error);
-      })
-    );
+    return this.subcontractProjectService.deleteSubcontractProject(id);
   }
 
   /**

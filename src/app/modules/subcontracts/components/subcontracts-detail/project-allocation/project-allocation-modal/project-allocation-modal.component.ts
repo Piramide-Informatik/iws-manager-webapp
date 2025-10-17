@@ -240,13 +240,21 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
           this.isSubcontractProjectPerformigAction = false;
           this.visibleSubcontractProjectModal = false;
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error deleting subcontract project', error);
+          this.handleDeleteErrorOcc(error);
           this.commonMessageService.showErrorDeleteMessage();
           this.isSubcontractProjectPerformigAction = false;
-          this.isProjectAllocationVisibleModal.emit(false);
           this.visibleSubcontractProjectModal = false;
         }
       });
+    }
+  }
+
+  private handleDeleteErrorOcc(err: any): void {
+    if (err instanceof OccError || err?.message.includes('404')) {
+      this.showOCCErrorSubcontractProject = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
 
