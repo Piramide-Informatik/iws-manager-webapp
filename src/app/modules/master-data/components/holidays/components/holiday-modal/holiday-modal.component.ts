@@ -58,6 +58,9 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     
     if (changes['visible'] && this.visible && this.isCreateMode) {
       this.resetForm();
+      this.publicHolidayUtils.getPublicHolidaysSequenceSort().subscribe(sequence => {
+        this.createdPublicHolidayForm.get('sequenceNo')?.setValue(sequence as any);
+      })
     }
   }
 
@@ -198,7 +201,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
             momentCreateDate(this.createdPublicHolidayForm.value.date)
           )
         : '',
-      sequenceNo: Number(this.createdPublicHolidayForm.value.sequenceNo),
+      sequenceNo: Number(this.createdPublicHolidayForm.getRawValue().sequenceNo),
       isFixedDate: true,
     };
   }
