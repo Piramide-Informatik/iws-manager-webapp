@@ -66,6 +66,7 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
           console.log('OCC Error occurred:', error);
           this.showOCCErrorModalChance = true;
           this.occErrorType = error.errorType;
+          this.commonMessageService.showErrorEditMessage();
         }else{
           this.commonMessageService.showErrorEditMessage();
         }
