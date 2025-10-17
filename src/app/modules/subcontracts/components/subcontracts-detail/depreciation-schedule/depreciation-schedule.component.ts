@@ -13,6 +13,7 @@ import { Subcontract } from '../../../../../Entities/subcontract';
 import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
 import { SubcontractStateService } from '../../../utils/subcontract-state.service';
 import { DatePicker } from 'primeng/datepicker';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 interface DepreciationEntry {
   id: number;
@@ -38,9 +39,10 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   private readonly translate = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
   private langSubscription = new Subscription();
-  public showOCCErrorModalDepreciation = false;
   visibleSubcontractYearModal = false;
-  
+  public showOCCErrorModalSubcontractYear = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
   @Input() currentSubcontract!: Subcontract;
 
   depreciationForm!: FormGroup;
@@ -66,7 +68,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.subcontractId = params['subContractId'];
-      this.loadSubcontractYears(this.subcontractId);  
+      this.loadSubcontractYears(this.subcontractId);
     })
     this.initForm();
     this.inputMonthsChange();
@@ -80,10 +82,10 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['currentSubcontract'] && this.currentSubcontract){
+    if (changes['currentSubcontract'] && this.currentSubcontract) {
       this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
-        if(updatedSubcontract && (updatedSubcontract?.netOrGross !== this.currentSubcontract.netOrGross || 
-          updatedSubcontract.afamonths !== this.currentSubcontract.afamonths )){
+        if (updatedSubcontract && (updatedSubcontract?.netOrGross !== this.currentSubcontract.netOrGross ||
+          updatedSubcontract.afamonths !== this.currentSubcontract.afamonths)) {
           this.loadSubcontractYears(updatedSubcontract.id)
         }
       });
@@ -122,11 +124,11 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   }
 
   showModal(option: 'new' | 'edit' | 'delete', idSubcontracYear?: number) {
-    if(option !== 'delete'){
+    if (option !== 'delete') {
       this.firstInputFocus();
     }
     this.modalType = option;
-    if( option === 'delete' || option === 'edit' ) {
+    if (option === 'delete' || option === 'edit') {
       this.selectedSubcontractYear = this.subcontractsYear.find(e => e.id === idSubcontracYear);
     }
     if (option === 'edit') {
@@ -154,9 +156,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   }
 
   public onSubmit(): void {
-    if (this.modalType === 'new'){
+    if (this.modalType === 'new') {
       this.createSubcontractYear();
-    } else if (this.modalType === 'edit'){
+    } else if (this.modalType === 'edit') {
       this.updateSubcontractYear();
     }
   }
@@ -168,7 +170,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       id: this.selectedSubcontractYear.id,
       year: this.depreciationForm.value.year,
       months: this.depreciationForm.value.months,
-      subcontract: this.currentSubcontract, 
+      subcontract: this.currentSubcontract,
       createdAt: this.selectedSubcontractYear.createdAt,
       updatedAt: new Date().toISOString(),
       version: this.selectedSubcontractYear.version
@@ -183,13 +185,20 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isLoading = false;
-        if (err.message === 'Conflict detected: subcontract year version mismatch') {
-          this.showOCCErrorModalDepreciation = true;
-        } else {
-          this.commonMessageService.showErrorEditMessage();
-        }
+        this.handleUpdateOCCError(err);
       }
     });
+  }
+
+  private handleUpdateOCCError(error: any) {
+    if (error instanceof OccError) {
+      this.visibleSubcontractYearModal = false;
+      this.visibleModal.set(false);
+      this.showOCCErrorModalSubcontractYear = true;
+      this.occErrorType = error.errorType;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
+    }
   }
 
   private createSubcontractYear(): void {
@@ -198,12 +207,12 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
     const newSubcontractYear: Omit<SubcontractYear, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       year: momentFormatDate(this.depreciationForm.value.year),
       months: this.depreciationForm.value.months,
-      subcontract: { 
+      subcontract: {
         id: this.currentSubcontract.id,
         version: 0
-      } as Subcontract, 
+      } as Subcontract,
     };
-    
+
     this.isLoading = true;
     this.subcontractYearUtils.createNewSubcontractYear(newSubcontractYear).subscribe({
       next: () => {
@@ -225,7 +234,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         next: () => {
           this.closeModal();
           this.commonMessageService.showDeleteSucessfullMessage();
-          this.subcontractsYear = this.subcontractsYear.filter( de => de.id !== this.selectedSubcontractYear?.id);
+          this.subcontractsYear = this.subcontractsYear.filter(de => de.id !== this.selectedSubcontractYear?.id);
           this.selectedSubcontractYear = undefined;
         },
         error: () => {
@@ -237,7 +246,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   }
 
   private loadSubcontractYears(subcontractId: number): void {
-    this.subcontractYearUtils.getAllSubcontractsYearSortedByYear(subcontractId).subscribe( sc => {
+    this.subcontractYearUtils.getAllSubcontractsYearSortedByYear(subcontractId).subscribe(sc => {
       this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
         const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
         const afamonths = curr.subcontract?.afamonths ?? 0;
@@ -251,14 +260,14 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
           usagePercentage: curr.months,
           depreciationAmount: this.calculateDepreciationAmount(invoiceNet, afamonths, subcontractsYearMonths)
         } as DepreciationEntry);
-          return acc;  
+        return acc;
       }, [])
       this.subcontractsYear = this.sortByCreatedAt()
     });
   }
 
   private sortByCreatedAt() {
-    return this.subcontractsYear.sort((sy1: DepreciationEntry,sy2: DepreciationEntry) => {
+    return this.subcontractsYear.sort((sy1: DepreciationEntry, sy2: DepreciationEntry) => {
       const sy1Date = new Date(sy1.createdAt);
       const sy2Date = new Date(sy2.createdAt);
       return sy2Date.getTime() - sy1Date.getTime();
@@ -266,10 +275,10 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   }
 
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput.inputfieldViewChild){
+    setTimeout(() => {
+      if (this.firstInput.inputfieldViewChild) {
         this.firstInput.inputfieldViewChild.nativeElement.focus();
       }
-    },300)
+    }, 300)
   }
 }
