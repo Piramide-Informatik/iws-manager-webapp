@@ -88,15 +88,7 @@ export class FrameworkAgreementsUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteFrameworkAgreement(id: number): Observable<void> {
-  return this.orderUtils.getAllOrdersByBasicContract(id).pipe(
-      take(1),
-      switchMap(orders => {
-        if (orders.length > 0) {
-          return throwError(() => new Error('Cannot delete framework agreement with associated orders'));
-        }
-        return this.frameworkAgreementService.deleteFrameworkAgreements(id);
-      })
-    );
+    return this.frameworkAgreementService.deleteFrameworkAgreements(id);
   }
 
   /**

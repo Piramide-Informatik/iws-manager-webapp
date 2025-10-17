@@ -5,7 +5,7 @@ import { ContractStatusUtils } from '../../../../master-data/components/contract
 import { EmployeeIwsUtils } from '../../../../master-data/components/iws-staff/utils/employee-iws-utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BasicContract } from '../../../../../Entities/basicContract';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../../Entities/customer';
 import { Subscription } from 'rxjs';
 import { CustomerUtils } from '../../../../customer/utils/customer-utils';
@@ -34,7 +34,6 @@ export class OrderComponent implements OnInit, OnChanges {
   private readonly subscriptions = new Subscription();
   private readonly customerUtils = inject(CustomerUtils);
   private readonly commonMessageService = inject(CommonMessagesService);
-  private readonly router = inject(Router);
   private readonly titleService = inject(Title);
   private readonly translate = inject(TranslateService);
 
@@ -53,7 +52,6 @@ export class OrderComponent implements OnInit, OnChanges {
   private readonly customerId: number = this.route.snapshot.params['id'];
   private currentCustomer!: Customer;
   @Input() contractToEdit!: BasicContract;
-  @Input() typeForm: 'create' | 'edit' = 'create';
   @Output() onIsLoading = new EventEmitter<boolean>();
   public showOCCErrorModalBasicContract: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
@@ -86,15 +84,6 @@ export class OrderComponent implements OnInit, OnChanges {
         employeeIws: this.contractToEdit.employeeIws?.id
       });
     }
-    if (changes['typeForm'] && this.typeForm === 'create') {
-      this.frameworkUtils.getNextContractNumber().subscribe(lastContractNo => {
-        if (lastContractNo) {
-          this.basicContractForm.patchValue({
-            contractNo: lastContractNo
-          })
-        }
-      })
-    }
   }
 
   private initOrderForm(): void {
@@ -112,13 +101,9 @@ export class OrderComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if (this.basicContractForm.invalid) return
+    if (this.basicContractForm.invalid || !this.contractToEdit) return
 
-    if (this.contractToEdit) {
-      this.updateFrameworkAgreement();
-    } else {
-      this.createFrameworkAgreement();
-    }
+    this.updateFrameworkAgreement();
   }
 
   private updateFrameworkAgreement(): void {
@@ -144,6 +129,7 @@ export class OrderComponent implements OnInit, OnChanges {
       },
       error: (error) => {
         this.onIsLoading.emit(false);
+        this.commonMessageService.showErrorEditMessage();
         this.handleSaveError(error);
       }
     });
@@ -154,42 +140,7 @@ export class OrderComponent implements OnInit, OnChanges {
       this.showOCCErrorModalBasicContract = true;
       this.occErrorType = error.errorType;
       this.redirectRoute = "/customers/framework-agreements/" + this.currentCustomer.id;
-      return;
     }
-
-    this.commonMessageService.showErrorEditMessage();
-  }
-
-  private createFrameworkAgreement(): void {
-    this.onIsLoading.emit(true);
-
-    const newBasicContract: Omit<BasicContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      contractNo: this.basicContractForm.getRawValue().contractNo,
-      contractLabel: this.basicContractForm.value.contractLabel,
-      date: momentFormatDate(this.basicContractForm.value.date),
-      contractTitle: this.basicContractForm.value.contractTitle,
-      confirmationDate: this.basicContractForm.value.confirmationDate,
-      fundingProgram: this.getFundingProgram(this.basicContractForm.value.fundingProgram ?? 0),
-      contractStatus: this.getContractStatus(this.basicContractForm.value.contractStatus ?? 0),
-      employeeIws: this.getEmployeeIws(this.basicContractForm.value.employeeIws),
-      customer: this.currentCustomer
-    }
-
-    this.frameworkUtils.createNewFrameworkAgreement(newBasicContract).subscribe({
-      next: (createdContract) => {
-        this.onIsLoading.emit(false);
-        this.commonMessageService.showCreatedSuccesfullMessage();
-        this.basicContractForm.reset();
-        setTimeout(() => {
-          this.navigationToEdit(createdContract.id);
-        }, 2000)
-      },
-      error: (error) => {
-        this.onIsLoading.emit(false);
-        console.log(error);
-        this.commonMessageService.showErrorCreatedMessage();
-      }
-    });
   }
 
   private getFundingProgram(idFunding: number): FundingProgram | null {
@@ -213,10 +164,6 @@ export class OrderComponent implements OnInit, OnChanges {
         }
       })
     );
-  }
-
-  private navigationToEdit(id: number): void {
-    this.router.navigate(['.', id], { relativeTo: this.route });
   }
 
   private firstInputFocus(): void {

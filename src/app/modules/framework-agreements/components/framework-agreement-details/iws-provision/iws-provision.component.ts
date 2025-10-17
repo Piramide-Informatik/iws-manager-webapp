@@ -11,6 +11,7 @@ import { ContractOrderCommission } from '../../../../../Entities/contractOrderCo
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { Column } from '../../../../../Entities/column';
 import { BasicContract } from '../../../../../Entities/basicContract'; 
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-iws-provision',
@@ -33,6 +34,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   orderCommissions: ContractOrderCommission[] = [];
   contractOrderCommissionToEdit!: ContractOrderCommission;
   showOCCErrorModalContractOrderCommission: boolean = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   visibleModalIWSCommissionEntity = false;
 
   // Modal configuration
@@ -41,6 +43,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   @ViewChild('inputNumber') firstInput!: InputNumber;
 
   public isLoading: boolean = false;
+  public isLoadingDelete: boolean = false;
 
   // Table IWS Commission configuration
   @ViewChild('dt') dt!: Table;
@@ -140,22 +143,21 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     };
 
     this.contractCommissionUtils.addContractOrderCommission(newContractOrderCommission).subscribe({
-      next: (createdCommission) => {
+      next: () => {
         this.isLoading = false;
+        this.loadContractOrderCommissions();
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.closeModalIwsCommission();
-        this.orderCommissions = [...this.orderCommissions, createdCommission];
       },
       error: (error) => {
         this.isLoading = false;
-        console.log(error);
         this.commonMessageService.showErrorCreatedMessage();
       }
     })
   }
 
   private updateContractOrderCommission(): void {
-    if (this.iwsCommissionFAForm.invalid) return;
+    if (this.iwsCommissionFAForm.invalid && !this.contractOrderCommissionToEdit) return;
 
     this.isLoading = true;
     const updatedCommission: ContractOrderCommission = {
@@ -166,20 +168,19 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
     };
 
     this.contractCommissionUtils.updateContractOrderCommission(updatedCommission).subscribe({
-      next: () => {
+      next: (updated) => {
         this.isLoading = false;
         this.commonMessageService.showEditSucessfullMessage();
         this.closeModalIwsCommission();
-        this.loadContractOrderCommissions();
+        this.orderCommissions = this.orderCommissions.map(c => c.id === updated.id ? updated : c);
       },
       error: (error: Error) => {
         this.isLoading = false;
-        console.log(error);
-        if(error.message === 'Version conflict: Contract Order Commission has been updated by another user'){
-          this.closeModalIwsCommission();
+        this.commonMessageService.showErrorEditMessage();
+        this.closeModalIwsCommission();
+        if(error instanceof OccError){
           this.showOCCErrorModalContractOrderCommission = true;
-        }else{
-          this.commonMessageService.showErrorEditMessage();
+          this.occErrorType = error.errorType;
         }
       }
     });
@@ -211,39 +212,43 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
 
  
   deleteCommission(commissionId: number){
-  this.typeModal = 'delete';
-  this.selectedOrderCommission = this.orderCommissions.find(oc => oc.id === commissionId) || null;
-  
-  if (this.selectedOrderCommission) {
-    console.log('Comisión a eliminar:', this.selectedOrderCommission);
-    this.visibleModalIWSCommission = true;
-  } else {
-    console.error('No se encontró la comisión con ID:', commissionId);
+    this.typeModal = 'delete';
+    this.selectedOrderCommission = this.orderCommissions.find(oc => oc.id === commissionId) || null;
+    
+    if (this.selectedOrderCommission) {
+      this.visibleModalIWSCommission = true;
+    }
   }
-}
 
   onIwsCommissionDeleteConfirm() {
-  if (!this.selectedOrderCommission?.id) {
-    return;
+    if (!this.selectedOrderCommission?.id) return
+
+    this.isLoadingDelete = true;
+    this.contractCommissionUtils.deleteContractOrderCommission(this.selectedOrderCommission.id).subscribe({
+      next: () => {
+        this.isLoadingDelete = false;
+        this.visibleModalIWSCommission = false;
+        this.visibleModalIWSCommissionEntity = false;
+        this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
+        this.commonMessageService.showDeleteSucessfullMessage();
+        this.selectedOrderCommission = null;
+      },
+      error: (error) => {
+        this.isLoadingDelete = false;
+        this.visibleModalIWSCommission = false;
+        this.visibleModalIWSCommissionEntity = false;
+        this.commonMessageService.showErrorDeleteMessage();
+        this.handleDeleteError(error);
+      }
+    });
   }
 
-  this.isLoading = true;
-  this.contractCommissionUtils.deleteContractOrderCommission(this.selectedOrderCommission.id).subscribe({
-    next: () => {
-      this.isLoading = false;
-      this.visibleModalIWSCommission = false;
-      this.visibleModalIWSCommissionEntity = false;
-      this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
-      this.commonMessageService.showDeleteSucessfullMessage();
-      this.selectedOrderCommission = null;
-    },
-    error: (error) => {
-      this.isLoading = false;
-      console.error('Error deleting commission:', error);
-      this.commonMessageService.showErrorDeleteMessage();
+  private handleDeleteError(error: any): void {
+    if (error instanceof OccError || error?.message?.includes('404') ) {
+      this.occErrorType = 'DELETE_UNEXISTED';
+      this.showOCCErrorModalContractOrderCommission = true;
     }
-  });
-}
+  }
 
   private firstInputFocus(): void {
     setTimeout(()=>{

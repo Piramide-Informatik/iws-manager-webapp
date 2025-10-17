@@ -6,6 +6,7 @@ import { BasicContract } from '../../../../Entities/basicContract';
 import { IwsProvisionComponent } from './iws-provision/iws-provision.component';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-framework-agreement-details',
@@ -19,24 +20,22 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
   private readonly router = inject(Router);
 
   private readonly contractId = this.route.snapshot.params['idContract'];
-  public modeForm: 'create' | 'edit' = 'create';
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalBasicContract = false;
   public redirectRoute = "";
   currentBasicContract!: BasicContract;
   visibleFrameworkAgreementModalEntity = false;
-  isFrameworkAgreementEntityLoading = false;
-
+  
   @ViewChild(OrderComponent) orderComponent!: OrderComponent;
   @ViewChild(IwsProvisionComponent) iwsProvisionComponent!: IwsProvisionComponent;
 
+  isLoadingDelete = false;
   isLoading: boolean = false;
 
   constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     if (this.contractId) {
-      this.modeForm = 'edit';
       this.frameworkUtils.getFrameworkAgreementById(Number(this.contractId)).subscribe(contract => {
         if (contract) {
           this.currentBasicContract = contract;
@@ -57,7 +56,7 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
   }
 
   goBackFrameworksAgreement() {
-    const path = this.modeForm === 'edit' ? '../../' : '../'
+    const path = this.contractId ? '../../' : '../'
     this.router.navigate([path], { relativeTo: this.route });
   }
 
@@ -65,26 +64,29 @@ export class FrameworkAgreementsDetailsComponent implements OnInit {
     if (error instanceof OccError || error?.message?.includes('404')) {
       this.showOCCErrorModalBasicContract = true;
       this.occErrorType = 'DELETE_UNEXISTED';
+      this.commonMessageService.showErrorDeleteMessage();
       this.visibleFrameworkAgreementModalEntity = false;
       this.redirectRoute = "/customers/framework-agreements/" + this.currentBasicContract.customer?.id;
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 
   onFrameworkAgreementDeleteConfirm() {
-    this.isFrameworkAgreementEntityLoading = true;
+    this.isLoadingDelete = true;
     this.frameworkUtils.deleteFrameworkAgreement(this.currentBasicContract.id).subscribe({
       next: () => {
+        this.isLoadingDelete = false;
         this.commonMessageService.showDeleteSucessfullMessage()
         this.visibleFrameworkAgreementModalEntity = false;
         this.goBackFrameworksAgreement();
       },
       error: (error) => {
+        this.isLoadingDelete = false;
+        this.visibleFrameworkAgreementModalEntity = false;
         this.handleDeleteError(error);
-        if (error.message.includes('have associated orders')) {
-          this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-        } else {
-          this.commonMessageService.showErrorDeleteMessage();
-        }
       }
     })
   }
