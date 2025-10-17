@@ -11,6 +11,7 @@ import { Project } from '../../../../../../Entities/project';
 import { SubcontractUtils } from '../../../../utils/subcontracts-utils';
 import { Subcontract } from '../../../../../../Entities/subcontract';
 import { Select } from 'primeng/select';
+import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-project-allocation-modal',
@@ -44,6 +45,8 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   public showOCCErrorSubcontractProject = false;
   visibleSubcontractProjectModal = false;
   private readonly customerId: number = this.route.snapshot.params['id'];
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+
   private projects: Project[] = [];
   public projectLabels = toSignal(
     this.projectUtils.getAllProjectByCustomerId(this.customerId).pipe(
@@ -64,7 +67,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       this.route.params.subscribe(params => {
         const subcontractId = params['subContractId'];
         this.subcontractUtils.getSubcontractById(subcontractId).subscribe(subcontract => {
-          if(subcontract){
+          if (subcontract) {
             this.currentSubcontract = subcontract;
           }
         })
@@ -124,7 +127,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       this.allocationForm.reset();
     }
 
-    if(changes['isVisibleModal'] && this.isVisibleModal){
+    if (changes['isVisibleModal'] && this.isVisibleModal) {
       this.firstInputFocus();
     }
   }
@@ -145,7 +148,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   private createSubcontractProject(): void {
     if (this.allocationForm.invalid) return;
 
-    const newSubcontractProject: Omit<SubcontractProject, 'id' | 'createdAt' | 'updatedAt' | 'version' > = {
+    const newSubcontractProject: Omit<SubcontractProject, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       subcontractYear: null,
       project: this.allocationForm.value.projectLabel ? this.getProjectSelected(this.allocationForm.value.projectLabel) : null,
       subcontract: this.currentSubcontract,
@@ -171,7 +174,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   }
 
   private getProjectSelected(projectId: number): Project | null {
-    return this.projects.find( p => p.id === projectId) ?? null;
+    return this.projects.find(p => p.id === projectId) ?? null;
   }
 
   private updateSubcontractProject(): void {
@@ -200,14 +203,18 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
         },
         error: (err) => {
           this.isSubcontractProjectPerformigAction = false;
-          if (err.message === 'Conflict detected: subcontract project version mismatch') {
-            this.showOCCErrorSubcontractProject = true;
-          } else {
-            this.commonMessageService.showErrorEditMessage();
-          }
+          this.handleUpdateErrorOcc(err);
         }
       })
     );
+  }
+  private handleUpdateErrorOcc(err: any): void {
+    if (err instanceof OccError) {
+      this.showOCCErrorSubcontractProject = true;
+      this.occErrorType = err.errorType;
+    } else {
+      this.commonMessageService.showErrorEditMessage();
+    }
   }
 
   openSubcontractProjectModal() {
@@ -233,22 +240,30 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
           this.isSubcontractProjectPerformigAction = false;
           this.visibleSubcontractProjectModal = false;
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error deleting subcontract project', error);
+          this.handleDeleteErrorOcc(error);
           this.commonMessageService.showErrorDeleteMessage();
           this.isSubcontractProjectPerformigAction = false;
-          this.isProjectAllocationVisibleModal.emit(false);
           this.visibleSubcontractProjectModal = false;
         }
       });
     }
   }
 
+  private handleDeleteErrorOcc(err: any): void {
+    if (err instanceof OccError || err?.message.includes('404')) {
+      this.showOCCErrorSubcontractProject = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
+  }
+
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput){
+    setTimeout(() => {
+      if (this.firstInput) {
         this.firstInput.focus();
         this.firstInput.show();
       }
-    },300)
+    }, 300)
   }
 }

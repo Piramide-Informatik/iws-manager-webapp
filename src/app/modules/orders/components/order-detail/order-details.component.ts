@@ -138,6 +138,7 @@ export class OrderDetailsComponent implements OnInit {
           }, 500);
         },
         error: (error) => {
+          console.error('Error deleting order:', error);
           this.isLoadingDelete = false;
           this.visibleOrderDeleteModal = false;
           this.handleDeleteError(error);

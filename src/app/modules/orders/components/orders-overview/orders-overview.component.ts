@@ -122,7 +122,11 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
       this.orderUtils.deleteOrder(this.selectedOrder.id).subscribe({
         next: () => {
           this.commonMessage.showDeleteSucessfullMessage();
+          this.isOrderLoading = false;
+          this.visibleOrderModal = false;
           this.orders = this.orders.filter(order => order.id != this.selectedOrder?.id);
+          this.visibleOrderModal = false;
+          this.isOrderLoading = false;
         },
         error: (ordersError) => {
           this.isOrderLoading = false;
@@ -135,6 +139,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   }
 
   handleOnDeleteError(error: Error) {
+    console.error('Error deleting order:', error);
     if (error instanceof OccError || error?.message?.includes('404')) {
       this.commonMessage.showErrorDeleteMessage();
       this.occErrorType = 'DELETE_UNEXISTED';

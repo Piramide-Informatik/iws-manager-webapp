@@ -90,6 +90,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
         error: (error) => {
           this.isLoading = false;
           this.handleDeleteError(error);
+          this.closeModal();
           this.deleteNetwork.emit({ status: 'error', error: error });
         }
       })
