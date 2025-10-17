@@ -2,6 +2,18 @@
   "PAGETITLE": {
     "CUSTOMER_OVERVIEW": "Kundenübersicht",
     "CUSTOMER": "kunde - ",
+    "CUSTOMERS": {
+      "BASIC_CONTRACTS": " - Rahmenverträge",
+      "CONTRACTORS": " - Auftragnehmer",
+      "DETAILS": " - Details",
+      "EMPLOYEES": " - Mitarbeiter",
+      "EMPLOYMENT_CONTRACTS": " - Arbeitsverträge",
+      "INVOICES": " - Rechnungen",
+      "ORDERS": " - Aufträge",
+      "PROJECTS": " - Projekte",
+      "RECEIVABLES": " - Forderungen",
+      "SUBCONTRACTS": " - Unteraufträge"
+    },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
