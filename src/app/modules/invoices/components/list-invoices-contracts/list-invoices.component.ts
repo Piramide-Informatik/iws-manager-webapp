@@ -2,14 +2,18 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, inject } fr
 import { Invoice } from '../../../../Entities/invoices';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import {TranslateService, _} from "@ngx-translate/core";
-import { Subscription } from 'rxjs';
+import { TranslateService, _ } from "@ngx-translate/core";
+import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { InvoiceUtils } from '../../utils/invoice.utils';
 import { Column } from '../../../../Entities/column';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { Title } from '@angular/platform-browser';
+import { CustomerStateService } from '../../../customer/utils/customer-state.service';
+import { CustomerUtils } from '../../../customer/utils/customer-utils';
+import { Customer } from '../../../../Entities/customer';
 
 @Component({
   selector: 'app-list-invoices',
@@ -18,9 +22,13 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
   templateUrl: './list-invoices.component.html',
   styleUrl: './list-invoices.component.scss',
 })
-export class ListInvoicesComponent implements OnInit, OnDestroy{
+export class ListInvoicesComponent implements OnInit, OnDestroy {
   public cols!: Column[];
   private readonly invoiceUtils = inject(InvoiceUtils);
+  private readonly titleService = inject(Title);
+  private readonly customerStateService = inject(CustomerStateService);
+  private readonly customerUtils = inject(CustomerUtils);
+
   private langSubscription!: Subscription;
 
   public selectedColumns!: Column[];
@@ -41,7 +49,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
   visibleInvoicesModal = false;
 
   isInvoicesLoading = false;
-
+  public currentCustomer!: Customer | undefined;
   selectedInvoices!: any;
 
   @ViewChild('dt2') dt2!: Table;
@@ -53,13 +61,13 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     private readonly confirmationService: ConfirmationService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly cd: ChangeDetectorRef,
-    private readonly translate: TranslateService, 
-    private readonly router:Router,
+    private readonly translate: TranslateService,
+    private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly commonMessage: CommonMessagesService
-  ) {}
+  ) { }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.loadInvoiceColHeaders();
     this.selectedColumns = this.cols;
     this.userInvoicePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
@@ -69,30 +77,55 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
       this.userInvoicePreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.route.params.subscribe(params => {
+      const customerId = params['id'];
+      if (!customerId) {
+        this.updateTitle('...');
+        return;
+      }
+
+      this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
+        if (currentCustomer) {
+          this.updateTitle(currentCustomer.customername1!);
+        } else {
+          this.getTitleByCustomerId(customerId);
+        }
+      })
+
       this.invoiceUtils.getAllInvoicesByCustomerId(params['id']).subscribe(invoices => {
         this.invoices = invoices.reduce((acc: any[], curr) => {
           acc.push({
             id: curr.id,
-            invoiceNumber: curr.invoiceNo, 
-            date: curr.invoiceDate, 
-            description: curr.note, 
-            type: curr.invoiceType, 
-            iwsNumber: curr.network, 
-            orderNumber: curr.order?.orderNo, 
-            orderName: curr.order?.orderLabel, 
-            netAmount: curr.amountNet, 
-            value: curr.amountTax, 
+            invoiceNumber: curr.invoiceNo,
+            date: curr.invoiceDate,
+            description: curr.note,
+            type: curr.invoiceType,
+            iwsNumber: curr.network,
+            orderNumber: curr.order?.orderNo,
+            orderName: curr.order?.orderLabel,
+            netAmount: curr.amountNet,
+            value: curr.amountTax,
             totalAmount: curr.amountGross
           });
           return acc;
-        },[]);
+        }, []);
       })
     })
   }
 
-    openDeleteModal(id: any) {
+  private getTitleByCustomerId(customerId: number): void {
+    this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+      if (customer) {
+        this.updateTitle(customer.customername1!);
+        this.currentCustomer = customer;
+      } else {
+        this.updateTitle('');
+      }
+    });
+  }
+
+  openDeleteModal(id: any) {
     this.visibleInvoicesModal = true;
-    const invoices = this.invoices.find( invoices => invoices.id == id);
+    const invoices = this.invoices.find(invoices => invoices.id == id);
     if (invoices) {
       this.selectedInvoices = invoices;
     }
@@ -104,7 +137,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
       this.invoiceUtils.deleteInvoice(this.selectedInvoices.id).subscribe({
         next: () => {
           this.commonMessage.showDeleteSucessfullMessage();
-          this.invoices = this.invoices.filter( invoices => invoices.id != this.selectedInvoices.id);
+          this.invoices = this.invoices.filter(invoices => invoices.id != this.selectedInvoices.id);
         },
         error: () => {
           this.commonMessage.showErrorDeleteMessage();
@@ -112,7 +145,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
         complete: () => {
           this.visibleInvoicesModal = false;
           this.selectedInvoices = undefined;
-          this.isInvoicesLoading = false; 
+          this.isInvoicesLoading = false;
         }
       })
     }
@@ -124,22 +157,28 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
 
   loadInvoiceColHeaders(): void {
     this.cols = [
-          { 
-            field: 'invoiceNumber', 
-            customClasses: ['align-right','date-font-style'], 
-            routerLink: (row: any) => `./invoice-details/${row.invoiceNumber}`,
-            header:  this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))
-          },
-          { field: 'date', type: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE'))},
-          { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION'))},
-          { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE'))},
-          { field: 'iwsNumber', header: this.translate.instant(_('INVOICES.TABLE.NETWORK'))},
-          { field: 'orderNumber', customClasses: ['align-right','date-font-style'], header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER'))},
-          { field: 'orderName', header: this.translate.instant(_('INVOICES.TABLE.ORDER_TITLE'))},
-          { field: 'netAmount', type: 'double', customClasses: ['align-right'],  header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT'))},
-          { field: 'value', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT'))},
-          { field: 'totalAmount', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.AMOUNT_GROSS'))}
-        ];
+      {
+        field: 'invoiceNumber',
+        customClasses: ['align-right', 'date-font-style'],
+        routerLink: (row: any) => `./invoice-details/${row.invoiceNumber}`,
+        header: this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))
+      },
+      { field: 'date', type: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE')) },
+      { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION')) },
+      { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE')) },
+      { field: 'iwsNumber', header: this.translate.instant(_('INVOICES.TABLE.NETWORK')) },
+      { field: 'orderNumber', customClasses: ['align-right', 'date-font-style'], header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER')) },
+      { field: 'orderName', header: this.translate.instant(_('INVOICES.TABLE.ORDER_TITLE')) },
+      { field: 'netAmount', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.NET_AMOUNT')) },
+      { field: 'value', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.TAX_AMOUNT')) },
+      { field: 'totalAmount', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('INVOICES.TABLE.AMOUNT_GROSS')) }
+    ];
+  }
+
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.INVOICES')}`
+    );
   }
 
   ngOnDestroy(): void {
@@ -148,13 +187,13 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
     }
   }
 
-  reloadComponent(self:boolean,urlToNavigateTo ?:string){
-   const url=self ? this.router.url :urlToNavigateTo;
-   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
-     this.router.navigate([`/${url}`]).then(()=>{
-     })
-   })
- }
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+      })
+    })
+  }
 
 
   applyFilter(event: Event, field: string) {
@@ -264,8 +303,8 @@ export class ListInvoicesComponent implements OnInit, OnDestroy{
       const productAction = this.currentInvoice.invoiceNo
         ? this.invoiceUtils.updateInvoice(this.currentInvoice)
         : this.invoiceUtils.createNewInvoice({
-            ...this.currentInvoice
-          });
+          ...this.currentInvoice
+        });
 
       productAction.subscribe(() => {
         this.cd.detectChanges();

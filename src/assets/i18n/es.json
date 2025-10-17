@@ -3,6 +3,18 @@
     "CUSTOMER_OVERVIEW": "Lista de Clientes",
     "CUSTOMER": "Cliente - ",
     "NEW_CUSTOMER": "Nuevo Cliente",
+    "CUSTOMERS": {
+      "BASIC_CONTRACTS": " - Contratos Básicos",
+      "CONTRACTORS": " - Contratistas",
+      "DETAILS": " - Detalles",
+      "EMPLOYEES": " - Empleados",
+      "EMPLOYMENT_CONTRACTS": " - Contratos Laborales",
+      "INVOICES": " - Facturas",
+      "ORDERS": " - Pedidos",
+      "PROJECTS": " - Proyectos",
+      "RECEIVABLES": " - Cuentas por Cobrar",
+      "SUBCONTRACTS": " - Subcontratos"
+    },
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",

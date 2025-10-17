@@ -105,15 +105,7 @@ export class StateUtils {
         if (!currentState) {
           return throwError(() => createNotFoundDeleteError('State'));
         }
-        
-        return this.checkStateUsage(id).pipe(
-          switchMap(isUsed => {
-            if (isUsed) {
-              return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-            }
-            return this.stateService.deleteState(id);
-          })
-        );
+        return this.stateService.deleteState(id);
       }),
       catchError(error => {
         if (error.name === 'OccError') {
