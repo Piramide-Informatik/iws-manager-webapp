@@ -157,7 +157,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
   }
 
   private updateContractOrderCommission(): void {
-    if (this.iwsCommissionFAForm.invalid) return;
+    if (this.iwsCommissionFAForm.invalid && !this.contractOrderCommissionToEdit) return;
 
     this.isLoading = true;
     const updatedCommission: ContractOrderCommission = {
@@ -166,10 +166,10 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
       commission: this.iwsCommissionFAForm.get('provision')?.value ?? 0,
       minCommission: this.iwsCommissionFAForm.get('minCommission')?.value ?? 0
     };
-    console.log('para actualizado',updatedCommission)
+     console.log('para actualizado',updatedCommission)
     this.contractCommissionUtils.updateContractOrderCommission(updatedCommission).subscribe({
       next: (updated) => {
-        console.log('actualizado',updated)
+         console.log('actualizado',updated)
         this.isLoading = false;
         this.commonMessageService.showEditSucessfullMessage();
         this.closeModalIwsCommission();
@@ -236,6 +236,8 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
       },
       error: (error) => {
         this.isLoadingDelete = false;
+        this.visibleModalIWSCommission = false;
+        this.visibleModalIWSCommissionEntity = false;
         this.commonMessageService.showErrorDeleteMessage();
         this.handleDeleteError(error);
       }
