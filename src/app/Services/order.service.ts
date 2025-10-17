@@ -171,7 +171,6 @@ export class OrderService {
         },
         error: (err) => {
           this._error.set('Failed to update order');
-          console.error('Error updating order:', err);
         }
       })
     )

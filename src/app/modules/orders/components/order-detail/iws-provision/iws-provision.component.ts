@@ -12,6 +12,7 @@ import { OrderCommissionUtils } from '../../../utils/order-commission-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { Column } from '../../../../../Entities/column';
 import { FormStateService } from '../../../utils/form-state.service';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 interface OrderCommissionForm {
   fixCommission: number;
@@ -56,11 +57,13 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   selectedOrderCommission!: OrderCommission | undefined;
   orderCommissions: OrderCommission[] = [];
   public showOCCErrorModalOrderCommission: boolean = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   
   // Configuration Modal
   visibleModalIWSCommission = false;
   visibleModalIWSCommissionEntity = false;
   isLoading: boolean = false;
+  isLoadingDelete: boolean = false;
   typeModal: 'create' | 'edit' | 'delete' = 'create';
   @ViewChild('inputNumber') firstInput!: InputNumber;
 
@@ -71,6 +74,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   tableKey: string = 'IwsProvision'
   dataKeys = ['fromOrderValue', 'commission', 'minCommission'];
   private langSubscription!: Subscription;
+  disableCreateCommission = true;
 
   ngOnInit(): void {
     this.orderForm.get('iwsProvision')?.disable();
@@ -99,6 +103,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['orderToEdit'] && this.orderToEdit) {
+      this.disableCreateCommission = false;
       this.orderForm.patchValue({
         fixCommission: this.orderToEdit.fixCommission,
         maxCommission: this.orderToEdit.maxCommission,
@@ -256,12 +261,14 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
     
     this.isLoading = true;
     this.orderCommissionUtils.createOrderCommission(newOrderCommission).subscribe({
-      next: (created) => {
+      next: () => {
         this.isLoading = false;
+        this.orderCommissionUtils.getAllOrderCommissionsByOrderIdSortedByFromOrderValue(this.orderToEdit.id).subscribe( orderComissions => {
+          this.orderCommissions = orderComissions;
+          this.calculateIwsProvision();
+        })
         this.commonMessageService.showCreatedSuccesfullMessage();
-        this.orderCommissions.push(created);
         this.closeModalIwsCommission();
-        this.calculateIwsProvision();
       },
       error: (error) => {
         this.isLoading = false;
@@ -290,12 +297,11 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
       },
       error: (error: Error) => {
         this.isLoading = false;
-        console.log(error);
-        if(error.message === 'Conflict detected: order commission version mismatch'){
-          this.closeModalIwsCommission();
+        this.commonMessageService.showErrorEditMessage();
+        this.closeModalIwsCommission();
+        if(error instanceof OccError){
           this.showOCCErrorModalOrderCommission = true;
-        }else{
-          this.commonMessageService.showErrorEditMessage();
+          this.occErrorType = error.errorType;
         }
       }
     })
@@ -328,12 +334,12 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onIwsCommissionDeleteConfirm() {
-    this.isLoading = true;
+    this.isLoadingDelete = true;
 
     if (this.selectedOrderCommission) {
       this.orderCommissionUtils.deleteOrderCommission(this.selectedOrderCommission.id).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.visibleModalIWSCommission = false;
           this.visibleModalIWSCommissionEntity = false;
           this.orderCommissions = this.orderCommissions.filter(c => c.id !== this.selectedOrderCommission!.id);
@@ -341,10 +347,18 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
           this.calculateIwsProvision();
         },
         error: (error) => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.commonMessageService.showErrorDeleteMessage();
+          this.handleDeleteError(error);
         }
       });
+    }
+  }
+
+  private handleDeleteError(error: any): void {
+    if (error instanceof OccError || error?.message?.includes('404') ) {
+      this.occErrorType = error.errorType;
+      this.showOCCErrorModalOrderCommission = true;
     }
   }
 

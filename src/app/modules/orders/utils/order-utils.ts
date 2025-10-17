@@ -2,10 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, forkJoin, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { OrderService } from '../../../Services/order.service';
 import { Order } from '../../../Entities/order';
-import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
-import { InvoiceUtils } from '../../invoices/utils/invoice.utils';
-import { OrderCommissionUtils } from './order-commission-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -14,9 +11,6 @@ import { OrderCommissionUtils } from './order-commission-utils';
  */
 export class OrderUtils {
   private readonly orderService = inject(OrderService);
-  private readonly debtUtils = inject(ReceivableUtils);
-  private readonly invoiceUtils = inject(InvoiceUtils);
-  private readonly orderCommissionUtils = inject(OrderCommissionUtils);
 
   /**
   * Gets all orders without any transformation
@@ -104,44 +98,7 @@ export class OrderUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteOrder(id: number): Observable<void> {
-    const checks = [
-      this.debtUtils.getAllReceivableByOrderId(id).pipe(
-        take(1),
-        map(debts => ({
-          valid: debts.length === 0,
-          error: 'Cannot be deleted because have associated debts'
-        }))
-      ),
-      this.invoiceUtils.getAllInvoicesByOrderId(id).pipe(
-        take(1),
-        map(invoices => ({
-          valid: invoices.length === 0,
-          error: 'Cannot be deleted because have associated invoices'
-        }))
-      ),
-      this.orderCommissionUtils.getAllOrderCommissionByOrderId(id).pipe(
-        take(1),
-        map(commissions => ({
-          valid: commissions.length === 0,
-          error: 'Cannot be deleted because have associated commissions'
-        }))
-      )
-    ];
-    return forkJoin(checks).pipe(
-      switchMap(results => {
-        const failedCheck = results.find(r => !r.valid);
-        if (failedCheck) {
-          return throwError(() => new Error(failedCheck.error))
-        }
-        return this.orderService.deleteOrder(id).pipe(
-          catchError(error => {
-            console.log('Error delete order', error)
-            return throwError(() => error);
-          })
-        );
-      })
-    )
-    
+    return this.orderService.deleteOrder(id);
   }
 
   /**
