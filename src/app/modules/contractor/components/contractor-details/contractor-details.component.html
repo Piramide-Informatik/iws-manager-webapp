@@ -1,17 +1,17 @@
 <ng-container *ngIf="isCreateContractorMode; else deleteContractorTemplate">
-  <form [formGroup]="contractorForm" (ngSubmit)="onSubmit()">
-    <div class="contractor-form align-items-center mb-2 mt-4">
-      <div class="form-container flex align-items-center mb-6">
-        <div class="contract_input mb-2">
+  <form [formGroup]="contractorForm" (ngSubmit)="onSubmit()" [style]="{ width: '30rem' }">
+    <div class="mb-2 mt-4">
+      <div class="form-container flex align-items-center mb-5">
+        <div class="contract_input">
           <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
           <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
             [appAutoFocusOnVisible]="isVisibleModal" />
         </div>
-        <div class="contract_input mb-2">
+        <div class="contract_input">
           <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
           <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
         </div>
-        <div class="contract_input mb-2">
+        <div class="contract_input">
           <label for="country">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
           <p-select formControlName="country" id="country" [options]="countries()" optionLabel="name" optionValue="id"
             appendTo="body" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate">
@@ -30,11 +30,11 @@
             </ng-template>
           </p-select>
         </div>
-        <div class="contract_input mb-2">
+        <div class="contract_input">
           <label for="street">{{ 'CONTRACTS.FORM.STREET' | translate }}</label>
           <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
         </div>
-        <div class="contract_input mb-2">
+        <div class="contract_input">
           <label for="zipcode">{{ 'CONTRACTS.FORM.ZIP_CODE' | translate }} / {{ 'CONTRACTS.FORM.CITY' | translate
             }}</label>
           <div class="postal-city">
@@ -42,22 +42,22 @@
             <input type="text" id="city" class="city" pInputText formControlName="city" autocomplete="off" />
           </div>
         </div>
-        <div class="contract_input mb-2">
+        <div class="contract_input">
           <label for="taxno">{{ 'CONTRACTS.FORM.TAX_NUMBER' | translate }}</label>
           <input pInputText type="text" id="taxno" formControlName="taxno" autocomplete="off" />
         </div>
       </div>
     </div>
-    <div class="buttons-container flex justify-content-center gap-2 mt-4">
+    <div class="flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
         iconPos="left" [loading]="isLoading" [disabled]="!hasAtLeastOneFieldFilled()"/>
       @if(modalContractType === 'edit') {
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoading"
+        iconPos="left" severity="danger" [disabled]="isLoading"
         (onClick)="this.visibleContractorDeleteEntityModal = true;" />
       }
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
-        (onClick)="closeModal()" />
+        (onClick)="closeModal()" [disabled]="isLoading" />
     </div>
   </form>
 </ng-container>
@@ -70,10 +70,10 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoading" (onClick)="removeContractor()" />
+        iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeContractor()" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="closeModal()" />
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete" />
 
     </div>
   </div>
@@ -97,10 +97,3 @@
     </div>
   </div>
 </p-dialog>
-
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModalContractor" 
-  [errorType]="occErrorType"
-  [reloadCurrentPage]="true"
-  (onClose)="showOCCErrorModalContractor = false">
-</app-occ-error-modal>

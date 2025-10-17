@@ -13,6 +13,8 @@ import { MessageService } from 'primeng/api';
 import { Column } from '../../../../Entities/column';
 import { Title } from '@angular/platform-browser';
 import { CustomerStateService } from '../../../customer/utils/customer-state.service';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-contractor-overview',
@@ -22,15 +24,10 @@ import { CustomerStateService } from '../../../customer/utils/customer-state.ser
   providers: [MessageService]
 })
 export class ContractorOverviewComponent implements OnInit, OnDestroy {
-
   public cols!: Column[];
-  public contractors!: Contractor[];
   public customer!: Customer | undefined;
-
   @ViewChild('dt2') dt2!: Table;
-
   private subscription!: Subscription;
-
   public selectedColumns!: Column[];
 
   userContractorOverviewPreferences: UserPreference = {};
@@ -38,12 +35,15 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   tableKey: string = 'ContractorOverview'
 
   dataKeys = ['label', 'name', 'countryLabel', 'street', 'zipCode', 'city', 'taxNro'];
-
   modalContractorType: 'create' | 'delete' | 'edit' = 'create';
-
   visibleModal: boolean = false;
-
   currentContract!: Contractor;
+  customerId!: number;
+
+  public contractors!: Contractor[];
+
+  public showOCCErrorModalContractor = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   private readonly contractorUtils = inject(ContractorUtils);
   private readonly customerUtils = inject(CustomerUtils);
@@ -51,9 +51,9 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly messageService = inject(MessageService);
   private readonly titleService = inject(Title);
   private readonly customerStateService = inject(CustomerStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
 
 
   ngOnInit(): void {
@@ -70,8 +70,8 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     });
 
     this.route.params.subscribe(params => {
-      const customerId = params['id'];
-      if (!customerId) {
+      this.customerId = params['id'];
+      if (!this.customerId) {
         this.updateTitle('...');
         return;
       }
@@ -80,11 +80,11 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
         if (currentCustomer) {
           this.updateTitle(currentCustomer.customername1!);
         } else {
-          this.getTitleByCustomerId(customerId);
+          this.getTitleByCustomerId(this.customerId);
         }
       })
 
-      this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(customerId).subscribe(contractors => {
+      this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(this.customerId).subscribe(contractors => {
         this.contractors = contractors;
       });
     });
@@ -159,13 +159,6 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   onContractorDeleted(contractorId: number) {
     this.contractors = this.contractors.filter(contract => contract.id !== contractorId);
   }
-  public messageOperation(message: { severity: string, summary: string, detail: string }): void {
-    this.messageService.add({
-      severity: message.severity,
-      summary: this.translate.instant(_(message.summary)),
-      detail: this.translate.instant(_(message.detail))
-    })
-  }
 
   onContractorUpdated(updated: Contractor): void {
     const index = this.contractors.findIndex(c => c.id === updated.id);
@@ -175,8 +168,29 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  onContractorCreated(newContractor: Contractor) {
-    this.contractors.unshift(newContractor);
+  onContractorCreated(event: { status: 'success' | 'error' }): void {
+    if (event.status === 'success') {
+      this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(this.customerId).subscribe(contractors => {
+        this.contractors = contractors;
+      })
+      this.prepareTableData();
+    } else if (event.status === 'error') {
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  private prepareTableData() {
+    if (this.contractors.length > 0) {
+      this.cols = [
+        { field: 'label', header: 'label' },
+        { field: 'name', header: 'name' },
+        { field: 'country.label', header: 'country' },
+        { field: 'street', header: 'street' },
+        { field: 'zipCode', header: 'zipCode' },
+        { field: 'city', header: 'city' },
+        { field: 'taxNumber', header: 'taxNumber' },
+      ];
+    }
   }
 
 }
