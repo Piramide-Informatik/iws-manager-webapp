@@ -117,6 +117,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
           if (error instanceof OccError) {
             this.showOCCErrorModalSalutation = true;
             this.occErrorType = error.errorType;
+            this.commonMessageService.showErrorEditMessage();
           } else {
             this.commonMessageService.showErrorEditMessage();
           }

@@ -124,8 +124,9 @@ export class TitleFormComponent implements OnInit, OnDestroy {
       console.log("tipo de error: ", error.errorType)
       this.showOCCErrorModaTitle = true;
       this.occErrorType = error.errorType;
+      this.handleSaveError(error);
     } else {
-      this.handleSaveError(error)
+      this.handleSaveError(error);
     }
     this.isSaving = false;
   }

@@ -92,6 +92,7 @@ export class CountryModalComponent implements OnInit {
   }
   private handleOccDeleteError(error: any): void {
     if (error instanceof OccError || error?.message.includes('404')) {
+      this.commonMessageService.showErrorDeleteMessage();
       this.showOCCErrorModalCountry = true;
       this.occErrorType = 'DELETE_UNEXISTED';
     }
