@@ -73,6 +73,16 @@ export class PublicHolidayUtils {
         );
     }
 
+    //Gets next sequence No for public holiday
+    getPublicHolidaysSequenceSort(): Observable<number> {
+        return this.publicHolidayService.getHolidaySequence().pipe(
+            catchError(err => {
+                console.error('Error sorting publicHolidays:', err);
+                return throwError(() => new Error('Failed to sort publicHolidays'));
+            })
+        );
+    }
+
     //Refreshes publicHolidays data
     refreshpublicHolidays(): Observable<void> {
         return new Observable<void>(subscriber => {

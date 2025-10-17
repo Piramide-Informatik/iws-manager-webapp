@@ -2,6 +2,18 @@
   "PAGETITLE": {
     "CUSTOMER_OVERVIEW": "Customer Overview",
     "CUSTOMER": "Customer - ",
+    "CUSTOMERS": {
+      "BASIC_CONTRACTS": " - Framework Agreements",
+      "CONTRACTORS": " - Contractors",
+      "DETAILS": " - Details",
+      "EMPLOYEES": " - Employees",
+      "EMPLOYMENT_CONTRACTS": " - Employment Contracts",
+      "INVOICES": " - Invoices",
+      "ORDERS": " - Orders",
+      "PROJECTS": " - Projects",
+      "RECEIVABLES": " - Receivables",
+      "SUBCONTRACTS": " - Subcontracts"
+    },
     "NEW_CUSTOMER": "New Customer",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
