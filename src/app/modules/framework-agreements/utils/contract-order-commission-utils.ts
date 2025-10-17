@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
 import { ContractOrderCommission } from '../../../Entities/contractOrderCommission';
 import { ContractOrderCommissionService } from '../../../Services/contract-order-commission.service';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 /**
  * Utility class for contractOrderCommission-related business logic and operations.
@@ -105,19 +106,16 @@ export class ContractOrderCommissionUtils {
 
     return this.contractOrderCommissionService.getContractOrderCommissionById(contractOrderCommission.id).pipe(
       take(1),
-      map((currentContractOrderCommission) => {
+      switchMap((currentContractOrderCommission) => {
         if (!currentContractOrderCommission) {
-          throw new Error('Contract Order Commission not found');
+          return throwError(() => createNotFoundUpdateError('Contract Order Commission'));
         }
+
         if (currentContractOrderCommission.version !== contractOrderCommission.version) {
-          throw new Error('Version conflict: Contract Order Commission has been updated by another user');
+          return throwError(() => createUpdateConflictError('Contract Order Commission'));
         }
-        return contractOrderCommission;
-      }),
-      switchMap((validatedContractOrderCommission: ContractOrderCommission) => this.contractOrderCommissionService.updateContractOrderCommission(validatedContractOrderCommission)),
-      catchError((err) => {
-        console.error('Error updating contract order commission:', err);
-        return throwError(() => err);
+
+        return this.contractOrderCommissionService.updateContractOrderCommission(currentContractOrderCommission);
       })
     );
   }

@@ -45,7 +45,7 @@
   (onHide)="closeModalIwsCommission()"
   [modal]="true"
   [(visible)]="visibleModalIWSCommission"
-  [style]="{ width: typeModal === 'delete' ? '30rem' : '40rem' }"
+  [style]="{ width: 'auto' }"
 >
   @if (typeModal !== 'delete') {
      <form [formGroup]="iwsCommissionFAForm" (ngSubmit)="onSubmit()">
@@ -93,13 +93,12 @@
         iconPos="left"
         type="submit"
         [loading]="isLoading"
-        [disabled]="iwsCommissionFAForm.invalid"
+        [disabled]="iwsCommissionFAForm.invalid || !iwsCommissionFAForm.dirty"
       ></p-button>
     
       @if(typeModal === 'edit') {
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="this.visibleModalIWSCommissionEntity = true;" severity="danger" [loading]="isLoading"
-        [disabled]="isLoading" />
+        iconPos="left" (onClick)="this.visibleModalIWSCommissionEntity = true;" severity="danger" [disabled]="isLoading" />
       }
 
       <p-button
@@ -122,10 +121,9 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="onIwsCommissionDeleteConfirm()" severity="danger" [loading]="isLoading"
-        [disabled]="isLoading" />
+        iconPos="left" (onClick)="onIwsCommissionDeleteConfirm()" severity="danger" [loading]="isLoadingDelete" />
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="this.visibleModalIWSCommission = false;" [disabled]="isLoading" />
+        iconPos="left" (onClick)="this.visibleModalIWSCommission = false;" [disabled]="isLoadingDelete" />
     </div>
   </div>
 }
@@ -136,7 +134,7 @@
   (onHide)="this.visibleModalIWSCommissionEntity = false;"
   [modal]="true"
   [(visible)]="visibleModalIWSCommissionEntity"
-  [style]="{ width: '30rem' }"
+  [style]="{ width: 'auto' }"
 >
   <div class="delete-confirmation-component-entity mb-2 mt-4 justify-content-center ">
     <p class="mb-4 text-center delete-iws-provision-title">
@@ -146,10 +144,15 @@
 
     <div class="flex justify-content-center gap-2 delete-iws-provision-buttons">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="onIwsCommissionDeleteConfirm()" severity="danger" [loading]="isLoading"
-        [disabled]="isLoading" />
+        iconPos="left" (onClick)="onIwsCommissionDeleteConfirm()" severity="danger" [loading]="isLoadingDelete"/>
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="this.visibleModalIWSCommissionEntity = false;" [disabled]="isLoading" />
+        iconPos="left" (onClick)="this.visibleModalIWSCommissionEntity = false;" [disabled]="isLoadingDelete" />
     </div>
   </div>
 </p-dialog>
+<app-occ-error-modal 
+    *ngIf="showOCCErrorModalContractOrderCommission"
+    [reloadCurrentPage]="true" 
+    [errorType]="occErrorType"
+    (onClose)="showOCCErrorModalContractOrderCommission = false">
+</app-occ-error-modal>

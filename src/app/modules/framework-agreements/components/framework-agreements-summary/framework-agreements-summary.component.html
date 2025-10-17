@@ -1,7 +1,7 @@
 <div class="card">
   <master-data-genaral-table
     [tableId]="tableKey"
-    [tableValues]="frameworkAgreements"
+    [tableValues]="frameworkAgreements()"
     [columns]="selectedColumns"
     [userPreferences]="userFrameworkAgreementsPreferences"
     [dataKeys]="dataKeys"
@@ -20,13 +20,11 @@
   >
     <app-framework-agreements-modal
       [selectedFrameworkAgreement]="selectedFrameworkAgreement"
-      [customer]="customer"
+      [customer]="currentCustomer"
       [modalType]="modalFrameworkAgreementType"
       [visible]="visibleFrameworkAgreementModal"
-      [isLoading]="isFrameworkAgreementLoading"
-      (createdFrameworkAgreement)="onCreateFrameworkAgreement($event)"
-      (deletedFrameworkAgreement)="onDeleteFrameworkAgreement($event)"
       (visibleModal)="onModalVisible($event)"
+      (showOCCErrorModalFA)="showOCCErrorModalBasicContract = $event"
     ></app-framework-agreements-modal>
   </p-dialog>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject, computed } from '@angular/core';
 import { Table } from 'primeng/table';
 import { TranslateService, _ } from "@ngx-translate/core";
 import { Subscription, take } from 'rxjs';
@@ -12,6 +12,9 @@ import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { Title } from '@angular/platform-browser';
 import { CustomerStateService } from '../../../customer/utils/customer-state.service';
+import { Customer } from '../../../../Entities/customer';
+import { FrameworkAgreementService } from '../../../../Services/framework-agreenent.service';
+import { BasicContract } from '../../../../Entities/basicContract';
 
 @Component({
   selector: 'app-framework-agreements-summary',
@@ -20,7 +23,7 @@ import { CustomerStateService } from '../../../customer/utils/customer-state.ser
   styleUrl: './framework-agreements-summary.component.scss'
 })
 export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
-
+  private readonly frameworkAgreementService = inject(FrameworkAgreementService);
   private readonly frameworkAgreementUtils = inject(FrameworkAgreementsUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly translate = inject(TranslateService);
@@ -32,26 +35,27 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
   public cols!: Column[];
   private langSubscription!: Subscription;
-  public frameworkAgreements!: any[];
   public selectedColumns!: Column[];
   public showOCCErrorModalBasicContract = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
-  customer!: any;
+  currentCustomer!: Customer;
   userFrameworkAgreementsPreferences: UserPreference = {};
   tableKey: string = 'FrameworkAgreements'
-  dataKeys = ['contractno', 'frameworkContract', 'date', 'fundingProgram', 'contractStatus', 'iwsEmployee'];
+  dataKeys = ['contractNo', 'contractLabel', 'date', 'fundingProgram', 'contractStatus', 'employeeIws'];
+  public frameworkAgreements = computed(() => {
+    return this.frameworkAgreementService.frameworkAgreements();
+  });
 
   @ViewChild('dt2') dt2!: Table;
   visibleFrameworkAgreementModal = false;
-  isFrameworkAgreementLoading = false;
-  selectedFrameworkAgreement: any = undefined;
+  selectedFrameworkAgreement: BasicContract | undefined = undefined;
   modalFrameworkAgreementType: 'create' | 'delete' = 'create';
+  customerId = '';
 
   constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnInit(): void {
     this.loadFrameworkAgreementsColHeaders();
-    this.frameworkAgreements = [];
     this.selectedColumns = this.cols;
     this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
@@ -59,44 +63,29 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
       this.reloadComponent(true);
       this.userFrameworkAgreementsPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
-    this.route.params.subscribe(params => {
-      this.frameworkAgreementUtils.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(params['id']).subscribe(fas => {
-        const customerId = params['id'];
-        if (!customerId) {
-          this.updateTitle('...');
-          return;
-        }
-        this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
-          if (currentCustomer) {
-            this.updateTitle(currentCustomer.customername1!);
-          } else {
-            this.getTitleByCustomerId(customerId);
-          }
-        })
 
-        this.frameworkAgreements = fas.reduce((acc: any[], curr) => {
-          acc.push({
-            id: curr.id,
-            contractLabel: curr.contractLabel,
-            contractno: curr.contractNo,
-            frameworkContract: curr.contractLabel,
-            date: curr.date,
-            fundingProgram: curr.fundingProgram?.name,
-            contractStatus: curr.contractStatus?.status,
-            iwsEmployee: curr.employeeIws?.employeeLabel
-          });
-          return acc
-        }, [])
-      });
+    this.customerId = this.route.snapshot.params['id'];
+    if (!this.customerId) {
+      this.updateTitle('...');
+    }
+
+    this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
+      if (currentCustomer) {
+        this.currentCustomer = currentCustomer;
+        this.updateTitle(currentCustomer.customername1!);
+      } else {
+        this.getTitleByCustomerId(Number(this.customerId));
+      }
     })
 
+    this.frameworkAgreementUtils.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(Number(this.customerId)).subscribe();
   }
 
-  private getTitleByCustomerId(customerId: any): void {
+  private getTitleByCustomerId(customerId: number): void {
     this.customerUtils.getCustomerById(customerId).subscribe(customer => {
       if (customer) {
+        this.currentCustomer = customer;
         this.updateTitle(customer.customername1!);
-        this.customer = customer;
       } else {
         this.updateTitle('');
       }
@@ -110,17 +99,17 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
   loadFrameworkAgreementsColHeaders(): void {
     this.cols = [
       {
-        field: 'contractno',
+        field: 'contractNo',
         customClasses: ['align-right', 'date-font-style'],
         classesTHead: ['fix-width'],
         routerLink: (row: any) => `./framework-agreement-details/${row.id}`,
         header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_NUMBER'))
       },
-      { field: 'frameworkContract', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_LABEL')) },
+      { field: 'contractLabel', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_LABEL')) },
       { field: 'date', type: 'date', customClasses: ['text-center'], header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.DATE')) },
-      { field: 'fundingProgram', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.FUNDING_PROGRAM')) },
-      { field: 'contractStatus', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_STATUS')) },
-      { field: 'iwsEmployee', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.IWS_EMPLOYEE')) }
+      { field: 'fundingProgram.name', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.FUNDING_PROGRAM')) },
+      { field: 'contractStatus.status', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.CONTRACT_STATUS')) },
+      { field: 'employeeIws.employeeLabel', header: this.translate.instant(_('FRAMEWORK-AGREEMENTS.TABLE.IWS_EMPLOYEE')) }
     ];
   }
 
@@ -150,95 +139,13 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
   deleteFrameworkAgreement(id: number) {
     this.modalFrameworkAgreementType = 'delete';
-    this.selectedFrameworkAgreement = this.frameworkAgreements.find(fa => fa.id == id);
+    this.selectedFrameworkAgreement = this.frameworkAgreements().find(fa => fa.id == id);
     this.visibleFrameworkAgreementModal = true;
-  }
-
-  onFrameworkAgreementDeleteConfirm() {
-    this.isFrameworkAgreementLoading = true;
-    if (this.selectedFrameworkAgreement) {
-      this.frameworkAgreementUtils.deleteFrameworkAgreement(this.selectedFrameworkAgreement.id).subscribe({
-        next: () => {
-          this.frameworkAgreements = this.frameworkAgreements.filter(fa => fa.id != this.selectedFrameworkAgreement.id);
-          this.commonMessageService.showDeleteSucessfullMessage()
-        },
-        error: (error) => {
-          if (error.message.includes('have associated orders')) {
-            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
-          this.handleFinishRequest();
-        },
-        complete: () => {
-          this.handleFinishRequest();
-        }
-      })
-    }
-  }
-
-  handleDeleteError(error: Error) {
-    if (error instanceof OccError || error?.message?.includes('404')) {
-      this.showOCCErrorModalBasicContract = true;
-      this.occErrorType = 'DELETE_UNEXISTED';
-      this.visibleFrameworkAgreementModal = false;
-    }
-  }
-
-  handleFinishRequest() {
-    this.selectedFrameworkAgreement = undefined;
-    this.visibleFrameworkAgreementModal = false;
-    this.isFrameworkAgreementLoading = false;
   }
 
   createFrameworkAgreementDetail() {
     this.modalFrameworkAgreementType = 'create';
     this.visibleFrameworkAgreementModal = true;
-  }
-
-  onCreateFrameworkAgreement(data: any) {
-    this.isFrameworkAgreementLoading = true;
-    this.frameworkAgreementUtils.createNewFrameworkAgreement(data).subscribe({
-      next: (createdContract) => {
-        this.commonMessageService.showCreatedSuccesfullMessage();
-        setTimeout(() => {
-          this.visibleFrameworkAgreementModal = false;
-          this.navigationToEdit(createdContract.id);
-        }, 1000)
-      },
-      error: (error) => {
-        console.log(error);
-        this.isFrameworkAgreementLoading = false;
-        this.commonMessageService.showErrorCreatedMessage();
-      }
-    });
-  }
-
-  private navigationToEdit(id: number): void {
-    this.router.navigate(['./framework-agreement-details', id], { relativeTo: this.route });
-  }
-
-  onDeleteFrameworkAgreement(data: any) {
-    this.frameworkAgreementUtils.deleteFrameworkAgreement(data.id).subscribe({
-      next: () => {
-        this.frameworkAgreements = this.frameworkAgreements.filter(fa => fa.id != data.id);
-        this.commonMessageService.showDeleteSucessfullMessage()
-        this.visibleFrameworkAgreementModal = false;
-      },
-      error: (error) => {
-        this.handleDeleteError(error);
-
-        if (error.message.includes('have associated orders')) {
-          this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-        } else {
-          this.commonMessageService.showErrorDeleteMessage();
-        }
-        this.handleFinishRequest();
-      },
-      complete: () => {
-        this.handleFinishRequest();
-      }
-    })
   }
 
   onModalVisible(value: boolean) {
