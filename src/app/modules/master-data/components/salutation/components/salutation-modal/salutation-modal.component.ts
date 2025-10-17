@@ -83,6 +83,7 @@ export class SalutationModalComponent implements OnChanges {
   private handleDeleteError(error: any):void {
     if (error instanceof OccError || error?.message.includes('404')) {
       this.showOCCErrorModalSalutation = true;
+      this.commonMessageService.showErrorDeleteMessage();
       this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
