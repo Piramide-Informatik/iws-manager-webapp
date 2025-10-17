@@ -91,7 +91,7 @@ export class TextFormComponent implements OnInit, OnDestroy {
   public onRefresh(): void {
     if (this.textToEdit?.id) {
       localStorage.setItem('selectedTextId', this.textToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

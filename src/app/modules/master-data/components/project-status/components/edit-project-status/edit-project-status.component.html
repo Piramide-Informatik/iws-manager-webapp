@@ -24,6 +24,8 @@
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalProjectStatus"
+  [useEmitter]="occErrorType==='UPDATE_UPDATED'"
+  (refresh)="onRefresh()"
   [errorType]="occErrorType"
   [reloadCurrentPage]="true"
   (close)="showOCCErrorModalProjectStatus = false"

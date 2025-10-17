@@ -276,7 +276,7 @@ export class EditUserFormComponent implements OnInit {
   onRefresh(): void {
     if (this.currentUser?.id) {
       localStorage.setItem('selectedUserId', this.currentUser.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

@@ -92,7 +92,7 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
   public onRefresh(): void {
     if (this.chanceToEdit?.id) {
       localStorage.setItem('selectedChanceId', this.chanceToEdit.id.toString());
-      window.location.reload();
+      globalThis.location.reload();
     }
   }
 

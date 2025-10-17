@@ -113,15 +113,7 @@ export class EmployeeUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteEmployee(id: number): Observable<void> {
-    return this.employmentContractUitls.getAllContractsByEmployeeId(id).pipe(
-      take(1),
-      switchMap((contracts) => {
-        if(contracts.length > 0){
-          return throwError(() => new Error('Cannot be deleted because have associated employment contracts'))
-        }
-        return this.employeeService.deleteEmployee(id);
-      })
-    );
+    return this.employeeService.deleteEmployee(id);
   }
 
   /**
