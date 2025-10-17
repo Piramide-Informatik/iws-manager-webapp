@@ -115,7 +115,7 @@ export class ContractOrderCommissionUtils {
           return throwError(() => createUpdateConflictError('Contract Order Commission'));
         }
 
-        return this.contractOrderCommissionService.updateContractOrderCommission(currentContractOrderCommission);
+        return this.contractOrderCommissionService.updateContractOrderCommission(contractOrderCommission);
       })
     );
   }

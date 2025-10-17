@@ -166,10 +166,9 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
       commission: this.iwsCommissionFAForm.get('provision')?.value ?? 0,
       minCommission: this.iwsCommissionFAForm.get('minCommission')?.value ?? 0
     };
-     console.log('para actualizado',updatedCommission)
+
     this.contractCommissionUtils.updateContractOrderCommission(updatedCommission).subscribe({
       next: (updated) => {
-         console.log('actualizado',updated)
         this.isLoading = false;
         this.commonMessageService.showEditSucessfullMessage();
         this.closeModalIwsCommission();
@@ -246,7 +245,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy{
 
   private handleDeleteError(error: any): void {
     if (error instanceof OccError || error?.message?.includes('404') ) {
-      this.occErrorType = error.errorType;
+      this.occErrorType = 'DELETE_UNEXISTED';
       this.showOCCErrorModalContractOrderCommission = true;
     }
   }
