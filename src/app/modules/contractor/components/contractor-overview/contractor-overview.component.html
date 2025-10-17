@@ -18,17 +18,25 @@
        : ('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" 
     [modal]="true" 
     [(visible)]="visibleModal"
+    [style]="{ width: 'auto' }"
   >
     <app-contractor-details
       [modalContractType]="modalContractorType"
       [currentCustomer]="customer"
       [contractor]="currentContract"
       [isVisibleModal]="visibleModal"
-      (onMessageOperation)="messageOperation($event)"
       (isContractVisibleModal)="onModalVisibilityChange($event)"
       (onContractorDeleted)="onContractorDeleted($event)"
       (contractorUpdated)="onContractorUpdated($event)"
       (onContractorCreated)="onContractorCreated($event)"
+      (showOCCErrorModalContractor)="showOCCErrorModalContractor = $event"
+      (occErrorType)="occErrorType = $event"
     ></app-contractor-details>
   </p-dialog>
 </div>
+<app-occ-error-modal 
+  *ngIf="showOCCErrorModalContractor" 
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalContractor = false">
+</app-occ-error-modal>

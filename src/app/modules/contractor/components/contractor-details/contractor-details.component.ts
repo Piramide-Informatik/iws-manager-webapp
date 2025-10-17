@@ -27,11 +27,12 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   private readonly subscription = new Subscription();
 
   public contractorForm!: FormGroup;
-  public showOCCErrorModalContractor = false;
   public isLoading = false;
+  public isLoadingDelete = false;
   visibleContractorDeleteEntityModal = false;
+  @Output() showOCCErrorModalContractor = new EventEmitter<boolean>();
+  @Output() occErrorType = new EventEmitter<OccErrorType>();
 
-  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   @Input() currentCustomer!: Customer | undefined;
   @Input() contractor: Contractor | null = null;
@@ -39,9 +40,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   @Input() isVisibleModal: boolean = false;
 
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
-  @Output() onMessageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>()
   @Output() contractorUpdated = new EventEmitter<Contractor>();
-  @Output() onContractorCreated = new EventEmitter<Contractor>();
+  @Output() onContractorCreated = new EventEmitter<{ status: 'success' | 'error'}>();
   @Output() onContractorDeleted = new EventEmitter<number>();
 
   @ViewChild('contractorLabelInput') contractorLabelInput!: ElementRef<HTMLInputElement>;
@@ -170,9 +170,9 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   updateContractor() {
-    if (!this.validateContractorForUpdate()) return;
-    this.isLoading = true;
+    if (!this.contractor?.id) return;
 
+    this.isLoading = true;
     const updatedContractor = this.buildContractor(
       this.contractor?.customer,
       this.getSelectedCountry()
@@ -180,28 +180,19 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
     this.subscription.add(this.contractorUtils.updateContractor(updatedContractor)
       .subscribe({
-        next: (updated) => this.handleUpdateSuccess(updated),
-        error: (err) => this.handleUpdateError(err),
-        complete: () => this.isLoading = false
-      }));
-  }
-
-  validateContractorForUpdate(): boolean {
-    if (!this.contractor?.id) {
-      this.commonMessageService.showErrorEditMessage();
-      return false;
-    }
-    return true;
+      next: (updated) => this.handleUpdateSuccess(updated),
+      error: (err) => this.handleUpdateError(err)
+    }));
   }
 
   handleUpdateError(error: Error): void {
-    if (error instanceof OccError) {
-      this.showOCCErrorModalContractor = true;
-      this.occErrorType = error.errorType;
-      return;
-    }
-
+    this.isLoading = false;
+    this.isContractVisibleModal.emit(false);
     this.commonMessageService.showErrorEditMessage();
+    if (error instanceof OccError) {
+      this.showOCCErrorModalContractor.emit(true);
+      this.occErrorType.emit(error.errorType);
+    }
   }
 
   get isCreateContractorMode(): boolean {
@@ -222,6 +213,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private handleUpdateSuccess(updatedContractor: Contractor): void {
+    this.isLoading = false;
     this.commonMessageService.showEditSucessfullMessage();
     this.isContractVisibleModal.emit(false);
     this.contractorUpdated.emit(updatedContractor);
@@ -231,14 +223,15 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     this.isLoading = true;
     this.subscription.add(
       this.contractorUtils.createNewContractor(newContractor).subscribe({
-        next: (resContractor) => {
+        next: () => {
           this.isLoading = false;
-          this.onContractorCreated.emit(resContractor);
+          this.onContractorCreated.emit({ status: 'success' });
           this.commonMessageService.showCreatedSuccesfullMessage();
           this.closeModal();
         },
         error: () => {
           this.isLoading = false;
+          this.onContractorCreated.emit({ status: 'error' });
           this.commonMessageService.showErrorCreatedMessage();
         }
       })
@@ -280,33 +273,30 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   removeContractor() {
     if (this.contractor) {
-      this.isLoading = true;
+      this.isLoadingDelete = true;
       this.contractorUtils.deleteContractor(this.contractor.id).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.isContractVisibleModal.emit(false);
           this.onContractorDeleted.emit(this.contractor?.id);
           this.visibleContractorDeleteEntityModal = false;
           this.commonMessageService.showDeleteSucessfullMessage();
         },
         error: (err) => {
+          this.isLoadingDelete = false;
+          this.closeModal();
           this.handleDeleteError(err);
-          this.isLoading = false;
         }
       })
     }
   }
 
   private handleDeleteError(error: any) {
-    if (error.message.includes('foreign key constraint fails')) {
-      this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-    } else if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+    this.commonMessageService.showErrorDeleteMessage();
+    if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
       this.visibleContractorDeleteEntityModal = false;
-      this.showOCCErrorModalContractor = true;
-      this.occErrorType = 'DELETE_UNEXISTED';
-      return;
-    } else {
-      this.commonMessageService.showErrorDeleteMessage();
+      this.showOCCErrorModalContractor.emit(true);
+      this.occErrorType.emit('DELETE_UNEXISTED');
     }
   }
 }
