@@ -144,7 +144,7 @@ export class EmploymentContractService {
    * @throws Error when server request fails
    */
   getContractsByEmployeeId(employeeId: number): Observable<EmploymentContract[]> {
-    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/employee/${employeeId}`, this.httpOptions).pipe(
+    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/employee/${employeeId}/sort-by-start-date`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch employment contracts for employee');
@@ -236,7 +236,7 @@ export class EmploymentContractService {
    */
   getContractsByEmployee(employeeId: number): Observable<EmploymentContract[]> {
     this._loading.set(true);
-    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/employee/${employeeId}`, this.httpOptions).pipe(
+    return this.http.get<EmploymentContract[]>(`${this.apiUrl}/employee/${employeeId}/sort-by-start-date`, this.httpOptions).pipe(
       tap({
         next: (contracts) => {
           this._contracts.set(contracts);

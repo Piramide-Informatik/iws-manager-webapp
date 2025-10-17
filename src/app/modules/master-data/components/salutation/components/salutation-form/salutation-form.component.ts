@@ -115,7 +115,6 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
         error: (error: Error) => {
           this.isLoading = false;
           if (error instanceof OccError) {
-            console.log('OCC Error occurred:', error);
             this.showOCCErrorModalSalutation = true;
             this.occErrorType = error.errorType;
           } else {
