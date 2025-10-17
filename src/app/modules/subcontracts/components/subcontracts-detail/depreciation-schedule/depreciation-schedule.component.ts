@@ -237,11 +237,21 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
           this.subcontractsYear = this.subcontractsYear.filter(de => de.id !== this.selectedSubcontractYear?.id);
           this.selectedSubcontractYear = undefined;
         },
-        error: () => {
-          this.closeModal();
+        error: (error) => {
+          this.isLoading = false;
+          this.handleDeleteOCCError(error);
           this.commonMessageService.showErrorDeleteMessage();
         }
       });
+    }
+  }
+
+  private handleDeleteOCCError(error: any) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModalSubcontractYear = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+      this.visibleModal.set(false);
+      this.visibleSubcontractYearModal = false;
     }
   }
 
