@@ -91,6 +91,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
 
   handleDeleteError(error: Error) {
     if (error instanceof OccError || error?.message.includes('404')) {
+      this.commonMessageService.showErrorDeleteMessage();
       this.showOCCErrorModaTitle = true;
       this.occErrorType = 'DELETE_UNEXISTED';
     }
