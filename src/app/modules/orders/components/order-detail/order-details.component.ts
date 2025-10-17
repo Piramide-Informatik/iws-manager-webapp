@@ -8,6 +8,7 @@ import { IwsProvisionComponent } from './iws-provision/iws-provision.component';
 import { Project } from '../../../../Entities/project';
 import { Order } from '../../../../Entities/order';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-order-details',
@@ -26,6 +27,7 @@ export class OrderDetailsComponent implements OnInit {
   @ViewChild(IwsProvisionComponent) iwsProvisionComponent!: IwsProvisionComponent;
 
   public isLoading: boolean = false;
+  public isLoadingDelete: boolean = false;
   private project: Project | null = null;
   private orderCommission!: { fixCommission: number, maxCommission: number, iwsProvision: number };
   private newOrder!: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
@@ -114,40 +116,31 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   private handleSaveError(error: any): void {
+    this.commonMessageService.showErrorEditMessage();
+    this.isLoading = false;
     if (error instanceof OccError) {
       this.showOCCErrorModalOrder = true;
       this.occErrorType = error.errorType;
       this.redirectRoute = '/customers/orders/' + this.currentOrder.customer?.id;
-      return;
     }
-
-    this.commonMessageService.showErrorEditMessage();
-    this.isLoading = false;
   }
 
   onOrderDelete() {
     if (this.currentOrder) {
-      this.isLoading = true;
+      this.isLoadingDelete = true;
       this.orderUtils.deleteOrder(this.currentOrder.id).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.visibleOrderDeleteModal = false;
           this.commonMessageService.showDeleteSucessfullMessage();
           setTimeout(() => {
             this.goBackListOrders();
-          }, 2000);
+          }, 500);
         },
-        error: (ordersError) => {
-          this.isLoading = false;
-          this.handleDeleteError(ordersError);
-          if (ordersError.message.includes('have associated debts') ||
-            ordersError.message.includes('have associated invoices') ||
-            ordersError.message.includes('have associated commissions')) {
-            this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
+        error: (error) => {
+          this.isLoadingDelete = false;
           this.visibleOrderDeleteModal = false;
+          this.handleDeleteError(error);
         }
       })
     }
@@ -155,9 +148,14 @@ export class OrderDetailsComponent implements OnInit {
 
   handleDeleteError(error: Error) {
     if (error instanceof OccError || error?.message?.includes('404') ) {
+      this.commonMessageService.showErrorDeleteMessage();
       this.showOCCErrorModalOrder = true;
       this.occErrorType = 'DELETE_UNEXISTED';
       this.redirectRoute = '/customers/orders/' + this.currentOrder.customer?.id;
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    } else {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 

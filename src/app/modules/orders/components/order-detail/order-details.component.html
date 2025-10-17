@@ -47,11 +47,10 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-          icon="pi pi-trash" iconPos="left" (onClick)="onOrderDelete()" severity="danger" [loading]="isLoading"
-          [disabled]="isLoading" />
+          icon="pi pi-trash" iconPos="left" (onClick)="onOrderDelete()" severity="danger" [loading]="isLoadingDelete" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-          icon="pi pi-times" iconPos="left" (onClick)="this.visibleOrderDeleteModal = false;" [disabled]="isLoading" />
+          icon="pi pi-times" iconPos="left" (onClick)="this.visibleOrderDeleteModal = false;" [disabled]="isLoadingDelete" />
 
     </div>
   </div>

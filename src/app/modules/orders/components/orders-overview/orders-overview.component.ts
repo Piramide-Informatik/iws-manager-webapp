@@ -14,6 +14,7 @@ import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { Title } from '@angular/platform-browser';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { CustomerStateService } from '../../../customer/utils/customer-state.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-orders-overview',
@@ -125,21 +126,9 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
         },
         error: (ordersError) => {
           this.isOrderLoading = false;
+          this.visibleOrderModal = false;
+          this.selectedOrder = undefined;
           this.handleOnDeleteError(ordersError);
-          if (ordersError.message.includes('have associated debts') ||
-            ordersError.message.includes('have associated invoices') ||
-            ordersError.message.includes('have associated commissions')) {
-            this.commonMessage.showErrorDeleteMessageContainsOtherEntities();
-          } else {
-            this.commonMessage.showErrorDeleteMessage();
-          }
-          this.visibleOrderModal = false;
-          this.selectedOrder = undefined;
-        },
-        complete: () => {
-          this.visibleOrderModal = false;
-          this.selectedOrder = undefined;
-          this.isOrderLoading = false;
         }
       })
     }
@@ -147,8 +136,13 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
 
   handleOnDeleteError(error: Error) {
     if (error instanceof OccError || error?.message?.includes('404')) {
-      this.showOCCErrorModalOrder = true;
+      this.commonMessage.showErrorDeleteMessage();
       this.occErrorType = 'DELETE_UNEXISTED';
+      this.showOCCErrorModalOrder = true;
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint fails')) {
+      this.commonMessage.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    } else {
+      this.commonMessage.showErrorDeleteMessage();
     }
   }
 

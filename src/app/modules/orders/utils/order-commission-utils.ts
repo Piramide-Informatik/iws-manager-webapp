@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 import { OrderCommissionService } from '../../../Services/order-commission.service';
 import { OrderCommission } from '../../../Entities/orderCommission';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -77,7 +78,6 @@ export class OrderCommissionUtils {
   deleteOrderCommission(id: number): Observable<void> {
     return this.orderCommissionService.deleteOrderCommission(id).pipe(
       catchError(error => {
-        console.log('Error delete orderCommission', error)
         return throwError(() => error);
       })
     );
@@ -97,11 +97,11 @@ export class OrderCommissionUtils {
       take(1),
       switchMap((currentOrderCommission) => {
         if (!currentOrderCommission) {
-          return throwError(() => new Error('OrderCommission not found'));
+          return throwError(() => createNotFoundUpdateError('Order Commission'));
         }
 
         if (currentOrderCommission.version !== orderCommission.version) {
-          return throwError(() => new Error('Conflict detected: order commission version mismatch'));
+          return throwError(() => createUpdateConflictError('Order'));
         }
 
         return this.orderCommissionService.updateOrderCommission(orderCommission);
