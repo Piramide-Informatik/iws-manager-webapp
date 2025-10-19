@@ -106,6 +106,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
           console.log('OCC Error occurred:', error);
           this.showOCCErrorModalCountry = true;
           this.occErrorType = error.errorType;
+          this.commonMessageService.showErrorEditMessage();
         }else {
           this.commonMessageService.showErrorEditMessage();
         }

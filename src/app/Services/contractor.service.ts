@@ -30,9 +30,9 @@ export class ContractorService {
     this.loadInitialData();
   }
 
-  public loadInitialData(): void {
+  public loadInitialData(): Observable<Contractor[]> {
     this._loading.set(true);
-    this.http.get<Contractor[]>(this.apiUrl, this.httpOptions).pipe(
+    return this.http.get<Contractor[]>(this.apiUrl, this.httpOptions).pipe(
       tap({
         next: (contractors) => {
           this._contractors.set(contractors);

@@ -98,6 +98,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
           console.log('OCC Error occurred:', error);
           this.showOCCErrorModaPromoter = true;
           this.occErrorType = error.errorType;
+          this.commonMessageService.showErrorEditMessage();
         } else {
           this.commonMessageService.showErrorEditMessage();
         }
