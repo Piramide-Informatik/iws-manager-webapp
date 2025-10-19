@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, catchError, map, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, forkJoin, map, switchMap, take, throwError } from 'rxjs';
 import { CustomerService } from '../../../Services/customer.service';
 import { Customer } from '../../../Entities/customer';
 import { ContactPerson } from '../../../Entities/contactPerson';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../shared/utils/occ-error';
+import { ContactUtils } from './contact-utils';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -12,6 +13,7 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../shar
  */
 export class CustomerUtils {
     private readonly customerService = inject(CustomerService);
+    private readonly contactUtils = inject(ContactUtils);
 
     loadInitialData(): Observable<Customer[]> {
       return this.customerService.loadInitialData();
@@ -110,7 +112,26 @@ export class CustomerUtils {
      * @returns Observable that completes when the deletion is done
      */
     deleteCustomer(id: number): Observable<void> {
-        return this.customerService.deleteCustomer(id)
+        if (!id || id <= 0) {
+            return throwError(() => new Error('Invalid customer ID'));
+        }
+
+        return this.getContactsByCustomerId(id).pipe(
+            switchMap((contacts: ContactPerson[]) => {
+                if (!contacts || contacts.length === 0) {
+                    return this.customerService.deleteCustomer(id);
+                }
+
+                return forkJoin(
+                    contacts.map(contact => 
+                        this.contactUtils.deleteContactPerson(contact.id)
+                    )
+                ).pipe(
+                    switchMap(() => this.customerService.deleteCustomer(id))
+                );
+            }),
+            catchError(err => throwError(() => err))
+        );
     }
 
     /**
