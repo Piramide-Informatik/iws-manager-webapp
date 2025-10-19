@@ -44,14 +44,14 @@
         </div>
         <div class="flex justify-content-center gap-2">
           <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" size="small" type="submit"
-            [loading]="isLoading" [disabled]="isLoading || depreciationForm.invalid"></p-button>
+            [loading]="isLoading" [disabled]="depreciationForm.invalid || !depreciationForm.dirty"></p-button>
           @if(selectedSubcontractYear) {
           <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+            iconPos="left" severity="danger" [disabled]="isLoading"
             (onClick)="visibleSubcontractYearModal = true;" />
           }
           <p-button [label]="'BUTTONS.CANCEL' | translate" class="cancel" icon="pi pi-times" iconPos="left" size="small"
-            (click)="closeModal()" (keydown.enter)="closeModal()"></p-button>
+            (onClick)="closeModal()" [disabled]="isLoading" ></p-button>
         </div>
       </form>
     </ng-container>
@@ -64,11 +64,11 @@
 
         <div class="flex justify-content-center gap-2">
           <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-            iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+            iconPos="left" severity="danger" [loading]="isLoadingDelete"
             (onClick)="removeSubcontractYear()" />
 
           <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-            iconPos="left" (onClick)="closeModal()" />
+            iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete" />
         </div>
       </div>
     </ng-template>
@@ -85,11 +85,11 @@
 
     <div class="flex justify-content-center gap-2 subcontractYearModalButtonContainer">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+        iconPos="left" severity="danger" [loading]="isLoadingDelete"
         (onClick)="removeSubcontractYear()" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="visibleSubcontractYearModal = false;" />
+        iconPos="left" (onClick)="visibleSubcontractYearModal = false;" [disabled]="isLoadingDelete" />
     </div>
   </div>
 </p-dialog>
