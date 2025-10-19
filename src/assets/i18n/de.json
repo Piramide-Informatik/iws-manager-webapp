@@ -453,7 +453,7 @@
     },
     "ORDER_DIALOG_REMOVE": "Bestellung löschen",
     "REMOVE_ORDERS_QUESTION": "Möchten Sie die Bestellung wirklich löschen",
-    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "Möchten Sie die IWS Commission löschen "
+    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "Möchten Sie die IWS Provision löschen?"
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -525,9 +525,13 @@
       },
       "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
       "TITLE_DIALOG_CREATE": "Rahmenvereinbarung erstellen",
-      "REMOVE_QUESTION": "Möchten Sie den Rahmenvertrag wirklich löschen",
-      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Möchten Sie die IWS Commission löschen"
-    }
+      "REMOVE_QUESTION": "Möchten sie den Rahmenvertrag wirklich löschen",
+      "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Möchten sie die IWS Provision löschen"
+    },
+    "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
+    "TITLE_DIALOG_CREATE": "Neuer rahmenvertrag",
+    "REMOVE_QUESTION": "Möchten sie den rahmenvertrag wirklich löschen",
+    "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Möchten sie die IWS Provision löschen"
   },
   "CONTRACTS": {
     "FORM": {
@@ -625,7 +629,6 @@
     "DELETE": {
       "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
     },
-    
     "MODAL": {
       "NEW": "Neue Abwesenheitsart",
       "DELETE": "Abwesenheitsart löschen"
