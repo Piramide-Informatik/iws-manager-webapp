@@ -7,6 +7,7 @@ import { Subscription, switchMap } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { SubcontractStateService } from '../../utils/subcontract-state.service';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-subcontracts-details',
@@ -84,6 +85,7 @@ export class SubcontractsDetailsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isLoadingDelete = false;
+          this.visibleSubcontractModal = false;
           this.handleDeleteError(error);
         }
       });
@@ -91,16 +93,14 @@ export class SubcontractsDetailsComponent implements OnInit, OnDestroy {
   }
 
   private handleDeleteError(error: any) {
-    if (error.message.includes('have associated subcontract projects') ||
-      error.message.includes('have associated subcontract years')) {
-      this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-    } else if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+    if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
+      this.commonMessageService.showErrorDeleteMessage();
       this.showOCCErrorModalSubcontract = true;
       this.errorType = 'DELETE_UNEXISTED';
-      this.visibleSubcontractModal = false;
       this.redirectRoute = "/customers/subcontracts/" + this.currentSubcontract.customer?.id;
-      return;
-    } else {
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+      } else {
       this.commonMessageService.showErrorDeleteMessage();
     }
   }

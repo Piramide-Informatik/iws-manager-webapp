@@ -68,7 +68,6 @@ export class SubcontractYearUtils {
   deleteSubcontractYear(id: number): Observable<void> {
     return this.subcontractYearService.deleteSubcontractYear(id).pipe(
       catchError(error => {
-        console.log('Error delete subcontract year', error)
         return throwError(() => error);
       })
     );

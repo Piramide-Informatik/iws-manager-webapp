@@ -40,7 +40,8 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   private readonly subscription = new Subscription();
 
   private currentSubcontract!: Subcontract;
-  isSubcontractProjectPerformigAction: boolean = false
+  isLoading: boolean = false
+  isLoadingDelete: boolean = false
   public allocationForm!: FormGroup;
   public showOCCErrorSubcontractProject = false;
   visibleSubcontractProjectModal = false;
@@ -82,7 +83,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
       projectLabel: [''],
-      percentage: ['', [Validators.max(100.00)]],
+      percentage: ['', [Validators.max(100)]],
       amount: [{ value: '', disabled: true }]
     });
 
@@ -96,31 +97,12 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['subcontractProject'] && this.subcontractProject && this.modalType === 'edit') {
-      this.isSubcontractProjectPerformigAction = true;
 
-      const sub = this.subcontractProjectUtils.getSubcontractProjectById(this.subcontractProject.id).subscribe({
-        next: (fullProject: SubcontractProject | undefined) => {
-          if (!fullProject) {
-            this.isSubcontractProjectPerformigAction = false;
-            return;
-          }
-
-          this.subcontractProject = fullProject;
-
-          this.allocationForm.patchValue({
-            projectLabel: fullProject.project?.id ?? '',
-            percentage: fullProject.share ?? '',
-            amount: fullProject.amount ?? ''
-          });
-
-          this.isSubcontractProjectPerformigAction = false;
-        },
-        error: () => {
-          this.isSubcontractProjectPerformigAction = false;
-        }
+      this.allocationForm.patchValue({
+        projectLabel: this.subcontractProject.project?.id ?? '',
+        percentage: this.subcontractProject.share ?? '',
+        amount: this.subcontractProject.amount ?? ''
       });
-
-      this.subscription.add(sub);
     }
 
     if (this.modalType === 'create') {
@@ -156,17 +138,17 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       share: this.allocationForm.value.percentage
     }
 
-    this.isSubcontractProjectPerformigAction = true;
+    this.isLoading = true;
     this.subscription.add(
       this.subcontractProjectUtils.createNewSubcontractProject(newSubcontractProject).subscribe({
         next: (created: SubcontractProject) => {
-          this.isSubcontractProjectPerformigAction = false;
+          this.isLoading = false;
           this.subcontractProjectCreated.emit(created);
           this.commonMessageService.showCreatedSuccesfullMessage();
           this.isProjectAllocationVisibleModal.emit(false);
         },
         error: () => {
-          this.isSubcontractProjectPerformigAction = false;
+          this.isLoading = false;
           this.commonMessageService.showErrorCreatedMessage();
         }
       })
@@ -187,22 +169,23 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
     const updatedProject: SubcontractProject = {
       ...this.subcontractProject,
+      project: this.getProjectSelected(raw.projectLabel),
       share,
       amount
     };
 
-    this.isSubcontractProjectPerformigAction = true;
-
+    this.isLoading = true;
     this.subscription.add(
       this.subcontractProjectUtils.updateSubcontractProject(updatedProject).subscribe({
         next: (updated: SubcontractProject) => {
-          this.isSubcontractProjectPerformigAction = false;
+          this.isLoading = false;
           this.SubcontractProjectUpdated.emit(updated);
           this.commonMessageService.showEditSucessfullMessage();
           this.isProjectAllocationVisibleModal.emit(false);
         },
         error: (err) => {
-          this.isSubcontractProjectPerformigAction = false;
+          this.isLoading = false;
+          this.commonMessageService.showErrorEditMessage();
           this.handleUpdateErrorOcc(err);
         }
       })
@@ -212,8 +195,6 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     if (err instanceof OccError) {
       this.showOCCErrorSubcontractProject = true;
       this.occErrorType = err.errorType;
-    } else {
-      this.commonMessageService.showErrorEditMessage();
     }
   }
 
@@ -231,20 +212,20 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   removeSubcontractProject() {
     if (this.subcontractProject) {
-      this.isSubcontractProjectPerformigAction = true;
+      this.isLoadingDelete = true;
       this.subcontractProjectUtils.deleteSubcontractProject(this.subcontractProject.id).subscribe({
         next: () => {
           this.subcontractProjectDeleted.emit(this.subcontractProject);
           this.isProjectAllocationVisibleModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();
-          this.isSubcontractProjectPerformigAction = false;
+          this.isLoadingDelete = false;
           this.visibleSubcontractProjectModal = false;
         },
         error: (error) => {
           console.error('Error deleting subcontract project', error);
           this.handleDeleteErrorOcc(error);
           this.commonMessageService.showErrorDeleteMessage();
-          this.isSubcontractProjectPerformigAction = false;
+          this.isLoadingDelete = false;
           this.visibleSubcontractProjectModal = false;
         }
       });
