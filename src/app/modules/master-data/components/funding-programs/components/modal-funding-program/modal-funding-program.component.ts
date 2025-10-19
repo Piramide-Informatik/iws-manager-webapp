@@ -27,9 +27,9 @@ export class ModalFundingProgramComponent {
 
   public readonly fundingProgramForm = new FormGroup({
     name: new FormControl(''),
-    defaultFundingRate: new FormControl(null, [Validators.max(100.00)]),
-    defaultStuffFlat: new FormControl(null, [Validators.max(100.00)]),
-    defaultResearchShare: new FormControl(null, [Validators.max(100.00)]),
+    defaultFundingRate: new FormControl(null, [Validators.max(100)]),
+    defaultStuffFlat: new FormControl(null, [Validators.max(100)]),
+    defaultResearchShare: new FormControl(null, [Validators.max(100)]),
     defaultHoursPerYear: new FormControl(null)
   })
 

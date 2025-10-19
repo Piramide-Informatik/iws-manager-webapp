@@ -6,9 +6,12 @@ import { momentFormatDate } from '../../../shared/utils/moment-date-utils';
 import { Contractor } from '../../../../Entities/contractor';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContractorUtils } from '../../../contractor/utils/contractor-utils';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../../../Entities/customer';
 import { Subcontract } from '../../../../Entities/subcontract';
+import { SubcontractUtils } from '../../utils/subcontracts-utils';
+import { OccError } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-subcontract-modal',
@@ -18,20 +21,22 @@ import { Subcontract } from '../../../../Entities/subcontract';
 })
 export class SubContractModalComponent implements OnInit, OnChanges {
   private readonly contractorUtils = inject(ContractorUtils);
+  private readonly subcontractsUtils = inject(SubcontractUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
 
   @Input() selectedSubContract!: Subcontract;
   @Input() customer: Customer | undefined;
   @Input() modalSubcontractType: 'create' | 'delete' = 'create';
   @Input() isVisibleModal: boolean = false;
-  @Input() isLoading = false;
-  @Input() isLoadingDelete = false;
-  @Output() deletedSubContract = new EventEmitter();
-  @Output() createdSubContract = new EventEmitter();
+  @Output() deletedSubContract = new EventEmitter<{ deleted?: Subcontract, status: 'success' | 'error', error?: OccError | HttpErrorResponse }>();
+  @Output() createdSubContract = new EventEmitter<{ created?: Subcontract, status: 'success' | 'error' }>();
   @Output() visibleModal = new EventEmitter();
   @ViewChild('inputText') firstInput!: ElementRef;
-
+  
+  public isLoading = false;
+  public isLoadingDelete = false;
   public createSubcontractForm!: FormGroup;
   public optionsNetOrGross!: { label: string, value: string }[];
   private readonly customerId: number = this.route.snapshot.params['id'];
@@ -62,11 +67,8 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       })
     }
 
-    let modalVisibleChange = changes['isVisibleModal'];
-    if (modalVisibleChange && !modalVisibleChange.firstChange) {
-      if (this.isVisibleModal && this.modalSubcontractType === 'create') {
-        this.createSubcontractForm.reset();
-      }
+    if (changes['isVisibleModal'] && !this.isVisibleModal && this.createSubcontractForm) {
+      this.createSubcontractForm.reset();
     }
   }
 
@@ -111,7 +113,25 @@ export class SubContractModalComponent implements OnInit, OnChanges {
 
     this.isLoading = true;
     const newSubcontract = this.buildSubcontractFromForm();
-    this.createdSubContract.emit(newSubcontract);
+    this.subcontractsUtils.createNewSubcontract(newSubcontract).subscribe({
+      next: (createdSubContract) => {
+        this.isLoading = false;
+        this.closeModal();
+        this.createdSubContract.emit({ created: createdSubContract, status: 'success' });
+        setTimeout(() => {
+          this.navigationToEdit(createdSubContract.id);
+        }, 1000)
+      },
+      error: () => {
+        this.isLoading = false;
+        this.closeModal();
+        this.createdSubContract.emit({ status: 'error' });
+      }
+    });
+  }
+
+  private navigationToEdit(id: number): void {
+    this.router.navigate(['./subcontracts-details', id], { relativeTo: this.route });
   }
 
   private checkboxAfaChange(): void {
@@ -153,8 +173,21 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   onSubcontractDeleteConfirm() {
+    if(!this.selectedSubContract) return;
+
     this.isLoadingDelete = true;
-    this.deletedSubContract.emit(this.selectedSubContract);  
+    this.subcontractsUtils.deleteSubcontract(this.selectedSubContract.id).subscribe({
+      next: () => {
+        this.isLoadingDelete = false;
+        this.deletedSubContract.emit({ deleted: this.selectedSubContract, status: 'success' });
+        this.closeModal();
+      },
+      error: (error) => {
+        this.isLoadingDelete = false;
+        this.closeModal();
+        this.deletedSubContract.emit({ status: 'error', error });
+      }
+    }); 
   }
 
   closeModal() {

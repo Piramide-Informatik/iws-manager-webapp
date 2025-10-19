@@ -13,7 +13,7 @@
 <div class="card">
   <p-dialog [header]="(modalType !== 'delete' ? 'SUB-CONTRACTS.PROJECT.MODAL_TITLE_' + optionSelected.toUpperCase() 
             : 'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT') | translate"
-    (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: '40rem' }">
+    (onHide)="closeModal()" [modal]="true" [(visible)]="visibleModal" [style]="{ width: modalType === 'delete' ? 'auto' : '40rem' }">
     <hr class="mt-0" />
     <app-project-allocation-modal [modalType]="modalType" [isVisibleModal]="visibleModal"
       [subcontractProject]="currentSubcontractProject"
