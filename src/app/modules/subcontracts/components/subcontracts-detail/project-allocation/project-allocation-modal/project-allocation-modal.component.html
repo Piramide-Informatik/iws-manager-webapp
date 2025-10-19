@@ -36,13 +36,13 @@
       </div>
       <div class="flex justify-content-center gap-2">
           <p-button type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" 
-            [loading]="isSubcontractProjectPerformigAction" [disabled]="allocationForm.invalid" iconPos="left" size="small"></p-button>
+            [loading]="isLoading" [disabled]="allocationForm.invalid || !allocationForm.dirty" iconPos="left" size="small"></p-button>
           @if(subcontractProject) {
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-              iconPos="left" severity="danger" [loading]="isSubcontractProjectPerformigAction" (onClick)="openSubcontractProjectModal()" />  
+              iconPos="left" severity="danger" [disabled]="isLoading" (onClick)="openSubcontractProjectModal()" />  
           }
-          <p-button [label]="'BUTTONS.CANCEL' | translate" (click)="closeModal()" class="cancel" icon="pi pi-times"
-              iconPos="left" size="small" (keydown.enter)="closeModal()"></p-button>
+          <p-button [label]="'BUTTONS.CANCEL' | translate" (onClick)="closeModal()" class="cancel" icon="pi pi-times"
+              iconPos="left" size="small" [disabled]="isLoading" ></p-button>
       </div>
   </form>
 </ng-container>
@@ -56,15 +56,15 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isSubcontractProjectPerformigAction" (onClick)="removeSubcontractProject()" />
+        iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeSubcontractProject()" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="closeModal()" />
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete" />
     </div>
   </div>
 </ng-template>
 <p-dialog [header]="('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT') | translate"
-  [modal]="true" [(visible)]="visibleSubcontractProjectModal" [style]="{ width: '40rem' }">
+  [modal]="true" [(visible)]="visibleSubcontractProjectModal" [style]="{ width: 'auto' }">
   <hr class="mt-0" />
   <div class="confirmation-content mb-2 mt-4 visibleSubcontractProjectEntity">
     <p class="mb-4 visibleSubcontractProjectQuestion">
@@ -75,10 +75,10 @@
 
     <div class="flex justify-content-center gap-2 visibleSubcontractProjectButtons">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isSubcontractProjectPerformigAction" (onClick)="removeSubcontractProject()" />
+        iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeSubcontractProject()" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="visibleSubcontractProjectModal = false;" />
+        iconPos="left" (onClick)="visibleSubcontractProjectModal = false;" [disabled]="isLoadingDelete" />
     </div>
   </div> 
 </p-dialog>
