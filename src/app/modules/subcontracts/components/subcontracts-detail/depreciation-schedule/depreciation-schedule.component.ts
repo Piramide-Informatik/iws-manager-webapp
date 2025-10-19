@@ -55,6 +55,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   public selectedSubcontractYear!: DepreciationEntry | undefined;
   subcontractId!: number;
   isLoading: boolean = false;
+  isLoadingDelete: boolean = false;
 
   // Configuration table Subcontract Year
   @ViewChild('dt') dt!: Table;
@@ -103,7 +104,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
   private inputMonthsChange(): void {
     this.depreciationForm.get('months')?.valueChanges.subscribe(value => {
-      const months = value ?? 0;
+      const months = value;
       const invoiceNet = this.currentSubcontract?.invoiceNet ?? 0;
       const afamonths = this.currentSubcontract?.afamonths ?? 0;
       const depreciationAmount = this.calculateDepreciationAmount(invoiceNet, afamonths, months);
@@ -146,6 +147,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
   closeModal() {
     this.isLoading = false;
+    this.isLoadingDelete = false;
     this.visibleModal.set(false);
     this.depreciationForm.reset();
     this.visibleSubcontractYearModal = false;
@@ -185,6 +187,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.isLoading = false;
+        this.commonMessageService.showErrorEditMessage();
         this.handleUpdateOCCError(err);
       }
     });
@@ -196,8 +199,6 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       this.visibleModal.set(false);
       this.showOCCErrorModalSubcontractYear = true;
       this.occErrorType = error.errorType;
-    } else {
-      this.commonMessageService.showErrorEditMessage();
     }
   }
 
@@ -229,7 +230,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
   public removeSubcontractYear() {
     if (this.selectedSubcontractYear) {
-      this.isLoading = true;
+      this.isLoadingDelete = true;
       this.subcontractYearUtils.deleteSubcontractYear(this.selectedSubcontractYear.id).subscribe({
         next: () => {
           this.closeModal();
@@ -238,7 +239,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
           this.selectedSubcontractYear = undefined;
         },
         error: (error) => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.handleDeleteOCCError(error);
           this.commonMessageService.showErrorDeleteMessage();
         }
@@ -260,7 +261,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
         const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
         const afamonths = curr.subcontract?.afamonths ?? 0;
-        const subcontractsYearMonths = curr.months;
+        const subcontractsYearMonths = curr.months ?? 0;
         acc.push({
           id: curr.id,
           createdAt: curr.createdAt,
@@ -272,15 +273,6 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         } as DepreciationEntry);
         return acc;
       }, [])
-      this.subcontractsYear = this.sortByCreatedAt()
-    });
-  }
-
-  private sortByCreatedAt() {
-    return this.subcontractsYear.sort((sy1: DepreciationEntry, sy2: DepreciationEntry) => {
-      const sy1Date = new Date(sy1.createdAt);
-      const sy2Date = new Date(sy2.createdAt);
-      return sy2Date.getTime() - sy1Date.getTime();
     });
   }
 

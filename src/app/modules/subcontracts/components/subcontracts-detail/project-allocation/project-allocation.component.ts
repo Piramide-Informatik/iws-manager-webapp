@@ -79,17 +79,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
 
   private loadSubcontractProjects(): void {
     this.subcontractsProjectUtils.getAllSubcontractsProject(this.subcontractId).subscribe(sc => {
-      this.subcontractProjectList = sc.reduce((acc: any[], curr: SubcontractProject) => {
-        acc.push({
-          id: curr.id,
-          project: {
-            projectLabel: curr.project?.projectLabel,
-          },
-          share: curr.share,
-          amount: curr.amount ?? 0
-        });
-        return acc;
-      }, []);
+      this.subcontractProjectList = sc
     })
   }
 

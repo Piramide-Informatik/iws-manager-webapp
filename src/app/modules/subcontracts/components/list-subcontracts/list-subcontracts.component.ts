@@ -13,6 +13,8 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { Column } from '../../../../Entities/column';
 import { Title } from '@angular/platform-browser';
 import { CustomerStateService } from '../../../customer/utils/customer-state.service';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-subcontracts',
@@ -27,32 +29,19 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
   private readonly titleService = inject(Title);
   private readonly customerStateService = inject(CustomerStateService);
   public customer!: Customer | undefined;
-
   public cols!: Column[];
-
   public subcontracts!: Subcontract[];
-
   @ViewChild('dt2') dt2!: Table;
-
   private langSubscription!: Subscription;
-
   public selectedColumns!: Column[];
-
   userSubcontractsListPreferences: UserPreference = {};
-
   tableKey: string = 'SubcontractsList'
-
   dataKeys = ['contractTitle', 'contractor', 'projectCostCenter', 'date', 'invoiceNo', 'invoiceNet', 'invoiceGross', 'share'];
-
   selectedSubcontract!: Subcontract;
-
   visibleSubcontractModal: boolean = false;
-
   subcontractName: string = '';
-
-  isDeletingSubcontract: boolean = false;
-  isCreating = false;
-
+  public showOCCErrorModalSubcontract = false;
+  public errorType: OccErrorType = 'DELETE_UNEXISTED';
   subContractModalType: 'create' | 'delete' = 'create';
 
   constructor(private readonly translate: TranslateService,
@@ -175,46 +164,29 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     this.visibleSubcontractModal = true;
   }
 
-  onCreateFrameworkAgreement(data: any) {
-    this.subcontractsUtils.createNewSubcontract(data).subscribe({
-      next: (createdSubContract) => {
-        this.isCreating = false;
-        this.commonMessageService.showCreatedSuccesfullMessage();
-        this.visibleSubcontractModal = false;
-        setTimeout(() => {
-          this.navigationToEdit(createdSubContract.id);
-        }, 1000)
-      },
-      error: (error) => {
-        this.isCreating = false;
-        console.log(error);
-        this.commonMessageService.showErrorCreatedMessage();
-      }
-    });
+  onCreateSubcontract(event: { created?: Subcontract, status: 'success' | 'error' }): void {
+    if( event.created && event.status === 'success'){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    } else if (event.status === 'error') {
+      this.commonMessageService.showErrorCreatedMessage();
+    }
   }
 
-  private navigationToEdit(id: number): void {
-    this.router.navigate(['./subcontracts-details', id], { relativeTo: this.route });
-  }
-
-  onDeleteFrameworkAgreement(data: any) {
-    this.subcontractsUtils.deleteSubcontract(data.id).subscribe({
-      next: () => {
-        this.isDeletingSubcontract = false;
-        this.visibleSubcontractModal = false;
-        this.subcontracts = this.subcontracts.filter(sc => sc.id !== data.id);
-        this.commonMessageService.showDeleteSucessfullMessage();
-      },
-      error: (error) => {
-        this.isDeletingSubcontract = false;
-        if (error.message.includes('have associated subcontract projects') ||
-          error.message.includes('have associated subcontract years')) {
-          this.commonMessageService.showErrorDeleteMessageContainsOtherEntities();
-        } else {
-          this.commonMessageService.showErrorDeleteMessage();
-        }
+  onDeleteSubcontract(event: { deleted?: Subcontract, status: 'success' | 'error', error?: any }) {
+    if(event.status === 'success' && event.deleted){
+      this.subcontracts = this.subcontracts.filter(sc => sc.id !== event.deleted?.id)
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }else if(event.status === 'error' && event.error){
+      if (event.error instanceof OccError || event.error?.message?.includes('404') || event.error?.errorType === 'DELETE_UNEXISTED') {
+        this.commonMessageService.showErrorDeleteMessage();
+        this.showOCCErrorModalSubcontract = true;
+        this.errorType = 'DELETE_UNEXISTED';
+      } else if (event.error instanceof HttpErrorResponse && event.error.status === 500 && event.error.error.message.includes('foreign key constraint')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
+      } else {
+        this.commonMessageService.showErrorDeleteMessage();
       }
-    });
+    }
   }
 
   onModalVisible(value: boolean) {
