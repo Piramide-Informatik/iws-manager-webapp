@@ -348,6 +348,8 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
         },
         error: (error) => {
           this.isLoadingDelete = false;
+          this.visibleModalIWSCommission = false;
+          this.visibleModalIWSCommissionEntity = false;
           this.commonMessageService.showErrorDeleteMessage();
           this.handleDeleteError(error);
         }
