@@ -587,7 +587,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
   
   private handleErrorDelete(error: any): void {
-    console.log(error)
     if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
       this.showOCCModalCustomer = true;
       this.occErrorType = 'DELETE_UNEXISTED';
