@@ -29,7 +29,7 @@
         <input pInputText type="number" id="sequenceNo" formControlName="sequenceNo" />
       </div>
 
-      <div class="holiday-form mb-2 flex align-items-center gap-2">
+      <div class="holiday-form flex align-items-center gap-2">
         <div class="holiday-form-check">
           <label for="isFixedDate">{{
             "HOLIDAYS.LABEL.FIXED_DATE" | translate
@@ -73,7 +73,7 @@
         [value]="bundeslands"
         showGridlines
         stripedRows
-        [tableStyle]="{ 'min-width': '100%' }"
+        [tableStyle]="{ 'min-width': '100%', 'border-spacing': '0.5px' }"
         [rows]="12"
         scrollable="true"
         scrollHeight="382px"
@@ -126,10 +126,11 @@
 
     <div class="col-6">
       <p-table
+        class="states-table"
         [value]="years"
         showGridlines
         stripedRows
-        [tableStyle]="{ 'min-width': '100%' }"
+        [tableStyle]="{ 'min-width': '100%', 'border-spacing': '0.5px' }"
         [rows]="12"
         scrollable="true"
         scrollHeight="382px"
