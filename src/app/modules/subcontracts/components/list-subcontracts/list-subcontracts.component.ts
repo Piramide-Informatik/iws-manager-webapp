@@ -68,10 +68,10 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
       const customerId = params['id'];
       if (!customerId) {
         this.updateTitle('...');
-        return;
       }
       this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
         if (currentCustomer) {
+          this.customer = currentCustomer;
           this.updateTitle(currentCustomer.customername1!);
         } else {
           this.getTitleByCustomerId(customerId);

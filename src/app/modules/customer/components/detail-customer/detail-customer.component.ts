@@ -160,7 +160,6 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.userDetailCustomerPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.formDetailCustomer.get('customerNo')?.disable();
-    this.loadNextCustomerNo();
     this.firstInputFocus();
     this.setupCustomerSubscription();
 
@@ -169,6 +168,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
       // Si no hay ID, estamos en modo create
       if (!this.customerId) {
+        this.loadNextCustomerNo();
         this.customerStateService.clearCustomer();
         this.clearForm();
         this.updateTitle(this.translate.instant('PAGETITLE.NEW_CUSTOMER'));
@@ -459,10 +459,10 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   }
 
   private markAllAsTouched(): void {
-    Object.values(this.formDetailCustomer.controls).forEach(control => {
+    for (const control of Object.values(this.formDetailCustomer.controls)) {
       control.markAsTouched();
       control.markAsDirty();
-    });
+    }
   }
 
   // Operations with Contact Person
@@ -546,6 +546,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.isSaving = false;
     this.commonMessageService.showCreatedSuccesfullMessage();
     this.clearForm();
+    this.customerStateService.setCustomerToEdit(customer);
     this.router.navigate(['../customer-details', customer.id], { relativeTo: this.activatedRoute });
   }
 

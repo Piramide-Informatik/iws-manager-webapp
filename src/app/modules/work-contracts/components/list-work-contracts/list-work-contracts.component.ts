@@ -74,7 +74,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(employeeContracts => {
-          this.employmentContracts = employeeContracts!;
+          this.employmentContracts = employeeContracts;
         })
     );
 
