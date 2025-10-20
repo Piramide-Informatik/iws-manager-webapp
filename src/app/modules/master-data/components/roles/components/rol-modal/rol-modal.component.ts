@@ -94,6 +94,7 @@ export class RolModalComponent implements OnInit {
 
   handleDeleteError(error: Error) {
     if (error instanceof OccError || error?.message.includes('404')) {
+      this.commonMessageService.showErrorDeleteMessage();
       this.showOCCErrorModalRole = true;
       this.occErrorType = 'DELETE_UNEXISTED';
     }

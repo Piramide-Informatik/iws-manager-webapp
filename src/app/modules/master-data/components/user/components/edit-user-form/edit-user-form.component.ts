@@ -248,7 +248,7 @@ export class EditUserFormComponent implements OnInit {
 
   private handleError(err: any): void {
     if (err instanceof OccError) {
-      console.log('tipo de error: ', err.errorType);
+      this.commonMessageService.showErrorEditMessage();
       this.showOCCErrorModaUser = true;
       this.occErrorType = err.errorType;
     } else {

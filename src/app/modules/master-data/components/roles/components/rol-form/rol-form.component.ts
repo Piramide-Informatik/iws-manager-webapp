@@ -175,6 +175,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
   private handleError(err: any): void {
     console.log(err);
     if (err instanceof OccError) { 
+      this.commonMessagesService.showErrorEditMessage();
       this.showOCCErrorModalRole = true;
       this.occErrorType = err.errorType;
     } else {
