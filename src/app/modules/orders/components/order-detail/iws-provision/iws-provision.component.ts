@@ -359,7 +359,7 @@ export class IwsProvisionComponent implements OnInit, OnDestroy, OnChanges {
 
   private handleDeleteError(error: any): void {
     if (error instanceof OccError || error?.message?.includes('404') ) {
-      this.occErrorType = error.errorType;
+      this.occErrorType = 'DELETE_UNEXISTED';
       this.showOCCErrorModalOrderCommission = true;
     }
   }
