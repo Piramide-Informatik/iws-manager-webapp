@@ -546,6 +546,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     this.isSaving = false;
     this.commonMessageService.showCreatedSuccesfullMessage();
     this.clearForm();
+    this.customerStateService.setCustomerToEdit(customer);
     this.router.navigate(['../customer-details', customer.id], { relativeTo: this.activatedRoute });
   }
 
