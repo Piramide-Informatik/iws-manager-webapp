@@ -262,38 +262,45 @@ export class RolFormComponent implements OnInit, OnDestroy {
 
     const toSave: RightRole[] = [];
     const toUpdate: RightRole[] = [];
-    const toDelete: RightRole[] = [];
 
+    // Procesar las funciones actuales
     this.functions.forEach((fn) => {
       const accessRight = this.calculateAccessRight(fn);
       const current = this.existingRights.find(
         (r) => r.systemFunction.id === fn.id
       );
 
-      if (accessRight > 0) {
-        if (current) {
-          if (current.accessRight !== accessRight) {
-            // update
-            toUpdate.push({ ...current, accessRight });
-          }
-        } else {
-          // new
-          toSave.push({
-            accessRight,
-            role: { id: role.id },
-            systemFunction: { id: fn.id },
-          } as RightRole);
+      if (current) {
+        // Actualizamos incluso si accessRight = 0
+        if (current.accessRight !== accessRight) {
+          toUpdate.push({ ...current, accessRight });
         }
-      } else if (current) {
-        // delete
-        toDelete.push(current);
+      } else {
+        // Crear nuevo derecho incluso si accessRight = 0
+        toSave.push({
+          accessRight,
+          role: { id: role.id },
+          systemFunction: { id: fn.id },
+        } as RightRole);
+      }
+    });
+
+    // Procesar derechos existentes que ya no están en la lista de funciones
+    const functionIds = this.functions.map(fn => fn.id);
+    this.existingRights.forEach((existingRight) => {
+      if (!functionIds.includes(existingRight.systemFunction.id)) {
+        // Esta función ya no está en la lista, crear nuevo con accessRight = 0
+        toSave.push({
+          accessRight: 0,
+          role: { id: role.id },
+          systemFunction: { id: existingRight.systemFunction.id },
+        } as RightRole);
       }
     });
 
     const requests = [
       ...toSave.map((r) => this.rightRoleUtils.addRightRole(r)),
       ...toUpdate.map((r) => this.rightRoleUtils.updateRightRole(r)),
-      ...toDelete.map((r) => this.rightRoleUtils.deleteRightRole(r.id!)),
     ];
 
     forkJoin({
