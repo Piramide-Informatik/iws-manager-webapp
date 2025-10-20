@@ -698,8 +698,8 @@
       "APPLIES_TO_NETWORK": "gilt fur Netzwerke"
     },
     "DELETE": {
-      "CONFIRMATION": "Genehmigungsstatus löschen",
-      "CONFIRM_QUESTION": "Möchten Sie den Genehmigungsstatus wirklich löschen  "
+      "CONFIRMATION": "Bewilligungstatus löschen",
+      "CONFIRM_QUESTION": "Möchten Sie den Bewilligungsstatus wirklich löschen "
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "Neuer Bewilligungsstatus"
