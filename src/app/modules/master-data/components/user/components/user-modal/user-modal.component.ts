@@ -7,6 +7,7 @@ import { PasswordDirective } from 'primeng/password';
 import { TranslateService } from '@ngx-translate/core';
 import { UserStateService } from '../../utils/user-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -45,7 +46,10 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
     active: new FormControl(false),
   });
 
-  constructor(private readonly translate: TranslateService) { }
+  constructor(
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
+  ) { }
 
   ngOnInit(): void {
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
