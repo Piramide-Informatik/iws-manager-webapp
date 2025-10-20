@@ -19,6 +19,8 @@ import { EmployeeIwsUtils } from '../../../../master-data/components/iws-staff/u
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
 import { InputNumber } from 'primeng/inputnumber';
 import { FormStateService } from '../../../utils/form-state.service';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order',
@@ -36,13 +38,16 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly subscriptions = new Subscription();
+  private readonly titleService = inject(Title);
+  private readonly translate = inject(TranslateService);
+
   @Input() orderToEdit!: Order;
   @Output() onCreateOrder = new EventEmitter<Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'>>();
   orderForm!: FormGroup;
 
   private readonly customerId: number = this.route.snapshot.params['id'];
   private currentCustomer!: Customer;
-  
+
   public readonly fundingPrograms = toSignal(
     this.fundingProgramUtils.getAllFundingPrograms(), { initialValue: [] }
   );
@@ -56,7 +61,7 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
     this.framworkUtils.getAllFrameworkAgreementsByCustomerIdSortedByContractNo(this.customerId).pipe(
       map(contracts => {
         this.basicContracts = contracts;
-        
+
         return contracts.map(contract => ({
           id: contract.id,
           label: contract.contractNo + ' ' + contract.contractTitle,
@@ -91,8 +96,14 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
     this.initForm();
   }
 
+  private updateTitle(name: string): void {
+    this.titleService.setTitle(
+      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')}`
+    );
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['orderToEdit'] && this.orderToEdit){
+    if (changes['orderToEdit'] && this.orderToEdit) {
       this.orderForm.patchValue({
         orderNo: this.orderToEdit.orderNo,
         orderLabel: this.orderToEdit.orderLabel,
@@ -152,19 +163,19 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
       promoter: null,//get of project
       acronym: this.orderForm.value.acronym ?? '',
       approvalDate: momentFormatDate(this.orderForm.value.approvalDate) ?? '',
-      approvalPdf: '', 
+      approvalPdf: '',
       contractData1: '',
       contractData2: '',
-      contractPdf: '', 
+      contractPdf: '',
       fixCommission: 0, //other component
       iwsProvision: 0, //other component
       maxCommission: 0, //other component
       nextDeptDate: '',
       noOfDepts: 0,
-      orderDate: momentFormatDate(this.orderForm.value.orderDate) ?? '', 
+      orderDate: momentFormatDate(this.orderForm.value.orderDate) ?? '',
       orderLabel: this.orderForm.value.orderLabel ?? '',
-      orderNo: this.orderForm.value.orderNo, 
-      orderTitle: this.orderForm.value.orderTitle ?? '', 
+      orderNo: this.orderForm.value.orderNo,
+      orderTitle: this.orderForm.value.orderTitle ?? '',
       orderValue: this.orderForm.value.orderValue ?? 0,
       signatureDate: ''
     }
@@ -173,31 +184,30 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getFundingProgram(idFunding: number): FundingProgram | null {
-    return idFunding === 0? null : this.fundingPrograms().find( f => f.id === idFunding) ?? null;
+    return idFunding === 0 ? null : this.fundingPrograms().find(f => f.id === idFunding) ?? null;
   }
 
   private getOrderType(idOrderType: number): CostType | null {
-    return idOrderType === 0? null : this.orderTypes().find( o => o.id === idOrderType) ?? null;
+    return idOrderType === 0 ? null : this.orderTypes().find(o => o.id === idOrderType) ?? null;
   }
 
   private getBasicContract(idBasicContract: number): BasicContract | null {
-    return idBasicContract === 0? null : this.basicContracts.find( b => b.id === idBasicContract) ?? null;
+    return idBasicContract === 0 ? null : this.basicContracts.find(b => b.id === idBasicContract) ?? null;
   }
 
   private getContractStatus(idContractStatus: number): ContractStatus | null {
-    return idContractStatus === 0? null : this.contractStatus().find( c => c.id === idContractStatus) ?? null;
+    return idContractStatus === 0 ? null : this.contractStatus().find(c => c.id === idContractStatus) ?? null;
   }
 
   private getEmployeeIws(idEmployeeIws: number): EmployeeIws | null {
-    return idEmployeeIws === 0? null : this.employeeIws.find( e => e.id === idEmployeeIws) ?? null;
+    return idEmployeeIws === 0 ? null : this.employeeIws.find(e => e.id === idEmployeeIws) ?? null;
   }
 
   private getCurrentCustomer(): void {
     this.subscriptions.add(
       this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
-        if(customer){
-          this.currentCustomer = customer;
-        }
+        this.currentCustomer = customer!;
+        this.updateTitle(customer?.customername1!);
       })
     );
   }
@@ -207,10 +217,10 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private firstInputFocus(): void {
-    setTimeout(()=>{
-      if(this.firstInput.input.nativeElement){
+    setTimeout(() => {
+      if (this.firstInput.input.nativeElement) {
         this.firstInput.input.nativeElement.focus();
       }
-    },300)
+    }, 300)
   }
 }
