@@ -109,7 +109,7 @@ export class SubContractModalComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    if (this.createSubcontractForm.invalid) return;
+    if (this.createSubcontractForm.invalid || !this.customer) return;
 
     this.isLoading = true;
     const newSubcontract = this.buildSubcontractFromForm();
@@ -159,7 +159,7 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       isAfa: this.createSubcontractForm.value.afa,
       afamonths: this.createSubcontractForm.value.afa ? this.createSubcontractForm.value.afaDurationMonths : 0,
       description: this.createSubcontractForm.value.description,
-      customer: this.customer ?? null,
+      customer: this.customer!,
       invoiceGross: controlNetOrGross ? 0 : this.createSubcontractForm.value.invoiceAmount,
       invoiceNet: controlNetOrGross ? this.createSubcontractForm.value.invoiceAmount : 0,
       note: '',
