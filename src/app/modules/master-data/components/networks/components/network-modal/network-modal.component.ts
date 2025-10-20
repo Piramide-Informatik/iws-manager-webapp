@@ -90,7 +90,9 @@ export class NetworkModalComponent implements OnInit, OnChanges {
         error: (error) => {
           this.isLoading = false;
           this.handleDeleteError(error);
-          this.closeModal();
+          if (error.error.message.includes('a foreign key constraint fails')) {
+            this.closeModal();
+          }
           this.deleteNetwork.emit({ status: 'error', error: error });
         }
       })

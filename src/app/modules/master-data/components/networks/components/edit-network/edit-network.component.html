@@ -5,43 +5,6 @@
                 <label for="name">{{ 'NETWORKS.LABEL.NETWORK' | translate }}</label>
                 <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
             </div>
-            <master-data-genaral-table
-                [tableId]="tableKey"
-                [tableValues]="networksPartners()"
-                [columns]="columsHeaderFieldPartner"
-                [filterByColumns]="false"
-                [hideColumns]="false"
-                nameNewButton="NETWORKS.LABEL.NEW_PARTNER"
-                [userPreferences]="userEditNetworkPreferences"
-                [dataKeys]="dataKeys"
-                [sortField]="'no'" 
-                [sortOrder]="1"
-                (onColumnChanges)="onUserEditNetworkPreferencesChanges($event)"
-                (onCreateRegister)="handleTableEvents({ type: 'create' })"
-                (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
-                (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
-                [enableCreateButton]="!isCreateButtonEnable"
-            ></master-data-genaral-table>
-            <p-dialog 
-              [header]="modalNetworkPartnerType === 'create' 
-                ? ('NETWORKS.MODAL.NEW_PARTNER' | translate) 
-                : modalNetworkPartnerType === 'edit'
-                  ? ('NETWORKS.MODAL.EDIT_PARTNER' | translate) 
-                  : ('NETWORKS.MODAL.DELETE_PARTNER' | translate)" 
-              [modal]="true"
-              [(visible)]="visibleNetworksPartnersModal"
-            >
-              <app-network-partner-modal
-                [modalType]="modalNetworkPartnerType"
-                [network]="networkToEdit"
-                [selectedNetworkPartner]="selectedNetworkPartner"
-                [visible]="visibleNetworksPartnersModal"
-                (isVisibleModal)="onModalNetworkPartenerVisibilityChange($event)"
-                (createNetworkPartner)="onCreateNetworkPartner($event)"
-                (editNetworkPartner)="onEditNetworkPartner($event)"
-                (deleteNetworkPartner)="onDeleteNetworkPartner($event)"
-              ></app-network-partner-modal>
-            </p-dialog>
             <div class="row mt-2">
                 <div class="col flex justify-content-center">
                     <p-button class="save me-2" size="small" type="submit" [loading]="isLoading" 
@@ -54,6 +17,45 @@
             </div>
         </div>
     </form>
+    <div class="row">
+      <master-data-genaral-table
+          [tableId]="tableKey"
+          [tableValues]="networksPartners()"
+          [columns]="columsHeaderFieldPartner"
+          [filterByColumns]="false"
+          [hideColumns]="false"
+          nameNewButton="NETWORKS.LABEL.NEW_PARTNER"
+          [userPreferences]="userEditNetworkPreferences"
+          [dataKeys]="dataKeys"
+          [sortField]="'no'" 
+          [sortOrder]="1"
+          (onColumnChanges)="onUserEditNetworkPreferencesChanges($event)"
+          (onCreateRegister)="handleTableEvents({ type: 'create' })"
+          (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
+          (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+          [enableCreateButton]="!isCreateButtonEnable"
+      ></master-data-genaral-table>
+      <p-dialog 
+        [header]="modalNetworkPartnerType === 'create' 
+          ? ('NETWORKS.MODAL.NEW_PARTNER' | translate) 
+          : modalNetworkPartnerType === 'edit'
+            ? ('NETWORKS.MODAL.EDIT_PARTNER' | translate) 
+            : ('NETWORKS.MODAL.DELETE_PARTNER' | translate)" 
+        [modal]="true"
+        [(visible)]="visibleNetworksPartnersModal"
+      >
+        <app-network-partner-modal
+          [modalType]="modalNetworkPartnerType"
+          [network]="networkToEdit"
+          [selectedNetworkPartner]="selectedNetworkPartner"
+          [visible]="visibleNetworksPartnersModal"
+          (isVisibleModal)="onModalNetworkPartenerVisibilityChange($event)"
+          (createNetworkPartner)="onCreateNetworkPartner($event)"
+          (editNetworkPartner)="onEditNetworkPartner($event)"
+          (deleteNetworkPartner)="onDeleteNetworkPartner($event)"
+        ></app-network-partner-modal>
+      </p-dialog>
+    </div>
 </p-card>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalNetwork"
