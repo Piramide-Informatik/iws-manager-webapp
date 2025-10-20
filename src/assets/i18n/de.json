@@ -447,9 +447,9 @@
       "COMMISSION": "Provision",
       "MIN_COMMISSION": "Mindestprovision",
       "ESTIMATED_IWS_COMMISSION": "Geschätzte IWS-Provision",
-      "TITLE_DIALOG_CREATE": "IWS Commission neu",
-      "TITLE_DIALOG_EDIT": "IWS Commission bearbeiten",
-      "TITLE_DIALOG_DELETE": "IWS Commission löschen"
+      "TITLE_DIALOG_CREATE": "Neue IWS Provision",
+      "TITLE_DIALOG_EDIT": "IWS Provision bearbeiten",
+      "TITLE_DIALOG_DELETE": "IWS Provision löschen"
     },
     "ORDER_DIALOG_REMOVE": "Bestellung löschen",
     "REMOVE_ORDERS_QUESTION": "Möchten Sie die Bestellung wirklich löschen",
@@ -698,8 +698,8 @@
       "APPLIES_TO_NETWORK": "gilt fur Netzwerke"
     },
     "DELETE": {
-      "CONFIRMATION": "Genehmigungsstatus löschen",
-      "CONFIRM_QUESTION": "Möchten Sie den Genehmigungsstatus wirklich löschen  "
+      "CONFIRMATION": "Bewilligungstatus löschen",
+      "CONFIRM_QUESTION": "Möchten Sie den Bewilligungsstatus wirklich löschen "
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "Neuer Bewilligungsstatus"
