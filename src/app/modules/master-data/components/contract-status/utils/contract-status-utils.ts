@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 import { ContractStatus } from '../../../../../Entities/contractStatus';
 import { ContractStatusService } from '../../../../../Services/contract-status.service';
-import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError } from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for contractStatus-related business logic and operations.
@@ -43,19 +43,22 @@ export class ContractStatusUtils {
    * @param nameContractStatus - Name for the new contractStatus
    * @returns Observable that completes when contractStatus is created
    */
-
   addContractStatus(contractStatus: Omit<ContractStatus, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ContractStatus> {
     return this.contractStatusService.addContractStatus(contractStatus);
   }
 
+  /**
+   * Gets all contract statuses
+   * @returns Observable emitting all contract statuses
+   */
   getAllcontractStatuses(): Observable<ContractStatus[]> {
     return this.contractStatusService.getAllContractStatuses();
   }
 
   /**
-     * Refreshes customers data
-     * @returns Observable that completes when refresh is done
-     */
+   * Refreshes contract statuses data
+   * @returns Observable that completes when refresh is done
+   */
   refreshcontractStatuses(): Observable<void> {
     return new Observable<void>(subscriber => {
       this.contractStatusService.loadInitialData();
@@ -65,58 +68,19 @@ export class ContractStatusUtils {
   }
 
   /**
- * Deletes a contractStatus by ID and updates the internal contractStatuses signal.
- * @param id - ID of the contractStatus to delete
- * @returns Observable that completes when the deletion is done
- */
-  deleteContractStatus(id: number): Observable<void> {
-    return this.getContractStatusById(id).pipe(
-      take(1),
-      switchMap((currentContractStatus) => {
-        if (!currentContractStatus) {
-          return throwError(() => createNotFoundDeleteError('Contract status'));
-        }
-        
-        return this.checkContractStatusUsage(id).pipe(
-          switchMap(isUsed => {
-            if (isUsed) {
-              return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-            }
-            return this.contractStatusService.deleteContractStatus(id);
-          })
-        );
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Checks if a contractStatus is used by any order or framework agreement (basic contract).
-   * @param idContractStatus - ID of the contractStatus to check
-   * @returns Observable emitting boolean indicating usage
+   * Deletes a contractStatus by ID and updates the internal contractStatuses signal.
+   * @param id - ID of the contractStatus to delete
+   * @returns Observable that completes when the deletion is done
    */
-  private checkContractStatusUsage(idContractStatus: number): Observable<boolean> {
-    return forkJoin([
-      this.orderUtils.getAllOrders().pipe(
-        map(orders => orders.some(order => order.contractStatus?.id === idContractStatus)),
-        catchError(() => of(false))
-      ),
-      this.frameworkUtils.getAllFrameworkAgreements().pipe(
-        map(frameworks => frameworks.some(framework => framework.contractStatus?.id === idContractStatus)),
-        catchError(() => of(false))
-      )
-    ] as const).pipe(
-      map(([usedInOrders, usedInFrameworks]) => usedInOrders || usedInFrameworks)
-    );
+  deleteContractStatus(id: number): Observable<void> {
+    return this.contractStatusService.deleteContractStatus(id);
   }
 
   /**
- * Updates a contractStatus by ID and updates the internal contractStatuses signal.
- * @param id - ID of the contractStatus to update
- * @returns Observable that completes when the update is done
- */
+   * Updates a contractStatus by ID and updates the internal contractStatuses signal.
+   * @param contractStatus - ContractStatus entity to update
+   * @returns Observable that completes when the update is done
+   */
   updateContractStatus(contractStatus: ContractStatus): Observable<ContractStatus> {
     if (!contractStatus?.id) {
       return throwError(() => new Error('Invalid contractStatus data'));
@@ -126,10 +90,10 @@ export class ContractStatusUtils {
       take(1),
       switchMap((currentContractStatus) => {
         if (!currentContractStatus) {
-            return throwError(() => createNotFoundUpdateError('Contract status'));
+          return throwError(() => createNotFoundUpdateError('Contract status'));
         }
         if (currentContractStatus.version !== contractStatus.version) {
-            return throwError(() => createUpdateConflictError('Contract status'));
+          return throwError(() => createUpdateConflictError('Contract status'));
         }
         return this.contractStatusService.updateContractStatus(contractStatus);
       }),
