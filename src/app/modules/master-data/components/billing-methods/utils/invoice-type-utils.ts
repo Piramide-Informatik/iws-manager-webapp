@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, of } from 'rxjs';
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { InvoiceType } from '../../../../../Entities/invoiceType';
 import { InvoiceTypeService } from '../../../../../Services/invoice-type.service';
