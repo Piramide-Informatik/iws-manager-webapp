@@ -12,6 +12,7 @@ import { buildCustomer } from '../../../shared/utils/builders/customer';
 import { buildCountry } from '../../../shared/utils/builders/country';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-contractor-details',
@@ -292,11 +293,15 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private handleDeleteError(error: any) {
-    this.commonMessageService.showErrorDeleteMessage();
     if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
       this.visibleContractorDeleteEntityModal = false;
       this.showOCCErrorModalContractor.emit(true);
       this.occErrorType.emit('DELETE_UNEXISTED');
+      this.commonMessageService.showErrorDeleteMessage();
+    }else if(error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    }else{
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }
