@@ -17,16 +17,15 @@
     <div class="confirmation-content mb-2 mt-4">
       <p class="mb-4">
         {{ 'INVOICES.REMOVE_INVOICES_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ selectedInvoices?.invoiceNumber }}"</strong>?
+        <strong class="stronglock mt-1">"{{ selectedInvoice?.invoiceNo }}"</strong>?
       </p>
 
       <div class="flex justify-content-center gap-2">
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-            icon="pi pi-trash" iconPos="left" (onClick)="onInvoicesDelete()" severity="danger" [loading]="isInvoicesLoading"
-            [disabled]="isInvoicesLoading" />
+            icon="pi pi-trash" iconPos="left" (onClick)="onInvoicesDelete()" severity="danger" [loading]="isLoadingDelete" />
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-            icon="pi pi-times" iconPos="left" (onClick)="this.visibleInvoicesModal = false;" [disabled]="isInvoicesLoading" />
+            icon="pi pi-times" iconPos="left" (onClick)="this.visibleInvoicesModal = false;" [disabled]="isLoadingDelete" />
 
       </div>
     </div>
