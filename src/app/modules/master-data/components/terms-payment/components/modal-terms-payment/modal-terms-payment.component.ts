@@ -15,9 +15,9 @@ export class ModalTermsPaymentComponent implements OnChanges {
   private readonly payConditionUtils = inject(PayConditionUtils);
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() isVisible: boolean = false;
-  @Input() termPayment!: PayCondition 
-  @Output() createPayCondition = new EventEmitter<{created?: PayCondition, status: 'success' | 'error'}>();
-  @Output() deletePayCondition = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Input() termPayment!: PayCondition;
+  @Output() createPayCondition = new EventEmitter<{ created?: PayCondition, status: 'success' | 'error' }>();
+  @Output() deletePayCondition = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
@@ -34,22 +34,22 @@ export class ModalTermsPaymentComponent implements OnChanges {
   constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['isVisible'] && this.isVisible && this.modalType !== 'delete'){
+    if (changes['isVisible'] && this.isVisible && this.modalType !== 'delete') {
       setTimeout(() => {
         this.focusInputIfNeeded();
-      })
+      });
     }
   }
 
   onSubmit(): void {
-    if(this.payConditionForm.invalid || this.isLoading) return
+    if (this.payConditionForm.invalid || this.isLoading) return;
 
     this.isLoading = true;
-    const newPayCondition: Omit<PayCondition, 'id' | 'createdAt'| 'updatedAt' | 'version'> = {
+    const newPayCondition: Omit<PayCondition, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       name: this.payConditionForm.value.name?.trim() ?? '',
       deadline: this.payConditionForm.value.deadline ?? 0,
       text: this.payConditionForm.value.text?.trim() ?? ''
-    }
+    };
 
     this.payConditionUtils.addPayCondition(newPayCondition).subscribe({
       next: (created) => {
@@ -64,30 +64,38 @@ export class ModalTermsPaymentComponent implements OnChanges {
     });
   }
 
-  confirmDelete(): void {
-    this.isLoading = true;
-    this.payConditionUtils.deletePayCondition(this.termPayment.id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.closeModal();
-        this.deletePayCondition.emit({ status: 'success' });
-      },
-      error: (error) => {
-        this.isLoading = false;
-        if (error instanceof OccError || error?.message.includes('404')) {
-          this.showOCCErrorModalTermsOfPayment = true;
-          this.occErrorTermsOfPaymentType = 'DELETE_UNEXISTED';
-          this.deletePayCondition.emit({ status: 'error', error });
-        }
-        const errorTermsPaymentMessage = error.error.message ?? '';
-        if (errorTermsPaymentMessage.includes('foreign key constraint fails')) {
-          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorTermsPaymentMessage);
-          return;
-        }
+confirmDelete(): void {
+  this.isLoading = true;
+
+  this.payConditionUtils.deletePayCondition(this.termPayment.id).subscribe({
+    next: () => {
+      this.isLoading = false;
+      this.closeModal();
+      this.deletePayCondition.emit({ status: 'success' });
+    },
+    error: (error) => {
+      this.isLoading = false;
+
+      const errorMessage = error?.error?.message ?? '';
+
+      if (error instanceof OccError || error?.message.includes('404')) {
+        this.showOCCErrorModalTermsOfPayment = true;
+        this.occErrorTermsOfPaymentType = 'DELETE_UNEXISTED';
         this.deletePayCondition.emit({ status: 'error', error });
+        return; 
       }
-    });
-  }
+
+      if (errorMessage.includes('foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorMessage);
+        this.isVisibleModal.emit(false);
+        this.deletePayCondition.emit({ status: 'error', error });
+        return;
+      }
+      this.deletePayCondition.emit({ status: 'error', error });
+    }
+  });
+}
+
 
   public closeModal(): void {
     this.isVisibleModal.emit(false);
