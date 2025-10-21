@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, map, of, switchMap, take, throwError } from "rxjs";
+import { Observable, catchError, map, switchMap, take, throwError } from "rxjs";
 import { Role } from "../../../../../Entities/role";
 import { RoleService } from "../../../../../Services/role.service";
 import { createNotFoundUpdateError, createUpdateConflictError } from "../../../../shared/utils/occ-error";
@@ -59,21 +59,7 @@ export class RoleUtils {
     }
     //Delete a approvalStatus by Id
     deleteRole(id: number): Observable<void> {
-        return this.checkApprovalStatusUsage(id).pipe(
-            switchMap((isUsed: boolean): Observable<void> =>
-                isUsed
-                    ? throwError(() => new Error('Cannot delete register: it is in use by other entities'))
-                    : this.roleService.deleteRole(id)
-            ),
-            catchError(error => {
-                return throwError(() => error);
-            })
-        )
-    }
-
-    private checkApprovalStatusUsage(idRole: number): Observable<boolean> {
-        // For now, no use has been verified in any entity.
-        return of(false);
+        return this.roleService.deleteRole(id);
     }
 
     //Update a approvalStatus by ID and updates the internal approvalStatus signal
