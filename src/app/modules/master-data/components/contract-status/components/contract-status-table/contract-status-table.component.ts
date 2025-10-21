@@ -26,7 +26,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   });
   contractStatusColumns: any[] = [];
   userContractStatusPreferences: UserPreference = {};
-  tableKey: string = 'ContractStatus'
+  tableKey: string = 'ContractStatus';
   dataKeys = ['status'];
   visibleContractStatusModal: boolean = false;
   modalContractStatusType: 'create' | 'delete' = 'create';
@@ -42,10 +42,12 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
 
   private langContractStatusSubscription!: Subscription;
 
-  constructor(private readonly router: Router,
-              private readonly userPreferenceService: UserPreferenceService, 
-              private readonly translate: TranslateService,
-              private readonly commonMessageService: CommonMessagesService ) { }
+  constructor(
+    private readonly router: Router,
+    private readonly userPreferenceService: UserPreferenceService, 
+    private readonly translate: TranslateService,
+    private readonly commonMessageService: CommonMessagesService
+  ) { }
 
   ngOnInit() {
     this.contractStatusUtils.loadInitialData().subscribe();
@@ -74,43 +76,47 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
     this.contractStatusUtils.addContractStatus(contractStatus).subscribe({
       next: () => {
         this.loadCreateDelete = false;
-        this.commonMessageService.showCreatedSuccesfullMessage()
+        this.commonMessageService.showCreatedSuccesfullMessage();
       },
-      error: (err) => {
+      error: () => {
         this.loadCreateDelete = false;
         this.commonMessageService.showErrorCreatedMessage();
       }
-    })
+    });
   }
 
   onContractStatusDeleted(contractStatus: any) {
-    this.loadCreateDelete = true;
-    this.contractStatusUtils.deleteContractStatus(contractStatus.id).subscribe({
-      next: () => {
-        this.loadCreateDelete = false;
-        this.contractStatusToEdit.emit(null);
-        this.commonMessageService.showDeleteSucessfullMessage()
-        this.visibleContractStatusModal = false;
-      },
-      error: (err) => {
-        this.loadCreateDelete = false;
-        
-        if (err instanceof OccError) {
-          this.showOCCErrorModalDelete = true;
-          this.occErrorDeleteType = err.errorType;
-          this.commonMessageService.showErrorDeleteMessage();
-        } else {
-          const errorAbscenceTypeMessage = err.error.message ?? '';
-          if (errorAbscenceTypeMessage.includes('foreign key constraint fails')) {
-            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorAbscenceTypeMessage);
-          } else {
-            this.commonMessageService.showErrorDeleteMessage();
-          }
-        }
-        this.visibleContractStatusModal = false;
+  this.loadCreateDelete = true;
+  if (!contractStatus?.id) return;
+
+  this.contractStatusUtils.deleteContractStatus(contractStatus.id).subscribe({
+    next: () => {
+      this.loadCreateDelete = false;
+      this.contractStatusToEdit.emit(null);
+      this.commonMessageService.showDeleteSucessfullMessage();
+      this.visibleContractStatusModal = false;
+    },
+    error: (error) => {
+      this.loadCreateDelete = false;
+
+      if (error instanceof OccError || error?.message.includes('404')) {
+        this.showOCCErrorModalDelete = true;
+        this.occErrorDeleteType = 'DELETE_UNEXISTED';
       }
-    })
-  }
+
+      const errorMessage = error.error?.message ?? '';
+      if (errorMessage.includes('foreign key constraint fails')) {
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorMessage);
+        this.visibleContractStatusModal = false;
+        return;
+      }
+
+      this.commonMessageService.showErrorDeleteMessage();
+      this.visibleContractStatusModal = false;
+    }
+  });
+}
+
 
   selectContractStatusToEdit(contractStatus: any) {
     this.contractStatusToEdit.emit(contractStatus);
@@ -124,11 +130,11 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
         this.contractStatusToEdit.emit(null);
         this.commonMessageService.showEditSucessfullMessage();
       },
-      error: (err) => {
+      error: () => {
         this.loadEdit.emit(false);
         this.commonMessageService.showErrorEditMessage();
       }
-    })
+    });
   }
 
   onUserContractStatusPreferencesChanges(userContractStatusPreferences: any) {
@@ -136,7 +142,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
   }
 
   loadContractStatusHeadersAndColumns() {
-    this.contractStatusColumns = this.loadContractStatusHeaders();;
+    this.contractStatusColumns = this.loadContractStatusHeaders();
   }
 
   loadContractStatusHeaders(): any[] {
@@ -150,7 +156,7 @@ export class ContractStatusTableComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     if (this.langContractStatusSubscription) {
       this.langContractStatusSubscription.unsubscribe();
     }
