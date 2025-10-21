@@ -165,7 +165,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy {
       },
       { field: 'date', type: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE')) },
       { field: 'description', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION')) },
-      { field: 'type', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE')) },
+      { field: 'type.name', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE')) },
       { field: 'iwsNumber', header: this.translate.instant(_('INVOICES.TABLE.NETWORK')) },
       { field: 'orderNumber', customClasses: ['align-right', 'date-font-style'], header: this.translate.instant(_('INVOICES.TABLE.ORDER_NUMBER')) },
       { field: 'orderName', header: this.translate.instant(_('INVOICES.TABLE.ORDER_TITLE')) },
