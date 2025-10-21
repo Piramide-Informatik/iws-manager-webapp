@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, of } from 'rxjs';
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { InvoiceType } from '../../../../../Entities/invoiceType';
 import { InvoiceTypeService } from '../../../../../Services/invoice-type.service';
@@ -71,32 +71,7 @@ export class InvoiceTypeUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteInvoiceType(id: number): Observable<void> {
-    return this.checkInvoiceTypeUsage(id).pipe(
-      switchMap(isUsed => {
-        if (isUsed) {
-          return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-        }
-        return this.invoiceTypeService.deleteInvoiceType(id);
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Checks if a invoice type is used by any invoice.
-   * @param idInvoiceType - ID of the invoice type to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkInvoiceTypeUsage(idInvoiceType: number): Observable<boolean> {
-    return this.invoiceUtils.getAllInvoices().pipe(
-      map(invoices => invoices.some(invoice => invoice.invoiceType?.id === idInvoiceType)),
-      catchError(err => {
-        console.error('Error checking invoice type usage:', err);
-        return of(false);
-      })
-    );
+    return this.invoiceTypeService.deleteInvoiceType(id);
   }
 
   /**

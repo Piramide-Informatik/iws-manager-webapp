@@ -17,8 +17,8 @@ export class ModalBillingMethodsComponent implements OnChanges {
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() createInvoiceType = new EventEmitter<{created?: InvoiceType, status: 'success' | 'error'}>();
-  @Output() deleteInvoiceType = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createInvoiceType = new EventEmitter<{ created?: InvoiceType, status: 'success' | 'error' }>();
+  @Output() deleteInvoiceType = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
@@ -29,10 +29,10 @@ export class ModalBillingMethodsComponent implements OnChanges {
   public showOCCErrorModalBillingMethod = false;
   public occErrorBillingMethodType: OccErrorType = 'UPDATE_UNEXISTED';
 
-  constructor(private readonly commonMessageService: CommonMessagesService) {}
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.visible){
+    if (changes['visible'] && this.visible) {
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
@@ -40,7 +40,7 @@ export class ModalBillingMethodsComponent implements OnChanges {
   }
 
   public onSubmit(): void {
-    if(this.invoiceTypeForm.invalid || this.isLoading) return
+    if (this.invoiceTypeForm.invalid || this.isLoading) return
 
     this.isLoading = true;
     const newInvoiceType: Omit<InvoiceType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
@@ -51,11 +51,11 @@ export class ModalBillingMethodsComponent implements OnChanges {
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.createInvoiceType.emit({created, status: 'success'})
+        this.createInvoiceType.emit({ created, status: 'success' })
       },
       error: () => {
         this.isLoading = false;
-        this.createInvoiceType.emit({status: 'error'})
+        this.createInvoiceType.emit({ status: 'error' })
       }
     })
   }
@@ -67,7 +67,7 @@ export class ModalBillingMethodsComponent implements OnChanges {
         next: () => {
           this.isLoading = false;
           this.closeModal();
-          this.deleteInvoiceType.emit({status: 'success'});
+          this.deleteInvoiceType.emit({ status: 'success' });
         },
         error: (error) => {
           this.isLoading = false;
@@ -78,6 +78,7 @@ export class ModalBillingMethodsComponent implements OnChanges {
           const errorInvoiceTypeMessage = error.error.message ?? '';
           if (errorInvoiceTypeMessage.includes('foreign key constraint fails')) {
             this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorInvoiceTypeMessage);
+            this.isVisibleModal.emit(false);
             return;
           }
           this.deleteInvoiceType.emit({ status: 'error', error: error });
