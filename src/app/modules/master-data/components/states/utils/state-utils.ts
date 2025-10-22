@@ -1,18 +1,16 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
 import { StateService } from '../../../../../Services/state.service';
 import { State } from '../../../../../Entities/state';
-import { CustomerUtils } from '../../../../customer/utils/customer-utils';
-import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError} from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for state-related business logic and operations.
  * Works with StateService's reactive signals while providing additional functionality.
  */
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 export class StateUtils {
   private readonly stateService = inject(StateService);
-  private readonly customerUtils = inject(CustomerUtils)
 
   loadInitialData(): Observable<State[]> {
     return this.stateService.loadInitialData();
@@ -47,7 +45,7 @@ export class StateUtils {
     }
 
     return this.stateService.addState({
-        name: nameState.trim()
+      name: nameState.trim()
     });
   }
 
@@ -58,9 +56,7 @@ export class StateUtils {
    */
   stateExists(name: string): Observable<boolean> {
     return this.stateService.getAllStates().pipe(
-      map(states => states.some(
-        s => s.name.toLowerCase() === name.toLowerCase()
-      )),
+      switchMap(states => [states.some(s => s.name.toLowerCase() === name.toLowerCase())]),
       catchError(err => {
         console.error('Error checking state existence:', err);
         return throwError(() => new Error('Failed to check state existence'));
@@ -74,7 +70,7 @@ export class StateUtils {
    */
   getStatesSortedByName(): Observable<State[]> {
     return this.stateService.getAllStates().pipe(
-      map(states => [...states].sort((a, b) => a.name.localeCompare(b.name))),
+      switchMap(states => [[...states].sort((a, b) => a.name.localeCompare(b.name))]),
       catchError(err => {
         console.error('Error sorting states:', err);
         return throwError(() => new Error('Failed to sort states'));
@@ -94,48 +90,10 @@ export class StateUtils {
     });
   }
 
-  /**
-   * Deletes a state by ID and updates the internal states signal.
-   * @param id - ID of the state to delete
-   * @returns Observable that completes when the deletion is done
-   */
   deleteState(id: number): Observable<void> {
-    return this.getStateById(id).pipe(
-      switchMap((currentState) => {
-        if (!currentState) {
-          return throwError(() => createNotFoundDeleteError('State'));
-        }
-        return this.stateService.deleteState(id);
-      }),
-      catchError(error => {
-        if (error.name === 'OccError') {
-          return throwError(() => error);
-        }
-        if (error.status === 404) {
-          return throwError(() => createNotFoundDeleteError('State'));
-        }
-        return throwError(() => error);
-      })
-    );
+    return this.stateService.deleteState(id);
   }
 
-  /**
-   * Checks if a state is used by any customer.
-   * @param id - ID of the state to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkStateUsage(id: number): Observable<boolean> {
-    return this.customerUtils.getAllCustomers().pipe(
-      map(customers => customers.some(customer => customer.state?.id === id)),
-      catchError(() => of(false))
-    );
-  }
-
-  /**
-   * Updates a state by ID and updates the internal states signal.
-   * @param state - State object to update
-   * @returns Observable that completes when the update is done
-   */
   updateState(state: State): Observable<State> {
     if (!state?.id) {
       return throwError(() => new Error('Invalid state data'));
@@ -151,6 +109,10 @@ export class StateUtils {
           return throwError(() => createUpdateConflictError('State'));
         }
         return this.stateService.updateState(state);
+      }),
+      catchError((err) => {
+        console.error('Error updating state:', err);
+        return throwError(() => err);
       })
     );
   }
