@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
 import { StateService } from '../../../../../Services/state.service';
 import { State } from '../../../../../Entities/state';
-import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError } from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
  * Utility class for state-related business logic and operations.
