@@ -82,11 +82,9 @@ export class RolModalComponent implements OnInit {
         this.handleDeleteError(error);
         this.errorMessage = error.error.message ?? 'a foreign key constraint fails';
         if (this.errorMessage?.includes('foreign key constraint fails')) {
-          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(this.errorMessage!);
+          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(this.errorMessage);
           this.closeAndReset();
-          return;
         }
-        console.error('Delete error:', error);
       }
     });
     this.subscriptions.add(sub);
