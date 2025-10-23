@@ -1,12 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import {
-  Observable,
-  catchError,
-  take,
-  throwError,
-  switchMap,
-  of,
-} from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { IwsCommissionService } from '../../../../../Services/iws-commission.service';
 import { IwsCommission } from '../../../../../Entities/iws-commission ';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -54,27 +47,9 @@ export class IwsCommissionUtils {
   }
   //Delete a IwsCommission by ID after checking if it's used by any entity
   deleteIwsCommission(id: number): Observable<void> {
-    return this.checkIwsCommissionUsage(id).pipe(
-      switchMap((isUsed) => {
-        if (isUsed) {
-          return throwError(
-            () =>
-              new Error(
-                'Cannot delete register: it is in use by other entities'
-              )
-          );
-        }
-        return this.iwsCommissionService.deleteIwsCommission(id);
-      }),
-      catchError((error) => {
-        return throwError(() => error);
-      })
-    );
+    return this.iwsCommissionService.deleteIwsCommission(id);
   }
-  //Checks if a IwsCommission is used by any entity
-  private checkIwsCommissionUsage(idIwsCommission: number): Observable<boolean> {
-    return of(false);
-  }
+
   //Update a IwsCommission by ID and updates the internal IwsCommission signal
   updateIwsCommission(iwsCommission: IwsCommission): Observable<IwsCommission> {
     if (!iwsCommission?.id) {
