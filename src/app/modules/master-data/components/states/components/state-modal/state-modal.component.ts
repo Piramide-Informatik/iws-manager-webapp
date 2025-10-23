@@ -67,48 +67,52 @@ export class StateModalComponent implements OnInit, OnChanges {
   }
 
   onStateDeleteConfirm(): void {
-    this.isStateLoading = true;
-    if(this.stateToDelete){
-      this.stateUtils.deleteState(this.stateToDelete).subscribe({
-        next: () => {
-          this.isStateLoading = false;
-          this.stateStateService.setStateToEdit(null);
-          this.confirmStateDelete.emit({
-            severity: 'success',
-            summary: 'MESSAGE.SUCCESS',
-            detail: 'MESSAGE.DELETE_SUCCESS'
-          }); 
-          this.closeStateModal();
-        },
-        error: (error) => {
-          this.isStateLoading = false;
-          if (error instanceof OccError) { 
-            this.showOCCErrorModalState = true;
-            this.occErrorStateType = error.errorType;
-            this.commonMessageService.showErrorDeleteMessage(); 
-          } else if (error?.message.includes('404')) {
-            this.showOCCErrorModalState = true;
-            this.occErrorStateType = 'DELETE_UNEXISTED';
-            this.commonMessageService.showErrorDeleteMessage(); 
-          } else {
-            const errorStateMessage = error.error.message ?? '';
-            if (errorStateMessage.includes('foreign key constraint fails')) {
-              this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorStateMessage);
-            } else {
-              this.errorStateMessage = error.message ?? 'Failed to delete state';
-              console.error('Delete error:', error);
-              this.confirmStateDelete.emit({
-                severity: 'error',
-                summary: 'MESSAGE.ERROR',
-                detail: this.errorStateMessage?.includes('it is in use by other entities') ? 'MESSAGE.DELETE_ERROR_IN_USE' : 'MESSAGE.DELETE_FAILED'
-              });
-            }
-            this.closeStateModal();
+  this.isStateLoading = true;
+  if (this.stateToDelete) {
+    this.stateUtils.deleteState(this.stateToDelete).subscribe({
+      next: () => {
+        this.isStateLoading = false;
+        this.stateStateService.setStateToEdit(null);
+        this.confirmStateDelete.emit({
+          severity: 'success',
+          summary: 'MESSAGE.SUCCESS',
+          detail: 'MESSAGE.DELETE_SUCCESS'
+        });
+        this.closeStateModal();
+      },
+      error: (error) => {
+        this.isStateLoading = false;
+        if (error instanceof OccError) {
+          this.showOCCErrorModalState = true;
+          this.occErrorStateType = error.errorType;
+          this.commonMessageService.showErrorDeleteMessage();
+        } else if (error?.message.includes('404')) {
+          this.showOCCErrorModalState = true;
+          this.occErrorStateType = 'DELETE_UNEXISTED';
+          this.commonMessageService.showErrorDeleteMessage();
+        } else {
+          const errorStateMessage = error.error.message ?? '';
+          if (errorStateMessage.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorStateMessage);
+            this.isVisibleModalChange.emit(false);
+            return;
           }
+          this.errorStateMessage = error.message ?? 'Failed to delete state';
+          console.error('Delete error:', error);
+          this.confirmStateDelete.emit({
+            severity: 'error',
+            summary: 'MESSAGE.ERROR',
+            detail: this.errorStateMessage?.includes('it is in use by other entities')
+              ? 'MESSAGE.DELETE_ERROR_IN_USE'
+              : 'MESSAGE.DELETE_FAILED'
+          });
+          this.closeStateModal();
         }
-      });
-    }
+      }
+    });
   }
+}
+
   public onRefresh(): void {
     if (this.stateToDelete) {
       localStorage.setItem('selectedStateId', this.stateToDelete.toString());
