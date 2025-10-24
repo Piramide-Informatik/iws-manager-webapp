@@ -334,7 +334,7 @@
       "SALUTATION": "Anrede",
       "TITLE": "Titel",
       "FUNCTION": "Funktion",
-      "EMAIL_ADDRESS": "Mailadresse"
+      "EMAIL_ADDRESS": "E-Mail"
     },
     "LABELS": {
       "TITLE_DIALOG_CREATE": "Neuer Ansprechpartner",
