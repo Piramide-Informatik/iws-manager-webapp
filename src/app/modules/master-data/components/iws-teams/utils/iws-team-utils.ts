@@ -5,7 +5,6 @@ import {
     take,
     throwError,
     switchMap,
-    of,
 } from 'rxjs';
 import { TeamIws } from '../../../../../Entities/teamIWS';
 import { TeamIwsService } from '../../../../../Services/team-iws.service';
@@ -50,27 +49,9 @@ export class TeamIwsUtils {
     }
     //Delete a TeamIws by ID after checking if it's used by any entity
     deleteTeamIws(id: number): Observable<void> {
-        return this.checkTeamIwsUsage(id).pipe(
-            switchMap((isUsed) => {
-                if (isUsed) {
-                    return throwError(
-                        () =>
-                            new Error(
-                                'Cannot delete register: it is in use by other entities'
-                            )
-                    );
-                }
-                return this.teamIwsService.deleteTeamIws(id);
-            }),
-            catchError((error) => {
-                return throwError(() => error);
-            })
-        );
+        return this.teamIwsService.deleteTeamIws(id);
     }
-    //Checks if a TeamIws is used by any entity
-    private checkTeamIwsUsage(idIwsCommission: number): Observable<boolean> {
-        return of(false);
-    }
+
     //Update a TeamIws by ID and updates the internal TeamIws signal
     updateTeamIws(teamIws: TeamIws): Observable<TeamIws> {
         if (!teamIws?.id) {

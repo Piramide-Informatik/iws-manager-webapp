@@ -8,7 +8,6 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { TeamIwsService } from '../../../../../../Services/team-iws.service';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
 import { TeamIws } from '../../../../../../Entities/teamIWS';
-import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { TeamIwsStateService } from '../../utils/iws-team-state.service';
 import { IwsTeamsModalComponent } from '../iws-teams-modal/iws-teams-modal.component';
@@ -24,7 +23,6 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   private readonly teamIwsService = inject(TeamIwsService);
   private readonly teamIwsUtils = new TeamIwsUtils();
-  private readonly messageService = inject(MessageService);
   visibleModal: boolean = false;
   modalType: 'create' | 'delete' = 'create';
   selectedTeamIws: number | null = null;
@@ -135,25 +133,25 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  toastMessageDisplay(message: {
-    severity: string;
-    summary: string;
-    detail: string;
+  toastMessageDisplay(event: {
+    status: 'success' | 'error';
+    operation: 'create' | 'delete';
+    error?: any;
   }): void {
-    console.log("TOAST MESSAGE", message);
-    switch (message.detail) {
-      case 'MESSAGE.CREATE_SUCCESS':
-        this.commonMessageService.showCreatedSuccesfullMessage();        
-        break;
-      case 'MESSAGE.CREATE_FAILED':
-        this.commonMessageService.showErrorCreatedMessage();        
-        break;
-      case 'MESSAGE.DELETE_SUCCESS':
-        this.commonMessageService.showDeleteSucessfullMessage();        
-        break;
-      case 'MESSAGE.DELETE_FAILED':
-        this.commonMessageService.showErrorDeleteMessage();        
-        break;
+    if(event.status === 'success'){
+      if(event.operation === 'create'){
+        this.commonMessageService.showCreatedSuccesfullMessage();
+      }else{
+        this.commonMessageService.showDeleteSucessfullMessage();
+      }
+    }else if(event.status === 'error'){
+      if(event.operation === 'create'){
+        this.commonMessageService.showErrorCreatedMessage();
+      }else if(event.operation === 'delete' && event.error.error.message.includes('foreign key constraint')){
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
+      }else {
+        this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 

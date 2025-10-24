@@ -822,7 +822,7 @@
     },
     "DELETE": {
       "CONFIRMATION": "Feiertag löschen",
-      "CONFIRM_QUESTION": "Möchten Sie den Feiertag wirklich löschen? "
+      "CONFIRM_QUESTION": "Möchten Sie den Feiertag wirklich löschen "
     },
     "ERROR": {
       "ALREADY_EXIST": "Der Datensatz existiert bereits",
