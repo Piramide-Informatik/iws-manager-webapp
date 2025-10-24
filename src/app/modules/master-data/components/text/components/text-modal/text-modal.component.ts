@@ -1,62 +1,83 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { Text } from '../../../../../../Entities/text';
 import { TextUtils } from '../../utils/text-utils';
 import { FormControl, FormGroup } from '@angular/forms';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { TextStateService } from '../../utils/text-state.service';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-text-modal',
   standalone: false,
   templateUrl: './text-modal.component.html',
-  styleUrl: './text-modal.component.scss'
+  styleUrl: './text-modal.component.scss',
 })
 export class TextModalComponent implements OnChanges {
   private readonly textUtils = inject(TextUtils);
   private readonly textStateService = inject(TextStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
+
   @Input() visible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedText!: Text;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() createText = new EventEmitter<{created?: Text, status: 'success' | 'error'}>();
-  @Output() deleteText = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createText = new EventEmitter<{
+    created?: Text;
+    status: 'success' | 'error';
+  }>();
+  @Output() deleteText = new EventEmitter<{
+    status: 'success' | 'error';
+    error?: Error;
+  }>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalText = false;
+
   public readonly textForm = new FormGroup({
     label: new FormControl(''),
-    content: new FormControl('')
+    content: new FormControl(''),
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.modalType === 'create'){
+    if (changes['visible'] && this.modalType === 'create') {
       setTimeout(() => {
         this.focusInputIfNeeded();
-      })
+      });
     }
   }
 
   onSubmit(): void {
-    if(this.textForm.invalid || this.isLoading) return 
-    
+    if (this.textForm.invalid || this.isLoading) return;
+
     this.isLoading = true;
     const newText: Omit<Text, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       label: this.textForm.value.label?.trim() ?? '',
-      content: this.textForm.value.content?.trim() ?? ''
-    }
+      content: this.textForm.value.content?.trim() ?? '',
+    };
 
     this.textUtils.addText(newText).subscribe({
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
-        this.createText.emit({created, status: 'success'});
+        this.createText.emit({ created, status: 'success' });
       },
       error: () => {
         this.isLoading = false;
         this.createText.emit({ status: 'error' });
-      } 
-    })
+      },
+    });
   }
 
   deleteSelectedText() {
@@ -67,22 +88,28 @@ export class TextModalComponent implements OnChanges {
           this.isLoading = false;
           this.textStateService.clearText();
           this.closeModal();
-          this.deleteText.emit({status: 'success'});
+          this.deleteText.emit({ status: 'success' });
         },
-        error: (errorResponse) => {
+        error: (error) => {
           this.isLoading = false;
-          this.handleDeleteError(errorResponse);
-          this.deleteText.emit({ status: 'error', error: errorResponse });
-        }
-      })
-    }
-  }
 
-  handleDeleteError(error: Error) {
-    console.error('Error deleting text:', error);
-    if (error instanceof OccError || error?.message.includes('404')) {
-      this.showOCCErrorModalText = true;
-      this.occErrorType = 'DELETE_UNEXISTED';
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalText = true;
+            this.occErrorType = 'DELETE_UNEXISTED';
+          }
+
+          const errorTextMessage = error.error?.message ?? '';
+          if (errorTextMessage.includes('foreign key constraint fails')) {
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(
+              errorTextMessage
+            );
+            this.isVisibleModal.emit(false);
+            return;
+          }
+
+          this.deleteText.emit({ status: 'error', error });
+        },
+      });
     }
   }
 
