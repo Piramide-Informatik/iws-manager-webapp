@@ -108,6 +108,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
               const errorHolidayMessage = error.error.message ?? '';
               if (errorHolidayMessage.includes('foreign key constraint fails')) {
                 this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorHolidayMessage);
+                this.isVisibleModel.emit(false); 
               } else {
                 this.errorMessage = error.message ?? 'Failed to delete publicHoliday';
                 this.toastMessage.emit({
