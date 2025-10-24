@@ -339,7 +339,7 @@
     "LABELS": {
       "TITLE_DIALOG_CREATE": "Neuer Ansprechpartner",
       "TITLE_DIALOG_EDIT": "Ansprechpartner bearbeiten",
-      "TITLE_DIALOG_DELETE": "Ansprechpartner Löschen",
+      "TITLE_DIALOG_DELETE": "Ansprechpartner löschen",
       "CONFIRM_QUESTION_DELETE": "Sind Sie sicher, dass Sie den Ansprechpartner löschen möchten: ",
       "INVOICE": "Rechnungsempfänger",
       "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
