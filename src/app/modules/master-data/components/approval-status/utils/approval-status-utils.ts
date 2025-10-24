@@ -1,8 +1,8 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, take, throwError, switchMap, of, map } from "rxjs";
+import { Observable, catchError, take, throwError, switchMap, map } from "rxjs";
 import { ApprovalStatus } from "../../../../../Entities/approvalStatus";
 import { ApprovalStatusService } from "../../../../../Services/approval-status.service";
-import { createNotFoundUpdateError, createUpdateConflictError, createNotFoundDeleteError } from "../../../../shared/utils/occ-error";
+import { createNotFoundUpdateError, createUpdateConflictError} from "../../../../shared/utils/occ-error";
 
 @Injectable({ providedIn: 'root' })
 export class ApprovalStatusUtils {
