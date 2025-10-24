@@ -105,7 +105,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     return this.contactPersons()
       .map(contact => ({
         id: contact.id,
-        name: `${contact.lastName} ${contact.firstName}`,
+        name: `${contact.lastName}, ${contact.firstName}`,
         function: contact.function ?? '',
         right: contact.forInvoicing
       }));
@@ -264,11 +264,12 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       {
         field: 'name',
         header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.NAME')),
-        styles: { width: 'fit-content' },
+        classesTHead: ['width-40'],
         useSameAsEdit: true
       },
       {
         field: 'function',
+        classesTHead: ['width-40'],
         header: this.translate.instant(_('CUSTOMERS.CONTACT_TABLE.FUNCTION'))
       },
       {
