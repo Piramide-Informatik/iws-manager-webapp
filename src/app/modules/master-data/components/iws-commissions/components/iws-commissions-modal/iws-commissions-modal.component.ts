@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { IwsCommission } from '../../../../../../Entities/iws-commission ';
 import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-iws-commissions-modal',
@@ -26,7 +27,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
 
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() iwsCommissionCreated = new EventEmitter<{status: 'success' | 'error'}>();
-  @Output() iwsCommissionDeleted = new EventEmitter<{status: 'success' | 'error'}>();
+  @Output() iwsCommissionDeleted = new EventEmitter<{status: 'success' | 'error' | 'related entity', message?: string}>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
     summary: string;
@@ -40,7 +41,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
 
   readonly createIwsCommissionForm = new FormGroup({
     fromOrderValue: new FormControl(null),
-    commission: new FormControl(null, [Validators.max(100.00)]),
+    commission: new FormControl(null, [Validators.max(100)]),
     minCommission: new FormControl(null),
   });
 
@@ -94,9 +95,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
           this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS')
         },
         error: (error) => {
-          this.iwsCommissionDeleted.emit({status: 'error'});
           this.handleDeleteError(error)
-          this.handleErrorWithToast(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE');
         }
       });
 
@@ -107,6 +106,11 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
     if (error instanceof OccError || error?.message.includes('404')) {
       this.showOCCErrorModalIwsCommission = true;
       this.occErrorType = 'DELETE_UNEXISTED';
+      this.iwsCommissionDeleted.emit({status: 'error'});
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+      this.iwsCommissionDeleted.emit({status: 'related entity', message: error.error.message});
+    } else {
+      this.iwsCommissionDeleted.emit({status: 'error'});
     }
   }
 

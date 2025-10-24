@@ -5,7 +5,6 @@ import {
   take,
   throwError,
   switchMap,
-  of,
 } from 'rxjs';
 import { TextService } from '../../../../../Services/text.service';
 import { Text } from '../../../../../Entities/text';
@@ -81,16 +80,12 @@ export class TextUtils {
    * @returns Observable that completes when the deletion is done
    */
   deleteText(id: number): Observable<void> {
-    return this.textService.deleteText(id).pipe(
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.textService.deleteText(id);
   }
 
   /**
    * Updates a text by ID and updates the internal texts signal.
-   * @param id - ID of the text to update
+   * @param text - Text to update
    * @returns Observable that completes when the update is done
    */
   updateText(text: Text): Observable<Text> {
