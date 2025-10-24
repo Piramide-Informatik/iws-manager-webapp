@@ -183,6 +183,8 @@ export class ModalApprovalStatusComponent
     const errorApprovalStatusMessage = error.error.message ?? '';  
     if (errorApprovalStatusMessage.includes('foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorApprovalStatusMessage);
+      this.isVisibleModal.emit(false);
+      return;
     } else {
       this.emitToast('error', detail);
     }
