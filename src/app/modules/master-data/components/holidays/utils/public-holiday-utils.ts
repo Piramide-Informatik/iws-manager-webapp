@@ -1,5 +1,5 @@
 import {Injectable, inject} from '@angular/core';
-import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
+import {Observable, catchError, map, take, throwError, switchMap} from 'rxjs';
 import { PublicHoliday } from '../../../../../Entities/publicholiday';
 import { PublicHolidayService } from '../../../../../Services/public-holiday.service';
 import { createNotFoundUpdateError, createUpdateConflictError} from '../../../../shared/utils/occ-error';
@@ -90,12 +90,6 @@ export class PublicHolidayUtils {
 
     deletePublicHoliday(id: number): Observable<void> {
         return this.publicHolidayService.deletePublicHoliday(id);
-    }
-
-    //Checks if a publicHolidays is used by any entity
-    private checkPublicHolidayUsage(idPublicHoliday: number): Observable<boolean> {
-        // For now, no use has been verified in any entity.
-        return of(false);
     }
 
     //Update a projectStatus by ID and updates the internal projectStatus signal
