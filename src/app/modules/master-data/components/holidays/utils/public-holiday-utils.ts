@@ -2,11 +2,7 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
 import { PublicHoliday } from '../../../../../Entities/publicholiday';
 import { PublicHolidayService } from '../../../../../Services/public-holiday.service';
-import { 
-    createNotFoundUpdateError, 
-    createUpdateConflictError, 
-    createNotFoundDeleteError 
-} from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError} from '../../../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 export class PublicHolidayUtils {
@@ -93,31 +89,7 @@ export class PublicHolidayUtils {
     }
 
     deletePublicHoliday(id: number): Observable<void> {
-        return this.getPublicHolidayById(id).pipe(
-            switchMap((currentPublicHoliday) => {
-                if (!currentPublicHoliday) {
-                    return throwError(() => createNotFoundDeleteError('Holiday'));
-                }
-                
-                return this.checkPublicHolidayUsage(id).pipe(
-                    switchMap(isUsed => {
-                        if (isUsed) {
-                            return throwError(() => new Error('Cannot delete register: it is in use by other entities'));
-                        }
-                        return this.publicHolidayService.deletePublicHoliday(id);
-                    })
-                );
-            }),
-            catchError(error => {
-                if (error.name === 'OccError') {
-                    return throwError(() => error);
-                }
-                if (error.status === 404) {
-                    return throwError(() => createNotFoundDeleteError('Holiday'));
-                }
-                return throwError(() => error);
-            })
-        );
+        return this.publicHolidayService.deletePublicHoliday(id);
     }
 
     //Checks if a publicHolidays is used by any entity
