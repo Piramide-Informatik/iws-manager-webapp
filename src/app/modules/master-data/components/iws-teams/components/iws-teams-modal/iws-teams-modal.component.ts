@@ -31,9 +31,8 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() teamIwsName: string | null = null;
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() teamIwsCreated = new EventEmitter<void>();
   @Output() createTeamIws = new EventEmitter<{ status: 'success' | 'error' }>();
-  @Output() toastMessage = new EventEmitter<{ severity: string; summary: string; detail: string }>();
+  @Output() toastMessage = new EventEmitter<{ status: 'success' | 'error'; operation: 'create' | 'delete', error?: any }>();
 
   isLoading = false;
   errorMessage: string | null = null;
@@ -95,12 +94,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.teamIwsToDelete) return;
     this.isLoading = true;
 
-    this.handleRequest(
-      this.teamIwsUtils.deleteTeamIws(this.teamIwsToDelete),
-      'MESSAGE.DELETE_SUCCESS',
-      'MESSAGE.DELETE_FAILED',
-      'MESSAGE.DELETE_ERROR_IN_USE'
-    );
+    this.handleRequest(this.teamIwsUtils.deleteTeamIws(this.teamIwsToDelete), 'delete');
   }
 
   onSubmit(): void {
@@ -109,32 +103,27 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     this.errorMessage = null;
 
     const data = this.getSanitizedTeamIwsValues();
-    this.handleRequest(this.teamIwsUtils.addTeamIws(data), 'MESSAGE.CREATE_SUCCESS', 'MESSAGE.CREATE_FAILED');
+    this.handleRequest(this.teamIwsUtils.addTeamIws(data), 'create');
   }
 
   // ------------------------ Helpers ------------------------
 
-  private handleRequest(
-    request$: Observable<any>,
-    successDetail: string,
-    errorDetail: string,
-    inUseDetail?: string
-  ): void {
+  private handleRequest(request$: Observable<any>, operation: 'create' | 'delete'): void {
     this.addSubscription(
       request$
         .pipe(finalize(() => (this.isLoading = false)))
         .subscribe({
           next: () => {
             this.teamIwsStateService.clearTeamIws();
-            if (successDetail === 'MESSAGE.CREATE_SUCCESS') {
-              this.teamIwsCreated.emit();
+            if (operation === 'create') {
               this.createTeamIws.emit({ status: 'success' });
             }
-            this.showToastAndClose('success', successDetail);
+            this.toastMessage.emit({ status: 'success', operation })
+            this.closeModal();
           },
           error: (error) => {
             this.handleDeleteError(error);
-            this.handleErrorWithToast(error, errorDetail, inUseDetail);
+            this.handleErrorWithToast(error, operation);
           }
         })
     );
@@ -147,32 +136,9 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private showToastAndClose(severity: string, detail: string): void {
-    this.toastMessage.emit({
-      severity,
-      summary: severity === 'success' ? 'MESSAGE.SUCCESS' : 'MESSAGE.ERROR',
-      detail,
-    });
-    this.closeModal();
-  }
+  private handleErrorWithToast(error: any, operation: 'create' | 'delete'): void {
 
-  private handleErrorWithToast(error: any, defaultDetail: string, inUseDetail?: string): void {
-    const errorMessage = error?.message ?? defaultDetail;
-    const detail = errorMessage.includes('it is in use by other entities') ? inUseDetail ?? defaultDetail : this.getErrorDetail(errorMessage);
-
-    this.toastMessage.emit({ severity: 'error', summary: 'MESSAGE.ERROR', detail });
-    console.error('Operation error:', error);
-  }
-
-  private getErrorDetail(code: string): string {
-    switch (code) {
-      case 'TITLE.ERROR.EMPTY':
-        return 'MESSAGE.EMPTY_ERROR';
-      case 'TITLE.ERROR.ALREADY_EXISTS':
-        return 'MESSAGE.RECORD_ALREADY_EXISTS';
-      default:
-        return 'MESSAGE.CREATE_FAILED';
-    }
+    this.toastMessage.emit({ status: 'error', operation , error });
   }
 
   private getSanitizedTeamIwsValues(): Omit<TeamIws, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
