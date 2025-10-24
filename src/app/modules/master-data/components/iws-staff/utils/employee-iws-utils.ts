@@ -1,7 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
-import { OrderUtils } from '../../../../orders/utils/order-utils';
-import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { EmployeeIwsService } from '../../../../../Services/employee-iws.service';
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -13,8 +11,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' })
 export class EmployeeIwsUtils {
   private readonly employeeIwsService = inject(EmployeeIwsService);
-  private readonly orderUtils = inject(OrderUtils);
-  private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
 
   loadInitialData(): Observable<EmployeeIws[]> {
     return this.employeeIwsService.loadInitialData();
@@ -76,26 +72,6 @@ export class EmployeeIwsUtils {
 
   deleteEmployeeIws(id: number): Observable<void> {
     return this.employeeIwsService.deleteEmployeeIws(id)
-  }
-
-  /**
-   * Checks if a employeeIws is used by any order or framework agreement (basic contract).
-   * @param idEmployeeIws - ID of the employeeIws to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkEmployeeIwsUsage(idEmployeeIws: number): Observable<boolean> {
-    return forkJoin([
-      this.orderUtils.getAllOrders().pipe(
-        map(orders => orders.some(order => order.employeeIws?.id === idEmployeeIws)),
-        catchError(() => of(false))
-      ),
-      this.frameworkUtils.getAllFrameworkAgreements().pipe(
-        map(frameworks => frameworks.some(framework => framework.employeeIws?.id === idEmployeeIws)),
-        catchError(() => of(false))
-      )
-    ] as const).pipe(
-      map(([usedInOrders, usedInFrameworks]) => usedInOrders || usedInFrameworks)
-    );
   }
 
   /**
