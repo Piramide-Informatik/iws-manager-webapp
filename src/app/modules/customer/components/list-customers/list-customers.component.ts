@@ -221,7 +221,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       },
       {
         field: 'customername2',
-        minWidth: 110,
+        classesTHead: ['customer_name_line2'],
         header: this.translate.instant(_('CUSTOMERS.TABLE.NAME_LINE_2')),
       },
       {
