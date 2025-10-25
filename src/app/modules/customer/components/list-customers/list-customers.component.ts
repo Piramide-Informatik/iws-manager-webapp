@@ -117,12 +117,12 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
     // Crear arrays con objetos que tienen label y value
     this.countries = [
-      { label: noneLabel, value: '' },
+      { label: noneLabel, value: null },
       ...countries.map(country => ({ label: country.name, value: country.name }))
     ];
 
     this.companyTypes = [
-      { label: noneLabel, value: '' },
+      { label: noneLabel, value: null },
       ...companyTypes.map(companyType => ({ label: companyType.name, value: companyType.name }))
     ];
 
