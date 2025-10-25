@@ -94,7 +94,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       this.countryUtils.getCountriesSortedByName(),
       this.contactPersonService.getAllContactPersons(),
       this.customerUtils.getAllCustomers(),
-      this.companyTypeUtils.getCompanyTypeSortedByName() 
+      this.companyTypeUtils.getCompanyTypeSortedByName()
     ]).subscribe({
       next: ([countries, contacts, customers, companyTypes]) => {
         this.handleInitialDataSuccess(countries, contacts, customers, companyTypes);
@@ -114,18 +114,18 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
     companyTypes: CompanyType[]
   ): void {
     const noneLabel = this.translate.instant(('FILTER.OPTIONS.SELECT_NONE'));
-    
+
     // Crear arrays con objetos que tienen label y value
     this.countries = [
       { label: noneLabel, value: '' },
       ...countries.map(country => ({ label: country.name, value: country.name }))
     ];
-    
+
     this.companyTypes = [
       { label: noneLabel, value: '' },
       ...companyTypes.map(companyType => ({ label: companyType.name, value: companyType.name }))
     ];
-    
+
     this.customers = customers;
     this.initializeContactsMap(contacts);
     this.initializeTableData();
@@ -209,7 +209,8 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
       {
         field: 'customerno',
         classesTHead: ['fix-width'],
-        customClasses: ['align-right','date-font-style'],
+        customClasses: ['align-right', 'date-font-style'],
+        useSameAsEdit: true,
         header: this.translate.instant(_('CUSTOMERS.TABLE.CUSTOMER_ID')),
       },
       {
@@ -297,11 +298,11 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoadingCustomer = false;
           this.visibleCustomerModal = false;
-          if(error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED'){
+          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
             this.showOCCErrorModalCustomer = true;
             this.occErrorType = 'DELETE_UNEXISTED';
             this.commonMessageService.showErrorDeleteMessage();
-          } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+          } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')) {
             this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
           } else {
             this.commonMessageService.showErrorDeleteMessage();
