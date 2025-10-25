@@ -5,7 +5,6 @@ import {
   take,
   throwError,
   switchMap,
-  of,
 } from 'rxjs';
 import { RightRoleService } from '../../../../../Services/rightrole.service';
 import { RightRole } from '../../../../../Entities/rightRole';
@@ -52,27 +51,9 @@ export class RightRoleUtils {
 
   //Delete a RightRole by ID after checking if it's used by any entity
   deleteRightRole(id: number): Observable<void> {
-    return this.checkRightRoleUsage(id).pipe(
-      switchMap((isUsed) => {
-        if (isUsed) {
-          return throwError(
-            () =>
-              new Error(
-                'Cannot delete register: it is in use by other entities'
-              )
-          );
-        }
-        return this.rightRoleService.deleteRightRole(id);
-      }),
-      catchError((error) => {
-        return throwError(() => error);
-      })
-    );
+    return this.rightRoleService.deleteRightRole(id);
   }
-  //Checks if a RightRole is used by any entity
-  private checkRightRoleUsage(idRightRole: number): Observable<boolean> {
-    return of(false);
-  }
+ 
   //Update a RightRole by ID and updates the internal RightRole signal
   updateRightRole(rightRole: RightRole): Observable<RightRole> {
     if (!rightRole?.id) {

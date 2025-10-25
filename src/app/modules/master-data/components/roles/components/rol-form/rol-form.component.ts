@@ -9,7 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { RoleStateService } from '../../utils/role-state.service';
 
 import { Rol } from '../../../../../../Entities/rol';
-import { RolesService } from '../../services/roles.service';
 import { SystemModule } from '../../../../../../Entities/systemModule';
 import { ModuleUtils } from '../../utils/system-module-utils';
 import { SystemFunctionWithRights } from '../../../../../../Entities/systemFunctionWithRights';
@@ -45,7 +44,6 @@ export class RolFormComponent implements OnInit, OnDestroy {
   cols!: Column[];
 
   constructor(
-    private readonly rolService: RolesService,
     private readonly roleUtils: RoleUtils,
     private readonly roleStateService: RoleStateService,
     private readonly messageService: MessageService,
@@ -185,7 +183,6 @@ export class RolFormComponent implements OnInit, OnDestroy {
   }
 
   private handleSaveError(error: any): void {
-    console.error('Error saving approval status:', error);
     this.messageService.add({
       severity: 'error',
       summary: this.translate.instant('MESSAGE.ERROR'),
