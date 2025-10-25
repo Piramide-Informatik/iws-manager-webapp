@@ -1,9 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, forkJoin, of } from 'rxjs';
+import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
 import { Title } from '../../../../../Entities/title';
 import { TitleService } from '../../../../../Services/title.service';
-import { CustomerUtils } from '../../../../customer/utils/customer-utils';
-import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
@@ -13,8 +11,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' })
 export class TitleUtils {
   private readonly titleService = inject(TitleService);
-  private readonly customerUtils = inject(CustomerUtils);
-  private readonly employeeUtils = inject(EmployeeUtils);
 
   loadInitialData(): Observable<Title[]> {
     return this.titleService.loadInitialData();
@@ -45,47 +41,7 @@ export class TitleUtils {
    */
 
   addTitle(nameTitle: string): Observable<Title> {
-    const trimmedName = nameTitle?.trim();
-
-    if (!trimmedName) {
-      return throwError(() => new Error('TITLE.ERROR.EMPTY'));
-    }
-
-    return this.titleExists(trimmedName).pipe(
-      switchMap(exists => {
-        if (exists) {
-          return throwError(() => new Error('TITLE.ERROR.ALREADY_EXISTS'));
-        }
-
-        return this.titleService.addTitle({ name: trimmedName });
-      }),
-      catchError(err => {
-        if (err.message === 'TITLE.ERROR.ALREADY_EXISTS' || err.message === 'TITLE.ERROR.EMPTY') {
-          return throwError(() => err);
-        }
-
-        console.error('Error creating title:', err);
-        return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
-      })
-    );
-  }
-
-
-  /**
-   * Checks if a title exists (case-insensitive comparison)
-   * @param name - Name to check
-   * @returns Observable emitting boolean indicating existence
-   */
-  titleExists(name: string): Observable<boolean> {
-    return this.titleService.getAllTitles().pipe(
-      map(titles => titles.some(
-        t => t.name.toLowerCase() === name.toLowerCase()
-      )),
-      catchError(err => {
-        console.error('Error checking title existence:', err);
-        return throwError(() => new Error('Failed to check title existence'));
-      })
-    );
+    return this.titleService.addTitle({name: nameTitle});
   }
 
   getAllTitles(): Observable<Title[]> {
@@ -125,26 +81,6 @@ export class TitleUtils {
  */
   deleteTitle(id: number): Observable<void> {
     return this.titleService.deleteTitle(id)      
-  }
-
-  /**
-   * Checks if a title is used by any customer contacts or employees.
-   * @param idTitle - ID of the title to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkTitleUsage(idTitle: number): Observable<boolean> {
-    return forkJoin([
-      this.customerUtils.getAllContacts().pipe(
-        map(contacts => contacts.some(contact => contact.title?.id === idTitle)),
-        catchError(() => of(false))
-      ),
-      this.employeeUtils.getAllEmployees().pipe(
-        map(employees => employees.some(employee => employee.title?.id === idTitle)),
-        catchError(() => of(false))
-      )
-    ] as const).pipe(
-      map(([usedInCustomers, usedInEmployees]) => usedInCustomers || usedInEmployees)
-    );
   }
 
   /**

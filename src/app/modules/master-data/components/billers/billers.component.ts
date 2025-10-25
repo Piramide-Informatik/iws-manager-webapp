@@ -95,11 +95,15 @@ export class BillersComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteBiller(event: {status: 'success' | 'error', error?: Error}): void {
+  onDeleteBiller(event: {status: 'success' | 'error', error?: any}): void {
     if(event.status === 'success'){
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(event.status === 'error'){
-      this.commonMessageService.showErrorDeleteMessage();
+      if(event.error.error.message.includes('foreign key constraint') && event.error.status === 500){
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
+      }else{
+        this.commonMessageService.showErrorDeleteMessage();
+      }
     }
     this.billerStateService.clearBiller();
   }
