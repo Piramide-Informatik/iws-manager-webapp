@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, of } from 'rxjs';
-import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
+import { Observable, catchError, take, throwError, switchMap, of } from 'rxjs';
 import { VatService } from '../../../../../Services/vat.service';
 import { Vat } from '../../../../../Entities/vat';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -12,7 +11,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' })
 export class VatUtils {
   private readonly vatService = inject(VatService);
-  private readonly invoiceUtils = inject(InvoiceUtils);
 
   loadInitialData(): Observable<Vat[]> {
     return this.vatService.loadInitialData();
@@ -72,21 +70,6 @@ export class VatUtils {
  */
   deleteVat(id: number): Observable<void> {
     return this.vatService.deleteVat(id);
-  }
-
-  /**
-   * Checks if a vat is used by any invoice.
-   * @param idVat - ID of the vat to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkVatUsage(idVat: number): Observable<boolean> {
-    return this.invoiceUtils.getAllInvoices().pipe(
-      map(invoices => invoices.some(invoice => invoice.vat?.id === idVat)),
-      catchError(err => {
-        console.error('Error checking vat usage:', err);
-        return of(false);
-      })
-    );
   }
 
   /**

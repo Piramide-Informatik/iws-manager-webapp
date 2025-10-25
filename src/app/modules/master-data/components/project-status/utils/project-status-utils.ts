@@ -1,5 +1,5 @@
 import {Injectable, inject} from '@angular/core';
-import {Observable, catchError, map, take, throwError, switchMap, of} from 'rxjs';
+import {Observable, catchError, map, take, throwError, switchMap} from 'rxjs';
 import { ProjectStatus} from  '../../../../../Entities/projectStatus';
 import { ProjectStatusService } from '../../../../../Services/project-status.service';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -13,28 +13,7 @@ export class ProjectStatusUtils {
     }
 
     addProjectStatus(nameProjectStatus: string): Observable<ProjectStatus>{
-        const trimmedName = nameProjectStatus?.trim();
-        if (!trimmedName) {
-            return throwError(() => new Error('ProjectStatus name cannot be empty'));
-        }
-
-        return this.projectExists(trimmedName).pipe(
-        switchMap(exists => {
-            if (exists) {
-            return throwError(() => new Error('PROJECT_STATUS.ERROR.ALREADY_EXISTS'));
-            }
-
-            return this.projectStatusService.addProjectStatus({ name: trimmedName });
-        }),
-        catchError(err => {
-            if (err.message === 'PROJECT_STATUS.ERROR.ALREADY_EXISTS' || err.message === 'PROJECT_STATUS.ERROR.EMPTY') {
-            return throwError(() => err);
-            }
-
-            console.error('Error creating title:', err);
-            return throwError(() => new Error('PROJECT_STATUS.ERROR.CREATION_FAILED'));
-        })
-        );
+        return this.projectStatusService.addProjectStatus({ name: nameProjectStatus });
     }
 
     //Get a projectStatus by ID
@@ -99,11 +78,6 @@ export class ProjectStatusUtils {
     //Deletes a projectStatus by ID
     deleteProjectStatus(id: number): Observable<void> {
         return this.projectStatusService.deleteProjectStatus(id);
-    }
-    //Checks if a projectStatus is used by any entity
-    private checkProjectStatusUsage(idProjectStatus: number): Observable<boolean> {
-        // For now, no use has been verified in any entity.
-        return of(false);
     }
 
     //Update a projectStatus by ID and updates the internal projectStatus signal

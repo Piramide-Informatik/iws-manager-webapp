@@ -112,14 +112,16 @@ export class SystemConstantTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteSystemConstant(event: { status: 'success' | 'error', error?: Error }) {
+  onDeleteSystemConstant(event: { status: 'success' | 'error', error?: any }) {
     if (event.status === 'success') {
       this.selectedSystemConstantToEdit = null;
       this.commonMessageService.showDeleteSucessfullMessage();
     } else if (event.status === 'error') {
-      event.error?.message === 'Cannot delete register: it is in use by other entities' ?
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities() :
+      if(event.error.error.message.includes('foreign key constraint')){
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
+      }else{
         this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 
