@@ -90,7 +90,6 @@ export class ModalProjectFunnelComponent implements OnChanges {
           this.isLoading = false;
           this.handleEntityRelatedError(error);
           this.handleOccDeleteError(error);
-          this.deletePromoter.emit({ status: 'error', error });
         } 
       })
     }
@@ -98,6 +97,8 @@ export class ModalProjectFunnelComponent implements OnChanges {
   private handleEntityRelatedError(error: any): void {
     if(error.error?.message?.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+    }else{
+      this.deletePromoter.emit({ status: 'error', error });
     }
   }
 
@@ -105,6 +106,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
     if (error instanceof OccError || error?.message.includes('404')) {
       this.showOCCErrorModalPromoter= true;
       this.occErrorType = 'DELETE_UNEXISTED';
+      this.deletePromoter.emit({ status: 'error', error });
     }
   }
 

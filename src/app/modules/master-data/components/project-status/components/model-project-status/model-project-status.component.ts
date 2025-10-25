@@ -81,9 +81,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
           this.toastMessage.emit({
             severity: 'error',
             summary: 'MESSAGE.ERROR',
-            detail: this.errorMessage?.includes('it is in use by other entities') 
-            ? 'MESSAGE.DELETE_FAILED_IN_USE' 
-            : 'MESSAGE.DELETE_FAILED'
+            detail: 'MESSAGE.DELETE_FAILED'
           });
         }
       });

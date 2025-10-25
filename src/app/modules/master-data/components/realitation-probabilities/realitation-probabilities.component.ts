@@ -95,13 +95,13 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
     }
   }
   
-  onDeleteChance(deleteEvent: {status: 'success' | 'error', error?: Error}): void {
+  onDeleteChance(deleteEvent: {status: 'success' | 'error', error?: any}): void {
     if(deleteEvent.status === 'success'){
       this.chanceStateService.clearChance();
       this.commonMessageService.showDeleteSucessfullMessage();
     }else if(deleteEvent.status === 'error' && deleteEvent.error){
-      if(deleteEvent.error.message === 'Cannot delete register: it is in use by other entities'){
-        this.commonMessageService.showErrorDeleteMessageUsedByOtherEntities();
+      if(deleteEvent.error.error.message.includes('foreign key constraint')){
+        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(deleteEvent.error.error.message);
       }else{
         this.commonMessageService.showErrorDeleteMessage();
       }
