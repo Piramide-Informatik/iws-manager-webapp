@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { FundingProgramService } from '../../../../../Services/funding-program.service';
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
@@ -47,23 +47,6 @@ export class FundingProgramUtils {
    */
   addFundingProgram(fundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<FundingProgram> {
     return this.fundingProgramService.addFundingProgram(fundingProgram);
-  }
-
-  /**
-   * Checks if a fundingProgram exists (case-insensitive comparison)
-   * @param name - Name to check
-   * @returns Observable emitting boolean indicating existence
-   */
-  fundingProgramExists(name: string): Observable<boolean> {
-    return this.fundingProgramService.getAllFundingPrograms().pipe(
-      map(fundingPrograms => fundingPrograms.some(
-        f => f.name?.toLowerCase() === name.toLowerCase()
-      )),
-      catchError(err => {
-        console.error('Error checking funding program existence:', err);
-        return throwError(() => new Error('Failed to check funding program existence'));
-      })
-    );
   }
 
   /**

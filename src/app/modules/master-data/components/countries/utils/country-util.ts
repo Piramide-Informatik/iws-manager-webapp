@@ -3,14 +3,12 @@ import {
   Observable,
   catchError,
   map,
-  of,
   switchMap,
   take,
   throwError,
 } from 'rxjs';
 import { CountryService } from '../../../../../Services/country.service';
 import { Country } from '../../../../../Entities/country';
-import { CustomerUtils } from '../../../../customer/utils/customer-utils';
 import {
   createNotFoundUpdateError,
   createUpdateConflictError,
@@ -21,7 +19,6 @@ import {
  */
 export class CountryUtils {
   private readonly countryService = inject(CountryService);
-  private readonly customerUtils = inject(CustomerUtils);
 
   /**
    * Gets a country by ID with proper error handling
@@ -108,20 +105,6 @@ export class CountryUtils {
    */
   deleteCountry(id: number): Observable<void> {
     return this.countryService.deleteCountry(id);
-  }
-
-  /**
-   * Checks if a country is used by any customer.
-   * @param id - ID of the country to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkCountryUsage(id: number): Observable<boolean> {
-    return this.customerUtils.getAllCustomers().pipe(
-      map((customers) =>
-        customers.some((customer) => customer.country?.id === id)
-      ),
-      catchError(() => of(false))
-    );
   }
 
   /**
