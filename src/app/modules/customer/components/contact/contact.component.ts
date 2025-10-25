@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContactPerson } from '../../../../Entities/contactPerson';
 import { Salutation } from '../../../../Entities/salutation';
 import { SalutationService } from '../../../../Services/salutation.service';
@@ -86,7 +86,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
 
   initForm(): void {
     this.contactForm = new FormGroup({
-      lastName: new FormControl(''),
+      lastName: new FormControl('', [Validators.minLength(2), Validators.required]),
       firstName: new FormControl(''),
       salutation: new FormControl(this.selectedSalutation),
       title: new FormControl(this.selectedTitle),
