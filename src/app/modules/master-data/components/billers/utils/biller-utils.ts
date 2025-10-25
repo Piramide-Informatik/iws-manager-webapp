@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { BillerService } from '../../../../../Services/biller.service';
-import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { Biller } from '../../../../../Entities/biller';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
@@ -12,7 +11,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' })
 export class BillerUtils {
   private readonly billerService = inject(BillerService);
-  private readonly invoiceUtils = inject(InvoiceUtils);
 
   loadInitialData(): Observable<Biller[]> {
     return this.billerService.loadInitialData();

@@ -68,6 +68,7 @@ export class ModalBillerComponent implements OnChanges {
         this.isLoading = false;
         this.handleOCCDeleteError(errorDeleteBiller)
         this.deleteBiller.emit({ status: 'error', error: errorDeleteBiller });
+        this.closeModal();
       }
     })
   }
