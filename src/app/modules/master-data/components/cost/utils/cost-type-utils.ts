@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, take, throwError, switchMap, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { CostTypeService } from '../../../../../Services/cost-type.service';
 import { CostType } from '../../../../../Entities/costType';
-import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
@@ -12,7 +11,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' })
 export class CostTypeUtils {
   private readonly costTypeService = inject(CostTypeService);
-  private readonly orderUtils = inject(OrderUtils);
 
   loadInitialData(): Observable<CostType[]> {
     return this.costTypeService.loadInitialData();
@@ -69,21 +67,7 @@ export class CostTypeUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteCostType(id: number): Observable<void> {
-
     return this.costTypeService.deleteCostType(id);
-
-  }
-
-  /**
-   * Checks if a costType is used by any order.
-   * @param idCostType - ID of the costType to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkCostTypeUsage(idCostType: number): Observable<boolean> {
-    return this.orderUtils.getAllOrders().pipe(
-      map(orders => orders.some(order => order.orderType?.id === idCostType)),
-      catchError(() => of(false))
-    );
   }
 
   /**

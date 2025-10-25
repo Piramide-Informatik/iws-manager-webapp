@@ -6,7 +6,6 @@ import {
   take,
   throwError,
   switchMap,
-  of,
 } from 'rxjs';
 import { EmployeeCategoryService } from '../../../../../Services/employee-category.service';
 import { EmployeeCategory } from '../../../../../Entities/employee-category ';
@@ -103,30 +102,7 @@ export class EmployeeCategoryUtils {
 
   //Deletes a EmployeeCategory by ID
   deleteEmployeeCategory(id: number): Observable<void> {
-    return this.checkEmployeeCategoryUsage(id).pipe(
-      switchMap((isUsed) => {
-        if (isUsed) {
-          return throwError(
-            () =>
-              new Error(
-                'Cannot delete register: it is in use by other entities'
-              )
-          );
-        }
-        return this.employeeCategoryService.deleteEmployeeCategory(id);
-      }),
-      catchError((error) => {
-        return throwError(() => error);
-      })
-    );
-  }
-
-  //Checks if a EmployeeCategory is used by any entity
-  private checkEmployeeCategoryUsage(
-    idEmployeeCategory: number
-  ): Observable<boolean> {
-    // For now, no use has been verified in any entity.
-    return of(false);
+    return this.employeeCategoryService.deleteEmployeeCategory(id);
   }
 
   //Update a EmployeeCategory by ID and updates the internal EmployeeCategory signal
