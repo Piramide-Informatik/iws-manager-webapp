@@ -44,3 +44,9 @@ p-button {
     width: 50px;
     height: 50px;
 }
+
+:host ::ng-deep {
+  .customer_name_line2 {
+    min-width: 190px !important;
+  }
+}
