@@ -119,7 +119,8 @@ export class RolFormComponent implements OnInit, OnDestroy {
             delete: (rightsValue & 8) !== 0,
             execute: (rightsValue & 16) !== 0,
           } as SystemFunctionWithRights;
-        });
+        })
+        .sort((a, b) => (a.sequenceNo || 0) - (b.sequenceNo || 0));
       },
       error: (err) => {
         console.error('Error loading RightRoles or Functions:', err);
