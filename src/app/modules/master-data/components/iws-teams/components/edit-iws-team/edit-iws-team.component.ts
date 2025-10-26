@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TeamIws } from '../../../../../../Entities/teamIWS';
-import { map, Subscription } from 'rxjs';
+import { map, Subscription, take } from 'rxjs';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
 import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,6 +27,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
   isSaving = false;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   private readonly subscriptions = new Subscription();
+  public teamNameAlreadyExist = false;
 
   constructor(
     private readonly teamIwsUtils: TeamIwsUtils,
@@ -59,11 +59,18 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
       this.loadTeamIwsAfterRefresh(savedTeamIwsId);
       localStorage.removeItem('selectedTeamIwsId');
     }
+
+    // Suscribirse a cambios en el campo name para resetear el error de duplicado
+    this.editTeamForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.teamNameAlreadyExist) {
+        this.teamNameAlreadyExist = false;
+      }
+    });
   }
 
   private initForm(): void {
     this.editTeamForm = new FormGroup({
-      name: new FormControl('', []),
+      name: new FormControl('', [Validators.required]),
       teamLeader: new FormControl('', []),
     });
   }
@@ -93,7 +100,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
           id: emp.id,
           firstname: emp.firstname,
           lastname: emp.lastname,
-          fullName: `${emp.lastname} ${emp.firstname} `,
+          fullName: `${emp.lastname}, ${emp.firstname}`,
           version: emp.version
         };
       }))
@@ -168,6 +175,15 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
     if (err instanceof OccError) {
       this.showOCCErrorModalTeamIws = true;
       this.occErrorType = err.errorType;
+    } else if (err?.message?.includes('team name already exists')) {
+      this.teamNameAlreadyExist = true;
+      this.editTeamForm.get('name')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.teamNameAlreadyExist = false);
+      
+      // Mostrar toast de error para nombre duplicado
+      this.commonMessageService.showErrorRecordAlreadyExist();
+    } else if (err?.message?.includes('Team name is required')) {
+      this.commonMessageService.showErrorEditMessage();
     } else {
       this.commonMessageService.showErrorEditMessage();
     }
@@ -180,6 +196,7 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
 
   private resetForm(clearCommission = false): void {
     this.editTeamForm.reset();
+    this.teamNameAlreadyExist = false;
     if (clearCommission) {
       this.currentTeamIws = null;
     }

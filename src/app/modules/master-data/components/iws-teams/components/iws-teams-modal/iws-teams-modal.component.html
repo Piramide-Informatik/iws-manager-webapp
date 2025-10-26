@@ -5,14 +5,30 @@
                 <label for="name" class="block">
                     {{ 'IWS_TEAMS.LABEL.TEAM_NAME' | translate }}
                 </label>
-                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
-                    [attr.aria-invalid]="createTeamIwsForm.get('name')?.invalid"
-                    [attr.aria-describedby]="createTeamIwsForm.get('name')?.invalid ? 'nameError' : null"
-                    class="w-full" />
-
-                <small *ngIf="createTeamIwsForm.get('name')?.invalid && createTeamIwsForm.get('name')?.touched"
-                    id="nameError" class="text-red-500 block mt-1">
-                </small>
+                <div class="input-message">
+                  <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
+                      [attr.aria-invalid]="createTeamIwsForm.get('name')?.invalid"
+                      [attr.aria-describedby]="createTeamIwsForm.get('name')?.invalid ? 'nameError' : null"
+                      class="w-full"
+                      [attr.invalid]="(createTeamIwsForm.get('name')?.invalid && 
+                      createTeamIwsForm.get('name')?.dirty) 
+                      || teamNameAlreadyExist" />
+                  <p-message 
+                    severity="error" 
+                    [showTransitionOptions]="'0ms'" 
+                    variant="simple" 
+                    size="small" 
+                    *ngIf="(createTeamIwsForm.get('name')?.invalid && 
+                    createTeamIwsForm.get('name')?.dirty) 
+                    || teamNameAlreadyExist">
+                    <span *ngIf="createTeamIwsForm.get('name')?.errors?.['required'] && createTeamIwsForm.get('name')?.dirty">
+                      {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </span>
+                    <span *ngIf="teamNameAlreadyExist && !createTeamIwsForm.get('name')?.errors?.['required']">
+                      {{ 'IWS_TEAMS.ERROR.TEAM_NAME_ALREADY_EXIST' | translate }}
+                    </span>
+                  </p-message>
+                </div>
             </div>
             <div class="team-form">
                 <label for="teamLeader">{{ "IWS_TEAMS.LABEL.TEAM_LEADER" | translate }}</label>
@@ -31,7 +47,7 @@
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
                     icon="pi pi-check" iconPos="left" [loading]="isLoading"
-                    [disabled]="createTeamIwsForm.invalid || isLoading" />
+                    [disabled]="!createTeamIwsForm.valid || isLoading || !createTeamIwsForm.dirty" />
 
                 <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                     icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />

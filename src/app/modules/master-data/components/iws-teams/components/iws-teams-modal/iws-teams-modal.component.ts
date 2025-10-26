@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TeamIwsUtils } from '../../utils/iws-team-utils';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { TeamIws } from '../../../../../../Entities/teamIWS';
 import { EmployeeIwsService } from '../../../../../../Services/employee-iws.service';
@@ -38,6 +38,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
   errorMessage: string | null = null;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalIwsTeams = false;
+  public teamNameAlreadyExist = false;
 
   readonly createTeamIwsForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -48,6 +49,13 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     this.loadInitialData();
     this.loadTeams()
     this.resetForm();
+    
+    // Suscribirse a cambios en el campo name para resetear el error de duplicado
+    this.createTeamIwsForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.teamNameAlreadyExist) {
+        this.teamNameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -76,7 +84,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
         id: emp.id,
         firstname: emp.firstname,
         lastname: emp.lastname,
-        fullName: `${emp.lastname} ${emp.firstname}`,
+        fullName: `${emp.lastname}, ${emp.firstname}`,
         version: emp.version
       })))
     ).subscribe({
@@ -101,6 +109,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     if (this.createTeamIwsForm.invalid || this.isLoading) return;
     this.isLoading = true;
     this.errorMessage = null;
+    this.teamNameAlreadyExist = false;
 
     const data = this.getSanitizedTeamIwsValues();
     this.handleRequest(this.teamIwsUtils.addTeamIws(data), 'create');
@@ -122,8 +131,12 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
             this.closeModal();
           },
           error: (error) => {
-            this.handleDeleteError(error);
-            this.handleErrorWithToast(error, operation);
+            if (operation === 'create') {
+              this.handleCreateError(error);
+            } else {
+              this.handleDeleteError(error);
+            }
+            this.toastMessage.emit({ status: 'error', operation , error });
           }
         })
     );
@@ -136,9 +149,17 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private handleErrorWithToast(error: any, operation: 'create' | 'delete'): void {
-
-    this.toastMessage.emit({ status: 'error', operation , error });
+  private handleCreateError(error: any): void {
+    if (error?.message?.includes('team name already exists')) {
+      this.teamNameAlreadyExist = true;
+      this.createTeamIwsForm.get('name')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.teamNameAlreadyExist = false);
+      this.createTeamIws.emit({ status: 'error' });
+    } else if (error?.message?.includes('Team name is required')) {
+      this.createTeamIws.emit({ status: 'error' });
+    } else {
+      this.createTeamIws.emit({ status: 'error' });
+    }
   }
 
   private getSanitizedTeamIwsValues(): Omit<TeamIws, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
@@ -150,6 +171,7 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
 
   private resetForm(): void {
     this.createTeamIwsForm.reset();
+    this.teamNameAlreadyExist = false;
   }
 
   public focusInputIfNeeded() {

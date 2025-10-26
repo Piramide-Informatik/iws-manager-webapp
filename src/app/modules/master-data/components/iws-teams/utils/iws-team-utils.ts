@@ -5,6 +5,7 @@ import {
     take,
     throwError,
     switchMap,
+    map,
 } from 'rxjs';
 import { TeamIws } from '../../../../../Entities/teamIWS';
 import { TeamIwsService } from '../../../../../Services/team-iws.service';
@@ -21,7 +22,26 @@ export class TeamIwsUtils {
     addTeamIws(
         teamIWS: Omit<TeamIws, 'id' | 'createdAt' | 'updatedAt' | 'version'>
     ): Observable<TeamIws> {
-        return this.teamIwsService.addTeamIws(teamIWS);
+        // Validar que name no sea undefined o vacío
+        const teamName = teamIWS.name?.trim() || '';
+        if (!teamName) {
+            return throwError(() => new Error('Team name is required'));
+        }
+
+        return this.teamNameExists(teamName).pipe(
+            switchMap((exists) => {
+                if (exists) {
+                    return throwError(() => new Error('team name already exists'));
+                }
+                return this.teamIwsService.addTeamIws(teamIWS);
+            }),
+            catchError((err) => {
+                if (err.message === 'team name already exists') {
+                    return throwError(() => err);
+                }
+                return throwError(() => new Error('IWS_TEAMS.ERROR.CREATION_FAILED'));
+            })
+        );
     }
 
     getAllTeamIws(): Observable<TeamIws[]> {
@@ -40,6 +60,7 @@ export class TeamIwsUtils {
             })
         );
     }
+
     refreshTeamIws(): Observable<void> {
         return new Observable<void>((subscriber) => {
             this.teamIwsService.loadInitialData();
@@ -47,31 +68,63 @@ export class TeamIwsUtils {
             subscriber.complete();
         });
     }
-    //Delete a TeamIws by ID after checking if it's used by any entity
+
     deleteTeamIws(id: number): Observable<void> {
         return this.teamIwsService.deleteTeamIws(id);
     }
 
-    //Update a TeamIws by ID and updates the internal TeamIws signal
     updateTeamIws(teamIws: TeamIws): Observable<TeamIws> {
         if (!teamIws?.id) {
             return throwError(() => new Error('Invalid teamIws data'));
+        }
+
+        // Validar que name no sea undefined o vacío
+        const teamName = teamIws.name?.trim() || '';
+        if (!teamName) {
+            return throwError(() => new Error('Team name is required'));
         }
 
         return this.teamIwsService.getTeamIwsById(teamIws.id).pipe(
             take(1),
             switchMap((currentTeamIws) => {
                 if (!currentTeamIws) {
-                    return throwError(() => createNotFoundUpdateError('Title'));
+                    return throwError(() => createNotFoundUpdateError('IWS Team'));
                 }
                 if (currentTeamIws.version !== teamIws.version) {
-                    return throwError(() => createUpdateConflictError('Title'));
+                    return throwError(() => createUpdateConflictError('IWS Team'));
                 }
-                return this.teamIwsService.updateTeamIws(teamIws);
+                
+                // Check if team name already exists (excluding current team)
+                return this.teamNameExists(teamName, teamIws.id).pipe(
+                    switchMap((exists) => {
+                        if (exists) {
+                            return throwError(() => new Error('team name already exists'));
+                        }
+                        return this.teamIwsService.updateTeamIws(teamIws);
+                    })
+                );
             }),
             catchError((err) => {
                 console.error('Error updating TeamIws:', err);
                 return throwError(() => err);
+            })
+        );
+    }
+
+    /**
+     * Checks if a team name already exists (case-insensitive comparison)
+     * @param teamName - Team name to check
+     * @param excludeId - ID to exclude from check (for updates)
+     * @returns Observable emitting boolean indicating existence
+     */
+    private teamNameExists(teamName: string, excludeId?: number): Observable<boolean> {
+        return this.teamIwsService.getAllTeamsIws().pipe(
+            map(teams => teams.some(
+                team => team.id !== excludeId && 
+                       team.name?.toLowerCase() === teamName.toLowerCase()
+            )),
+            catchError(() => {
+                return throwError(() => new Error('Failed to check team name existence'));
             })
         );
     }

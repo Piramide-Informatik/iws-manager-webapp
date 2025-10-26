@@ -29,7 +29,7 @@
       "HOLIDAYS": "Stammdaten - Feiertage",
       "IWS_COMMISSIONS": "Stammdaten - IWS Provisionen",
       "IWS_STAFF": "Stammdaten - IWS Mitarbeiter",
-      "IWS_TEAMS": "Stammdaten - IWS Teams",
+      "IWS_TEAMS": "IWS Teams",
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
       "PROJECT_FUNNELS": "Stammdaten - Projektträger",
@@ -63,7 +63,8 @@
     "NUMBER_MAX": "Maximalwert 100 erwartet",
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
-    "NUMBER_MAX_12": "Maximalwert 12 erwartet"
+    "NUMBER_MAX_12": "Maximalwert 12 erwartet",
+    "FIELD_REQUIRED": "Pflichtfeld"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -992,6 +993,10 @@
     },
     "FORM": {
       "IWS_TEAM_FORM": "Neues Team"
+    },
+    "ERROR": {
+      "TEAM_NAME_ALREADY_EXIST": "Teamname existiert bereits",
+      "CREATION_FAILED": "Fehler beim Erstellen des Teams"
     }
   },
   "COUNTRIES": {

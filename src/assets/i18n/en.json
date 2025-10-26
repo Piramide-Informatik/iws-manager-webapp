@@ -29,7 +29,7 @@
       "HOLIDAYS": "Masterdata - Holidays",
       "IWS_COMMISSIONS": "Masterdata - IWS Commissions",
       "IWS_STAFF": "Masterdata - IWS Staff",
-      "IWS_TEAMS": "Masterdata - IWS Teams",
+      "IWS_TEAMS": "IWS Teams",
       "NETWORKS": "Masterdata - Networks",
       "ROLE": "Masterdata - Roles",
       "PROJECT_STATUS": "Masterdata - Project Status",
@@ -63,7 +63,8 @@
     "NUMBER_MAX": "Max value 100 expected",
     "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
     "NUMBER_MAX_12": "Max value 12 expected",
-    "DUPLICATE_PROBABILITY": "This probability already exists"
+    "DUPLICATE_PROBABILITY": "This probability already exists",
+    "FIELD_REQUIRED": "Field required"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -988,6 +989,10 @@
     },
     "FORM": {
       "IWS_TEAM_FORM": "New Team"
+    },
+    "ERROR": {
+      "TEAM_NAME_ALREADY_EXIST": "Team name already exists",
+      "CREATION_FAILED": "Failed to create team"
     }
   },
   "COUNTRIES": {

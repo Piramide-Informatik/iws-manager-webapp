@@ -32,16 +32,23 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   mapTeamIws = new Map<number, TeamIws>();
 
   readonly teams = computed(() => {
-    return this.teamIwsService.teamsIws().map((teamiws) => {
-      this.mapTeamIws.set(teamiws.id, teamiws);
-      return {
-        id: teamiws.id,
-        name: teamiws.name,
-        teamLeader: teamiws.teamLeader
-          ? `${teamiws.teamLeader.lastname ?? ""} ${teamiws.teamLeader.firstname ?? ""}`.trim()
-          : "",
-      };
-    });
+    // Ordenar equipos por nombre alfabéticamente
+    return this.teamIwsService.teamsIws()
+      .sort((a, b) => {
+        const nameA = a.name || '';
+        const nameB = b.name || '';
+        return nameA.localeCompare(nameB);
+      })
+      .map((teamiws) => {
+        this.mapTeamIws.set(teamiws.id, teamiws);
+        return {
+          id: teamiws.id,
+          name: teamiws.name,
+          teamLeader: teamiws.teamLeader
+            ? `${teamiws.teamLeader.lastname ?? ""}, ${teamiws.teamLeader.firstname ?? ""}`.trim()
+            : "",
+        };
+      });
   });
 
   columnsHeaderIwsTeams: Column[] = [];
@@ -62,8 +69,6 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-
-
     this.loadColumnsIwsTeams();
     this.userIwsTeamsPreferences = this.userPreferenceService.getUserPreferences(
       this.tableKey,
@@ -147,7 +152,7 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
     }else if(event.status === 'error'){
       if(event.operation === 'create'){
         this.commonMessageService.showErrorCreatedMessage();
-      }else if(event.operation === 'delete' && event.error.error.message.includes('foreign key constraint')){
+      }else if(event.operation === 'delete' && event.error?.error?.message?.includes('foreign key constraint')){
         this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(event.error.error.message);
       }else {
         this.commonMessageService.showErrorDeleteMessage();
