@@ -43,7 +43,7 @@
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
       "TYPE_OF_COMPANIES": "Datos Maestros - Tipos de Empresas",
-      "USER": "Datos Maestros - Usuario"
+      "USER": "Usuario"
     }
   },
   "ERROR": {
@@ -63,7 +63,8 @@
     "NUMBER_MAX": "Se espera un valor máximo de 100",
     "NUMBER_BETWEEN_0_1": "valores entre 0 - 1",
     "NUMBER_MAX_12": "Se espera un valor máximo de 12",
-    "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe"
+    "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe",
+    "FIELD_REQUIRED": "Campo requerido"
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -749,6 +750,9 @@
       "WEAK": "Debil",
       "MEDIUM": "Medio",
       "STRONG": "Fuerte"
+    },
+    "ERROR": {
+      "USERNAME_ALREADY_EXIST": "Nombre de usuario ya existe"
     }
   },
   "ROLES": {

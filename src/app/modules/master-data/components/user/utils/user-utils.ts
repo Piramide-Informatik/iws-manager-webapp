@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Observable, catchError, take, throwError, switchMap, of, tap } from "rxjs";
+import { Observable, catchError, take, throwError, switchMap, of, tap, map } from "rxjs";
 import { User } from "../../../../../Entities/user";
 import { RoleUtils } from "../../roles/utils/role-utils";
 import { UserService } from "../../../../../Services/user.service";
@@ -33,8 +33,37 @@ export class UserUtils {
     }
 
     addUser(user: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<User> {
-        return this.userService.addUser(user).pipe(
-            catchError(err => throwError(() => new Error(err)))
+        return this.userExists(user.username).pipe(
+            switchMap((exists) => {
+                if (exists) {
+                    return throwError(() => new Error('username already exists'));
+                }
+
+                return this.userService.addUser(user);
+            }),
+            catchError((err) => {
+                if (err.message === 'username already exists') {
+                    return throwError(() => err);
+                }
+
+                return throwError(() => new Error('PROJECT_STATUS.ERROR.CREATION_FAILED'));
+            })
+        );
+    }
+
+    /**
+      * Checks if a user exists by user.username (case-insensitive comparison)
+      * @param user.username - User username to check
+      * @returns Observable emitting boolean indicating existence
+      */
+    private userExists(username: string): Observable<boolean> {
+        return this.userService.getAllUser().pipe(
+            map(users => users.some(
+                u => u.id !== null && u.username?.toString().toLowerCase() === username.toString().toLowerCase()
+            )),
+            catchError(() => {
+                return throwError(() => new Error('Failed to check user existence'));
+            })
         );
     }
 
@@ -70,7 +99,15 @@ export class UserUtils {
                 if (currentUser.version !== user.version) {
                     return throwError(() => createUpdateConflictError('User'));
                 }
-                return this.userService.updateUser(user);
+                
+                return this.userExists(user.username).pipe(
+                    switchMap((exists) => {
+                        if (exists) {
+                            return throwError(() => new Error('username already exists'));
+                        }
+                        return this.userService.updateUser(user);
+                    })
+                );
             }),
             catchError((err) => {
                 console.error('Error updating user:', err);

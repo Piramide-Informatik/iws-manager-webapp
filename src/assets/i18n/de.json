@@ -43,7 +43,7 @@
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
       "TYPE_OF_COMPANIES": "Stammdaten - Unternehmensarten",
-      "USER": "Stammdaten - Benutzer"
+      "USER": "Benutzer"
     }
   },
   "ERROR": {
@@ -63,7 +63,8 @@
     "NUMBER_MAX": "Maximalwert 100 erwartet",
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
-    "NUMBER_MAX_12": "Maximalwert 12 erwartet"
+    "NUMBER_MAX_12": "Maximalwert 12 erwartet",
+    "FIELD_REQUIRED": "Pflichtfeld"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -735,7 +736,7 @@
       "USERNAME": "Benutzername",
       "FIRSTNAME": "Vorname",
       "LASTNAME": "Nachname",
-      "EMAIL": "E-Mail-Adresse",
+      "EMAIL": "E-Mail",
       "PASSWORD": "Kennwort",
       "ACTIVE": "Aktiv",
       "ASSIGNED_ROLES": "Zugewiesene Rollen",
@@ -755,6 +756,9 @@
       "WEAK": "Schwach",
       "MEDIUM": "Mittel",
       "STRONG": "Stark"
+    },
+    "ERROR": {
+      "USERNAME_ALREADY_EXIST": "Benutzername existiert bereits"
     }
   },
   "ROLES": {
