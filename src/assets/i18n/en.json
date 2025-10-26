@@ -28,8 +28,8 @@
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
       "HOLIDAYS": "Masterdata - Holidays",
       "IWS_COMMISSIONS": "IWS Commissions",
-      "IWS_STAFF": "Masterdata - IWS Staff",
-      "IWS_TEAMS": "Masterdata - IWS Teams",
+      "IWS_STAFF": "IWS Staff",
+      "IWS_TEAMS": "IWS Teams",
       "NETWORKS": "Masterdata - Networks",
       "ROLE": "Masterdata - Roles",
       "PROJECT_STATUS": "Masterdata - Project Status",
@@ -1001,6 +1001,10 @@
     },
     "FORM": {
       "IWS_TEAM_FORM": "New Team"
+    },
+    "ERROR": {
+      "TEAM_NAME_ALREADY_EXIST": "Team name already exists",
+      "CREATION_FAILED": "Failed to create team"
     }
   },
   "COUNTRIES": {

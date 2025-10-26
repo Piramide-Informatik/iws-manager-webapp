@@ -28,10 +28,8 @@
       "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
       "HOLIDAYS": "Datos Maestros - Días Festivos",
       "IWS_COMMISSIONS": "Comisiones de IWS",
-      "IWS_STAFF": "Datos Maestros - Personal de IWS",
-      "IWS_COMMISSIONS": "Datos Maestros - Comisiones de IWS",
       "IWS_STAFF": "Personal de IWS",
-      "IWS_TEAMS": "Datos Maestros - Equipos de IWS",
+      "IWS_TEAMS": "Equipos de IWS",
       "NETWORKS": "Datos Maestros - Redes",
       "PROJECT_STATUS": "Datos Maestros - Estado del Proyecto",
       "PROJECT_FUNNELS": "Datos Maestros - Responsable de Proyecto",
@@ -1001,6 +999,10 @@
     },
     "FORM": {
       "IWS_TEAM_FORM": "Nuevo Equipo"
+    },
+    "ERROR": {
+      "TEAM_NAME_ALREADY_EXIST": "El nombre del equipo ya existe",
+      "CREATION_FAILED": "Error al crear el equipo"
     }
   },
   "COUNTRIES": {

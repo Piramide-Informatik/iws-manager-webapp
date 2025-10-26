@@ -6,12 +6,32 @@
     <div class="align-items-center">
       <div class="team-form">
         <label for="name">{{ "IWS_TEAMS.LABEL.TEAM_NAME" | translate }}</label>
-        <input #firstInput
-          pInputText
-          id="name"
-          formControlName="name"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input #firstInput
+            pInputText
+            id="name"
+            formControlName="name"
+            autocomplete="off"
+            [attr.invalid]="(editTeamForm.get('name')?.invalid && 
+            editTeamForm.get('name')?.dirty) 
+            || teamNameAlreadyExist"
+          />
+          <p-message 
+            severity="error" 
+            [showTransitionOptions]="'0ms'" 
+            variant="simple" 
+            size="small" 
+            *ngIf="(editTeamForm.get('name')?.invalid && 
+            editTeamForm.get('name')?.dirty) 
+            || teamNameAlreadyExist">
+            <span *ngIf="editTeamForm.get('name')?.errors?.['required'] && editTeamForm.get('name')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="teamNameAlreadyExist && !editTeamForm.get('name')?.errors?.['required']">
+              {{ 'IWS_TEAMS.ERROR.TEAM_NAME_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+        </div>
       </div>
 
       <div class="team-form">

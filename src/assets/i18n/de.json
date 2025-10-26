@@ -28,8 +28,8 @@
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
       "HOLIDAYS": "Stammdaten - Feiertage",
       "IWS_COMMISSIONS": "IWS Provisionen",
-      "IWS_STAFF": "Stammdaten - IWS Mitarbeiter",
-      "IWS_TEAMS": "Stammdaten - IWS Teams",
+      "IWS_STAFF": "IWS Mitarbeiter",
+      "IWS_TEAMS": "IWS Teams",
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
       "PROJECT_FUNNELS": "Stammdaten - Projektträger",
@@ -1005,6 +1005,10 @@
     },
     "FORM": {
       "IWS_TEAM_FORM": "Neues Team"
+    },
+    "ERROR": {
+      "TEAM_NAME_ALREADY_EXIST": "Teamname existiert bereits",
+      "CREATION_FAILED": "Fehler beim Erstellen des Teams"
     }
   },
   "COUNTRIES": {
