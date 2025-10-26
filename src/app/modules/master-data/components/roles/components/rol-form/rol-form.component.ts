@@ -75,10 +75,6 @@ export class RolFormComponent implements OnInit, OnDestroy {
       this.loadRoleAfterRefresh(savedRoleId);
       localStorage.removeItem('selectedRoleId');
     }
-    this.editRoleForm = new FormGroup({
-      name: new FormControl(''),
-      selectedModule: new FormControl(''),
-    });
 
     this.loadModules();
   }
@@ -229,9 +225,10 @@ export class RolFormComponent implements OnInit, OnDestroy {
     this.editRoleForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.minLength(2),
+        Validators.minLength(1),
         Validators.maxLength(50),
       ]),
+      selectedModule: new FormControl('')
     });
   }
 
