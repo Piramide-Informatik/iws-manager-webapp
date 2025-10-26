@@ -6,11 +6,27 @@
     <div class="align-items-center mb-2">
       <div class="commission-form">
         <label for="threshold">{{ "IWS_COMMISSIONS.FORM.THRESHOLD" | translate }}</label>
-        <p-inputnumber #firstInput mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-          inpuId="threshold" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-          formControlName="threshold"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <p-inputnumber #firstInput mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            inputId="threshold" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            formControlName="threshold"
+            autocomplete="off"
+            [attr.invalid]="(editCommissionForm.get('threshold')?.invalid && 
+            editCommissionForm.get('threshold')?.dirty) 
+            || thresholdAlreadyExist"
+          />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (editCommissionForm.get('threshold')?.invalid && 
+            editCommissionForm.get('threshold')?.dirty) 
+            || thresholdAlreadyExist">
+            <span *ngIf="editCommissionForm.get('threshold')?.errors?.['required'] && editCommissionForm.get('threshold')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="thresholdAlreadyExist && !editCommissionForm.get('threshold')?.errors?.['required']">
+              {{ 'IWS_COMMISSIONS.ERROR.THRESHOLD_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+        </div>
       </div>
 
       <div class="commission-form">
@@ -19,7 +35,7 @@
           <p-inputnumber mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             inputId="percentage" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
             formControlName="percentage" autocomplete="off" 
-            invalid="editCommissionForm.get('percentage')?.invalid  
+            [attr.invalid]="editCommissionForm.get('percentage')?.invalid  
               && editCommissionForm.get('percentage')?.dirty 
               || editCommissionForm.get('percentage')?.touched"/>
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="

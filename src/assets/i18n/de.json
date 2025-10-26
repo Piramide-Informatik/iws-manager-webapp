@@ -27,8 +27,8 @@
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
       "HOLIDAYS": "Stammdaten - Feiertage",
-      "IWS_COMMISSIONS": "Stammdaten - IWS Provisionen",
-      "IWS_STAFF": "IWS Mitarbeiter",
+      "IWS_COMMISSIONS": "IWS Provisionen",
+      "IWS_STAFF": "Stammdaten - IWS Mitarbeiter",
       "IWS_TEAMS": "Stammdaten - IWS Teams",
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
@@ -982,6 +982,10 @@
     "DELETE": {
       "CONFIRMATION": "Provision löschen",
       "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
+    },
+    "ERROR": {
+      "THRESHOLD_ALREADY_EXIST": "Forderungswert existiert bereits",
+      "CREATION_FAILED": "Fehler beim Erstellen der Kommission"
     }
   },
   "IWS_TEAMS": {

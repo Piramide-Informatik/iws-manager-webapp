@@ -27,8 +27,8 @@
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
       "HOLIDAYS": "Masterdata - Holidays",
-      "IWS_COMMISSIONS": "Masterdata - IWS Commissions",
-      "IWS_STAFF": "IWS Staff",
+      "IWS_COMMISSIONS": "IWS Commissions",
+      "IWS_STAFF": "Masterdata - IWS Staff",
       "IWS_TEAMS": "Masterdata - IWS Teams",
       "NETWORKS": "Masterdata - Networks",
       "ROLE": "Masterdata - Roles",
@@ -978,6 +978,10 @@
     "DELETE": {
       "CONFIRMATION": "Delete Commission",
       "CONFIRM_QUESTION": "Are you sure you want to delete "
+    },
+    "ERROR": {
+      "THRESHOLD_ALREADY_EXIST": "From value already exists",
+      "CREATION_FAILED": "Failed to create commission"
     }
   },
   "IWS_TEAMS": {
