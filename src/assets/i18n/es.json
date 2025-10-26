@@ -43,7 +43,7 @@
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
       "TYPE_OF_COMPANIES": "Datos Maestros - Tipos de Empresas",
-      "USER": "Datos Maestros - Usuario"
+      "USER": "Usuario"
     }
   },
   "ERROR": {
@@ -750,6 +750,9 @@
       "WEAK": "Debil",
       "MEDIUM": "Medio",
       "STRONG": "Fuerte"
+    },
+    "ERROR": {
+      "USERNAME_ALREADY_EXIST": "Nombre de usuario ya existe"
     }
   },
   "ROLES": {
@@ -788,7 +791,8 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Rol requerido",
       "CHECKING_DUPLICATE": "Verificando duplicado",
-      "CREATION_FAILED": "Hubo un error durante la creacion de Rol"
+      "CREATION_FAILED": "Hubo un error durante la creacion de Rol",
+      "ROL_REQUIRED": "El Rol de Usuario es obligatorio"
     }
   },
   "HOLIDAYS": {

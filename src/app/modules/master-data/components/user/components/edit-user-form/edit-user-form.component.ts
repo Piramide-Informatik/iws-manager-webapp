@@ -13,11 +13,11 @@ import {
   Observable,
   Subscription,
   switchMap,
+  take,
 } from 'rxjs';
 import { UserStateService } from '../../utils/user-state.service';
 import { UserUtils } from '../../utils/user-utils';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
 import { Role } from '../../../../../../Entities/role';
 import { RoleService } from '../../../../../../Services/role.service';
 import { PasswordDirective } from 'primeng/password';
@@ -35,6 +35,7 @@ export class EditUserFormComponent implements OnInit {
   currentUser: User | null = null;
   editUserForm!: FormGroup;
   isSaving = false;
+  usernameAlreadyExist = false;
   private readonly subscriptions = new Subscription();
   private readonly editUserSource = new BehaviorSubject<User | null>(null);
   private readonly roleService = inject(RoleService);
@@ -54,7 +55,6 @@ export class EditUserFormComponent implements OnInit {
   constructor(
     private readonly userUtils: UserUtils,
     private readonly userStateService: UserStateService,
-    private readonly messageService: MessageService,
     private readonly translate: TranslateService,
     private readonly commonMessageService: CommonMessagesService
   ) {}
@@ -85,7 +85,7 @@ export class EditUserFormComponent implements OnInit {
 
   private initForm(): void {
     this.editUserForm = new FormGroup({
-      username: new FormControl(''),
+      username: new FormControl('', [Validators.required]),
       nameUser: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
@@ -247,26 +247,22 @@ export class EditUserFormComponent implements OnInit {
   }
 
   private handleError(err: any): void {
-    if (err instanceof OccError) {
-      this.commonMessageService.showErrorEditMessage();
+    this.isSaving = false;
+    this.commonMessageService.showErrorEditMessage();
+    if (err instanceof OccError || err.message?.includes('404')) {
       this.showOCCErrorModaUser = true;
       this.occErrorType = err.errorType;
-    } else {
-      this.handleSaveError(err);
+    } else if (err.message.includes('username already exists')){
+      this.usernameAlreadyExist = true;
+      this.editUserForm.get('username')?.valueChanges.pipe(take(1))
+      .subscribe(() => this.usernameAlreadyExist = false);
     }
-    this.isSaving = false;
   }
 
   private handleSaveSuccess(savedUser: User): void {
     this.commonMessageService.showEditSucessfullMessage();
     this.userStateService.setUserToEdit(null);
     this.clearForm();
-  }
-
-  private handleSaveError(error: any): void {
-    console.error('Error saving user:', error);
-    this.commonMessageService.showErrorEditMessage();
-    this.isSaving = false;
   }
 
   setUserToEdit(user: User | null) {

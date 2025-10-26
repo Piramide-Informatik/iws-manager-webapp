@@ -1,38 +1,47 @@
 <p-card [style]="{ background: 'var(--light-cyan)', height: '550px' }" [header]="'USERS.FORM.EDIT_TITLE' | translate">
   <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
     <div class="align-items-center mb-2">
-      <div class="user-form mb-2">
+      <div class="user-form">
         <label for="username">{{ "USERS.FORM.USERNAME" | translate }}</label>
-        <input #firstInput pInputText id="username" formControlName="username" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('username')?.invalid && 
-        editUserForm.get('username')?.touched}" autocomplete="off" />
+        <div class="input-message">
+          <input #firstInput pInputText id="username" formControlName="username" autocomplete="off" 
+          invalid="editUserForm.get('username')?.invalid  
+          && editUserForm.get('username')?.dirty 
+          || editUserForm.get('username')?.touched
+          || usernameAlreadyExist"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          editUserForm.get('username')?.invalid && 
+          editUserForm.get('username')?.dirty || usernameAlreadyExist
+          ">{{ usernameAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+        </div>
       </div>
 
-      <div class="user-form mb-2">
+      <div class="user-form">
         <label for="firstName">{{ "USERS.FORM.FIRSTNAME" | translate }}</label>
         <input pInputText id="firstName" formControlName="firstName" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('firstName')?.invalid && 
         editUserForm.get('firstName')?.touched}" autocomplete="off"/>
       </div>
 
-      <div class="user-form mb-2">
+      <div class="user-form">
         <label for="lastName">{{ "USERS.FORM.LASTNAME" | translate }}</label>
         <input pInputText id="lastName" formControlName="lastName" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('lastName')?.invalid && 
         editUserForm.get('lastName')?.touched}" autocomplete="off" />
       </div>
 
-      <div class="user-form mb-2">
+      <div class="user-form">
         <label for="email">{{ "USERS.FORM.EMAIL" | translate }}</label>
         <input pInputText id="email" formControlName="email" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('email')?.invalid && 
         editUserForm.get('email')?.touched}" autocomplete="off"/>
       </div>
 
-      <div class="user-form mb-2">
+      <div class="user-form">
         <label for="password">{{ "USERS.FORM.PASSWORD" | translate }}</label>
         <p-password #passwordContainer formControlName="password" [feedback]="true" [toggleMask]="true" [ngClass]="{'ng-invalid ng-dirty':editUserForm.get('password')?.invalid && 
         editUserForm.get('password')?.touched}" autocomplete="off" [weakLabel]="'USERS.PASSWORD_LABEL.WEAK' | translate" [mediumLabel]="'USERS.PASSWORD_LABEL.MEDIUM' | translate" 
         [strongLabel]="'USERS.PASSWORD_LABEL.STRONG' | translate" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate" inputId="password">
         </p-password>
       </div>
-      <div class="user-form mb-2">
+      <div class="user-form">
         <label for="active">{{ "USERS.FORM.ACTIVE" | translate }}</label>
         <p-toggleswitch formControlName="active" inputId="active">
           <ng-template #handle let-checked="checked">

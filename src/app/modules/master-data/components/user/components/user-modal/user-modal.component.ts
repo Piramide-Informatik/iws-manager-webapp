@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserUtils } from '../../utils/user-utils';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { PasswordDirective } from 'primeng/password';
 import { TranslateService } from '@ngx-translate/core';
 import { UserStateService } from '../../utils/user-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
-import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -33,12 +32,13 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('passwordCreateContainer') passwordCreateContainer!: PasswordDirective;
 
   isLoading = false;
+  usernameAlreadyExist = false;
   errorMessage: string | null = null;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalUser = false;
 
   readonly createUserForm = new FormGroup({
-    username: new FormControl(''),
+    username: new FormControl('', [Validators.required]),
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     password: new FormControl(''),
@@ -47,8 +47,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
   });
 
   constructor(
-    private readonly translate: TranslateService,
-    private readonly commonMessageService: CommonMessagesService
+    private readonly translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -79,6 +78,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
 
   closeAndReset(): void {
     this.isLoading = false;
+    this.usernameAlreadyExist = false;
     this.isVisibleModal.emit(false);
     this.resetForm();
   }
@@ -116,7 +116,12 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
     // Check for general "in use" error
     else if (errorMessage.includes('it is in use by other entities')) {
       detail = inUseDetail ?? defaultDetail;
-    } 
+    } else if(errorMessage.includes('username already exists')){
+      detail = defaultDetail;
+      this.usernameAlreadyExist = true;
+       this.createUserForm.get('username')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.usernameAlreadyExist = false);
+    }
     // Check for other specific error codes
     else {
       detail = this.getErrorDetail(errorMessage);
