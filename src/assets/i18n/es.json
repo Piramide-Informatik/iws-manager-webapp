@@ -29,6 +29,8 @@
       "HOLIDAYS": "Datos Maestros - Días Festivos",
       "IWS_COMMISSIONS": "Comisiones de IWS",
       "IWS_STAFF": "Datos Maestros - Personal de IWS",
+      "IWS_COMMISSIONS": "Datos Maestros - Comisiones de IWS",
+      "IWS_STAFF": "Personal de IWS",
       "IWS_TEAMS": "Datos Maestros - Equipos de IWS",
       "NETWORKS": "Datos Maestros - Redes",
       "PROJECT_STATUS": "Datos Maestros - Estado del Proyecto",
@@ -43,7 +45,7 @@
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
       "TYPE_OF_COMPANIES": "Datos Maestros - Tipos de Empresas",
-      "USER": "Datos Maestros - Usuario"
+      "USER": "Usuario"
     }
   },
   "ERROR": {
@@ -750,6 +752,9 @@
       "WEAK": "Debil",
       "MEDIUM": "Medio",
       "STRONG": "Fuerte"
+    },
+    "ERROR": {
+      "USERNAME_ALREADY_EXIST": "Nombre de usuario ya existe"
     }
   },
   "ROLES": {
@@ -788,7 +793,8 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Rol requerido",
       "CHECKING_DUPLICATE": "Verificando duplicado",
-      "CREATION_FAILED": "Hubo un error durante la creacion de Rol"
+      "CREATION_FAILED": "Hubo un error durante la creacion de Rol",
+      "ROL_REQUIRED": "El Rol de Usuario es obligatorio"
     }
   },
   "HOLIDAYS": {
@@ -927,6 +933,10 @@
     "DELETE": {
       "CONFIRMATION": "Eliminar Empleado",
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el empleado "
+    },
+    "ERROR": {
+      "SHORT_NAME_ALREADY_EXIST": "La abreviatura ya existe",
+      "CREATION_FAILED": "Error al crear el miembro del personal"
     }
   },
   "SYSTEM_CONSTANT": {

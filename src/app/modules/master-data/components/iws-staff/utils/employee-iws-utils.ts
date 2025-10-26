@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { EmployeeIwsService } from '../../../../../Services/employee-iws.service';
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -41,7 +41,25 @@ export class EmployeeIwsUtils {
    */
 
   addEmployeeIws(employeeIws: Omit<EmployeeIws, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<EmployeeIws> {
-    return this.employeeIwsService.addEmployeeIws(employeeIws);
+    const employeeLabel = employeeIws.employeeLabel?.trim() || '';
+    if (!employeeLabel) {
+      return throwError(() => new Error('Employee label is required'));
+    }
+
+    return this.employeeIwsShortNameExists(employeeLabel).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('short name already exists'));
+        }
+        return this.employeeIwsService.addEmployeeIws(employeeIws);
+      }),
+      catchError((err) => {
+        if (err.message === 'short name already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('IWS_STAFF.ERROR.CREATION_FAILED'));
+      })
+    );
   }
 
   getAllEmployeeIws(): Observable<EmployeeIws[]> {
@@ -84,6 +102,11 @@ export class EmployeeIwsUtils {
       return throwError(() => new Error('Invalid employeeIws data'));
     }
 
+    const employeeLabel = employeeIws.employeeLabel?.trim() || '';
+    if (!employeeLabel) {
+      return throwError(() => new Error('Employee label is required'));
+    }
+
     return this.employeeIwsService.getEmployeeIwsById(employeeIws.id).pipe(
       take(1),
       switchMap((currentEmployeeIws) => {
@@ -93,7 +116,15 @@ export class EmployeeIwsUtils {
         if (currentEmployeeIws.version !== employeeIws.version) {
           return throwError(() => createUpdateConflictError('IWS Employee'));
         }
-        return this.employeeIwsService.updateEmployeeIws(employeeIws);
+        
+        return this.employeeIwsShortNameExists(employeeLabel, employeeIws.id).pipe(
+          switchMap((exists) => {
+            if (exists) {
+              return throwError(() => new Error('short name already exists'));
+            }
+            return this.employeeIwsService.updateEmployeeIws(employeeIws);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating employeeIws:', err);
@@ -106,6 +137,23 @@ export class EmployeeIwsUtils {
       catchError(err => {
         console.error('Error fetching next employee number:', err);
         return throwError(() => new Error('Failed to load next employee number'));
+      })
+    );
+  }
+  /**
+   * Checks if a employee short name already exists (case-insensitive comparison)
+   * @param shortName - Short name to check
+   * @param excludeId - ID to exclude from check (for updates)
+   * @returns Observable emitting boolean indicating existence
+   */
+  private employeeIwsShortNameExists(shortName: string, excludeId?: number): Observable<boolean> {
+    return this.employeeIwsService.getAllEmployeeIws().pipe(
+      map(employees => employees.some(
+        emp => emp.id !== excludeId && 
+               emp.employeeLabel?.toLowerCase() === shortName?.toLowerCase()
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check short name existence'));
       })
     );
   }

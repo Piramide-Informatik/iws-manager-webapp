@@ -34,7 +34,7 @@
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
       "PROJECT_FUNNELS": "Stammdaten - Projektträger",
       "REALIZATION_PROBABILITIES": "Stammdaten - Realisierungswahrscheinlichkeit",
-      "ROLE": "Stammdaten - Benutzerrollen",
+      "ROLE": "Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Stammdaten - Umsatzsteuer",
       "SALUTATION": "Stammdaten - Anrede",
@@ -43,7 +43,7 @@
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
       "TYPE_OF_COMPANIES": "Stammdaten - Unternehmensarten",
-      "USER": "Stammdaten - Benutzer"
+      "USER": "Benutzer"
     }
   },
   "ERROR": {
@@ -736,7 +736,7 @@
       "USERNAME": "Benutzername",
       "FIRSTNAME": "Vorname",
       "LASTNAME": "Nachname",
-      "EMAIL": "E-Mail-Adresse",
+      "EMAIL": "E-Mail",
       "PASSWORD": "Kennwort",
       "ACTIVE": "Aktiv",
       "ASSIGNED_ROLES": "Zugewiesene Rollen",
@@ -756,6 +756,9 @@
       "WEAK": "Schwach",
       "MEDIUM": "Mittel",
       "STRONG": "Stark"
+    },
+    "ERROR": {
+      "USERNAME_ALREADY_EXIST": "Benutzername existiert bereits"
     }
   },
   "ROLES": {
@@ -794,7 +797,8 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",
       "CHECKING_DUPLICATE": "Duplikatprüfung",
-      "CREATION_FAILED": "Beim Erstellen der Rolle ist ein Fehler aufgetreten"
+      "CREATION_FAILED": "Beim Erstellen der Rolle ist ein Fehler aufgetreten",
+      "ROL_REQUIRED": "Die Benutzerrolle ist erforderlich"
     }
   },
   "HOLIDAYS": {
@@ -933,6 +937,10 @@
     "DELETE": {
       "CONFIRMATION": "Mitarbeiter löschen",
       "CONFIRM_QUESTION": "Möchten Sie wirklich löschen"
+    },
+    "ERROR": {
+      "SHORT_NAME_ALREADY_EXIST": "Kürzel existiert bereits",
+      "CREATION_FAILED": "Fehler beim Erstellen des Mitarbeiters"
     }
   },
   "SYSTEM_CONSTANT": {

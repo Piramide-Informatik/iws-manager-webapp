@@ -10,7 +10,13 @@
                     id="name"
                     formControlName="name"
                     autocomplete="off"
+                    [class]="createRoleForm.get('name')?.invalid && createRoleForm.get('name')?.touched ? 'ng-invalid ng-dirty' : ''"
                     />
+                    <div *ngIf="createRoleForm.get('name')?.invalid && createRoleForm.get('name')?.touched" class="error-messages">
+                    <small *ngIf="createRoleForm.get('name')?.errors?.['required']" class="p-error">
+                        {{ 'ROLES.ERROR.ROL_REQUIRED' | translate }}
+                    </small>
+                    </div>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button

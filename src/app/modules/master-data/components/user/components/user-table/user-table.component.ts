@@ -94,6 +94,7 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
       {
         field: 'username',
         minWidth: 110,
+        classesTHead: ['fix-width'],
         header: this.translate.instant(_('USERS.HEADER.USERNAME')),
         useSameAsEdit: true
       },

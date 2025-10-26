@@ -7,5 +7,5 @@ export interface RightRole {
     accessRight?: number;
     sequenceNo?: number;
     role: { id: number; name?: string };
-    systemFunction: { id: number; functionName?: string };
+    systemFunction: { id: number; functionName?: string; sequenceNo?: number };
 }

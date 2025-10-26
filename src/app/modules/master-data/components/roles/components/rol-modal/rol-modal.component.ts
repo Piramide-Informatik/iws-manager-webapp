@@ -35,7 +35,7 @@ export class RolModalComponent implements OnInit {
   readonly createRoleForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
-      Validators.minLength(2),
+      Validators.minLength(1),
       Validators.maxLength(50)
     ])
   });
@@ -141,22 +141,28 @@ export class RolModalComponent implements OnInit {
   }
 
   private handleRoleExistence(exists: boolean, name: string) {
-    if (exists) {
-      this.errorMessage = 'MESSAGE.RECORD_ALREADY_EXISTS';
-      this.roleCreated.emit();
-      this.closeAndReset();
-      this.stopLoading()
-    }
-    this.roleUtils.createNewRole(name).subscribe({
-      next: () => this.commonMessageService.showCreatedSuccesfullMessage(),
-      error: () => this.commonMessageService.showErrorCreatedMessage(),
-      complete: () => {
-        this.roleCreated.emit({ status: 'success' });
-        this.closeAndReset();
-        this.stopLoading()
-      }
-    });
+  if (exists) {
+    this.errorMessage = 'MESSAGE.RECORD_ALREADY_EXISTS';
+    this.commonMessageService.showErrorRecordAlreadyExist();
+    this.stopLoading();
+    return; // ⚠️ importante
   }
+
+  this.roleUtils.createNewRole(name).subscribe({
+    next: () => {
+      this.commonMessageService.showCreatedSuccesfullMessage();
+      this.roleCreated.emit({ status: 'success' });
+    },
+    error: () => {
+      this.commonMessageService.showErrorCreatedMessage();
+      this.roleCreated.emit({ status: 'error' });
+    },
+    complete: () => {
+      this.closeAndReset();
+      this.stopLoading();
+    }
+  });
+}
 
   private handleError(messageKey: string, error: any) {
     this.errorMessage = messageKey;
