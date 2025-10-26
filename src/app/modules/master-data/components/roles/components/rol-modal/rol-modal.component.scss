@@ -1,14 +1,35 @@
 .role-form {
-    display: flex;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: auto auto;
     align-items: center;
     margin-bottom: 1rem;
+    gap: 0.5rem 0; /* Espacio vertical entre filas */
 
     label {
-        width: 100px;
-        flex-shrink: 0;
+        grid-column: 1;
+        grid-row: 1;
     }
 
     input {
+        grid-column: 2;
+        grid-row: 1;
         width: 100%;
     }
+
+    .error-messages {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 0;
+    }
+}
+
+.error-messages small {
+    display: block;
+    color: #e24c4c;
+    font-size: 0.75rem;
+}
+
+.ng-invalid.ng-dirty {
+    border-color: #e24c4c !important;
 }

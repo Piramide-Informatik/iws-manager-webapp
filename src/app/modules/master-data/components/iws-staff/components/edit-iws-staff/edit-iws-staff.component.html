@@ -14,14 +14,34 @@
       </div>
 
       <div class="iws-form">
-        <label for="shortName">{{ "IWS_STAFF.LABEL.SHORT_NAME" | translate }}</label>
-        <input #firstInput
-          pInputText
-          type="text"
-          id="shortName"
-          formControlName="shortName"
-          autocomplete="off"
-        />
+          <label for="shortName">{{ "IWS_STAFF.LABEL.SHORT_NAME" | translate }}</label>
+          <div class="input-message">
+            <input #firstInput
+              pInputText
+              type="text"
+              id="shortName"
+              formControlName="shortName"
+              autocomplete="off"
+              [attr.invalid]="(editIwsStaffForm.get('shortName')?.invalid && 
+              editIwsStaffForm.get('shortName')?.dirty) 
+              || shortNameAlreadyExist"
+            />
+            <p-message 
+              severity="error" 
+              [showTransitionOptions]="'0ms'" 
+              variant="simple" 
+              size="small" 
+              *ngIf="(editIwsStaffForm.get('shortName')?.invalid && 
+              editIwsStaffForm.get('shortName')?.dirty) 
+              || shortNameAlreadyExist">
+              <span *ngIf="editIwsStaffForm.get('shortName')?.errors?.['required'] && editIwsStaffForm.get('shortName')?.dirty">
+                {{ 'ERROR.FIELD_REQUIRED' | translate }}
+              </span>
+              <span *ngIf="shortNameAlreadyExist && !editIwsStaffForm.get('shortName')?.errors?.['required']">
+                {{ 'IWS_STAFF.ERROR.SHORT_NAME_ALREADY_EXIST' | translate }}
+              </span>
+            </p-message>
+          </div>
       </div>
 
       <div class="iws-form">

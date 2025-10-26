@@ -1,5 +1,16 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder,
+} from '@angular/forms';
 import { Role } from '../../../../../../Entities/role';
 import { Subscription, forkJoin, of } from 'rxjs';
 import { RoleUtils } from '../../utils/role-utils';
@@ -53,7 +64,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
     private readonly fb: FormBuilder,
     private readonly rightRoleUtils: RightRoleUtils,
     private readonly commonMessagesService: CommonMessagesService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -64,10 +75,6 @@ export class RolFormComponent implements OnInit, OnDestroy {
       this.loadRoleAfterRefresh(savedRoleId);
       localStorage.removeItem('selectedRoleId');
     }
-    this.editRoleForm = new FormGroup({
-      name: new FormControl(''),
-      selectedModule: new FormControl(''),
-    });
 
     this.loadModules();
   }
@@ -112,7 +119,8 @@ export class RolFormComponent implements OnInit, OnDestroy {
             delete: (rightsValue & 8) !== 0,
             execute: (rightsValue & 16) !== 0,
           } as SystemFunctionWithRights;
-        });
+        })
+        .sort((a, b) => (a.sequenceNo || 0) - (b.sequenceNo || 0));
       },
       error: (err) => {
         console.error('Error loading RightRoles or Functions:', err);
@@ -127,25 +135,49 @@ export class RolFormComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.editRoleForm.invalid || !this.currentRole || this.isSaving) {
-      this.markAllAsTouched();
-      return;
-    }
+    this.markAllAsTouched();
+    return;
+  }
 
-    this.isSaving = true;
-    const updatedRole: Role = {
-      ...this.currentRole,
-      name: this.editRoleForm.value.name?.trim(),
-    };
-    this.subscriptions.add(
-      this.roleUtils.updateRole(updatedRole).subscribe({
-        next: (savedRole) => {
-          this.currentRole = savedRole;
-          this.saveRights(savedRole);
-          this.commonMessagesService.showEditSucessfullMessage();
-        },
-        error: (err) => this.handleError(err),
-      })
-    );
+  const newName = this.editRoleForm.value.name?.trim();
+  if (!newName) return;
+
+  this.isSaving = true;
+
+  // Check if another role with the same name already exists
+  this.roleUtils.roleExists(newName).subscribe({
+    next: (exists) => {
+      if (exists && newName !== this.currentRole!.name) {
+        // Only show error if the name belongs to ANOTHER role
+        this.commonMessagesService.showErrorRecordAlreadyExist();
+        this.isSaving = false;
+        return;
+      }
+
+      // Continue with the update
+      const updatedRole: Role = {
+        ...this.currentRole!,
+        id: this.currentRole!.id,
+        name: newName,
+      };
+
+      this.subscriptions.add(
+        this.roleUtils.updateRole(updatedRole).subscribe({
+          next: (savedRole) => {
+            this.currentRole = savedRole;
+            this.saveRights(savedRole);
+            this.commonMessagesService.showEditSucessfullMessage();
+            this.isSaving = false;
+          },
+          error: (err) => this.handleError(err),
+        })
+      );
+    },
+    error: (err) => {
+      console.error('Error checking role existence:', err);
+      this.isSaving = false;
+    },
+  });
   }
 
   private markAllAsTouched(): void {
@@ -171,8 +203,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
   }
 
   private handleError(err: any): void {
-    console.log(err);
-    if (err instanceof OccError) { 
+    if (err instanceof OccError) {
       this.commonMessagesService.showErrorEditMessage();
       this.showOCCErrorModalRole = true;
       this.occErrorType = err.errorType;
@@ -195,9 +226,10 @@ export class RolFormComponent implements OnInit, OnDestroy {
     this.editRoleForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.minLength(2),
+        Validators.minLength(1),
         Validators.maxLength(50),
       ]),
+      selectedModule: new FormControl('')
     });
   }
 
@@ -213,7 +245,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
   private loadRolesData(role: Role): void {
     this.editRoleForm.patchValue({
       name: role.name,
-      selectedModule: null // deselect the module when changing roles
+      selectedModule: null, // deselect the module when changing roles
     });
     this.functions = []; // deselect the module when changing roles
     this.existingRights = [];
@@ -284,9 +316,9 @@ export class RolFormComponent implements OnInit, OnDestroy {
     });
 
     // Procesar derechos existentes que ya no están en la lista de funciones
-    const functionIds = this.functions.map(fn => fn.id);
+    const functionIds = new Set(this.functions.map((fn) => fn.id));
     this.existingRights.forEach((existingRight) => {
-      if (!functionIds.includes(existingRight.systemFunction.id)) {
+      if (!functionIds.has(existingRight.systemFunction.id)) {
         // Esta función ya no está en la lista, crear nuevo con accessRight = 0
         toSave.push({
           accessRight: 0,

@@ -14,14 +14,30 @@
             </div>
             <div class="create-form flex align-items-center mb-3">
                 <label for="employeeLabel">{{ 'IWS_STAFF.LABEL.SHORT_NAME' | translate }}</label>
-                <input #fisrtInput pInputText type="text" id="employeeLabel" formControlName="employeeLabel" autocomplete="off"
-                    [attr.aria-invalid]="createEmployeeIwsForm.get('employeeLabel')?.invalid"
-                    [attr.aria-describedby]="createEmployeeIwsForm.get('employeeLabel')?.invalid ? 'employeeLabelError' : null"
-                    />
-
-                <small *ngIf="createEmployeeIwsForm.get('employeeLabel')?.invalid && createEmployeeIwsForm.get('employeeLabel')?.touched"
-                    id="employeeLabelError" class="text-red-500 block mt-1">
-                </small>
+                <div class="input-message">
+                  <input #fisrtInput pInputText type="text" id="employeeLabel" formControlName="employeeLabel" autocomplete="off"
+                      [attr.aria-invalid]="createEmployeeIwsForm.get('employeeLabel')?.invalid"
+                      [attr.aria-describedby]="createEmployeeIwsForm.get('employeeLabel')?.invalid ? 'employeeLabelError' : null"
+                      [attr.invalid]="(createEmployeeIwsForm.get('employeeLabel')?.invalid && 
+                      createEmployeeIwsForm.get('employeeLabel')?.dirty) 
+                      || shortNameAlreadyExist"
+                  />
+                  <p-message 
+                    severity="error" 
+                    [showTransitionOptions]="'0ms'" 
+                    variant="simple" 
+                    size="small" 
+                    *ngIf="(createEmployeeIwsForm.get('employeeLabel')?.invalid && 
+                    createEmployeeIwsForm.get('employeeLabel')?.dirty) 
+                    || shortNameAlreadyExist">
+                    <span *ngIf="createEmployeeIwsForm.get('employeeLabel')?.errors?.['required'] && createEmployeeIwsForm.get('employeeLabel')?.dirty">
+                      {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </span>
+                    <span *ngIf="shortNameAlreadyExist && !createEmployeeIwsForm.get('employeeLabel')?.errors?.['required']">
+                      {{ 'IWS_STAFF.ERROR.SHORT_NAME_ALREADY_EXIST' | translate }}
+                    </span>
+                  </p-message>
+                </div>
             </div>
             <div class="create-form flex align-items-center mb-3">
                 <label for="firstName">{{ 'IWS_STAFF.LABEL.FIRST_NAME' | translate }}</label>
@@ -105,7 +121,7 @@
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
                     icon="pi pi-check" iconPos="left" [loading]="isLoading"
-                    [disabled]="!createEmployeeIwsForm.dirty || isLoading" />
+                    [disabled]="!createEmployeeIwsForm.valid || isLoading || !createEmployeeIwsForm.dirty" />
 
                 <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                     icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />

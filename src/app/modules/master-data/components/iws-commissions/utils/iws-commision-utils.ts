@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { IwsCommissionService } from '../../../../../Services/iws-commission.service';
 import { IwsCommission } from '../../../../../Entities/iws-commission ';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -18,7 +18,25 @@ export class IwsCommissionUtils {
       'id' | 'createdAt' | 'updatedAt' | 'version'
     >
   ): Observable<IwsCommission> {
-    return this.iwsCommissionService.addIwsCommission(iwsCommission);
+    const threshold = iwsCommission.fromOrderValue;
+    if (threshold === null || threshold === undefined) {
+      return throwError(() => new Error('Threshold is required'));
+    }
+
+    return this.iwsCommissionThresholdExists(threshold).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('threshold already exists'));
+        }
+        return this.iwsCommissionService.addIwsCommission(iwsCommission);
+      }),
+      catchError((err) => {
+        if (err.message === 'threshold already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('IWS_COMMISSIONS.ERROR.CREATION_FAILED'));
+      })
+    );
   }
 
   getAllIwsCommission(): Observable<IwsCommission[]> {
@@ -45,31 +63,62 @@ export class IwsCommissionUtils {
       subscriber.complete();
     });
   }
-  //Delete a IwsCommission by ID after checking if it's used by any entity
+
   deleteIwsCommission(id: number): Observable<void> {
     return this.iwsCommissionService.deleteIwsCommission(id);
   }
 
-  //Update a IwsCommission by ID and updates the internal IwsCommission signal
   updateIwsCommission(iwsCommission: IwsCommission): Observable<IwsCommission> {
     if (!iwsCommission?.id) {
       return throwError(() => new Error('Invalid iwsCommission data'));
+    }
+
+    const threshold = iwsCommission.fromOrderValue;
+    if (threshold === null || threshold === undefined) {
+      return throwError(() => new Error('Threshold is required'));
     }
 
     return this.iwsCommissionService.getIwsCommissionById(iwsCommission.id).pipe(
       take(1),
       switchMap((currentIwsCommission) => {
         if (!currentIwsCommission) {
-          return throwError(() => createNotFoundUpdateError('Title'));
+          return throwError(() => createNotFoundUpdateError('IWS Commission'));
         }
         if (currentIwsCommission.version !== iwsCommission.version) {
-          return throwError(() => createUpdateConflictError('Title'));
+          return throwError(() => createUpdateConflictError('IWS Commission'));
         }
-        return this.iwsCommissionService.updateIwsCommission(iwsCommission);
+        
+        // Check if threshold already exists (excluding current commission)
+        return this.iwsCommissionThresholdExists(threshold, iwsCommission.id).pipe(
+          switchMap((exists) => {
+            if (exists) {
+              return throwError(() => new Error('threshold already exists'));
+            }
+            return this.iwsCommissionService.updateIwsCommission(iwsCommission);
+          })
+        );
       }),
       catchError((err) => {
-        console.error('Error updating employeeIws:', err);
+        console.error('Error updating IWS Commission:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  /**
+   * Checks if a commission threshold already exists
+   * @param threshold - Threshold value to check
+   * @param excludeId - ID to exclude from check (for updates)
+   * @returns Observable emitting boolean indicating existence
+   */
+  private iwsCommissionThresholdExists(threshold: number, excludeId?: number): Observable<boolean> {
+    return this.iwsCommissionService.getAllIwsCommissions().pipe(
+      map(commissions => commissions.some(
+        commission => commission.id !== excludeId && 
+               commission.fromOrderValue === threshold
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check threshold existence'));
       })
     );
   }
