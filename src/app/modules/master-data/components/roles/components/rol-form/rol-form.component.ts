@@ -157,7 +157,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
       // Continue with the update
       const updatedRole: Role = {
         ...this.currentRole!,
-        id: this.currentRole!.id!, // ensures that it is not undefined
+        id: this.currentRole!.id,
         name: newName,
       };
 
@@ -316,9 +316,9 @@ export class RolFormComponent implements OnInit, OnDestroy {
     });
 
     // Procesar derechos existentes que ya no están en la lista de funciones
-    const functionIds = this.functions.map((fn) => fn.id);
+    const functionIds = new Set(this.functions.map((fn) => fn.id));
     this.existingRights.forEach((existingRight) => {
-      if (!functionIds.includes(existingRight.systemFunction.id)) {
+      if (!functionIds.has(existingRight.systemFunction.id)) {
         // Esta función ya no está en la lista, crear nuevo con accessRight = 0
         toSave.push({
           accessRight: 0,
