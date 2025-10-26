@@ -3,14 +3,17 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center">
                 <label for="userName">{{ 'USERS.FORM.USERNAME' | translate }}</label>
-                <input #firstInput pInputText type="text" id="userName" formControlName="username" autocomplete="off"
-                    [attr.aria-invalid]="createUserForm.get('username')?.invalid"
-                    [attr.aria-describedby]="createUserForm.get('username')?.invalid ? 'userError' : null"
-                     />
-
-                <small *ngIf="createUserForm.get('username')?.invalid && createUserForm.get('username')?.touched"
-                    id="userError" class="text-red-500 block mt-1">
-                </small>
+                <div class="input-message">
+                    <input #firstInput pInputText type="text" id="userName" formControlName="username" autocomplete="off"
+                        invalid="createUserForm.get('username')?.invalid  
+                        && createUserForm.get('username')?.dirty 
+                        || createUserForm.get('username')?.touched
+                        || usernameAlreadyExist"/>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    createUserForm.get('username')?.invalid && 
+                    createUserForm.get('username')?.dirty || usernameAlreadyExist
+                    ">{{ usernameAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                </div>
             </div>
             <div class="create-form flex align-items-center">
                 <label for="firstName">{{ 'USERS.FORM.FIRSTNAME' | translate }}</label>

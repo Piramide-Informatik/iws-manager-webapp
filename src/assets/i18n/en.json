@@ -43,7 +43,7 @@
       "TEXTS": "Masterdata - Texts",
       "TITLE": "Masterdata - Titles",
       "TYPE_OF_COMPANIES": "Masterdata - Company Types",
-      "USER": "Masterdata - User"
+      "USER": "User"
     }
   },
   "ERROR": {
@@ -63,7 +63,8 @@
     "NUMBER_MAX": "Max value 100 expected",
     "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
     "NUMBER_MAX_12": "Max value 12 expected",
-    "DUPLICATE_PROBABILITY": "This probability already exists"
+    "DUPLICATE_PROBABILITY": "This probability already exists",
+    "FIELD_REQUIRED": "Field required"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -751,6 +752,9 @@
       "WEAK": "Weak",
       "MEDIUM": "Medium",
       "STRONG": "Strong"
+    },
+    "ERROR": {
+      "USERNAME_ALREADY_EXIST": "Username already exist"
     }
   },
   "ROLES": {
