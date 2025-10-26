@@ -1,10 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, filter, forkJoin, map, of, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, filter, map, switchMap, take, throwError } from 'rxjs';
 import { Salutation } from '../../../../../Entities/salutation';
 import { SalutationService } from '../../../../../Services/salutation.service';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { CustomerUtils } from '../../../../customer/utils/customer-utils';
-import { EmployeeUtils } from '../../../../employee/utils/employee.utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 /**
@@ -14,8 +12,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' }) 
 export class SalutationUtils {
   private readonly salutationService = inject(SalutationService);
-  private readonly customerUtils = inject(CustomerUtils);
-  private readonly employeeUtils = inject(EmployeeUtils);
 
   loadInitialData(): Observable<Salutation[]> {
       return this.salutationService.loadInitialData();
@@ -104,26 +100,6 @@ export class SalutationUtils {
  */
   deleteSalutation(id: number): Observable<void> {
     return this.salutationService.deleteSalutation(id);
-  }
-
-  /**
-   * Checks if a salutation is used by any customer contacts or employees.
-   * @param idSalutation - ID of the salutation to check
-   * @returns Observable emitting boolean indicating usage
-   */
-  private checkSalutationUsage(idSalutation: number): Observable<boolean> {
-    return forkJoin([
-      this.customerUtils.getAllContacts().pipe(
-        map(contacts => contacts.some(contact => contact.salutation?.id === idSalutation)),
-        catchError(() => of(false))
-      ),
-      this.employeeUtils.getAllEmployees().pipe(
-        map(employees => employees.some(employee => employee.salutation?.id === idSalutation)),
-        catchError(() => of(false))
-      )
-    ]).pipe(
-      map(([usedInCustomers, usedInEmployees]) => usedInCustomers || usedInEmployees)
-    );
   }
 
   /**
