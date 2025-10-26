@@ -28,7 +28,7 @@
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
       "HOLIDAYS": "Stammdaten - Feiertage",
       "IWS_COMMISSIONS": "Stammdaten - IWS Provisionen",
-      "IWS_STAFF": "Stammdaten - IWS Mitarbeiter",
+      "IWS_STAFF": "IWS Mitarbeiter",
       "IWS_TEAMS": "Stammdaten - IWS Teams",
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
@@ -937,6 +937,10 @@
     "DELETE": {
       "CONFIRMATION": "Mitarbeiter löschen",
       "CONFIRM_QUESTION": "Möchten Sie wirklich löschen"
+    },
+    "ERROR": {
+      "SHORT_NAME_ALREADY_EXIST": "Kürzel existiert bereits",
+      "CREATION_FAILED": "Fehler beim Erstellen des Mitarbeiters"
     }
   },
   "SYSTEM_CONSTANT": {

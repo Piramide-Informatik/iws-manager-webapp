@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeIws } from '../../../../../../Entities/employeeIws';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { EmployeeIwsStateService } from '../../utils/employee-iws-state.service';
 import { TeamIwsService } from '../../../../../../Services/team-iws.service';
 import { EmployeeIwsUtils } from '../../utils/employee-iws-utils';
@@ -24,6 +24,7 @@ export class EditIwsStaffComponent implements OnInit {
   isSaving = false;
   private readonly subscriptions = new Subscription();
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public shortNameAlreadyExist = false;
 
   teams: any[] = [];
 
@@ -50,7 +51,7 @@ export class EditIwsStaffComponent implements OnInit {
   private initForm(): void {
     this.editIwsStaffForm = new FormGroup({
       staffId: new FormControl({ value: null, disabled: true }),
-      shortName: new FormControl('', []),
+      shortName: new FormControl('', [Validators.required]),
       firstName: new FormControl('', []),
       lastName: new FormControl('', []),
       email: new FormControl('', [Validators.email]),
@@ -180,13 +181,33 @@ export class EditIwsStaffComponent implements OnInit {
 
   private handleSaveError(error: any): void {
     console.error('Error saving employeeIWS:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: this.translate.instant('MESSAGE.ERROR'),
-      detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
-    });
+    
+    if (error?.message?.includes('short name already exists')) {
+      this.shortNameAlreadyExist = true;
+      this.editIwsStaffForm.get('shortName')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.shortNameAlreadyExist = false);
+      
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('IWS_STAFF.ERROR.SHORT_NAME_ALREADY_EXIST'),
+      });
+    } else if (error?.message?.includes('Employee label is required')) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('ERROR.FIELD_REQUIRED'),
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('MESSAGE.UPDATE_FAILED'),
+      });
+    }
+    
     this.isSaving = false;
-  }
+}
 
   cancelEdit(): void {
     this.editIwsStaffForm.reset();

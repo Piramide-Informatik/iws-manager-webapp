@@ -43,7 +43,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() employeeIwsToDelete: number | null = null;
   @Input() employeeIwsName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() employeeIwsCreated = new EventEmitter<{ status: 'success'}>();
+  @Output() employeeIwsCreated = new EventEmitter<{ status: 'success' | 'error'}>();
   @Output() employeeIwsDeleted = new EventEmitter<{ status: 'success' | 'error', error?: any }>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
@@ -55,6 +55,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   errorMessage: string | null = null;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalIWSStaff = false;
+  public shortNameAlreadyExist = false;
 
   readonly createEmployeeIwsForm = new FormGroup({
     firstName: new FormControl('', [
@@ -67,7 +68,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
     ]),
     mail: new FormControl('', [Validators.email]),
     employeeNo: new FormControl<number | null>({ value: null, disabled: true }),
-    employeeLabel: new FormControl(''),
+    employeeLabel: new FormControl('', [Validators.required]),
     startDate: new FormControl(''),
     endDate: new FormControl(''),
     teamIws: new FormControl(null),
@@ -79,6 +80,12 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
     this.loadInitialData();
     this.loadTeams();
     this.resetForm();
+    
+    this.createEmployeeIwsForm.get('employeeLabel')?.valueChanges.subscribe(() => {
+      if (this.shortNameAlreadyExist) {
+        this.shortNameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -156,6 +163,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
 
     this.isLoading = true;
     this.errorMessage = null;
+    this.shortNameAlreadyExist = false;
 
     const EmployeeIwsData = this.getSanitizedEmployeeIwsValues();
 
@@ -167,11 +175,34 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
           this.employeeIwsCreated.emit({ status: 'success' });
           this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
         },
-        error: (error) =>
-          this.handleOperationError(error, 'MESSAGE.CREATE_FAILED'),
+        error: (error) => {
+          this.handleCreateError(error);
+        }
       });
 
     this.subscriptions.add(sub);
+  }
+
+  private handleCreateError(error: any): void {
+    if (error?.message?.includes('short name already exists')) {
+      this.shortNameAlreadyExist = true;
+      this.toastMessage.emit({
+        severity: 'error',
+        summary: 'MESSAGE.ERROR',
+        detail: 'IWS_STAFF.ERROR.SHORT_NAME_ALREADY_EXIST',
+      });
+      this.employeeIwsCreated.emit({ status: 'error' });
+    } else if (error?.message?.includes('Employee label is required')) {
+      this.toastMessage.emit({
+        severity: 'error',
+        summary: 'MESSAGE.ERROR',
+        detail: 'ERROR.FIELD_REQUIRED',
+      });
+      this.employeeIwsCreated.emit({ status: 'error' });
+    } else {
+      this.handleOperationError(error, 'MESSAGE.CREATE_FAILED');
+      this.employeeIwsCreated.emit({ status: 'error' });
+    }
   }
 
   private showToastAndClose(severity: string, detail: string): void {
@@ -243,6 +274,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
 
   private resetForm(): void {
     this.createEmployeeIwsForm.reset();
+    this.shortNameAlreadyExist = false;
   }
 
   onCancel(): void {
