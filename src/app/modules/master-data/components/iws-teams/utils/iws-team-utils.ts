@@ -22,7 +22,6 @@ export class TeamIwsUtils {
     addTeamIws(
         teamIWS: Omit<TeamIws, 'id' | 'createdAt' | 'updatedAt' | 'version'>
     ): Observable<TeamIws> {
-        // Validar que name no sea undefined o vacío
         const teamName = teamIWS.name?.trim() || '';
         if (!teamName) {
             return throwError(() => new Error('Team name is required'));
@@ -78,7 +77,6 @@ export class TeamIwsUtils {
             return throwError(() => new Error('Invalid teamIws data'));
         }
 
-        // Validar que name no sea undefined o vacío
         const teamName = teamIws.name?.trim() || '';
         if (!teamName) {
             return throwError(() => new Error('Team name is required'));
@@ -94,7 +92,6 @@ export class TeamIwsUtils {
                     return throwError(() => createUpdateConflictError('IWS Team'));
                 }
                 
-                // Check if team name already exists (excluding current team)
                 return this.teamNameExists(teamName, teamIws.id).pipe(
                     switchMap((exists) => {
                         if (exists) {

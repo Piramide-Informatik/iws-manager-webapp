@@ -50,7 +50,6 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     this.loadTeams()
     this.resetForm();
     
-    // Suscribirse a cambios en el campo name para resetear el error de duplicado
     this.createTeamIwsForm.get('name')?.valueChanges.subscribe(() => {
       if (this.teamNameAlreadyExist) {
         this.teamNameAlreadyExist = false;
@@ -114,8 +113,6 @@ export class IwsTeamsModalComponent implements OnInit, OnDestroy, OnChanges {
     const data = this.getSanitizedTeamIwsValues();
     this.handleRequest(this.teamIwsUtils.addTeamIws(data), 'create');
   }
-
-  // ------------------------ Helpers ------------------------
 
   private handleRequest(request$: Observable<any>, operation: 'create' | 'delete'): void {
     this.addSubscription(

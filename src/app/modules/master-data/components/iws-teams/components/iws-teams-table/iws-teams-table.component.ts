@@ -32,7 +32,6 @@ export class IwsTeamsTableComponent implements OnInit, OnDestroy {
   mapTeamIws = new Map<number, TeamIws>();
 
   readonly teams = computed(() => {
-    // Ordenar equipos por nombre alfabéticamente
     return this.teamIwsService.teamsIws()
       .sort((a, b) => {
         const nameA = a.name || '';

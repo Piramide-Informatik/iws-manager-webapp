@@ -60,7 +60,6 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
       localStorage.removeItem('selectedTeamIwsId');
     }
 
-    // Suscribirse a cambios en el campo name para resetear el error de duplicado
     this.editTeamForm.get('name')?.valueChanges.subscribe(() => {
       if (this.teamNameAlreadyExist) {
         this.teamNameAlreadyExist = false;
@@ -180,7 +179,6 @@ export class EditIwsTeamComponent implements OnInit, OnDestroy {
       this.editTeamForm.get('name')?.valueChanges.pipe(take(1))
         .subscribe(() => this.teamNameAlreadyExist = false);
       
-      // Mostrar toast de error para nombre duplicado
       this.commonMessageService.showErrorRecordAlreadyExist();
     } else if (err?.message?.includes('Team name is required')) {
       this.commonMessageService.showErrorEditMessage();
