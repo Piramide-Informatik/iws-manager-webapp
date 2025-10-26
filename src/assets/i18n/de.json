@@ -34,7 +34,7 @@
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
       "PROJECT_FUNNELS": "Stammdaten - Projektträger",
       "REALIZATION_PROBABILITIES": "Stammdaten - Realisierungswahrscheinlichkeit",
-      "ROLE": "Stammdaten - Benutzerrollen",
+      "ROLE": "Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Stammdaten - Umsatzsteuer",
       "SALUTATION": "Stammdaten - Anrede",
@@ -797,7 +797,8 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",
       "CHECKING_DUPLICATE": "Duplikatprüfung",
-      "CREATION_FAILED": "Beim Erstellen der Rolle ist ein Fehler aufgetreten"
+      "CREATION_FAILED": "Beim Erstellen der Rolle ist ein Fehler aufgetreten",
+      "ROL_REQUIRED": "Die Benutzerrolle ist erforderlich"
     }
   },
   "HOLIDAYS": {

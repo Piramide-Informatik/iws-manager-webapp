@@ -31,6 +31,10 @@ export class RoleService {
         this.loadInitialData()
     }
 
+    private sortAlphabetically(list: Role[]): Role[] {
+        return [...list].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+    }
+
     public loadInitialData(): Observable <Role[]> {
         this._loading.set(true);
         return this.http.get<Role[]>(this.apiUrl, this.httpOptions).pipe(
@@ -54,7 +58,7 @@ export class RoleService {
         return this.http.post<Role>(this.apiUrl, status, this.httpOptions).pipe(
             tap({
                 next: (newStatus) => {
-                    this._roles.update(roles => [...roles, newStatus]);
+                    this._roles.update(roles => this.sortAlphabetically([...roles, newStatus]));
                     this._error.set(null);
                 },
                 error: (err) => {
@@ -71,8 +75,9 @@ export class RoleService {
         return this.http.put<Role>(url, role, this.httpOptions).pipe(
             tap({
                 next: (updatedStatus) => {
-                    this._roles.update(roles => 
-                        roles.map(r => r.id === updatedStatus.id ? updatedStatus : r)
+                    this._roles.update(roles =>
+                        this.sortAlphabetically( 
+                        roles.map(r => r.id === updatedStatus.id ? updatedStatus : r))
                     );
                     this._error.set(null);
                 },

@@ -791,7 +791,8 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Rol requerido",
       "CHECKING_DUPLICATE": "Verificando duplicado",
-      "CREATION_FAILED": "Hubo un error durante la creacion de Rol"
+      "CREATION_FAILED": "Hubo un error durante la creacion de Rol",
+      "ROL_REQUIRED": "El Rol de Usuario es obligatorio"
     }
   },
   "HOLIDAYS": {

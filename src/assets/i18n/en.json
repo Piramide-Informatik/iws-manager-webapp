@@ -793,7 +793,8 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Required role",
       "CHECKING_DUPLICATE": "Checking duplicate",
-      "CREATION_FAILED": "There was an error during role creation"
+      "CREATION_FAILED": "There was an error during role creation",
+      "ROL_REQUIRED": "The User Role is required"
     }
   },
   "HOLIDAYS": {
