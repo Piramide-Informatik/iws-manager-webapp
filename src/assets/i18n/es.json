@@ -27,7 +27,7 @@
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
       "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
       "HOLIDAYS": "Datos Maestros - Días Festivos",
-      "IWS_COMMISSIONS": "Datos Maestros - Comisiones de IWS",
+      "IWS_COMMISSIONS": "Comisiones de IWS",
       "IWS_STAFF": "Datos Maestros - Personal de IWS",
       "IWS_TEAMS": "Datos Maestros - Equipos de IWS",
       "NETWORKS": "Datos Maestros - Redes",
@@ -63,7 +63,8 @@
     "NUMBER_MAX": "Se espera un valor máximo de 100",
     "NUMBER_BETWEEN_0_1": "valores entre 0 - 1",
     "NUMBER_MAX_12": "Se espera un valor máximo de 12",
-    "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe"
+    "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe",
+    "FIELD_REQUIRED": "Campo requerido"
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -967,6 +968,10 @@
     "DELETE": {
       "CONFIRMATION": "Eliminar Comisión",
       "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+    },
+    "ERROR": {
+      "THRESHOLD_ALREADY_EXIST": "El valor de exigencia ya existe",
+      "CREATION_FAILED": "Error al crear la comisión"
     }
   },
   "IWS_TEAMS": {

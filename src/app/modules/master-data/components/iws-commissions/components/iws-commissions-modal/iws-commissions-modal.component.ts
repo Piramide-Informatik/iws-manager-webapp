@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, OnDestroy, OnChanges, SimpleChanges, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { IwsCommission } from '../../../../../../Entities/iws-commission ';
 import { InputNumber } from 'primeng/inputnumber';
@@ -38,9 +38,10 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
   errorMessage: string | null = null;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalIwsCommission = false;
+  public thresholdAlreadyExist = false;
 
   readonly createIwsCommissionForm = new FormGroup({
-    fromOrderValue: new FormControl(null),
+    fromOrderValue: new FormControl(null, [Validators.required]),
     commission: new FormControl(null, [Validators.max(100)]),
     minCommission: new FormControl(null),
   });
@@ -48,6 +49,12 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
   ngOnInit(): void {
     this.loadInitialData();
     this.resetForm();
+    
+    this.createIwsCommissionForm.get('fromOrderValue')?.valueChanges.subscribe(() => {
+      if (this.thresholdAlreadyExist) {
+        this.thresholdAlreadyExist = false;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,7 +77,6 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
     const sub = this.iwsCommissionUtils.loadInitialData().subscribe();
     this.subscriptions.add(sub);
   }
-
 
   private closeModal(): void {
     this.isLoading = false;
@@ -119,6 +125,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
 
     this.isLoading = true;
     this.errorMessage = null;
+    this.thresholdAlreadyExist = false;
 
     const IwsCommissionData = this.getSanitizedIwsCommissionValues();
 
@@ -131,12 +138,33 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
           this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
         },
         error: (error) => {
-          this.iwsCommissionCreated.emit({status: 'error'});
-          this.handleErrorWithToast(error, 'MESSAGE.CREATE_FAILED');
+          this.handleCreateError(error);
         }
       });
 
     this.subscriptions.add(sub);
+  }
+
+  private handleCreateError(error: any): void {
+    if (error?.message?.includes('threshold already exists')) {
+      this.thresholdAlreadyExist = true;
+      this.toastMessage.emit({
+        severity: 'error',
+        summary: 'MESSAGE.ERROR',
+        detail: 'IWS_COMMISSIONS.ERROR.THRESHOLD_ALREADY_EXIST',
+      });
+      this.iwsCommissionCreated.emit({status: 'error'});
+    } else if (error?.message?.includes('Threshold is required')) {
+      this.toastMessage.emit({
+        severity: 'error',
+        summary: 'MESSAGE.ERROR',
+        detail: 'ERROR.FIELD_REQUIRED',
+      });
+      this.iwsCommissionCreated.emit({status: 'error'});
+    } else {
+      this.handleErrorWithToast(error, 'MESSAGE.CREATE_FAILED');
+      this.iwsCommissionCreated.emit({status: 'error'});
+    }
   }
 
   private showToastAndClose(severity: string, detail: string): void {
@@ -147,7 +175,6 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
     });
     this.closeModal();
   }
-
 
   private handleErrorWithToast(
     error: any,
@@ -193,6 +220,7 @@ export class IwsCommissionsModalComponent implements OnInit, OnDestroy, OnChange
 
   private resetForm(): void {
     this.createIwsCommissionForm.reset();
+    this.thresholdAlreadyExist = false;
   }
 
   public focusInputIfNeeded(): void {

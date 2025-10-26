@@ -3,9 +3,25 @@
     <div class="align-items-center mb-2 mt-4">
       <div class="commission-form">
         <label for="fromOrderValue" class="block">{{ 'IWS_COMMISSIONS.FORM.THRESHOLD' | translate }}</label>
-        <p-inputnumber #firstInput inputId="fromOrderValue" formControlName="fromOrderValue" autocomplete="off"
-          mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+        <div class="input-message">
+          <p-inputnumber #firstInput inputId="fromOrderValue" formControlName="fromOrderValue" autocomplete="off"
+            mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+            [attr.invalid]="(createIwsCommissionForm.get('fromOrderValue')?.invalid && 
+            createIwsCommissionForm.get('fromOrderValue')?.dirty) 
+            || thresholdAlreadyExist"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (createIwsCommissionForm.get('fromOrderValue')?.invalid && 
+            createIwsCommissionForm.get('fromOrderValue')?.dirty) 
+            || thresholdAlreadyExist">
+            <span *ngIf="createIwsCommissionForm.get('fromOrderValue')?.errors?.['required'] && createIwsCommissionForm.get('fromOrderValue')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="thresholdAlreadyExist && !createIwsCommissionForm.get('fromOrderValue')?.errors?.['required']">
+              {{ 'IWS_COMMISSIONS.ERROR.THRESHOLD_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+        </div>
       </div>
       <div class="commission-form">
         <label for="commission" class="block">{{ 'IWS_COMMISSIONS.FORM.PERCENTAGE' | translate }}</label>
@@ -13,7 +29,7 @@
           <p-inputnumber inputId="commission" formControlName="commission" autocomplete="off"
             mode="decimal" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
-            invalid="createIwsCommissionForm.get('commission')?.invalid  
+            [attr.invalid]="createIwsCommissionForm.get('commission')?.invalid  
               && createIwsCommissionForm.get('commission')?.dirty 
               || createIwsCommissionForm.get('commission')?.touched"/>
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
@@ -21,7 +37,6 @@
             createIwsCommissionForm.get('commission')?.dirty">
             {{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
         </div>
-
       </div>
       <div class="commission-form">
         <label for="minCommission" class="block">{{ 'IWS_COMMISSIONS.FORM.MIN_COMMISSION' | translate }}</label>
@@ -32,7 +47,7 @@
       <div class="flex justify-content-center gap-2 mt-4">
         <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
           icon="pi pi-check" iconPos="left" [loading]="isLoading"
-          [disabled]="createIwsCommissionForm.invalid || isLoading || !createIwsCommissionForm.dirty" />
+          [disabled]="!createIwsCommissionForm.valid || isLoading || !createIwsCommissionForm.dirty" />
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
           icon="pi pi-times" iconPos="left" (onClick)="onCancel()" [disabled]="isLoading" />

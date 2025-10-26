@@ -27,7 +27,7 @@
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
       "HOLIDAYS": "Masterdata - Holidays",
-      "IWS_COMMISSIONS": "Masterdata - IWS Commissions",
+      "IWS_COMMISSIONS": "IWS Commissions",
       "IWS_STAFF": "Masterdata - IWS Staff",
       "IWS_TEAMS": "Masterdata - IWS Teams",
       "NETWORKS": "Masterdata - Networks",
@@ -63,7 +63,8 @@
     "NUMBER_MAX": "Max value 100 expected",
     "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
     "NUMBER_MAX_12": "Max value 12 expected",
-    "DUPLICATE_PROBABILITY": "This probability already exists"
+    "DUPLICATE_PROBABILITY": "This probability already exists",
+    "FIELD_REQUIRED": "Field required"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -969,6 +970,10 @@
     "DELETE": {
       "CONFIRMATION": "Delete Commission",
       "CONFIRM_QUESTION": "Are you sure you want to delete "
+    },
+    "ERROR": {
+      "THRESHOLD_ALREADY_EXIST": "From value already exists",
+      "CREATION_FAILED": "Failed to create commission"
     }
   },
   "IWS_TEAMS": {

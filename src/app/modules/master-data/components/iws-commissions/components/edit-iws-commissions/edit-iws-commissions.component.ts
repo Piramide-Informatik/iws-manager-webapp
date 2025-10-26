@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IwsCommission } from '../../../../../../Entities/iws-commission ';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { IwsCommissionUtils } from '../../utils/iws-commision-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
@@ -24,6 +24,7 @@ export class EditIwsCommissionsComponent implements OnInit {
   isSaving = false;
   private readonly subscriptions = new Subscription();
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public thresholdAlreadyExist = false;
 
   constructor(
     private readonly iwsCommissionUtils: IwsCommissionUtils,
@@ -42,11 +43,17 @@ export class EditIwsCommissionsComponent implements OnInit {
       this.loadIwsCommissionAfterRefresh(savedIwsCommissionId);
       localStorage.removeItem('selectedIwsCommissionId');
     }
+
+    this.editCommissionForm.get('threshold')?.valueChanges.subscribe(() => {
+      if (this.thresholdAlreadyExist) {
+        this.thresholdAlreadyExist = false;
+      }
+    });
   }
 
   private initForm(): void {
     this.editCommissionForm = new FormGroup({
-      threshold: new FormControl(null, []),
+      threshold: new FormControl(null, [Validators.required]),
       percentage: new FormControl(null, [Validators.max(100.00)]),
       minCommission: new FormControl(null, []),
     });
@@ -116,7 +123,6 @@ export class EditIwsCommissionsComponent implements OnInit {
           this.handleSaveSuccess(savedCommission);
         },
         error: (err) => {
-          this.commonMessagesService.showErrorEditMessage();
           this.handleError(err);
         },
       })
@@ -146,7 +152,24 @@ export class EditIwsCommissionsComponent implements OnInit {
       console.log("tipo de error: ", err.errorType)
       this.showOCCErrorModaEmployeeIws = true;
       this.occErrorType = err.errorType;
+    } else if (err?.message?.includes('threshold already exists')) {
+      this.thresholdAlreadyExist = true;
+      this.editCommissionForm.get('threshold')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.thresholdAlreadyExist = false);
+      
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('IWS_COMMISSIONS.ERROR.THRESHOLD_ALREADY_EXIST'),
+      });
+    } else if (err?.message?.includes('Threshold is required')) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('ERROR.FIELD_REQUIRED'),
+      });
     } else {
+      this.commonMessagesService.showErrorEditMessage();
       this.messageService.add({
         severity: 'error',
         summary: this.translate.instant('MESSAGE.ERROR'),
@@ -162,6 +185,7 @@ export class EditIwsCommissionsComponent implements OnInit {
 
   private resetForm(clearCommission = false): void {
     this.editCommissionForm.reset();
+    this.thresholdAlreadyExist = false;
     if (clearCommission) {
       this.currentIwsCommission = null;
       this.isSaving = false;
