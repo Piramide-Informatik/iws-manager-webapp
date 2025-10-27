@@ -4,7 +4,7 @@ import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramStateService } from '../../utils/funding-program-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
@@ -24,10 +24,11 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
   public isLoading: boolean = false;
   public fundingForm: FormGroup;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public nameAlreadyExist = false;
 
   constructor(private readonly fb: FormBuilder) {
     this.fundingForm = this.fb.group({
-      name: [''],
+      name: ['', [Validators.required]],
       defaultFundingRate: [null, [Validators.max(100.00)]],
       defaultStuffFlat: [null, [Validators.max(100.00)]],
       defaultResearchShare: [null, [Validators.max(100.00)]],
@@ -43,6 +44,12 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
       this.loadFundingAfterRefresh(savedFundingId);
       localStorage.removeItem('selectedFundingId');
     }
+
+    this.fundingForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -70,19 +77,38 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.fundingForm.invalid || !this.fundingToEdit) return
+    if (this.fundingForm.invalid || !this.fundingToEdit || this.nameAlreadyExist) return
 
     this.isLoading = true;
     const formData: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = this.fundingForm.value;
     const editedFunding: FundingProgram = {
       ...this.fundingToEdit,
-      name: formData.name?.trim(),
+      name: formData.name?.trim() || '',
       defaultFundingRate: formData.defaultFundingRate ?? 0,
       defaultStuffFlat: formData.defaultStuffFlat ?? 0,
       defaultResearchShare: formData.defaultResearchShare ?? 0,
       defaultHoursPerYear: formData.defaultHoursPerYear ?? 0
     }
 
+    const nameToCheck = editedFunding.name || '';
+    this.fundingUtils.checkFundingProgramNameExists(nameToCheck, editedFunding.id).subscribe({
+      next: (exists: boolean) => {
+        if (exists) {
+          this.nameAlreadyExist = true;
+          this.isLoading = false;
+          this.commonMessageService.showErrorEditMessage();
+        } else {
+          this.performUpdate(editedFunding);
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+        this.commonMessageService.showErrorEditMessage();
+      }
+    });
+  }
+
+  private performUpdate(editedFunding: FundingProgram): void {
     this.fundingUtils.updateFundingProgram(editedFunding).subscribe({
       next: () => {
         this.isLoading = false;
@@ -94,6 +120,11 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
         if (error instanceof OccError) {
           this.showOCCErrorModaFunding = true;
           this.occErrorType = error.errorType;
+        } else if (error?.message?.includes('name already exists')) {
+          this.nameAlreadyExist = true;
+          this.fundingForm.get('name')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.nameAlreadyExist = false);
+          this.commonMessageService.showErrorEditMessage();
         } else {
           this.commonMessageService.showErrorEditMessage();
         }
@@ -112,6 +143,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
     this.fundingForm.reset();
     this.fundingToEdit = null;
     this.isLoading = false;
+    this.nameAlreadyExist = false;
     this.fundingStateService.setFundingProgramToEdit(null);
   }
 

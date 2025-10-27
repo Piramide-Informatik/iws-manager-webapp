@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { FundingProgramService } from '../../../../../Services/funding-program.service';
 import { ProjectUtils } from '../../../../projects/utils/project.utils';
 import { OrderUtils } from '../../../../orders/utils/order-utils';
@@ -46,7 +46,38 @@ export class FundingProgramUtils {
    * @returns Observable that completes when funding program is created
    */
   addFundingProgram(fundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<FundingProgram> {
-    return this.fundingProgramService.addFundingProgram(fundingProgram);
+    return this.checkFundingProgramNameExists(fundingProgram.name || '').pipe( 
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('name already exists'));
+        }
+        return this.fundingProgramService.addFundingProgram(fundingProgram);
+      }),
+      catchError((err) => {
+        if (err.message === 'name already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('Failed to create funding program'));
+      })
+    );
+  }
+
+  /**
+   * Checks if a funding program name already exists
+   * @param name - Name to check
+   * @param excludeId - ID to exclude from check (for updates)
+   * @returns Observable emitting boolean indicating existence
+   */
+  checkFundingProgramNameExists(name: string, excludeId?: number): Observable<boolean> {
+    return this.fundingProgramService.getAllFundingPrograms().pipe(
+      map(programs => programs.some(
+        program => program.id !== excludeId && 
+               program.name?.toLowerCase().trim() === name.toLowerCase().trim()
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check name existence'));
+      })
+    );
   }
 
   /**
@@ -97,7 +128,15 @@ export class FundingProgramUtils {
         if (currentFundingProgram.version !== fundingProgram.version) {
           return throwError(() => createUpdateConflictError('Funding Program'));
         }
-        return this.fundingProgramService.updateFundingProgram(fundingProgram);
+        
+        return this.checkFundingProgramNameExists(fundingProgram.name || '', fundingProgram.id).pipe(
+          switchMap((exists) => {
+            if (exists) {
+              return throwError(() => new Error('name already exists'));
+            }
+            return this.fundingProgramService.updateFundingProgram(fundingProgram);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating funding program:', err);

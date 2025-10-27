@@ -863,6 +863,9 @@
       "NEW_FUNDING": "Nuevo programa de financiación",
       "DELETE_FUNDING": "Eliminar programa de financiación",
       "DELETE_CONFIRM_QUESTION": "¿Está seguro que desea eliminar el programa de financiación: "
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "El programa ya existe"
     }
   },
   "DUNNING_LEVELS": {
