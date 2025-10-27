@@ -6,6 +6,7 @@ import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FundingProgram } from '../../../../../Entities/fundingProgram';
 import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
+type FundingProgramCreateUpdate = Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
 
 /**
  * Utility class for fundingProgram-related business logic and operations.
@@ -42,10 +43,10 @@ export class FundingProgramUtils {
 
   /**
    * Creates a new funding program with validation
-   * @param nameFundingProgram - Name for the new funding program
+   * @param fundingProgram - Funding program data for creation
    * @returns Observable that completes when funding program is created
    */
-  addFundingProgram(fundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<FundingProgram> {
+  addFundingProgram(fundingProgram: FundingProgramCreateUpdate): Observable<FundingProgram> {
     return this.checkFundingProgramNameExists(fundingProgram.name || '').pipe(
       switchMap(() => this.fundingProgramService.addFundingProgram(fundingProgram)),
       catchError((err) => {
@@ -111,7 +112,7 @@ export class FundingProgramUtils {
 
   /**
  * Updates a funding program by ID and updates the internal fundingPrograms signal.
- * @param id - ID of the funding program to update
+ * @param fundingProgram - Funding program data to update
  * @returns Observable that completes when the update is done
  */
   updateFundingProgram(fundingProgram: FundingProgram): Observable<FundingProgram> {

@@ -6,6 +6,7 @@ import { FundingProgramStateService } from '../../utils/funding-program-state.se
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription, take } from 'rxjs';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+type FundingProgramCreateUpdate = Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
 
 @Component({
   selector: 'app-edit-funding-program',
@@ -38,7 +39,6 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setupFundingSubscription();
-    // Check if we need to load a funding after page refresh for OCC
     const savedFundingId = localStorage.getItem('selectedFundingId');
     if (savedFundingId) {
       this.loadFundingAfterRefresh(savedFundingId);
@@ -80,7 +80,7 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
     if (this.fundingForm.invalid || !this.fundingToEdit || this.nameAlreadyExist) return
 
     this.isLoading = true;
-    const formData: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = this.fundingForm.value;
+    const formData: FundingProgramCreateUpdate = this.fundingForm.value;
     const editedFunding: FundingProgram = {
       ...this.fundingToEdit,
       name: formData.name?.trim() || '',

@@ -7,6 +7,8 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Subscription } from 'rxjs';
 
+type FundingProgramCreateUpdate = Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
+
 @Component({
   selector: 'app-modal-funding-program',
   standalone: false,
@@ -55,7 +57,7 @@ export class ModalFundingProgramComponent implements OnInit, OnDestroy {
     if (this.fundingProgramForm.invalid || this.isLoading || this.nameAlreadyExist) return
 
     this.isLoading = true;
-    const newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+    const newFundingProgram: FundingProgramCreateUpdate = {
       name: this.fundingProgramForm.value.name?.trim() || '',
       defaultFundingRate: this.fundingProgramForm.value.defaultFundingRate ?? 0,
       defaultStuffFlat: this.fundingProgramForm.value.defaultStuffFlat ?? 0,
@@ -70,7 +72,7 @@ export class ModalFundingProgramComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleNameAvailable(newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
+  private handleNameAvailable(newFundingProgram: FundingProgramCreateUpdate): void {
     this.performCreate(newFundingProgram);
   }
 
@@ -80,7 +82,7 @@ export class ModalFundingProgramComponent implements OnInit, OnDestroy {
     this.onCreateFundingProgram.emit({ status: 'error' });
   }
 
-  private performCreate(newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
+  private performCreate(newFundingProgram: FundingProgramCreateUpdate): void {
     this.fundingProgramUtils.addFundingProgram(newFundingProgram).subscribe({
       next: (created) => {
         this.isLoading = false;
@@ -92,7 +94,7 @@ export class ModalFundingProgramComponent implements OnInit, OnDestroy {
         if (error?.message?.includes('name already exists')) {
           this.nameAlreadyExist = true;
         } else {
-          this.commonMessageService.showErrorCreatedMessage(); 
+          this.commonMessageService.showErrorCreatedMessage();
         }
         this.onCreateFundingProgram.emit({ status: 'error' })
       }
