@@ -92,20 +92,19 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
 
     const nameToCheck = editedFunding.name || '';
     this.fundingUtils.checkFundingProgramNameExists(nameToCheck, editedFunding.id).subscribe({
-      next: (exists: boolean) => {
-        if (exists) {
-          this.nameAlreadyExist = true;
-          this.isLoading = false;
-          this.commonMessageService.showErrorEditMessage();
-        } else {
-          this.performUpdate(editedFunding);
-        }
-      },
-      error: () => {
-        this.isLoading = false;
-        this.commonMessageService.showErrorEditMessage();
-      }
+      next: () => this.handleNameAvailable(editedFunding),
+      error: () => this.handleNameCheckError()
     });
+  }
+
+  private handleNameAvailable(editedFunding: FundingProgram): void {
+    this.performUpdate(editedFunding);
+  }
+
+  private handleNameCheckError(): void {
+    this.nameAlreadyExist = true;
+    this.isLoading = false;
+    this.commonMessageService.showErrorEditMessage();
   }
 
   private performUpdate(editedFunding: FundingProgram): void {
@@ -124,7 +123,6 @@ export class FundingProgramFormComponent implements OnInit, OnDestroy {
           this.nameAlreadyExist = true;
           this.fundingForm.get('name')?.valueChanges.pipe(take(1))
             .subscribe(() => this.nameAlreadyExist = false);
-          this.commonMessageService.showErrorEditMessage();
         } else {
           this.commonMessageService.showErrorEditMessage();
         }

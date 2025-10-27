@@ -65,21 +65,19 @@ export class ModalFundingProgramComponent implements OnInit, OnDestroy {
 
     const nameToCheck = newFundingProgram.name || '';
     this.fundingProgramUtils.checkFundingProgramNameExists(nameToCheck).subscribe({
-      next: (exists: boolean) => {
-        if (exists) {
-          this.nameAlreadyExist = true;
-          this.isLoading = false;
-          this.commonMessageService.showErrorCreatedMessage();
-        } else {
-          this.performCreate(newFundingProgram);
-        }
-      },
-      error: () => {
-        this.isLoading = false;
-        this.commonMessageService.showErrorCreatedMessage(); 
-        this.onCreateFundingProgram.emit({ status: 'error' })
-      }
+      next: () => this.handleNameAvailable(newFundingProgram),
+      error: () => this.handleNameCheckError()
     });
+  }
+
+  private handleNameAvailable(newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
+    this.performCreate(newFundingProgram);
+  }
+
+  private handleNameCheckError(): void {
+    this.nameAlreadyExist = true;
+    this.isLoading = false;
+    this.onCreateFundingProgram.emit({ status: 'error' });
   }
 
   private performCreate(newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
@@ -93,9 +91,8 @@ export class ModalFundingProgramComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         if (error?.message?.includes('name already exists')) {
           this.nameAlreadyExist = true;
-          this.commonMessageService.showErrorCreatedMessage(); 
         } else {
-          this.commonMessageService.showErrorCreatedMessage();
+          this.commonMessageService.showErrorCreatedMessage(); 
         }
         this.onCreateFundingProgram.emit({ status: 'error' })
       }
