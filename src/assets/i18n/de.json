@@ -787,7 +787,8 @@
       "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",
       "CHECKING_DUPLICATE": "Duplikatprüfung",
       "CREATION_FAILED": "Beim Erstellen der Rolle ist ein Fehler aufgetreten",
-      "ROL_REQUIRED": "Die Benutzerrolle ist erforderlich"
+      "ROL_REQUIRED": "Die Benutzerrolle ist erforderlich",
+      "NAME_ALREADY_EXIST": "Benutzerrolle existiert bereits"
     }
   },
   "HOLIDAYS": {

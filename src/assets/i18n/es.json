@@ -34,7 +34,7 @@
       "PROJECT_STATUS": "Datos Maestros - Estado del Proyecto",
       "PROJECT_FUNNELS": "Datos Maestros - Responsable de Proyecto",
       "REALIZATION_PROBABILITIES": "Datos Maestros - Probabilidades de Realización",
-      "ROLE": "Datos Maestros - Roles",
+      "ROLE": "Roles",
       "SYSTEM_CONSTANTS": "Datos Maestros - Constantes del Sistema",
       "SALES_TAX": "Datos Maestros - Impuesto sobre Ventas",
       "SALUTATION": "Datos Maestros - Saludo",
@@ -782,7 +782,8 @@
       "APPROVAL_STATUS_REQUIRED": "Rol requerido",
       "CHECKING_DUPLICATE": "Verificando duplicado",
       "CREATION_FAILED": "Hubo un error durante la creacion de Rol",
-      "ROL_REQUIRED": "El Rol de Usuario es obligatorio"
+      "ROL_REQUIRED": "El Rol de Usuario es obligatorio",
+      "NAME_ALREADY_EXIST": "El nombre del rol ya existe"
     }
   },
   "HOLIDAYS": {
