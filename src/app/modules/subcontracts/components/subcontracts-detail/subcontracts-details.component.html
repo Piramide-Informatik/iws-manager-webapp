@@ -66,10 +66,9 @@
 </div>
 <p-dialog [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT' | translate" [modal]="true" [(visible)]="visibleSubcontractModal">
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_QUESTION' | translate }}
-      <strong *ngIf="currentSubcontract" class="stronglock mt-1">"{{ currentSubcontract.contractTitle }}"</strong>?
+    <p class="mb-4" *ngIf="currentSubcontract" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentSubcontract.contractTitle }">
     </p>
+    
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" (onClick)="onSubcontractDeleteConfirm()" severity="danger" [loading]="isLoadingDelete"

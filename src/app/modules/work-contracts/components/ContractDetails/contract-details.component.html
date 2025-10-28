@@ -131,8 +131,8 @@
 </ng-container>
 <ng-template #deleteTemplate>
   <div class="confirmation-content mt-4">
-    <p *ngIf="currentEmploymentContractEntity" class="mb-4">
-      {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }} <strong class="stronglock mt-1">"{{ currentEmploymentContractEntity.employee?.employeeno }}"</strong>?
+    <p *ngIf="currentEmploymentContractEntity" class="mb-4"
+      [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentEmploymentContractEntity.employee?.employeeno }">
     </p>
 
     <div class="flex justify-content-center gap-3">
@@ -158,8 +158,8 @@
   [(visible)]="visiblEmployeeContractModal"
 >
   <div class="confirmation-content mt-4 dialog-container">
-    <p *ngIf="currentEmploymentContractEntity"  class="mb-4 dialog-title">
-      {{ 'EMPLOYEE-CONTRACTS.LABEL.REMOVE_EMPLOYEE_CONTRACT_QUESTION' | translate }}<strong class="stronglock mt-1">"{{ currentEmploymentContractEntity.employee?.employeeno }}"</strong>?
+    <p *ngIf="currentEmploymentContractEntity"  class="mb-4 dialog-title" 
+      [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentEmploymentContractEntity.employee?.employeeno }">
     </p>
 
     <div class="flex justify-content-center gap-3 buttons-container">

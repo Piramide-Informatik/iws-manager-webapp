@@ -60,9 +60,8 @@ export class OrderComponent implements OnInit, OnChanges {
   public basicContractForm!: FormGroup;
 
   ngOnInit(): void {
-    this.getCurrentCustomer();
     this.initOrderForm();
-    this.firstInputFocus();
+    this.getCurrentCustomer();
   }
 
   private updateTitle(name: string): void {
@@ -72,7 +71,7 @@ export class OrderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['contractToEdit'] && this.contractToEdit) {
+    if (changes['contractToEdit'] && this.contractToEdit && this.basicContractForm) {
       this.basicContractForm.patchValue({
         contractNo: this.contractToEdit.contractNo,
         contractLabel: this.contractToEdit.contractLabel,
@@ -83,6 +82,7 @@ export class OrderComponent implements OnInit, OnChanges {
         contractStatus: this.contractToEdit.contractStatus?.id,
         employeeIws: this.contractToEdit.employeeIws?.id
       });
+      this.firstInputFocus();
     }
   }
 

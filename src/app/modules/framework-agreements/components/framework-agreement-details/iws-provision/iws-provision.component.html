@@ -114,9 +114,8 @@
   </form>
  } @else {
   <div class="delete-confirmation-component mb-2 mt-4 justify-content-center ">
-    <p class="mb-4 text-center">
-      {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
-      <strong>"{{ selectedOrderCommission?.fromOrderValue}}"</strong>?
+    <p class="mb-4 text-center" 
+      [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }">
     </p>
 
     <div class="flex justify-content-center gap-2">
@@ -137,9 +136,8 @@
   [style]="{ width: 'auto' }"
 >
   <div class="delete-confirmation-component-entity mb-2 mt-4 justify-content-center ">
-    <p class="mb-4 text-center delete-iws-provision-title">
-      {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
-      <strong>"{{ selectedOrderCommission?.fromOrderValue}}"</strong>?
+    <p class="mb-4 text-center delete-iws-provision-title" 
+      [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }">
     </p>
 
     <div class="flex justify-content-center gap-2 delete-iws-provision-buttons">

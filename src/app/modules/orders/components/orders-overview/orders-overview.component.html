@@ -17,10 +17,7 @@
     [(visible)]="visibleOrderModal" 
   >
     <div class="confirmation-content mb-2 mt-4">
-      <p class="mb-4">
-        {{ 'ORDERS.REMOVE_ORDERS_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ selectedOrder?.orderLabel }}"</strong>?
-      </p>
+      <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedOrder?.orderLabel }"></p>
 
       <div class="flex justify-content-center gap-2">
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"

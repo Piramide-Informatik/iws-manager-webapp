@@ -55,7 +55,7 @@ export class FrameworkAgreementsModalComponent implements OnInit, OnChanges {
   }
   
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.visible){
+    if(changes['visible'] && this.visible && this.basicContractCreateForm){
       this.getNextContractNumber();
       setTimeout(() => {
         this.focusInputIfNeeded();
