@@ -3,15 +3,21 @@
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
             <div class="form-row">
                 <label for="lastName">{{ 'CONTACT.FORM.LAST_NAME' | translate }}</label>
-                <input 
-                    type="text" 
-                    id="lastName" 
-                    formControlName="lastName" 
-                    pInputText
-                    [ngClass]="{'ng-invalid ng-dirty': contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched}"
-                    autocomplete="off"
-                    [appAutoFocusOnVisible]="visible"
-                >
+                <div class="input-message">
+                    <input 
+                        type="text" 
+                        id="lastName" 
+                        formControlName="lastName" 
+                        pInputText
+                        [ngClass]="{'ng-invalid ng-dirty': contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched}"
+                        autocomplete="off"
+                        [appAutoFocusOnVisible]="visible"
+                    >
+                    <p-message severity="error" variant="simple" size="small"
+                        *ngIf="contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched && contactForm.get('lastName')?.errors?.['required']">
+                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </p-message>
+                </div>
             </div>
     
             <div class="form-row">
