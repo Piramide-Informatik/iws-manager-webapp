@@ -280,6 +280,10 @@
       "CREATE_SUCCESS": "Customer created successfully.",
       "ERROR": "Error",
       "CREATE_FAILED": "Failed to create customer."
+    },
+    "VALIDATION": {
+      "INVALID_EMAIL": "Invalid email format",
+      "COMPANY_TEXT1_REQUIRED": "Company name is required"
     }
   },
   "EMPLOYEE": {

@@ -1,7 +1,7 @@
 {
   "PAGETITLE": {
     "CUSTOMER_OVERVIEW": "Kunden",
-    "CUSTOMER": "kunde - ",
+    "CUSTOMER": "Kunde - ",
     "CUSTOMERS": {
       "BASIC_CONTRACTS": " - Rahmenverträge",
       "CONTRACTORS": " - Auftragnehmer",
@@ -280,6 +280,10 @@
       "CREATE_SUCCESS": "Kunde erfolgreich erstellt.",
       "ERROR": "Fehler",
       "CREATE_FAILED": "Kunde konnte nicht erstellt werden."
+    },
+    "VALIDATION": {
+      "INVALID_EMAIL": "Ungültiges E-Mail-Format",
+      "COMPANY_TEXT1_REQUIRED": "Firmenname ist erforderlich"
     }
   },
   "EMPLOYEE": {

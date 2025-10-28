@@ -126,7 +126,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
   ) {
     this.formDetailCustomer = this.fb.group({
       customerNo: [null],
-      companyText1: [''],
+      companyText1: ['',[Validators.required]],
       companyText2: [''],
       selectedCountry: [''],
       street: [''],
@@ -137,7 +137,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       selectedState: [''],
       homepage: [''],
       phone: [''],
-      invoiceEmail: [''],
+      invoiceEmail: ['',[Validators.email]],
       weekWorkingHours: ['', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
       taxNumber: [''],
       headcount: [''],
@@ -599,4 +599,18 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       this.commonMessageService.showErrorDeleteMessage();
     }
   }
+  openWebsite(): void {
+  const homepageControl = this.formDetailCustomer.get('homepage');
+  const url = homepageControl?.value?.trim();
+
+  if (!url) return; // No abrir nada si está vacío
+
+  // Asegurar que el enlace tenga protocolo
+  const fullUrl =
+    url.startsWith('http://') || url.startsWith('https://')
+      ? url
+      : `https://${url}`;
+
+  window.open(fullUrl, '_blank');
+}
 }

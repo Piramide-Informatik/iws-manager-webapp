@@ -274,6 +274,10 @@
       "NAME": "Nombre",
       "FUNCTION": "Función",
       "LAW": "Ley"
+    },
+    "VALIDATION": {
+      "INVALID_EMAIL": "Formato de email inválido",
+      "COMPANY_TEXT1_REQUIRED": "El nombre de la compañía es obligatorio"
     }
   },
   "EMPLOYEE": {
