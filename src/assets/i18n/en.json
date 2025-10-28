@@ -281,6 +281,10 @@
       "CREATE_SUCCESS": "Customer created successfully.",
       "ERROR": "Error",
       "CREATE_FAILED": "Failed to create customer."
+    },
+    "VALIDATION": {
+      "INVALID_EMAIL": "Invalid email format",
+      "COMPANY_TEXT1_REQUIRED": "Company name is required"
     }
   },
   "EMPLOYEE": {
@@ -851,6 +855,9 @@
       "NEW_FUNDING": "New funding program",
       "DELETE_FUNDING": "Delete funding program",
       "DELETE_CONFIRM_QUESTION": "Are you sure you want to delete the funding program: "
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Program already exists"
     }
   },
   "DUNNING_LEVELS": {

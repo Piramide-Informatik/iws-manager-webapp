@@ -275,6 +275,10 @@
       "NAME": "Nombre",
       "FUNCTION": "Función",
       "LAW": "Ley"
+    },
+    "VALIDATION": {
+      "INVALID_EMAIL": "Formato de email inválido",
+      "COMPANY_TEXT1_REQUIRED": "El nombre de la compañía es obligatorio"
     }
   },
   "EMPLOYEE": {
@@ -850,6 +854,9 @@
       "NEW_FUNDING": "Nuevo programa de financiación",
       "DELETE_FUNDING": "Eliminar programa de financiación",
       "DELETE_CONFIRM_QUESTION": "¿Está seguro que desea eliminar el programa de financiación: "
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "El programa ya existe"
     }
   },
   "DUNNING_LEVELS": {
