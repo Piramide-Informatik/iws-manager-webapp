@@ -229,7 +229,7 @@
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmación",
-    "DELETE": "¿Estás seguro de que quieres eliminar {{value}}?",
+    "DELETE": "¿Estás seguro de que quieres eliminar \"<strong>{{ value }}</strong>\"?",
     "SUCCESSFUL_MESSAGE": "Exitosamente",
     "EMPLOYEE_SUCCESS_DELETED_MESSAGE": "Empleado eliminado.",
     "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Contrato Laboral eliminado",
@@ -268,9 +268,7 @@
     },
     "LABELS": {
       "CONTACT_PERSON": "Persona de Contacto",
-      "DELETE_CUSTOMER": "Eliminar Cliente",
-      "REMOVE_CUSTOMER_QUESTION": "¿Está seguro que desea eliminar ",
-      "REMOVE_CONTACT_LIST": "y su lista de contactos"
+      "DELETE_CUSTOMER": "Eliminar Cliente"
     },
     "CONTACT_TABLE": {
       "NAME": "Nombre",
@@ -312,8 +310,7 @@
       "QUALI_MKUI": "Quali KMU-i"
     },
     "LABELS": {
-      "DELETE_EMPLOYEE": "Eliminar Empleado",
-      "REMOVE_EMPLOYEE_QUESTION": "¿Está seguro que desea eliminar el empleado "
+      "DELETE_EMPLOYEE": "Eliminar Empleado"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Fecha Incio",
@@ -339,7 +336,6 @@
       "TITLE_DIALOG_CREATE": "Nueva Persona de Contacto",
       "TITLE_DIALOG_EDIT": "Editar Persona de Contacto",
       "TITLE_DIALOG_DELETE": "Eliminar Persona de Contacto",
-      "CONFIRM_QUESTION_DELETE": "¿Está seguro que desea eliminar ",
       "INVOICE": "Destinatario de Facturas",
       "IS_INVOICE_RECIPIENT": "¿Es el destinatario de la factura?"
     },
@@ -397,8 +393,7 @@
       "AUTH_DATE": "Fecha de Aprobación",
       "FUNDING_RATE": "Tasa de Financiación"
     },
-    "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto",
-    "REMOVE_PROJECTS_QUESTION": "¿Está seguro que desea eliminar el proyecto"
+    "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto"
   },
   "ORDERS": {
     "FORM": {
@@ -451,9 +446,7 @@
       "TITLE_DIALOG_EDIT": "Editar comisión IWS",
       "TITLE_DIALOG_DELETE": "Eliminar comisión IWS"
     },
-    "ORDER_DIALOG_REMOVE": "Eliminar Orden",
-    "REMOVE_ORDERS_QUESTION": "¿Está seguro que desea eliminar la orden",
-    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "¿Está seguro que desea eliminar la comisión IWS "
+    "ORDER_DIALOG_REMOVE": "Eliminar Orden"
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -475,8 +468,7 @@
       "OPEN_AMOUNT": "Saldo Pendiente",
       "IWS_PERCENT": "IWS-%"
     },
-    "RECEIVABLES_DIALOG_REMOVE": "Eliminar Cuenta por Cobrar",
-    "REMOVE_RECEIVABLES_QUESTION": "¿Está seguro que desea eliminar la cuenta por cobrar"
+    "RECEIVABLES_DIALOG_REMOVE": "Eliminar Cuenta por Cobrar"
   },
   "INVOICES": {
     "TABLE": {
@@ -491,8 +483,7 @@
       "TAX_AMOUNT": "Importe al Impuesto",
       "AMOUNT_GROSS": "Importe Bruto"
     },
-    "INVOICES_DIALOG_REMOVE": "Eliminar factura",
-    "REMOVE_INVOICES_QUESTION": "¿Está seguro que desea eliminar la factura"
+    "INVOICES_DIALOG_REMOVE": "Eliminar factura"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
@@ -529,8 +520,7 @@
       "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "¿Está seguro que desea eliminar la comisión IWS "
     },
     "TITLE_DIALOG_CREATE": "Nuevo Marco de Acuerdo",
-    "TITLE_DIALOG_REMOVE": "Eliminar Marco de Acuerdo",
-    "REMOVE_QUESTION": "¿Está seguro que desea eliminar el Marco de Acuerdo"
+    "TITLE_DIALOG_REMOVE": "Eliminar Marco de Acuerdo"
   },
   "CONTRACTS": {
     "FORM": {
@@ -544,7 +534,6 @@
       "TAX_NUMBER": "Numero de Impuesto"
     },
     "LABEL": {
-      "REMOVE_CONTRACTOR_QUESTION": "¿Está seguro que desea eliminar el contratista",
       "CREATE_CONTRACTOR": "Crear Contratista",
       "EDIT_CONTRACTOR": "Editar Contratista",
       "DELETE_CONTRACTOR": "Eliminar Contratista"
@@ -577,11 +566,8 @@
       "DURATION_OF_USE": "Duración de uso (meses)"
     },
     "LABEL": {
-      "REMOVE_SUBCONTRACT_QUESTION": "¿Está seguro que desea eliminar el Subcontratista",
       "DELETE_SUBCONTRACT": "Eliminar Subcontratista",
-      "REMOVE_SUBCONTRACT_YEAR_QUESTION": "¿Está seguro que desea eliminar el año de subcontratación",
       "DELETE_SUBCONTRACT_YEAR": "Eliminar año de subcontratación",
-      "REMOVE_SUBCONTRACT_PROJECT_QUESTION": "¿Está seguro que desea eliminar el proyecto de subcontratación",
       "DELETE_SUBCONTRACT_PROJECT": "Eliminar Proyecto de Subcontratación",
       "NEW_SUBCONTRACT": "Nuevo Subcontrato"
     },
@@ -867,6 +853,9 @@
       "NEW_FUNDING": "Nuevo programa de financiación",
       "DELETE_FUNDING": "Eliminar programa de financiación",
       "DELETE_CONFIRM_QUESTION": "¿Está seguro que desea eliminar el programa de financiación: "
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "El programa ya existe"
     }
   },
   "DUNNING_LEVELS": {

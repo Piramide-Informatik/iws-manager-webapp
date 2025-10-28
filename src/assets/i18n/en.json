@@ -229,7 +229,7 @@
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Confirmation",
-    "DELETE": "Are you sure you want to delete {{value}}?",
+    "DELETE": "Are you sure you want to delete \"<strong>{{ value }}</strong>\"?",
     "SUCCESSFUL_MESSAGE": "Successful",
     "EMPLOYEE_SUCCESS_DELETED_MESSAGE": "Employee deleted.",
     "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Work Contract deleted.",
@@ -268,9 +268,7 @@
     },
     "LABELS": {
       "CONTACT_PERSON": "Contact Person",
-      "DELETE_CUSTOMER": "Delete Customer",
-      "REMOVE_CUSTOMER_QUESTION": "Are you sure you want to delete the Customer ",
-      "REMOVE_CONTACT_LIST": "and his contact list"
+      "DELETE_CUSTOMER": "Delete Customer"
     },
     "CONTACT_TABLE": {
       "NAME": "Name",
@@ -318,8 +316,7 @@
       "QUALI_MKUI": "Quali KMU-i"
     },
     "LABELS": {
-      "DELETE_EMPLOYEE": "Delete Employee",
-      "REMOVE_EMPLOYEE_QUESTION": "Are you sure you want to delete the employee "
+      "DELETE_EMPLOYEE": "Delete Employee"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Start Date",
@@ -345,7 +342,6 @@
       "TITLE_DIALOG_CREATE": "New Contact Person",
       "TITLE_DIALOG_EDIT": "Edit Contact Person",
       "TITLE_DIALOG_DELETE": "Delete Contact Person",
-      "CONFIRM_QUESTION_DELETE": "Are you sure you want to delete the Contact Person ",
       "INVOICE": "Invoice Recipient",
       "IS_INVOICE_RECIPIENT": "is Invoice Recipient"
     },
@@ -403,8 +399,7 @@
       "AUTH_DATE": "Appr. Date",
       "FUNDING_RATE": "Funding Rate"
     },
-    "PROJECTS_DIALOG_REMOVE": "Delete Project",
-    "REMOVE_PROJECTS_QUESTION": "Are you sure you want to delete the project"
+    "PROJECTS_DIALOG_REMOVE": "Delete Project"
   },
   "ORDERS": {
     "FORM": {
@@ -456,9 +451,7 @@
       "TITLE_DIALOG_EDIT": "Edit IWS Commission",
       "TITLE_DIALOG_DELETE": "Delete IWS Commission"
     },
-    "ORDER_DIALOG_REMOVE": "Delete Order",
-    "REMOVE_ORDERS_QUESTION": "Are you sure you want to delete the order",
-    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "Are you sure you want to delete the IWS Commission "
+    "ORDER_DIALOG_REMOVE": "Delete Order"
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -480,8 +473,7 @@
       "OPEN_AMOUNT": "Outstanding Balance",
       "IWS_PERCENT": "IWS-%"
     },
-    "RECEIVABLES_DIALOG_REMOVE": "Delete Receivable",
-    "REMOVE_RECEIVABLES_QUESTION": "Are you sure you want to delete the receivable"
+    "RECEIVABLES_DIALOG_REMOVE": "Delete Receivable"
   },
   "INVOICES": {
     "TABLE": {
@@ -496,8 +488,7 @@
       "TAX_AMOUNT": "Tax Amount",
       "AMOUNT_GROSS": "Gross Amount"
     },
-    "INVOICES_DIALOG_REMOVE": "Delete Invoice",
-    "REMOVE_INVOICES_QUESTION": "Are you sure you want to delete the invoice"
+    "INVOICES_DIALOG_REMOVE": "Delete Invoice"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
@@ -530,9 +521,7 @@
       }
     },
     "TITLE_DIALOG_REMOVE": "Delete Framework Agreement",
-    "TITLE_DIALOG_CREATE": "Create Framework Agreement",
-    "REMOVE_QUESTION": "Are you sure you want to delete the framework agreement",
-    "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Are you sure you want to delete the IWS Commission "
+    "TITLE_DIALOG_CREATE": "Create Framework Agreement"
   },
   "CONTRACTS": {
     "FORM": {
@@ -546,7 +535,6 @@
       "TAX_NUMBER": "Tax Number"
     },
     "LABEL": {
-      "REMOVE_CONTRACTOR_QUESTION": "Are you sure you want to delete the Contractor",
       "CREATE_CONTRACTOR": "Create Contractor",
       "EDIT_CONTRACTOR": "Edit Contractor",
       "DELETE_CONTRACTOR": "Delete Contractor"
@@ -579,11 +567,8 @@
       "DURATION_OF_USE": "Duration of use (months)"
     },
     "LABEL": {
-      "REMOVE_SUBCONTRACT_QUESTION": "Are you sure you want to delete the Subcontract",
       "DELETE_SUBCONTRACT": "Delete Subcontract",
-      "REMOVE_SUBCONTRACT_YEAR_QUESTION": "Are you sure you want to delete the Subcontract Year",
       "DELETE_SUBCONTRACT_YEAR": "Delete Subcontract Year",
-      "REMOVE_SUBCONTRACT_PROJECT_QUESTION": "Are you sure you want to delete the Subcontract Project",
       "DELETE_SUBCONTRACT_PROJECT": "Delete Subcontract Project",
       "NEW_SUBCONTRACT": "New Subcontract"
     },
@@ -869,6 +854,9 @@
       "NEW_FUNDING": "New funding program",
       "DELETE_FUNDING": "Delete funding program",
       "DELETE_CONFIRM_QUESTION": "Are you sure you want to delete the funding program: "
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Program already exists"
     }
   },
   "DUNNING_LEVELS": {

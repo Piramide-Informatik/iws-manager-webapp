@@ -409,13 +409,8 @@
   [(visible)]="showDeleteCustomerModal"
 >
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ "CUSTOMERS.LABELS.REMOVE_CUSTOMER_QUESTION" | translate }}
-      <strong class="stronglock mt-1"
-        >"{{ formDetailCustomer.get("companyText1")?.value }}"</strong
-      >
-      {{ "CUSTOMERS.LABELS.REMOVE_CONTACT_LIST" | translate }}?
-    </p>
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: formDetailCustomer.get('companyText1')?.value }"></p>
+    
     <div class="flex justify-content-center gap-2">
       <p-button
         type="button"

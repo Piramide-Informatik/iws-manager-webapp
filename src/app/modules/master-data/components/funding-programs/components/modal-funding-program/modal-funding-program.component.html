@@ -3,13 +3,25 @@
     <div class="create-form my-4">
       <div class="funding-form">
         <label for="name">{{ "FUNDING.LABEL.PROGRAM" | translate }}</label>
-        <input #firstInput
-          pInputText
-          type="text"
-          id="name"
-          formControlName="name"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input #firstInput
+            pInputText
+            type="text"
+            id="name"
+            formControlName="name"
+            autocomplete="off"
+            [attr.invalid]="(fundingProgramForm.get('name')?.invalid && fundingProgramForm.get('name')?.dirty) || nameAlreadyExist"
+          />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (fundingProgramForm.get('name')?.invalid && fundingProgramForm.get('name')?.dirty) || nameAlreadyExist">
+            <span *ngIf="fundingProgramForm.get('name')?.errors?.['required'] && fundingProgramForm.get('name')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="nameAlreadyExist && !fundingProgramForm.get('name')?.errors?.['required']">
+              {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+        </div>
       </div>
 
       <div class="funding-form">
@@ -72,7 +84,7 @@
     <div class="flex justify-content-center gap-2 mt-4">
         <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
             icon="pi pi-check" iconPos="left" [loading]="isLoading"
-            [disabled]="fundingProgramForm.invalid || isLoading || !fundingProgramForm.dirty" />
+            [disabled]="fundingProgramForm.invalid || isLoading || !fundingProgramForm.dirty || nameAlreadyExist" />
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
