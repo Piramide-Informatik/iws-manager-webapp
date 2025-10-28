@@ -13,6 +13,10 @@
                         *ngIf="editRoleForm.get('name')?.invalid && editRoleForm.get('name')?.touched && editRoleForm.get('name')!.hasError('required')">
                         {{ 'ROLES.ERROR.ROL_REQUIRED' | translate }}
                     </p-message>
+                    <p-message severity="error" variant="simple" size="small"
+                        *ngIf="nameAlreadyExist">
+                        {{ 'ROLES.ERROR.NAME_ALREADY_EXIST' | translate }}
+                    </p-message>
                 </div>
             </div>
 
@@ -73,7 +77,7 @@
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate"
                 icon="pi pi-check" iconPos="left" [loading]="isSaving"
-                [disabled]="editRoleForm.invalid || !editRoleForm.dirty || isSaving"></p-button>
+                [disabled]="editRoleForm.invalid || !editRoleForm.dirty || isSaving || nameAlreadyExist"></p-button>
 
             <p-button type="button"
                 class="cancel"
@@ -88,8 +92,6 @@
         </div>
     </form>
 </p-card>
-
-
 
 <app-occ-error-modal
     *ngIf="showOCCErrorModalRole"
