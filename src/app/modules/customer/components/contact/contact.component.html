@@ -121,10 +121,7 @@
     </div>
 }@else if(modalType === 'delete') {
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-            {{ 'CONTACT.LABELS.CONFIRM_QUESTION_DELETE' | translate }}
-            <strong class="stronglock mt-1">"{{ `${currentContact?.firstName} ${currentContact?.lastName}` }}"</strong>?
-        </p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentContact?.firstName+' '+currentContact?.lastName }"></p>
 
         <div class="flex justify-content-center gap-2">
             <p-button
@@ -154,12 +151,9 @@
   </div>
 }
 
-<p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_DELETE` | translate" id="delete-contact-person"  [modal]="true" [(visible)]="visibleDeleteContactPersonEntity" [style]="{ width: '40rem' }">
+<p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_DELETE` | translate" id="delete-contact-person"  [modal]="true" [(visible)]="visibleDeleteContactPersonEntity" [style]="{ width: 'auto' }">
   <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-            {{ 'CONTACT.LABELS.CONFIRM_QUESTION_DELETE' | translate }}
-            <strong class="stronglock mt-1">"{{ `${currentContact?.firstName} ${currentContact?.lastName}` }}"</strong>?
-        </p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentContact?.firstName+' '+currentContact?.lastName }"></p>
 
         <div class="flex justify-content-center gap-2">
             <p-button

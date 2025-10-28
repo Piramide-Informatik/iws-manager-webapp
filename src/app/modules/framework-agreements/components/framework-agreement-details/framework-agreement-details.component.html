@@ -25,10 +25,8 @@
   [(visible)]="visibleFrameworkAgreementModalEntity" 
 >
   <div class="confirmation-content-entity mb-2 mt-4">
-    <p class="mb-4 title-container">
-      {{ 'FRAMEWORK-AGREEMENTS.REMOVE_QUESTION' | translate }}
-      <strong class="stronglock mt-1" *ngIf="currentBasicContract">"{{ currentBasicContract.contractLabel }}"</strong>?
-    </p>
+    <p class="mb-4 title-container" *ngIf="currentBasicContract" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentBasicContract.contractLabel }"></p>
+
     <div class="flex justify-content-center gap-2 buttons-container">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash" iconPos="left" (onClick)="onFrameworkAgreementDeleteConfirm()" severity="danger" 

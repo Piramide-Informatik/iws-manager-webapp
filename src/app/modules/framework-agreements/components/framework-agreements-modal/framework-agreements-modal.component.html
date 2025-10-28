@@ -80,10 +80,8 @@
 </ng-container> 
 <ng-template #deleteFrameworkAgreementTemplate>
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'FRAMEWORK-AGREEMENTS.REMOVE_QUESTION' | translate }}
-      <strong class="stronglock mt-1">"{{ selectedFrameworkAgreement?.contractLabel	}}"</strong>?
-    </p>
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedFrameworkAgreement?.contractLabel }"></p>
+    
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash" iconPos="left" (onClick)="onFrameworkAgreementDeleteConfirm()" severity="danger" 

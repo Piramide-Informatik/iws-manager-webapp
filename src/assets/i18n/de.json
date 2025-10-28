@@ -1,7 +1,7 @@
 {
   "PAGETITLE": {
     "CUSTOMER_OVERVIEW": "Kunden",
-    "CUSTOMER": "kunde - ",
+    "CUSTOMER": "Kunde - ",
     "CUSTOMERS": {
       "BASIC_CONTRACTS": " - Rahmenverträge",
       "CONTRACTORS": " - Auftragnehmer",
@@ -229,7 +229,7 @@
   },
   "DIALOG": {
     "CONFIRM_TITLE": "Bestätigen",
-    "DELETE": "Möchten Sie wirklich löschen {{value}} ?",
+    "DELETE": "Möchten Sie \"<strong>{{ value }}</strong>\" wirklich löschen?",
     "SUCCESSFUL_MESSAGE": "Erfolgreich",
     "EMPLOYEE_SUCCESS_DELETED_MESSAGE": "Mitarbeiter gelöscht",
     "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Arbeitsvertrag gelöscht",
@@ -268,9 +268,7 @@
     },
     "LABELS": {
       "CONTACT_PERSON": "Ansprechpartner",
-      "DELETE_CUSTOMER": "Kunde löschen",
-      "REMOVE_CUSTOMER_QUESTION": "Möchten Sie den Kunde ",
-      "REMOVE_CONTACT_LIST": "und seine Ansprechpartner wirklich löschen"
+      "DELETE_CUSTOMER": "Kunde löschen"
     },
     "CONTACT_TABLE": {
       "NAME": "Name",
@@ -282,6 +280,10 @@
       "CREATE_SUCCESS": "Kunde erfolgreich erstellt.",
       "ERROR": "Fehler",
       "CREATE_FAILED": "Kunde konnte nicht erstellt werden."
+    },
+    "VALIDATION": {
+      "INVALID_EMAIL": "Ungültiges E-Mail-Format",
+      "COMPANY_TEXT1_REQUIRED": "Firmenname ist erforderlich"
     }
   },
   "EMPLOYEE": {
@@ -314,8 +316,7 @@
       "QUALI_MKUI": "Quali KMU-i"
     },
     "LABELS": {
-      "DELETE_EMPLOYEE": "Mitarbeiter löschen",
-      "REMOVE_EMPLOYEE_QUESTION": "Möchten Sie den Mitarbeiter wirklich löschen "
+      "DELETE_EMPLOYEE": "Mitarbeiter löschen"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Datum",
@@ -341,7 +342,6 @@
       "TITLE_DIALOG_CREATE": "Neuer Ansprechpartner",
       "TITLE_DIALOG_EDIT": "Ansprechpartner bearbeiten",
       "TITLE_DIALOG_DELETE": "Ansprechpartner löschen",
-      "CONFIRM_QUESTION_DELETE": "Sind Sie sicher, dass Sie den Ansprechpartner löschen möchten: ",
       "INVOICE": "Rechnungsempfänger",
       "IS_INVOICE_RECIPIENT": "ist Rechnungsempfänger"
     },
@@ -381,7 +381,7 @@
       "HOURLY_REAL_RATE": "Realer Stundensatz"
     },
     "LABEL": {
-      "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Möchten Sie den Arbeitsvertrag wirklich löschen",
+      "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Möchten Sie Arbeitsvertrag wirklich löschen",
       "CREATE_EMPLOYEE_CONTRACT": "Arbeitsvertrag erstellen",
       "EDIT_EMPLOYEE_CONTRACT": "Arbeitsvertrag bearbeiten",
       "DELETE_EMPLOYEE_CONTRACT": "Arbeitsvertrag löschen"
@@ -399,8 +399,7 @@
       "AUTH_DATE": "Bewilligt",
       "FUNDING_RATE": "Fördersatz"
     },
-    "PROJECTS_DIALOG_REMOVE": "Projekt löschen",
-    "REMOVE_PROJECTS_QUESTION": "Möchten Sie das Projekt wirklich löschen"
+    "PROJECTS_DIALOG_REMOVE": "Projekt löschen"
   },
   "ORDERS": {
     "FORM": {
@@ -452,9 +451,7 @@
       "TITLE_DIALOG_EDIT": "IWS Provision bearbeiten",
       "TITLE_DIALOG_DELETE": "IWS Provision löschen"
     },
-    "ORDER_DIALOG_REMOVE": "Bestellung löschen",
-    "REMOVE_ORDERS_QUESTION": "Möchten Sie die Bestellung wirklich löschen",
-    "REMOVE_ORDER_IWS_COMMISSION_QUESTION": "Möchten Sie die IWS Provision löschen?"
+    "ORDER_DIALOG_REMOVE": "Bestellung löschen"
   },
   "RECEIVABLES": {
     "TABLE": {
@@ -476,8 +473,7 @@
       "OPEN_AMOUNT": "ZA erhalten.",
       "IWS_PERCENT": "IWS-%"
     },
-    "RECEIVABLES_DIALOG_REMOVE": "Forderung löschen",
-    "REMOVE_RECEIVABLES_QUESTION": "Möchten Sie die Forderung wirklich löschen"
+    "RECEIVABLES_DIALOG_REMOVE": "Forderung löschen"
   },
   "INVOICES": {
     "TABLE": {
@@ -492,8 +488,7 @@
       "TAX_AMOUNT": "MwSt.",
       "AMOUNT_GROSS": "Summe"
     },
-    "INVOICES_DIALOG_REMOVE": "Rechnung löschen",
-    "REMOVE_INVOICES_QUESTION": "Möchten Sie die Rechnung wirklich löschen"
+    "INVOICES_DIALOG_REMOVE": "Rechnung löschen"
   },
   "FRAMEWORK-AGREEMENTS": {
     "TABLE": {
@@ -530,9 +525,7 @@
       "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Möchten sie die IWS Provision löschen"
     },
     "TITLE_DIALOG_REMOVE": "Rahmenvereinbarung löschen",
-    "TITLE_DIALOG_CREATE": "Neuer rahmenvertrag",
-    "REMOVE_QUESTION": "Möchten sie den rahmenvertrag wirklich löschen",
-    "REMOVE_CONTRACT_IWS_COMMISSION_QUESTION": "Möchten sie die IWS Provision löschen"
+    "TITLE_DIALOG_CREATE": "Neuer rahmenvertrag"
   },
   "CONTRACTS": {
     "FORM": {
@@ -546,7 +539,6 @@
       "TAX_NUMBER": "USt.-ID"
     },
     "LABEL": {
-      "REMOVE_CONTRACTOR_QUESTION": "Möchten Sie den Auftragnehmer wirklich löschen",
       "CREATE_CONTRACTOR": "Auftragnehmer erstellen",
       "EDIT_CONTRACTOR": "Auftragnehmer bearbeiten",
       "DELETE_CONTRACTOR": "Auftragnehmer löschen"
@@ -579,11 +571,8 @@
       "DURATION_OF_USE": "Nutzungsdauer (Monate)"
     },
     "LABEL": {
-      "REMOVE_SUBCONTRACT_QUESTION": "Möchten Sie den Untervertrag wirklich löschen",
       "DELETE_SUBCONTRACT": "Untervertrag löschen",
-      "REMOVE_SUBCONTRACT_YEAR_QUESTION": "Möchten Sie das Untervertragsjahr wirklich löschen",
       "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
-      "REMOVE_SUBCONTRACT_PROJECT_QUESTION": "Möchten Sie das Unterouftrag Projekt wirklich löschen",
       "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen",
       "NEW_SUBCONTRACT": "Neuer Untervertrag"
     },
@@ -869,6 +858,9 @@
       "NEW_FUNDING": "Neues Förderprogramm",
       "DELETE_FUNDING": "Förderprogramm löschen",
       "DELETE_CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Förderprogramm löschen möchten: "
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Förderprogramm existiert bereits"
     }
   },
   "DUNNING_LEVELS": {

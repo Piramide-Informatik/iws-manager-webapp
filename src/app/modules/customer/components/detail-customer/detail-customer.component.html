@@ -2,25 +2,72 @@
   <form [formGroup]="formDetailCustomer" action="">
     <div class="grid justify-content-center">
       <!-- Primera columna -->
-      <div class="md:col-6 lg:col-6 px-7"> 
-
+      <div class="md:col-6 lg:col-6 px-7">
         <div class="field">
-          <label for="customerNo">{{ 'CUSTOMERS.FORM.CUSTOMER_ID' | translate }}</label>
-          <p-inputnumber inputId="customerNo" [useGrouping]="false" formControlName="customerNo" [inputStyle]="{'text-align': 'right'}"/>
+          <label for="customerNo">{{
+            "CUSTOMERS.FORM.CUSTOMER_ID" | translate
+          }}</label>
+          <p-inputnumber
+            inputId="customerNo"
+            [useGrouping]="false"
+            formControlName="customerNo"
+            [inputStyle]="{ 'text-align': 'right' }"
+          />
         </div>
 
-        <div class="field align-items-start">
-          <label for="companyName1" class="mt-2">{{ 'CUSTOMERS.FORM.COMPANY_NAME' | translate }}</label>
+        <div class="field email-field">
+          <label for="companyText1" class="mt-2"
+            >{{ "CUSTOMERS.FORM.COMPANY_NAME" | translate }}</label
+          >
           <div class="flex flex-column w-full">
-            <input #inputText type="text" id="companyName1" class="mb-2" pInputText formControlName="companyText1"/>
-            <input type="text" id="companyName2" pInputText formControlName="companyText2"/>
+            <div class="field-content">
+              <input
+                #inputText
+                type="text"
+                id="companyText1"
+                class="mb-2"
+                pInputText
+                formControlName="companyText1"
+                [class]="
+                  formDetailCustomer.get('companyText1')?.invalid &&
+                  formDetailCustomer.get('companyText1')?.touched
+                    ? 'ng-invalid ng-dirty'
+                    : ''
+                "
+              />
+              <div
+                *ngIf="
+                  formDetailCustomer.get('companyText1')?.invalid &&
+                  formDetailCustomer.get('companyText1')?.touched
+                "
+                class="error-messages1"
+              >
+                <small
+                  *ngIf="formDetailCustomer.get('companyText1')?.errors?.['required']"
+                  class="p-error"
+                >
+                  {{
+                    "CUSTOMERS.VALIDATION.COMPANY_TEXT1_REQUIRED" | translate
+                  }}
+                </small>
+              </div>
+            </div>
+            <input
+              type="text"
+              id="companyText2"
+              pInputText
+              formControlName="companyText2"
+            />
           </div>
         </div>
 
         <!-- Select country -->
         <div class="field">
-          <label for="country">{{ 'CUSTOMERS.FORM.COUNTRY' | translate }}</label>
-          <p-select formControlName="selectedCountry" 
+          <label for="country">{{
+            "CUSTOMERS.FORM.COUNTRY" | translate
+          }}</label>
+          <p-select
+            formControlName="selectedCountry"
             id="country"
             [options]="countries()"
             [(ngModel)]="selectedCountry"
@@ -36,7 +83,7 @@
               </div>
             </ng-template>
 
-           <!-- Personalización de cada opción -->
+            <!-- Personalización de cada opción -->
             <ng-template let-country pTemplate="item">
               <div class="flex align-items-center gap-2">
                 <span>{{ country.name }}</span>
@@ -46,173 +93,347 @@
         </div>
 
         <div class="field">
-          <label for="street">{{ 'CUSTOMERS.FORM.STREET' | translate }}</label>
-          <input type="text" id="street" pInputText formControlName="street"/>
+          <label for="street">{{ "CUSTOMERS.FORM.STREET" | translate }}</label>
+          <input type="text" id="street" pInputText formControlName="street" />
         </div>
 
         <div class="field">
-          <label for="">{{ 'CUSTOMERS.FORM.ZIP_CITY' | translate }}</label>
+          <label for="">{{ "CUSTOMERS.FORM.ZIP_CITY" | translate }}</label>
           <div class="postal-city">
-            <input type="text" id="postalCode" class="postal" pInputText formControlName="postalCode"/>
-            <input type="text" id="city" class="city" pInputText formControlName="city"/>
+            <input
+              type="text"
+              id="postalCode"
+              class="postal"
+              pInputText
+              formControlName="postalCode"
+            />
+            <input
+              type="text"
+              id="city"
+              class="city"
+              pInputText
+              formControlName="city"
+            />
           </div>
         </div>
 
         <div class="field">
-          <label for="">{{ 'CUSTOMERS.FORM.COMPANY_TYPE' | translate }}</label>
-          <p-select formControlName="selectedTypeCompany" 
-          id="typeCompany"
-          [options]="companyTypes()"
-          [(ngModel)]="selectedTypeCompany"
-          optionLabel="name"
-          optionValue="id"
-          [showClear]="true"
-          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          <label for="">{{ "CUSTOMERS.FORM.COMPANY_TYPE" | translate }}</label>
+          <p-select
+            formControlName="selectedTypeCompany"
+            id="typeCompany"
+            [options]="companyTypes()"
+            [(ngModel)]="selectedTypeCompany"
+            optionLabel="name"
+            optionValue="id"
+            [showClear]="true"
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           />
         </div>
 
         <div class="field">
-          <label for="">{{ 'CUSTOMERS.FORM.INDUSTRY' | translate }}</label>
-          <p-select formControlName="selectedSector" 
-          id="sector"
-          [options]="sectors()" 
-          optionLabel="name"
-          optionValue="code" 
-          [showClear]="true"
-          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          <label for="">{{ "CUSTOMERS.FORM.INDUSTRY" | translate }}</label>
+          <p-select
+            formControlName="selectedSector"
+            id="sector"
+            [options]="sectors()"
+            optionLabel="name"
+            optionValue="code"
+            [showClear]="true"
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           />
         </div>
 
         <div class="field">
-          <label for="state">{{ 'CUSTOMERS.FORM.FEDERAL_STATE' | translate }}</label>
-          <p-select formControlName="selectedState" 
-          id="state"
-          [options]="states()" 
-          optionLabel="name"
-          optionValue="id"
-          [showClear]="true"
-          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          <label for="state">{{
+            "CUSTOMERS.FORM.FEDERAL_STATE" | translate
+          }}</label>
+          <p-select
+            formControlName="selectedState"
+            id="state"
+            [options]="states()"
+            optionLabel="name"
+            optionValue="id"
+            [showClear]="true"
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           />
         </div>
 
-        <div class="field relative">
-          <label for="homepage">{{ 'CUSTOMERS.FORM.WEB_SITE' | translate }}</label>
-          <input type="text" id="homepage" pInputText formControlName="homepage"/>
-          <i class="pi pi-globe" style="color: #12435d"></i>
+        <div class="field">
+          <label for="homepage">{{
+            "CUSTOMERS.FORM.WEB_SITE" | translate
+          }}</label>
+          <input
+            type="text"
+            id="homepage"
+            pInputText
+            formControlName="homepage"
+            placeholder="https://..."
+          />
+          <button
+            pButton
+            type="button"
+            icon="pi pi-globe"
+            class="transparent-icon-button"
+            (click)="openWebsite()"
+          ></button>
         </div>
 
         <div class="field">
-          <label for="phone">{{ 'CUSTOMERS.FORM.PHONE' | translate }}</label>
-          <input type="text" id="phone" pInputText formControlName="phone"/>
+          <label for="phone">{{ "CUSTOMERS.FORM.PHONE" | translate }}</label>
+          <input type="text" id="phone" pInputText formControlName="phone" />
         </div>
       </div>
 
       <!-- Segunda columna -->
       <div class="md:col-6 lg:col-6 px-7">
-        
-        <div class="field">
-          <label for="invoiceEmail">{{ 'CUSTOMERS.FORM.EMAIL_INVOICE' | translate }}</label>
-          <input type="text" id="invoiceEmail" pInputText formControlName="invoiceEmail"/>
+        <div class="field email-field">
+          <label for="invoiceEmail">{{
+            "CUSTOMERS.FORM.EMAIL_INVOICE" | translate
+          }}</label>
+          <div class="field-content">
+            <input
+              type="text"
+              id="invoiceEmail"
+              pInputText
+              formControlName="invoiceEmail"
+              [class]="
+                formDetailCustomer.get('invoiceEmail')?.invalid &&
+                formDetailCustomer.get('invoiceEmail')?.touched
+                  ? 'ng-invalid ng-dirty'
+                  : ''
+              "
+            />
+            <div
+              *ngIf="
+                formDetailCustomer.get('invoiceEmail')?.invalid &&
+                formDetailCustomer.get('invoiceEmail')?.touched
+              "
+              class="error-messages2"
+            >
+              <small
+                *ngIf="formDetailCustomer.get('invoiceEmail')?.errors?.['email']"
+                class="p-error"
+              >
+                {{ "CUSTOMERS.VALIDATION.INVALID_EMAIL" | translate }}
+              </small>
+            </div>
+          </div>
         </div>
 
         <div class="field">
-          <label for="weekWorkingHours">{{ 'CUSTOMERS.FORM.ENTREPRENEURIAL_WEEKLY_WORKING_HOURS' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" inputId="weekWorkingHours" formControlName="weekWorkingHours" [inputStyle]="{'text-align': 'right'}"
-          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          <label for="weekWorkingHours">{{
+            "CUSTOMERS.FORM.ENTREPRENEURIAL_WEEKLY_WORKING_HOURS" | translate
+          }}</label>
+          <p-inputNumber
+            class="p-inputnumber-input"
+            inputId="weekWorkingHours"
+            formControlName="weekWorkingHours"
+            [inputStyle]="{ 'text-align': 'right' }"
+            mode="decimal"
+            [max]="99999.99"
+            [min]="0"
+            [useGrouping]="true"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            locale="de-DE"
+          />
         </div>
 
         <div class="field">
-          <label for="taxNumber">{{ 'CUSTOMERS.FORM.TAX_NUMBER' | translate }}</label>
-          <input type="text" id="taxNumber" pInputText formControlName="taxNumber"/>
+          <label for="taxNumber">{{
+            "CUSTOMERS.FORM.TAX_NUMBER" | translate
+          }}</label>
+          <input
+            type="text"
+            id="taxNumber"
+            pInputText
+            formControlName="taxNumber"
+          />
         </div>
 
         <div class="field">
-          <label for="headcount">{{ 'CUSTOMERS.FORM.FINANCE' | translate }}</label>
-          <input type="text" id="headcount" pInputText formControlName="headcount"/>
+          <label for="headcount">{{
+            "CUSTOMERS.FORM.FINANCE" | translate
+          }}</label>
+          <input
+            type="text"
+            id="headcount"
+            pInputText
+            formControlName="headcount"
+          />
         </div>
 
         <div class="field">
-          <label for="maxHoursMonth">{{ 'CUSTOMERS.FORM.MAX_HOURS_MONTH' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" inputId="maxHoursMonth" formControlName="maxHoursMonth" [inputStyle]="{'text-align': 'right'}"
-          mode="decimal"[max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          <label for="maxHoursMonth">{{
+            "CUSTOMERS.FORM.MAX_HOURS_MONTH" | translate
+          }}</label>
+          <p-inputNumber
+            class="p-inputnumber-input"
+            inputId="maxHoursMonth"
+            formControlName="maxHoursMonth"
+            [inputStyle]="{ 'text-align': 'right' }"
+            mode="decimal"
+            [max]="99999.99"
+            [min]="0"
+            [useGrouping]="true"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            locale="de-DE"
+          />
         </div>
 
         <div class="field">
-          <label for="maxHoursYear">{{ 'CUSTOMERS.FORM.MAX_HOURS_YEAR' | translate }}</label>
-          <p-inputNumber class="p-inputnumber-input" inputId="maxHoursYear" formControlName="maxHoursYear" [inputStyle]="{'text-align': 'right'}"
-          mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+          <label for="maxHoursYear">{{
+            "CUSTOMERS.FORM.MAX_HOURS_YEAR" | translate
+          }}</label>
+          <p-inputNumber
+            class="p-inputnumber-input"
+            inputId="maxHoursYear"
+            formControlName="maxHoursYear"
+            [inputStyle]="{ 'text-align': 'right' }"
+            mode="decimal"
+            [max]="99999.99"
+            [min]="0"
+            [useGrouping]="true"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            locale="de-DE"
+          />
         </div>
 
         <p-floatlabel variant="on">
-          <textarea pTextarea id="textAreaComment" formControlName="textAreaComment" rows="6" cols="30" style="resize: none" class="w-full"></textarea>
-          <label for="textAreaComment">{{ 'CUSTOMERS.FORM.COMMENT' | translate }}</label>
+          <textarea
+            pTextarea
+            id="textAreaComment"
+            formControlName="textAreaComment"
+            rows="6"
+            cols="30"
+            style="resize: none"
+            class="w-full"
+          ></textarea>
+          <label for="textAreaComment">{{
+            "CUSTOMERS.FORM.COMMENT" | translate
+          }}</label>
         </p-floatlabel>
-
       </div>
-
     </div>
   </form>
   <div class="contact-person flex flex-column">
-    @if(customerId){ 
-      <div class="flex flex-row gap-3 align-items-center my-2">
-        <span class="font-semibold">{{ 'CUSTOMERS.LABELS.CONTACT_PERSON' | translate }}</span>
-        <p-dialog [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate" 
-          id="new-contact-person"  
-          [modal]="true" 
-          [(visible)]="visible" 
-          [style]="{ width: 'auto' }"
-          (onHide)="closeDialog = !closeDialog">
-          <app-contact (onVisibility)="closeVisibility($event)" 
-            [visible]="visible"
-            [closeModal]="closeDialog"
-            [modalType]="modalType" 
-            [currentContact]="currentContactPerson"
-            (onOperationContact)="updateContactList($event)"
-          ></app-contact>
-        </p-dialog>
-      </div>
-      <master-data-genaral-table
-        [tableId]="tableKey"
-        [tableValues]="tableData()"
-        [columns]="selectedColumns"
-        [userPreferences]="userDetailCustomerPreferences"
-        [dataKeys]="dataKeys"
-        (onColumnChanges)="onUserCustomerDetailPreferencesChanges($event)"
-        (onCreateRegister)="createPerson()"
-        (onEditRegister)="editPerson($event)"
-        (onDeleteRegister)="deletePerson($event)"
-      ></master-data-genaral-table>
+    @if(customerId){
+    <div class="flex flex-row gap-3 align-items-center my-2">
+      <span class="font-semibold">{{
+        "CUSTOMERS.LABELS.CONTACT_PERSON" | translate
+      }}</span>
+      <p-dialog
+        [header]="`CONTACT.LABELS.TITLE_DIALOG_${modalType | uppercase}` | translate"
+        id="new-contact-person"
+        [modal]="true"
+        [(visible)]="visible"
+        [style]="{ width: 'auto' }"
+        (onHide)="closeDialog = !closeDialog"
+      >
+        <app-contact
+          (onVisibility)="closeVisibility($event)"
+          [visible]="visible"
+          [closeModal]="closeDialog"
+          [modalType]="modalType"
+          [currentContact]="currentContactPerson"
+          (onOperationContact)="updateContactList($event)"
+        ></app-contact>
+      </p-dialog>
+    </div>
+    <master-data-genaral-table
+      [tableId]="tableKey"
+      [tableValues]="tableData()"
+      [columns]="selectedColumns"
+      [userPreferences]="userDetailCustomerPreferences"
+      [dataKeys]="dataKeys"
+      (onColumnChanges)="onUserCustomerDetailPreferencesChanges($event)"
+      (onCreateRegister)="createPerson()"
+      (onEditRegister)="editPerson($event)"
+      (onDeleteRegister)="deletePerson($event)"
+    ></master-data-genaral-table>
     }
-    <br>
+    <br />
     <div class="form-row flex flex-wrap gap-3 justify-content-center py-3">
       @if(customerId){
-        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" [loading]="isSaving"
-            iconPos="left" (onClick)="onSubmit()" [disabled]="formDetailCustomer.invalid || !formDetailCustomer.dirty" />
-        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash" [disabled]="isSaving"
-          iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="showDeleteCustomerModal = true" />    
+      <p-button
+        class="Save me-2"
+        size="small"
+        [label]="'BUTTONS.SAVE' | translate"
+        icon="pi pi-check"
+        [loading]="isSaving"
+        iconPos="left"
+        (onClick)="onSubmit()"
+        [disabled]="formDetailCustomer.invalid || !formDetailCustomer.dirty"
+      />
+      <p-button
+        class="Delete me-2"
+        size="small"
+        [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash"
+        [disabled]="isSaving"
+        iconPos="left"
+        [style]="{ background: '#ef4444' }"
+        (onClick)="showDeleteCustomerModal = true"
+      />
       }@else{
-        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" [loading]="isSaving"
-            iconPos="left" (onClick)="createCustomer()" [disabled]="formDetailCustomer.invalid || !formDetailCustomer.dirty" />
+      <p-button
+        class="Save me-2"
+        size="small"
+        [label]="'BUTTONS.SAVE' | translate"
+        icon="pi pi-check"
+        [loading]="isSaving"
+        iconPos="left"
+        (onClick)="createCustomer()"
+        [disabled]="formDetailCustomer.invalid || !formDetailCustomer.dirty"
+      />
       }
-      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-          iconPos="left" routerLink="/customers" [disabled]="isSaving" />
+      <p-button
+        class="cancel"
+        size="small"
+        [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times"
+        iconPos="left"
+        routerLink="/customers"
+        [disabled]="isSaving"
+      />
     </div>
   </div>
 </div>
 
-<p-dialog [header]="'CUSTOMERS.LABELS.DELETE_CUSTOMER' | translate" [modal]="true" [(visible)]="showDeleteCustomerModal">
+<p-dialog
+  [header]="'CUSTOMERS.LABELS.DELETE_CUSTOMER' | translate"
+  [modal]="true"
+  [(visible)]="showDeleteCustomerModal"
+>
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'CUSTOMERS.LABELS.REMOVE_CUSTOMER_QUESTION' | translate }}
-      <strong class="stronglock mt-1">"{{ formDetailCustomer.get('companyText1')?.value }}"</strong>
-      {{ 'CUSTOMERS.LABELS.REMOVE_CONTACT_LIST' | translate }}?
-    </p>
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: formDetailCustomer.get('companyText1')?.value }"></p>
+    
     <div class="flex justify-content-center gap-2">
-      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="onCustomerDeleteConfirm()" severity="danger" [loading]="isLoadingCustomer"
-        [disabled]="isLoadingCustomer" />
-      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="showDeleteCustomerModal = false;" [disabled]="isLoadingCustomer" />
+      <p-button
+        type="button"
+        class="delete"
+        size="small"
+        [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash"
+        iconPos="left"
+        (onClick)="onCustomerDeleteConfirm()"
+        severity="danger"
+        [loading]="isLoadingCustomer"
+        [disabled]="isLoadingCustomer"
+      />
+      <p-button
+        type="button"
+        class="cancel"
+        size="small"
+        [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times"
+        iconPos="left"
+        (onClick)="showDeleteCustomerModal = false"
+        [disabled]="isLoadingCustomer"
+      />
     </div>
   </div>
 </p-dialog>
@@ -221,6 +442,7 @@
   *ngIf="showOCCModalCustomer"
   [errorType]="occErrorType"
   [redirectRoute]="'/customers'"
-  (onClose)="showOCCModalCustomer = false">
+  (onClose)="showOCCModalCustomer = false"
+>
 </app-occ-error-modal>
 <p-toast></p-toast>
