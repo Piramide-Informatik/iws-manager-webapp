@@ -24,7 +24,6 @@
     
     .postal {
       width: 33.333%;
-      
     }
     .city {
       width: 100%;
@@ -34,7 +33,21 @@
   input, p-inputnumber {
     width: 100%;
   }
+}
+
+// Para campos con mensajes de error
+.field.email-field {
+  align-items: flex-start !important;
   
+  .field-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .flex.flex-column.w-full {
+    width: 100%;
+  }
 }
 
 //Icon homegape
@@ -47,3 +60,45 @@
   text-align: right;
 }
 
+.transparent-icon-button {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #12435d !important;
+  padding: 0.3rem 0.5rem;
+}
+
+.transparent-icon-button .p-button-icon {
+  color: #12435d !important;
+}
+
+.transparent-icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  color: #0b2e49 !important;
+}
+
+.transparent-icon-button:hover .p-button-icon {
+  color: #0b2e49 !important;
+}
+
+.error-messages1 small {
+  display: block;
+  color: #e24c4c !important;
+  font-size: 0.65rem;
+  margin-top: -0.4rem;
+  margin-bottom: 0;
+}
+
+.error-messages2 small {
+  display: block;
+  color: #e24c4c !important;
+  font-size: 0.65rem;
+  margin-top: 0rem;
+  margin-bottom: -0.9rem;
+}
+
+// Input inválido con borde rojo
+.field input.ng-invalid.ng-dirty {
+  border-color: #e24c4c !important;
+  box-shadow: 0 0 0 1px #e24c4c !important;
+}
