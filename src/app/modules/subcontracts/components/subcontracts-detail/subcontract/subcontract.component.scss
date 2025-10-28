@@ -1,17 +1,19 @@
-.order_input input{
-    width: 20vw;
-}
-
 ::ng-deep .p-inputtext, p-inputnumber {
   width: 20vw;
 }
 
 .order_input{
-    width: 100% !important;
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 
-    label {
-        width: 33%;
-    }
+  label {
+    width: 33%;
+    flex-shrink: 0;
+  }
+
+
 }
 
 /* Estilo del calendario */

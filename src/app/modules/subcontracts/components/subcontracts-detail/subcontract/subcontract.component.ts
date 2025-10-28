@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Subscription } from 'rxjs';
 import { Subcontract } from '../../../../../Entities/subcontract';
@@ -43,6 +43,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = false;
   @Output() public onLoadingUpdate = new EventEmitter<boolean>();
   @Output() formDirty = new EventEmitter<boolean>();
+  @Output() formInvalid = new EventEmitter<boolean>();
   mode: 'create' | 'edit' = 'create';
   @Input() subcontractToEdit!: Subcontract | null;
   private readonly customerId: number = this.route.snapshot.params['id'];
@@ -56,13 +57,16 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     )
   );
   private previousDirtyState = false;
+  private previousInvalidState = false;
 
   public currentCustomer!: Customer | undefined;
 
   ngOnInit(): void {
     this.loadOptionsInvoiceLabel();
+    this.updateTitle();
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadOptionsInvoiceLabel();
+      this.updateTitle();
     });
 
     this.initForm();
@@ -70,6 +74,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     this.firstInputFocus();
     this.subcontractForm.valueChanges.subscribe(() => {
       this.checkDirtyState();
+      this.checkInvalidState();
     });
   }
 
@@ -98,6 +103,15 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  private checkInvalidState(): void {
+    const currentIvalid = this.subcontractForm.invalid;
+
+    if(currentIvalid !== this.previousInvalidState){
+      this.previousInvalidState = currentIvalid;
+      this.formInvalid.emit(currentIvalid);
+    }
+  }
+
   private initForm(): void {
     this.subcontractForm = new FormGroup({
       contractTitle: new FormControl(''),
@@ -105,9 +119,9 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
       invoiceNumber: new FormControl(''),
       invoiceDate: new FormControl(''),
       netOrGross: new FormControl(''),
-      invoiceAmount: new FormControl(''),
+      invoiceAmount: new FormControl('', [Validators.max(99999999.99)]),
       afa: new FormControl(false), // checkbox
-      afaDurationMonths: new FormControl({ value: null, disabled: true }), // solo si afa = true
+      afaDurationMonths: new FormControl({ value: null, disabled: true }, [Validators.max(12)]), // solo si afa = true
       description: new FormControl(''),
     });
     this.subcontractForm.reset();
@@ -218,15 +232,12 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptions.add(
       this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
         this.currentCustomer = customer;
-        this.updateTitle(customer?.customername1!);
       })
     );
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.SUBCONTRACTS')}`
-    );
+  private updateTitle(): void {
+    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.SUBCONTRACTS'));
   }
 
   private handleUpdateSubcontractError(error: Error): void {

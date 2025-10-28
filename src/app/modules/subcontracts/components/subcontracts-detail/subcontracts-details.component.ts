@@ -28,6 +28,7 @@ export class SubcontractsDetailsComponent implements OnInit, OnDestroy {
   isLoadingDelete: boolean = false;
   isLoadingEdit = false;
   isDirty = false;
+  isInvalid = false;
 
   public showOCCErrorModalSubcontract = false;
   public redirectRoute = "";

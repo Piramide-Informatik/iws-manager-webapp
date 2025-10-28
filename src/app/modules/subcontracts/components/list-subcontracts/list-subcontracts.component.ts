@@ -52,7 +52,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
+    this.updateTitle();
     this.loadColHeaders();
     this.selectedColumns = this.cols;
 
@@ -63,18 +63,14 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
       this.reloadComponent(true);
       this.userSubcontractsListPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
-
     this.route.params.subscribe(params => {
       const customerId = params['id'];
-      if (!customerId) {
-        this.updateTitle('...');
-      }
+
       this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
         if (currentCustomer) {
           this.customer = currentCustomer;
-          this.updateTitle(currentCustomer.customername1!);
         } else {
-          this.getTitleByCustomerId(customerId);
+          this.getCustomerId(customerId);
         }
       })
 
@@ -86,19 +82,16 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
     this.subcontracts = [];
   }
 
-  getTitleByCustomerId(customerId: number): void {
+  getCustomerId(customerId: number): void {
     this.customerUtils.getCustomerById(customerId).subscribe(customer => {
       if (customer) {
-        this.updateTitle(customer.customername1!);
         this.customer = customer;
-      } else {
-        this.updateTitle('');
       }
     });
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.SUBCONTRACTS')}`);
+  private updateTitle(): void {
+    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.SUBCONTRACTS'));
   }
 
   onUserSubcontractsListPreferencesChanges(userSubcontractsListPreferences: any) {

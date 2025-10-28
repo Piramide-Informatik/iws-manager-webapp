@@ -1,8 +1,3 @@
-.sub-contractor-form {
-  margin-left: 5% !important;
-  margin-right: 5% !important;
-}
-
 .form-container {
   display: block !important;
 }
@@ -22,8 +17,7 @@
   p-select,
   p-datepicker,
   textarea {
-    width: 250px;
-    max-width: 100%;
+    width: 100%;
   }
 
   ::ng-deep {

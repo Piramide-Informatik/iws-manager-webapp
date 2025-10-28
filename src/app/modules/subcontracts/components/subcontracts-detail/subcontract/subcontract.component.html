@@ -1,7 +1,7 @@
 <form [formGroup]="subcontractForm" (ngSubmit)="onSubmit()">
   <div class="align-items-center mb-2">
 
-    <div class="order_input order_name mb-2">
+    <div class="order_input">
       <label for="contractTitle">{{ 'SUB-CONTRACTS.FORM.ORDER_TITLE' | translate }}</label>
       <input #inputText
         pInputText
@@ -12,7 +12,7 @@
       />
     </div>
 
-    <div class="order_input order_name mb-2">
+    <div class="order_input">
       <label for="contractor">{{ 'SUB-CONTRACTS.FORM.CONTRACTOR' | translate }}</label>
       <p-select
         [style]="{ width: '20vw' }"
@@ -25,7 +25,7 @@
         [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
       ></p-select>
     </div>
-    <div class="order_input order_name mb-2">
+    <div class="order_input">
       <label for="invoiceNumber">{{ 'SUB-CONTRACTS.FORM.INVOICE_NUMBER' | translate }}</label>
       <input
         pInputText
@@ -36,7 +36,7 @@
       />
     </div>
 
-    <div class="order_input order_name mb-2">
+    <div class="order_input">
       <label for="invoiceDate">{{ 'SUB-CONTRACTS.FORM.INVOICE_DATE' | translate }}</label>
       <p-datepicker
         inputId="invoiceDate"
@@ -47,7 +47,7 @@
       ></p-datepicker>
     </div>
 
-    <div class="order_input order_name mb-2">
+    <div class="order_input">
       <label for="netOrGross">{{ 'SUB-CONTRACTS.FORM.INVOICE_NET_OR_GROSS' | translate }}</label>
       <p-select
         [style]="{ width: '20vw' }"
@@ -61,15 +61,23 @@
     </div>
 
     <!-- Monto -->
-    <div class="order_input order_name mb-2">
+    <div class="order_input">
       <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
-      <p-inputNumber class="p-inputnumber-input" id="invoiceAmount" formControlName="invoiceAmount" 
-        mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-        [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" 
-      />
+      <div class="input-message">
+        <p-inputNumber class="p-inputnumber-input" id="invoiceAmount" formControlName="invoiceAmount" 
+          mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" invalid="
+            subcontractForm.get('invoiceAmount')?.invalid  
+            && subcontractForm.get('invoiceAmount')?.dirty 
+            || subcontractForm.get('invoiceAmount')?.touched"/>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          subcontractForm.get('invoiceAmount')?.invalid && 
+          subcontractForm.get('invoiceAmount')?.dirty
+        ">{{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: "99.999.999,99" } }}</p-message>
+      </div>
     </div>
 
-    <div class="order_input order_name mb-2">
+    <div class="order_input mb-2">
       <label for="afa">{{ 'SUB-CONTRACTS.FORM.IS_AFA' | translate }}</label>
       <p-checkbox
         inputId="afa"
@@ -78,17 +86,25 @@
       ></p-checkbox>
     </div>
 
-    <div class="order_input order_name mb-2">
+    <div class="order_input mb-2">
       <label for="afaDurationMonths">{{ 'SUB-CONTRACTS.FORM.AFA_MONTHS' | translate }}</label>
-      <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false"
-        inputId="afaDurationMonths"
-        formControlName="afaDurationMonths"
-        autocomplete="off"
-      />
+      <div class="input-message">
+        <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false"
+          inputId="afaDurationMonths"
+          formControlName="afaDurationMonths"
+          autocomplete="off" invalid="
+                subcontractForm.get('afaDurationMonths')?.invalid  
+                && subcontractForm.get('afaDurationMonths')?.dirty 
+                || subcontractForm.get('afaDurationMonths')?.touched"/>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          subcontractForm.get('afaDurationMonths')?.invalid && 
+          subcontractForm.get('afaDurationMonths')?.dirty
+        ">{{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: "12" } }}</p-message>
+      </div>
     </div>
 
     <!-- Descripción -->
-    <div class="order_input order_name mb-2 flex">
+    <div class="order_input mb-2 flex">
       <label for="description">{{ 'SUB-CONTRACTS.FORM.DESCRIPTION' | translate }}</label>
       <textarea
         id="description"
