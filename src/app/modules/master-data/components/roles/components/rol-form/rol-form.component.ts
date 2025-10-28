@@ -45,6 +45,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
   modules: SystemModule[] = [];
   existingRights: RightRole[] = [];
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public nameAlreadyExist = false;
 
   selectedOrderCommission!: null;
   roles: Rol[] = [];
@@ -150,6 +151,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
       if (exists && newName !== this.currentRole!.name) {
         // Only show error if the name belongs to ANOTHER role
         this.commonMessagesService.showErrorRecordAlreadyExist();
+        this.nameAlreadyExist = true;
         this.isSaving = false;
         return;
       }
@@ -255,6 +257,7 @@ export class RolFormComponent implements OnInit, OnDestroy {
     this.editRoleForm.reset();
     this.currentRole = null;
     this.isSaving = false;
+    this.nameAlreadyExist = false;
     this.functions = [];
     this.existingRights = [];
   }

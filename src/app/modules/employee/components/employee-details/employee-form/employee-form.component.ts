@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalutationUtils } from '../../../../master-data/components/salutation/utils/salutation.utils';
 import { TitleUtils } from '../../../../master-data/components/title/utils/title-utils';
 import { QualificationFZUtils } from '../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
@@ -132,12 +132,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.employeeForm = new FormGroup({
-      employeeNumber: new FormControl(null),
+      employeeNumber: new FormControl(null, [Validators.required]),
       salutation: new FormControl(''),
       title: new FormControl(''),
       employeeFirstName: new FormControl(''),
-      employeeLastName: new FormControl(''),
-      employeeEmail: new FormControl(''),
+      employeeLastName: new FormControl('', [Validators.required]),
+      employeeEmail: new FormControl('', [Validators.email]),
       generalManagerSinceDate: new FormControl(''),
       shareholderSinceDate: new FormControl(''),
       solePropietorSinceDate: new FormControl(''),

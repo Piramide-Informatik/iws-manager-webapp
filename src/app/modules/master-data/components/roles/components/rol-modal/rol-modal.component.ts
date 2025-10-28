@@ -18,6 +18,7 @@ export class RolModalComponent implements OnInit {
   private readonly subscriptions = new Subscription();
   public showOCCErrorModalRole = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public nameAlreadyExist = false;
 
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() roleToDelete: number | null = null;
@@ -113,6 +114,7 @@ export class RolModalComponent implements OnInit {
   // ---------- Helpers centrales ----------
   private resetForm(): void {
     this.createRoleForm.reset();
+    this.nameAlreadyExist = false;
   }
 
   private shouldPreventSubmission(): boolean {
@@ -144,8 +146,9 @@ export class RolModalComponent implements OnInit {
   if (exists) {
     this.errorMessage = 'MESSAGE.RECORD_ALREADY_EXISTS';
     this.commonMessageService.showErrorRecordAlreadyExist();
+    this.nameAlreadyExist = true;
     this.stopLoading();
-    return; // ⚠️ importante
+    return;
   }
 
   this.roleUtils.createNewRole(name).subscribe({

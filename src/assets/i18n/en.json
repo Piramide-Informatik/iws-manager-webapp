@@ -31,7 +31,7 @@
       "IWS_STAFF": "IWS Staff",
       "IWS_TEAMS": "IWS Teams",
       "NETWORKS": "Masterdata - Networks",
-      "ROLE": "Masterdata - Roles",
+      "ROLE": "Roles",
       "PROJECT_STATUS": "Masterdata - Project Status",
       "PROJECT_FUNNELS": "Masterdata - Project Responsible",
       "REALIZATION_PROBABILITIES": "Masterdata - Realization Probability",
@@ -169,7 +169,9 @@
     "DELETE_ERROR_WITH_RECORDS": "The record cannot be deleted because it has associated records.",
     "SELECT_AT_LEAST_ONE": "There must be at least one column selected.",
     "DELETE_ERROR_ROLES_ASSIGNED": "Cannot delete user because they are assigned to {{count}} role(s)",
-    "DELETE_ERROR_HAS_ROLES": "Cannot delete user because they have assigned roles"
+    "DELETE_ERROR_HAS_ROLES": "Cannot delete user because they have assigned roles",
+    "INVALID_EMAIL": "Invalid email format",
+    "REQUIRED_FIELD": "Required field"
   },
   "primeng_date": {
     "dayNames": [
@@ -784,7 +786,8 @@
       "APPROVAL_STATUS_REQUIRED": "Required role",
       "CHECKING_DUPLICATE": "Checking duplicate",
       "CREATION_FAILED": "There was an error during role creation",
-      "ROL_REQUIRED": "The User Role is required"
+      "ROL_REQUIRED": "The User Role is required",
+      "NAME_ALREADY_EXIST": "Role name already exists"
     }
   },
   "HOLIDAYS": {

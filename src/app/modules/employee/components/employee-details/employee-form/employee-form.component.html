@@ -4,6 +4,9 @@
       <div class="field">
         <label for="employeeNumber">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
         <p-inputnumber #inputNumber class="col-md-6" [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off" formControlName="employeeNumber" id="employeeNumber" />
+        <div *ngIf="employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.touched" class="error-messages1">
+          <small class="p-error">{{ 'MESSAGE.REQUIRED_FIELD' | translate }}</small>
+        </div>
       </div>
 
       <div class="field">
@@ -26,12 +29,40 @@
       <div class="field">
         <label for="employeeLastName">{{ 'EMPLOYEE.FORM.LAST_NAME' | translate }}</label>
         <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName" autocomplete="off"/>
+        <div *ngIf="employeeForm.get('employeeLastName')?.invalid && employeeForm.get('employeeLastName')?.touched" class="error-messages1">
+          <small class="p-error">{{ 'MESSAGE.REQUIRED_FIELD' | translate }}</small>
+        </div>
       </div>
 
-      <div class="field">
-        <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="employeeEmail" id="employeeEmail" autocomplete="off"/>
+    <div class="field">
+      <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
+      <input
+        type="text"
+        pInputText
+        formControlName="employeeEmail"
+        id="employeeEmail"
+        [class]="
+          employeeForm.get('employeeEmail')?.invalid &&
+          employeeForm.get('employeeEmail')?.touched
+            ? 'ng-invalid ng-dirty'
+            : ''
+        "
+      />
+      <div
+        *ngIf="
+          employeeForm.get('employeeEmail')?.invalid &&
+          employeeForm.get('employeeEmail')?.touched
+        "
+        class="error-messages1"
+      >
+        <small
+          *ngIf="employeeForm.get('employeeEmail')?.errors?.['email']"
+          class="p-error"
+        >
+          {{ 'MESSAGE.INVALID_EMAIL' | translate }}
+        </small>
       </div>
+    </div>
     </div>
 
     <div class="form-column flex flex-column pl-6">
