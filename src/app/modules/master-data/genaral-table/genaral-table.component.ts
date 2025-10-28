@@ -168,7 +168,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
 
   processColumnsOrders() {
     const aux = this.userPreferences[this.tableId].displayedColumns;
-    this.userPreferences[this.tableId].displayedColumns = aux.map((column: any) => Object.assign(column, { pos: this.colOrders[column.field] })).sort((a: any, b: any) => a.pos > b.pos);
+    this.userPreferences[this.tableId].displayedColumns = aux.map((column: any) => Object.assign(column, { pos: this.colOrders[column.field] })).sort((a: any, b: any) => a.pos - b.pos);
   }
   loadStorageData() {
     if (!localStorage.getItem(this.dt2.stateKey ?? '')) {
