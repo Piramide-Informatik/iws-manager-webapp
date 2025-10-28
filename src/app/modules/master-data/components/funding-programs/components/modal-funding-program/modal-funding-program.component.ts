@@ -1,9 +1,13 @@
-import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FundingProgram } from '../../../../../../Entities/fundingProgram';
 import { FundingProgramUtils } from '../../utils/funding-program-utils';
 import { FundingProgramStateService } from '../../utils/funding-program-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { Subscription } from 'rxjs';
+
+type FundingProgramCreateUpdate = Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
 
 @Component({
   selector: 'app-modal-funding-program',
@@ -11,9 +15,12 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
   templateUrl: './modal-funding-program.component.html',
   styleUrl: './modal-funding-program.component.scss'
 })
-export class ModalFundingProgramComponent {
+export class ModalFundingProgramComponent implements OnInit, OnDestroy {
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly fundingProgramStateService = inject(FundingProgramStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly subscriptions = new Subscription();
+  
   @Input() selectedFunding!: FundingProgram | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Output() isVisibleModal = new EventEmitter<boolean>();
@@ -24,35 +31,71 @@ export class ModalFundingProgramComponent {
   public isLoading: boolean = false;
   public showOCCErrorModaFunding = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public nameAlreadyExist = false;
 
   public readonly fundingProgramForm = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
     defaultFundingRate: new FormControl(null, [Validators.max(100)]),
     defaultStuffFlat: new FormControl(null, [Validators.max(100)]),
     defaultResearchShare: new FormControl(null, [Validators.max(100)]),
     defaultHoursPerYear: new FormControl(null)
   })
 
+  ngOnInit(): void {
+    this.fundingProgramForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   public onSubmit(): void {
-    if (this.fundingProgramForm.invalid || this.isLoading) return
+    if (this.fundingProgramForm.invalid || this.isLoading || this.nameAlreadyExist) return
 
     this.isLoading = true;
-    const newFundingProgram: Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.fundingProgramForm.value.name?.trim(),
+    const newFundingProgram: FundingProgramCreateUpdate = {
+      name: this.fundingProgramForm.value.name?.trim() || '',
       defaultFundingRate: this.fundingProgramForm.value.defaultFundingRate ?? 0,
       defaultStuffFlat: this.fundingProgramForm.value.defaultStuffFlat ?? 0,
       defaultResearchShare: this.fundingProgramForm.value.defaultResearchShare ?? 0,
       defaultHoursPerYear: this.fundingProgramForm.value.defaultHoursPerYear ?? 0
     };
 
+    const nameToCheck = newFundingProgram.name || '';
+    this.fundingProgramUtils.checkFundingProgramNameExists(nameToCheck).subscribe({
+      next: () => this.handleNameAvailable(newFundingProgram),
+      error: () => this.handleNameCheckError()
+    });
+  }
+
+  private handleNameAvailable(newFundingProgram: FundingProgramCreateUpdate): void {
+    this.performCreate(newFundingProgram);
+  }
+
+  private handleNameCheckError(): void {
+    this.nameAlreadyExist = true;
+    this.isLoading = false;
+    this.onCreateFundingProgram.emit({ status: 'error' });
+  }
+
+  private performCreate(newFundingProgram: FundingProgramCreateUpdate): void {
     this.fundingProgramUtils.addFundingProgram(newFundingProgram).subscribe({
       next: (created) => {
         this.isLoading = false;
         this.closeModal();
         this.onCreateFundingProgram.emit({ created, status: 'success' })
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
+        if (error?.message?.includes('name already exists')) {
+          this.nameAlreadyExist = true;
+        } else {
+          this.commonMessageService.showErrorCreatedMessage();
+        }
         this.onCreateFundingProgram.emit({ status: 'error' })
       }
     })
@@ -72,7 +115,7 @@ export class ModalFundingProgramComponent {
         error: (error) => {
           this.isLoading = false;
           this.handleDeleteError(error);
-          if (error.error.message.includes('a foreign key constraint fails')) {
+          if (error.error?.message?.includes('a foreign key constraint fails')) {
             this.closeModal();
           }
           this.onDeleteFundingProgram.emit({ status: 'error', error });
@@ -91,6 +134,7 @@ export class ModalFundingProgramComponent {
   public closeModal(): void {
     this.isVisibleModal.emit(false);
     this.fundingProgramForm.reset();
+    this.nameAlreadyExist = false;
   }
 
   get isCreateMode(): boolean {
