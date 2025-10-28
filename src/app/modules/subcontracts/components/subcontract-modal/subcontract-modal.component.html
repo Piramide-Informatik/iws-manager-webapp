@@ -107,10 +107,9 @@
 </ng-container>
 <ng-template #deleteTemplate>
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_QUESTION' | translate }}
-      <strong class="stronglock mt-1" *ngIf="selectedSubContract">"{{ selectedSubContract.contractTitle }}"</strong>?
-    </p>
+    <p class="mb-4" *ngIf="selectedSubContract" 
+      [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedSubContract.contractTitle }"></p>
+
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" [loading]="isLoadingDelete" (onClick)="onSubcontractDeleteConfirm()" severity="danger"/>

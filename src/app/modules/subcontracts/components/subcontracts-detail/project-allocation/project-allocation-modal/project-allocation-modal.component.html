@@ -48,11 +48,7 @@
 </ng-container>
 <ng-template #deleteTemplate>
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_PROJECT_QUESTION' | translate }} 
-      <strong class="stronglock mt-1">"{{subcontractProject?.project?.projectLabel}}"</strong>
-      ?
-    </p>
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: subcontractProject?.project?.projectLabel }"></p>
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
@@ -66,14 +62,10 @@
 <p-dialog [header]="('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT') | translate"
   [modal]="true" [(visible)]="visibleSubcontractProjectModal" [style]="{ width: 'auto' }">
   <hr class="mt-0" />
-  <div class="confirmation-content mb-2 mt-4 visibleSubcontractProjectEntity">
-    <p class="mb-4 visibleSubcontractProjectQuestion">
-      {{ 'SUB-CONTRACTS.LABEL.REMOVE_SUBCONTRACT_PROJECT_QUESTION' | translate }} 
-      <strong class="stronglock mt-1">"{{subcontractProject?.project?.projectLabel}}"</strong>
-      ?
-    </p>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: subcontractProject?.project?.projectLabel }"></p>
 
-    <div class="flex justify-content-center gap-2 visibleSubcontractProjectButtons">
+    <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeSubcontractProject()" />
 

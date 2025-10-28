@@ -61,7 +61,7 @@
     (onHide)="closeModalIwsCommission()"
     [modal]="true"
     [(visible)]="visibleModalIWSCommission"
-    [style]="{ width: '35rem' }"
+    [style]="{ width: 'auto' }"
   >
    @if (typeModal !== 'delete') {
      <form [formGroup]="iwsCommissionForm" (ngSubmit)="onSubmitIwsCommission()">
@@ -133,10 +133,7 @@
     </form>
    } @else {
      <div class="delete-confirmation-component mb-2 mt-4 justify-content-center ">
-      <p class="mb-4">
-        {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }}"?</strong>
-      </p>
+      <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }"></p>
 
       <div class="flex justify-content-center gap-2">
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
@@ -155,12 +152,11 @@
     (onHide)="this.visibleModalIWSCommissionEntity = false;"
     [modal]="true"
     [(visible)]="visibleModalIWSCommissionEntity"
-    [style]="{ width: '35rem' }"
+    [style]="{ width: 'auto' }"
   >
     <div class="delete-confirmation-component-entity mb-2 mt-4 justify-content-center ">
-      <p class="mb-4 delete-confirmation-component-entity-title">
-        {{ 'ORDERS.REMOVE_ORDER_IWS_COMMISSION_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }}"?</strong>
+      <p class="mb-4 delete-confirmation-component-entity-title" 
+        [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedOrderCommission?.fromOrderValue | number:'1.2-2':'de-DE' }">
       </p>
 
       <div class="flex justify-content-center gap-2 delete-confirmation-component-entity-buttons">

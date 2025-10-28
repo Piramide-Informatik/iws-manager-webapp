@@ -94,10 +94,7 @@
 <p-dialog [header]="('EMPLOYEE.LABELS.DELETE_EMPLOYEE' | translate)" [modal]="true"
   [(visible)]="visibleEmployeeModalDelete">
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'EMPLOYEE.LABELS.REMOVE_EMPLOYEE_QUESTION' | translate }}
-      <strong class="stronglock mt-1">"{{ getFullNameEmployee() }}"</strong>?
-    </p>
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: getFullNameEmployee() }"></p>
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
