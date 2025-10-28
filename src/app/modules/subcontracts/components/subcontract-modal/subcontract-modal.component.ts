@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { momentFormatDate } from '../../../shared/utils/moment-date-utils';
@@ -83,9 +83,9 @@ export class SubContractModalComponent implements OnInit, OnChanges {
       invoiceNumber: new FormControl(''),
       invoiceDate: new FormControl(''),
       netOrGross: new FormControl(this.optionsNetOrGross[0].value), // default: 'gross'
-      invoiceAmount: new FormControl(''),
+      invoiceAmount: new FormControl('', [Validators.max(99999999.99)]),
       afa: new FormControl(false), // checkbox
-      afaDurationMonths: new FormControl({ value: null, disabled: true }), // solo si afa = true
+      afaDurationMonths: new FormControl({ value: null, disabled: true }, [Validators.max(12)]), // solo si afa = true
       description: new FormControl(''),
     });
     this.createSubcontractForm.reset();

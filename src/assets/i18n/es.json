@@ -13,7 +13,7 @@
       "ORDERS": " - Pedidos",
       "PROJECTS": " - Proyectos",
       "RECEIVABLES": " - Cuentas por Cobrar",
-      "SUBCONTRACTS": " - Subcontratos"
+      "SUBCONTRACTS": "Subcontratos"
     },
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
@@ -64,7 +64,8 @@
     "NUMBER_BETWEEN_0_1": "valores entre 0 - 1",
     "NUMBER_MAX_12": "Se espera un valor máximo de 12",
     "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe",
-    "FIELD_REQUIRED": "Campo requerido"
+    "FIELD_REQUIRED": "Campo requerido",
+    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}"
   },
   "MENU": {
     "DASHBOARD": "Panel",

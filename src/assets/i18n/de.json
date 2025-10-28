@@ -12,7 +12,7 @@
       "ORDERS": " - Aufträge",
       "PROJECTS": " - Projekte",
       "RECEIVABLES": " - Forderungen",
-      "SUBCONTRACTS": " - Unteraufträge"
+      "SUBCONTRACTS": "Unteraufträge"
     },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
@@ -64,7 +64,8 @@
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet",
-    "FIELD_REQUIRED": "Pflichtfeld"
+    "FIELD_REQUIRED": "Pflichtfeld",
+    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
