@@ -28,10 +28,35 @@
         <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName" autocomplete="off"/>
       </div>
 
-      <div class="field">
-        <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="employeeEmail" id="employeeEmail" autocomplete="off"/>
-      </div>
+     <div class="field">
+  <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
+  <input
+    type="text"
+    pInputText
+    formControlName="employeeEmail"
+    id="employeeEmail"
+    [class]="
+      employeeForm.get('employeeEmail')?.invalid &&
+      employeeForm.get('employeeEmail')?.touched
+        ? 'ng-invalid ng-dirty'
+        : ''
+    "
+  />
+  <div
+    *ngIf="
+      employeeForm.get('employeeEmail')?.invalid &&
+      employeeForm.get('employeeEmail')?.touched
+    "
+    class="error-messages1"
+  >
+    <small
+      *ngIf="employeeForm.get('employeeEmail')?.errors?.['email']"
+      class="p-error"
+    >
+      {{ 'MESSAGE.INVALID_EMAIL' | translate }}
+    </small>
+  </div>
+</div>
     </div>
 
     <div class="form-column flex flex-column pl-6">
