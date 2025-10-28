@@ -6,7 +6,19 @@
     <div class="mb-2">
       <div class="funding-form">
         <label for="name">{{ "FUNDING.LABEL.PROGRAM" | translate }}</label>
-        <input #firstInput pInputText id="name" formControlName="name" autocomplete="off"/>
+        <div class="input-message">
+          <input #firstInput pInputText id="name" formControlName="name" autocomplete="off"
+            [attr.invalid]="(fundingForm.get('name')?.invalid && fundingForm.get('name')?.dirty) || nameAlreadyExist"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (fundingForm.get('name')?.invalid && fundingForm.get('name')?.dirty) || nameAlreadyExist">
+            <span *ngIf="fundingForm.get('name')?.errors?.['required'] && fundingForm.get('name')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="nameAlreadyExist && !fundingForm.get('name')?.errors?.['required']">
+              {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+        </div>
       </div>
 
       <div class="funding-form">
@@ -74,7 +86,7 @@
           iconPos="left"
           type="submit"
           [loading]="isLoading"
-          [disabled]="fundingForm.invalid || !fundingForm.dirty || isLoading"
+          [disabled]="fundingForm.invalid || !fundingForm.dirty || isLoading || nameAlreadyExist"
         ></p-button>
 
         <p-button
