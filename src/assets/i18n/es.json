@@ -169,7 +169,8 @@
     "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada.",
     "DELETE_ERROR_ROLES_ASSIGNED": "No se puede eliminar el usuario porque está asignado a {{count}} rol(es)",
     "DELETE_ERROR_HAS_ROLES": "No se puede eliminar el usuario porque tiene roles asignados",
-    "INVALID_EMAIL":"Formato de email inválido"
+    "INVALID_EMAIL":"Formato de email inválido",
+    "REQUIRED_FIELD": "Campo obligatorio"
   },
   "primeng_date": {
     "dayNames": [
