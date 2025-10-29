@@ -15,7 +15,6 @@ import { Title } from '@angular/platform-browser';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
 import { QualificationFZUtils } from '../../../master-data/components/employee-qualification/utils/qualificationfz-util';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-employee-overview',
