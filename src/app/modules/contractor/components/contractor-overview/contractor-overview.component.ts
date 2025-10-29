@@ -72,13 +72,14 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.customerId = params['id'];
       if (!this.customerId) {
-        this.updateTitle('...');
+        this.updateTitle();
         return;
       }
 
       this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
         if (currentCustomer) {
-          this.updateTitle(currentCustomer.customername1!);
+          this.customer = currentCustomer;
+          this.updateTitle();
         } else {
           this.getTitleByCustomerId(this.customerId);
         }
@@ -93,18 +94,16 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   private getTitleByCustomerId(customerId: number): void {
     this.customerUtils.getCustomerById(customerId).subscribe(customer => {
       if (customer) {
-        this.updateTitle(customer.customername1!);
         this.customer = customer;
-      } else {
-        this.updateTitle('');
       }
+      this.updateTitle();
     });
   }
 
   loadColHeaders(): void {
     this.cols = [
       { field: 'label', classesTHead: ['fix-width'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL')) },
-      { field: 'name', header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
+      { field: 'name', classesTHead: ['contractor-name'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
       { field: 'country.label', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL')) },
       { field: 'street', header: this.translate.instant(_('CONTRACTS.TABLE.STREET')) },
       { field: 'zipCode', header: this.translate.instant(_('CONTRACTS.TABLE.ZIP_CODE')) },
@@ -113,9 +112,8 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name}`
-      + this.translate.instant('PAGETITLE.CUSTOMERS.CONTRACTORS'));
+  private updateTitle(): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMERS.CONTRACTORS')}`)
   }
 
 
