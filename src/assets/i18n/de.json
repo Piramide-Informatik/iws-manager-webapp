@@ -12,7 +12,7 @@
       "ORDERS": " - Aufträge",
       "PROJECTS": " - Projekte",
       "RECEIVABLES": " - Forderungen",
-      "SUBCONTRACTS": " - Unteraufträge"
+      "SUBCONTRACTS": "Unteraufträge"
     },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
@@ -50,7 +50,7 @@
     "OCC": {
       "TITLE": "Parallelitätsfehler",
       "TEXT": {
-        "UPDATE_UPDATED": "Es tut uns leid, aber es scheint, dass jemand anderÄ Changes an diesem Datensatz vorgenommen hat, während Sie ihn bearbeitet haben. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut, um sicherzustellen, dass Sie mit den neuesten Informationen arbeiten.",
+        "UPDATE_UPDATED": "Es tut uns leid, aber es scheint, dass jemand anderes Änderungen an diesem Datensatz vorgenommen hat, während Sie ihn bearbeitet haben. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut, um sicherzustellen, dass Sie mit den neuesten Informationen arbeiten.",
         "UPDATE_UNEXISTED": "Es tut uns leid, der Datensatz, den Sie aktualisieren möchten, existiert nicht mehr. Möglicherweise wurde er von einem anderen Benutzer gelöscht. Sie werden zur Hauptliste weitergeleitet, um mit den verfügbaren Datensätzen weiterzuarbeiten.",
         "DELETE_UNEXISTED": "Es tut uns leid, der Datensatz, den Sie löschen möchten, existiert nicht mehr. Es scheint, dass er bereits von einem anderen Benutzer entfernt wurde. Sie werden zur Hauptliste weitergeleitet, wo Sie Ihre Datensätze weiter verwalten können."
       },
@@ -64,7 +64,8 @@
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet",
-    "FIELD_REQUIRED": "Pflichtfeld"
+    "FIELD_REQUIRED": "Pflichtfeld",
+    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -168,7 +169,9 @@
     "DELETE_ERROR_WITH_RECORDS": "Der Datensatz kann nicht gelöscht werden, weil verknüpfte Datensätze vorhanden sind.",
     "SELECT_AT_LEAST_ONE": "Es muss mindestens eine Spalte ausgewählt sein.",
     "DELETE_ERROR_ROLES_ASSIGNED": "Benutzer kann nicht gelöscht werden, da er {{count}} Rolle(n) zugewiesen ist",
-    "DELETE_ERROR_HAS_ROLES": "Benutzer kann nicht gelöscht werden, da ihm Rollen zugewiesen sind"
+    "DELETE_ERROR_HAS_ROLES": "Benutzer kann nicht gelöscht werden, da ihm Rollen zugewiesen sind",
+    "INVALID_EMAIL": "Ungültiges E-Mail-Format",
+    "REQUIRED_FIELD": "Pflichtfeld"
   },
   "primeng_date": {
     "dayNames": [
@@ -294,7 +297,7 @@
       "TITLE": "Titel",
       "LAST_NAME": "Nachname",
       "FIRST_NAME": "Vorname",
-      "EMAIL": "Email",
+      "EMAIL": "E-Mail",
       "GENERAL_MANAGER_SINCE": "GF seit",
       "SHAREHOLDER_SINCE": "Gesellschafter seit",
       "SOLE_PROPRIETOR_SINCE": "Einzelunternehmer seit",
@@ -787,7 +790,8 @@
       "APPROVAL_STATUS_REQUIRED": "Erforderliche Rolle",
       "CHECKING_DUPLICATE": "Duplikatprüfung",
       "CREATION_FAILED": "Beim Erstellen der Rolle ist ein Fehler aufgetreten",
-      "ROL_REQUIRED": "Die Benutzerrolle ist erforderlich"
+      "ROL_REQUIRED": "Die Benutzerrolle ist erforderlich",
+      "NAME_ALREADY_EXIST": "Benutzerrolle existiert bereits"
     }
   },
   "HOLIDAYS": {

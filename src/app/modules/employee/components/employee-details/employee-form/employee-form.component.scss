@@ -53,3 +53,15 @@ p-inputnumber {
     background: $primary-color !important;
   }
 }
+
+.error-messages1 small {
+  display: block;
+  color: #e24c4c !important;
+  font-size: 0.65rem;
+  margin-left: 17rem;
+}
+
+.field input.ng-invalid.ng-dirty {
+  border-color: #e24c4c !important;
+  box-shadow: 0 0 0 1px #e24c4c !important;
+}

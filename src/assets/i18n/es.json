@@ -13,7 +13,7 @@
       "ORDERS": " - Pedidos",
       "PROJECTS": " - Proyectos",
       "RECEIVABLES": " - Cuentas por Cobrar",
-      "SUBCONTRACTS": " - Subcontratos"
+      "SUBCONTRACTS": "Subcontratos"
     },
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
@@ -34,7 +34,7 @@
       "PROJECT_STATUS": "Datos Maestros - Estado del Proyecto",
       "PROJECT_FUNNELS": "Datos Maestros - Responsable de Proyecto",
       "REALIZATION_PROBABILITIES": "Datos Maestros - Probabilidades de Realización",
-      "ROLE": "Datos Maestros - Roles",
+      "ROLE": "Roles",
       "SYSTEM_CONSTANTS": "Datos Maestros - Constantes del Sistema",
       "SALES_TAX": "Datos Maestros - Impuesto sobre Ventas",
       "SALUTATION": "Datos Maestros - Saludo",
@@ -64,7 +64,8 @@
     "NUMBER_BETWEEN_0_1": "valores entre 0 - 1",
     "NUMBER_MAX_12": "Se espera un valor máximo de 12",
     "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe",
-    "FIELD_REQUIRED": "Campo requerido"
+    "FIELD_REQUIRED": "Campo requerido",
+    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}"
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -168,7 +169,9 @@
     "DELETE_ERROR_WITH_RECORDS": "No se puede eliminar el registro porque tiene otros registros asociados",
     "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada.",
     "DELETE_ERROR_ROLES_ASSIGNED": "No se puede eliminar el usuario porque está asignado a {{count}} rol(es)",
-    "DELETE_ERROR_HAS_ROLES": "No se puede eliminar el usuario porque tiene roles asignados"
+    "DELETE_ERROR_HAS_ROLES": "No se puede eliminar el usuario porque tiene roles asignados",
+    "INVALID_EMAIL":"Formato de email inválido",
+    "REQUIRED_FIELD": "Campo obligatorio"
   },
   "primeng_date": {
     "dayNames": [
@@ -782,7 +785,8 @@
       "APPROVAL_STATUS_REQUIRED": "Rol requerido",
       "CHECKING_DUPLICATE": "Verificando duplicado",
       "CREATION_FAILED": "Hubo un error durante la creacion de Rol",
-      "ROL_REQUIRED": "El Rol de Usuario es obligatorio"
+      "ROL_REQUIRED": "El Rol de Usuario es obligatorio",
+      "NAME_ALREADY_EXIST": "El nombre del rol ya existe"
     }
   },
   "HOLIDAYS": {

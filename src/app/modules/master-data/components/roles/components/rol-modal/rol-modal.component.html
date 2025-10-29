@@ -3,20 +3,26 @@
         <div class="align-items-center display mb-2 mt-4">
             <div class="role-form">
                 <label for="name">{{ "ROLES.LABEL.ROL" | translate}}</label>
-                <input
-                    #roleNameInput
-                    pInputText
-                    type="text"
-                    id="name"
-                    formControlName="name"
-                    autocomplete="off"
-                    [class]="createRoleForm.get('name')?.invalid && createRoleForm.get('name')?.touched ? 'ng-invalid ng-dirty' : ''"
-                    />
+                <div class="input-message">
+                    <input
+                        #roleNameInput
+                        pInputText
+                        type="text"
+                        id="name"
+                        formControlName="name"
+                        autocomplete="off"
+                        [class]="createRoleForm.get('name')?.invalid && createRoleForm.get('name')?.touched ? 'ng-invalid ng-dirty' : ''"
+                        />
                     <div *ngIf="createRoleForm.get('name')?.invalid && createRoleForm.get('name')?.touched" class="error-messages">
-                    <small *ngIf="createRoleForm.get('name')?.errors?.['required']" class="p-error">
-                        {{ 'ROLES.ERROR.ROL_REQUIRED' | translate }}
-                    </small>
+                        <small *ngIf="createRoleForm.get('name')?.errors?.['required']" class="p-error">
+                            {{ 'ROLES.ERROR.ROL_REQUIRED' | translate }}
+                        </small>
                     </div>
+                    <p-message severity="error" variant="simple" size="small"
+                        *ngIf="nameAlreadyExist">
+                        {{ 'ROLES.ERROR.NAME_ALREADY_EXIST' | translate }}
+                    </p-message>
+                </div>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button
@@ -27,7 +33,7 @@
                 icon="pi pi-check"
                 iconPos="left"
                 [loading]="isLoading"
-                [disabled]="createRoleForm.invalid || isLoading"
+                [disabled]="createRoleForm.invalid || isLoading || nameAlreadyExist"
                 />
 
                 <p-button

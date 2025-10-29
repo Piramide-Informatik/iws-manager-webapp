@@ -7,6 +7,7 @@
         <app-subcontract (onLoadingUpdate)="isLoadingEdit = $event" 
           [subcontractToEdit]="currentSubcontract"
           (formDirty)="isDirty = $event"
+          (formInvalid)="isInvalid = $event"
         ></app-subcontract>
       </div>
       <!-- Sección derecha: Asignaciones -->
@@ -38,7 +39,7 @@
           iconPos="left"
           (onClick)="onSubmit()"
           [loading]="isLoadingEdit"
-          [disabled]="!isDirty"
+          [disabled]="!isDirty || isInvalid"
         ></p-button>
         @if(subcontractId){
         <p-button
