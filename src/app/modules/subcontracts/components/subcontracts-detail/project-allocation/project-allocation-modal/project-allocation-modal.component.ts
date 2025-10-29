@@ -23,6 +23,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() subcontractProject!: SubcontractProject | undefined;
+  @Input() currentSubcontract!: Subcontract | undefined;
   @Input() isVisibleModal: boolean = false;
 
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
@@ -39,7 +40,6 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscription = new Subscription();
 
-  private currentSubcontract!: Subcontract;
   isLoading: boolean = false
   isLoadingDelete: boolean = false
   public allocationForm!: FormGroup;
@@ -133,8 +133,8 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     const newSubcontractProject: Omit<SubcontractProject, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       subcontractYear: null,
       project: this.allocationForm.value.projectLabel ? this.getProjectSelected(this.allocationForm.value.projectLabel) : null,
-      subcontract: this.currentSubcontract,
-      amount: (this.allocationForm.value.percentage * this.currentSubcontract.invoiceGross),
+      subcontract: this.currentSubcontract!,
+      amount: (this.allocationForm.value.percentage * this.currentSubcontract!.invoiceGross),
       share: this.allocationForm.value.percentage
     }
 
