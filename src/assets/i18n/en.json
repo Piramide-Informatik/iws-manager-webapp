@@ -551,6 +551,9 @@
       "ZIP_CODE": "Zip Code",
       "CITY": "City",
       "TAX_NUMBER": "Tax No."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Label already exists"
     }
   },
   "SUB-CONTRACTS": {

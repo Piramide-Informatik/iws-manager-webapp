@@ -550,6 +550,9 @@
       "ZIP_CODE": "Código Postal",
       "CITY": "Ciudad",
       "TAX_NUMBER": "Numero de Impuesto"
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "La sigla ya existe"
     }
   },
   "SUB-CONTRACTS": {

@@ -555,6 +555,9 @@
       "ZIP_CODE": "PLZ",
       "CITY": "Ort",
       "TAX_NUMBER": "USt.-Ident-Nr."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Kurzname existiert bereits"
     }
   },
   "SUB-CONTRACTS": {
