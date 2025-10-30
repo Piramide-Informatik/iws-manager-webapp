@@ -94,11 +94,12 @@ export class CommonMessagesService {
 
   showErrorDeleteMessageUsedByEntityWithName(errorMessage: string) {
     const entityName = this.extractRelatedEntity(errorMessage);
+    const entityNameTranslated = this.translateService.instant(`TABLES_BD.${entityName}`) || entityName;
     const detailMessage = this.translateService.instant('MESSAGE.DELETE_ERROR_IN_USE_WITH_ENTITY');
     this.messageService.add({
       severity: 'error',
       summary: this.translateService.instant('MESSAGE.ERROR'),
-      detail: detailMessage + ' ' + entityName
+      detail: detailMessage + ' ' + entityNameTranslated
     })
   }
 
