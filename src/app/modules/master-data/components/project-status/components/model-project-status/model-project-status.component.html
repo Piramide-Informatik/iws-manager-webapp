@@ -26,10 +26,7 @@
 
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-            {{ 'PROJECT_STATUS.DELETE.CONFIRM_QUESTION' | translate }}
-            <strong class="stronglock mt-1">{{ projectStatusName }}</strong>?
-        </p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: projectStatusName }"></p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"

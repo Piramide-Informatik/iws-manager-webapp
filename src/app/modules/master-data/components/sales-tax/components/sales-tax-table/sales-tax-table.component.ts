@@ -109,7 +109,8 @@ export class SalesTaxTableComponent implements OnInit, OnDestroy, OnChanges {
         minWidth: 110,
         type: 'double',
         header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX.CURRENT_TAX_RATE')),
-        customClasses: ['align-right']
+        customClasses: ['align-right'],
+        filter : { type: 'numeric' }
       }
     ];
   }

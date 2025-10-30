@@ -15,7 +15,8 @@
     ? ('EMPLOYEE-CONTRACTS.LABEL.EDIT_EMPLOYEE_CONTRACT' | translate) 
     : modalType === 'create' 
      ? ('EMPLOYEE-CONTRACTS.LABEL.CREATE_EMPLOYEE_CONTRACT' | translate) 
-     : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" [modal]="true" [(visible)]="visibleModal">
+     : ('EMPLOYEE-CONTRACTS.LABEL.DELETE_EMPLOYEE_CONTRACT' | translate)" 
+     [modal]="true" [(visible)]="visibleModal" [style]="{ width: modalType === 'delete' ? 'auto' : '40rem' }">
   <app-employment-contract-modal [modalType]="modalType" [employmentContract]="selectedEmployeeContract"
     [visible]="visibleModal"
     [currentEmployee]="currentEmployee" (messageOperation)="onMessageOperation($event)"

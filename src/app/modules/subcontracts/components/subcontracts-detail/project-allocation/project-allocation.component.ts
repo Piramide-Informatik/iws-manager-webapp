@@ -26,7 +26,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
   public subcontractProjectList!: SubcontractProject[];
   private subscription!: Subscription;
 
-  @Input() currentSubcontract!: Subcontract;
+  @Input() currentSubcontract!: Subcontract | undefined;
 
   @ViewChild('dt') dt!: Table;
   loading: boolean = true;
@@ -62,7 +62,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['currentSubcontract'] && this.currentSubcontract){
       this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
-        if(updatedSubcontract && updatedSubcontract.netOrGross !== this.currentSubcontract.netOrGross){
+        if(updatedSubcontract && updatedSubcontract.netOrGross !== this.currentSubcontract!.netOrGross){
           this.loadSubcontractProjects();
         }
       });
@@ -113,7 +113,6 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
     }
     if (event.type === 'create') {
       this.optionSelected = "NEW";
-      this.currentSubcontractProject = undefined;
     }
 
     this.visibleModal = true;

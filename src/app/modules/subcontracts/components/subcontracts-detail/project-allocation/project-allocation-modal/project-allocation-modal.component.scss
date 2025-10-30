@@ -1,9 +1,13 @@
 p-select {
   width: 100%;
+  min-width: 120px;
+  max-width: 300px;
 }
 
 p-inputnumber {
   width: 100% !important;
+  min-width: 120px;
+  max-width: 300px;
 }
 
 label {

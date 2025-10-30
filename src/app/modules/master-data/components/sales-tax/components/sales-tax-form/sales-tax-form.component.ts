@@ -1,6 +1,7 @@
 import { Component, computed, ElementRef, EventEmitter, inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { FormGroup, FormControl, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { Subscription, Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../Entities/user-preference';
@@ -62,6 +63,9 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
       label: new FormControl('')
     });
     this.setupVatSubscription();
+    
+    this.editSalesTaxForm.get('label')?.setAsyncValidators(this.checkDuplicateLabel());
+    
     // Check if we need to load an vat after page refresh for OCC
     const savedVatId = localStorage.getItem('selectedVatId');
     if (savedVatId) {
@@ -77,6 +81,20 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  private checkDuplicateLabel(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value || control.value.trim() === '') {
+        return of(null);
+      }
+      
+      const currentVatId = this.vatToEdit?.id;
+      return this.vatUtils.checkVatLabelExists(control.value, currentVatId).pipe(
+        map(exists => exists ? { labelExists: true } : null),
+        catchError(() => of(null))
+      );
+    };
+  }
+
   onUserSalesTaxFormPreferencesChanges(userSalesTaxFormPreferences: any) {
     localStorage.setItem('userPreferences', JSON.stringify(userSalesTaxFormPreferences));
   }
@@ -88,11 +106,10 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-
   loadSalesTaxRateHeadersAndColumns() {
     this.salesTaxRatesColumns = [
-      { field: 'fromdate', minWidth: 110, type: 'date', header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')) },
-      { field: 'rate', type: 'double', customClasses: ['align-right'], minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')) }
+      { field: 'fromdate', minWidth: 110, type: 'date', header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')), useSameAsEdit: true },
+      { field: 'rate', type: 'double', customClasses: ['align-right'], minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')), filter : { type: 'numeric' } }
     ];
   }
 

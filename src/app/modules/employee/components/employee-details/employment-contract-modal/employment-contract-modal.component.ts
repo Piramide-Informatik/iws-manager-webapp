@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmploymentContract } from '../../../../../Entities/employment-contract';
 import { EmploymentContractUtils } from '../../../utils/employment-contract-utils';
 import { Employee } from '../../../../../Entities/employee';
-import { debounceTime, Subscription } from 'rxjs';
+import { debounceTime, Subscription, take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { buildCustomer } from '../../../../shared/utils/builders/customer';
@@ -44,8 +44,8 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   public showOCCErrorModalContract = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public isLoadingDelete = false;
-  public isInvalid = false;
   public redirectRoute = "";
+  public startDateContractAlreadyExists: boolean = false;
 
   constructor(
     private readonly commonMessageService: CommonMessagesService
@@ -53,11 +53,11 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] || changes['employmentContract']) {
-      if (!this.employmentContract) {
+      if (this.employmentContract) {
+        this.fillEmploymentContractForm();
+      } else {
         this.initFormEmploymentContract();
         this.employmentContractForm.reset();
-      } else {
-        this.fillEmploymentContractForm();
       }
     }
 
@@ -78,15 +78,15 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
   private initFormEmploymentContract(): void {
     this.employmentContractForm = new FormGroup({
-      startDate: new FormControl(''),
-      salaryPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999.99)]),
-      hoursPerWeek: new FormControl('', [Validators.min(0), Validators.max(999.99)]),
+      startDate: new FormControl('', [Validators.required]),
+      salaryPerMonth: new FormControl('', [Validators.min(0), Validators.max(99999999.99)]),
+      hoursPerWeek: new FormControl('', [Validators.min(0), Validators.max(168)]),
       workShortTime: new FormControl('', [Validators.min(0), Validators.max(100)]),
-      specialPayment: new FormControl('', [Validators.min(0), Validators.max(99999.99)]),
+      specialPayment: new FormControl('', [Validators.min(0), Validators.max(99999999.99)]),
       maxHoursPerMonth: new FormControl('', [Validators.min(0), Validators.max(999.99)]),
-      maxHoursPerDay: new FormControl('', [Validators.min(0), Validators.max(99999.99)]),
-      hourlyRate: new FormControl('', [Validators.min(0), Validators.max(100)]),
-      hourlyRealRate: new FormControl('', [Validators.min(0), Validators.max(100)]),
+      maxHoursPerDay: new FormControl('', [Validators.min(0)]),
+      hourlyRate: new FormControl('', [Validators.min(0)]),
+      hourlyRealRate: new FormControl('', [Validators.min(0)]),
     });
 
     this.disableFormControls();
@@ -103,13 +103,13 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   private setupFormSubscriptions(): void {
     const calculationFields = ['salaryPerMonth', 'specialPayment', 'hoursPerWeek', 'workShortTime'];
 
-    calculationFields.forEach(field => {
+    for(const field of calculationFields) {
       this.subscription.add(
         this.employmentContractForm.get(field)!.valueChanges.pipe(
           debounceTime(300) // Esperar 300ms después de la última tecla
         ).subscribe(() => this.calculateAllFields())
       );
-    });
+    }
   }
 
   private calculateAllFields(): void {
@@ -164,17 +164,22 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   }
 
   private calculateHourlyRates(salary: number, specialPayment: number, hoursPerWeek: number): void {
-    // Fórmula: (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12)
+    // Fórmula hourly rate:       (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12) * 12 / 10.5
+    // Fórmula hourly real rate:  (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12)
     const monthlySpecialPayment = specialPayment / 12;
     const totalMonthlyCompensation = salary + monthlySpecialPayment;
     const monthlyHours = (hoursPerWeek * 52) / 12;
 
-    const hourlyRate = totalMonthlyCompensation / monthlyHours;
-
-    this.isInvalid = hourlyRate > 100;
+    const hourlyRealRate = totalMonthlyCompensation / monthlyHours;
+    const hourlyRate = hourlyRealRate * (12 / 10.5);
 
     this.employmentContractForm.get('hourlyRate')?.setValue(
       this.roundToTwoDecimals(hourlyRate),
+      { emitEvent: false }
+    );
+
+    this.employmentContractForm.get('hourlyRealRate')?.setValue(
+      this.roundToTwoDecimals(hourlyRealRate),
       { emitEvent: false }
     );
   }
@@ -221,7 +226,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
     this.errorMessage = null;
 
     const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      startDate: momentFormatDate(this.employmentContractForm.value.startDate),
+      startDate: momentFormatDate(this.employmentContractForm.value.startDate) ?? '',
       salaryPerMonth: this.employmentContractForm.value.salaryPerMonth ?? 0,
       hoursPerWeek: this.employmentContractForm.value.hoursPerWeek ?? 0,
       workShortTime: this.employmentContractForm.value.workShortTime ?? 0,
@@ -244,10 +249,16 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.message;
-        this.isVisibleModal.emit(false);
         this.commonMessageService.showErrorCreatedMessage();
-        this.employmentContractForm.reset();
+        this.errorMessage = error.message;
+        if(error.message.includes('start date employment contract already exists for this employee')) {
+          this.startDateContractAlreadyExists = true;
+          this.employmentContractForm.get('startDate')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.startDateContractAlreadyExists = false);
+        } else {
+          this.isVisibleModal.emit(false);
+          this.employmentContractForm.reset();
+        }
       }
     });
   }
@@ -290,6 +301,10 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
       this.showOCCErrorModalContract = true;
       this.redirectRoute = "/customers/employees/" + this.currentEmployee.customer?.id + "/employee-details/" + this.currentEmployee.id;
       this.occErrorType = error.errorType;
+    }else if(error.message.includes('start date employment contract already exists for this employee')) {
+      this.startDateContractAlreadyExists = true;
+      this.employmentContractForm.get('startDate')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.startDateContractAlreadyExists = false);
     }
   }
 
@@ -308,7 +323,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
       version: this.employmentContract?.version ?? 0,
       customer: this.buildCustomerFromSource(customerSource),
       employee: this.buildEmployeeFromSource(employeeSource),
-      startDate: momentFormatDate(formValues.startDate),
+      startDate: momentFormatDate(formValues.startDate) ?? '',
       salaryPerMonth: formValues.salaryPerMonth,
       hoursPerWeek: formValues.hoursPerWeek,
       workShortTime: formValues.workShortTime,
@@ -360,6 +375,8 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
     if (this.firstInputForm && this.isCreateMode) {
       setTimeout(() => {
         this.firstInputForm.inputfieldViewChild?.nativeElement.focus();
+        this.employmentContractForm.get('startDate')?.valueChanges.pipe(take(1))
+          .subscribe(() => this.firstInputForm.showOverlay());
       }, 200)
     }
   }
