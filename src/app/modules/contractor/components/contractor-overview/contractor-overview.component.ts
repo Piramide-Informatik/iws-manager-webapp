@@ -44,7 +44,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   public showOCCErrorModalContractor = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
-  private contractorsSubject = new BehaviorSubject<Contractor[]>([]);
+  private readonly contractorsSubject = new BehaviorSubject<Contractor[]>([]);
   public contractors$ = this.contractorsSubject.asObservable();
 
   private readonly contractorUtils = inject(ContractorUtils);
