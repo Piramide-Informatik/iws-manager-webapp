@@ -1,11 +1,13 @@
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BillerUtils } from '../../utils/biller-utils';
 import { BillerStateService } from '../../utils/biller-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { Biller } from '../../../../../../Entities/biller';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'master-data-edit-biller',
@@ -17,19 +19,30 @@ export class EditBillerComponent implements OnInit, OnDestroy {
   private readonly billerUtils = inject(BillerUtils);
   private readonly billerStateService = inject(BillerStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly messageService = inject(MessageService);
+  private readonly translate = inject(TranslateService);
   private readonly subscriptions = new Subscription();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   private billerToEdit: Biller | null = null;
   public showOCCErrorModaBiller = false;
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public nameAlreadyExist = false;
   editBillerForm!: FormGroup;
 
   ngOnInit(): void {
     this.editBillerForm = new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
     });
     this.setupBillerSubscription();
+    
+    // Reset nameAlreadyExist when user types
+    this.editBillerForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
+    
     // Check if we need to load a biller after page refresh for OCC
     const savedBillerId = localStorage.getItem('selectedBillerId');
     if (savedBillerId) {
@@ -56,20 +69,38 @@ export class EditBillerComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.clearForm();
         this.commonMessageService.showEditSucessfullMessage();
+        // Refresh the grid data after successful update
+        this.billerUtils.loadInitialData().subscribe();
       },
       error: (error) => {
         this.isLoading = false;
-        this.handleOccError(error);
-        this.commonMessageService.showErrorEditMessage();
+        this.handleUpdateError(error);
       }
     });
   }
 
-  private handleOccError(error: any): void {
+  private handleUpdateError(error: any): void {
     if (error instanceof OccError) {
-      console.log("tipo de error: ", error.errorType)
       this.showOCCErrorModaBiller = true;
       this.occErrorType = error.errorType;
+    } else if (error?.message?.includes('biller name already exists')) {
+      this.nameAlreadyExist = true;
+      this.editBillerForm.get('name')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.nameAlreadyExist = false);
+      
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('BILLERS.ERROR.NAME_ALREADY_EXIST'),
+      });
+    } else if (error?.message?.includes('Biller name is required')) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('ERROR.FIELD_REQUIRED'),
+      });
+    } else {
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 
@@ -84,6 +115,7 @@ export class EditBillerComponent implements OnInit, OnDestroy {
     this.editBillerForm.reset();
     this.billerStateService.clearBiller();
     this.billerToEdit = null;
+    this.nameAlreadyExist = false;
   }
 
   private setupBillerSubscription(): void {

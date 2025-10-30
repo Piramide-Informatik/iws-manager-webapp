@@ -18,7 +18,7 @@
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
       "APPROVAL_STATUS": "Masterdata - Approval Status",
-      "BILLERS": "Masterdata - Billers",
+      "BILLERS": "Billers",
       "BILLING_METHODS": "Masterdata - Billing Methods",
       "CONTRACT_STATUS": "Masterdata - Contract Status",
       "COSTS": "Masterdata - Costs",
@@ -1181,6 +1181,9 @@
     "MODAL": {
       "NEW": "New Biller",
       "DELETE": "Delete Biller"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Biller already exists"
     }
   },
   "REALIZATION_PROBABILITIES": {

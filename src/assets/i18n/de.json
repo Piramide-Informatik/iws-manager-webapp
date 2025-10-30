@@ -18,7 +18,7 @@
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
-      "BILLERS": "Stammdaten - Rechnungsersteller",
+      "BILLERS": "Rechnungsersteller",
       "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
       "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
       "COSTS": "Stammdaten - Kostenarten",
@@ -1185,6 +1185,9 @@
     "MODAL": {
       "NEW": "Neuer Rechnungsersteller",
       "DELETE": "Rechnungsersteller löschen"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Rechnungsersteller existiert bereits"
     }
   },
   "REALIZATION_PROBABILITIES": {
