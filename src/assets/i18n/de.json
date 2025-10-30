@@ -576,7 +576,7 @@
     "LABEL": {
       "DELETE_SUBCONTRACT": "Unterauftrag löschen",
       "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
-      "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen",
+      "DELETE_SUBCONTRACT_PROJECT": "Projekt löschen",
       "NEW_SUBCONTRACT": "Neuer Unterauftrag"
     },
     "TABLE": {
