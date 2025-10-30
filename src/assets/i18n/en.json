@@ -241,7 +241,6 @@
     "REJECT_LABEL": "No"
   },
   "CUSTOMERS": {
-    "CUSTOMER_NAME": "Customer",
     "TABLE": {
       "CUSTOMER_ID": "No.",
       "COMPANY_NAME": "Company Name",
@@ -1293,5 +1292,55 @@
     "OPTIONS": {
       "SELECT_NONE": "None"
     }
+  },
+  "TABLES_BD": {
+    "customer": "Customer",
+    "contactperson": "Contact Person",
+    "employee": "Employee",
+    "employmentcontract": "Employment Contract",
+    "project": "Project",
+    "order": "Order",
+    "ordercommission": "Order Commission",
+    "debt": "Debt",
+    "invoice": "Invoice",
+    "basiccontract": "Basic Contract",
+    "contractordercommission": "Contract Order Commission",
+    "contractor": "Contractor",
+    "subcontract": "Subcontract",
+    "subcontractproject": "Subcontract Project",
+    "subcontractyear": "Subcontract Year",
+    "user": "User",
+    "userrole": "User Role",
+    "role": "User Role",
+    "roleright": "Role Rights",
+    "employeeiws": "Employee IWS",
+    "iwscommission": "IWS Commission",
+    "teamiws": "Team IWS",
+    "employeecategory": "Employee Category",
+    "fundingprogram": "Funding Program",
+    "costtype": "Cost Type",
+    "biller": "Biller",
+    "vat": "Vat",
+    "vatrate": "Vat Rate",
+    "reminderlevel": "Reminder Level",
+    "invoicetype": "Invoice Type",
+    "paycondition": "Payment Condition",
+    "contractstatus": "Contract Status",
+    "ORDER_TYPES": "Order Types",
+    "approvalstatus": "Approval Status",
+    "absencetype": "Absence Type",
+    "holidayyear": "Holiday Year",
+    "state": "State",
+    "network": "Network",
+    "networkpartner": "Network Partner",
+    "salutation": "Salutation",
+    "country": "Country",
+    "title": "Title",
+    "projectstatus": "Project Status",
+    "promoter": "Promoter",
+    "chance": "Chance",
+    "system": "System",
+    "text": "Text",
+    "companytype": "Company Type"
   }
 }
