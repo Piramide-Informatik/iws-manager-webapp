@@ -91,8 +91,8 @@ export class SalesTaxFormComponent implements OnInit, OnDestroy {
 
   loadSalesTaxRateHeadersAndColumns() {
     this.salesTaxRatesColumns = [
-      { field: 'fromdate', minWidth: 110, type: 'date', header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')) },
-      { field: 'rate', type: 'double', customClasses: ['align-right'], minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')) }
+      { field: 'fromdate', minWidth: 110, type: 'date', header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.FROM_DATE')), useSameAsEdit: true },
+      { field: 'rate', type: 'double', customClasses: ['align-right'], minWidth: 110, header: this.translate.instant(_('SALES_TAX.TABLE_SALES_TAX_FORM.SENTENCE')), filter : { type: 'numeric' } }
     ];
   }
 
