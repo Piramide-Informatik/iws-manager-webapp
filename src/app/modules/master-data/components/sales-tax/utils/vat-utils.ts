@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, of, map } from 'rxjs';
 import { VatService } from '../../../../../Services/vat.service';
 import { Vat } from '../../../../../Entities/vat';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -96,6 +96,25 @@ export class VatUtils {
       catchError((err) => {
         console.error('Error updating vat:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  /**
+   * NEW: Checks if a vat label already exists
+   * @param label - Label to check
+   * @param excludeId - ID to exclude from check (for updates)
+   * @returns Observable emitting boolean (true if label exists)
+   */
+  checkVatLabelExists(label: string, excludeId?: number): Observable<boolean> {
+    const trimmedLabel = label.trim().toLowerCase();
+    return this.vatService.getAllVats().pipe(
+      take(1),
+      map(vats => {
+        return vats.some(vat => 
+          vat.label?.toLowerCase() === trimmedLabel && 
+          (!excludeId || vat.id !== excludeId)
+        );
       })
     );
   }

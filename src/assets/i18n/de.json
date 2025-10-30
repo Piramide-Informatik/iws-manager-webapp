@@ -1169,7 +1169,7 @@
   "SALES_TAX": {
     "TABLE_SALES_TAX": {
       "SALES_TAX": "Umsatzsteuer",
-      "CURRENT_TAX_RATE": "akt Steuersatz",
+      "CURRENT_TAX_RATE": "akt. Steuersatz",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
     },
     "TABLE_SALES_TAX_FORM": {
@@ -1187,7 +1187,8 @@
       "SALES_TAX_LABEL": "Umsatzsteuer"
     },
     "ERROR": {
-      "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich"
+      "SALES_TAX_REQUIRED": "Umsatzsteuer ist erforderlich",
+      "NAME_ALREADY_EXISTS": "Umsatzsteuer existiert bereits"
     },
     "MODAL": {
       "NEW": "Neue Umsatzsteuer",
