@@ -240,7 +240,6 @@
     "REJECT_LABEL": "Nein"
   },
   "CUSTOMERS": {
-    "CUSTOMER_NAME": "Kunde",
     "TABLE": {
       "CUSTOMER_ID": "Nr.",
       "COMPANY_NAME": "Unternehmensname",
@@ -1293,5 +1292,55 @@
     "OPTIONS": {
       "SELECT_NONE": "Ohne"
     }
+  },
+  "TABLES_BD": {
+    "customer": "Kunde",
+    "contactperson": "Ansprechpartner",
+    "employee": "Mitarbeiter",
+    "employmentcontract": "Arbeitsverträge",
+    "project": "Projekt",
+    "order": "Auftrag",
+    "ordercommission": "Auftragsprovision",
+    "debt": "Forderung",
+    "invoice": "Rechnungsempfänger",
+    "basiccontract": "Rahmenvertrag",
+    "contractordercommission": "Auftragsprovision Vertrag",
+    "contractor": "Auftragnehmer",
+    "subcontract": "Untervertrag",
+    "subcontractproject": "Untervertragsprojekt",
+    "subcontractyear": "Untervertragsjahr",
+    "user": "Benutzer",
+    "userrole": "Benutzerrolle",
+    "role": "Benutzerrolle",
+    "roleright": "Rollenrechte",
+    "employeeiws": "IWS Mitarbeiter",
+    "iwscommission": "IWS Provisionen",
+    "teamiws": "IWS Teams",
+    "employeecategory": "Mitarbeiter-Qualifikationen",
+    "fundingprogram": "Förderprogramme",
+    "costtype": "Kostenarten",
+    "biller": "Rechnungsersteller",
+    "vat": "Umsatzsteuer",
+    "vatrate": "Umsatzsteuersätze",
+    "reminderlevel": "Mahnungstufen",
+    "invoicetype": "Abrechnungsmethoden",
+    "paycondition": "Zahlungsbedingungen",
+    "contractstatus": "Vertragsstatus",
+    "ORDER_TYPES": "Auftragsarten",
+    "approvalstatus": "Bewilligungsstati",
+    "absencetype": "Abwesenheitsarten",
+    "holidayyear": "Feiertage",
+    "state": "Bundesländer",
+    "network": "Anreden",
+    "networkpartner": "Netzwerkpartner",
+    "salutation": "Anrede",
+    "country": "Länder",
+    "title": "Titel",
+    "projectstatus": "Projektstatus",
+    "promoter": "Projektträger",
+    "chance": "Realisierungswahrscheinlichkeit",
+    "system": "Systemkonstanten",
+    "text": "Texte",
+    "companytype": "Unternehmensarten"
   }
 }
