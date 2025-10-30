@@ -23,6 +23,12 @@
         <div class="contract_input">
           <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
           <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+      contractorForm.get('contractorname')?.invalid && 
+      contractorForm.get('contractorname')?.touched && 
+      contractorForm.get('contractorname')?.errors?.['required']">
+            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+          </p-message>
         </div>
         <div class="contract_input">
           <label for="country">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
@@ -63,7 +69,8 @@
     </div>
     <div class="flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left" [loading]="isLoading" [disabled]="!hasAtLeastOneFieldFilled()  || !contractorForm.dirty || contractorForm.invalid" />
+        iconPos="left" [loading]="isLoading"
+        [disabled]="!hasAtLeastOneFieldFilled()  || !contractorForm.dirty || contractorForm.invalid" />
       @if(modalContractType === 'edit') {
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" severity="danger" [disabled]="isLoading"

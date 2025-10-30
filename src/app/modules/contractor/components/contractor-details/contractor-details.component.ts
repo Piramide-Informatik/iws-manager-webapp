@@ -58,7 +58,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.contractorForm = this.fb.group({
       contractorlabel: ['', [Validators.required] ],
-      contractorname: [''],
+      contractorname: ['', [Validators.required]],
       country: [null],
       street: [''],
       zipcode: [''],
@@ -97,7 +97,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   private initFormContractor(): void {
     this.contractorForm = new FormGroup({
       contractorlabel: new FormControl('', [Validators.required]),
-      contractorname: new FormControl(''),
+      contractorname: new FormControl('', [Validators.required]),
       country: new FormControl(''),
       street: new FormControl(''),
       zipcode: new FormControl(''),
