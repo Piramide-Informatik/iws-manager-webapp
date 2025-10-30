@@ -36,7 +36,7 @@
       "REALIZATION_PROBABILITIES": "Datos Maestros - Probabilidades de Realización",
       "ROLE": "Roles",
       "SYSTEM_CONSTANTS": "Datos Maestros - Constantes del Sistema",
-      "SALES_TAX": "Datos Maestros - Impuesto sobre Ventas",
+      "SALES_TAX": "Impuesto sobre Ventas",
       "SALUTATION": "Datos Maestros - Saludo",
       "STATES": "Datos Maestros - Estados",
       "TERMS_OF_PAYMENT": "Datos Maestros - Términos de Pago",
@@ -615,9 +615,6 @@
       "NEW_ABSENCE_TYPE": "Nuevo Tipo de Ausencia",
       "DELETE_ABSENCE_TYPE": "Eliminar Tipo de Ausencia"
     },
-    "DELETE": {
-      "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar el tipo de ausencia "
-    },
     "MODAL": {
       "NEW": "Nuevo Tipo de Ausencia",
       "DELETE": "Eliminar Tipo de Ausencia"
@@ -633,7 +630,6 @@
       "LABEL_SALUTATION": "Saludo"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
       "CONFIRMATION": "Eliminar saludo"
     },
     "LABEL": {
@@ -657,7 +653,6 @@
     "LABEL": {
       "STATE": "Estado Federal",
       "EDIT_STATE": "Editar Estado",
-      "REMOVE_STATE_QUESTION": "¿Está seguro que desea eliminar el Estado Federal",
       "NEW_STATE": "Crear Estado Federal",
       "DELETE_STATE": "Eliminar Estado Federal"
     },
@@ -687,8 +682,7 @@
       "APPLIES_TO_NETWORK": "Aplica a Redes"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Estado de Aprobación",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el Estado de Aprobación "
+      "CONFIRMATION": "Eliminar Estado de Aprobación"
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "Nuevo Estado de Aprobación"
@@ -731,8 +725,7 @@
       "AVAILABLE_ROLES": "Roles disponibles"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Usuario",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Usuario"
     },
     "HEADER": {
       "USERNAME": "Nombre de usuario",
@@ -768,7 +761,6 @@
       "SELECT_MODULE": "Seleccione un módulo"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
       "CONFIRMATION": "Eliminar Rol de Usuario"
     },
     "MODAL_CREATE": {
@@ -815,8 +807,7 @@
       "HOLIDAY_NAME": "Nuevo festivo"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Festivo",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el festivo "
+      "CONFIRMATION": "Eliminar Festivo"
     },
     "ERROR": {
       "ALREADY_EXIST": "ya existe el registro",
@@ -856,8 +847,7 @@
     "HEADER": {
       "EDIT_FUNDING": "Editar programa de financiación",
       "NEW_FUNDING": "Nuevo programa de financiación",
-      "DELETE_FUNDING": "Eliminar programa de financiación",
-      "DELETE_CONFIRM_QUESTION": "¿Está seguro que desea eliminar el programa de financiación: "
+      "DELETE_FUNDING": "Eliminar programa de financiación"
     },
     "ERROR": {
       "NAME_ALREADY_EXIST": "El programa ya existe"
@@ -875,8 +865,7 @@
     },
     "MODAL": {
       "NEW": "Nuevo Nivel de Reclamación",
-      "DELETE": "Borrar Nivel de Reclamación",
-      "DELETE_QUESTION": "¿Está seguro que desea eliminar el Nivel de Reclamación: "
+      "DELETE": "Borrar Nivel de Reclamación"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -886,8 +875,7 @@
       "ABBREVIATION": "Abreviatura"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Calificación",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Calificación"
     },
     "FORM": {
       "QUALIFICATION_FORM": "Nueva Calificación"
@@ -927,8 +915,7 @@
       "IWS_STAFF_FORM": "Nuevo Empleado"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Empleado",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el empleado "
+      "CONFIRMATION": "Eliminar Empleado"
     },
     "ERROR": {
       "SHORT_NAME_ALREADY_EXIST": "La abreviatura ya existe",
@@ -954,8 +941,7 @@
     },
     "MODAL": {
       "NEW": "Nueva Constante del Sistema",
-      "DELETE": "Eliminar Constantes del Sistema",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar la constante de sistema "
+      "DELETE": "Eliminar Constantes del Sistema"
     }
   },
   "IWS_COMMISSIONS": {
@@ -972,8 +958,7 @@
       "NEW": "Nuevo Comisión"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Comisión",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Comisión"
     },
     "ERROR": {
       "THRESHOLD_ALREADY_EXIST": "El valor de exigencia ya existe",
@@ -992,8 +977,7 @@
       "SELECT_LEADER": "Seleccionar Líder"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Equipo",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Equipo"
     },
     "FORM": {
       "IWS_TEAM_FORM": "Nuevo Equipo"
@@ -1033,8 +1017,7 @@
       "NEW_COUNTRY": "Nuevo País"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar País",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar País"
     },
     "ERROR": {
       "COUNTRY_NAME_REQUIRED": "Nombre de país requerido",
@@ -1056,8 +1039,7 @@
     },
     "MODAL": {
       "CREATE_COST_TYPE": "Nuevo tipo de costo",
-      "DELETE_COST_TYPE": "Eliminar tipo de costo",
-      "DELETE_COST_TYPE_QUESTION": "¿Está seguro que desea eliminar el tipo de costo "
+      "DELETE_COST_TYPE": "Eliminar tipo de costo"
     }
   },
   "PAGINATION": {
@@ -1080,8 +1062,7 @@
     },
     "MODAL": {
       "NEW": "Nuevo Texto",
-      "DELETE": "Eliminar Texto",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el texto "
+      "DELETE": "Eliminar Texto"
     }
   },
   "PROJECT_FUNNELS": {
@@ -1096,9 +1077,6 @@
       "LAND": "Pais",
       "STREET": "Calle",
       "ZIP_CITY": "Código Postal / Ciudad"
-    },
-    "DELETE": {
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el patrocinador del proyecto "
     },
     "MODAL": {
       "NEW": "Nuevo Patrocinador del Proyecto",
@@ -1125,7 +1103,6 @@
       "ALREADY_EXISTS": "El registro ya existe"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar ",
       "CONFIRMATION": "Eliminar Estado del Proyecto"
     },
     "TABLE_PROJECT_STATUS": {
@@ -1148,11 +1125,9 @@
     "MODAL": {
       "NEW": "Nueva Red",
       "DELETE": "Eliminar Red",
-      "CONFIRM_QUESTION": "¿Está seguro de que desea eliminar la red ",
       "NEW_PARTNER": "Nuevo Socio",
       "EDIT_PARTNER": "Editar Socio",
-      "DELETE_PARTNER": "Eliminar Socio",
-      "DELETE_PARTNER_QUESTION": "¿Está seguro de que desea eliminar el socio "
+      "DELETE_PARTNER": "Eliminar Socio"
     },
     "PARTNER": {
       "NO": "No",
@@ -1173,7 +1148,6 @@
       "MODAL_SALES_TAX_RATE": {
         "NEW": "Nueva Tasa Impositiva",
         "DELETE": "Eliminar Tasa Impositiva",
-        "DELETE_QUESTION": "¿Está seguro de que desea eliminar la tasa impositiva ",
         "EDIT": "Editar Tasa Impositiva"
       }
     },
@@ -1187,8 +1161,7 @@
     },
     "MODAL": {
       "NEW": "Nuevo Impuesto Sobre las Ventas",
-      "DELETE": "Eliminar Impuesto Sobre las Ventas",
-      "DELETE_QUESTION": "¿Está seguro que desea eliminar el impuesto de ventas  "
+      "DELETE": "Eliminar Impuesto Sobre las Ventas"
     }
   },
   "TERMS_OF_PAYMENT": {
@@ -1199,24 +1172,21 @@
     "INVOICE_TEXT": "Texto de la Factura",
     "MODAL": {
       "NEW": "Nueva Condición de Pago",
-      "DELETE": "Eliminar Condición de Pago",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar la Condición de Pago "
+      "DELETE": "Eliminar Condición de Pago"
     }
   },
   "BILLERS": {
     "TITLE_FORM": "Editar Facturador",
     "MODAL": {
       "NEW": "Nuevo Facturador",
-      "DELETE": "Eliminar Facturador",
-      "REMOVE_BILLER_QUESTION": "¿Está seguro que desea eliminar el facturador "
+      "DELETE": "Eliminar Facturador"
     }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Editar Probabilidad de Ejecución",
     "MODAL": {
       "NEW": "Nueva Probabilidad de Ejecución",
-      "DELETE": "Eliminar Probabilidad de Ejecución",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar la Probabilidad de Ejecución "
+      "DELETE": "Eliminar Probabilidad de Ejecución"
     }
   },
   "TYPE_OF_COMPANIES": {
@@ -1235,8 +1205,7 @@
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Editar Tipo de Empresa",
       "COMPANY_TYPE": "Tipo de Empresa",
-      "DELETE_TITLE": "Eliminar Tipo de Empresa",
-      "REMOVE_COMPANY_TYPE_QUESTION": "¿Está seguro que desea eliminar"
+      "DELETE_TITLE": "Eliminar Tipo de Empresa"
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Tipo de Empresa es requerido",
@@ -1266,8 +1235,7 @@
       "TITLE_LABEL_REQUIRED": "Titulo es requerido"
     },
     "DELETE": {
-      "CONFIRMATION": "Eliminar Título",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar "
+      "CONFIRMATION": "Eliminar Título"
     },
     "FORM": {
       "TITLE_FORM": "Nuevo Título",
@@ -1294,8 +1262,7 @@
     },
     "MODAL": {
       "NEW": "Nuevo Tipo de Facturación",
-      "DELETE": "Eliminar Tipo de Facturación",
-      "CONFIRM_QUESTION": "¿Está seguro que desea eliminar el Tipo de Facturación "
+      "DELETE": "Eliminar Tipo de Facturación"
     }
   },
   "CONTRACT_STATUS": {
@@ -1312,8 +1279,7 @@
     },
     "MODAL": {
       "TITLE_CREATE": "Nuevo Estado del Contrato",
-      "TITLE_DELETE": "Eliminar Estado del Contrato",
-      "DELETE_QUESTION": "¿Está seguro que desea eliminar el Estado del Contrato "
+      "TITLE_DELETE": "Eliminar Estado del Contrato"
     }
   },
   "FILTER": {

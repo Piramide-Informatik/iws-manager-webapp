@@ -69,10 +69,7 @@
 
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-        {{ 'APPROVAL_STATUS.DELETE.CONFIRM_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ approvalStatusName }}"</strong>?
-        </p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: approvalStatusName }"></p>
 
         <div class="flex justify-content-center gap-2">
         <p-button

@@ -94,7 +94,7 @@
 
 <ng-template #deleteTemplate>
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedFunding?.name }">
       {{ 'FUNDING.HEADER.DELETE_CONFIRM_QUESTION' | translate }}
       <strong class="stronglock mt-1">"{{ selectedFunding?.name }}"</strong>?
     </p>

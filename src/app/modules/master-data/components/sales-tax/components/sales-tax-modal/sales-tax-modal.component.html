@@ -25,9 +25,7 @@
 
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">{{ 'SALES_TAX.MODAL.DELETE_QUESTION' | translate }}
-            <strong class="stronglock mt-1">"{{ selectedVat.label }}"</strong>?
-        </p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedVat.label }"></p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
