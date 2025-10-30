@@ -330,6 +330,9 @@
       "MAX_HOURS_PER_DAY": "Max Std Tag",
       "HOURLY_RATE": "Std.Satz",
       "SPECIAL_PAYMENT": "JaSoZa"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "Personal-Nr. existiert bereits"
     }
   },
   "CONTACT": {
