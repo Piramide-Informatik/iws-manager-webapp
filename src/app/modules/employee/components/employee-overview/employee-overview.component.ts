@@ -3,7 +3,7 @@ import { Table } from 'primeng/table';
 import { Employee } from '../../../../Entities/employee';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService, _ } from "@ngx-translate/core";
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { EmployeeUtils } from '../../utils/employee.utils';
@@ -14,6 +14,7 @@ import { Column } from '../../../../Entities/column';
 import { Title } from '@angular/platform-browser';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
+import { QualificationFZUtils } from '../../../master-data/components/employee-qualification/utils/qualificationfz-util';
 
 @Component({
   selector: 'app-employee-overview',
@@ -25,6 +26,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly titleService = inject(Title);
+  private readonly qualificationFZUtils = inject(QualificationFZUtils);
   public customer!: Customer | undefined;
   employees: Employee[] = [];
   @ViewChild('dt2') dt2!: Table;
@@ -95,10 +97,35 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       { field: 'shareholdersince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')), customClasses: ['align-right'] },
       { field: 'soleproprietorsince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), customClasses: ['align-right'] },
       { field: 'coentrepreneursince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'qualificationFZ.qualification', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')) },
+      { field: 'qualificationFZ.qualification', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')),filter: {type: 'multiple',
+        data: []
+      } },
       { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
     ];
+    // Load grades dynamically
+    this.qualificationFZUtils.getAllQualifications().pipe(
+      map(qualifications => 
+        qualifications
+          .filter(q => q.qualification) // Filter null/undefined values
+          .map(q => ({
+            label: q.qualification!,
+            value: q.qualification!
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)) // Sort alphabetically
+      )
+    ).subscribe({
+      next: (filterData) => {
+        const qualificationCol = this.cols.find(col => col.field === 'qualificationFZ.qualification');
+        if (qualificationCol?.filter) {
+          qualificationCol.filter.data = filterData;
+        }
+      },
+      error: (err) => {
+        console.error('Error loading qualifications for filter:', err);
+        // Keep the array empty in case of error
+      }
+    });
   }
 
   onUserEmployeeOverviewPreferencesChanges(userEmployeeOverviewPreferences: any) {
@@ -202,9 +229,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   }
 
   private updateTitle(name: string): void {
-    this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYEES')}`
-    );
+    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYEES'));
   }
 
 }
