@@ -27,7 +27,7 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.loadDunningLevelAfterRefresh();
     this.editDunningLevelForm = new FormGroup({
-      levelNo: new FormControl(null),
+      levelNo: new FormControl(null,[Validators.required]),
       reminderTitle: new FormControl(''),
       fee: new FormControl(null),
       interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),

@@ -30,7 +30,7 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.dunningLevelForm = new FormGroup({
-      levelNo: new FormControl(null),
+      levelNo: new FormControl(null,[Validators.required]),
       reminderTitle: new FormControl(''),
       fee: new FormControl(null),
       interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
