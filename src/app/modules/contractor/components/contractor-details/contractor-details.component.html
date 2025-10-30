@@ -4,31 +4,33 @@
       <div class="form-container flex align-items-center mb-5">
         <div class="contract_input">
           <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
-          <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
-            [appAutoFocusOnVisible]="isVisibleModal"
-            [ngClass]="{'ng-invalid': contractorForm.get('contractorlabel')?.invalid && contractorForm.get('contractorlabel')?.dirty}" />
-          <p-message severity="error" variant="simple" size="small" *ngIf="
+          <div class="input-container">
+            <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
+              [appAutoFocusOnVisible]="isVisibleModal"
+              [ngClass]="{'ng-invalid': contractorForm.get('contractorlabel')?.invalid && contractorForm.get('contractorlabel')?.dirty}" />
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
       contractorForm.get('contractorlabel')?.invalid && 
-      contractorForm.get('contractorlabel')?.touched && 
-      contractorForm.get('contractorlabel')?.errors?.['required']">
-            {{ 'ERROR.FIELD_REQUIRED' | translate }}
-          </p-message>
-          <p-message severity="error" variant="simple" size="small" *ngIf="
-      contractorForm.get('contractorlabel')?.invalid && 
-      contractorForm.get('contractorlabel')?.touched && 
-      contractorForm.get('contractorlabel')!.hasError('labelExists')">
-            {{ 'ERROR.RECORD_ARLEADY_EXISTS' | translate }}
-          </p-message>
+      contractorForm.get('contractorlabel')?.dirty || 
+      contractorForm.get('contractorlabel')?.hasError('labelExists')
+  ">
+              {{ contractorForm.get('contractorlabel')?.hasError('labelExists') ?
+              ('CONTRACTOR.ERROR.LABEL_ALREADY_EXISTS' | translate) :
+              ('ERROR.FIELD_REQUIRED' | translate)
+              }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input">
           <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
-          <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
-          <p-message severity="error" variant="simple" size="small" *ngIf="
+          <div class="input-container">
+            <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="
       contractorForm.get('contractorname')?.invalid && 
       contractorForm.get('contractorname')?.touched && 
       contractorForm.get('contractorname')?.errors?.['required']">
-            {{ 'ERROR.FIELD_REQUIRED' | translate }}
-          </p-message>
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input">
           <label for="country">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
