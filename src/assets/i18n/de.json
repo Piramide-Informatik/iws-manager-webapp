@@ -385,9 +385,10 @@
     },
     "LABEL": {
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Möchten Sie Arbeitsvertrag wirklich löschen",
-      "CREATE_EMPLOYEE_CONTRACT": "Arbeitsvertrag erstellen",
+      "CREATE_EMPLOYEE_CONTRACT": "Neuer Arbeitsvertrag",
       "EDIT_EMPLOYEE_CONTRACT": "Arbeitsvertrag bearbeiten",
-      "DELETE_EMPLOYEE_CONTRACT": "Arbeitsvertrag löschen"
+      "DELETE_EMPLOYEE_CONTRACT": "Arbeitsvertrag löschen",
+      "START_DATE_ALREADY_EXISTS": "Für dieses Datum existiert bereits ein Vertrag"
     }
   },
   "PROJECTS": {

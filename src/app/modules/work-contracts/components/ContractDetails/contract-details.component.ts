@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { debounceTime, Subscription } from 'rxjs';
+import { debounceTime, Subscription, take } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { EmploymentContractUtils } from '../../../employee/utils/employment-contract-utils';
 import { Customer } from '../../../../Entities/customer';
@@ -44,10 +44,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public showOCCErrorModalContract = false;
   public ContractDetailsForm!: FormGroup;
   public employeeSelectOptions: { employeeNo: number, employeeId: number }[] = [];
-  public isInvalidForm = false;
 
   public isLoading: boolean = false;
   public isLoadingDelete: boolean = false;
+  public startDateContractAlreadyExists: boolean = false;
   public visiblEmployeeContractModal: boolean = false;
   private readonly employeesMap: Map<number, Employee> = new Map();
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
@@ -128,9 +128,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
           this.employeeSelectOptions = employees.map((emp: Employee) => ({ employeeNo: emp.employeeno ?? 0, employeeId: emp.id }));
           // Guardar empleados en un mapa para acceso rápido
           this.employeesMap.clear();
-          employees.forEach((emp: Employee) => {
+          for(const emp of employees) {
             this.employeesMap.set(emp.id, emp);
-          });
+          }
         },
         error: () => {
           this.employeeSelectOptions = [];
@@ -145,15 +145,15 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       employeNro: new FormControl('', []),
       firstName: new FormControl('', []),
       lastName: new FormControl('', []),
-      startDate: new FormControl('', []),
-      salaryPerMonth: new FormControl(null, [Validators.min(0), Validators.max(99999.99)]),
-      hoursPerWeek: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
+      startDate: new FormControl('', [Validators.required]),
+      salaryPerMonth: new FormControl(null, [Validators.min(0), Validators.max(99999999.99)]),
+      hoursPerWeek: new FormControl(null, [Validators.min(0), Validators.max(168)]),
       workShortTime: new FormControl(null, [Validators.min(0), Validators.max(100)]),
-      specialPayment: new FormControl(null, [Validators.min(0), Validators.max(99999.99)]),
+      specialPayment: new FormControl(null, [Validators.min(0), Validators.max(99999999.99)]),
       maxHoursPerMonth: new FormControl(null, [Validators.min(0), Validators.max(999.99)]),
-      maxHoursPerDay: new FormControl(null, []),
-      hourlyRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
-      hourlyRealRate: new FormControl(null, [Validators.min(0), Validators.max(100)])
+      maxHoursPerDay: new FormControl(null),
+      hourlyRate: new FormControl(null),
+      hourlyRealRate: new FormControl(null)
     });
 
     this.disableFormControls();
@@ -179,13 +179,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     const calculationFields = ['salaryPerMonth', 'specialPayment', 'hoursPerWeek', 'workShortTime'];
 
-    calculationFields.forEach(field => {
+    for(const field of calculationFields) {
       this.subscription.add(
         this.ContractDetailsForm.get(field)!.valueChanges.pipe(
           debounceTime(300) // Esperar 300ms después de la última tecla
         ).subscribe(() => this.calculateAllFields())
       );
-    });
+    }
   }
 
   private onEmployeeIdChange(employeeId: number): void {
@@ -251,17 +251,22 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private calculateHourlyRates(salary: number, specialPayment: number, hoursPerWeek: number): void {
-    // Fórmula: (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12)
+    // Fórmula hourly rate:       (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12) * 12 / 10.5
+    // Fórmula hourly real rate:  (Salary + Annual Special Payment / 12) / (Weekly hours * 52 / 12)
     const monthlySpecialPayment = specialPayment / 12;
     const totalMonthlyCompensation = salary + monthlySpecialPayment;
     const monthlyHours = (hoursPerWeek * 52) / 12;
 
-    const hourlyRate = totalMonthlyCompensation / monthlyHours;
-
-    this.isInvalidForm = hourlyRate > 100;
+    const hourlyRealRate = totalMonthlyCompensation / monthlyHours;
+    const hourlyRate = hourlyRealRate * (12 / 10.5);
 
     this.ContractDetailsForm.get('hourlyRate')?.setValue(
       this.roundToTwoDecimals(hourlyRate),
+      { emitEvent: false }
+    );
+
+    this.ContractDetailsForm.get('hourlyRealRate')?.setValue(
+      this.roundToTwoDecimals(hourlyRealRate),
       { emitEvent: false }
     );
   }
@@ -302,7 +307,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   private _doCreateWorkContract() {
     const raw = this.ContractDetailsForm.getRawValue();
-    const startDate = raw.startDate ? momentFormatDate(raw.startDate) : '';
+    const startDate = momentFormatDate(raw.startDate) ?? '';
     const salaryPerMonth = raw.salaryPerMonth ?? 0;
     const hoursPerWeek = raw.hoursPerWeek ?? 0;
     const workShortTime = raw.workShortTime ?? 0;
@@ -340,9 +345,15 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
       error: (error) => {
         this.isLoading = false;
         this.errorMsg = error.message;
-        this.isVisibleModal.emit(false);
         this.commonMessageService.showErrorCreatedMessage();
-        this.ContractDetailsForm.reset();
+        if(error.message.includes('start date employment contract already exists for this employee')) {
+          this.startDateContractAlreadyExists = true;
+          this.ContractDetailsForm.get('startDate')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.startDateContractAlreadyExists = false);
+        }else{
+          this.isVisibleModal.emit(false);
+          this.ContractDetailsForm.reset();
+        }
       }
     });
   }
@@ -353,7 +364,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     const updatedEmployment: EmploymentContract = {
       ...this.currentEmploymentContractEntity,
       employee: this.employeesMap.get(this.ContractDetailsForm.value.employeNro),
-      startDate: this.ContractDetailsForm.value.startDate,
+      startDate: momentFormatDate(this.ContractDetailsForm.value.startDate) ?? '',
       salaryPerMonth: this.ContractDetailsForm.value.salaryPerMonth,
       hoursPerWeek: this.ContractDetailsForm.value.hoursPerWeek,
       workShortTime: this.ContractDetailsForm.value.workShortTime,
@@ -382,6 +393,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     if (error instanceof OccError) {
       this.showOCCErrorModalContract = true;
       this.occErrorType = error.errorType;
+    }else if(error.message.includes('start date employment contract already exists for this employee')) {
+      this.startDateContractAlreadyExists = true;
+      this.ContractDetailsForm.get('startDate')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.startDateContractAlreadyExists = false);
     }
   }
 

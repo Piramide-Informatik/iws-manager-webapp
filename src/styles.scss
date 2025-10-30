@@ -374,6 +374,11 @@ input[type='number'] {
     box-shadow: none !important;
   }
 
+  p-datepicker.ng-invalid > input#startDate.p-datepicker-input.p-inputtext:enabled:focus {
+    border-color: #dc2626 !important;
+    box-shadow: none !important;
+  }
+
   p-message .p-message-text {
     position: absolute;
     top: 22px;

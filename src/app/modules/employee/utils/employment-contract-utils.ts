@@ -82,21 +82,35 @@ export class EmploymentContractUtils {
   * @returns Observable that completes when employment contract is created
   */
   createNewEmploymentContract(contract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<EmploymentContract> {
-    return this.employmentContractService.addEmploymentContract(contract);
+    return this.contractStartDateExistsByEmployee(contract.startDate, contract.employee?.id ?? 0).pipe(
+      switchMap((exist) => {
+        if (exist) {
+          return throwError(() => new Error('start date employment contract already exists for this employee'));
+        }
+        return this.employmentContractService.addEmploymentContract(contract);
+      }),
+      catchError((err) => {
+        if(err.message === 'start date employment contract already exists for this employee') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('Failed to create employment contract'));
+      })
+    );
   }
 
   /**
-  * Checks if an employment contract exists by contract.id (case-insensitive comparison)
-  * @param contractId - Contract ID to check
+  * Checks if an start date employment contract exists by employee id
+  * @param startDate - Contract start date to check
+  * @param employeeId - Employee ID to check
   * @returns Observable emitting boolean indicating existence
   */
-  contractExists(contractId: number | string): Observable<boolean> {
-    return this.employmentContractService.getAllEmploymentContracts().pipe(
+  private contractStartDateExistsByEmployee(startDate: string, employeeId: number): Observable<boolean> {
+    return this.employmentContractService.getContractsByEmployeeId(employeeId).pipe(
       map(contracts => contracts.some(
-        c => c.id !== null && c.id?.toString().toLowerCase() === contractId.toString().toLowerCase()
+        c =>  c.startDate !== null && c.startDate?.toString().toLowerCase() === startDate.toString().toLowerCase()
       )),
-      catchError(() => {
-        return throwError(() => new Error('Failed to check employment contract existence'));
+      catchError((err) => {
+        return throwError(() => new Error('Fail to check employment contract start date existence'));
       })
     );
   }
@@ -173,8 +187,15 @@ export class EmploymentContractUtils {
           return throwError(() => createUpdateConflictError("Employment Contract"));
         }
 
-        // Update the contract
-        return this.employmentContractService.updateEmploymentContract(contract);
+        return this.contractStartDateExistsByEmployee(contract.startDate, contract.employee?.id ?? 0).pipe(
+          switchMap((exist) => {
+            if (exist) {
+              return throwError(() => new Error('start date employment contract already exists for this employee'));
+            }
+            // Update the contract
+            return this.employmentContractService.updateEmploymentContract(contract);
+          })
+        );
       })
     );
   }

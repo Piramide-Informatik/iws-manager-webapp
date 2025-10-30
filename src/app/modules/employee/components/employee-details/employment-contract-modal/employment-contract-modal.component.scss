@@ -1,39 +1,33 @@
 .create-employee-contract-form {
-  margin-left: 5% !important;
-  margin-right: 5% !important;
+  margin-left: 2% !important;
+  margin-right: 2% !important;
 }
 
 .contract_input {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1.2rem;
-  font-weight: normal;
+  margin-bottom: 1rem;
 
   label {
     width: 150px;
-    font-weight: normal;
+    flex-shrink: 0;
   }
 
   input,
   p-select,
   p-datepicker {
-    width: 70% !important;
+    width: 100% !important;
   }
 
   div {
-    width: 70% !important;
+    width: 100% !important;
   }
 
   div input,
   div p-inputnumber {
     width: 100% !important;
   }
-}
-
-.contract_input p-calendar,
-.contract_input p-calendar .p-inputtext {
-  width: 70%;
 }
 
 ::ng-deep .p-datepicker {
