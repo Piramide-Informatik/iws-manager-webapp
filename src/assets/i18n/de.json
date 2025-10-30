@@ -620,9 +620,6 @@
       "NEW_ABSENCE_TYPE": "Neue Abwesenheitsart",
       "DELETE_ABSENCE_TYPE": "Abwesenheitsart löschen"
     },
-    "DELETE": {
-      "CONFIRM_QUESTION": "Möchten Sie die Abwesenheitsart wirklich löschen "
-    },
     "MODAL": {
       "NEW": "Neue Abwesenheitsart",
       "DELETE": "Abwesenheitsart löschen"
@@ -638,7 +635,6 @@
       "LABEL_SALUTATION": "Anrede"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Anrede löschen möchten: ",
       "CONFIRMATION": "Anrede löschen"
     },
     "LABEL": {
@@ -662,7 +658,6 @@
     "LABEL": {
       "STATE": "Bundesland",
       "EDIT_STATE": "Bundesland bearbeiten",
-      "REMOVE_STATE_QUESTION": "Möchten Sie das Bundesland wirklich löschen",
       "NEW_STATE": "Bundesstaat erstellen",
       "DELETE_STATE": "Bundesland löschen"
     },
@@ -692,8 +687,7 @@
       "APPLIES_TO_NETWORK": "gilt fur Netzwerke"
     },
     "DELETE": {
-      "CONFIRMATION": "Bewilligungstatus löschen",
-      "CONFIRM_QUESTION": "Möchten Sie den Bewilligungsstatus wirklich löschen "
+      "CONFIRMATION": "Bewilligungstatus löschen"
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "Neuer Bewilligungsstatus"
@@ -736,8 +730,7 @@
       "AVAILABLE_ROLES": "Verfügbare Rollen"
     },
     "DELETE": {
-      "CONFIRMATION": "Benutzer löschen",
-      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Benutzer löschen"
     },
     "HEADER": {
       "USERNAME": "Benutzername",
@@ -776,8 +769,7 @@
       "CREATE_FORM": "Neue Rolle"
     },
     "DELETE": {
-      "CONFIRMATION": "Rolle löschen",
-      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie löschen möchten "
+      "CONFIRMATION": "Rolle löschen"
     },
     "MESSAGE": {
       "SUCCESS": "ERFOLG",
@@ -820,8 +812,7 @@
       "HOLIDAY_NAME": "Neuer Feiertag"
     },
     "DELETE": {
-      "CONFIRMATION": "Feiertag löschen",
-      "CONFIRM_QUESTION": "Möchten Sie den Feiertag wirklich löschen "
+      "CONFIRMATION": "Feiertag löschen"
     },
     "ERROR": {
       "ALREADY_EXIST": "Der Datensatz existiert bereits",
@@ -861,8 +852,7 @@
     "HEADER": {
       "EDIT_FUNDING": "Förderprogramm bearbeiten",
       "NEW_FUNDING": "Neues Förderprogramm",
-      "DELETE_FUNDING": "Förderprogramm löschen",
-      "DELETE_CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Förderprogramm löschen möchten: "
+      "DELETE_FUNDING": "Förderprogramm löschen"
     },
     "ERROR": {
       "NAME_ALREADY_EXIST": "Förderprogramm existiert bereits"
@@ -880,8 +870,7 @@
     },
     "MODAL": {
       "NEW": "Neue Mahnstufe",
-      "DELETE": "Mahnstufe löschen",
-      "DELETE_QUESTION": "Möchten Sie den Mahnstufe wirklich löschen "
+      "DELETE": "Mahnstufe löschen"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -891,8 +880,7 @@
       "ABBREVIATION": "Kürzel"
     },
     "DELETE": {
-      "CONFIRMATION": "Qualifikation löschen",
-      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Qualifikation löschen"
     },
     "FORM": {
       "QUALIFICATION_FORM": "Neue Qualifikation"
@@ -932,8 +920,7 @@
       "IWS_STAFF_FORM": "Neuer Mitarbeiter"
     },
     "DELETE": {
-      "CONFIRMATION": "Mitarbeiter löschen",
-      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen"
+      "CONFIRMATION": "Mitarbeiter löschen"
     },
     "ERROR": {
       "SHORT_NAME_ALREADY_EXIST": "Kürzel existiert bereits",
@@ -959,8 +946,7 @@
     },
     "MODAL": {
       "NEW": "Neu Systemkonstante",
-      "DELETE": "Systemkonstante löschen",
-      "CONFIRM_QUESTION": "Möchten Sie die Systemkonstante wirklich löschen "
+      "DELETE": "Systemkonstante löschen"
     }
   },
   "IWS_COMMISSIONS": {
@@ -977,8 +963,7 @@
       "NEW": "Neue Provision"
     },
     "DELETE": {
-      "CONFIRMATION": "Provision löschen",
-      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Provision löschen"
     },
     "ERROR": {
       "THRESHOLD_ALREADY_EXIST": "Forderungswert existiert bereits",
@@ -997,8 +982,7 @@
       "SELECT_LEADER": "Teamleiter auswählen"
     },
     "DELETE": {
-      "CONFIRMATION": "Team löschen",
-      "CONFIRM_QUESTION": "Möchten Sie wirklich löschen "
+      "CONFIRMATION": "Team löschen"
     },
     "FORM": {
       "IWS_TEAM_FORM": "Neues Team"
@@ -1038,8 +1022,7 @@
       "NEW_COUNTRY": "Neuer Länder"
     },
     "DELETE": {
-      "CONFIRMATION": "Land löschen",
-      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Land löschen möchten: "
+      "CONFIRMATION": "Land löschen"
     },
     "ERROR": {
       "COUNTRY_NAME_REQUIRED": "Land erforderlich",
@@ -1061,8 +1044,7 @@
     },
     "MODAL": {
       "CREATE_COST_TYPE": "Kostenart neu",
-      "DELETE_COST_TYPE": "Kostenart löschen",
-      "DELETE_COST_TYPE_QUESTION": "Sind Sie sicher, dass Sie den Kostenart löschen möchten "
+      "DELETE_COST_TYPE": "Kostenart löschen"
     }
   },
   "PAGINATION": {
@@ -1085,8 +1067,7 @@
     },
     "MODAL": {
       "NEW": "Neu Text",
-      "DELETE": "Text löschen",
-      "CONFIRM_QUESTION": "Möchten Sie den Text wirklich löschen "
+      "DELETE": "Text löschen"
     }
   },
   "PROJECT_FUNNELS": {
@@ -1101,9 +1082,6 @@
       "LAND": "Land",
       "STREET": "Straße",
       "ZIP_CITY": "PLZ / Ort"
-    },
-    "DELETE": {
-      "CONFIRM_QUESTION": "Möchten Sie den Projektträger wirklich löschen "
     },
     "MODAL": {
       "NEW": "Neu Projektträger",
@@ -1130,7 +1108,6 @@
       "ALREADY_EXISTS": "Der Datensatz existiert bereits"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie Folgendes entfernen möchten",
       "CONFIRMATION": "Projektstatus löschen Projekt"
     },
     "TABLE_PROJECT_STATUS": {
@@ -1153,11 +1130,9 @@
     "MODAL": {
       "NEW": "Neues Netzwerk",
       "DELETE": "Netzwerk löschen",
-      "CONFIRM_QUESTION": "Möchten Sie das Netzwerk wirklich löschen ",
       "NEW_PARTNER": "Neuer Partner",
       "EDIT_PARTNER": "Partner bearbeiten",
-      "DELETE_PARTNER": "Partner löschen",
-      "DELETE_PARTNER_QUESTION": "Möchten Sie das Partner wirklich löschen "
+      "DELETE_PARTNER": "Partner löschen"
     },
     "PARTNER": {
       "NO": "No",
@@ -1178,7 +1153,6 @@
       "MODAL_SALES_TAX_RATE": {
         "NEW": "Neu Steuersatz",
         "DELETE": "Steuersatz löschen",
-        "DELETE_QUESTION": "Möchten Sie den Steuersatz wirklich löschen ",
         "EDIT": "Steuersatz bearbeiten"
       }
     },
@@ -1191,8 +1165,7 @@
     },
     "MODAL": {
       "NEW": "Neue Umsatzsteuer",
-      "DELETE": "Umsatzsteuer löschen",
-      "DELETE_QUESTION": "Möchten Sie das Umsatzsteuer wirklich löschen "
+      "DELETE": "Umsatzsteuer löschen"
     }
   },
   "TERMS_OF_PAYMENT": {
@@ -1203,24 +1176,21 @@
     "INVOICE_TEXT": "Rechnungstext",
     "MODAL": {
       "NEW": "Neu Zahlungsziel",
-      "DELETE": "Zahlungsziel löschen",
-      "CONFIRM_QUESTION": "Möchten Sie die Zahlungsbedingungen wirklich löschen "
+      "DELETE": "Zahlungsziel löschen"
     }
   },
   "BILLERS": {
     "TITLE_FORM": "Rechnungsersteller bearbeiten",
     "MODAL": {
       "NEW": "Neuer Rechnungsersteller",
-      "DELETE": "Rechnungsersteller löschen",
-      "REMOVE_BILLER_QUESTION": "Möchten Sie den Rechnungssteller wirklich löschen "
+      "DELETE": "Rechnungsersteller löschen"
     }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten",
     "MODAL": {
       "NEW": "Neu Realisierungswahrscheinlichkeit",
-      "DELETE": "Realisierungswahrscheinlichkeit löschen",
-      "CONFIRM_QUESTION": "Möchten Sie die Realisierungswahrscheinlichkeit wirklich löschen "
+      "DELETE": "Realisierungswahrscheinlichkeit löschen"
     }
   },
   "TYPE_OF_COMPANIES": {
@@ -1239,8 +1209,7 @@
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Unternehmensart bearbeiten",
       "COMPANY_TYPE": "Unternehmensart",
-      "DELETE_TITLE": "Unternehmenstyp löschen",
-      "REMOVE_COMPANY_TYPE_QUESTION": "Möchten Sie den Unternehmenstyp wirklich löschen"
+      "DELETE_TITLE": "Unternehmenstyp löschen"
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich",
@@ -1270,8 +1239,7 @@
       "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
     },
     "DELETE": {
-      "CONFIRMATION": "Titel löschen",
-      "CONFIRM_QUESTION": "Sind Sie sicher, dass Sie den Titel löschen möchten: "
+      "CONFIRMATION": "Titel löschen"
     },
     "FORM": {
       "TITLE_FORM": "Neuer Titel",
@@ -1300,8 +1268,7 @@
     },
     "MODAL": {
       "NEW": "Neu Verrechnungsart",
-      "DELETE": "Verrechnungsart löschen",
-      "CONFIRM_QUESTION": "Möchten Sie den Verrechnungsart wirklich löschen "
+      "DELETE": "Verrechnungsart löschen"
     }
   },
   "CONTRACT_STATUS": {
@@ -1318,8 +1285,7 @@
     },
     "MODAL": {
       "TITLE_CREATE": "Neuer Vertragsstatus",
-      "TITLE_DELETE": "Vertragsstatus löschen",
-      "DELETE_QUESTION": "Möchten Sie den Vertragsstatus wirklich löschen "
+      "TITLE_DELETE": "Vertragsstatus löschen"
     }
   },
   "FILTER": {

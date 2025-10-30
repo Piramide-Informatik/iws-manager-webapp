@@ -58,10 +58,7 @@
 
 <ng-template #deleteTemplate>
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4">
-      {{ 'IWS_COMMISSIONS.DELETE.CONFIRM_QUESTION' | translate }}
-      <strong class="stronglock mt-1">"{{ iwsCommissionName | number:'1.2-2':'de-DE' }}"</strong>?
-    </p>
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: iwsCommissionName | number:'1.2-2':'de-DE' }"></p>
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"

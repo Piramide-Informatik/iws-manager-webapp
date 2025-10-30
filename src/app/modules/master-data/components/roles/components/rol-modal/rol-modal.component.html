@@ -53,10 +53,7 @@
 </ng-container>
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-        {{ 'ROLES.DELETE.CONFIRM_QUESTION' | translate }}
-        <strong class="stronglock mt-1">"{{ roleName }}"</strong>?
-        </p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: roleName }"></p>
 
         <div class="flex justify-content-center gap-2">
         <p-button

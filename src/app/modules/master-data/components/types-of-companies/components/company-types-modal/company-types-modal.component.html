@@ -33,10 +33,7 @@
 
 <ng-template #deleteTemplate>
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">
-            {{ 'TYPE_OF_COMPANIES.LABEL.REMOVE_COMPANY_TYPE_QUESTION' | translate }}
-            <strong class="stronglock mt-1">"{{ companyTypeName }}"</strong>?
-        </p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: companyTypeName }"></p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
