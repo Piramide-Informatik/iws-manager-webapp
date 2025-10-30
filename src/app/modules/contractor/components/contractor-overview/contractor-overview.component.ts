@@ -172,6 +172,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
       this.contractors[index] = { ...updated };
       this.contractors = [...this.contractors];
       this.contractorsSubject.next(this.contractors);
+      this.loadContractors();
     }
   }
 
