@@ -100,19 +100,20 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
       {
         field: 'employee.employeeno',
         customClasses: ['align-right', 'date-font-style'],
+        filter: { type: 'numeric' },
         useSameAsEdit: true,
         header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.EMPLOYEE_ID'))
       },
       { field: 'employee.firstname', header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.FIRST_NAME')) },
       { field: 'employee.lastname', header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.LAST_NAME')) },
       { field: 'startDate', type: 'date', customClasses: ['text-center'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.START_DATE')) },
-      { field: 'salaryPerMonth', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH')) },
-      { field: 'hoursPerWeek', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS')) },
-      { field: 'workShortTime', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME')) },
-      { field: 'maxHoursPerMonth', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH')) },
-      { field: 'maxHoursPerDay', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY')) },
-      { field: 'hourlyRate', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE')) },
-      { field: 'specialPayment', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT')) },
+      { field: 'salaryPerMonth', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SALARY_PER_MONTH')) },
+      { field: 'hoursPerWeek', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WEEKLY_HOURS')) },
+      { field: 'workShortTime', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.WORK_SHORT_TIME')) },
+      { field: 'maxHoursPerMonth', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_MONTH')) },
+      { field: 'maxHoursPerDay', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.MAX_HOURS_PER_DAY')) },
+      { field: 'hourlyRate', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE')) },
+      { field: 'specialPayment', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant(_('EMPLOYEE-CONTRACTS.TABLE.SPECIAL_PAYMENT')) },
     ];
   }
 

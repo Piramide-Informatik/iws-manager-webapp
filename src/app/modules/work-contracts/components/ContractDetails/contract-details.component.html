@@ -25,32 +25,42 @@
       </div>
       <div class="contract_input">
         <label for="startDate">{{ 'EMPLOYEE-CONTRACTS.FORM.START_DATE' | translate }}</label>
-        <p-datepicker inputId="startDate"
-          formControlName="startDate"
-          [showIcon]="true"
-          [showClear]="true"
-          dateFormat="dd.mm.yy">
-        </p-datepicker>
+        <div class="input-message">
+          <p-datepicker inputId="startDate"
+            formControlName="startDate"
+            [showIcon]="true"
+            [showClear]="true"
+            dateFormat="dd.mm.yy"
+            [ngClass]="{'ng-invalid ng-dirty': ContractDetailsForm.get('startDate')?.errors?.['required'] && (ContractDetailsForm.get('startDate')?.dirty || ContractDetailsForm.get('startDate')?.touched) || startDateContractAlreadyExists}">
+          </p-datepicker>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('startDate')?.errors?.['required'] && (ContractDetailsForm.get('startDate')?.dirty || ContractDetailsForm.get('startDate')?.touched) || startDateContractAlreadyExists">
+            {{ startDateContractAlreadyExists ? ('EMPLOYEE-CONTRACTS.LABEL.START_DATE_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+          </p-message>
+        </div>
       </div>
       <div class="contract_input">
         <label for="salaryPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.SALARY_PER_MONTH' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="salaryPerMonth" formControlName="salaryPerMonth" autocomplete="off"
-             />
-          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('salaryPerMonth')?.invalid && ContractDetailsForm.get('salaryPerMonth')?.dirty && ContractDetailsForm.get('salaryPerMonth')!.hasError('pattern')">
-            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            invalid="ContractDetailsForm.get('salaryPerMonth')?.invalid
+            && ContractDetailsForm.get('salaryPerMonth')?.dirty
+            || ContractDetailsForm.get('salaryPerMonth')?.touched"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('salaryPerMonth')?.invalid && ContractDetailsForm.get('salaryPerMonth')?.dirty">
+            {{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: '99.999.999,99'} }}
           </p-message>
         </div>
       </div>
       <div class="contract_input">
         <label for="hoursPerWeek">{{ 'EMPLOYEE-CONTRACTS.FORM.WEEKLY_HOURS' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hoursPerWeek" formControlName="hoursPerWeek" autocomplete="off"
-            [ngClass]="{'ng-invalid': ContractDetailsForm.get('hoursPerWeek')?.invalid && ContractDetailsForm.get('hoursPerWeek')?.dirty && ContractDetailsForm.get('hoursPerWeek')?.touched}" />
-          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hoursPerWeek')?.invalid && ContractDetailsForm.get('hoursPerWeek')?.dirty && ContractDetailsForm.get('hoursPerWeek')!.hasError('pattern')">
-            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            invalid="ContractDetailsForm.get('hoursPerWeek')?.invalid
+            && ContractDetailsForm.get('hoursPerWeek')?.dirty
+            || ContractDetailsForm.get('hoursPerWeek')?.touched" />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hoursPerWeek')?.invalid && ContractDetailsForm.get('hoursPerWeek')?.dirty">
+            {{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: "168" } }}
           </p-message>
         </div>
       </div>
@@ -59,64 +69,61 @@
         <div class="input-message">
           <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="workShortTime" formControlName="workShortTime" autocomplete="off"
-            invalid="
-           ContractDetailsForm.get('workShortTime')?.invalid
+            invalid="ContractDetailsForm.get('workShortTime')?.invalid
             && ContractDetailsForm.get('workShortTime')?.dirty
             || ContractDetailsForm.get('workShortTime')?.touched" />
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('workShortTime')?.invalid && ContractDetailsForm.get('workShortTime')?.dirty">
-            {{ 'ERROR.NUMBER_MAX' | translate }}
+            {{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: '100'} }}
           </p-message>
         </div>
       </div>
       <div class="contract_input">
         <label for="specialPayment">{{ 'EMPLOYEE-CONTRACTS.FORM.SPECIAL_PAYMENT' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="specialPayment" formControlName="specialPayment" autocomplete="off"
-            [ngClass]="{'ng-invalid': ContractDetailsForm.get('specialPayment')?.invalid && ContractDetailsForm.get('specialPayment')?.dirty && ContractDetailsForm.get('specialPayment')?.touched}" />
-          <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('specialPayment')?.invalid && ContractDetailsForm.get('specialPayment')?.dirty && ContractDetailsForm.get('specialPayment')!.hasError('pattern')">
-            {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+            invalid="ContractDetailsForm.get('specialPayment')?.invalid
+            && ContractDetailsForm.get('specialPayment')?.dirty
+            || ContractDetailsForm.get('specialPayment')?.touched"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('specialPayment')?.invalid && ContractDetailsForm.get('specialPayment')?.dirty">
+            {{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: '99.999.999,99'} }}
           </p-message>
         </div>
       </div>
       <div class="contract_input">
         <label for="maxHoursPerMonth">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_MONTH' | translate }}</label>
-        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+        <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
           [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxHoursPerMonth" formControlName="maxHoursPerMonth" autocomplete="off"
-          [ngClass]="{'ng-invalid': ContractDetailsForm.get('maxHoursPerMonth')?.invalid && ContractDetailsForm.get('maxHoursPerMonth')?.dirty && ContractDetailsForm.get('maxHoursPerMonth')?.touched}" />
-        <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('maxHoursPerMonth')?.invalid && ContractDetailsForm.get('maxHoursPerMonth')?.dirty && ContractDetailsForm.get('maxHoursPerMonth')!.hasError('pattern')">
-          {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
+          invalid="ContractDetailsForm.get('maxHoursPerMonth')?.invalid
+            && ContractDetailsForm.get('maxHoursPerMonth')?.dirty
+            || ContractDetailsForm.get('maxHoursPerMonth')?.touched"/>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.get('maxHoursPerMonth')?.invalid && ContractDetailsForm.get('maxHoursPerMonth')?.dirty">
+          {{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: '999.99'} }}
         </p-message>
       </div>
       <div class="contract_input">
         <label for="maxHoursPerDay">{{ 'EMPLOYEE-CONTRACTS.FORM.MAX_HOURS_PER_DAY' | translate }}</label>
-        <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxHoursPerDay" formControlName="maxHoursPerDay" autocomplete="off"
-          [ngClass]="{'ng-invalid': ContractDetailsForm.get('maxHoursPerDay')?.invalid && ContractDetailsForm.get('maxHoursPerDay')?.dirty && ContractDetailsForm.get('maxHoursPerDay')?.touched}" />
-        <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('maxHoursPerDay')?.invalid && ContractDetailsForm.get('maxHoursPerDay')?.dirty && ContractDetailsForm.get('maxHoursPerDay')!.hasError('pattern')">
-          {{ 'ERROR.NUMBER_FORMAT_ERROR' | translate }}
-        </p-message>
+        <div class="input-message">
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="maxHoursPerDay" 
+            formControlName="maxHoursPerDay" autocomplete="off"/>
+          
+        </div>
       </div>
       <div class="contract_input">
         <label for="hourlyRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_RATE' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber mode="decimal" [max]="100" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRate" formControlName="hourlyRate" autocomplete="off"
-             invalid="ContractDetailsForm.getRawValue().hourlyRate > 100" />
-          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="ContractDetailsForm.getRawValue().hourlyRate > 100" >
-            {{ 'ERROR.NUMBER_MAX' | translate }}
-          </p-message>
+             />
         </div>
       </div>
       <div class="contract_input">
         <label for="hourlyRealRate">{{ 'EMPLOYEE-CONTRACTS.FORM.HOURLY_REAL_RATE' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber mode="decimal" [max]="100" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
+          <p-inputnumber mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" inputId="hourlyRealRate" formControlName="hourlyRealRate" autocomplete="off"
              />
-          <p-message severity="error" variant="simple" size="small" *ngIf="ContractDetailsForm.get('hourlyRealRate')?.invalid && ContractDetailsForm.get('hourlyRealRate')?.dirty && ContractDetailsForm.get('hourlyRealRate')!.hasError('pattern')">
-            {{ 'ERROR.NUMBER_MAX' | translate }}
-          </p-message>
         </div>
       </div>
     </div>

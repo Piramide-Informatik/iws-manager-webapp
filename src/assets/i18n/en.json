@@ -387,7 +387,8 @@
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Are you sure you want to delete the Employee Contract",
       "CREATE_EMPLOYEE_CONTRACT": "Create Employee Contract",
       "EDIT_EMPLOYEE_CONTRACT": "Edit Employee Contract",
-      "DELETE_EMPLOYEE_CONTRACT": "Delete Employee Contract"
+      "DELETE_EMPLOYEE_CONTRACT": "Delete Employee Contract",
+      "START_DATE_ALREADY_EXISTS": "A contract already exists for this date"
     }
   },
   "PROJECTS": {

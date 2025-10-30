@@ -381,7 +381,8 @@
       "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "¿Está seguro que desea eliminar el contrato de empleado",
       "CREATE_EMPLOYEE_CONTRACT": "Crear Contrato de empleado",
       "EDIT_EMPLOYEE_CONTRACT": "Editar Contrato de empleado",
-      "DELETE_EMPLOYEE_CONTRACT": "Eliminar Contrato de empleado"
+      "DELETE_EMPLOYEE_CONTRACT": "Eliminar Contrato de empleado",
+      "START_DATE_ALREADY_EXISTS": "Ya existe un contrato para esta fecha"
     }
   },
   "PROJECTS": {
