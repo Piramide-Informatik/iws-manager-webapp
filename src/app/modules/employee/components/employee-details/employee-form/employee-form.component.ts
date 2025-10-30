@@ -290,12 +290,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private updateEmployee(updatedEmployee: Employee): void {
-    // ✅ Validar si ya existe otro empleado con el mismo número
   const employeeNumber = updatedEmployee.employeeno?.toString().trim() ?? '';
 
   if (employeeNumber) {
     const duplicate = this.customerEmployees.some(
-      e => e.employeeno?.toString().trim() === employeeNumber
+      e => e.id !== updatedEmployee.id && e.employeeno?.toString().trim() === employeeNumber
     );
 
     if (duplicate) {
@@ -314,7 +313,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         this.currentEmployee = editedEmployee;
 
         const index = this.customerEmployees.findIndex(e => e.id === editedEmployee.id);
-        if (index !== -1) {
+        if (index === -1) {
           this.customerEmployees[index] = editedEmployee;
         } else {
           console.warn(`Empleado con id ${editedEmployee.id} no encontrado en la lista local.`);
