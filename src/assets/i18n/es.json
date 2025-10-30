@@ -866,6 +866,9 @@
     "MODAL": {
       "NEW": "Nuevo Nivel de Reclamación",
       "DELETE": "Borrar Nivel de Reclamación"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "Ya existe Nivel de Reclamación"
     }
   },
   "EMPLOYEE_QUALIFICATION": {

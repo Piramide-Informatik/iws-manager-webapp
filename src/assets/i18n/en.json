@@ -867,6 +867,9 @@
     "MODAL": {
       "NEW": "New Dunning level",
       "DELETE": "Delete Dunning level"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "A Dunning Level already exists"
     }
   },
   "EMPLOYEE_QUALIFICATION": {

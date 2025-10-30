@@ -35,6 +35,7 @@
         [modalType]="modalType"
         [visible]="visibleDunningLevelModal"
         [selectedDunningLevel]="selectedDunningLevel"
+        [existingDunningLevels]="dunningLevels()"
         (isVisibleModal)="onModalVisibilityChange($event)"
         (createDunningLevel)="onCreateDunningLevel($event)"
         (deleteDunningLevel)="onDeleteDunningLevel($event)"

@@ -871,6 +871,9 @@
     "MODAL": {
       "NEW": "Neue Mahnstufe",
       "DELETE": "Mahnstufe löschen"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "Mahnstufe existiert bereits"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
