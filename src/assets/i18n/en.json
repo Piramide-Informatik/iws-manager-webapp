@@ -616,9 +616,6 @@
       "NEW_ABSENCE_TYPE": "New Absence Type",
       "DELETE_ABSENCE_TYPE": "Delete Absence Type"
     },
-    "DELETE": {
-      "CONFIRM_QUESTION": "Are you sure you want to delete the absence type "
-    },
     "MODAL": {
       "NEW": "New Absence Type",
       "DELETE": "Delete Absence Type"
@@ -634,7 +631,6 @@
       "LABEL_SALUTATION": "Salutation"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "Are you sure you want to delete the Salutation ",
       "CONFIRMATION": "Delete salutation"
     },
     "LABEL": {
@@ -658,7 +654,6 @@
     "LABEL": {
       "STATE": "Federal State",
       "EDIT_STATE": "Edit State",
-      "REMOVE_STATE_QUESTION": "Are you sure you want to delete the federal state",
       "NEW_STATE": "Create Federal State",
       "DELETE_STATE": "Delete Federal State"
     },
@@ -688,8 +683,7 @@
       "APPLIES_TO_NETWORK": "Applies to Network"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Approval Status",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the Approval Status "
+      "CONFIRMATION": "Delete Approval Status"
     },
     "MODAL_CREATE": {
       "CREATE_FORM": "New Approval Status"
@@ -732,8 +726,7 @@
       "AVAILABLE_ROLES": "Available Roles"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete User",
-      "CONFIRM_QUESTION": "Are you sure you want to delete "
+      "CONFIRMATION": "Delete User"
     },
     "HEADER": {
       "USERNAME": "Username",
@@ -772,8 +765,7 @@
       "CREATE_FORM": "New Role"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Role",
-      "CONFIRM_QUESTION": "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Role"
     },
     "MESSAGE": {
       "SUCCESS": "SUCCESS",
@@ -816,8 +808,7 @@
       "HOLIDAY_NAME": "New holiday"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Holiday",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the holiday "
+      "CONFIRMATION": "Delete Holiday"
     },
     "ERROR": {
       "ALREADY_EXIST": "The record already exists",
@@ -857,8 +848,7 @@
     "HEADER": {
       "EDIT_FUNDING": "Edit funding program",
       "NEW_FUNDING": "New funding program",
-      "DELETE_FUNDING": "Delete funding program",
-      "DELETE_CONFIRM_QUESTION": "Are you sure you want to delete the funding program: "
+      "DELETE_FUNDING": "Delete funding program"
     },
     "ERROR": {
       "NAME_ALREADY_EXIST": "Program already exists"
@@ -876,8 +866,7 @@
     },
     "MODAL": {
       "NEW": "New Dunning level",
-      "DELETE": "Delete Dunning level",
-      "DELETE_QUESTION": "Are you sure you want to delete the Dunning level "
+      "DELETE": "Delete Dunning level"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -887,8 +876,7 @@
       "ABBREVIATION": "Abbreviation"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Qualification",
-      "CONFIRM_QUESTION": "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Qualification"
     },
     "FORM": {
       "QUALIFICATION_FORM": "New Qualification"
@@ -928,8 +916,7 @@
       "IWS_STAFF_FORM": "New Employee"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Employee",
-      "CONFIRM_QUESTION": "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Employee"
     },
     "ERROR": {
       "SHORT_NAME_ALREADY_EXIST": "Short name already exists",
@@ -955,8 +942,7 @@
     },
     "MODAL": {
       "NEW": "New System Constant",
-      "DELETE": "Delete System Constant",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the system constant "
+      "DELETE": "Delete System Constant"
     }
   },
   "IWS_COMMISSIONS": {
@@ -973,8 +959,7 @@
       "NEW": "New Commission"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Commission",
-      "CONFIRM_QUESTION": "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Commission"
     },
     "ERROR": {
       "THRESHOLD_ALREADY_EXIST": "From value already exists",
@@ -993,8 +978,7 @@
       "SELECT_LEADER": "Select Leader"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Team",
-      "CONFIRM_QUESTION": "Are you sure you want to delete "
+      "CONFIRMATION": "Delete Team"
     },
     "FORM": {
       "IWS_TEAM_FORM": "New Team"
@@ -1034,8 +1018,7 @@
       "NEW_COUNTRY": "New Country"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Country",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the Country "
+      "CONFIRMATION": "Delete Country"
     },
     "ERROR": {
       "COUNTRY_NAME_REQUIRED": "Country name required",
@@ -1057,8 +1040,7 @@
     },
     "MODAL": {
       "CREATE_COST_TYPE": "New Cost Type",
-      "DELETE_COST_TYPE": "Delete Cost Type",
-      "DELETE_COST_TYPE_QUESTION": "Are you sure you want to delete the Cost Type "
+      "DELETE_COST_TYPE": "Delete Cost Type"
     }
   },
   "PAGINATION": {
@@ -1081,8 +1063,7 @@
     },
     "MODAL": {
       "NEW": "New Text",
-      "DELETE": "Delete Text",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the text "
+      "DELETE": "Delete Text"
     }
   },
   "PROJECT_FUNNELS": {
@@ -1097,9 +1078,6 @@
       "LAND": "Land",
       "STREET": "Street",
       "ZIP_CITY": "ZIP / City"
-    },
-    "DELETE": {
-      "CONFIRM_QUESTION": "Are you sure you want to delete the project sponsor "
     },
     "MODAL": {
       "NEW": "New Project Sponsor",
@@ -1126,7 +1104,6 @@
       "ALREADY_EXISTS": "The record already exists"
     },
     "DELETE": {
-      "CONFIRM_QUESTION": "Are you sure you want to delete",
       "CONFIRMATION": "Delete Project Status Project"
     },
     "TABLE_PROJECT_STATUS": {
@@ -1149,11 +1126,9 @@
     "MODAL": {
       "NEW": "New Network",
       "DELETE": "Delete Network",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the network ",
       "NEW_PARTNER": "New Network Partner",
       "EDIT_PARTNER": "Edit Network Partner",
-      "DELETE_PARTNER": "Delete Network Partner",
-      "DELETE_PARTNER_QUESTION": "Are you sure you want to delete the network partner "
+      "DELETE_PARTNER": "Delete Network Partner"
     },
     "PARTNER": {
       "NO": "No",
@@ -1174,7 +1149,6 @@
       "MODAL_SALES_TAX_RATE": {
         "NEW": "New Tax Rate",
         "DELETE": "Delete Tax Rate",
-        "DELETE_QUESTION": "Are you sure you want to delete the tax rate ",
         "EDIT": "Edit Tax Rate"
       }
     },
@@ -1187,8 +1161,7 @@
     },
     "MODAL": {
       "NEW": "New Sales Tax",
-      "DELETE": "Delete Sales Tax",
-      "DELETE_QUESTION": "Are you sure you want to delete the sales tax "
+      "DELETE": "Delete Sales Tax"
     }
   },
   "TERMS_OF_PAYMENT": {
@@ -1199,24 +1172,21 @@
     "INVOICE_TEXT": "Invoice Text",
     "MODAL": {
       "NEW": "New Term of Payment",
-      "DELETE": "Delete Term of Payment",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the Term of Payment "
+      "DELETE": "Delete Term of Payment"
     }
   },
   "BILLERS": {
     "TITLE_FORM": "Edit Biller",
     "MODAL": {
       "NEW": "New Biller",
-      "DELETE": "Delete Biller",
-      "REMOVE_BILLER_QUESTION": "Are you sure you want to delete the biller "
+      "DELETE": "Delete Biller"
     }
   },
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Edit Realization Probabilities",
     "MODAL": {
       "NEW": "New Realization Probabilities",
-      "DELETE": "Delete Realization Probabilities",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the realization probability "
+      "DELETE": "Delete Realization Probabilities"
     }
   },
   "TYPE_OF_COMPANIES": {
@@ -1235,8 +1205,7 @@
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Edit Company Type",
       "COMPANY_TYPE": "Company Type",
-      "DELETE_TITLE": "Delete Company Type",
-      "REMOVE_COMPANY_TYPE_QUESTION": "Are you sure you want to delete the company type"
+      "DELETE_TITLE": "Delete Company Type"
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Company Type is required",
@@ -1266,8 +1235,7 @@
       "TITLE_LABEL_REQUIRED": "Title is required"
     },
     "DELETE": {
-      "CONFIRMATION": "Delete Title",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the title "
+      "CONFIRMATION": "Delete Title"
     },
     "FORM": {
       "TITLE_FORM": "New Title",
@@ -1296,8 +1264,7 @@
     },
     "MODAL": {
       "NEW": "New Billing Type",
-      "DELETE": "Delete Billing Type",
-      "CONFIRM_QUESTION": "Are you sure you want to delete the billing type "
+      "DELETE": "Delete Billing Type"
     }
   },
   "CONTRACT_STATUS": {
@@ -1314,8 +1281,7 @@
     },
     "MODAL": {
       "TITLE_CREATE": "New Contract Status",
-      "TITLE_DELETE": "Delete Contract Status",
-      "DELETE_QUESTION": "Are you sure you want to delete the Contract Status "
+      "TITLE_DELETE": "Delete Contract Status"
     }
   },
   "FILTER": {
