@@ -36,7 +36,7 @@
       "REALIZATION_PROBABILITIES": "Stammdaten - Realisierungswahrscheinlichkeit",
       "ROLE": "Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
-      "SALES_TAX": "Stammdaten - Umsatzsteuer",
+      "SALES_TAX": "Umsatzsteuer",
       "SALUTATION": "Stammdaten - Anrede",
       "STATES": "Stammdaten - Bundesländer",
       "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
@@ -1151,7 +1151,7 @@
       "FROM_DATE": "ab Datum",
       "SENTENCE": "Satz",
       "MODAL_SALES_TAX_RATE": {
-        "NEW": "Neu Steuersatz",
+        "NEW": "Neuer Steuersatz",
         "DELETE": "Steuersatz löschen",
         "EDIT": "Steuersatz bearbeiten"
       }
