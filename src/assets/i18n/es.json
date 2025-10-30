@@ -1156,7 +1156,8 @@
       "SALES_TAX_LABEL": "Impuesto Sobre la Venta"
     },
     "ERROR": {
-      "SALES_TAX_REQUIRED": "Impuesto sobre la venta requerido"
+      "SALES_TAX_REQUIRED": "Impuesto sobre la venta requerido",
+      "NAME_ALREADY_EXISTS": "Impuesto Sobre las Ventas ya existe"
     },
     "MODAL": {
       "NEW": "Nuevo Impuesto Sobre las Ventas",

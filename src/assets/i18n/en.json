@@ -1157,7 +1157,8 @@
       "SALES_TAX_LABEL": "Sales Tax"
     },
     "ERROR": {
-      "SALES_TAX_REQUIRED": "Sales Tax is required"
+      "SALES_TAX_REQUIRED": "Sales Tax is required",
+      "NAME_ALREADY_EXISTS": "Sales Tax already exists"
     },
     "MODAL": {
       "NEW": "New Sales Tax",

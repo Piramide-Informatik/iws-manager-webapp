@@ -3,7 +3,15 @@
         <div class="flex flex-column mt-4">
             <div class="sales-tax-form flex flex-row mb-3 align-items-center">
                 <label for="label">{{ 'SALES_TAX.LABEL.SALES_TAX_LABEL' | translate }}</label>
-                <input #firstInput pInputText type="text" id="label" formControlName="label" autocomplete="off" />
+                <div class="input-message">
+                  <input #firstInput pInputText type="text" id="label" formControlName="label" autocomplete="off" 
+                         [ngClass]="{'ng-invalid': vatForm.get('label')?.invalid && vatForm.get('label')?.dirty}" />
+                  <p-message severity="error" variant="simple" size="small" *ngIf="
+                    vatForm.get('label')?.invalid && 
+                    vatForm.get('label')?.dirty && 
+                    vatForm.get('label')!.hasError('labelExists')"
+                  >{{ 'SALES_TAX.ERROR.NAME_ALREADY_EXISTS' | translate }}</p-message>
+                </div>
             </div>
             <div class="row">
                 <div class="col flex justify-content-center">

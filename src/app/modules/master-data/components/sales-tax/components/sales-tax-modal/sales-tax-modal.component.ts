@@ -1,9 +1,10 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { VatUtils } from '../../utils/vat-utils';
 import { Vat } from '../../../../../../Entities/vat';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sales-tax-modal',
@@ -11,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './sales-tax-modal.component.html',
   styleUrl: './sales-tax-modal.component.scss'
 })
-export class SalesTaxModalComponent implements OnChanges {
+export class SalesTaxModalComponent implements OnChanges, OnInit {
   private readonly vatUtils = inject(VatUtils);
   @Input() visible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -29,12 +30,26 @@ export class SalesTaxModalComponent implements OnChanges {
     label: new FormControl('')
   });
 
+  ngOnInit(): void {
+    this.vatForm.get('label')?.setAsyncValidators(this.checkDuplicateLabel.bind(this));
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.modalType === 'create') {
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
     }
+  }
+  private checkDuplicateLabel(control: AbstractControl): Observable<ValidationErrors | null> {
+    if (!control.value || control.value.trim() === '') {
+      return of(null);
+    }
+    
+    return this.vatUtils.checkVatLabelExists(control.value).pipe(
+      map(exists => exists ? { labelExists: true } : null),
+      catchError(() => of(null))
+    );
   }
 
   onSubmit(): void {
