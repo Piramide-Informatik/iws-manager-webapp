@@ -39,6 +39,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   @Input() contractor: Contractor | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
   @Input() isVisibleModal: boolean = false;
+  @Input() contractors!: Contractor[] | undefined;
 
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() contractorUpdated = new EventEmitter<Contractor>();
@@ -56,7 +57,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.contractorForm = this.fb.group({
-      contractorlabel: ['', [Validators.required]],
+      contractorlabel: ['', [Validators.required] ],
       contractorname: [''],
       country: [null],
       street: [''],
@@ -71,6 +72,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
     if (this.modalContractType === 'create') {
       this.getCurrentCustomer();
+      console.log(this.contractors);
     }
   }
 
@@ -94,7 +96,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   private initFormContractor(): void {
     this.contractorForm = new FormGroup({
-      contractorlabel: new FormControl(''),
+      contractorlabel: new FormControl('', [Validators.required]),
       contractorname: new FormControl(''),
       country: new FormControl(''),
       street: new FormControl(''),

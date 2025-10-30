@@ -5,7 +5,20 @@
         <div class="contract_input">
           <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
           <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
-            [appAutoFocusOnVisible]="isVisibleModal" />
+            [appAutoFocusOnVisible]="isVisibleModal"
+            [ngClass]="{'ng-invalid': contractorForm.get('contractorlabel')?.invalid && contractorForm.get('contractorlabel')?.dirty}" />
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+      contractorForm.get('contractorlabel')?.invalid && 
+      contractorForm.get('contractorlabel')?.touched && 
+      contractorForm.get('contractorlabel')?.errors?.['required']">
+            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+          </p-message>
+          <p-message severity="error" variant="simple" size="small" *ngIf="
+      contractorForm.get('contractorlabel')?.invalid && 
+      contractorForm.get('contractorlabel')?.touched && 
+      contractorForm.get('contractorlabel')!.hasError('labelExists')">
+            {{ 'CONTRACTOR.ERROR.LABEL_ALREADY_EXISTS' | translate }}
+          </p-message>
         </div>
         <div class="contract_input">
           <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
@@ -50,7 +63,7 @@
     </div>
     <div class="flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left" [loading]="isLoading" [disabled]="!hasAtLeastOneFieldFilled()  || !contractorForm.dirty"/>
+        iconPos="left" [loading]="isLoading" [disabled]="!hasAtLeastOneFieldFilled()  || !contractorForm.dirty || contractorForm.invalid" />
       @if(modalContractType === 'edit') {
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" severity="danger" [disabled]="isLoading"
