@@ -574,10 +574,10 @@
       "DURATION_OF_USE": "Nutzungsdauer (Monate)"
     },
     "LABEL": {
-      "DELETE_SUBCONTRACT": "Untervertrag löschen",
+      "DELETE_SUBCONTRACT": "Unterauftrag löschen",
       "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
       "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen",
-      "NEW_SUBCONTRACT": "Neuer Untervertrag"
+      "NEW_SUBCONTRACT": "Neuer Unterauftrag"
     },
     "TABLE": {
       "ORDER_TITLE": "Autrag",
