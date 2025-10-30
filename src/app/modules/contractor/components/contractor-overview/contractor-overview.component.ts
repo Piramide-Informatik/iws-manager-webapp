@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Contractor } from '../../../../Entities/contractor';
 import { TranslateService, _ } from "@ngx-translate/core";
-import { Subscription, take } from 'rxjs';
+import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../Entities/user-preference';
@@ -44,6 +44,8 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   public showOCCErrorModalContractor = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  private contractorsSubject = new BehaviorSubject<Contractor[]>([]);
+  public contractors$ = this.contractorsSubject.asObservable();
 
   private readonly contractorUtils = inject(ContractorUtils);
   private readonly customerUtils = inject(CustomerUtils);
@@ -85,9 +87,14 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
         }
       })
 
-      this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(this.customerId).subscribe(contractors => {
-        this.contractors = contractors;
-      });
+      this.loadContractors();
+    });
+  }
+
+  private loadContractors(): void {
+    this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(this.customerId).subscribe(contractors => {
+      this.contractors = contractors; 
+      this.contractorsSubject.next(contractors); 
     });
   }
 
@@ -156,6 +163,7 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   onContractorDeleted(contractorId: number) {
     this.contractors = this.contractors.filter(contract => contract.id !== contractorId);
+    this.contractorsSubject.next(this.contractors);
   }
 
   onContractorUpdated(updated: Contractor): void {
@@ -163,14 +171,13 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     if (index !== -1) {
       this.contractors[index] = { ...updated };
       this.contractors = [...this.contractors];
+      this.contractorsSubject.next(this.contractors);
     }
   }
 
   onContractorCreated(event: { status: 'success' | 'error' }): void {
     if (event.status === 'success') {
-      this.contractorUtils.getAllContractorsByCustomerIdSortedByLabel(this.customerId).subscribe(contractors => {
-        this.contractors = contractors;
-      })
+      this.loadContractors()
       this.prepareTableData();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
