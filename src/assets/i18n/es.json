@@ -65,7 +65,8 @@
     "NUMBER_MAX_12": "Se espera un valor máximo de 12",
     "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe",
     "FIELD_REQUIRED": "Campo requerido",
-    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}"
+    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}",
+    "RECORD_ARLEADY_EXISTS": "Este registro ya existe"
   },
   "MENU": {
     "DASHBOARD": "Panel",

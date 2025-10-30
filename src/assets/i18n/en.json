@@ -65,7 +65,8 @@
     "NUMBER_MAX_12": "Max value 12 expected",
     "DUPLICATE_PROBABILITY": "This probability already exists",
     "FIELD_REQUIRED": "Field required",
-    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected"
+    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected",
+    "RECORD_ARLEADY_EXISTS": "This record already exists"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",

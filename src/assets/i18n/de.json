@@ -65,7 +65,8 @@
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet",
     "FIELD_REQUIRED": "Pflichtfeld",
-    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet"
+    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet",
+    "RECORD_ARLEADY_EXISTS": "Dieser Datensatz existiert bereits"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
