@@ -23,7 +23,7 @@
       "CONTRACT_STATUS": "Estado del Contrato",
       "COSTS": "Datos Maestros - Tipos de Costos",
       "COUNTRIES": "Datos Maestros - Países",
-      "DUNNING_LEVELS": "Datos Maestros - Niveles de Cobranza",
+      "DUNNING_LEVELS": "Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
       "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
       "HOLIDAYS": "Datos Maestros - Días Festivos",
@@ -240,7 +240,6 @@
     "REJECT_LABEL": "No"
   },
   "CUSTOMERS": {
-    "CUSTOMER_NAME": "Cliente",
     "TABLE": {
       "CUSTOMER_ID": "Número de Cliente",
       "COMPANY_NAME": "Nombre de la Compañia",
@@ -324,6 +323,9 @@
       "MAX_HOURS_PER_DAY": "Max. Horas/Día",
       "HOURLY_RATE": "Tafira por Hora",
       "SPECIAL_PAYMENT": "Pago Especial"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "ID empleado ya existe"
     }
   },
   "CONTACT": {
@@ -866,6 +868,9 @@
     "MODAL": {
       "NEW": "Nuevo Nivel de Reclamación",
       "DELETE": "Borrar Nivel de Reclamación"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "Ya existe Nivel de Reclamación"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -1286,5 +1291,55 @@
     "OPTIONS": {
       "SELECT_NONE": "Ninguno"
     }
+  },
+  "TABLES_BD": {
+    "customer": "Cliente",
+    "contactperson": "Persona de Contacto",
+    "employee": "Empleado",
+    "employmentcontract": "Contrato de Empleado",
+    "project": "Proyecto",
+    "order": "Orden",
+    "ordercommission": "Comisión de Orden",
+    "debt": "Deuda",
+    "invoice": "Factura",
+    "basiccontract": "Contrato Básico",
+    "contractordercommission": "Comisión de Orden de Contrato",
+    "contractor": "Contratista",
+    "subcontract": "Subcontrato",
+    "subcontractproject": "Proyecto Subcontratado",
+    "subcontractyear": "Año de Subcontratación",
+    "user": "Usuario",
+    "userrole": "Rol de Usuario",
+    "role": "Rol de Usuario",
+    "roleright": "Derechos de Rol",
+    "employeeiws": "Empleado IWS",
+    "iwscommission": "Comisión IWS",
+    "teamiws": "Equipo IWS",
+    "employeecategory": "Categoría de Empleado",
+    "fundingprogram": "Programa de Financiamiento",
+    "costtype": "Tipo de Costo",
+    "biller": "Facturador",
+    "vat": "IVA",
+    "vatrate": "Tasa de IVA",
+    "reminderlevel": "Nivel de Recordatorio",
+    "invoicetype": "Tipo de Factura",
+    "paycondition": "Condición de Pago",
+    "contractstatus": "Estado del Contrato",
+    "ORDER_TYPES": "Tipos de Orden",
+    "approvalstatus": "Estado de Aprobación",
+    "absencetype": "Tipo de Ausencia",
+    "holidayyear": "Año de Vacaciones",
+    "state": "Estado",
+    "network": "Red",
+    "networkpartner": "Socio de Red",
+    "salutation": "Saludo",
+    "country": "País",
+    "title": "Título",
+    "projectstatus": "Estado del Proyecto",
+    "promoter": "Promotor",
+    "chance": "Oportunidad",
+    "system": "Sistema",
+    "text": "Texto",
+    "companytype": "Tipo de Empresa"
   }
 }
