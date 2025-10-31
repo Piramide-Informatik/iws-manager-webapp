@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContractStatus } from '../../../../../../Entities/contractStatus';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-contract-status-modal',
@@ -15,6 +16,7 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   @Input() isVisible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedContractStatus: ContractStatus | null = null;
+  @Input() existingContractStatus: ContractStatus[] = [];
   @Input() loadCreateDelete = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() contractStatusCreated = new EventEmitter<any>();
@@ -23,6 +25,8 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   readonly createContractStatusForm = new FormGroup({
     status: new FormControl('',[Validators.required])
   });
+
+  constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   ngOnInit(): void {
     this.createContractStatusForm.reset();
@@ -51,6 +55,15 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     if (this.createContractStatusForm.invalid) return;
+    const statusName = this.createContractStatusForm.value.status?.trim();
+    const isDuplicate = this.existingContractStatus.some(
+      status => status.status === statusName
+    );
+
+    if (isDuplicate) {
+      this.commonMessageService.showErrorRecordAlreadyExist();
+      return;
+    }
     const formValue = this.createContractStatusForm.value;
     formValue.status = formValue.status?.trim();
     this.contractStatusCreated.emit(formValue);
