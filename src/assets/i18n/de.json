@@ -583,7 +583,7 @@
     "LABEL": {
       "DELETE_SUBCONTRACT": "Unterauftrag löschen",
       "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
-      "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen",
+      "DELETE_SUBCONTRACT_PROJECT": "Projekt löschen",
       "NEW_SUBCONTRACT": "Neuer Unterauftrag"
     },
     "TABLE": {
@@ -609,8 +609,8 @@
       "PROJECT": "Projekt",
       "SHARE": "Anteil",
       "AMOUNT": "Betrag",
-      "MODAL_TITLE_NEW": "Unterauftrag - Projekte",
-      "MODAL_TITLE_EDIT": "Unterauftrag - Projekte"
+      "MODAL_TITLE_NEW": "Unterauftrag - neues Projekt",
+      "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
     }
   },
   "ABSENCE_TYPES": {
