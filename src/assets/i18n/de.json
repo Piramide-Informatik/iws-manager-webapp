@@ -38,7 +38,7 @@
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Umsatzsteuer",
       "SALUTATION": "Stammdaten - Anrede",
-      "STATES": "Stammdaten - Bundesländer",
+      "STATES": "Bundesländer",
       "TERMS_OF_PAYMENT": "Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
@@ -664,7 +664,7 @@
     "LABEL": {
       "STATE": "Bundesland",
       "EDIT_STATE": "Bundesland bearbeiten",
-      "NEW_STATE": "Bundesstaat erstellen",
+      "NEW_STATE": "Neues Bundesland",
       "DELETE_STATE": "Bundesland löschen"
     },
     "ERROR": {

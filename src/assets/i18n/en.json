@@ -38,7 +38,7 @@
       "SYSTEM_CONSTANTS": "Masterdata - System Constants",
       "SALES_TAX": "Sales Tax",
       "SALUTATION": "Masterdata - Salutation",
-      "STATES": "Masterdata - States",
+      "STATES": "States",
       "TERMS_OF_PAYMENT": "Terms of Payment",
       "TEXTS": "Masterdata - Texts",
       "TITLE": "Masterdata - Titles",
@@ -660,7 +660,7 @@
     "LABEL": {
       "STATE": "Federal State",
       "EDIT_STATE": "Edit State",
-      "NEW_STATE": "Create Federal State",
+      "NEW_STATE": "New Federal State",
       "DELETE_STATE": "Delete Federal State"
     },
     "ERROR": {
