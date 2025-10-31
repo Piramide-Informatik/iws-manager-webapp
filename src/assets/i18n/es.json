@@ -38,7 +38,7 @@
       "SYSTEM_CONSTANTS": "Datos Maestros - Constantes del Sistema",
       "SALES_TAX": "Impuesto sobre Ventas",
       "SALUTATION": "Datos Maestros - Saludo",
-      "STATES": "Datos Maestros - Estados",
+      "STATES": "Estados",
       "TERMS_OF_PAYMENT": "Términos de Pago",
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
@@ -659,7 +659,7 @@
     "LABEL": {
       "STATE": "Estado Federal",
       "EDIT_STATE": "Editar Estado",
-      "NEW_STATE": "Crear Estado Federal",
+      "NEW_STATE": "Nuevo Estado Federal",
       "DELETE_STATE": "Eliminar Estado Federal"
     },
     "ERROR": {

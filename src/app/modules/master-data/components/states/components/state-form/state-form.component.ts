@@ -102,21 +102,40 @@ export class StateFormComponent implements OnInit, OnDestroy {
   }
 
   onStateEditFormSubmit(): void {
-    if (this.editStateForm.invalid || !this.state || this.isSaving) {
-      this.markAllFieldsAsTouched();
-      return;
-    }
-    this.isSaving = true;
-    const stateFormValue = this.editStateForm.value;
-    stateFormValue.name = stateFormValue.name?.trim();
-    const state = Object.assign(this.state, stateFormValue);
-    this.subscriptions.add(
-      this.stateServiceUtils.updateState(state).subscribe({
-        next: (savedState) => this.handleSaveStateSuccess(savedState),
-        error: (err) => this.handleSaveStateError(err)
-      })
-    );
+  if (this.editStateForm.invalid || !this.state || this.isSaving) {
+    this.markAllFieldsAsTouched();
+    return;
   }
+
+  this.isSaving = true;
+  const stateFormValue = this.editStateForm.value;
+  const trimmedName = stateFormValue.name?.trim() ?? '';
+  const updatedState: State = { ...this.state, ...stateFormValue, name: trimmedName };
+
+  this.subscriptions.add(
+    this.stateServiceUtils.stateExists(trimmedName).subscribe({
+      next: (exists) => {
+        if (exists && trimmedName.toLowerCase() !== this.state!.name.toLowerCase()) {
+          this.isSaving = false;
+          this.editStateForm.get('name')?.setErrors({ duplicate: true });
+        this.commonMessageService.showErrorRecordAlreadyExist();
+          return;
+        }
+
+        this.subscriptions.add(
+          this.stateServiceUtils.updateState(updatedState).subscribe({
+            next: (savedState) => this.handleSaveStateSuccess(savedState),
+            error: (err) => this.handleSaveStateError(err)
+          })
+        );
+      },
+      error: (err) => {
+        this.isSaving = false;
+        this.handleSaveStateError(err);
+      }
+    })
+  );
+}
 
   private handleSaveStateSuccess(state: State): void {
     this.isSaving = false;
