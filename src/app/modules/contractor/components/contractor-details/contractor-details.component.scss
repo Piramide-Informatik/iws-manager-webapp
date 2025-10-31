@@ -17,17 +17,31 @@
   p-datepicker {
     width: 100% !important;
   }
+
+  .input-container {
+    width: 100%;
+    position: relative;
+  }
+
+  p-message{
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    top: 100%;
+    position: absolute;
+  }
 }
 
 .postal-city {
   width: 100% !important;
   display: flex;
   gap: 5px;
-  
+
   .postal {
     width: 33.333% !important;
-    
+
   }
+
   .city {
     width: 100% !important;
   }

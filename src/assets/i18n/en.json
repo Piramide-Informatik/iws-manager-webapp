@@ -23,7 +23,7 @@
       "CONTRACT_STATUS": "Masterdata - Contract Status",
       "COSTS": "Masterdata - Costs",
       "COUNTRIES": "Masterdata - Countries",
-      "DUNNING_LEVELS": "Masterdata - Dunning Levels",
+      "DUNNING_LEVELS": "Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
       "HOLIDAYS": "Masterdata - Holidays",
@@ -65,7 +65,8 @@
     "NUMBER_MAX_12": "Max value 12 expected",
     "DUPLICATE_PROBABILITY": "This probability already exists",
     "FIELD_REQUIRED": "Field required",
-    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected"
+    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected",
+    "RECORD_ARLEADY_EXISTS": "This record already exists"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -304,6 +305,9 @@
       "QUALIFICATION_FZ": "Qualification FZ",
       "QUALIFICATION_KMU_I": "Qualification KMU-i",
       "EMPLOYMENT_CONTRACTS": "Employment Contracts"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "Employee number already exists"
     },
     "TABLE": {
       "EMPLOYEE_ID": "No.",
@@ -550,6 +554,9 @@
       "ZIP_CODE": "Zip Code",
       "CITY": "City",
       "TAX_NUMBER": "Tax No."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Label already exists"
     }
   },
   "SUB-CONTRACTS": {
@@ -866,6 +873,9 @@
     "MODAL": {
       "NEW": "New Dunning level",
       "DELETE": "Delete Dunning level"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "A Dunning Level already exists"
     }
   },
   "EMPLOYEE_QUALIFICATION": {

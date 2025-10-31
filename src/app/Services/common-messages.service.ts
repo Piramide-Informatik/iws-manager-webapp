@@ -75,6 +75,14 @@ export class CommonMessagesService {
     })
   }
 
+  showErrorRecordAlreadyExistWithNumberEmployee() {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('EMPLOYEE.VALIDATION.EMPLOYEE_ID_EXISTS')
+    })
+  }
+
   
   showErrorDeleteMessageContainsOtherEntities() {
     this.messageService.add({
@@ -119,4 +127,11 @@ export class CommonMessagesService {
     return 'unknown entity';
   }
   
+  showErrorRecordAlreadyExistWithDunningLevel() {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: this.translateService.instant('DUNNING_LEVELS.VALIDATION.DUNNING_LVL_EXISTS')
+    })
+  }
 }
