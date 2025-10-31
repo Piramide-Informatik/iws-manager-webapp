@@ -1042,8 +1042,11 @@
       "NO_DATA": "Keine Kostenarten gefunden"
     },
     "MODAL": {
-      "CREATE_COST_TYPE": "Kostenart neu",
+      "CREATE_COST_TYPE": "Neue Kostenart",
       "DELETE_COST_TYPE": "Kostenart löschen"
+    },
+    "ERROR": {
+    "TYPE_ALREADY_EXIST": "Kostenart existiert bereits"
     }
   },
   "PAGINATION": {

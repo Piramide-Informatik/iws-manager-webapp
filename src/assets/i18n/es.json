@@ -1039,6 +1039,9 @@
     "MODAL": {
       "CREATE_COST_TYPE": "Nuevo tipo de costo",
       "DELETE_COST_TYPE": "Eliminar tipo de costo"
+    },
+    "ERROR": {
+    "TYPE_ALREADY_EXIST": "El tipo de costo ya existe"
     }
   },
   "PAGINATION": {
