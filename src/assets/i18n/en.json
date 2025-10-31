@@ -1277,7 +1277,8 @@
       "BILLING_TYPE": "Billing Type"
     },
     "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Billing Type is required"
+      "BILLING_TYPE_REQUIRED": "Billing Type is required",
+      "BILLING_TYPE_ALREADY_EXIST": "Billing Type already exists"
     },
     "MODAL": {
       "NEW": "New Billing Type",
