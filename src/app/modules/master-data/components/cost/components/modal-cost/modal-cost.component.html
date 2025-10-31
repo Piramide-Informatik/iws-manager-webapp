@@ -9,7 +9,22 @@
           id="type"
           formControlName="type"
           autocomplete="off"
+          [attr.invalid]="(costTypeForm.get('type')?.invalid && costTypeForm.get('type')?.dirty) || typeAlreadyExist"
         />
+        <p-message 
+          severity="error" 
+          [showTransitionOptions]="'0ms'" 
+          variant="simple" 
+          size="small" 
+          *ngIf="(costTypeForm.get('type')?.invalid && costTypeForm.get('type')?.dirty) || typeAlreadyExist"
+          [ngStyle]="{'margin-left': '110px', 'margin-top': '2px', 'display': 'block'}">
+          <span *ngIf="costTypeForm.get('type')?.errors?.['required'] && costTypeForm.get('type')?.dirty">
+            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+          </span>
+          <span *ngIf="typeAlreadyExist && !costTypeForm.get('type')?.errors?.['required']">
+            {{ 'COSTS.ERROR.TYPE_ALREADY_EXIST' | translate }}
+          </span>
+        </p-message>
       </div>
 
       <div class="cost-form">
@@ -26,7 +41,7 @@
     <div class="flex justify-content-center gap-2 mt-4">
         <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
             icon="pi pi-check" iconPos="left" [loading]="isLoading"
-            [disabled]="costTypeForm.invalid || isLoading || !costTypeForm.dirty"/>
+            [disabled]="costTypeForm.invalid || isLoading || !costTypeForm.dirty || typeAlreadyExist"/>
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
