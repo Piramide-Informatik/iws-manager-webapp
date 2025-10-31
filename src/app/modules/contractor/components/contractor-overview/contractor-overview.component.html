@@ -1,42 +1,26 @@
 <div class="card">
-  <master-data-genaral-table
-    [tableId]="tableKey"
-    [tableValues]="contractors"
-    [columns]="selectedColumns"
-    [userPreferences]="userContractorOverviewPreferences"
-    [dataKeys]="dataKeys"
+  <master-data-genaral-table [tableId]="tableKey" [tableValues]="contractors" [columns]="selectedColumns"
+    [userPreferences]="userContractorOverviewPreferences" [dataKeys]="dataKeys"
     (onColumnChanges)="onUserContractorOverviewPreferencesChanges($event)"
     (onEditRegister)="handleContractorTableEvents({ type: 'edit', data: $event })"
     (onDeleteRegister)="handleContractorTableEvents({ type: 'delete', data: $event })"
-    (onCreateRegister)="handleContractorTableEvents({ type: 'create' })"
-  ></master-data-genaral-table>
-  <p-dialog 
-    [header]="modalContractorType === 'edit' 
+    (onCreateRegister)="handleContractorTableEvents({ type: 'create' })"></master-data-genaral-table>
+  <p-dialog [header]="modalContractorType === 'edit' 
       ? ('CONTRACTS.LABEL.EDIT_CONTRACTOR' | translate) 
       : modalContractorType === 'create' 
        ? ('CONTRACTS.LABEL.CREATE_CONTRACTOR' | translate) 
-       : ('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" 
-    [modal]="true" 
-    [(visible)]="visibleModal"
-    [style]="{ width: 'auto' }"
-  >
-    <app-contractor-details
-      [modalContractType]="modalContractorType"
-      [currentCustomer]="customer"
-      [contractor]="currentContract"
-      [isVisibleModal]="visibleModal"
-      (isContractVisibleModal)="onModalVisibilityChange($event)"
-      (onContractorDeleted)="onContractorDeleted($event)"
-      (contractorUpdated)="onContractorUpdated($event)"
-      (onContractorCreated)="onContractorCreated($event)"
-      (showOCCErrorModalContractor)="showOCCErrorModalContractor = $event"
-      (occErrorType)="occErrorType = $event"
-    ></app-contractor-details>
+       : ('CONTRACTS.LABEL.DELETE_CONTRACTOR' | translate)" [modal]="true" [(visible)]="visibleModal"
+    [style]="{ width: 'auto' }">
+    <ng-container *ngIf="contractors$ | async as contractorsList">
+      <app-contractor-details [modalContractType]="modalContractorType" [currentCustomer]="customer"
+        [contractors]="contractorsList" [contractor]="currentContract" [isVisibleModal]="visibleModal"
+        (isContractVisibleModal)="onModalVisibilityChange($event)" (onContractorDeleted)="onContractorDeleted($event)"
+        (contractorUpdated)="onContractorUpdated($event)" (onContractorCreated)="onContractorCreated($event)"
+        (showOCCErrorModalContractor)="showOCCErrorModalContractor = $event"
+        (occErrorType)="occErrorType = $event"></app-contractor-details>
+    </ng-container>
   </p-dialog>
 </div>
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModalContractor" 
-  [errorType]="occErrorType"
-  [reloadCurrentPage]="true"
+<app-occ-error-modal *ngIf="showOCCErrorModalContractor" [errorType]="occErrorType" [reloadCurrentPage]="true"
   (onClose)="showOCCErrorModalContractor = false">
 </app-occ-error-modal>

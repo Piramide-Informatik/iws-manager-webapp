@@ -22,6 +22,13 @@
 .thead-input-width {
     width: 100%;
 }
+
 .align-right {
     text-align: right;
-  }
+}
+
+:host ::ng-deep {
+    .contractor-name {
+        max-width: 90px !important;
+    }
+}
