@@ -23,7 +23,7 @@
       "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
       "COSTS": "Stammdaten - Kostenarten",
       "COUNTRIES": "Stammdaten - Länder",
-      "DUNNING_LEVELS": "Stammdaten - Mahnungstufen",
+      "DUNNING_LEVELS": "Mahnstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
       "HOLIDAYS": "Stammdaten - Feiertage",
@@ -111,7 +111,7 @@
     "IWS_TEAMS": "IWS - Teams",
     "COUNTRIES": "Länder",
     "COST": "Kostenarten",
-    "DUNNING_LEVELS": "Mahnungstufen",
+    "DUNNING_LEVELS": "Mahnstufen",
     "EMPLOYEE_QUALIFICATION": "Mitarbeiter-Qualifikationen",
     "NETWORKS": "Netzwerke",
     "PROJECT_STATUS": "Projektstatus",
@@ -877,6 +877,9 @@
     "MODAL": {
       "NEW": "Neue Mahnstufe",
       "DELETE": "Mahnstufe löschen"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "Mahnstufe existiert bereits"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
