@@ -23,7 +23,7 @@
       "CONTRACT_STATUS": "Masterdata - Contract Status",
       "COSTS": "Masterdata - Costs",
       "COUNTRIES": "Masterdata - Countries",
-      "DUNNING_LEVELS": "Masterdata - Dunning Levels",
+      "DUNNING_LEVELS": "Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
       "HOLIDAYS": "Masterdata - Holidays",
@@ -304,6 +304,9 @@
       "QUALIFICATION_FZ": "Qualification FZ",
       "QUALIFICATION_KMU_I": "Qualification KMU-i",
       "EMPLOYMENT_CONTRACTS": "Employment Contracts"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "Employee number already exists"
     },
     "TABLE": {
       "EMPLOYEE_ID": "No.",
@@ -866,6 +869,9 @@
     "MODAL": {
       "NEW": "New Dunning level",
       "DELETE": "Delete Dunning level"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "A Dunning Level already exists"
     }
   },
   "EMPLOYEE_QUALIFICATION": {

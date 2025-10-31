@@ -23,7 +23,7 @@
       "CONTRACT_STATUS": "Datos Maestros - Estado del Contrato",
       "COSTS": "Datos Maestros - Tipos de Costos",
       "COUNTRIES": "Datos Maestros - Países",
-      "DUNNING_LEVELS": "Datos Maestros - Niveles de Cobranza",
+      "DUNNING_LEVELS": "Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
       "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
       "HOLIDAYS": "Datos Maestros - Días Festivos",
@@ -323,6 +323,9 @@
       "MAX_HOURS_PER_DAY": "Max. Horas/Día",
       "HOURLY_RATE": "Tafira por Hora",
       "SPECIAL_PAYMENT": "Pago Especial"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "ID empleado ya existe"
     }
   },
   "CONTACT": {
@@ -865,6 +868,9 @@
     "MODAL": {
       "NEW": "Nuevo Nivel de Reclamación",
       "DELETE": "Borrar Nivel de Reclamación"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "Ya existe Nivel de Reclamación"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
