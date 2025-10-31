@@ -82,7 +82,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
-      projectLabel: [''],
+      projectLabel: ['', [Validators.required]],
       percentage: ['', [Validators.max(100)]],
       amount: [{ value: '', disabled: true }]
     });
