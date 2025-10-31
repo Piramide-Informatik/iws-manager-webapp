@@ -82,14 +82,14 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
-      projectLabel: [''],
+      projectLabel: ['', [Validators.required]],
       percentage: ['', [Validators.max(100)]],
       amount: [{ value: '', disabled: true }]
     });
 
     this.allocationForm.get('percentage')?.valueChanges.subscribe((share: number) => {
       const invoiceGross = this.currentSubcontract?.invoiceGross ?? 0;
-      const calculatedAmount = (share * invoiceGross).toFixed(2);
+      const calculatedAmount = (share * invoiceGross * 0.01).toFixed(2);
 
       this.allocationForm.get('amount')?.setValue(calculatedAmount, { emitEvent: false });
     });

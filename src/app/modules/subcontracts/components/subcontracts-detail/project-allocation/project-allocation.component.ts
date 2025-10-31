@@ -71,7 +71,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
 
   loadColumns() {
     this.allocationsColumns = [
-      { field: 'project.projectLabel', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
+      { field: 'project.projectLabel', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
       { field: 'share', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
       { field: 'amount', type: 'double',customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
     ];
