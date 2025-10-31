@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, OnInit, Input, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ContractStatus } from '../../../../../../Entities/contractStatus';
 
 @Component({
@@ -21,7 +21,7 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   @Output() contractStatusDeleted = new EventEmitter<ContractStatus>();
 
   readonly createContractStatusForm = new FormGroup({
-    status: new FormControl('')
+    status: new FormControl('',[Validators.required])
   });
 
   ngOnInit(): void {
