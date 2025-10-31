@@ -1,17 +1,21 @@
 .term-payment-form {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1rem !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1rem !important;
 
-    label {
-      width: 150px;
-      flex-shrink: 0;
-    }
-  
-    input,
-    p-inputnumber, 
-    textarea {
-      width: 100%;
-    }
+  label {
+    width: 150px;
+    flex-shrink: 0;
+  }
+
+  input,
+  p-inputnumber, 
+  textarea {
+    width: 100%;
+  }
+
+}
+::ng-deep .p-inputnumber-input {
+  width: 100%;
 }

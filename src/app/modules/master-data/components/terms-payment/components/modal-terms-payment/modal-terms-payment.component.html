@@ -3,11 +3,23 @@
         <div class="flex flex-column mt-4">
             <div class="term-payment-form mb-2">
                 <label for="name">{{ 'TERMS_OF_PAYMENT.TERMS_OF_PAYMENT' | translate }}</label>
-                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+                <div class="input-message">
+                    <input #firstInput pInputText type="text" id="name" formControlName="name" 
+                    autocomplete="off" invalid="payConditionForm.get('name')?.invalid  
+                        && payConditionForm.get('name')?.dirty 
+                        || payConditionForm.get('name')?.touched
+                        || nameAlreadyExist"/>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    payConditionForm.get('name')?.invalid && 
+                    payConditionForm.get('name')?.dirty || nameAlreadyExist
+                    ">{{ nameAlreadyExist ? ('TERMS_OF_PAYMENT.TERM_OF_PAYMENT_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                </div>
             </div>
             <div class="term-payment-form mb-2">
                 <label for="deadline">{{ 'TERMS_OF_PAYMENT.TERM_OF_PAYMENT_DAYS' | translate }}</label>
-                <p-inputnumber [useGrouping]="true" inputId="deadline" formControlName="deadline" autocomplete="off" [inputStyle]="{'text-align': 'right'}"/>
+                <div class="input-message">
+                    <p-inputnumber [useGrouping]="true" inputId="deadline" formControlName="deadline" autocomplete="off" [inputStyle]="{'text-align': 'right'}"/>
+                </div>
             </div>
             <div class="term-payment-form mb-2 flex flex-column align-items-start gap-2">
                 <label for="text">{{ 'TERMS_OF_PAYMENT.INVOICE_TEXT' | translate }}</label>

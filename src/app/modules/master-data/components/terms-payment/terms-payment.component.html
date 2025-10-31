@@ -24,6 +24,7 @@
         [modal]="true"
         [(visible)]="isVisibleModal"
         (onHide)="onModalTermsPaymentClose()"
+        [style]="{ width: modalType === 'delete' ? 'auto' : '45rem' }"
       >
         <app-modal-terms-payment
           #termsPaymentModal

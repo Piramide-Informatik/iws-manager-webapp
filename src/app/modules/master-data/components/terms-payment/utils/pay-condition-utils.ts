@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { PayCondition } from '../../../../../Entities/payCondition';
 import { PayConditionService } from '../../../../../Services/pay-condition.service';
@@ -32,7 +32,38 @@ export class PayConditionUtils {
   }
 
   addPayCondition(payCondition: Omit<PayCondition, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<PayCondition> {
-    return this.payConditionService.addPayCondition(payCondition);
+    return this.payConditionExists(payCondition.name).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('pay condition already exists'));
+        }
+
+        return this.payConditionService.addPayCondition(payCondition);
+      }),
+      catchError((err) => {
+        if (err.message === 'pay condition already exists') {
+          return throwError(() => err);
+        }
+
+        return throwError(() => new Error('Failed to add pay condition'));
+      })
+    );
+  }
+
+  /**
+    * Checks if a pay condition exists by name (case-insensitive comparison)
+    * @param name - Pay condition name to check
+    * @returns Observable emitting boolean indicating existence
+    */
+  private payConditionExists(name: string): Observable<boolean> {
+    return this.payConditionService.getAllPayConditions().pipe(
+      map(payConditions => payConditions.some(
+        pc => pc.id !== null && pc.name?.toString().toLowerCase() === name.toString().toLowerCase()
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check pay condition existence'));
+      })
+    );
   }
 
   getAllPayConditions(): Observable<PayCondition[]> {
@@ -70,7 +101,14 @@ export class PayConditionUtils {
         if (currentPayCondition.version !== payCondition.version) {
           return throwError(() => createUpdateConflictError('TermsPayment'));
         }
-        return this.payConditionService.updatePayCondition(payCondition);
+        return this.payConditionExists(payCondition.name).pipe(
+          switchMap((exists) => {
+            if (exists) {
+              return throwError(() => new Error('pay condition already exists'));
+            }
+            return this.payConditionService.updatePayCondition(payCondition);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating pay condition:', err);

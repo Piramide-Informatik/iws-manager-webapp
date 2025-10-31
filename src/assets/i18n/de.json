@@ -39,7 +39,7 @@
       "SALES_TAX": "Umsatzsteuer",
       "SALUTATION": "Stammdaten - Anrede",
       "STATES": "Stammdaten - Bundesländer",
-      "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
+      "TERMS_OF_PAYMENT": "Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
       "TYPE_OF_COMPANIES": "Stammdaten - Unternehmensarten",
@@ -1175,9 +1175,10 @@
     "TITLE_FORM": "Zahlungsbedingung bearbeiten",
     "TERM_OF_PAYMENT_DAYS": "Zahlungsziel (Tage)",
     "INVOICE_TEXT": "Rechnungstext",
+    "TERM_OF_PAYMENT_ALREADY_EXISTS": "Zahlungsbedingung existiert bereits",
     "MODAL": {
-      "NEW": "Neu Zahlungsziel",
-      "DELETE": "Zahlungsziel löschen"
+      "NEW": "Neue Zahlungsbedingung",
+      "DELETE": "Zahlungsbedingung löschen"
     }
   },
   "BILLERS": {

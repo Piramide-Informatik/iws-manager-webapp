@@ -4,7 +4,7 @@ export interface PayCondition {
   updatedAt: string;
   version: number;
 
-  name?: string;
+  name: string;
   deadline?: number;
   text?: string;
 }

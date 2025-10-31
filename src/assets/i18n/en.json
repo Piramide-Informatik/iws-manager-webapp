@@ -39,7 +39,7 @@
       "SALES_TAX": "Sales Tax",
       "SALUTATION": "Masterdata - Salutation",
       "STATES": "Masterdata - States",
-      "TERMS_OF_PAYMENT": "Masterdata - Terms of Payment",
+      "TERMS_OF_PAYMENT": "Terms of Payment",
       "TEXTS": "Masterdata - Texts",
       "TITLE": "Masterdata - Titles",
       "TYPE_OF_COMPANIES": "Masterdata - Company Types",
@@ -1171,6 +1171,7 @@
     "TITLE_FORM": "Edit Term of Payment",
     "TERM_OF_PAYMENT_DAYS": "Term of Payment (Days)",
     "INVOICE_TEXT": "Invoice Text",
+    "TERM_OF_PAYMENT_ALREADY_EXISTS": "Term of Payment already exists",
     "MODAL": {
       "NEW": "New Term of Payment",
       "DELETE": "Delete Term of Payment"
