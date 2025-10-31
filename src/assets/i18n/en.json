@@ -1050,6 +1050,9 @@
     "MODAL": {
       "CREATE_COST_TYPE": "New Cost Type",
       "DELETE_COST_TYPE": "Delete Cost Type"
+    },
+    "ERROR": {
+    "TYPE_ALREADY_EXIST": "Cost type already exists"
     }
   },
   "PAGINATION": {
@@ -1274,7 +1277,8 @@
       "BILLING_TYPE": "Billing Type"
     },
     "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Billing Type is required"
+      "BILLING_TYPE_REQUIRED": "Billing Type is required",
+      "BILLING_TYPE_ALREADY_EXIST": "Billing Type already exists"
     },
     "MODAL": {
       "NEW": "New Billing Type",

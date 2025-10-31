@@ -1049,6 +1049,9 @@
     "MODAL": {
       "CREATE_COST_TYPE": "Nuevo tipo de costo",
       "DELETE_COST_TYPE": "Eliminar tipo de costo"
+    },
+    "ERROR": {
+    "TYPE_ALREADY_EXIST": "El tipo de costo ya existe"
     }
   },
   "PAGINATION": {
@@ -1271,7 +1274,8 @@
       "BILLING_TYPE": "Tipo de Facturación"
     },
     "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido"
+      "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido",
+      "BILLING_TYPE_ALREADY_EXIST": "Tipo de Facturación ya existe"
     },
     "MODAL": {
       "NEW": "Nuevo Tipo de Facturación",
