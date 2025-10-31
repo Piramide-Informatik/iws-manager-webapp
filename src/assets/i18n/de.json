@@ -3,15 +3,15 @@
     "CUSTOMER_OVERVIEW": "Kunden",
     "CUSTOMER": "Kunde - ",
     "CUSTOMERS": {
-      "BASIC_CONTRACTS": " - Rahmenverträge",
-      "CONTRACTORS": " - Auftragnehmer",
-      "DETAILS": " - Details",
+      "BASIC_CONTRACTS": "Rahmenverträge",
+      "CONTRACTORS": "Auftragnehmer",
+      "DETAILS": "Details",
       "EMPLOYEES": "Mitarbeiter",
-      "EMPLOYMENT_CONTRACTS": " - Arbeitsverträge",
-      "INVOICES": " - Rechnungen",
-      "ORDERS": " - Aufträge",
-      "PROJECTS": " - Projekte",
-      "RECEIVABLES": " - Forderungen",
+      "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
+      "INVOICES": "Rechnungen",
+      "ORDERS": "Aufträge",
+      "PROJECTS": "Projekte",
+      "RECEIVABLES": "Forderungen",
       "SUBCONTRACTS": "Unteraufträge"
     },
     "NEW_CUSTOMER": "Neuer Kunde",
@@ -65,7 +65,8 @@
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet",
     "FIELD_REQUIRED": "Pflichtfeld",
-    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet"
+    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet",
+    "RECORD_ARLEADY_EXISTS": "Dieser Datensatz existiert bereits"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -557,6 +558,9 @@
       "ZIP_CODE": "PLZ",
       "CITY": "Ort",
       "TAX_NUMBER": "USt.-Ident-Nr."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Kurzname existiert bereits"
     }
   },
   "SUB-CONTRACTS": {
