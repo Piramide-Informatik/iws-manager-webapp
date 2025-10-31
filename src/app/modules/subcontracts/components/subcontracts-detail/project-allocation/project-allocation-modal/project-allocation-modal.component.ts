@@ -50,7 +50,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   private projects: Project[] = [];
   public projectLabels = toSignal(
-    this.projectUtils.getAllProjectByCustomerId(this.customerId).pipe(
+    this.projectUtils.getAllProjects().pipe(
       map(projects => {
         this.projects = projects;
         return projects.map(({ id, projectLabel }) => ({ id, projectLabel }))
