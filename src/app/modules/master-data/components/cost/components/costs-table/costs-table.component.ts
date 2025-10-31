@@ -83,7 +83,8 @@ export class CostsTableComponent implements OnInit, OnDestroy {
         field: 'sort',
         styles: { width: '100px' },
         header: this.translate.instant(_('COSTS.TABLE.SORT')),
-        customClasses: ['align-right']
+        customClasses: ['align-right'],
+        filter : { type: 'numeric' }
       },
     ];
   }

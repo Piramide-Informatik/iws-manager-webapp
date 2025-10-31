@@ -24,6 +24,10 @@ export class ContractStatusComponent implements OnInit{
     this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.CONTRACT_STATUS');
   }
 
+  get contractStatusValues() {
+    return this.contractStatusTable ? this.contractStatusTable.contractStatusValues() : [];
+  }
+
 
   onSelectedContractStatusToEdit(selectedContractStatusToEdit: any) {
     this.selectedContractStatusToEdit = selectedContractStatusToEdit;

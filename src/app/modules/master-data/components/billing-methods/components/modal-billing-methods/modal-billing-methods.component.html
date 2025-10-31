@@ -3,11 +3,28 @@
         <div class="flex flex-column mb-2 mt-4">
             <div class="billing-method-form flex align-items-center flex-row mb-2">
                 <label for="name">{{ 'BILLING_METHODS.LABEL.BILLING_TYPE' | translate }}</label>
-                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" 
+                  [ngClass]="{'ng-invalid': (invoiceTypeForm.get('name')?.invalid && invoiceTypeForm.get('name')?.dirty) || nameAlreadyExist}" />
             </div>
+            <div class="error-messages" [ngStyle]="{'margin-left': '120px'}">
+                <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" 
+                  *ngIf="invoiceTypeForm.get('name')?.invalid && invoiceTypeForm.get('name')?.dirty && invoiceTypeForm.get('name')?.hasError('required')"
+                  [ngStyle]="{'margin-top': '2px', 'display': 'block'}">
+                    {{ 'BILLING_METHODS.ERROR.BILLING_TYPE_REQUIRED' | translate }}
+                </p-message>
+                
+                <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" 
+                  *ngIf="nameAlreadyExist && !invoiceTypeForm.get('name')?.errors?.['required']"
+                  [ngStyle]="{'margin-top': '2px', 'display': 'block'}">
+                    {{ 'BILLING_METHODS.ERROR.BILLING_TYPE_ALREADY_EXIST' | translate }}
+                </p-message>
+            </div>
+
             <div class="row mt-2">
                 <div class="col flex justify-content-center">
-                    <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="invoiceTypeForm.invalid || isLoading || !invoiceTypeForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" 
+                      [disabled]="invoiceTypeForm.invalid || isLoading || !invoiceTypeForm.dirty || nameAlreadyExist" 
+                      size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                     <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="closeModal()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>

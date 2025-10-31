@@ -1,9 +1,10 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InvoiceTypeUtils } from '../../utils/invoice-type-utils';
 import { InvoiceType } from '../../../../../../Entities/invoiceType';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-modal-billing-methods',
@@ -22,9 +23,12 @@ export class ModalBillingMethodsComponent implements OnChanges {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
+  public nameAlreadyExist: boolean = false;
+  private allInvoiceTypes: InvoiceType[] = [];
+  private subscriptions = new Subscription(); 
 
   public readonly invoiceTypeForm = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl('', [Validators.required])
   })
   public showOCCErrorModalBillingMethod = false;
   public occErrorBillingMethodType: OccErrorType = 'UPDATE_UNEXISTED';
@@ -33,14 +37,22 @@ export class ModalBillingMethodsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
+      this.invoiceTypeForm.reset();
+      this.nameAlreadyExist = false;
+      this.loadAllInvoiceTypes();
+      
       setTimeout(() => {
         this.focusInputIfNeeded();
-      })
+      }, 100);
+    }
+    
+    if (changes['visible'] && !this.visible) {
+      this.clearSubscriptions();
     }
   }
 
   public onSubmit(): void {
-    if (this.invoiceTypeForm.invalid || this.isLoading) return
+    if (this.invoiceTypeForm.invalid || this.isLoading || this.nameAlreadyExist) return;
 
     this.isLoading = true;
     const newInvoiceType: Omit<InvoiceType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
@@ -53,7 +65,7 @@ export class ModalBillingMethodsComponent implements OnChanges {
         this.closeModal();
         this.createInvoiceType.emit({ created, status: 'success' })
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
         this.createInvoiceType.emit({ status: 'error' })
       }
@@ -90,6 +102,8 @@ export class ModalBillingMethodsComponent implements OnChanges {
   public closeModal(): void {
     this.isVisibleModal.emit(false);
     this.invoiceTypeForm.reset();
+    this.nameAlreadyExist = false;
+    this.clearSubscriptions();
   }
 
   get isCreateMode(): boolean {
@@ -104,5 +118,53 @@ export class ModalBillingMethodsComponent implements OnChanges {
         }
       }, 200);
     }
+  }
+
+  private loadAllInvoiceTypes(): void {
+    this.clearSubscriptions();
+    
+    this.subscriptions.add(
+      this.invoiceTypeUtils.getAllInvoiceTypes().subscribe({
+        next: (invoiceTypes) => {
+          this.allInvoiceTypes = invoiceTypes;
+          this.setupNameValidation();
+        },
+        error: (error) => {
+          console.error('Error loading invoice types:', error);
+        }
+      })
+    );
+  }
+
+  private setupNameValidation(): void {
+    const nameControl = this.invoiceTypeForm.get('name');
+    if (nameControl) {
+      this.subscriptions.add(
+        nameControl.valueChanges.subscribe(value => {
+          this.checkNameUniqueness(value || '');
+        })
+      );
+    }
+  }
+
+  private checkNameUniqueness(name: string): void {
+  if (!name?.trim()) {
+    this.nameAlreadyExist = false;
+    return;
+  }
+
+  const trimmedName = name.trim().toLowerCase();
+  const existingType = this.allInvoiceTypes.find(type => 
+    type.name?.toLowerCase() === trimmedName
+  );
+
+  this.nameAlreadyExist = !!existingType;
+}
+
+  private clearSubscriptions(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
+    this.subscriptions = new Subscription();
   }
 }

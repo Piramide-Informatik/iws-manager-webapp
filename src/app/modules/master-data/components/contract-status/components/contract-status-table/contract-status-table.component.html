@@ -27,6 +27,7 @@
         [selectedContractStatus]="selectedContractStatus"
         [isVisible]="visibleContractStatusModal"
         [loadCreateDelete]="loadCreateDelete"
+        [existingContractStatus]="contractStatusValues()"
         (isVisibleModal)="onModalVisibilityChange($event)"
         (contractStatusCreated)="onContractStatusCreated($event)"
         (contractStatusDeleted)="onContractStatusDeleted($event)"

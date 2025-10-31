@@ -1,9 +1,11 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { CostTypeUtils } from '../../utils/cost-type-utils';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CostType } from '../../../../../../Entities/costType';
 import { CostTypeStateService } from '../../utils/cost-type-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-modal-cost',
@@ -11,9 +13,11 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
   templateUrl: './modal-cost.component.html',
   styleUrl: './modal-cost.component.scss'
 })
-export class ModalCostComponent implements OnChanges {
+export class ModalCostComponent implements OnChanges, OnInit {
   private readonly costTypeUtils = inject(CostTypeUtils);
   private readonly costTypeStateService = inject(CostTypeStateService);
+  private readonly messageService = inject(MessageService);
+  private readonly translate = inject(TranslateService);
   @Input() selectedCostType!: CostType | undefined;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible: boolean = false;
@@ -25,10 +29,21 @@ export class ModalCostComponent implements OnChanges {
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalCost = false;
+  public typeAlreadyExist = false;
+
   public readonly costTypeForm = new FormGroup({
-    type: new FormControl(''),
+    type: new FormControl('', [Validators.required]),
     sequenceNo: new FormControl(null)
   });
+
+  ngOnInit(): void {
+    // Reset typeAlreadyExist when user types
+    this.costTypeForm.get('type')?.valueChanges.subscribe(() => {
+      if (this.typeAlreadyExist) {
+        this.typeAlreadyExist = false;
+      }
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
@@ -53,11 +68,37 @@ export class ModalCostComponent implements OnChanges {
         this.closeModal();
         this.onCreateCostType.emit({ created, status: 'success' });
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
-        this.onCreateCostType.emit({ status: 'error' });
+        this.handleCreateError(error);
       }
     })
+  }
+
+  private handleCreateError(error: any): void {
+    if (error?.message?.includes('cost type already exists')) {
+      this.typeAlreadyExist = true;
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('COSTS.ERROR.TYPE_ALREADY_EXIST'),
+      });
+      this.onCreateCostType.emit({ status: 'error' });
+    } else if (error?.message?.includes('Cost type is required')) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('ERROR.FIELD_REQUIRED'),
+      });
+      this.onCreateCostType.emit({ status: 'error' });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('MESSAGE.ERROR'),
+        detail: this.translate.instant('MESSAGE.CREATE_FAILED'),
+      });
+      this.onCreateCostType.emit({ status: 'error' });
+    }
   }
 
   get isCreateMode(): boolean {
@@ -67,6 +108,7 @@ export class ModalCostComponent implements OnChanges {
   public closeModal(): void {
     this.isVisibleModal.emit(false);
     this.costTypeForm.reset();
+    this.typeAlreadyExist = false;
   }
 
   onDeleteCostTypeConfirm(): void {

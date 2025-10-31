@@ -20,7 +20,7 @@
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
       "BILLERS": "Rechnungsersteller",
       "BILLING_METHODS": "Verrechnungsarten",
-      "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
+      "CONTRACT_STATUS": "Vertragsstatus",
       "COSTS": "Kostenarten",
       "COUNTRIES": "Stammdaten - Länder",
       "DUNNING_LEVELS": "Mahnstufen",
@@ -38,7 +38,7 @@
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Umsatzsteuer",
       "SALUTATION": "Stammdaten - Anrede",
-      "STATES": "Stammdaten - Bundesländer",
+      "STATES": "Bundesländer",
       "TERMS_OF_PAYMENT": "Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
@@ -123,7 +123,7 @@
     "TITLE": "Titel",
     "SALES_TAX": "Umsatzsteuer",
     "TYPES_OF_COMPANIES": "Unternehmensarten",
-    "BILLING_METHODS": "Abrechnungsmethoden",
+    "BILLING_METHODS": "Verrechnungsarten",
     "CONTRACT_STATUS": "Vertragsstatus",
     "TERMS_OF_PAYMENT": "Zahlungsbedingungen"
   },
@@ -664,7 +664,7 @@
     "LABEL": {
       "STATE": "Bundesland",
       "EDIT_STATE": "Bundesland bearbeiten",
-      "NEW_STATE": "Bundesstaat erstellen",
+      "NEW_STATE": "Neues Bundesland",
       "DELETE_STATE": "Bundesland löschen"
     },
     "ERROR": {
@@ -1052,8 +1052,11 @@
       "NO_DATA": "Keine Kostenarten gefunden"
     },
     "MODAL": {
-      "CREATE_COST_TYPE": "Kostenart neu",
+      "CREATE_COST_TYPE": "Neue Kostenart",
       "DELETE_COST_TYPE": "Kostenart löschen"
+    },
+    "ERROR": {
+    "TYPE_ALREADY_EXIST": "Kostenart existiert bereits"
     }
   },
   "PAGINATION": {
@@ -1278,10 +1281,11 @@
       "BILLING_TYPE": "Verrechnungsart"
     },
     "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Verrechnungsart ist erforderlich"
+      "BILLING_TYPE_REQUIRED": "Verrechnungsart ist erforderlich",
+      "BILLING_TYPE_ALREADY_EXIST": "Verrechnungsart existiert bereits"
     },
     "MODAL": {
-      "NEW": "Neu Verrechnungsart",
+      "NEW": "Neue Verrechnungsart",
       "DELETE": "Verrechnungsart löschen"
     }
   },
