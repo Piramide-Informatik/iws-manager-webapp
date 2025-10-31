@@ -3,8 +3,13 @@
         <div class="flex flex-column mb-2 mt-4">
             <div class="dunning-level-form">
                 <label for="levelNo">{{ 'DUNNING_LEVELS.LABEL.DUNNING_LEVEL' | translate }}</label>
-                <p-inputnumber #firstInput [useGrouping]="true" inputId="levelNo"
-                 formControlName="levelNo" autocomplete="off" [inputStyle]="{'text-align': 'right'}"/>
+                <div class="input-wrapper">
+                    <p-inputnumber #firstInput [useGrouping]="true" inputId="levelNo"
+                        formControlName="levelNo" autocomplete="off" [inputStyle]="{'text-align': 'right'}"/>
+                    <div *ngIf="dunningLevelForm.get('levelNo')?.invalid && dunningLevelForm.get('levelNo')?.touched" class="error-messages">
+                        <small class="p-error">{{ 'MESSAGE.REQUIRED_FIELD' | translate }}</small>
+                    </div>
+                </div>
             </div>
             <div class="dunning-level-form">
                 <label for="reminderTitle">{{ 'DUNNING_LEVELS.LABEL.DESIGNATION' | translate }}</label>

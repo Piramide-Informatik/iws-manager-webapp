@@ -27,6 +27,13 @@ export class ReminderLevelService {
   public loading = this._loading.asReadonly();
   public error = this._error.asReadonly();
 
+  private sortByLevelNo(list: ReminderLevel[]): ReminderLevel[] {
+    return [...list].sort((a, b) => {
+      const levelA = a.levelNo ?? 0;
+      const levelB = b.levelNo ?? 0;
+      return levelA - levelB;
+    });
+  }
 
   public loadInitialData(): Observable<ReminderLevel[]> {
     this._loading.set(true);
@@ -51,7 +58,7 @@ export class ReminderLevelService {
     return this.http.post<ReminderLevel>(this.apiUrl, reminderLevel, this.httpOptions).pipe(
       tap({
         next: (newReminderLevel) => {
-          this._reminders.update(reminders => [...reminders, newReminderLevel]);
+          this._reminders.update(reminders => this.sortByLevelNo([...reminders, newReminderLevel]));
           this._error.set(null);
         },
         error: (err) => {
@@ -69,7 +76,7 @@ export class ReminderLevelService {
       tap({
         next: (res) => {
           this._reminders.update(reminders => 
-            reminders.map(rmd => rmd.id === res.id ? res : rmd)
+            this.sortByLevelNo(reminders.map(rmd => rmd.id === res.id ? res : rmd))
           );
           this._error.set(null);
         },

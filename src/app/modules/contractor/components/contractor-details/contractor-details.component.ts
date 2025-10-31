@@ -1,6 +1,6 @@
 import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Subscription } from 'rxjs';
 import { CountryUtils } from '../../../master-data/components/countries/utils/country-util';
 import { ContractorUtils } from '../../utils/contractor-utils';
@@ -39,10 +39,11 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   @Input() contractor: Contractor | null = null;
   @Input() modalContractType: 'create' | 'edit' | 'delete' = 'create';
   @Input() isVisibleModal: boolean = false;
+  @Input() contractors!: Contractor[] | undefined;
 
   @Output() isContractVisibleModal = new EventEmitter<boolean>();
   @Output() contractorUpdated = new EventEmitter<Contractor>();
-  @Output() onContractorCreated = new EventEmitter<{ status: 'success' | 'error'}>();
+  @Output() onContractorCreated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() onContractorDeleted = new EventEmitter<number>();
 
   @ViewChild('contractorLabelInput') contractorLabelInput!: ElementRef<HTMLInputElement>;
@@ -56,8 +57,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.contractorForm = this.fb.group({
-      contractorlabel: [''],
-      contractorname: [''],
+      contractorlabel: ['', [Validators.required, this.uniqueLabelValidator.bind(this)]],
+      contractorname: ['', [Validators.required]],
       country: [null],
       street: [''],
       zipcode: [''],
@@ -71,6 +72,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
     if (this.modalContractType === 'create') {
       this.getCurrentCustomer();
+      console.log(this.contractors);
     }
   }
 
@@ -94,8 +96,8 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   private initFormContractor(): void {
     this.contractorForm = new FormGroup({
-      contractorlabel: new FormControl(''),
-      contractorname: new FormControl(''),
+      contractorlabel: new FormControl('', [Validators.required, this.uniqueLabelValidator.bind(this)]),
+      contractorname: new FormControl('', [Validators.required]),
       country: new FormControl(''),
       street: new FormControl(''),
       zipcode: new FormControl(''),
@@ -104,17 +106,38 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     })
   }
 
+  private uniqueLabelValidator(control: FormControl): { [key: string]: any } | null {
+    const value = control.value;
+
+    if (!value || !this.contractors) {
+      return null;
+    }
+    // verify case sensitive
+    const labelExists = this.contractors.some(contractor => {
+      const existingLabel = contractor.label?.trim();
+      const newLabel = value?.trim(); 
+
+      if (this.modalContractType === 'edit' && this.contractor) {
+        return existingLabel === newLabel && contractor.id !== this.contractor.id;
+      }
+
+      return existingLabel === newLabel;
+    });
+
+    return labelExists ? { labelExists: true } : null;
+  }
+
   hasAtLeastOneFieldFilled(): boolean {
     const formValues = this.contractorForm.value;
-    
+
     return Object.keys(formValues).some(key => {
       const value = formValues[key];
-      
+
       if (value === null || value === undefined) return false;
       if (typeof value === 'string') return value.trim().length > 0;
       if (typeof value === 'number') return value !== 0;
       if (typeof value === 'object') return value !== null;
-      
+
       return false;
     });
   }
@@ -181,9 +204,9 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
     this.subscription.add(this.contractorUtils.updateContractor(updatedContractor)
       .subscribe({
-      next: (updated) => this.handleUpdateSuccess(updated),
-      error: (err) => this.handleUpdateError(err)
-    }));
+        next: (updated) => this.handleUpdateSuccess(updated),
+        error: (err) => this.handleUpdateError(err)
+      }));
   }
 
   handleUpdateError(error: Error): void {
@@ -298,9 +321,9 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       this.showOCCErrorModalContractor.emit(true);
       this.occErrorType.emit('DELETE_UNEXISTED');
       this.commonMessageService.showErrorDeleteMessage();
-    }else if(error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+    } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
-    }else{
+    } else {
       this.commonMessageService.showErrorDeleteMessage();
     }
   }

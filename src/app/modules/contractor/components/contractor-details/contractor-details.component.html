@@ -4,12 +4,33 @@
       <div class="form-container flex align-items-center mb-5">
         <div class="contract_input">
           <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
-          <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
-            [appAutoFocusOnVisible]="isVisibleModal" />
+          <div class="input-container">
+            <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
+              [appAutoFocusOnVisible]="isVisibleModal"
+              [ngClass]="{'ng-invalid': contractorForm.get('contractorlabel')?.invalid && contractorForm.get('contractorlabel')?.dirty}" />
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+      contractorForm.get('contractorlabel')?.invalid && 
+      contractorForm.get('contractorlabel')?.dirty || 
+      contractorForm.get('contractorlabel')?.hasError('labelExists')
+  ">
+              {{ contractorForm.get('contractorlabel')?.hasError('labelExists') ?
+              ('CONTRACTS.ERROR.LABEL_ALREADY_EXISTS' | translate) :
+              ('ERROR.FIELD_REQUIRED' | translate)
+              }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input">
           <label for="contractorname">{{ 'CONTRACTS.FORM.CONTRACTOR_NAME' | translate }}</label>
-          <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
+          <div class="input-container">
+            <input pInputText type="text" id="contractorname" formControlName="contractorname" autocomplete="off" />
+            <p-message severity="error" variant="simple" size="small" *ngIf="
+      contractorForm.get('contractorname')?.invalid && 
+      contractorForm.get('contractorname')?.touched && 
+      contractorForm.get('contractorname')?.errors?.['required']">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </p-message>
+          </div>
         </div>
         <div class="contract_input">
           <label for="country">{{ 'CONTRACTS.FORM.COUNTRY_LABEL' | translate }}</label>
@@ -50,7 +71,8 @@
     </div>
     <div class="flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left" [loading]="isLoading" [disabled]="!hasAtLeastOneFieldFilled()  || !contractorForm.dirty"/>
+        iconPos="left" [loading]="isLoading"
+        [disabled]="!hasAtLeastOneFieldFilled()  || !contractorForm.dirty || contractorForm.invalid" />
       @if(modalContractType === 'edit') {
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" severity="danger" [disabled]="isLoading"

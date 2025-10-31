@@ -23,7 +23,7 @@
       "CONTRACT_STATUS": "Datos Maestros - Estado del Contrato",
       "COSTS": "Tipos de Costos",
       "COUNTRIES": "Datos Maestros - Países",
-      "DUNNING_LEVELS": "Datos Maestros - Niveles de Cobranza",
+      "DUNNING_LEVELS": "Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
       "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
       "HOLIDAYS": "Datos Maestros - Días Festivos",
@@ -65,7 +65,8 @@
     "NUMBER_MAX_12": "Se espera un valor máximo de 12",
     "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe",
     "FIELD_REQUIRED": "Campo requerido",
-    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}"
+    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}",
+    "RECORD_ARLEADY_EXISTS": "Este registro ya existe"
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -323,6 +324,9 @@
       "MAX_HOURS_PER_DAY": "Max. Horas/Día",
       "HOURLY_RATE": "Tafira por Hora",
       "SPECIAL_PAYMENT": "Pago Especial"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "ID empleado ya existe"
     }
   },
   "CONTACT": {
@@ -549,6 +553,9 @@
       "ZIP_CODE": "Código Postal",
       "CITY": "Ciudad",
       "TAX_NUMBER": "Numero de Impuesto"
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "La sigla ya existe"
     }
   },
   "SUB-CONTRACTS": {
@@ -865,6 +872,9 @@
     "MODAL": {
       "NEW": "Nuevo Nivel de Reclamación",
       "DELETE": "Borrar Nivel de Reclamación"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "Ya existe Nivel de Reclamación"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
