@@ -3,7 +3,28 @@
         <div class="flex flex-column mb-2 mt-4 px-5">
             <div class="billers-form flex flex-row mb-6 align-items-center gap-4">
                 <label for="name">{{ 'SIDEBAR.BILLERS' | translate }}</label>
-                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+                <div class="input-message">
+                  <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
+                      [attr.invalid]="(editBillerForm.get('name')?.invalid && 
+                      editBillerForm.get('name')?.dirty) 
+                      || nameAlreadyExist"
+                  />
+                  <p-message 
+                    severity="error" 
+                    [showTransitionOptions]="'0ms'" 
+                    variant="simple" 
+                    size="small" 
+                    *ngIf="(editBillerForm.get('name')?.invalid && 
+                    editBillerForm.get('name')?.dirty) 
+                    || nameAlreadyExist">
+                    <span *ngIf="editBillerForm.get('name')?.errors?.['required'] && editBillerForm.get('name')?.dirty">
+                      {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </span>
+                    <span *ngIf="nameAlreadyExist && !editBillerForm.get('name')?.errors?.['required']">
+                      {{ 'BILLERS.ERROR.NAME_ALREADY_EXIST' | translate }}
+                    </span>
+                  </p-message>
+                </div>
             </div>
             <div class="row">
                 <div class="col flex justify-content-center">

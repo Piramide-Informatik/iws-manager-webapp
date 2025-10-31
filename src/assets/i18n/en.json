@@ -18,10 +18,10 @@
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
       "APPROVAL_STATUS": "Masterdata - Approval Status",
-      "BILLERS": "Masterdata - Billers",
-      "BILLING_METHODS": "Masterdata - Billing Methods",
-      "CONTRACT_STATUS": "Masterdata - Contract Status",
-      "COSTS": "Masterdata - Costs",
+      "BILLERS": "Billers",
+      "BILLING_METHODS": "Billing Methods",
+      "CONTRACT_STATUS": "Contract Status",
+      "COSTS": "Costs",
       "COUNTRIES": "Masterdata - Countries",
       "DUNNING_LEVELS": "Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
@@ -39,7 +39,7 @@
       "SALES_TAX": "Sales Tax",
       "SALUTATION": "Masterdata - Salutation",
       "STATES": "Masterdata - States",
-      "TERMS_OF_PAYMENT": "Masterdata - Terms of Payment",
+      "TERMS_OF_PAYMENT": "Terms of Payment",
       "TEXTS": "Masterdata - Texts",
       "TITLE": "Masterdata - Titles",
       "TYPE_OF_COMPANIES": "Masterdata - Company Types",
@@ -65,7 +65,8 @@
     "NUMBER_MAX_12": "Max value 12 expected",
     "DUPLICATE_PROBABILITY": "This probability already exists",
     "FIELD_REQUIRED": "Field required",
-    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected"
+    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected",
+    "RECORD_ARLEADY_EXISTS": "This record already exists"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -553,6 +554,9 @@
       "ZIP_CODE": "Zip Code",
       "CITY": "City",
       "TAX_NUMBER": "Tax No."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Label already exists"
     }
   },
   "SUB-CONTRACTS": {
@@ -1046,6 +1050,9 @@
     "MODAL": {
       "CREATE_COST_TYPE": "New Cost Type",
       "DELETE_COST_TYPE": "Delete Cost Type"
+    },
+    "ERROR": {
+    "TYPE_ALREADY_EXIST": "Cost type already exists"
     }
   },
   "PAGINATION": {
@@ -1176,6 +1183,7 @@
     "TITLE_FORM": "Edit Term of Payment",
     "TERM_OF_PAYMENT_DAYS": "Term of Payment (Days)",
     "INVOICE_TEXT": "Invoice Text",
+    "TERM_OF_PAYMENT_ALREADY_EXISTS": "Term of Payment already exists",
     "MODAL": {
       "NEW": "New Term of Payment",
       "DELETE": "Delete Term of Payment"
@@ -1186,6 +1194,9 @@
     "MODAL": {
       "NEW": "New Biller",
       "DELETE": "Delete Biller"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Biller already exists"
     }
   },
   "REALIZATION_PROBABILITIES": {

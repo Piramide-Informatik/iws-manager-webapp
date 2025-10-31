@@ -13,3 +13,8 @@ p-inputnumber {
 label {
   flex-shrink: 0;
 }
+
+::ng-deep .p-message {
+    display: block !important;
+    width: 100% !important;
+}

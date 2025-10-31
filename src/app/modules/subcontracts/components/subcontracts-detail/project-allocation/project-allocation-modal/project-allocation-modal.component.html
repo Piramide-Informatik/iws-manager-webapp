@@ -1,49 +1,51 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
   <form [formGroup]="allocationForm" (ngSubmit)="onSubmit()">
-      <div class="form-item-container flex gap-4 mb-3">
-          <label for="projectLabel" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
-          <p-select #pSelect
-            formControlName="projectLabel" 
-            inputId="country" 
-            [options]="projectLabels()" 
-            optionLabel="projectLabel" 
-            optionValue="id"
-            appendTo="body" 
-            [showClear]="true" 
-            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
-          ></p-select>
+    <div class="form-item-container flex gap-4 mb-3">
+      <label for="projectLabel" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
+      <div class="input-message w-full">
+        <p-select #pSelect formControlName="projectLabel" inputId="country" [options]="projectLabels()"
+          optionLabel="projectLabel" optionValue="id" appendTo="body"
+          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          [ngClass]="{'ng-invalid': allocationForm.get('projectLabel')?.invalid && allocationForm.get('projectLabel')?.dirty}"></p-select>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            allocationForm.get('projectLabel')?.invalid && 
+            allocationForm.get('projectLabel')?.touched && 
+            allocationForm.get('projectLabel')?.errors?.['required']">
+          {{ 'ERROR.FIELD_REQUIRED' | translate }}
+        </p-message>
       </div>
-      <div class="form-item-container flex gap-4 mb-3">
-        <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
-        <div class="input-message">
-          <p-inputnumber inputId="percentage" class="flex-auto" formControlName="percentage" 
-            mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" invalid="
+    </div>
+    <div class="form-item-container flex gap-4 mb-3">
+      <label for="percentage" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.SHARE' | translate }} %</label>
+      <div class="input-message">
+        <p-inputnumber inputId="percentage" class="flex-auto" formControlName="percentage" mode="decimal" [min]="0"
+          [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" [minFractionDigits]="2" [maxFractionDigits]="2"
+          locale="de-DE" autocomplete="off" invalid="
           allocationForm.get('percentage')?.invalid  
             && allocationForm.get('percentage')?.dirty 
-            || allocationForm.get('percentage')?.touched"/>
-          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            || allocationForm.get('percentage')?.touched" />
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             allocationForm.get('percentage')?.invalid && 
             allocationForm.get('percentage')?.dirty
           ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
-        </div>
       </div>
-      <div class="form-item-container flex gap-4 mb-3">
-          <label for="amount" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>
-          <p-inputnumber inputId="amount" class="flex-auto" formControlName="amount" mode="decimal" 
-          [max]="99999.99" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
-      </div>
-      <div class="flex justify-content-center gap-2">
-          <p-button type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" 
-            [loading]="isLoading" [disabled]="allocationForm.invalid || !allocationForm.dirty" iconPos="left" size="small"></p-button>
-          @if(subcontractProject) {
-            <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-              iconPos="left" severity="danger" [disabled]="isLoading" (onClick)="openSubcontractProjectModal()" />  
-          }
-          <p-button [label]="'BUTTONS.CANCEL' | translate" (onClick)="closeModal()" class="cancel" icon="pi pi-times"
-              iconPos="left" size="small" [disabled]="isLoading" ></p-button>
-      </div>
+    </div>
+    <div class="form-item-container flex gap-4 mb-3">
+      <label for="amount" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.AMOUNT' | translate }}</label>
+      <p-inputnumber inputId="amount" class="flex-auto" formControlName="amount" mode="decimal" [max]="99999.99"
+        [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" [minFractionDigits]="2"
+        [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
+    </div>
+    <div class="flex justify-content-center gap-2">
+      <p-button type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" [loading]="isLoading"
+        [disabled]="allocationForm.invalid || !allocationForm.dirty" iconPos="left" size="small"></p-button>
+      @if(subcontractProject) {
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [disabled]="isLoading" (onClick)="openSubcontractProjectModal()" />
+      }
+      <p-button [label]="'BUTTONS.CANCEL' | translate" (onClick)="closeModal()" class="cancel" icon="pi pi-times"
+        iconPos="left" size="small" [disabled]="isLoading"></p-button>
+    </div>
   </form>
 </ng-container>
 <ng-template #deleteTemplate>
@@ -59,8 +61,8 @@
     </div>
   </div>
 </ng-template>
-<p-dialog [header]="('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT') | translate"
-  [modal]="true" [(visible)]="visibleSubcontractProjectModal" [style]="{ width: 'auto' }">
+<p-dialog [header]="('SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_PROJECT') | translate" [modal]="true"
+  [(visible)]="visibleSubcontractProjectModal" [style]="{ width: 'auto' }">
   <hr class="mt-0" />
   <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: subcontractProject?.project?.projectLabel }"></p>
@@ -72,11 +74,8 @@
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
         iconPos="left" (onClick)="visibleSubcontractProjectModal = false;" [disabled]="isLoadingDelete" />
     </div>
-  </div> 
+  </div>
 </p-dialog>
-<app-occ-error-modal 
-    *ngIf="showOCCErrorSubcontractProject" 
-    [reloadCurrentPage]="true"
-    [errorType]="occErrorType"
-    (onClose)="showOCCErrorSubcontractProject = false">
+<app-occ-error-modal *ngIf="showOCCErrorSubcontractProject" [reloadCurrentPage]="true" [errorType]="occErrorType"
+  (onClose)="showOCCErrorSubcontractProject = false">
 </app-occ-error-modal>

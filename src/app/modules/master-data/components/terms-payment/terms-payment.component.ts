@@ -11,6 +11,7 @@ import { PayConditionService } from '../../../../Services/pay-condition.service'
 import { PayConditionStateService } from './utils/pay-condition-state.services';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
 import { ModalTermsPaymentComponent } from './components/modal-terms-payment/modal-terms-payment.component';
+import { Column } from '../../../../Entities/column';
 
 @Component({
   selector: 'app-terms-payment',
@@ -23,7 +24,7 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
   private readonly payConditionUtils = inject(PayConditionUtils);
   private readonly payConditionService = inject(PayConditionService);
   private readonly payStateService = inject(PayConditionStateService);
-  public columsHeaderFieldTermsPayment: any[] = [];
+  public columsHeaderFieldTermsPayment: Column[] = [];
   userTermsPaymentPreferences: UserPreference = {};
   tableKey: string = 'TermsPayment'
   dataKeys = ['name', 'deadline'];
@@ -64,7 +65,7 @@ export class TermsPaymentComponent implements OnInit, OnDestroy {
   loadColHeadersTermsPayment(): void {
     this.columsHeaderFieldTermsPayment = [
       { field: 'name', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERMS_OF_PAYMENT')), useSameAsEdit: true },
-      { field: 'deadline', styles: {'width': 'auto'}, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERM_OF_PAYMENT')), customClasses: ['align-right'] },
+      { field: 'deadline', styles: {'width': 'auto'}, type: 'integer' ,filter: { type: 'numeric' }, header: this.translate.instant(_('TERMS_OF_PAYMENT.TERM_OF_PAYMENT')), customClasses: ['align-right', 'date-font-style'] },
     ];
   }
 
