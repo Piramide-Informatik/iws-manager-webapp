@@ -3,25 +3,25 @@
     "CUSTOMER_OVERVIEW": "Kunden",
     "CUSTOMER": "Kunde - ",
     "CUSTOMERS": {
-      "BASIC_CONTRACTS": " - Rahmenverträge",
-      "CONTRACTORS": " - Auftragnehmer",
-      "DETAILS": " - Details",
+      "BASIC_CONTRACTS": "Rahmenverträge",
+      "CONTRACTORS": "Auftragnehmer",
+      "DETAILS": "Details",
       "EMPLOYEES": "Mitarbeiter",
-      "EMPLOYMENT_CONTRACTS": " - Arbeitsverträge",
-      "INVOICES": " - Rechnungen",
-      "ORDERS": " - Aufträge",
-      "PROJECTS": " - Projekte",
-      "RECEIVABLES": " - Forderungen",
+      "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
+      "INVOICES": "Rechnungen",
+      "ORDERS": "Aufträge",
+      "PROJECTS": "Projekte",
+      "RECEIVABLES": "Forderungen",
       "SUBCONTRACTS": "Unteraufträge"
     },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
-      "BILLERS": "Stammdaten - Rechnungsersteller",
-      "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
-      "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
-      "COSTS": "Stammdaten - Kostenarten",
+      "BILLERS": "Rechnungsersteller",
+      "BILLING_METHODS": "Verrechnungsarten",
+      "CONTRACT_STATUS": "Vertragsstatus",
+      "COSTS": "Kostenarten",
       "COUNTRIES": "Stammdaten - Länder",
       "DUNNING_LEVELS": "Mahnstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
@@ -39,7 +39,7 @@
       "SALES_TAX": "Umsatzsteuer",
       "SALUTATION": "Stammdaten - Anrede",
       "STATES": "Stammdaten - Bundesländer",
-      "TERMS_OF_PAYMENT": "Stammdaten - Zahlungsbedingungen",
+      "TERMS_OF_PAYMENT": "Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
       "TITLE": "Stammdaten - Titel",
       "TYPE_OF_COMPANIES": "Stammdaten - Unternehmensarten",
@@ -65,7 +65,8 @@
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet",
     "FIELD_REQUIRED": "Pflichtfeld",
-    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet"
+    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet",
+    "RECORD_ARLEADY_EXISTS": "Dieser Datensatz existiert bereits"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -557,6 +558,9 @@
       "ZIP_CODE": "PLZ",
       "CITY": "Ort",
       "TAX_NUMBER": "USt.-Ident-Nr."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Kurzname existiert bereits"
     }
   },
   "SUB-CONTRACTS": {
@@ -579,7 +583,7 @@
     "LABEL": {
       "DELETE_SUBCONTRACT": "Unterauftrag löschen",
       "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
-      "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen",
+      "DELETE_SUBCONTRACT_PROJECT": "Projekt löschen",
       "NEW_SUBCONTRACT": "Neuer Unterauftrag"
     },
     "TABLE": {
@@ -605,8 +609,8 @@
       "PROJECT": "Projekt",
       "SHARE": "Anteil",
       "AMOUNT": "Betrag",
-      "MODAL_TITLE_NEW": "Unterauftrag - Projekte",
-      "MODAL_TITLE_EDIT": "Unterauftrag - Projekte"
+      "MODAL_TITLE_NEW": "Unterauftrag - neues Projekt",
+      "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
     }
   },
   "ABSENCE_TYPES": {
@@ -1183,9 +1187,10 @@
     "TITLE_FORM": "Zahlungsbedingung bearbeiten",
     "TERM_OF_PAYMENT_DAYS": "Zahlungsziel (Tage)",
     "INVOICE_TEXT": "Rechnungstext",
+    "TERM_OF_PAYMENT_ALREADY_EXISTS": "Zahlungsbedingung existiert bereits",
     "MODAL": {
-      "NEW": "Neu Zahlungsziel",
-      "DELETE": "Zahlungsziel löschen"
+      "NEW": "Neue Zahlungsbedingung",
+      "DELETE": "Zahlungsbedingung löschen"
     }
   },
   "BILLERS": {
@@ -1193,6 +1198,9 @@
     "MODAL": {
       "NEW": "Neuer Rechnungsersteller",
       "DELETE": "Rechnungsersteller löschen"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Rechnungsersteller existiert bereits"
     }
   },
   "REALIZATION_PROBABILITIES": {

@@ -18,10 +18,10 @@
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
-      "BILLERS": "Datos Maestros - Facturadores",
-      "BILLING_METHODS": "Datos Maestros - Métodos de Facturación",
-      "CONTRACT_STATUS": "Datos Maestros - Estado del Contrato",
-      "COSTS": "Datos Maestros - Tipos de Costos",
+      "BILLERS": "Facturadores",
+      "BILLING_METHODS": "Métodos de Facturación",
+      "CONTRACT_STATUS": "Estado del Contrato",
+      "COSTS": "Tipos de Costos",
       "COUNTRIES": "Datos Maestros - Países",
       "DUNNING_LEVELS": "Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
@@ -39,7 +39,7 @@
       "SALES_TAX": "Impuesto sobre Ventas",
       "SALUTATION": "Datos Maestros - Saludo",
       "STATES": "Datos Maestros - Estados",
-      "TERMS_OF_PAYMENT": "Datos Maestros - Términos de Pago",
+      "TERMS_OF_PAYMENT": "Términos de Pago",
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
       "TYPE_OF_COMPANIES": "Datos Maestros - Tipos de Empresas",
@@ -65,7 +65,8 @@
     "NUMBER_MAX_12": "Se espera un valor máximo de 12",
     "DUPLICATE_PROBABILITY": "Esta probabilidad ya existe",
     "FIELD_REQUIRED": "Campo requerido",
-    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}"
+    "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}",
+    "RECORD_ARLEADY_EXISTS": "Este registro ya existe"
   },
   "MENU": {
     "DASHBOARD": "Panel",
@@ -552,6 +553,9 @@
       "ZIP_CODE": "Código Postal",
       "CITY": "Ciudad",
       "TAX_NUMBER": "Numero de Impuesto"
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "La sigla ya existe"
     }
   },
   "SUB-CONTRACTS": {
@@ -1178,6 +1182,7 @@
     "TITLE_FORM": "Editar Condición de Pago",
     "TERM_OF_PAYMENT_DAYS": "Condición de Pago (Días)",
     "INVOICE_TEXT": "Texto de la Factura",
+    "TERM_OF_PAYMENT_ALREADY_EXISTS": "Condición de Pago ya existe",
     "MODAL": {
       "NEW": "Nueva Condición de Pago",
       "DELETE": "Eliminar Condición de Pago"
@@ -1188,6 +1193,9 @@
     "MODAL": {
       "NEW": "Nuevo Facturador",
       "DELETE": "Eliminar Facturador"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Facturador ya existe"
     }
   },
   "REALIZATION_PROBABILITIES": {

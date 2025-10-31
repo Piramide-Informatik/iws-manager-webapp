@@ -71,7 +71,7 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
 
   loadColumns() {
     this.allocationsColumns = [
-      { field: 'project.projectLabel', header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
+      { field: 'project.projectLabel', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.PROJECT')) },
       { field: 'share', type: 'double', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.SHARE')) },
       { field: 'amount', type: 'double',customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.PROJECT.AMOUNT')) },
     ];
@@ -123,11 +123,15 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
     if (index !== -1) {
       this.subcontractProjectList[index] = { ...updated };
       this.subcontractProjectList = [...this.subcontractProjectList];
+      this.loadSubcontractProjects();
     }
   }
 
-  onSubcontractProjectCreated(newSubcontractProj: SubcontractProject) {
-    this.subcontractProjectList.unshift(newSubcontractProj);
+  onSubcontractProjectCreated(event: { status: 'success' | 'error'}): void {
+    if(event.status === 'success'){
+      this.loadSubcontractProjects();
+    }
+    this.prepareTableData();
   }
 
   onModalVisibilityChange(visible: any): void {
@@ -136,5 +140,15 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
 
   onSubcontractProjectDeleted(subContractProject: SubcontractProject) {
     this.subcontractProjectList = this.subcontractProjectList.filter( sp => sp.id !== subContractProject.id);
+  }
+
+   private prepareTableData() {
+    if (this.subcontractProjectList.length > 0) {
+      this.allocationsColumns = [
+        { field: 'project', header: 'project' },
+        { field: 'share', header: 'share' },
+        { field: 'amount', header: 'amount' },
+      ];
+    }
   }
 }

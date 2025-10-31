@@ -86,7 +86,7 @@ export class BillersComponent implements OnInit, OnDestroy {
 
   onCreateBiller(event: { created?: Biller, status: 'success' | 'error'}): void {
     if(event.created && event.status === 'success'){
-      const sub = this.billersService.loadInitialData().subscribe();
+      const sub = this.billerUtils.loadInitialData().subscribe();
       this.langSubscription.add(sub);
       this.prepareTableData();
       this.commonMessageService.showCreatedSuccesfullMessage();

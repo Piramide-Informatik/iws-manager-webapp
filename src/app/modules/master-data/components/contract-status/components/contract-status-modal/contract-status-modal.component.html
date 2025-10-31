@@ -3,15 +3,12 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="contract-status-form flex align-items-center mb-3">
                 <label for="status" class="block label-status">{{ 'CONTRACT_STATUS.LABEL.CONTRACT_STATUS' | translate }}</label>
-                <div>
+                <div class="input-wrapper">
                     <input #statusInput pInputText type="text" id="status" formControlName="status" [ngClass]="{'ng-invalid': createContractStatusForm.get('status')?.invalid && 
                       createContractStatusForm.get('status')?.dirty && createContractStatusForm.get('status')?.touched}" autocomplete="off" />
-                     <p-message severity="error" variant="simple" size="small" class="w-full"  *ngIf="
-                         createContractStatusForm.get('status')?.invalid && 
-                         createContractStatusForm.get('status')?.dirty && 
-                         createContractStatusForm.get('status')!.hasError('required')
-                         ">
-                         {{ 'CONTRACT_STATUS.ERROR.CONTRACT_STATUS_REQUIRED' | translate }}</p-message>
+                     <div *ngIf="createContractStatusForm.get('status')?.invalid && createContractStatusForm.get('status')?.touched" class="error-messages">
+                        <small class="p-error">{{ 'MESSAGE.REQUIRED_FIELD' | translate }}</small>
+                    </div>
                 </div>
                 
             </div>

@@ -102,7 +102,7 @@
                  "></i>
             </ng-container>
             <ng-template #normalText>
-              <span [ngClass]="{'date-font-style' : col.type === 'date' || col.type === 'dateYear' || col.type === 'double'}">
+              <span [ngClass]="{'date-font-style' : col.type === 'date' || col.type === 'dateYear' || col.type === 'double' || col.type === 'integer'}">
                 {{
                   col.type === 'date'
                     ? col.format
@@ -112,6 +112,8 @@
                       ? (getNestedValue(row, col.field) | date:'yyyy')
                     : col.type === 'double'
                       ? (getNestedValue(row, col.field) | number:'1.2-2':'de-DE')
+                    : col.type === 'integer' 
+                      ? (getNestedValue(row, col.field) | number:'1.0-0':'de-DE') 
                       : getNestedValue(row, col.field)
                 }}
               </span>
