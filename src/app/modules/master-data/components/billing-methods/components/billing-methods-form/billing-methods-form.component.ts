@@ -54,8 +54,9 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
     this.invoiceTypeUtils.updateInvoiceType(editedInvoiceType).subscribe({
       next: () => {
         this.isLoading = false;
-        this.clearForm();
         this.commonMessageService.showEditSucessfullMessage();
+        this.loadAllInvoiceTypes();
+        this.clearForm();
       },
       error: (error: Error) => {
         this.isLoading = false;
@@ -78,6 +79,7 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
           this.billingMethodForm.patchValue({
             name: this.invoiceTypeToEdit.name ?? ''
           });
+          this.nameAlreadyExist = false;
           this.setupNameValidation();
           this.focusInputIfNeeded();
         } else {
@@ -89,40 +91,40 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
   }
 
   private loadAllInvoiceTypes(): void {
-    this.subscriptions.add(
-      this.invoiceTypeUtils.getAllInvoiceTypes().subscribe({
-        next: (invoiceTypes) => {
-          this.allInvoiceTypes = invoiceTypes;
-        },
-        error: (error) => {
-          console.error('Error loading invoice types:', error);
-        }
-      })
-    );
+    const loadSubscription = this.invoiceTypeUtils.getAllInvoiceTypes().subscribe({
+      next: (invoiceTypes) => {
+        this.allInvoiceTypes = invoiceTypes;
+      },
+      error: (error) => {
+        console.error('Error loading invoice types:', error);
+      }
+    });
+    this.subscriptions.add(loadSubscription);
   }
 
   private setupNameValidation(): void {
     const nameControl = this.billingMethodForm.get('name');
     if (nameControl) {
-      this.subscriptions.add(
-        nameControl.valueChanges.subscribe(value => {
-          this.checkNameUniqueness(value || '');
-        })
-      );
+      const nameSubscription = nameControl.valueChanges.subscribe(value => {
+        this.checkNameUniqueness(value || '');
+      });
+      this.subscriptions.add(nameSubscription);
     }
   }
 
   private checkNameUniqueness(name: string): void {
-    if (!name || !name.trim()) {
+    if (!name?.trim()) {
       this.nameAlreadyExist = false;
       return;
     }
 
     const trimmedName = name.trim().toLowerCase();
-    const existingType = this.allInvoiceTypes.find(type => 
-      type.name?.toLowerCase() === trimmedName && 
-      type.id !== this.invoiceTypeToEdit?.id 
-    );
+    const currentName = this.invoiceTypeToEdit?.name?.trim().toLowerCase();
+    
+    const existingType = this.allInvoiceTypes.find(type => {
+      const typeName = type.name?.trim().toLowerCase();
+      return typeName === trimmedName && typeName !== currentName;
+    });
 
     this.nameAlreadyExist = !!existingType;
   }
@@ -139,7 +141,6 @@ export class BillingMethodsFormComponent implements OnInit, OnDestroy {
     this.invoiceTypeStateService.clearInvoiceType();
     this.invoiceTypeToEdit = null;
     this.nameAlreadyExist = false;
-    this.clearSubscriptions();
   }
 
   private loadInvoiceTypeAfterRefresh(): void {

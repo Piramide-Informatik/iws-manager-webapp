@@ -148,18 +148,18 @@ export class ModalBillingMethodsComponent implements OnChanges {
   }
 
   private checkNameUniqueness(name: string): void {
-    if (!name || !name.trim()) {
-      this.nameAlreadyExist = false;
-      return;
-    }
-
-    const trimmedName = name.trim().toLowerCase();
-    const existingType = this.allInvoiceTypes.find(type => 
-      type.name?.toLowerCase() === trimmedName
-    );
-
-    this.nameAlreadyExist = !!existingType;
+  if (!name?.trim()) {
+    this.nameAlreadyExist = false;
+    return;
   }
+
+  const trimmedName = name.trim().toLowerCase();
+  const existingType = this.allInvoiceTypes.find(type => 
+    type.name?.toLowerCase() === trimmedName
+  );
+
+  this.nameAlreadyExist = !!existingType;
+}
 
   private clearSubscriptions(): void {
     if (this.subscriptions) {
