@@ -18,12 +18,12 @@
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
       "APPROVAL_STATUS": "Masterdata - Approval Status",
-      "BILLERS": "Masterdata - Billers",
-      "BILLING_METHODS": "Masterdata - Billing Methods",
+      "BILLERS": "Billers",
+      "BILLING_METHODS": "Billing Methods",
       "CONTRACT_STATUS": "Masterdata - Contract Status",
-      "COSTS": "Masterdata - Costs",
+      "COSTS": "Costs",
       "COUNTRIES": "Masterdata - Countries",
-      "DUNNING_LEVELS": "Masterdata - Dunning Levels",
+      "DUNNING_LEVELS": "Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
       "HOLIDAYS": "Masterdata - Holidays",
@@ -65,7 +65,8 @@
     "NUMBER_MAX_12": "Max value 12 expected",
     "DUPLICATE_PROBABILITY": "This probability already exists",
     "FIELD_REQUIRED": "Field required",
-    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected"
+    "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected",
+    "RECORD_ARLEADY_EXISTS": "This record already exists"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -240,7 +241,6 @@
     "REJECT_LABEL": "No"
   },
   "CUSTOMERS": {
-    "CUSTOMER_NAME": "Customer",
     "TABLE": {
       "CUSTOMER_ID": "No.",
       "COMPANY_NAME": "Company Name",
@@ -305,6 +305,9 @@
       "QUALIFICATION_FZ": "Qualification FZ",
       "QUALIFICATION_KMU_I": "Qualification KMU-i",
       "EMPLOYMENT_CONTRACTS": "Employment Contracts"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "Employee number already exists"
     },
     "TABLE": {
       "EMPLOYEE_ID": "No.",
@@ -551,6 +554,9 @@
       "ZIP_CODE": "Zip Code",
       "CITY": "City",
       "TAX_NUMBER": "Tax No."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Label already exists"
     }
   },
   "SUB-CONTRACTS": {
@@ -867,6 +873,9 @@
     "MODAL": {
       "NEW": "New Dunning level",
       "DELETE": "Delete Dunning level"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "A Dunning Level already exists"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -1182,6 +1191,9 @@
     "MODAL": {
       "NEW": "New Biller",
       "DELETE": "Delete Biller"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Biller already exists"
     }
   },
   "REALIZATION_PROBABILITIES": {
@@ -1290,5 +1302,55 @@
     "OPTIONS": {
       "SELECT_NONE": "None"
     }
+  },
+  "TABLES_BD": {
+    "customer": "Customer",
+    "contactperson": "Contact Person",
+    "employee": "Employee",
+    "employmentcontract": "Employment Contract",
+    "project": "Project",
+    "order": "Order",
+    "ordercommission": "Order Commission",
+    "debt": "Debt",
+    "invoice": "Invoice",
+    "basiccontract": "Basic Contract",
+    "contractordercommission": "Contract Order Commission",
+    "contractor": "Contractor",
+    "subcontract": "Subcontract",
+    "subcontractproject": "Subcontract Project",
+    "subcontractyear": "Subcontract Year",
+    "user": "User",
+    "userrole": "User Role",
+    "role": "User Role",
+    "roleright": "Role Rights",
+    "employeeiws": "Employee IWS",
+    "iwscommission": "IWS Commission",
+    "teamiws": "Team IWS",
+    "employeecategory": "Employee Category",
+    "fundingprogram": "Funding Program",
+    "costtype": "Cost Type",
+    "biller": "Biller",
+    "vat": "Vat",
+    "vatrate": "Vat Rate",
+    "reminderlevel": "Reminder Level",
+    "invoicetype": "Invoice Type",
+    "paycondition": "Payment Condition",
+    "contractstatus": "Contract Status",
+    "ORDER_TYPES": "Order Types",
+    "approvalstatus": "Approval Status",
+    "absencetype": "Absence Type",
+    "holidayyear": "Holiday Year",
+    "state": "State",
+    "network": "Network",
+    "networkpartner": "Network Partner",
+    "salutation": "Salutation",
+    "country": "Country",
+    "title": "Title",
+    "projectstatus": "Project Status",
+    "promoter": "Promoter",
+    "chance": "Chance",
+    "system": "System",
+    "text": "Text",
+    "companytype": "Company Type"
   }
 }

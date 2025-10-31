@@ -7,8 +7,6 @@
           [columns]="columsHeaderField"
           [userPreferences]="userDunningPreferences"
           [dataKeys]="dataKeys"
-          [sortField]="'levelNo'" 
-          [sortOrder]="1"
           (onColumnChanges)="onUserDunningPreferencesChanges($event)"
           (onCreateRegister)="handleTableEvents({ type: 'create' })"
           (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
@@ -18,6 +16,7 @@
       <div class="col-6">
         <app-edit-dunning-level
           [selectedDunningLevel]="selectedDunningLevelToEdit"
+          [existingDunningLevels]="dunningLevels()"
           (cancelAction)="onCancelEdit($event)"
         ></app-edit-dunning-level>
       </div>
@@ -35,6 +34,7 @@
         [modalType]="modalType"
         [visible]="visibleDunningLevelModal"
         [selectedDunningLevel]="selectedDunningLevel"
+        [existingDunningLevels]="dunningLevels()"
         (isVisibleModal)="onModalVisibilityChange($event)"
         (createDunningLevel)="onCreateDunningLevel($event)"
         (deleteDunningLevel)="onDeleteDunningLevel($event)"

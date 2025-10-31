@@ -17,6 +17,7 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
   @Input() visible: boolean = false;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedDunningLevel!: ReminderLevel | null;
+  @Input() existingDunningLevels: ReminderLevel[] = [];
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createDunningLevel = new EventEmitter<{created?: ReminderLevel, status: 'success' | 'error'}>();
   @Output() deleteDunningLevel = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
@@ -30,7 +31,7 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.dunningLevelForm = new FormGroup({
-      levelNo: new FormControl(null),
+      levelNo: new FormControl(null,[Validators.required]),
       reminderTitle: new FormControl(''),
       fee: new FormControl(null),
       interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
@@ -49,7 +50,16 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     if(this.dunningLevelForm.invalid || this.isLoading) return
+    
+    const levelNo = this.dunningLevelForm.value.levelNo;
+    const isDuplicate = this.existingDunningLevels.some(
+      level => level.levelNo === levelNo
+    );
 
+    if (isDuplicate) {
+      this.commonMessageService.showErrorRecordAlreadyExistWithDunningLevel();
+      return;
+    }
     this.isLoading = true;
     const dunningLevel: Omit<ReminderLevel, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       levelNo: this.dunningLevelForm.value.levelNo,

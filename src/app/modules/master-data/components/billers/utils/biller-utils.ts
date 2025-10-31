@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { BillerService } from '../../../../../Services/biller.service';
 import { Biller } from '../../../../../Entities/biller';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -40,7 +40,25 @@ export class BillerUtils {
    * @returns Observable that completes when biller is created
    */
   addBiller(biller: Omit<Biller, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Biller> {
-    return this.billerService.addBiller(biller);
+    const name = biller.name?.trim() || '';
+    if (!name) {
+      return throwError(() => new Error('Biller name is required'));
+    }
+
+    return this.billerNameExists(name).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('biller name already exists'));
+        }
+        return this.billerService.addBiller(biller);
+      }),
+      catchError((err) => {
+        if (err.message === 'biller name already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('BILLERS.ERROR.CREATION_FAILED'));
+      })
+    );
   }
 
   /**
@@ -82,6 +100,11 @@ export class BillerUtils {
       return throwError(() => new Error('Invalid biller data'));
     }
 
+    const name = biller.name?.trim() || '';
+    if (!name) {
+      return throwError(() => new Error('Biller name is required'));
+    }
+
     return this.billerService.getBillerById(biller.id).pipe(
       take(1),
       switchMap((currentBiller) => {
@@ -91,11 +114,37 @@ export class BillerUtils {
         if (currentBiller.version !== biller.version) {
           return throwError(() => createUpdateConflictError('Biller'));
         }
-        return this.billerService.updateBiller(biller);
+        
+        return this.billerNameExists(name, biller.id).pipe(
+          switchMap((exists) => {
+            if (exists) {
+              return throwError(() => new Error('biller name already exists'));
+            }
+            return this.billerService.updateBiller(biller);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating biller:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  /**
+   * NEW: Checks if a biller name already exists (case-insensitive comparison)
+   * @param name - Name to check
+   * @param excludeId - ID to exclude from check (for updates)
+   * @returns Observable emitting boolean indicating existence
+   */
+  private billerNameExists(name: string, excludeId?: number): Observable<boolean> {
+    return this.billerService.getAllBillers().pipe(
+      map(billers => billers.some(
+        biller => biller.id !== excludeId && 
+               biller.name?.toLowerCase() === name?.toLowerCase()
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check biller name existence'));
       })
     );
   }

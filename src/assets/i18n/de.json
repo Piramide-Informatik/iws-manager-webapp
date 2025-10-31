@@ -3,27 +3,27 @@
     "CUSTOMER_OVERVIEW": "Kunden",
     "CUSTOMER": "Kunde - ",
     "CUSTOMERS": {
-      "BASIC_CONTRACTS": " - Rahmenverträge",
-      "CONTRACTORS": " - Auftragnehmer",
-      "DETAILS": " - Details",
+      "BASIC_CONTRACTS": "Rahmenverträge",
+      "CONTRACTORS": "Auftragnehmer",
+      "DETAILS": "Details",
       "EMPLOYEES": "Mitarbeiter",
-      "EMPLOYMENT_CONTRACTS": " - Arbeitsverträge",
-      "INVOICES": " - Rechnungen",
-      "ORDERS": " - Aufträge",
-      "PROJECTS": " - Projekte",
-      "RECEIVABLES": " - Forderungen",
+      "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
+      "INVOICES": "Rechnungen",
+      "ORDERS": "Aufträge",
+      "PROJECTS": "Projekte",
+      "RECEIVABLES": "Forderungen",
       "SUBCONTRACTS": "Unteraufträge"
     },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
-      "BILLERS": "Stammdaten - Rechnungsersteller",
-      "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
+      "BILLERS": "Rechnungsersteller",
+      "BILLING_METHODS": "Verrechnungsarten",
       "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
-      "COSTS": "Stammdaten - Kostenarten",
+      "COSTS": "Kostenarten",
       "COUNTRIES": "Stammdaten - Länder",
-      "DUNNING_LEVELS": "Stammdaten - Mahnungstufen",
+      "DUNNING_LEVELS": "Mahnstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
       "HOLIDAYS": "Stammdaten - Feiertage",
@@ -65,7 +65,8 @@
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
     "NUMBER_MAX_12": "Maximalwert 12 erwartet",
     "FIELD_REQUIRED": "Pflichtfeld",
-    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet"
+    "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet",
+    "RECORD_ARLEADY_EXISTS": "Dieser Datensatz existiert bereits"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -110,7 +111,7 @@
     "IWS_TEAMS": "IWS - Teams",
     "COUNTRIES": "Länder",
     "COST": "Kostenarten",
-    "DUNNING_LEVELS": "Mahnungstufen",
+    "DUNNING_LEVELS": "Mahnstufen",
     "EMPLOYEE_QUALIFICATION": "Mitarbeiter-Qualifikationen",
     "NETWORKS": "Netzwerke",
     "PROJECT_STATUS": "Projektstatus",
@@ -240,7 +241,6 @@
     "REJECT_LABEL": "Nein"
   },
   "CUSTOMERS": {
-    "CUSTOMER_NAME": "Kunde",
     "TABLE": {
       "CUSTOMER_ID": "Nr.",
       "COMPANY_NAME": "Unternehmensname",
@@ -330,6 +330,9 @@
       "MAX_HOURS_PER_DAY": "Max Std Tag",
       "HOURLY_RATE": "Std.Satz",
       "SPECIAL_PAYMENT": "JaSoZa"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "Personal-Nr. existiert bereits"
     }
   },
   "CONTACT": {
@@ -555,6 +558,9 @@
       "ZIP_CODE": "PLZ",
       "CITY": "Ort",
       "TAX_NUMBER": "USt.-Ident-Nr."
+    },
+    "ERROR": {
+      "LABEL_ALREADY_EXISTS": "Kurzname existiert bereits"
     }
   },
   "SUB-CONTRACTS": {
@@ -575,10 +581,10 @@
       "DURATION_OF_USE": "Nutzungsdauer (Monate)"
     },
     "LABEL": {
-      "DELETE_SUBCONTRACT": "Untervertrag löschen",
+      "DELETE_SUBCONTRACT": "Unterauftrag löschen",
       "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
-      "DELETE_SUBCONTRACT_PROJECT": "Projekt wirklich löschen",
-      "NEW_SUBCONTRACT": "Neuer Untervertrag"
+      "DELETE_SUBCONTRACT_PROJECT": "Projekt löschen",
+      "NEW_SUBCONTRACT": "Neuer Unterauftrag"
     },
     "TABLE": {
       "ORDER_TITLE": "Autrag",
@@ -603,8 +609,8 @@
       "PROJECT": "Projekt",
       "SHARE": "Anteil",
       "AMOUNT": "Betrag",
-      "MODAL_TITLE_NEW": "Unterauftrag - Projekte",
-      "MODAL_TITLE_EDIT": "Unterauftrag - Projekte"
+      "MODAL_TITLE_NEW": "Unterauftrag - neues Projekt",
+      "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
     }
   },
   "ABSENCE_TYPES": {
@@ -871,6 +877,9 @@
     "MODAL": {
       "NEW": "Neue Mahnstufe",
       "DELETE": "Mahnstufe löschen"
+    },
+    "VALIDATION":{
+      "DUNNING_LVL_EXISTS": "Mahnstufe existiert bereits"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -1186,6 +1195,9 @@
     "MODAL": {
       "NEW": "Neuer Rechnungsersteller",
       "DELETE": "Rechnungsersteller löschen"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Rechnungsersteller existiert bereits"
     }
   },
   "REALIZATION_PROBABILITIES": {
@@ -1294,5 +1306,55 @@
     "OPTIONS": {
       "SELECT_NONE": "Ohne"
     }
+  },
+  "TABLES_BD": {
+    "customer": "Kunde",
+    "contactperson": "Ansprechpartner",
+    "employee": "Mitarbeiter",
+    "employmentcontract": "Arbeitsverträge",
+    "project": "Projekt",
+    "order": "Auftrag",
+    "ordercommission": "Auftragsprovision",
+    "debt": "Forderung",
+    "invoice": "Rechnungsempfänger",
+    "basiccontract": "Rahmenvertrag",
+    "contractordercommission": "Auftragsprovision Vertrag",
+    "contractor": "Auftragnehmer",
+    "subcontract": "Untervertrag",
+    "subcontractproject": "Untervertragsprojekt",
+    "subcontractyear": "Untervertragsjahr",
+    "user": "Benutzer",
+    "userrole": "Benutzerrolle",
+    "role": "Benutzerrolle",
+    "roleright": "Rollenrechte",
+    "employeeiws": "IWS Mitarbeiter",
+    "iwscommission": "IWS Provisionen",
+    "teamiws": "IWS Teams",
+    "employeecategory": "Mitarbeiter-Qualifikationen",
+    "fundingprogram": "Förderprogramme",
+    "costtype": "Kostenarten",
+    "biller": "Rechnungsersteller",
+    "vat": "Umsatzsteuer",
+    "vatrate": "Umsatzsteuersätze",
+    "reminderlevel": "Mahnungstufen",
+    "invoicetype": "Abrechnungsmethoden",
+    "paycondition": "Zahlungsbedingungen",
+    "contractstatus": "Vertragsstatus",
+    "ORDER_TYPES": "Auftragsarten",
+    "approvalstatus": "Bewilligungsstati",
+    "absencetype": "Abwesenheitsarten",
+    "holidayyear": "Feiertage",
+    "state": "Bundesländer",
+    "network": "Anreden",
+    "networkpartner": "Netzwerkpartner",
+    "salutation": "Anrede",
+    "country": "Länder",
+    "title": "Titel",
+    "projectstatus": "Projektstatus",
+    "promoter": "Projektträger",
+    "chance": "Realisierungswahrscheinlichkeit",
+    "system": "Systemkonstanten",
+    "text": "Texte",
+    "companytype": "Unternehmensarten"
   }
 }
