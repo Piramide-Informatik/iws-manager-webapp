@@ -5,11 +5,16 @@
     margin-bottom: 1rem !important;
 
     label {
-      width: 70%;
+      width: 150px;
       white-space: nowrap;
+      flex-shrink: 0;
     }
   
-    input, textarea {
+    input, p-inputnumber,textarea {
       width: 100%;
     }
   }
+
+::ng-deep .p-inputnumber-input {
+  width: 100%;
+}

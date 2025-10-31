@@ -39,7 +39,7 @@
       "SALES_TAX": "Impuesto sobre Ventas",
       "SALUTATION": "Datos Maestros - Saludo",
       "STATES": "Datos Maestros - Estados",
-      "TERMS_OF_PAYMENT": "Datos Maestros - Términos de Pago",
+      "TERMS_OF_PAYMENT": "Términos de Pago",
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
       "TYPE_OF_COMPANIES": "Datos Maestros - Tipos de Empresas",
@@ -1179,6 +1179,7 @@
     "TITLE_FORM": "Editar Condición de Pago",
     "TERM_OF_PAYMENT_DAYS": "Condición de Pago (Días)",
     "INVOICE_TEXT": "Texto de la Factura",
+    "TERM_OF_PAYMENT_ALREADY_EXISTS": "Condición de Pago ya existe",
     "MODAL": {
       "NEW": "Nueva Condición de Pago",
       "DELETE": "Eliminar Condición de Pago"

@@ -369,6 +369,11 @@ input[type='number'] {
   flex-direction: column;
   width: 100%;
 
+  .p-inputtext.ng-invalid.ng-dirty.p-inputtext:enabled:focus {
+    border-color: #dc2626 !important;
+    box-shadow: none !important;
+  }
+
   p-inputnumber.ng-invalid.ng-dirty > .p-inputtext:enabled:focus {
     border-color: #dc2626 !important;
     box-shadow: none !important;
