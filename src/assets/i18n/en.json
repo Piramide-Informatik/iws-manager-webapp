@@ -305,6 +305,9 @@
       "QUALIFICATION_KMU_I": "Qualification KMU-i",
       "EMPLOYMENT_CONTRACTS": "Employment Contracts"
     },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "Employee number already exists"
+    },
     "TABLE": {
       "EMPLOYEE_ID": "No.",
       "FIRST_NAME": "First Name",

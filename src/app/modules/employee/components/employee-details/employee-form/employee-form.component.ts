@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { SalutationUtils } from '../../../../master-data/components/salutation/utils/salutation.utils';
 import { TitleUtils } from '../../../../master-data/components/title/utils/title-utils';
 import { QualificationFZUtils } from '../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
@@ -45,6 +45,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   public isLoading = false;
   public isLoadingDelete = false;
   public customer: any;
+  public customerEmployees: Employee[] = [];
 
   public salutations = toSignal(
     this.salutationUtils.getSalutationsSortedByName().pipe(
@@ -77,6 +78,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.updateTitle('...');
     this.activatedRoute.params.subscribe(params => {
       const employeeId = params['employeeId'];
+      const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
       if (!employeeId) {
         this.formType = 'create';
         const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
@@ -84,11 +86,18 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           this.customerUtils.getCustomerById(customerId).subscribe(customer => {
             this.customer = customer;
             this.updateTitle(customer?.customername1!);
+
+            this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe(employees => {
+            this.customerEmployees = employees;
+          });
           });
         }
 
       } else {
         this.formType = 'update';
+        if (customerId) {
+          this.loadCustomerEmployees(customerId); // 👈 agrega esto
+        }
         this.subscriptions.add(
           this.employeeUtils.getEmployeeById(employeeId).subscribe({
             next: (employee) => {
@@ -132,7 +141,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.employeeForm = new FormGroup({
-      employeeNumber: new FormControl(null, [Validators.required]),
+      employeeNumber: new FormControl(null,[Validators.required]),
       salutation: new FormControl(''),
       title: new FormControl(''),
       employeeFirstName: new FormControl(''),
@@ -249,15 +258,27 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private createEmployee(newEmployee: Omit<Employee, 'id'>): void {
+    const employeeNumber = newEmployee.employeeno?.toString().trim();
+    const exists = this.customerEmployees.some(
+      e => e.employeeno?.toString().trim() === employeeNumber
+    );
+
+    if (exists) {
+      this.commonMessageService.showErrorRecordAlreadyExistWithNumberEmployee();
+      return; // sale sin llamar al backend
+    }
+
     this.isLoading = true;
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: (createdEmployee) => {
           this.isLoading = false;
           this.commonMessageService.showCreatedSuccesfullMessage();
+          // Actualizar lista local para futuras validaciones
+          this.customerEmployees.push(createdEmployee);
           setTimeout(() => {
             this.resetFormAndNavigation(createdEmployee.id);
-          }, 2000)
+          }, 2000);
         },
         error: (err) => {
           this.isLoading = false;
@@ -269,21 +290,43 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private updateEmployee(updatedEmployee: Employee): void {
-    this.isLoading = true;
-    this.subscriptions.add(
-      this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
-        next: (editeEmployee) => {
-          this.isLoading = false;
-          this.commonMessageService.showEditSucessfullMessage();
-          this.currentEmployee = editeEmployee;
-          this.buildUpdatedEmployee();
-        },
-        error: (err) => {
-          this.isLoading = false;
-          this.handleUpdateEmployeeError(err)
-        }
-      })
+  const employeeNumber = updatedEmployee.employeeno?.toString().trim() ?? '';
+
+  if (employeeNumber) {
+    const duplicate = this.customerEmployees.some(
+      e => e.id !== updatedEmployee.id && e.employeeno?.toString().trim() === employeeNumber
     );
+
+    if (duplicate) {
+      this.commonMessageService.showErrorRecordAlreadyExistWithNumberEmployee();
+      return;
+    }
+  }
+
+  this.isLoading = true;
+
+  this.subscriptions.add(
+    this.employeeUtils.updateEmployee(updatedEmployee).subscribe({
+      next: (editedEmployee) => {
+        this.isLoading = false;
+        this.commonMessageService.showEditSucessfullMessage();
+        this.currentEmployee = editedEmployee;
+
+        const index = this.customerEmployees.findIndex(e => e.id === editedEmployee.id);
+        if (index === -1) {
+          this.customerEmployees[index] = editedEmployee;
+        } else {
+          console.warn(`Empleado con id ${editedEmployee.id} no encontrado en la lista local.`);
+        }
+
+        this.buildUpdatedEmployee();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.handleUpdateEmployeeError(err);
+      }
+    })
+  );
   }
 
   onEmployeeDeleteConfirm() {
@@ -351,5 +394,22 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private updateTitle(name: string): void {
     this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYEES'));
+  }
+
+  private employeeNumberUniqueValidator(control: AbstractControl): ValidationErrors | null {
+  const employeeNumber = control.value;
+  const exists = this.customerEmployees.some(
+    (e) => e.employeeno === employeeNumber
+  );
+
+  return exists ? { employeeNumberExists: true } : null;
+}
+  private loadCustomerEmployees(customerId: number): void {
+    this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe({
+      next: (employees) => {
+        this.customerEmployees = employees;
+      },
+      error: (err) => console.error('Error loading employees list:', err)
+    });
   }
 }
