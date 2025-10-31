@@ -244,7 +244,6 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     setTimeout(() => {
       if (this.firstInput) {
         this.firstInput.focus();
-        this.firstInput.show();
       }
     }, 300)
   }
