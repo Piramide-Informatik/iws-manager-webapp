@@ -3,11 +3,32 @@
         <div class="flex flex-column mt-4">
             <div class="billers-form flex flex-row mb-3 align-items-center gap-4">
                 <label for="name">{{ 'SIDEBAR.BILLERS' | translate }}</label>
-                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+                <div class="input-message">
+                  <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
+                      [attr.invalid]="(billerForm.get('name')?.invalid && 
+                      billerForm.get('name')?.dirty) 
+                      || nameAlreadyExist"
+                  />
+                  <p-message 
+                    severity="error" 
+                    [showTransitionOptions]="'0ms'" 
+                    variant="simple" 
+                    size="small" 
+                    *ngIf="(billerForm.get('name')?.invalid && 
+                    billerForm.get('name')?.dirty) 
+                    || nameAlreadyExist">
+                    <span *ngIf="billerForm.get('name')?.errors?.['required'] && billerForm.get('name')?.dirty">
+                      {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </span>
+                    <span *ngIf="nameAlreadyExist && !billerForm.get('name')?.errors?.['required']">
+                      {{ 'BILLERS.ERROR.NAME_ALREADY_EXIST' | translate }}
+                    </span>
+                  </p-message>
+                </div>
             </div>
             <div class="row">
                 <div class="col flex justify-content-center">
-                    <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="billerForm.invalid || isLoading || !billerForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="!billerForm.valid || isLoading || !billerForm.dirty" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                     <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="closeModal()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>

@@ -1,9 +1,9 @@
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PayConditionUtils } from '../../utils/pay-condition-utils';
 import { PayConditionStateService } from '../../utils/pay-condition-state.services';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { PayCondition } from '../../../../../../Entities/payCondition';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
@@ -24,10 +24,11 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
   public isLoading: boolean = false;
   public editTermPaymentForm!: FormGroup;
   public occErrorTermPaymentType: OccErrorType = 'UPDATE_UPDATED';
+  public nameAlreadyExist: boolean = false;
 
   ngOnInit(): void {
     this.editTermPaymentForm = new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
       deadline: new FormControl(''),
       text: new FormControl(''),
     });
@@ -56,14 +57,17 @@ export class EditTermPaymentComponent implements OnInit, OnDestroy {
       this.clearForm();
       this.commonMessageService.showEditSucessfullMessage();
     },
-    error: (error: Error) => {
+    error: (error: any) => {
       this.isLoading = false;
+      this.commonMessageService.showErrorEditMessage();
       if (error instanceof OccError) { 
         this.showOCCErrorModaPay = true;
         this.occErrorTermPaymentType = error.errorType;
-        this.commonMessageService.showErrorEditMessage();
-      } else {
-        this.commonMessageService.showErrorEditMessage();
+      } else if(error.message === 'pay condition already exists'){
+        this.nameAlreadyExist = true;
+        this.editTermPaymentForm.get('name')?.valueChanges.pipe(take(1)).subscribe(() => {
+          this.nameAlreadyExist = false;
+        });
       }
     }
   });

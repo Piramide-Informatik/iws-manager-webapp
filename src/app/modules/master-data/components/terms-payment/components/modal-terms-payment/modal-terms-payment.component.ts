@@ -1,9 +1,10 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { PayConditionUtils } from '../../utils/pay-condition-utils';
 import { PayCondition } from '../../../../../../Entities/payCondition';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-modal-terms-payment',
@@ -22,9 +23,10 @@ export class ModalTermsPaymentComponent implements OnChanges {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
+  public nameAlreadyExist: boolean = false;
 
   public readonly payConditionForm = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
     deadline: new FormControl(null),
     text: new FormControl('')
   });
@@ -57,44 +59,50 @@ export class ModalTermsPaymentComponent implements OnChanges {
         this.closeModal();
         this.createPayCondition.emit({ created, status: 'success' });
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
         this.createPayCondition.emit({ status: 'error' });
+        if(error.message === 'pay condition already exists'){
+          this.nameAlreadyExist = true;
+          this.payConditionForm.get('name')?.valueChanges.pipe(take(1)).subscribe(() => {
+            this.nameAlreadyExist = false;
+          });
+        }
       }
     });
   }
 
-confirmDelete(): void {
-  this.isLoading = true;
+  confirmDelete(): void {
+    this.isLoading = true;
 
-  this.payConditionUtils.deletePayCondition(this.termPayment.id).subscribe({
-    next: () => {
-      this.isLoading = false;
-      this.closeModal();
-      this.deletePayCondition.emit({ status: 'success' });
-    },
-    error: (error) => {
-      this.isLoading = false;
+    this.payConditionUtils.deletePayCondition(this.termPayment.id).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.closeModal();
+        this.deletePayCondition.emit({ status: 'success' });
+      },
+      error: (error) => {
+        this.isLoading = false;
 
-      const errorMessage = error?.error?.message ?? '';
+        const errorMessage = error?.error?.message ?? '';
 
-      if (error instanceof OccError || error?.message.includes('404')) {
-        this.showOCCErrorModalTermsOfPayment = true;
-        this.occErrorTermsOfPaymentType = 'DELETE_UNEXISTED';
+        if (error instanceof OccError || error?.message.includes('404')) {
+          this.showOCCErrorModalTermsOfPayment = true;
+          this.occErrorTermsOfPaymentType = 'DELETE_UNEXISTED';
+          this.deletePayCondition.emit({ status: 'error', error });
+          return; 
+        }
+
+        if (errorMessage.includes('foreign key constraint fails')) {
+          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorMessage);
+          this.isVisibleModal.emit(false);
+          this.deletePayCondition.emit({ status: 'error', error });
+          return;
+        }
         this.deletePayCondition.emit({ status: 'error', error });
-        return; 
       }
-
-      if (errorMessage.includes('foreign key constraint fails')) {
-        this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorMessage);
-        this.isVisibleModal.emit(false);
-        this.deletePayCondition.emit({ status: 'error', error });
-        return;
-      }
-      this.deletePayCondition.emit({ status: 'error', error });
-    }
-  });
-}
+    });
+  }
 
 
   public closeModal(): void {

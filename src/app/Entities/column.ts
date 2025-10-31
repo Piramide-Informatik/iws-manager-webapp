@@ -8,7 +8,7 @@ export interface Column {
   };
   styles?: {},
   routerLink?: (row: any) => string;
-  type?: 'double' | 'date' | 'dateYear';
+  type?: 'double' | 'integer' | 'date' | 'dateYear';
   customClasses?: string[];
   classesTHead?: string[];
   useSameAsEdit?: boolean;
