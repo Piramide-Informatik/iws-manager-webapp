@@ -1263,7 +1263,8 @@
       "BILLING_TYPE": "Tipo de Facturación"
     },
     "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido"
+      "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido",
+      "BILLING_TYPE_ALREADY_EXIST": "Tipo de Facturación ya existe"
     },
     "MODAL": {
       "NEW": "Nuevo Tipo de Facturación",

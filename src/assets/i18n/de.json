@@ -122,7 +122,7 @@
     "TITLE": "Titel",
     "SALES_TAX": "Umsatzsteuer",
     "TYPES_OF_COMPANIES": "Unternehmensarten",
-    "BILLING_METHODS": "Abrechnungsmethoden",
+    "BILLING_METHODS": "Verrechnungsarten",
     "CONTRACT_STATUS": "Vertragsstatus",
     "TERMS_OF_PAYMENT": "Zahlungsbedingungen"
   },
@@ -1270,10 +1270,11 @@
       "BILLING_TYPE": "Verrechnungsart"
     },
     "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Verrechnungsart ist erforderlich"
+      "BILLING_TYPE_REQUIRED": "Verrechnungsart ist erforderlich",
+      "BILLING_TYPE_ALREADY_EXIST": "Verrechnungsart existiert bereits"
     },
     "MODAL": {
-      "NEW": "Neu Verrechnungsart",
+      "NEW": "Neue Verrechnungsart",
       "DELETE": "Verrechnungsart löschen"
     }
   },
