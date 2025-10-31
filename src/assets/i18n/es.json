@@ -18,10 +18,10 @@
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
-      "BILLERS": "Datos Maestros - Facturadores",
-      "BILLING_METHODS": "Datos Maestros - Métodos de Facturación",
+      "BILLERS": "Facturadores",
+      "BILLING_METHODS": "Métodos de Facturación",
       "CONTRACT_STATUS": "Datos Maestros - Estado del Contrato",
-      "COSTS": "Datos Maestros - Tipos de Costos",
+      "COSTS": "Tipos de Costos",
       "COUNTRIES": "Datos Maestros - Países",
       "DUNNING_LEVELS": "Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
@@ -1189,6 +1189,9 @@
     "MODAL": {
       "NEW": "Nuevo Facturador",
       "DELETE": "Eliminar Facturador"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Facturador ya existe"
     }
   },
   "REALIZATION_PROBABILITIES": {

@@ -18,10 +18,10 @@
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
       "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
-      "BILLERS": "Stammdaten - Rechnungsersteller",
-      "BILLING_METHODS": "Stammdaten - Abrechnungsmethoden",
+      "BILLERS": "Rechnungsersteller",
+      "BILLING_METHODS": "Verrechnungsarten",
       "CONTRACT_STATUS": "Stammdaten - Vertragsstatus",
-      "COSTS": "Stammdaten - Kostenarten",
+      "COSTS": "Kostenarten",
       "COUNTRIES": "Stammdaten - Länder",
       "DUNNING_LEVELS": "Mahnstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
@@ -1194,6 +1194,9 @@
     "MODAL": {
       "NEW": "Neuer Rechnungsersteller",
       "DELETE": "Rechnungsersteller löschen"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Rechnungsersteller existiert bereits"
     }
   },
   "REALIZATION_PROBABILITIES": {
