@@ -323,6 +323,9 @@
       "MAX_HOURS_PER_DAY": "Max. Horas/Día",
       "HOURLY_RATE": "Tafira por Hora",
       "SPECIAL_PAYMENT": "Pago Especial"
+    },
+    "VALIDATION": {
+      "EMPLOYEE_ID_EXISTS": "ID empleado ya existe"
     }
   },
   "CONTACT": {
