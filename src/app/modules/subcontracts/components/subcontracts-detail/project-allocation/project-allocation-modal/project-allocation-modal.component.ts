@@ -100,19 +100,18 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   private calculateTotalShare(): void {
     if (!this.currentSubcontract?.id) return;
 
-    // Calcular el share total excluyendo el proyecto actual en modo edición
     let totalShare = this.existingSubcontractProjects.reduce((sum, project) => {
       if (this.modalType === 'edit' && this.subcontractProject && project.id === this.subcontractProject.id) {
-        return sum; // Excluir el proyecto actual en edición
+        return sum; 
       }
       return sum + (project.share || 0);
     }, 0);
 
-    // Agregar el share del formulario actual
+  
     const currentFormShare = this.allocationForm.get('percentage')?.value || 0;
     totalShare += currentFormShare;
 
-    this.currentTotalShare = Math.round(totalShare * 100) / 100; // Redondear a 2 decimales
+    this.currentTotalShare = Math.round(totalShare * 100) / 100;
     this.showShareWarning = this.currentTotalShare !== 100;
   }
 
@@ -128,7 +127,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       const calculatedAmount = (share * invoiceGross * 0.01).toFixed(2);
 
       this.allocationForm.get('amount')?.setValue(calculatedAmount, { emitEvent: false });
-      
+
       // Recalcular el share total cuando cambie el porcentaje
       this.calculateTotalShare();
     });
@@ -179,37 +178,20 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   private uniqueProjectValidator(control: FormControl): { [key: string]: any } | null {
     const selectedProjectId = control.value;
 
-    if (!selectedProjectId || !this.currentSubcontract?.id) {
+    if (!selectedProjectId || this.existingSubcontractProjects.length === 0) {
       return null;
     }
 
-    this.subcontractProjectUtils.getAllSubcontractsProject(this.currentSubcontract.id).subscribe({
-      next: (subcontractProjects) => {
-        const projectExists = subcontractProjects.some(existingProject => {
-          if (this.modalType === 'edit' && this.subcontractProject && this.subcontractProject.id) {
-            return existingProject.project?.id === selectedProjectId &&
-              existingProject.id !== this.subcontractProject.id;
-          }
-
-          // Verify when creating
-          return existingProject.project?.id === selectedProjectId;
-        });
-
-        // Update validation
-        if (projectExists && !control.hasError('projectExists')) {
-          control.setErrors({ ...control.errors, projectExists: true });
-        } else if (!projectExists && control.hasError('projectExists')) {
-          const errors = { ...control.errors };
-          delete errors['projectExists'];
-          control.setErrors(Object.keys(errors).length > 0 ? errors : null);
-        }
-      },
-      error: () => {
-        console.error('Error loading subcontract projects for validation');
+    const projectExists = this.existingSubcontractProjects.some(existingProject => {
+      if (this.modalType === 'edit' && this.subcontractProject?.id) {
+        return existingProject.project?.id === selectedProjectId &&
+          existingProject.id !== this.subcontractProject.id;
       }
+
+      return existingProject.project?.id === selectedProjectId;
     });
 
-    return null;
+    return projectExists ? { projectExists: true } : null;
   }
 
   private createSubcontractProject(): void {
