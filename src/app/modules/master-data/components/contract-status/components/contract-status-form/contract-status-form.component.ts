@@ -14,7 +14,8 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 export class ContractStatusFormComponent implements OnInit, OnChanges {
   @Input() contractStatus!: ContractStatus;
   @Input() isLoading: boolean = false;
-  
+  @Input() existingContractStatus: ContractStatus[] = [];
+
   contractStatusForm!: FormGroup;
   @Output() contractStatusToEdit = new EventEmitter<ContractStatus | null>();
   @Output() cancelEditContractStatus = new EventEmitter<any>();
@@ -49,6 +50,15 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     if (this.contractStatusForm.valid && this.contractStatusForm.dirty && this.contractStatus) {
+      const statusName = this.contractStatusForm.value.status?.trim();
+      const isDuplicate = this.existingContractStatus.some(
+        status => status.status === statusName
+      );
+
+      if (isDuplicate) {
+        this.commonMessageService.showErrorRecordAlreadyExist();
+        return;
+      }
       this.isLoading = true;
       const value = this.contractStatusForm.value;
       const updatedContractStatus: ContractStatus = {
