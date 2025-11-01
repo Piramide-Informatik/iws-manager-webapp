@@ -50,7 +50,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   private projects: Project[] = [];
   public projectLabels = toSignal(
-    this.projectUtils.getAllProjectByCustomerId(this.customerId).pipe(
+    this.projectUtils.getAllProjects().pipe(
       map(projects => {
         this.projects = projects;
         return projects.map(({ id, projectLabel }) => ({ id, projectLabel }))
@@ -244,7 +244,6 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     setTimeout(() => {
       if (this.firstInput) {
         this.firstInput.focus();
-        this.firstInput.show();
       }
     }, 300)
   }
