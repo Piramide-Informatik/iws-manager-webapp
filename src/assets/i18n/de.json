@@ -611,6 +611,13 @@
       "AMOUNT": "Betrag",
       "MODAL_TITLE_NEW": "Unterauftrag - neues Projekt",
       "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
+    },
+    "ERROR": {
+      "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet."
+    },
+    "WARNING": {
+      "SHARE_NOT_100_PERCENT": "Die gesamte Anteilszuweisung beträgt nicht 100%",
+      "CURRENT_TOTAL": "Aktueller Gesamtbetrag"
     }
   },
   "ABSENCE_TYPES": {

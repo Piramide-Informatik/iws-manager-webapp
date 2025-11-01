@@ -3,15 +3,18 @@
     <div class="form-item-container flex gap-4 mb-3">
       <label for="projectLabel" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
       <div class="input-message w-full">
-        <p-select #pSelect formControlName="projectLabel" inputId="country" [options]="projectLabels()"
+        <p-select #pSelect formControlName="projectLabel" inputId="projectLabel" [options]="projectLabels()"
           optionLabel="projectLabel" optionValue="id" appendTo="body"
           [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           [ngClass]="{'ng-invalid': allocationForm.get('projectLabel')?.invalid && allocationForm.get('projectLabel')?.dirty}"></p-select>
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
-            allocationForm.get('projectLabel')?.invalid && 
-            allocationForm.get('projectLabel')?.touched && 
-            allocationForm.get('projectLabel')?.errors?.['required']">
-          {{ 'ERROR.FIELD_REQUIRED' | translate }}
+    allocationForm.get('projectLabel')?.invalid && 
+    allocationForm.get('projectLabel')?.touched">
+          {{
+          allocationForm.get('projectLabel')?.errors?.['projectExists'] ?
+          ('SUB-CONTRACTS.ERROR.PROJECT_ALREADY_EXISTS' | translate) :
+          ('ERROR.FIELD_REQUIRED' | translate)
+          }}
         </p-message>
       </div>
     </div>
@@ -36,6 +39,16 @@
         [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" [minFractionDigits]="2"
         [maxFractionDigits]="2" locale="de-DE" autocomplete="off" />
     </div>
+
+    <div *ngIf="showShareWarning" class="p-message p-message-warn mb-3">
+      <span class="p-message-icon pi pi-exclamation-triangle"></span>
+      <div class="p-message-content">
+        <small>{{ 'SUB-CONTRACTS.WARNING.SHARE_NOT_100_PERCENT' | translate }}</small>
+        <small>{{ 'SUB-CONTRACTS.WARNING.CURRENT_TOTAL' | translate }}: {{ currentTotalShare }}%</small>
+      </div>
+    </div>
+
+
     <div class="flex justify-content-center gap-2">
       <p-button type="submit" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" [loading]="isLoading"
         [disabled]="allocationForm.invalid || !allocationForm.dirty" iconPos="left" size="small"></p-button>
