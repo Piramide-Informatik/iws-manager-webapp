@@ -114,8 +114,8 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
       }
     } 
     // Check for general "in use" error
-    else if (errorMessage.includes('it is in use by other entities')) {
-      detail = inUseDetail ?? defaultDetail;
+    else if (errorMessage.includes('foreign key constraint')) {
+      detail = errorMessage;
     } else if(errorMessage.includes('username already exists')){
       detail = defaultDetail;
       this.usernameAlreadyExist = true;
@@ -143,7 +143,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
     ).subscribe({
       next: () => this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS'),
       error: (error) => {
-        this.handleDeleteError(error);
+        this.handleDeleteErrorOCC(error);
         this.handleOperationError(error, 'MESSAGE.DELETE_FAILED', 'MESSAGE.DELETE_ERROR_IN_USE')
       }
     });
@@ -151,7 +151,7 @@ export class UserModalComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptions.add(sub);
   }
 
-  handleDeleteError(error: Error) {
+  handleDeleteErrorOCC(error: Error) {
     if (error instanceof OccError || error?.message.includes('404')) {
       this.showOCCErrorModalUser = true;
       this.occErrorType = 'DELETE_UNEXISTED';

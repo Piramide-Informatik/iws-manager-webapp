@@ -102,7 +102,7 @@ export class UserUtils {
                 
                 return this.userExists(user.username).pipe(
                     switchMap((exists) => {
-                        if (exists) {
+                        if (exists && currentUser.username.toLowerCase() !== user.username.toLowerCase()) {
                             return throwError(() => new Error('username already exists'));
                         }
                         return this.userService.updateUser(user);
