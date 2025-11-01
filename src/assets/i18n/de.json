@@ -611,6 +611,9 @@
       "AMOUNT": "Betrag",
       "MODAL_TITLE_NEW": "Unterauftrag - neues Projekt",
       "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
+    },
+    "ERROR": {
+      "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet."
     }
   },
   "ABSENCE_TYPES": {

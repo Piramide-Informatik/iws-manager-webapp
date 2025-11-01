@@ -607,6 +607,9 @@
       "AMOUNT": "Amount",
       "MODAL_TITLE_NEW": "Subcontract - New project",
       "MODAL_TITLE_EDIT": "Subcontract - Edit project"
+    },
+    "ERROR": {
+      "PROJECT_ALREADY_EXISTS": "Project already exists."
     }
   },
   "ABSENCE_TYPES": {

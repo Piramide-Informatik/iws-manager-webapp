@@ -3,15 +3,18 @@
     <div class="form-item-container flex gap-4 mb-3">
       <label for="projectLabel" class="w-3">{{ 'SUB-CONTRACTS.PROJECT.PROJECT' | translate }}</label>
       <div class="input-message w-full">
-        <p-select #pSelect formControlName="projectLabel" inputId="country" [options]="projectLabels()"
+        <p-select #pSelect formControlName="projectLabel" inputId="projectLabel" [options]="projectLabels()"
           optionLabel="projectLabel" optionValue="id" appendTo="body"
           [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           [ngClass]="{'ng-invalid': allocationForm.get('projectLabel')?.invalid && allocationForm.get('projectLabel')?.dirty}"></p-select>
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
-            allocationForm.get('projectLabel')?.invalid && 
-            allocationForm.get('projectLabel')?.touched && 
-            allocationForm.get('projectLabel')?.errors?.['required']">
-          {{ 'ERROR.FIELD_REQUIRED' | translate }}
+    allocationForm.get('projectLabel')?.invalid && 
+    allocationForm.get('projectLabel')?.touched">
+          {{
+          allocationForm.get('projectLabel')?.errors?.['projectExists'] ?
+          ('SUB-CONTRACTS.ERROR.PROJECT_ALREADY_EXISTS' | translate) :
+          ('ERROR.FIELD_REQUIRED' | translate)
+          }}
         </p-message>
       </div>
     </div>

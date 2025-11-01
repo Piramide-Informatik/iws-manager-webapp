@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -28,7 +28,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
   @Output() SubcontractProjectUpdated = new EventEmitter<SubcontractProject>();
-  @Output() subcontractProjectCreated = new EventEmitter<{ status: 'success' | 'error'}>();
+  @Output() subcontractProjectCreated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() subcontractProjectDeleted = new EventEmitter<SubcontractProject>();
 
   @ViewChild('pSelect') firstInput!: Select;
@@ -82,7 +82,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
-      projectLabel: ['', [Validators.required]],
+      projectLabel: ['', [Validators.required, this.uniqueProjectValidator.bind(this)]],
       percentage: ['', [Validators.max(100)]],
       amount: [{ value: '', disabled: true }]
     });
@@ -127,6 +127,42 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     }
   }
 
+  private uniqueProjectValidator(control: FormControl): { [key: string]: any } | null {
+    const selectedProjectId = control.value;
+
+    if (!selectedProjectId || !this.currentSubcontract?.id) {
+      return null;
+    }
+
+    this.subcontractProjectUtils.getAllSubcontractsProject(this.currentSubcontract.id).subscribe({
+      next: (subcontractProjects) => {
+        const projectExists = subcontractProjects.some(existingProject => {
+          if (this.modalType === 'edit' && this.subcontractProject && this.subcontractProject.id) {
+            return existingProject.project?.id === selectedProjectId &&
+              existingProject.id !== this.subcontractProject.id;
+          }
+
+          // Verify when creating
+          return existingProject.project?.id === selectedProjectId;
+        });
+
+        // Update validation
+        if (projectExists && !control.hasError('projectExists')) {
+          control.setErrors({ ...control.errors, projectExists: true });
+        } else if (!projectExists && control.hasError('projectExists')) {
+          const errors = { ...control.errors };
+          delete errors['projectExists'];
+          control.setErrors(Object.keys(errors).length > 0 ? errors : null);
+        }
+      },
+      error: () => {
+        console.error('Error loading subcontract projects for validation');
+      }
+    });
+
+    return null; 
+  }
+
   private createSubcontractProject(): void {
     if (this.allocationForm.invalid) return;
 
@@ -143,13 +179,13 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       this.subcontractProjectUtils.createNewSubcontractProject(newSubcontractProject).subscribe({
         next: (created: SubcontractProject) => {
           this.isLoading = false;
-          this.subcontractProjectCreated.emit({status: 'success'});
+          this.subcontractProjectCreated.emit({ status: 'success' });
           this.commonMessageService.showCreatedSuccesfullMessage();
           this.isProjectAllocationVisibleModal.emit(false);
         },
         error: () => {
           this.isLoading = false;
-          this.subcontractProjectCreated.emit({ status: 'error'});
+          this.subcontractProjectCreated.emit({ status: 'error' });
           this.commonMessageService.showErrorCreatedMessage();
         }
       })

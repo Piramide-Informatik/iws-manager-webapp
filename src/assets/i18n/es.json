@@ -606,6 +606,9 @@
       "AMOUNT": "Cantidad",
       "MODAL_TITLE_NEW": "Subcontratación - Nuevo proyecto",
       "MODAL_TITLE_EDIT": "Subcontratación - Editar proyecto"
+    },
+    "ERROR": {
+      "PROJECT_ALREADY_EXISTS": "El proyecto ya existe."
     }
   },
   "ABSENCE_TYPES": {
