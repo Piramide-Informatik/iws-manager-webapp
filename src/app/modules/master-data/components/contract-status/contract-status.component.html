@@ -11,6 +11,7 @@
             <app-contract-status-form #contractForm
              [contractStatus] = "selectedContractStatusToEdit"
              [isLoading]="isLoading"
+             [existingContractStatus]="contractStatusValues"
              (contractStatusToEdit) = "onContractStatusToEdit($event)"
              (cancelEditContractStatus) = "onCancelEdit($event)"
             ></app-contract-status-form>

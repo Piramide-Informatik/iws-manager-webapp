@@ -4,18 +4,38 @@
 >
   <form [formGroup]="costForm" (ngSubmit)="updateCost()">
     <div class="align-items-center mb-2">
-      <div class="cost-form mb-2">
+      <div class="cost-form mb-3">
         <label for="type">{{ "COSTS.LABEL.NAME" | translate }}</label>
-        <input #firstInput
-          pInputText
-          type="text"
-          id="type"
-          formControlName="type"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input #firstInput
+            pInputText
+            type="text"
+            id="type"
+            formControlName="type"
+            autocomplete="off"
+            [attr.invalid]="(costForm.get('type')?.invalid && 
+            costForm.get('type')?.dirty) 
+            || typeAlreadyExist"
+          />
+          <p-message 
+            severity="error" 
+            [showTransitionOptions]="'0ms'" 
+            variant="simple" 
+            size="small" 
+            *ngIf="(costForm.get('type')?.invalid && 
+            costForm.get('type')?.dirty) 
+            || typeAlreadyExist">
+            <span *ngIf="costForm.get('type')?.errors?.['required'] && costForm.get('type')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="typeAlreadyExist && !costForm.get('type')?.errors?.['required']">
+              {{ 'COSTS.ERROR.TYPE_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+        </div>
       </div>
 
-      <div class="cost-form mb-2">
+      <div class="cost-form mb-4">
         <label for="sequenceNo">{{ "COSTS.LABEL.SORT" | translate }}</label>
         <p-inputnumber [inputStyle]="{'text-align': 'right'}"
           inputId="sequenceNo"

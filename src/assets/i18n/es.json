@@ -20,7 +20,7 @@
       "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
       "BILLERS": "Facturadores",
       "BILLING_METHODS": "Métodos de Facturación",
-      "CONTRACT_STATUS": "Datos Maestros - Estado del Contrato",
+      "CONTRACT_STATUS": "Estado del Contrato",
       "COSTS": "Tipos de Costos",
       "COUNTRIES": "Datos Maestros - Países",
       "DUNNING_LEVELS": "Niveles de Cobranza",
@@ -38,7 +38,7 @@
       "SYSTEM_CONSTANTS": "Datos Maestros - Constantes del Sistema",
       "SALES_TAX": "Impuesto sobre Ventas",
       "SALUTATION": "Datos Maestros - Saludo",
-      "STATES": "Datos Maestros - Estados",
+      "STATES": "Estados",
       "TERMS_OF_PAYMENT": "Términos de Pago",
       "TEXTS": "Datos Maestros - Textos",
       "TITLE": "Datos Maestros - Título",
@@ -666,7 +666,7 @@
     "LABEL": {
       "STATE": "Estado Federal",
       "EDIT_STATE": "Editar Estado",
-      "NEW_STATE": "Crear Estado Federal",
+      "NEW_STATE": "Nuevo Estado Federal",
       "DELETE_STATE": "Eliminar Estado Federal"
     },
     "ERROR": {
@@ -1056,6 +1056,9 @@
     "MODAL": {
       "CREATE_COST_TYPE": "Nuevo tipo de costo",
       "DELETE_COST_TYPE": "Eliminar tipo de costo"
+    },
+    "ERROR": {
+    "TYPE_ALREADY_EXIST": "El tipo de costo ya existe"
     }
   },
   "PAGINATION": {
@@ -1278,7 +1281,8 @@
       "BILLING_TYPE": "Tipo de Facturación"
     },
     "ERROR": {
-      "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido"
+      "BILLING_TYPE_REQUIRED": "Tipo de Facturación es requerido",
+      "BILLING_TYPE_ALREADY_EXIST": "Tipo de Facturación ya existe"
     },
     "MODAL": {
       "NEW": "Nuevo Tipo de Facturación",

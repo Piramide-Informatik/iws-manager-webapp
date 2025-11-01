@@ -127,7 +127,9 @@ export class StateModalComponent implements OnInit, OnChanges {
     const stateName = this.stateForm.value.name?.trim() ?? '';
 
     this.stateUtils.stateExists(stateName).subscribe({
-      next: (exists) => this.handleStateExistence(exists, stateName),
+      next: (exists) => {
+        this.handleStateExistence(exists, stateName)
+      },
       error: (err) => this.handleStateError('STATES.ERROR.CHECKING_DUPLICATE', err)
     });
   }
@@ -143,14 +145,8 @@ export class StateModalComponent implements OnInit, OnChanges {
 
   private handleStateExistence(exists: boolean, stateName: string) {
     if (exists) {
-      this.errorStateMessage = 'STATES.ERROR.STATE_ALREADY_EXIST';
-      this.messageService.add({
-        severity: 'error',
-        summary: this.translateService.instant('MESSAGE.ERROR'),
-        detail: this.translateService.instant(this.errorStateMessage)
-      });
+      this.commonMessageService.showErrorRecordAlreadyExist();
       this.isStateLoading = false;
-      this.handleStateClose();
       return;
     } 
     this.stateUtils.createNewState(stateName).subscribe({

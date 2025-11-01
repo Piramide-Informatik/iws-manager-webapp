@@ -3,13 +3,29 @@
 .contract-status-form {
     display: flex; 
     align-items: center;
+    margin-bottom: 1rem;
 
     label {
         width: 120px;
         flex-shrink: 0;
+        margin-bottom: 1rem;
     }
 
     input {
         width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .input-wrapper {
+    width: 100%;
+    position: relative;
+
+    .error-messages {
+        position: absolute;
+        bottom: -0.5rem; // debajo del input
+        left: 0;
+        color: #e24c4c !important;
+        font-size: 0.7rem;
+    }
     }
 }
