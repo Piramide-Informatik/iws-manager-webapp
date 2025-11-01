@@ -47,6 +47,9 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   visibleSubcontractProjectModal = false;
   private readonly customerId: number = this.route.snapshot.params['id'];
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showShareWarning: boolean = false;
+  public currentTotalShare: number = 0;
+  private existingSubcontractProjects: SubcontractProject[] = [];
 
   private projects: Project[] = [];
   public projectLabels = toSignal(
@@ -70,6 +73,8 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
         this.subcontractUtils.getSubcontractById(subcontractId).subscribe(subcontract => {
           if (subcontract) {
             this.currentSubcontract = subcontract;
+            // Cargar los subcontractProjects existentes
+            this.loadExistingSubcontractProjects(subcontract.id);
           }
         })
       })
@@ -78,6 +83,37 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  private loadExistingSubcontractProjects(subcontractId: number): void {
+    this.subcontractProjectUtils.getAllSubcontractsProject(subcontractId).subscribe({
+      next: (projects) => {
+        this.existingSubcontractProjects = projects;
+        this.calculateTotalShare();
+      },
+      error: (error) => {
+        console.error('Error loading subcontract projects:', error);
+      }
+    });
+  }
+
+  private calculateTotalShare(): void {
+    if (!this.currentSubcontract?.id) return;
+
+    // Calcular el share total excluyendo el proyecto actual en modo edición
+    let totalShare = this.existingSubcontractProjects.reduce((sum, project) => {
+      if (this.modalType === 'edit' && this.subcontractProject && project.id === this.subcontractProject.id) {
+        return sum; // Excluir el proyecto actual en edición
+      }
+      return sum + (project.share || 0);
+    }, 0);
+
+    // Agregar el share del formulario actual
+    const currentFormShare = this.allocationForm.get('percentage')?.value || 0;
+    totalShare += currentFormShare;
+
+    this.currentTotalShare = Math.round(totalShare * 100) / 100; // Redondear a 2 decimales
+    this.showShareWarning = this.currentTotalShare !== 100;
   }
 
   private initializeForm(): void {
@@ -92,12 +128,14 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       const calculatedAmount = (share * invoiceGross * 0.01).toFixed(2);
 
       this.allocationForm.get('amount')?.setValue(calculatedAmount, { emitEvent: false });
+      
+      // Recalcular el share total cuando cambie el porcentaje
+      this.calculateTotalShare();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['subcontractProject'] && this.subcontractProject && this.modalType === 'edit') {
-
       this.allocationForm.patchValue({
         projectLabel: this.subcontractProject.project?.id ?? '',
         percentage: this.subcontractProject.share ?? '',
@@ -111,6 +149,17 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
     if (changes['isVisibleModal'] && this.isVisibleModal) {
       this.firstInputFocus();
+      // Recargar los datos cuando se abra el modal
+      if (this.currentSubcontract?.id) {
+        this.loadExistingSubcontractProjects(this.currentSubcontract.id);
+      }
+    }
+
+    // Recalcular cuando cambien los datos importantes
+    if (changes['subcontractProject'] || changes['currentSubcontract']) {
+      setTimeout(() => {
+        this.calculateTotalShare();
+      }, 100);
     }
   }
 
@@ -160,7 +209,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       }
     });
 
-    return null; 
+    return null;
   }
 
   private createSubcontractProject(): void {
@@ -228,6 +277,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       })
     );
   }
+
   private handleUpdateErrorOcc(err: any): void {
     if (err instanceof OccError) {
       this.showOCCErrorSubcontractProject = true;

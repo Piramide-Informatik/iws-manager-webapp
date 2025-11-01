@@ -610,6 +610,10 @@
     },
     "ERROR": {
       "PROJECT_ALREADY_EXISTS": "Project already exists."
+    },
+    "WARNING": {
+      "SHARE_NOT_100_PERCENT": "The total share allocation is not 100%",
+      "CURRENT_TOTAL": "Current total"
     }
   },
   "ABSENCE_TYPES": {

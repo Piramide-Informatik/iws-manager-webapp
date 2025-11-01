@@ -171,7 +171,7 @@
     "SELECT_AT_LEAST_ONE": "Debe de haber al menos una columna seleccionada.",
     "DELETE_ERROR_ROLES_ASSIGNED": "No se puede eliminar el usuario porque está asignado a {{count}} rol(es)",
     "DELETE_ERROR_HAS_ROLES": "No se puede eliminar el usuario porque tiene roles asignados",
-    "INVALID_EMAIL":"Formato de email inválido",
+    "INVALID_EMAIL": "Formato de email inválido",
     "REQUIRED_FIELD": "Campo obligatorio"
   },
   "primeng_date": {
@@ -609,6 +609,10 @@
     },
     "ERROR": {
       "PROJECT_ALREADY_EXISTS": "El proyecto ya existe."
+    },
+    "WARNING": {
+      "SHARE_NOT_100_PERCENT": "La asignación total de participación no es del 100%",
+      "CURRENT_TOTAL": "Total actual"
     }
   },
   "ABSENCE_TYPES": {
@@ -876,7 +880,7 @@
       "NEW": "Nuevo Nivel de Reclamación",
       "DELETE": "Borrar Nivel de Reclamación"
     },
-    "VALIDATION":{
+    "VALIDATION": {
       "DUNNING_LVL_EXISTS": "Ya existe Nivel de Reclamación"
     }
   },
