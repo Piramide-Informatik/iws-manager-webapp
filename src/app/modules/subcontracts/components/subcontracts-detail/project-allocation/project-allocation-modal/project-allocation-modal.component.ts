@@ -73,7 +73,6 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
         this.subcontractUtils.getSubcontractById(subcontractId).subscribe(subcontract => {
           if (subcontract) {
             this.currentSubcontract = subcontract;
-            // Cargar los subcontractProjects existentes
             this.loadExistingSubcontractProjects(subcontract.id);
           }
         })
@@ -128,7 +127,6 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
       this.allocationForm.get('amount')?.setValue(calculatedAmount, { emitEvent: false });
 
-      // Recalcular el share total cuando cambie el porcentaje
       this.calculateTotalShare();
     });
   }
@@ -148,13 +146,11 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
     if (changes['isVisibleModal'] && this.isVisibleModal) {
       this.firstInputFocus();
-      // Recargar los datos cuando se abra el modal
       if (this.currentSubcontract?.id) {
         this.loadExistingSubcontractProjects(this.currentSubcontract.id);
       }
     }
 
-    // Recalcular cuando cambien los datos importantes
     if (changes['subcontractProject'] || changes['currentSubcontract']) {
       setTimeout(() => {
         this.calculateTotalShare();
