@@ -151,7 +151,11 @@ export class UserTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toastMessageDisplay(message: {severity: string, summary: string, detail: string}): void {
-    this.commonMessageService.showCustomSeverityAndMessage(message.severity, message.summary, message.detail);
+    if(message.detail.includes('foreign key constraint')){
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(message.detail);
+    }else{
+      this.commonMessageService.showCustomSeverityAndMessage(message.severity, message.summary, message.detail);
+    }
   }
 
   editUser(user: { id: number, username: string, name: string, active: boolean }) {
