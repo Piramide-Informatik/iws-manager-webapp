@@ -92,11 +92,18 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         }
       });
     }
+
+    if (changes['subcontractsYear'] && this.depreciationForm) {
+      const yearControl = this.depreciationForm.get('year');
+      if (yearControl) {
+        yearControl.updateValueAndValidity();
+      }
+    }
   }
 
   private initForm(): void {
     this.depreciationForm = new FormGroup({
-      year: new FormControl(''),
+      year: new FormControl('', [Validators.required, this.uniqueYearValidator.bind(this)]),
       months: new FormControl(null, [Validators.min(0), Validators.max(12)]),
       depreciationAmount: new FormControl(null),
     });
@@ -119,9 +126,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
   loadColumns() {
     this.depreciationColumns = [
-      { field: 'year', customClasses: ['align-right'], type: 'dateYear', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')), filter : { type: 'text' } },
-      { field: 'usagePercentage', customClasses: ['align-right'], type: 'integer', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')), filter : { type: 'numeric' } },
-      { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')), filter : { type: 'numeric' } },
+      { field: 'year', customClasses: ['align-right'], type: 'dateYear', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')), filter: { type: 'text' } },
+      { field: 'usagePercentage', customClasses: ['align-right'], type: 'integer', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')), filter: { type: 'numeric' } },
+      { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')), filter: { type: 'numeric' } },
     ];
   }
 
@@ -275,6 +282,27 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         return acc;
       }, [])
     });
+  }
+
+  private uniqueYearValidator(control: FormControl): { [key: string]: any } | null {
+    const selectedYear = control.value;
+
+    if (!selectedYear || !this.subcontractsYear || this.subcontractsYear.length === 0) {
+      return null;
+    }
+
+    const formattedSelectedYear = momentFormatDate(selectedYear);
+
+    const yearExists = this.subcontractsYear.some(existingYear => {
+      if (this.modalType === 'edit' && this.selectedSubcontractYear) {
+        return existingYear.year === formattedSelectedYear &&
+          existingYear.id !== this.selectedSubcontractYear.id;
+      }
+
+      return existingYear.year === formattedSelectedYear;
+    });
+
+    return yearExists ? { yearExists: true } : null;
   }
 
   private firstInputFocus(): void {
