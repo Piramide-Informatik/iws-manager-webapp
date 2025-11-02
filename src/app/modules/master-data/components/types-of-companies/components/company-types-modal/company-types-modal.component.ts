@@ -63,11 +63,8 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
       this.companyTypeUtils.deleteCompanyType(this.companyTypeToDelete).subscribe({
         next: () => {
           this.closeModal();
-          this.handleDeletionCompanyType({
-            severity: 'success',
-            summary: 'MESSAGE.SUCCESS',
-            detail: 'MESSAGE.DELETE_SUCCESS'
-          });
+          this.commonMessageService.showDeleteSucessfullMessage();
+          this.isLoading = false;
         },
         error: (error) => {
           this.handleOCCDeleteError(error);
