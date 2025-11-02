@@ -17,7 +17,7 @@
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
-      "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
+      "APPROVAL_STATUS": "Bewilligungsstatus",
       "BILLERS": "Rechnungsersteller",
       "BILLING_METHODS": "Verrechnungsarten",
       "CONTRACT_STATUS": "Vertragsstatus",
@@ -102,7 +102,7 @@
     "ORDER_TYPES": "Auftragsarten",
     "USER": "Benutzer",
     "ROLES": "Benutzerrollen",
-    "APPROVAL_STATUS": "Bewilligungsstati",
+    "APPROVAL_STATUS": "Bewilligungsstatus",
     "STATES": "Bundesländer",
     "HOLIDAYS": "Feiertage",
     "FUNDING_PROGRAMS": "Förderprogramme",
