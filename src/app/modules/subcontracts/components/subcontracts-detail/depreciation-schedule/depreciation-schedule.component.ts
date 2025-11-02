@@ -42,6 +42,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   visibleSubcontractYearModal = false;
   public showOCCErrorModalSubcontractYear = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showMonthsWarning: boolean = false;
+  public currentTotalMonths: number = 0;
+  public expectedTotalMonths: number = 0;
 
   @Input() currentSubcontract!: Subcontract;
 
@@ -117,6 +120,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       const afamonths = this.currentSubcontract?.afamonths ?? 0;
       const depreciationAmount = this.calculateDepreciationAmount(invoiceNet, afamonths, months);
       this.depreciationForm.get('depreciationAmount')?.setValue(depreciationAmount, { emitEvent: false });
+      this.calculateTotalMonths();
     });
   }
 
@@ -245,6 +249,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
           this.commonMessageService.showDeleteSucessfullMessage();
           this.subcontractsYear = this.subcontractsYear.filter(de => de.id !== this.selectedSubcontractYear?.id);
           this.selectedSubcontractYear = undefined;
+          this.calculateTotalMonths();
         },
         error: (error) => {
           this.isLoadingDelete = false;
@@ -281,6 +286,8 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         } as DepreciationEntry);
         return acc;
       }, [])
+
+      this.calculateTotalMonths();
     });
   }
 
@@ -303,6 +310,33 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
     });
 
     return yearExists ? { yearExists: true } : null;
+  }
+
+  private calculateTotalMonths(): void {
+    if (!this.currentSubcontract?.afamonths) return;
+
+    // 1. Calcular suma total de TODOS los registros existentes
+    let totalMonths = this.subcontractsYear.reduce((sum, yearEntry) => {
+      return sum + (yearEntry.usagePercentage || 0);
+    }, 0);
+
+    // 2. Si estamos en modo 'edit', ajustar el total
+    if (this.modalType === 'edit' && this.selectedSubcontractYear) {
+      // Restamos los meses originales y sumamos los nuevos del formulario
+      const currentFormMonths = this.depreciationForm.get('months')?.value || 0;
+      totalMonths = totalMonths - this.selectedSubcontractYear.usagePercentage + currentFormMonths;
+    }
+    // 3. Si estamos en modo 'new', simplemente agregar los meses del formulario
+    else if (this.modalType === 'new') {
+      const currentFormMonths = this.depreciationForm.get('months')?.value || 0;
+      totalMonths += currentFormMonths;
+    }
+
+    this.currentTotalMonths = totalMonths;
+    this.expectedTotalMonths = this.currentSubcontract.afamonths;
+    this.showMonthsWarning = totalMonths !== this.currentSubcontract.afamonths;
+
+    console.log('Modal type:', this.modalType, 'Total meses:', totalMonths, 'Esperado:', this.expectedTotalMonths, 'Warning:', this.showMonthsWarning);
   }
 
   private firstInputFocus(): void {

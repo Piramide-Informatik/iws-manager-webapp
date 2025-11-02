@@ -53,6 +53,17 @@
             mode="decimal" [max]="99999.99" [min]="0" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" [useGrouping]="true" [disabled]="true" readonly />
         </div>
+
+        <!-- Mensaje de advertencia para meses totales -->
+        <div *ngIf="showMonthsWarning" class="p-message p-message-warn mb-3">
+          <span class="p-message-icon pi pi-exclamation-triangle"></span>
+          <div class="p-message-content warning-content">
+            <small class="warning-line">{{ 'SUB-CONTRACTS.WARNING.MONTHS_TOTAL_MISMATCH' | translate }}</small>
+            <small class="warning-line">{{ 'SUB-CONTRACTS.WARNING.CURRENT_TOTAL_MONTHS' | translate }}: {{ currentTotalMonths }} / {{
+              expectedTotalMonths }}</small>
+          </div>
+        </div>
+
         <div class="flex justify-content-center gap-2">
           <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" size="small" type="submit"
             [loading]="isLoading" [disabled]="depreciationForm.invalid || !depreciationForm.dirty"></p-button>
