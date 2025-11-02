@@ -3,25 +3,41 @@
     <div class="align-items-center display mb-2 mt-4">
       <div class="country-form">
         <label for="name">{{ "COUNTRIES.LABEL.NAME" | translate }}</label>
-        <input
-          #countryNameInput
-          pInputText
-          type="text"
-          id="name"
-          formControlName="name"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input
+            #countryNameInput
+            pInputText
+            type="text"
+            id="name"
+            formControlName="name"
+            autocomplete="off"
+            invalid="createCountryForm.get('name')?.invalid
+              && createCountryForm.get('name')?.dirty
+              || createCountryForm.get('name')?.touched"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            createCountryForm.get('name')?.invalid && 
+            createCountryForm.get('name')?.dirty
+            ">{{ ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+        </div>
       </div>
 
       <div class="country-form">
         <label for="abbreviation">{{ "COUNTRIES.LABEL.ABBREVIATION" | translate }}</label>
-        <input
-          pInputText
-          type="text"
-          id="abbreviation"
-          formControlName="abbreviation"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input
+            pInputText
+            type="text"
+            id="abbreviation"
+            formControlName="abbreviation"
+            autocomplete="off"
+            invalid="createCountryForm.get('abbreviation')?.invalid
+              && createCountryForm.get('abbreviation')?.dirty
+              || createCountryForm.get('abbreviation')?.touched"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            createCountryForm.get('abbreviation')?.invalid && 
+            createCountryForm.get('abbreviation')?.dirty
+            ">{{ ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+        </div>
       </div>
 
       <div class="country-form">
