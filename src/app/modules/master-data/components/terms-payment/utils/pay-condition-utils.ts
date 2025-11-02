@@ -103,7 +103,7 @@ export class PayConditionUtils {
         }
         return this.payConditionExists(payCondition.name).pipe(
           switchMap((exists) => {
-            if (exists) {
+            if (exists && currentPayCondition.name.toLowerCase() !== payCondition.name.toLowerCase()) {
               return throwError(() => new Error('pay condition already exists'));
             }
             return this.payConditionService.updatePayCondition(payCondition);

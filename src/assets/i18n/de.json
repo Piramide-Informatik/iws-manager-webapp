@@ -33,7 +33,7 @@
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
       "PROJECT_FUNNELS": "Stammdaten - Projektträger",
-      "REALIZATION_PROBABILITIES": "Stammdaten - Realisierungswahrscheinlichkeit",
+      "REALIZATION_PROBABILITIES": "Realisierungswahrscheinlichkeiten",
       "ROLE": "Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Umsatzsteuer",
@@ -1206,7 +1206,7 @@
   "REALIZATION_PROBABILITIES": {
     "TITLE_FORM": "Realisierungswahrscheinlichkeit bearbeiten",
     "MODAL": {
-      "NEW": "Neu Realisierungswahrscheinlichkeit",
+      "NEW": "Neue Realisierungswahrscheinlichkeit",
       "DELETE": "Realisierungswahrscheinlichkeit löschen"
     }
   },
