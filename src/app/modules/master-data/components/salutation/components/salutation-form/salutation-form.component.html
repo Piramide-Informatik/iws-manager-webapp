@@ -5,13 +5,10 @@
             <div class="input-message">
                 <input #firstInput pInputText type="text" id="salutation" formControlName="salutation" [ngClass]="{'ng-invalid ng-dirty': editSalutationForm.get('salutation')?.invalid && 
                     editSalutationForm.get('salutation')?.touched}" autocomplete="off" />
-                <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
-                     editSalutationForm.get('salutation')?.invalid && 
-                     editSalutationForm.get('salutation')?.touched && 
-                     editSalutationForm.get('salutation')!.hasError('required')
-                     ">
-                    {{ 'SALUTATION.ERROR.SALUTATION_REQUIRED' | translate }}
-                </p-message>
+                <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    editSalutationForm.get('salutation')?.invalid &&
+                    editSalutationForm.get('salutation')?.dirty || salutationAlreadyExist
+                    ">{{ salutationAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
             </div>
         </div>
         <div class="flex justify-content-center gap-2 mt-4">

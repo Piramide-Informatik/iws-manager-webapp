@@ -29,6 +29,7 @@ export class SalutationModalComponent implements OnChanges {
   @Output() onDeleteSalutation = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
 
   isLoading = false;
+  salutationAlreadyExist = false;
   errorMessage: string | null = null;
   public showOCCErrorModaFunding = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
@@ -36,9 +37,7 @@ export class SalutationModalComponent implements OnChanges {
 
   readonly createSalutationForm = new FormGroup({
     name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(50)
+      Validators.required
     ])
   });
 
