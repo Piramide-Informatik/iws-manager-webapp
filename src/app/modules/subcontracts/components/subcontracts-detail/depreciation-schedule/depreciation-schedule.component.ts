@@ -315,18 +315,18 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   private calculateTotalMonths(): void {
     if (!this.currentSubcontract?.afamonths) return;
 
-    // 1. Calcular suma total de TODOS los registros existentes
+    //  Calculate the total sum of ALL existing records
     let totalMonths = this.subcontractsYear.reduce((sum, yearEntry) => {
       return sum + (yearEntry.usagePercentage || 0);
     }, 0);
 
-    // 2. Si estamos en modo 'edit', ajustar el total
+    // in edit fix total
     if (this.modalType === 'edit' && this.selectedSubcontractYear) {
-      // Restamos los meses originales y sumamos los nuevos del formulario
+      // subtract the original months and add the new ones from the form
       const currentFormMonths = this.depreciationForm.get('months')?.value || 0;
       totalMonths = totalMonths - this.selectedSubcontractYear.usagePercentage + currentFormMonths;
     }
-    // 3. Si estamos en modo 'new', simplemente agregar los meses del formulario
+    // If we are in 'new' mode, simply add the months from the form
     else if (this.modalType === 'new') {
       const currentFormMonths = this.depreciationForm.get('months')?.value || 0;
       totalMonths += currentFormMonths;
