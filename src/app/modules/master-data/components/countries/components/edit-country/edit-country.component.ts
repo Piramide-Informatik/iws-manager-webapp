@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Country } from '../../../../../../Entities/country';
 import { Subscription } from 'rxjs';
 import { CountryStateService } from '../../utils/country-state.service';
@@ -50,8 +50,8 @@ export class EditCountryComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.countryForm = new FormGroup({
-      name: new FormControl(''),
-      abbreviation: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
+      abbreviation: new FormControl('', [Validators.required]),
       isStandard: new FormControl(false)
     });
   }
@@ -160,10 +160,10 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   }
 
   private markAllAsTouched(): void {
-    Object.values(this.countryForm.controls).forEach(control => {
+    for(const control of Object.values(this.countryForm.controls)){
       control.markAsTouched();
       control.markAsDirty();
-    });
+    }
   }
 
   private focusInputIfNeeded(): void {
