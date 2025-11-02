@@ -62,7 +62,9 @@ export class ProjectAllocationComponent implements OnInit, OnDestroy, OnChanges 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['currentSubcontract'] && this.currentSubcontract){
       this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
-        if(updatedSubcontract && updatedSubcontract.netOrGross !== this.currentSubcontract!.netOrGross){
+        if(updatedSubcontract && updatedSubcontract.netOrGross !== this.currentSubcontract!.netOrGross ||
+          updatedSubcontract?.invoiceAmount !== this.currentSubcontract!.invoiceAmount
+        ){
           this.loadSubcontractProjects();
         }
       });
