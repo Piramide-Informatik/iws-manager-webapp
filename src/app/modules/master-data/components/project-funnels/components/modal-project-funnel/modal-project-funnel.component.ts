@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PromoterUtils } from '../../utils/promoter-utils';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -31,8 +31,8 @@ export class ModalProjectFunnelComponent implements OnChanges {
 
   public readonly projectFunnelForm = new FormGroup({
     promoterNo: new FormControl<string | null>(null),
-    projectPromoter: new FormControl(''),
-    promoterName1: new FormControl(''),
+    projectPromoter: new FormControl('', [Validators.required]),
+    promoterName1: new FormControl('', [Validators.required]),
     promoterName2: new FormControl(''),
     country: new FormControl(),
     street: new FormControl(''),
