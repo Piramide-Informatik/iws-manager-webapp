@@ -582,7 +582,7 @@
     },
     "LABEL": {
       "DELETE_SUBCONTRACT": "Unterauftrag löschen",
-      "DELETE_SUBCONTRACT_YEAR": "Untervertragsjahr löschen",
+      "DELETE_SUBCONTRACT_YEAR": "Unterauftrag - Abschreibungsjahr löschen",
       "DELETE_SUBCONTRACT_PROJECT": "Projekt löschen",
       "NEW_SUBCONTRACT": "Neuer Unterauftrag"
     },
@@ -599,10 +599,10 @@
     "DEPRECIATION_COLUMNS": {
       "TABLE_NAME": "Aufteilung auf Jahre",
       "YEAR": "Jahr",
-      "SERVICE_LIFE": "Nutzungsanteil",
+      "SERVICE_LIFE": "Nutzungsdauer",
       "AFA_BY_YEAR": "AfA im Jahr",
-      "MODAL_TITLE_NEW": "Unterauftrag - Abschreibung Jahre",
-      "MODAL_TITLE_EDIT": "Unterauftrag - Abschreibung Jahre"
+      "MODAL_TITLE_NEW": "Unterauftrag - Neues Abschreibungsjahr",
+      "MODAL_TITLE_EDIT": "Unterauftrag - Abschreibungsjahr bearbeiten"
     },
     "PROJECT": {
       "TABLE_NAME": "Projekte",
