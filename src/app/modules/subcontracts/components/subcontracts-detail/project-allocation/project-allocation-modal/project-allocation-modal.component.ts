@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SubcontractProject } from '../../../../../../Entities/subcontract-project';
 import { SubcontractProjectUtils } from '../../../../utils/subcontract-project.utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -28,7 +28,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
   @Output() isProjectAllocationVisibleModal = new EventEmitter<boolean>();
   @Output() SubcontractProjectUpdated = new EventEmitter<SubcontractProject>();
-  @Output() subcontractProjectCreated = new EventEmitter<{ status: 'success' | 'error'}>();
+  @Output() subcontractProjectCreated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() subcontractProjectDeleted = new EventEmitter<SubcontractProject>();
 
   @ViewChild('pSelect') firstInput!: Select;
@@ -47,6 +47,9 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
   visibleSubcontractProjectModal = false;
   private readonly customerId: number = this.route.snapshot.params['id'];
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showShareWarning: boolean = false;
+  public currentTotalShare: number = 0;
+  private existingSubcontractProjects: SubcontractProject[] = [];
 
   private projects: Project[] = [];
   public projectLabels = toSignal(
@@ -70,6 +73,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
         this.subcontractUtils.getSubcontractById(subcontractId).subscribe(subcontract => {
           if (subcontract) {
             this.currentSubcontract = subcontract;
+            this.loadExistingSubcontractProjects(subcontract.id);
           }
         })
       })
@@ -80,9 +84,39 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     this.subscription.unsubscribe();
   }
 
+  private loadExistingSubcontractProjects(subcontractId: number): void {
+    this.subcontractProjectUtils.getAllSubcontractsProject(subcontractId).subscribe({
+      next: (projects) => {
+        this.existingSubcontractProjects = projects;
+        this.calculateTotalShare();
+      },
+      error: (error) => {
+        console.error('Error loading subcontract projects:', error);
+      }
+    });
+  }
+
+  private calculateTotalShare(): void {
+    if (!this.currentSubcontract?.id) return;
+
+    let totalShare = this.existingSubcontractProjects.reduce((sum, project) => {
+      if (this.modalType === 'edit' && this.subcontractProject && project.id === this.subcontractProject.id) {
+        return sum; 
+      }
+      return sum + (project.share || 0);
+    }, 0);
+
+  
+    const currentFormShare = this.allocationForm.get('percentage')?.value || 0;
+    totalShare += currentFormShare;
+
+    this.currentTotalShare = Math.round(totalShare * 100) / 100;
+    this.showShareWarning = this.currentTotalShare !== 100;
+  }
+
   private initializeForm(): void {
     this.allocationForm = this.fb.group({
-      projectLabel: ['', [Validators.required]],
+      projectLabel: ['', [Validators.required, this.uniqueProjectValidator.bind(this)]],
       percentage: ['', [Validators.max(100)]],
       amount: [{ value: '', disabled: true }]
     });
@@ -92,12 +126,13 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       const calculatedAmount = (share * invoiceGross * 0.01).toFixed(2);
 
       this.allocationForm.get('amount')?.setValue(calculatedAmount, { emitEvent: false });
+
+      this.calculateTotalShare();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['subcontractProject'] && this.subcontractProject && this.modalType === 'edit') {
-
       this.allocationForm.patchValue({
         projectLabel: this.subcontractProject.project?.id ?? '',
         percentage: this.subcontractProject.share ?? '',
@@ -111,6 +146,15 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
 
     if (changes['isVisibleModal'] && this.isVisibleModal) {
       this.firstInputFocus();
+      if (this.currentSubcontract?.id) {
+        this.loadExistingSubcontractProjects(this.currentSubcontract.id);
+      }
+    }
+
+    if (changes['subcontractProject'] || changes['currentSubcontract']) {
+      setTimeout(() => {
+        this.calculateTotalShare();
+      }, 100);
     }
   }
 
@@ -127,6 +171,25 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     }
   }
 
+  private uniqueProjectValidator(control: FormControl): { [key: string]: any } | null {
+    const selectedProjectId = control.value;
+
+    if (!selectedProjectId || this.existingSubcontractProjects.length === 0) {
+      return null;
+    }
+
+    const projectExists = this.existingSubcontractProjects.some(existingProject => {
+      if (this.modalType === 'edit' && this.subcontractProject?.id) {
+        return existingProject.project?.id === selectedProjectId &&
+          existingProject.id !== this.subcontractProject.id;
+      }
+
+      return existingProject.project?.id === selectedProjectId;
+    });
+
+    return projectExists ? { projectExists: true } : null;
+  }
+
   private createSubcontractProject(): void {
     if (this.allocationForm.invalid) return;
 
@@ -134,7 +197,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       subcontractYear: null,
       project: this.allocationForm.value.projectLabel ? this.getProjectSelected(this.allocationForm.value.projectLabel) : null,
       subcontract: this.currentSubcontract!,
-      amount: (this.allocationForm.value.percentage * this.currentSubcontract!.invoiceGross),
+      amount: (this.allocationForm.value.percentage * this.currentSubcontract!.invoiceGross / 100),
       share: this.allocationForm.value.percentage
     }
 
@@ -143,13 +206,13 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       this.subcontractProjectUtils.createNewSubcontractProject(newSubcontractProject).subscribe({
         next: (created: SubcontractProject) => {
           this.isLoading = false;
-          this.subcontractProjectCreated.emit({status: 'success'});
+          this.subcontractProjectCreated.emit({ status: 'success' });
           this.commonMessageService.showCreatedSuccesfullMessage();
           this.isProjectAllocationVisibleModal.emit(false);
         },
         error: () => {
           this.isLoading = false;
-          this.subcontractProjectCreated.emit({ status: 'error'});
+          this.subcontractProjectCreated.emit({ status: 'error' });
           this.commonMessageService.showErrorCreatedMessage();
         }
       })
@@ -166,7 +229,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     const raw = this.allocationForm.value;
     const share = Number(raw.percentage);
     const invoiceGross = this.subcontractProject.subcontract?.invoiceGross ?? 0;
-    const amount = share * invoiceGross;
+    const amount = share * invoiceGross /100;
 
     const updatedProject: SubcontractProject = {
       ...this.subcontractProject,
@@ -180,6 +243,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       this.subcontractProjectUtils.updateSubcontractProject(updatedProject).subscribe({
         next: (updated: SubcontractProject) => {
           this.isLoading = false;
+          console.log("updated:", updated)
           this.SubcontractProjectUpdated.emit(updated);
           this.commonMessageService.showEditSucessfullMessage();
           this.isProjectAllocationVisibleModal.emit(false);
@@ -192,6 +256,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       })
     );
   }
+
   private handleUpdateErrorOcc(err: any): void {
     if (err instanceof OccError) {
       this.showOCCErrorSubcontractProject = true;

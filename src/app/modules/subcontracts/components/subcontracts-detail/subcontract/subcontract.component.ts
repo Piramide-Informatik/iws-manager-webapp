@@ -163,7 +163,8 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
     this.onLoadingUpdate.emit(this.isLoading);
     const subcontractUpdated = this.buildSubcontractEdited(this.subcontractToEdit);
 
-    if (subcontractUpdated.netOrGross === this.subcontractToEdit?.netOrGross) {
+    if (subcontractUpdated.netOrGross === this.subcontractToEdit?.netOrGross && 
+      subcontractUpdated.invoiceAmount === this.subcontractToEdit?.invoiceAmount) {
       this.updateOnlySubcontract(subcontractUpdated);
     } else {
       this.updateSubcontractWithProjects(subcontractUpdated);
