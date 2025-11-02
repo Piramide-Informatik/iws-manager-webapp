@@ -614,11 +614,13 @@
     },
     "ERROR": {
       "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet.",
-      "YEAR_ALREADY_EXISTS": "Jahr existiert bereits" 
+      "YEAR_ALREADY_EXISTS": "Jahr existiert bereits"
     },
     "WARNING": {
       "SHARE_NOT_100_PERCENT": "Die gesamte Anteilszuweisung beträgt nicht 100%",
-      "CURRENT_TOTAL": "Aktueller Gesamtbetrag"
+      "CURRENT_TOTAL": "Aktueller Gesamtbetrag",
+      "MONTHS_TOTAL_MISMATCH": "Die Gesamtmonate entsprechen nicht der erwarteten Dauer",
+      "CURRENT_TOTAL_MONTHS": "Aktuelle Gesamtmonate"
     }
   },
   "ABSENCE_TYPES": {
@@ -886,7 +888,7 @@
       "NEW": "Neue Mahnstufe",
       "DELETE": "Mahnstufe löschen"
     },
-    "VALIDATION":{
+    "VALIDATION": {
       "DUNNING_LVL_EXISTS": "Mahnstufe existiert bereits"
     }
   },
@@ -1064,7 +1066,7 @@
       "DELETE_COST_TYPE": "Kostenart löschen"
     },
     "ERROR": {
-    "TYPE_ALREADY_EXIST": "Kostenart existiert bereits"
+      "TYPE_ALREADY_EXIST": "Kostenart existiert bereits"
     }
   },
   "PAGINATION": {

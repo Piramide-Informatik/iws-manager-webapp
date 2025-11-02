@@ -613,7 +613,9 @@
     },
     "WARNING": {
       "SHARE_NOT_100_PERCENT": "La asignación total de participación no es del 100%",
-      "CURRENT_TOTAL": "Total actual"
+      "CURRENT_TOTAL": "Total actual",
+      "MONTHS_TOTAL_MISMATCH": "El total de meses asignados no coincide con la duración esperada",
+      "CURRENT_TOTAL_MONTHS": "Total actual de meses"
     }
   },
   "ABSENCE_TYPES": {
@@ -1059,7 +1061,7 @@
       "DELETE_COST_TYPE": "Eliminar tipo de costo"
     },
     "ERROR": {
-    "TYPE_ALREADY_EXIST": "El tipo de costo ya existe"
+      "TYPE_ALREADY_EXIST": "El tipo de costo ya existe"
     }
   },
   "PAGINATION": {
