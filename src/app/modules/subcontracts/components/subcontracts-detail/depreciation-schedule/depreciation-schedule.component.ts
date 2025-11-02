@@ -119,9 +119,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
   loadColumns() {
     this.depreciationColumns = [
-      { field: 'year', customClasses: ['align-right'], type: 'dateYear', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')) },
-      { field: 'usagePercentage', customClasses: ['align-right'], header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')) },
-      { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')) },
+      { field: 'year', customClasses: ['align-right'], type: 'dateYear', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')), filter : { type: 'text' } },
+      { field: 'usagePercentage', customClasses: ['align-right'], type: 'integer', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')), filter : { type: 'numeric' } },
+      { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')), filter : { type: 'numeric' } },
     ];
   }
 
