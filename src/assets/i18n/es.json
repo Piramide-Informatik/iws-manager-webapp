@@ -22,7 +22,7 @@
       "BILLING_METHODS": "Métodos de Facturación",
       "CONTRACT_STATUS": "Estado del Contrato",
       "COSTS": "Tipos de Costos",
-      "COUNTRIES": "Datos Maestros - Países",
+      "COUNTRIES": "Países",
       "DUNNING_LEVELS": "Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
       "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
@@ -1029,15 +1029,10 @@
       "UPDATE_FAILED": "Actualización fallida"
     },
     "MODAL_CREATE": {
-      "CREATE_FORM": "Crear País",
       "NEW_COUNTRY": "Nuevo País"
     },
     "DELETE": {
       "CONFIRMATION": "Eliminar País"
-    },
-    "ERROR": {
-      "COUNTRY_NAME_REQUIRED": "Nombre de país requerido",
-      "ABBREVIATION_REQUIRED": "Abreviatura requerida"
     }
   },
   "COSTS": {
