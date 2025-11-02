@@ -197,7 +197,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
       subcontractYear: null,
       project: this.allocationForm.value.projectLabel ? this.getProjectSelected(this.allocationForm.value.projectLabel) : null,
       subcontract: this.currentSubcontract!,
-      amount: (this.allocationForm.value.percentage * this.currentSubcontract!.invoiceGross / 100.00),
+      amount: (this.allocationForm.value.percentage * this.currentSubcontract!.invoiceGross / 100),
       share: this.allocationForm.value.percentage
     }
 
@@ -229,7 +229,7 @@ export class ProjectAllocationModalComponent implements OnInit, OnChanges, OnDes
     const raw = this.allocationForm.value;
     const share = Number(raw.percentage);
     const invoiceGross = this.subcontractProject.subcontract?.invoiceGross ?? 0;
-    const amount = share * invoiceGross /100.00;
+    const amount = share * invoiceGross /100;
 
     const updatedProject: SubcontractProject = {
       ...this.subcontractProject,
