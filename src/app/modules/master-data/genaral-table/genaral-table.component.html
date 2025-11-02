@@ -82,9 +82,13 @@
             {{ getNestedValue(row, col.field) }}
           </a>
           } @else if(col.useSameAsEdit && !disableButtons) {
-          <p class="clickable-title without-margin" (click)="editRegister(row)" (keydown.enter)="editRegister(row)" [ngClass]="{'date-font-style' : col.type === 'double'}">
+          <p class="clickable-title without-margin" (click)="editRegister(row)" (keydown.enter)="editRegister(row)" [ngClass]="{'date-font-style' : col.type === 'double' || col.type === 'dateYear' || col.type === 'date'}">
             {{ col.type === 'double'? 
                 (getNestedValue(row, col.field) | number:'1.2-2':'de-DE') :
+                col.type === 'dateYear' ?
+                (getNestedValue(row, col.field) | date: 'yyyy'):
+                col.type === 'date' ?
+                (getNestedValue(row, col.field) | date:defaultDateFormat) :
                 getNestedValue(row, col.field) 
             }}
           </p>
