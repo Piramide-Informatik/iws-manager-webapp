@@ -26,6 +26,7 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   public showOCCErrorModalCompanyType = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   isLoading = false;
+  nameAlreadyExist = false;
   errorMessage: string | null = null;
 
   readonly companyTypeForm = new FormGroup({
