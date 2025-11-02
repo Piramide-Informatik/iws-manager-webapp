@@ -32,7 +32,7 @@
       "IWS_TEAMS": "IWS Teams",
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
-      "PROJECT_FUNNELS": "Stammdaten - Projektträger",
+      "PROJECT_FUNNELS": "Projektträger",
       "REALIZATION_PROBABILITIES": "Realisierungswahrscheinlichkeiten",
       "ROLE": "Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
@@ -1103,7 +1103,7 @@
       "ZIP_CITY": "PLZ / Ort"
     },
     "MODAL": {
-      "NEW": "Neu Projektträger",
+      "NEW": "Neuer Projektträger",
       "DELETE": "Projektträger löschen"
     }
   },

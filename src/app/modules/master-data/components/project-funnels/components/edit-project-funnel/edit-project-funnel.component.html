@@ -1,10 +1,9 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }" [header]="'PROJECT_FUNNELS.FORM.TITLE_FORM' | translate ">
     <form [formGroup]="editProjectFunnelForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column mb-2 px-4">
-            <div class="project-funnel-form mb-2">
+            <div class="project-funnel-form mb-3">
                 <label for="promoterNo">{{ 'PROJECT_FUNNELS.FORM.PROJECT_SPONSOR_ID' | translate }}</label>
                 <input
-                    #firstInput
                     pInputText
                     type="text"
                     id="promoterNo"
@@ -12,18 +11,42 @@
                     autocomplete="off"
                 />
             </div>
-            <div class="project-funnel-form mb-2">
+            <div class="project-funnel-form mb-3">
                 <label for="projectPromoter">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>
-                <input pInputText type="text" id="projectPromoter" formControlName="projectPromoter" autocomplete="off" />
+                <div class="input-message">
+                    <input #firstInput 
+                        pInputText 
+                        type="text" 
+                        id="projectPromoter" 
+                        formControlName="projectPromoter" 
+                        autocomplete="off"
+                        [ngClass]="{'ng-invalid': editProjectFunnelForm.get('projectPromoter')?.invalid && 
+                        (editProjectFunnelForm.get('projectPromoter')?.dirty || editProjectFunnelForm.get('projectPromoter')?.touched)}" />
+                    <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
+                        *ngIf="editProjectFunnelForm.get('projectPromoter')?.invalid && 
+                        (editProjectFunnelForm.get('projectPromoter')?.dirty || editProjectFunnelForm.get('projectPromoter')?.touched)">
+                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </p-message>
+                </div>
             </div>
-            <div class="project-funnel-form mb-2 align-items-start">
+            <div class="project-funnel-form mb-3 align-items-start">
                 <label for="promoterName1" class="mt-1">{{ 'PROJECT_FUNNELS.FORM.NAME' | translate }}</label>
                 <div class="flex flex-column gap-2 group">
-                    <input pInputText type="text" id="promoterName1" formControlName="promoterName1" autocomplete="off" />
+                    <div class="input-message">
+                        <input pInputText type="text" id="promoterName1" formControlName="promoterName1" autocomplete="off"
+                            [ngClass]="{'ng-invalid': editProjectFunnelForm.get('promoterName1')?.invalid && 
+                            (editProjectFunnelForm.get('promoterName1')?.dirty || editProjectFunnelForm.get('promoterName1')?.touched)}" />
+                        <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
+                            *ngIf="editProjectFunnelForm.get('promoterName1')?.invalid && 
+                            (editProjectFunnelForm.get('promoterName1')?.dirty || editProjectFunnelForm.get('promoterName1')?.touched)"
+                            [ngStyle]="{'margin-top': '0.5rem'}">
+                            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                        </p-message>
+                    </div>
                     <input pInputText type="text" id="promoterName2" formControlName="promoterName2" autocomplete="off" />
                 </div>
             </div>
-            <div class="project-funnel-form mb-2">
+            <div class="project-funnel-form mb-3">
                 <label for="country">{{ 'PROJECT_FUNNELS.FORM.LAND' | translate }}</label>
                 <p-select formControlName="country" 
                     inputId="country"
@@ -34,11 +57,11 @@
                     [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
                 />
             </div>
-            <div class="project-funnel-form mb-2">
+            <div class="project-funnel-form mb-3">
                 <label for="street">{{ 'PROJECT_FUNNELS.FORM.STREET' | translate }}</label>
                 <input pInputText type="text" id="street" formControlName="street" autocomplete="off" />
             </div>
-            <div class="project-funnel-form mb-2 flex">
+            <div class="project-funnel-form mb-3 flex">
                 <label for="zipCode">{{ 'PROJECT_FUNNELS.FORM.ZIP_CITY' | translate }}</label>
                 <div class="flex flex-row gap-1 group">
                     <input pInputText type="text" class="w-4" id="zipCode" formControlName="zipCode" autocomplete="off" />
