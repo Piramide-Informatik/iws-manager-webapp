@@ -3,14 +3,17 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form">
                 <label for="salutationName" class="block">{{ 'SALUTATION.FORM.NEW_SALUTATION' | translate }}</label>
+                <div class="input-wrapper">
                 <input #salutationInput pInputText type="text" id="salutationName" formControlName="name" autocomplete="off"
                     [attr.aria-invalid]="createSalutationForm.get('name')?.invalid"
                     [attr.aria-describedby]="createSalutationForm.get('name')?.invalid ? 'salutationError' : null"
                     class="w-full" />
 
-                <small *ngIf="createSalutationForm.get('name')?.invalid && createSalutationForm.get('name')?.touched"
-                    id="salutationError" class="text-red-500 block mt-1">
-                </small>
+                <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    createSalutationForm.get('name')?.invalid && 
+                    createSalutationForm.get('name')?.dirty || salutationAlreadyExist
+                    ">{{ salutationAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                </div>
             </div>
 
             <div class="flex justify-content-center gap-2 mt-4">
