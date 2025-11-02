@@ -86,7 +86,8 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
     if (changes['currentSubcontract'] && this.currentSubcontract) {
       this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
         if (updatedSubcontract && (updatedSubcontract?.netOrGross !== this.currentSubcontract.netOrGross ||
-          updatedSubcontract.afamonths !== this.currentSubcontract.afamonths)) {
+          updatedSubcontract.afamonths !== this.currentSubcontract.afamonths ||
+          updatedSubcontract.invoiceAmount !== this.currentSubcontract.invoiceAmount)) {
           this.loadSubcontractYears(updatedSubcontract.id)
         }
       });
@@ -154,7 +155,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   }
 
   private calculateDepreciationAmount(invoiceNet: number, afamonths: number, months: number): number {
-    return afamonths === 0 || months === 0 ? 0 : invoiceNet / (afamonths * months);
+    return afamonths === 0 || months === 0 ? 0 : invoiceNet / afamonths * months;
   }
 
   public onSubmit(): void {
