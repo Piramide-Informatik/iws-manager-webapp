@@ -17,7 +17,7 @@
     },
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Datos Maestros - Tipos de Ausencia",
-      "APPROVAL_STATUS": "Datos Maestros - Estados de Aprobación",
+      "APPROVAL_STATUS": "Estados de Aprobación",
       "BILLERS": "Facturadores",
       "BILLING_METHODS": "Métodos de Facturación",
       "CONTRACT_STATUS": "Estado del Contrato",
