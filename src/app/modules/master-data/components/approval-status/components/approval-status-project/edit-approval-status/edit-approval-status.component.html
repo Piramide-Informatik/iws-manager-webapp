@@ -11,15 +11,12 @@
                         id="status"
                         formControlName="status"
                         [ngClass]="{'ng-invalid': editApprovalStatusForm.get('status')?.invalid && 
-                         editApprovalStatusForm.get('status')?.dirty && 
-                         editApprovalStatusForm.get('status')?.touched}"
+                        (editApprovalStatusForm.get('status')?.dirty || editApprovalStatusForm.get('status')?.touched)}"
                         autocomplete="off" />
                     <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
                         *ngIf="editApprovalStatusForm.get('status')?.invalid && 
-                         editApprovalStatusForm.get('status')?.dirty && 
-                         editApprovalStatusForm.get('status')?.touched && 
-                         editApprovalStatusForm.get('status')!.hasError('required')">
-                        {{ 'APPROVAL_STATUS.ERROR.APPROVAL_STATUS_REQUIRED' | translate }}
+                        (editApprovalStatusForm.get('status')?.dirty || editApprovalStatusForm.get('status')?.touched)">
+                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
                     </p-message>
                 </div>
             </div>

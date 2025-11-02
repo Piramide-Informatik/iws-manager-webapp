@@ -17,12 +17,12 @@
     "NEW_CUSTOMER": "New Customer",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Masterdata - Absence Types",
-      "APPROVAL_STATUS": "Masterdata - Approval Status",
+      "APPROVAL_STATUS": "Approval Status",
       "BILLERS": "Billers",
       "BILLING_METHODS": "Billing Methods",
       "CONTRACT_STATUS": "Contract Status",
       "COSTS": "Costs",
-      "COUNTRIES": "Masterdata - Countries",
+      "COUNTRIES": "Countries",
       "DUNNING_LEVELS": "Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
@@ -37,7 +37,7 @@
       "REALIZATION_PROBABILITIES": "Realization Probability",
       "SYSTEM_CONSTANTS": "Masterdata - System Constants",
       "SALES_TAX": "Sales Tax",
-      "SALUTATION": "Masterdata - Salutation",
+      "SALUTATION": "Salutation",
       "STATES": "States",
       "TERMS_OF_PAYMENT": "Terms of Payment",
       "TEXTS": "Masterdata - Texts",
@@ -1030,15 +1030,10 @@
       "UPDATE_FAILED": "Update failed"
     },
     "MODAL_CREATE": {
-      "CREATE_FORM": "Create Country",
       "NEW_COUNTRY": "New Country"
     },
     "DELETE": {
       "CONFIRMATION": "Delete Country"
-    },
-    "ERROR": {
-      "COUNTRY_NAME_REQUIRED": "Country name required",
-      "ABBREVIATION_REQUIRED": "Abbreviation required"
     }
   },
   "COSTS": {

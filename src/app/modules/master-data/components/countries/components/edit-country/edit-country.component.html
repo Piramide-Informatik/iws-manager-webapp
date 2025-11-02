@@ -14,7 +14,7 @@
           />
           <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
             *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required')">
-            {{ 'COUNTRIES.ERROR.COUNTRY_NAME_REQUIRED' | translate }}
+            {{ 'ERROR.FIELD_REQUIRED' | translate }}
           </p-message>
         </div>
       </div>
@@ -32,7 +32,7 @@
           />
           <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
             *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required')">
-            {{ 'COUNTRIES.ERROR.ABBREVIATION_REQUIRED' | translate }}
+            {{ 'ERROR.FIELD_REQUIRED' | translate }}
           </p-message>
         </div>
       </div>
