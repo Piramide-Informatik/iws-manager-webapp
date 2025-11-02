@@ -335,8 +335,6 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
     this.currentTotalMonths = totalMonths;
     this.expectedTotalMonths = this.currentSubcontract.afamonths;
     this.showMonthsWarning = totalMonths !== this.currentSubcontract.afamonths;
-
-    console.log('Modal type:', this.modalType, 'Total meses:', totalMonths, 'Esperado:', this.expectedTotalMonths, 'Warning:', this.showMonthsWarning);
   }
 
   private firstInputFocus(): void {
