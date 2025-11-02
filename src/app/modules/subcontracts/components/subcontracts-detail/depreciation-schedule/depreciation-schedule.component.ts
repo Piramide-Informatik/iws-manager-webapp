@@ -171,7 +171,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
     const updatedSubcontractYear: SubcontractYear = {
       id: this.selectedSubcontractYear.id,
-      year: this.depreciationForm.value.year,
+      year: momentFormatDate(this.depreciationForm.value.year),
       months: this.depreciationForm.value.months,
       subcontract: this.currentSubcontract,
       createdAt: this.selectedSubcontractYear.createdAt,
