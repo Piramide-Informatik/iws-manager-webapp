@@ -33,7 +33,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editApprovalStatusForm = new FormGroup({
       status: new FormControl('', [Validators.required]),
-      order: new FormControl(null, [Validators.required]),
+      order: new FormControl(null),
       forProject: new FormControl(false),
       forNetwork: new FormControl(false),
     });

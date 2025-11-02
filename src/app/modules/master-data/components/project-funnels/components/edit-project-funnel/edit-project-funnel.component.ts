@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PromoterUtils } from '../../utils/promoter-utils';
 import { CountryUtils } from '../../../countries/utils/country-util';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -57,9 +57,9 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.editProjectFunnelForm = new FormGroup({
-      promoterNo: new FormControl<string | null>(''),
-      projectPromoter: new FormControl(''),
-      promoterName1: new FormControl(''),
+      promoterNo: new FormControl<string | null>({ value: null, disabled: true }),
+      projectPromoter: new FormControl('', [Validators.required]),
+      promoterName1: new FormControl('', [Validators.required]),
       promoterName2: new FormControl(''),
       country: new FormControl(),
       street: new FormControl(''),

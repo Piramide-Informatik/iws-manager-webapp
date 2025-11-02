@@ -17,12 +17,12 @@
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
       "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
-      "APPROVAL_STATUS": "Stammdaten - Bewilligungsstati",
+      "APPROVAL_STATUS": "Bewilligungsstatus",
       "BILLERS": "Rechnungsersteller",
       "BILLING_METHODS": "Verrechnungsarten",
       "CONTRACT_STATUS": "Vertragsstatus",
       "COSTS": "Kostenarten",
-      "COUNTRIES": "Stammdaten - Länder",
+      "COUNTRIES": "Länder",
       "DUNNING_LEVELS": "Mahnstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
@@ -32,12 +32,12 @@
       "IWS_TEAMS": "IWS Teams",
       "NETWORKS": "Stammdaten - Netzwerke",
       "PROJECT_STATUS": "Stammdaten - Projektstatus",
-      "PROJECT_FUNNELS": "Stammdaten - Projektträger",
+      "PROJECT_FUNNELS": "Projektträger",
       "REALIZATION_PROBABILITIES": "Realisierungswahrscheinlichkeiten",
       "ROLE": "Benutzerrollen",
       "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
       "SALES_TAX": "Umsatzsteuer",
-      "SALUTATION": "Stammdaten - Anrede",
+      "SALUTATION": "Anrede",
       "STATES": "Bundesländer",
       "TERMS_OF_PAYMENT": "Zahlungsbedingungen",
       "TEXTS": "Stammdaten - Texte",
@@ -102,7 +102,7 @@
     "ORDER_TYPES": "Auftragsarten",
     "USER": "Benutzer",
     "ROLES": "Benutzerrollen",
-    "APPROVAL_STATUS": "Bewilligungsstati",
+    "APPROVAL_STATUS": "Bewilligungsstatus",
     "STATES": "Bundesländer",
     "HOLIDAYS": "Feiertage",
     "FUNDING_PROGRAMS": "Förderprogramme",
@@ -1037,15 +1037,10 @@
       "UPDATE_FAILED": "Update fehlgeschlagen"
     },
     "MODAL_CREATE": {
-      "CREATE_FORM": "Neues Land",
-      "NEW_COUNTRY": "Neuer Länder"
+      "NEW_COUNTRY": "Neues Land"
     },
     "DELETE": {
       "CONFIRMATION": "Land löschen"
-    },
-    "ERROR": {
-      "COUNTRY_NAME_REQUIRED": "Land erforderlich",
-      "ABBREVIATION_REQUIRED": "Kürzel erforderlich"
     }
   },
   "COSTS": {
@@ -1106,7 +1101,7 @@
       "ZIP_CITY": "PLZ / Ort"
     },
     "MODAL": {
-      "NEW": "Neu Projektträger",
+      "NEW": "Neuer Projektträger",
       "DELETE": "Projektträger löschen"
     }
   },

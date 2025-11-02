@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Salutation } from '../../../../../../Entities/salutation';
@@ -17,6 +17,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
   currentSalutation: Salutation | null = null;
   editSalutationForm!: FormGroup;
   isSaving = false;
+  salutationAlreadyExist = false;
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalSalutation = false;
@@ -52,7 +53,8 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.editSalutationForm = new FormGroup({
-      salutation: new FormControl('')
+      salutation: new FormControl('', [
+      Validators.required])
     });
   }
 

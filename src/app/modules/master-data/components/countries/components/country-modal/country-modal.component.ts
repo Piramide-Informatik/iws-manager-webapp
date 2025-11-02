@@ -30,12 +30,8 @@ export class CountryModalComponent implements OnInit {
   constructor(private readonly commonMessageService: CommonMessagesService) {}
 
   readonly createCountryForm = new FormGroup({
-    name: new FormControl('', [
-      Validators.maxLength(50)
-    ]),
-    abbreviation: new FormControl('', [
-      Validators.maxLength(10)
-    ]),
+    name: new FormControl('', [Validators.required]),
+    abbreviation: new FormControl('', [Validators.required]),
     isStandard: new FormControl(false)
   });
 

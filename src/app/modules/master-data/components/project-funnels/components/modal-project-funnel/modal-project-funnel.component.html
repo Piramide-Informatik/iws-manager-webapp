@@ -14,12 +14,31 @@
             </div>
             <div class="project-funnel-form">
                 <label for="projectPromoter">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>
-                <input pInputText type="text" id="projectPromoter" formControlName="projectPromoter" autocomplete="off" />
+                <div class="input-message">
+                    <input pInputText type="text" id="projectPromoter" formControlName="projectPromoter" autocomplete="off"
+                        [ngClass]="{'ng-invalid': projectFunnelForm.get('projectPromoter')?.invalid && 
+                        (projectFunnelForm.get('projectPromoter')?.dirty || projectFunnelForm.get('projectPromoter')?.touched)}" />
+                    <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
+                        *ngIf="projectFunnelForm.get('projectPromoter')?.invalid && 
+                        (projectFunnelForm.get('projectPromoter')?.dirty || projectFunnelForm.get('projectPromoter')?.touched)">
+                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </p-message>
+                </div>
             </div>
             <div class="project-funnel-form align-items-start">
                 <label for="promoterName1" class="mt-1">{{ 'PROJECT_FUNNELS.FORM.NAME' | translate }}</label>
                 <div class="flex flex-column gap-2 group">
-                    <input pInputText type="text" id="promoterName1" formControlName="promoterName1" autocomplete="off" />
+                    <div class="input-message">
+                        <input pInputText type="text" id="promoterName1" formControlName="promoterName1" autocomplete="off"
+                            [ngClass]="{'ng-invalid': projectFunnelForm.get('promoterName1')?.invalid && 
+                            (projectFunnelForm.get('promoterName1')?.dirty || projectFunnelForm.get('promoterName1')?.touched)}" />
+                        <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
+                            *ngIf="projectFunnelForm.get('promoterName1')?.invalid && 
+                            (projectFunnelForm.get('promoterName1')?.dirty || projectFunnelForm.get('promoterName1')?.touched)"
+                            [ngStyle]="{'margin-top': '0.5rem'}">
+                            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                        </p-message>
+                    </div>
                     <input pInputText type="text" id="promoterName2" formControlName="promoterName2" autocomplete="off" />
                 </div>
             </div>
