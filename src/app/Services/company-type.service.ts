@@ -30,6 +30,10 @@ export class CompanyTypeService {
     this.loadInitialData();
   }
 
+  private sortAlphabetically(list: CompanyType[]): CompanyType[] {
+    return [...list].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+  }
+
   public loadInitialData(): Observable<CompanyType[]> {
     this._loading.set(true);
     return this.http.get<CompanyType[]>(this.apiUrl).pipe(
@@ -53,7 +57,7 @@ export class CompanyTypeService {
     return this.http.post<CompanyType>(this.apiUrl, companyType, this.httpOptions).pipe(
       tap({
         next: (newCompanyType) => {
-          this._companyTypes.update(companyTypes => [...companyTypes, newCompanyType]);
+          this._companyTypes.update(companyTypes => this.sortAlphabetically([...companyTypes, newCompanyType]));
           this._error.set(null);
         },
         error: (err) => {
@@ -71,7 +75,7 @@ export class CompanyTypeService {
       tap({
         next: (res) => {
           this._companyTypes.update(companyTypes =>
-            companyTypes.map(ct => ct.id === res.id ? res : ct)
+            this.sortAlphabetically(companyTypes.map(ct => ct.id === res.id ? res : ct))
           );
           this._error.set(null);
         },
