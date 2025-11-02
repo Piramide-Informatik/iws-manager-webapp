@@ -613,7 +613,8 @@
       "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
     },
     "ERROR": {
-      "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet."
+      "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet.",
+      "YEAR_ALREADY_EXISTS": "Jahr existiert bereits" 
     },
     "WARNING": {
       "SHARE_NOT_100_PERCENT": "Die gesamte Anteilszuweisung beträgt nicht 100%",

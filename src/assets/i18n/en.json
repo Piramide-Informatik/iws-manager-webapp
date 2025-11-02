@@ -609,7 +609,8 @@
       "MODAL_TITLE_EDIT": "Subcontract - Edit project"
     },
     "ERROR": {
-      "PROJECT_ALREADY_EXISTS": "Project already exists."
+      "PROJECT_ALREADY_EXISTS": "Project already exists.",
+      "YEAR_ALREADY_EXISTS": "Year already exists."
     },
     "WARNING": {
       "SHARE_NOT_100_PERCENT": "The total share allocation is not 100%",

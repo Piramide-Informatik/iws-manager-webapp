@@ -608,7 +608,8 @@
       "MODAL_TITLE_EDIT": "Subcontratación - Editar proyecto"
     },
     "ERROR": {
-      "PROJECT_ALREADY_EXISTS": "El proyecto ya existe."
+      "PROJECT_ALREADY_EXISTS": "El proyecto ya existe.",
+      "YEAR_ALREADY_EXISTS": "El año ya existe"
     },
     "WARNING": {
       "SHARE_NOT_100_PERCENT": "La asignación total de participación no es del 100%",
