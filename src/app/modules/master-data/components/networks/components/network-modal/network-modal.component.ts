@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Network } from '../../../../../../Entities/network';
 import { NetowrkUtils } from '../../utils/ network.utils';
 import { Subscription } from 'rxjs';
@@ -23,6 +23,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   public networkForm!: FormGroup;
   public isLoading = false;
   private readonly subscriptions = new Subscription();
+  nameAlreadyExist = false;
 
   public partners!: any[];
   public columsHeaderFieldPartner: any[] = [];
@@ -34,7 +35,7 @@ export class NetworkModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.networkForm = new FormGroup({
-      name: new FormControl('')
+      name: new FormControl('',[Validators.required])
     });
   }
 
