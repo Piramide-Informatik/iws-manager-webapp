@@ -48,18 +48,12 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   readonly contacts = computed(() => {
     const customerId = this.selectedCustomer();
     const allContacts = this.contactService.contactPersons();
-    
-    // Mapear todos los contactos
-    allContacts.forEach(ct => {
+    for (const ct of allContacts) {
       this.contactsMap.set(ct.id, ct);
-    });
-    
-    // Si no hay cliente seleccionado, devolver array vacío
+    }
     if (!customerId) {
       return [];
     }
-    
-    // Filtrar contactos que pertenecen al cliente seleccionado
     return allContacts
       .filter(ct => ct.customer?.id === customerId)
       .map(ct => ({
@@ -80,10 +74,8 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
       contact: new FormControl(''),
     });
 
-    // Escuchar cambios en el campo partner para actualizar contactos
     this.networkPartnerForm.get('partner')?.valueChanges.subscribe(partnerId => {
       this.selectedCustomer.set(partnerId || 0);
-      // Limpiar el contacto seleccionado cuando cambia el cliente
       this.networkPartnerForm.patchValue({ contact: '' }, { emitEvent: false });
       this.selectedContact.set(0);
     });
@@ -103,7 +95,6 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     if (selectNetworkPartnerChange && !selectNetworkPartnerChange.firstChange) {
       this.selectedNetworkPartner = selectNetworkPartnerChange.currentValue;
       this.isCreateButtonEnable = this.selectedNetworkPartner !== null;
-      // Primero actualizar el cliente para que se filtren los contactos correctamente
       const partnerId = this.selectedNetworkPartner?.partner?.id;
       if (partnerId) {
         this.selectedCustomer.set(partnerId);
