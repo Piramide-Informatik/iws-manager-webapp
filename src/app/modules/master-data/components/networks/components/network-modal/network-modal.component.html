@@ -3,7 +3,17 @@
         <div class="flex flex-column mb-2 mt-4">
             <div class="network-form flex flex-row mb-4">
                 <label for="name">{{ 'NETWORKS.LABEL.NETWORK' | translate }}</label>
-                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+                <div class="input-wrapper">
+                <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" 
+                invalid="networkForm.get('name')?.invalid  
+                        && networkForm.get('name')?.dirty 
+                        || networkForm.get('name')?.touched
+                        || nameAlreadyExist"/>
+                <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    networkForm.get('name')?.invalid && 
+                    networkForm.get('name')?.dirty || nameAlreadyExist
+                    ">{{ nameAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                </div>
             </div>
             <div class="row mt-2">
                 <div class="col flex justify-content-center">

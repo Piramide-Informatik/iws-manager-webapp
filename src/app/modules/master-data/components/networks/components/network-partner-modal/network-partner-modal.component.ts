@@ -46,13 +46,20 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   });
   private readonly contactsMap = new Map<number, ContactPerson>();
   readonly contacts = computed(() => {
-    return this.contactService.contactPersons().map(ct => {
+    const customerId = this.selectedCustomer();
+    const allContacts = this.contactService.contactPersons();
+    for (const ct of allContacts) {
       this.contactsMap.set(ct.id, ct);
-      return {
+    }
+    if (!customerId) {
+      return [];
+    }
+    return allContacts
+      .filter(ct => ct.customer?.id === customerId)
+      .map(ct => ({
         id: ct.id,
         name: `${ct.lastName} ${ct.firstName}`
-      }
-    })
+      }));
   });
 
   constructor(){}
@@ -65,6 +72,12 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
       comment: new FormControl(''),
       partner: new FormControl(''),
       contact: new FormControl(''),
+    });
+
+    this.networkPartnerForm.get('partner')?.valueChanges.subscribe(partnerId => {
+      this.selectedCustomer.set(partnerId || 0);
+      this.networkPartnerForm.patchValue({ contact: '' }, { emitEvent: false });
+      this.selectedContact.set(0);
     });
   }
 
@@ -82,10 +95,15 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     if (selectNetworkPartnerChange && !selectNetworkPartnerChange.firstChange) {
       this.selectedNetworkPartner = selectNetworkPartnerChange.currentValue;
       this.isCreateButtonEnable = this.selectedNetworkPartner !== null;
+      const partnerId = this.selectedNetworkPartner?.partner?.id;
+      if (partnerId) {
+        this.selectedCustomer.set(partnerId);
+      }
+      
       this.networkPartnerForm.patchValue({
         partnerno: this.selectedNetworkPartner?.partnerno,
         comment: this.selectedNetworkPartner?.comment,
-        partner: this.selectedNetworkPartner?.partner?.id,
+        partner: partnerId,
         contact: this.selectedNetworkPartner?.contact?.id
       });
     }
