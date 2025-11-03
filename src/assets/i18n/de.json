@@ -1217,7 +1217,7 @@
   },
   "TYPE_OF_COMPANIES": {
     "TABLE_TYPE_OF_COMPANIES": {
-      "COMPANY_TYPE": "Unternehmensart",
+      "COMPANY_TYPE": "Unternehmensarten",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
     },
     "FORM": {
@@ -1231,7 +1231,7 @@
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Unternehmensart bearbeiten",
       "COMPANY_TYPE": "Unternehmensart",
-      "DELETE_TITLE": "Unternehmenstyp löschen"
+      "DELETE_TITLE": "Unternehmensart löschen"
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich",
