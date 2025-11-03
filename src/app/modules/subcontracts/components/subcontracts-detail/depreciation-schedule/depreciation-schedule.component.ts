@@ -42,6 +42,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   visibleSubcontractYearModal = false;
   public showOCCErrorModalSubcontractYear = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showMonthsWarning: boolean = false;
+  public currentTotalMonths: number = 0;
+  public expectedTotalMonths: number = 0;
 
   @Input() currentSubcontract!: Subcontract;
 
@@ -92,11 +95,18 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         }
       });
     }
+
+    if (changes['subcontractsYear'] && this.depreciationForm) {
+      const yearControl = this.depreciationForm.get('year');
+      if (yearControl) {
+        yearControl.updateValueAndValidity();
+      }
+    }
   }
 
   private initForm(): void {
     this.depreciationForm = new FormGroup({
-      year: new FormControl(''),
+      year: new FormControl('', [Validators.required, this.uniqueYearValidator.bind(this)]),
       months: new FormControl(null, [Validators.min(0), Validators.max(12)]),
       depreciationAmount: new FormControl(null),
     });
@@ -110,6 +120,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       const afamonths = this.currentSubcontract?.afamonths ?? 0;
       const depreciationAmount = this.calculateDepreciationAmount(invoiceNet, afamonths, months);
       this.depreciationForm.get('depreciationAmount')?.setValue(depreciationAmount, { emitEvent: false });
+      this.calculateTotalMonths();
     });
   }
 
@@ -119,9 +130,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
   loadColumns() {
     this.depreciationColumns = [
-      { field: 'year', customClasses: ['align-right'], type: 'dateYear', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')), filter : { type: 'text' } },
-      { field: 'usagePercentage', customClasses: ['align-right'], type: 'integer', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')), filter : { type: 'numeric' } },
-      { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')), filter : { type: 'numeric' } },
+      { field: 'year', customClasses: ['align-right'], type: 'dateYear', useSameAsEdit: true, header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR')), filter: { type: 'text' } },
+      { field: 'usagePercentage', customClasses: ['align-right'], type: 'integer', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.SERVICE_LIFE')), filter: { type: 'numeric' } },
+      { field: 'depreciationAmount', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.DEPRECIATION_COLUMNS.AFA_BY_YEAR')), filter: { type: 'numeric' } },
     ];
   }
 
@@ -171,7 +182,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
     const updatedSubcontractYear: SubcontractYear = {
       id: this.selectedSubcontractYear.id,
-      year: this.depreciationForm.value.year,
+      year: momentFormatDate(this.depreciationForm.value.year),
       months: this.depreciationForm.value.months,
       subcontract: this.currentSubcontract,
       createdAt: this.selectedSubcontractYear.createdAt,
@@ -238,6 +249,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
           this.commonMessageService.showDeleteSucessfullMessage();
           this.subcontractsYear = this.subcontractsYear.filter(de => de.id !== this.selectedSubcontractYear?.id);
           this.selectedSubcontractYear = undefined;
+          this.calculateTotalMonths();
         },
         error: (error) => {
           this.isLoadingDelete = false;
@@ -274,7 +286,55 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
         } as DepreciationEntry);
         return acc;
       }, [])
+
+      this.calculateTotalMonths();
     });
+  }
+
+  private uniqueYearValidator(control: FormControl): { [key: string]: any } | null {
+    const selectedYear = control.value;
+
+    if (!selectedYear || !this.subcontractsYear || this.subcontractsYear.length === 0) {
+      return null;
+    }
+
+    const formattedSelectedYear = momentFormatDate(selectedYear);
+
+    const yearExists = this.subcontractsYear.some(existingYear => {
+      if (this.modalType === 'edit' && this.selectedSubcontractYear) {
+        return existingYear.year === formattedSelectedYear &&
+          existingYear.id !== this.selectedSubcontractYear.id;
+      }
+
+      return existingYear.year === formattedSelectedYear;
+    });
+
+    return yearExists ? { yearExists: true } : null;
+  }
+
+  private calculateTotalMonths(): void {
+    if (!this.currentSubcontract?.afamonths) return;
+
+    //  Calculate the total sum of ALL existing records
+    let totalMonths = this.subcontractsYear.reduce((sum, yearEntry) => {
+      return sum + (yearEntry.usagePercentage || 0);
+    }, 0);
+
+    // in edit fix total
+    if (this.modalType === 'edit' && this.selectedSubcontractYear) {
+      // subtract the original months and add the new ones from the form
+      const currentFormMonths = this.depreciationForm.get('months')?.value || 0;
+      totalMonths = totalMonths - this.selectedSubcontractYear.usagePercentage + currentFormMonths;
+    }
+    // If we are in 'new' mode, simply add the months from the form
+    else if (this.modalType === 'new') {
+      const currentFormMonths = this.depreciationForm.get('months')?.value || 0;
+      totalMonths += currentFormMonths;
+    }
+
+    this.currentTotalMonths = totalMonths;
+    this.expectedTotalMonths = this.currentSubcontract.afamonths;
+    this.showMonthsWarning = totalMonths !== this.currentSubcontract.afamonths;
   }
 
   private firstInputFocus(): void {
