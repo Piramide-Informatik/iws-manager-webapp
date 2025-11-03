@@ -16,7 +16,7 @@
     },
     "NEW_CUSTOMER": "New Customer",
     "MASTER_DATA": {
-      "ABSENCE_TYPES": "Masterdata - Absence Types",
+      "ABSENCE_TYPES": "Absence Types",
       "APPROVAL_STATUS": "Approval Status",
       "BILLERS": "Billers",
       "BILLING_METHODS": "Billing Methods",
@@ -24,25 +24,25 @@
       "COSTS": "Costs",
       "COUNTRIES": "Countries",
       "DUNNING_LEVELS": "Dunning Levels",
-      "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
-      "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
-      "HOLIDAYS": "Masterdata - Holidays",
+      "EMPLOYEE_QUALIFICATION": "Employee Qualification",
+      "FUNDING_PROGRAMS": "Funding Programs",
+      "HOLIDAYS": "Holidays",
       "IWS_COMMISSIONS": "IWS Commissions",
       "IWS_STAFF": "IWS Staff",
       "IWS_TEAMS": "IWS Teams",
-      "NETWORKS": "Masterdata - Networks",
+      "NETWORKS": "Networks",
       "ROLE": "Roles",
-      "PROJECT_STATUS": "Masterdata - Project Status",
+      "PROJECT_STATUS": "Project Status",
       "PROJECT_FUNNELS": "Project Responsible",
       "REALIZATION_PROBABILITIES": "Realization Probability",
-      "SYSTEM_CONSTANTS": "Masterdata - System Constants",
+      "SYSTEM_CONSTANTS": "System Constants",
       "SALES_TAX": "Sales Tax",
       "SALUTATION": "Salutation",
       "STATES": "States",
       "TERMS_OF_PAYMENT": "Terms of Payment",
-      "TEXTS": "Masterdata - Texts",
-      "TITLE": "Masterdata - Titles",
-      "TYPE_OF_COMPANIES": "Masterdata - Company Types",
+      "TEXTS": "Texts",
+      "TITLE": "Titles",
+      "TYPE_OF_COMPANIES": "Company Types",
       "USER": "User"
     }
   },
@@ -609,11 +609,14 @@
       "MODAL_TITLE_EDIT": "Subcontract - Edit project"
     },
     "ERROR": {
-      "PROJECT_ALREADY_EXISTS": "Project already exists."
+      "PROJECT_ALREADY_EXISTS": "Project already exists.",
+      "YEAR_ALREADY_EXISTS": "Year already exists."
     },
     "WARNING": {
       "SHARE_NOT_100_PERCENT": "The total share allocation is not 100%",
-      "CURRENT_TOTAL": "Current total"
+      "CURRENT_TOTAL": "Current total",
+      "MONTHS_TOTAL_MISMATCH": "Total months allocated does not match expected duration",
+      "CURRENT_TOTAL_MONTHS": "Current total months"
     }
   },
   "ABSENCE_TYPES": {

@@ -17,15 +17,26 @@
       <form [formGroup]="depreciationForm" (ngSubmit)="onSubmit()">
         <div class="form-item-container flex gap-4 mb-3">
           <label for="year" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
-          <p-datepicker #datePicker formControlName="year" inputId="year" view="year" dateFormat="yy" appendTo="body"
-            showIcon showClear />
+          <div class="input-message">
+            <p-datepicker #datePicker formControlName="year" inputId="year" view="year" dateFormat="yy" appendTo="body"
+              showIcon showClear />
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+        depreciationForm.get('year')?.invalid && 
+        depreciationForm.get('year')?.touched">
+              {{
+              depreciationForm.get('year')?.errors?.['yearExists'] ?
+              ('SUB-CONTRACTS.ERROR.YEAR_ALREADY_EXISTS' | translate) :
+              ('ERROR.FIELD_REQUIRED' | translate)
+              }}
+            </p-message>
+          </div>
         </div>
         <div class="form-item-container flex gap-4 mb-3">
           <label for="months" class="label-modal">{{ 'SUB-CONTRACTS.FORM_COMMISSION.DURATION_OF_USE' | translate
             }}</label>
           <div class="input-message">
-            <p-inputnumber [inputStyle]="{'text-align': 'right'}" inputId="months" [min]="0"
-              [useGrouping]="true" formControlName="months" autocomplete="off" invalid="
+            <p-inputnumber [inputStyle]="{'text-align': 'right'}" inputId="months" [min]="0" [useGrouping]="true"
+              formControlName="months" autocomplete="off" invalid="
               depreciationForm.get('months')?.invalid  
               && depreciationForm.get('months')?.dirty 
               || depreciationForm.get('months')?.touched" />
@@ -42,27 +53,37 @@
             mode="decimal" [max]="99999.99" [min]="0" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
             [minFractionDigits]="2" [maxFractionDigits]="2" [useGrouping]="true" [disabled]="true" readonly />
         </div>
+
+        <!-- Mensaje de advertencia para meses totales -->
+        <div *ngIf="showMonthsWarning" class="p-message p-message-warn mb-3">
+          <span class="p-message-icon pi pi-exclamation-triangle"></span>
+          <div class="p-message-content warning-content">
+            <small class="warning-line">{{ 'SUB-CONTRACTS.WARNING.MONTHS_TOTAL_MISMATCH' | translate }}</small>
+            <small class="warning-line">{{ 'SUB-CONTRACTS.WARNING.CURRENT_TOTAL_MONTHS' | translate }}: {{ currentTotalMonths }} / {{
+              expectedTotalMonths }}</small>
+          </div>
+        </div>
+
         <div class="flex justify-content-center gap-2">
           <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" size="small" type="submit"
             [loading]="isLoading" [disabled]="depreciationForm.invalid || !depreciationForm.dirty"></p-button>
           @if(selectedSubcontractYear) {
           <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-            iconPos="left" severity="danger" [disabled]="isLoading"
-            (onClick)="visibleSubcontractYearModal = true;" />
+            iconPos="left" severity="danger" [disabled]="isLoading" (onClick)="visibleSubcontractYearModal = true;" />
           }
           <p-button [label]="'BUTTONS.CANCEL' | translate" class="cancel" icon="pi pi-times" iconPos="left" size="small"
-            (onClick)="closeModal()" [disabled]="isLoading" ></p-button>
+            (onClick)="closeModal()" [disabled]="isLoading"></p-button>
         </div>
       </form>
     </ng-container>
     <ng-template #deleteTemplate>
       <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedSubcontractYear?.year | date:'yyyy' }"></p>
+        <p class="mb-4"
+          [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedSubcontractYear?.year | date:'yyyy' }"></p>
 
         <div class="flex justify-content-center gap-2">
           <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-            iconPos="left" severity="danger" [loading]="isLoadingDelete"
-            (onClick)="removeSubcontractYear()" />
+            iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeSubcontractYear()" />
 
           <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
             iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete" />
@@ -75,12 +96,12 @@
 <p-dialog [header]="'SUB-CONTRACTS.LABEL.DELETE_SUBCONTRACT_YEAR' | translate" [modal]="true"
   [(visible)]="visibleSubcontractYearModal" [style]="{ width: 'auto' }">
   <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedSubcontractYear?.year | date:'yyyy' }"></p>
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedSubcontractYear?.year | date:'yyyy' }">
+    </p>
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoadingDelete"
-        (onClick)="removeSubcontractYear()" />
+        iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeSubcontractYear()" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
         iconPos="left" (onClick)="visibleSubcontractYearModal = false;" [disabled]="isLoadingDelete" />
@@ -88,9 +109,6 @@
   </div>
 </p-dialog>
 
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModalSubcontractYear" 
-  [errorType]="occErrorType" 
-  [reloadCurrentPage]="true"
+<app-occ-error-modal *ngIf="showOCCErrorModalSubcontractYear" [errorType]="occErrorType" [reloadCurrentPage]="true"
   (close)="showOCCErrorModalSubcontractYear = false">
 </app-occ-error-modal>

@@ -30,3 +30,18 @@
     background: $primary-color !important;
   }
 }
+
+::ng-deep .p-message {
+    display: block !important;
+    width: 100% !important;
+}
+
+.warning-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.warning-line {
+  display: block;
+  line-height: 1.4;
+}
