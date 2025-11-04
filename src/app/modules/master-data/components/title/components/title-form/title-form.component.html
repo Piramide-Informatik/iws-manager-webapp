@@ -3,16 +3,22 @@
         <div class="title-form flex align-items-center pb-2">
             <label for="title">{{ 'TITLE.LABEL.TITLE_LABEL' | translate }}</label>
             <div class="input-message">
-                <input #firstInput pInputText type="text" id="title" formControlName="title" [ngClass]="{'ng-invalid ng-dirty': editTitleForm.get('title')?.invalid && 
-                editTitleForm.get('title')?.touched}" autocomplete="off" />
-                <p-message severity="error" variant="simple" size="small" *ngIf="
-                     editTitleForm.get('title')?.invalid && 
-                     editTitleForm.get('title')?.touched && 
-                     editTitleForm.get('title')!.hasError('required')
-                     ">
-                    {{ 'TITLE.ERROR.TITLE_LABEL_REQUIRED' | translate }}
+                <input #firstInput pInputText type="text" id="title" formControlName="title"
+                    [ngClass]="{'ng-invalid ng-dirty': (editTitleForm.get('title')?.invalid && editTitleForm.get('title')?.touched) || titleAlreadyExist}"
+                    autocomplete="off" />
+
+                <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    (editTitleForm.get('title')?.invalid && editTitleForm.get('title')?.dirty) || 
+                    titleAlreadyExist">
+                    <span
+                        *ngIf="editTitleForm.get('title')?.errors?.['required'] && editTitleForm.get('title')?.dirty">
+                        {{ 'TITLE.ERROR.TITLE_LABEL_REQUIRED' | translate }}
+                    </span>
+                    <span *ngIf="titleAlreadyExist && !editTitleForm.get('title')?.errors?.['required']">
+                        {{ 'TITLE.ERROR.TITLE_ALREADY_EXISTS' | translate }}
+                    </span>
                 </p-message>
-            </div>    
+            </div>
         </div>
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
@@ -22,11 +28,7 @@
         </div>
     </form>
 </p-card>
-<app-occ-error-modal
-  *ngIf="showOCCErrorModaTitle"
-  [useEmitter]="occErrorType==='UPDATE_UPDATED'"
-  (refresh)="onRefresh()"
-  [errorType]="occErrorType"
-  [reloadCurrentPage]="true"
-  (close)="showOCCErrorModaTitle = false">
+<app-occ-error-modal *ngIf="showOCCErrorModaTitle" [useEmitter]="occErrorType==='UPDATE_UPDATED'"
+    (refresh)="onRefresh()" [errorType]="occErrorType" [reloadCurrentPage]="true"
+    (close)="showOCCErrorModaTitle = false">
 </app-occ-error-modal>
