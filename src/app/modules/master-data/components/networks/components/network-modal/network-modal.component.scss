@@ -1,13 +1,25 @@
 .network-form {
   display: flex;
-  align-items: center;
-  
+  align-items: flex-start;
+  margin-bottom: 1rem;
+
   label {
-      width: auto;
+      width: 70px;
+      flex-shrink: 0;
   }
+
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
   input {
-     flex: 1;
-     max-width: 300px;
-     margin-left: 1rem;
+    width: 100%;
   }
+
+  p-message {
+      margin-top: 0.15rem;
+      margin-bottom: -1.6rem;
+    }
 }

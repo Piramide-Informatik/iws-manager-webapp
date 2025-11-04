@@ -7,8 +7,18 @@
     width: 100px;
     flex-shrink: 0;
   }
+  .input-wrapper {
+    display: flex;
+    flex-direction: column; 
+    flex: 1;
+  }
 
   input {
     width: 100%;
   }
+
+  p-message {
+      margin-top: 0.15rem;
+      margin-bottom: -1.6rem;
+    }
 }
