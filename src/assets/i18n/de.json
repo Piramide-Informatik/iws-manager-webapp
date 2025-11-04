@@ -326,9 +326,9 @@
       "SALARY_PER_MONTH": "Gehalt",
       "WEEKLY_HOURS": "WoStd",
       "WORK_SHORT_TIME": "Kurz",
-      "MAX_HOURS_PER_MONTH": "Max.Std Mon",
-      "MAX_HOURS_PER_DAY": "Max Std Tag",
-      "HOURLY_RATE": "Std.Satz",
+      "MAX_HOURS_PER_MONTH": "Max. Std. Mon",
+      "MAX_HOURS_PER_DAY": "Max. Std. Tag",
+      "HOURLY_RATE": "Std. Satz",
       "SPECIAL_PAYMENT": "JaSoZa"
     },
     "VALIDATION": {
@@ -367,9 +367,9 @@
       "WEEKLY_HOURS": "WoStd",
       "WORK_SHORT_TIME": "Kurz",
       "SPECIAL_PAYMENT": "JaSoZa",
-      "MAX_HOURS_PER_MONTH": "Max.Std Mon",
-      "MAX_HOURS_PER_DAY": "Max Std Tag",
-      "HOURLY_RATE": "Std.Satz"
+      "MAX_HOURS_PER_MONTH": "Max. Std. Mon",
+      "MAX_HOURS_PER_DAY": "Max. Std. Tag",
+      "HOURLY_RATE": "Std. Satz"
     },
     "FORM": {
       "CUSTOMER": "kunde",
