@@ -16,7 +16,7 @@
     },
     "NEW_CUSTOMER": "Neuer Kunde",
     "MASTER_DATA": {
-      "ABSENCE_TYPES": "Stammdaten - Abwesenheitsarten",
+      "ABSENCE_TYPES": "Abwesenheitsarten",
       "APPROVAL_STATUS": "Bewilligungsstatus",
       "BILLERS": "Rechnungsersteller",
       "BILLING_METHODS": "Verrechnungsarten",
@@ -24,25 +24,25 @@
       "COSTS": "Kostenarten",
       "COUNTRIES": "Länder",
       "DUNNING_LEVELS": "Mahnstufen",
-      "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
-      "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
+      "EMPLOYEE_QUALIFICATION": "Mitarbeiter-Qualifikationen",
+      "FUNDING_PROGRAMS": "Förderprogramme",
       "HOLIDAYS": "Feiertage",
       "IWS_COMMISSIONS": "IWS Provisionen",
       "IWS_STAFF": "IWS Mitarbeiter",
       "IWS_TEAMS": "IWS Teams",
-      "NETWORKS": "Stammdaten - Netzwerke",
-      "PROJECT_STATUS": "Stammdaten - Projektstatus",
+      "NETWORKS": "Netzwerke",
+      "PROJECT_STATUS": "Projektstatus",
       "PROJECT_FUNNELS": "Projektträger",
       "REALIZATION_PROBABILITIES": "Realisierungswahrscheinlichkeiten",
       "ROLE": "Benutzerrollen",
-      "SYSTEM_CONSTANTS": "Stammdaten - Systemkonstanten",
+      "SYSTEM_CONSTANTS": "Systemkonstanten",
       "SALES_TAX": "Umsatzsteuer",
       "SALUTATION": "Anrede",
       "STATES": "Bundesländer",
       "TERMS_OF_PAYMENT": "Zahlungsbedingungen",
-      "TEXTS": "Stammdaten - Texte",
-      "TITLE": "Stammdaten - Titel",
-      "TYPE_OF_COMPANIES": "Stammdaten - Unternehmensarten",
+      "TEXTS": "Texte",
+      "TITLE": "Titel",
+      "TYPE_OF_COMPANIES": "Unternehmensarten",
       "USER": "Benutzer"
     }
   },
@@ -613,11 +613,14 @@
       "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
     },
     "ERROR": {
-      "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet."
+      "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet.",
+      "YEAR_ALREADY_EXISTS": "Jahr existiert bereits"
     },
     "WARNING": {
       "SHARE_NOT_100_PERCENT": "Die gesamte Anteilszuweisung beträgt nicht 100%",
-      "CURRENT_TOTAL": "Aktueller Gesamtbetrag"
+      "CURRENT_TOTAL": "Aktueller Gesamtbetrag",
+      "MONTHS_TOTAL_MISMATCH": "Die Gesamtmonate entsprechen nicht der erwarteten Dauer",
+      "CURRENT_TOTAL_MONTHS": "Aktuelle Gesamtmonate"
     }
   },
   "ABSENCE_TYPES": {
@@ -886,7 +889,7 @@
       "NEW": "Neue Mahnstufe",
       "DELETE": "Mahnstufe löschen"
     },
-    "VALIDATION":{
+    "VALIDATION": {
       "DUNNING_LVL_EXISTS": "Mahnstufe existiert bereits"
     }
   },
@@ -1059,7 +1062,7 @@
       "DELETE_COST_TYPE": "Kostenart löschen"
     },
     "ERROR": {
-    "TYPE_ALREADY_EXIST": "Kostenart existiert bereits"
+      "TYPE_ALREADY_EXIST": "Kostenart existiert bereits"
     }
   },
   "PAGINATION": {
@@ -1150,7 +1153,7 @@
       "DELETE_PARTNER": "Partner löschen"
     },
     "PARTNER": {
-      "NO": "No",
+      "NO": "Nr.",
       "COMMENT": "Kommentar",
       "CUSTOMER": "Kunde",
       "CONTACT": "Kontakt"
@@ -1215,7 +1218,7 @@
   },
   "TYPE_OF_COMPANIES": {
     "TABLE_TYPE_OF_COMPANIES": {
-      "COMPANY_TYPE": "Unternehmensart",
+      "COMPANY_TYPE": "Unternehmensarten",
       "NO_RESULTS_FOUND": "Keine Ergebnisse gefunden."
     },
     "FORM": {
@@ -1229,7 +1232,7 @@
     "LABEL": {
       "EDIT_COMPANY_TYPE": "Unternehmensart bearbeiten",
       "COMPANY_TYPE": "Unternehmensart",
-      "DELETE_TITLE": "Unternehmenstyp löschen"
+      "DELETE_TITLE": "Unternehmensart löschen"
     },
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich",

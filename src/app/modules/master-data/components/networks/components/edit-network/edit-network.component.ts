@@ -1,5 +1,5 @@
 import { Component, computed, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
@@ -36,7 +36,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   modalNetworkPartnerType: 'create' | 'edit' | 'delete' = 'create';
   visibleNetworksPartnersModal = false;
   public occErrorType: OccErrorType = 'UPDATE_UPDATED';
-
+  public nameAlreadyExist = false;
   selectedNetworkPartner!: NetworkPartner | null;
   isCreateButtonEnable = false;
   networksPartners = computed(() => {
@@ -65,7 +65,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editNetworkForm = new FormGroup({
-      name: new FormControl('')
+      name: new FormControl('',[Validators.required])
     });
     this.setupNetworkSubscription();
     // Check if we need to load a network after page refresh for OCC
@@ -90,7 +90,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
 
   loadColHeadersPartner(): void {
     this.columsHeaderFieldPartner = [
-      { field: 'no', classesTHead: ['width-10'], header: 'No', useSameAsEdit: true },
+      { field: 'no', classesTHead: ['width-10'], header: this.translate.instant(_('NETWORKS.PARTNER.NO')), useSameAsEdit: true },
       { field: 'customerNumber', classesTHead: ['width-10'], header: this.translate.instant(_('NETWORKS.LABEL.CUSTOMER')) },
       { field: 'partner', classesTHead: ['width-80'], header: this.translate.instant(_('NETWORKS.LABEL.PARTNER')) },
     ];

@@ -18,6 +18,7 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   companyType: CompanyType | null = null;
   companyTypeEditForm!: FormGroup;
   isSaving = false;
+  nameAlreadyExist = false;
   public showOCCErrorModalCompanyType = false;
   private readonly subscriptions = new Subscription();
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
