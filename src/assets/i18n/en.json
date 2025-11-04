@@ -26,7 +26,7 @@
       "DUNNING_LEVELS": "Dunning Levels",
       "EMPLOYEE_QUALIFICATION": "Masterdata - Employee Qualification",
       "FUNDING_PROGRAMS": "Masterdata - Funding Programs",
-      "HOLIDAYS": "Masterdata - Holidays",
+      "HOLIDAYS": "Holidays",
       "IWS_COMMISSIONS": "IWS Commissions",
       "IWS_STAFF": "IWS Staff",
       "IWS_TEAMS": "IWS Teams",
@@ -803,7 +803,9 @@
     "LABEL": {
       "HOLIDAY_NAME": "Holiday Name",
       "SORT": "Sort Order",
-      "FIXED_DATE": "Fixed Date"
+      "FIXED_DATE": "Fixed Date",
+      "FIX_DATE_FORMAT": "DD.MM",
+      "DATE_FORMAT": "DD.MM.YYYY"
     },
     "TABLE": {
       "SORT": "Sort",
@@ -827,8 +829,7 @@
       "ALREADY_EXIST": "The record already exists",
       "CREATION_FAILED": "There was an error during the creation of the holiday.",
       "UPDATE_FAILED": "There was an error during the holiday update.",
-      "EMPTY": "The name of the holiday must have at least one character",
-      "HOLIDAY_LABEL_REQUIRED": "The name of the holiday is required."
+      "EMPTY": "The name of the holiday must have at least one character"
     },
     "MODAL": {
       "NAME": "Holiday",

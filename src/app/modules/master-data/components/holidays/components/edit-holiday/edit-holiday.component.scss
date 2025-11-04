@@ -2,21 +2,25 @@
 .holiday-form {
   display: flex;
   align-items: center;
-  gap: 0.75rem;         // espacio horizontal entre label e input
-  margin-bottom: 0.5rem; // reduce espacio entre filas
+  gap: 0.5rem;
 
   label {
     width: 130px;       // ancho fijo para alinear todos los labels
+    flex-shrink: 0;
   }
 
   input[pInputText] {
-    width: 180px;       // ancho fijo de inputs de texto/número
-    padding: 0.25rem 0.5rem;
-    font-size: 0.9rem;
+    width: 180px;
+    flex-shrink: 0;
+
+  }
+
+  ::ng-deep .p-inputnumber-input {
+    width: 180px !important;
   }
 
   ::ng-deep .p-datepicker input {
-    width: 100px !important; // ancho fijo para el campo de fecha
+    width: 110px !important; // ancho fijo para el campo de fecha
     text-align: center;
   }
 }

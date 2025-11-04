@@ -3,45 +3,37 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form">
                 <label for="publicHolidayName">{{ "HOLIDAYS.MODAL.NAME" | translate }}</label>
-                <input
-                    #publicHolidayInput
-                    pInputText
-                    type="text"
-                    id="publicHolidayName"
-                    formControlName="name"
-                    autocomplete="off"
-                    [attr.aria-invalid]="createdPublicHolidayForm.get('name')?.invalid"
-                    [attr.aria-describedby]="
-                    createdPublicHolidayForm.get('name')?.invalid
-                    ? 'publicHolidayError'
-                    : null
-                    "
-                    class="w-full"
-                />
-                <small
-                *ngIf="
-                    createdPublicHolidayForm.get('name')?.invalid &&
-                    createdPublicHolidayForm.get('name')?.touched
-                "
-                id="publicHolidayError"
-                class="text-red-500 block mt-1"
-                ></small>
+                <div class="input-message">
+                    <input
+                        #publicHolidayInput
+                        pInputText
+                        type="text"
+                        id="publicHolidayName"
+                        formControlName="name"
+                        autocomplete="off"
+                        class="w-full"
+                        invalid="createdPublicHolidayForm.get('name')?.invalid &&
+                        createdPublicHolidayForm.get('name')?.dirty &&
+                        createdPublicHolidayForm.get('name')!.hasError('required')"
+                    />
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                        createdPublicHolidayForm.get('name')?.invalid &&
+                        createdPublicHolidayForm.get('name')?.dirty &&
+                        createdPublicHolidayForm.get('name')!.hasError('required')
+                    ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
+                </div>
             </div>
         
             <div class="create-form">
                 <label for="sequenceNo">{{ "HOLIDAYS.MODAL.ORDEN" | translate }}</label>
-                <input
-                #projectStatusInput
-                pInputText
-                type="text"
-                id="sequenceNo"
+                <p-inputnumber
+                inputId="sequenceNo"
                 formControlName="sequenceNo"
                 autocomplete="off"
-                [attr.aria-invalid]="
-                    createdPublicHolidayForm.get('sequenceNo')?.invalid
-                "
-                [attr.aria-describedby]="
-                    createdPublicHolidayForm.get('sequenceNo')?.invalid
+                [useGrouping]="true"
+                [inputStyle]="{'text-align': 'right'}"
+                [attr.aria-invalid]="createdPublicHolidayForm.get('sequenceNo')?.invalid"
+                [attr.aria-describedby]="createdPublicHolidayForm.get('sequenceNo')?.invalid
                     ? 'publicHolidayError'
                     : null
                 "
@@ -56,18 +48,28 @@
                 class="text-red-500 block mt-1"
                 ></small>
             </div>
+
+            <div class="create-form">
+                <label for="isFixedDateModal">{{ "HOLIDAYS.LABEL.FIXED_DATE" | translate }}</label>
+                <p-toggleswitch inputId="isFixedDateModal" formControlName="isFixedDate" class="flex">
+                    <ng-template #handle let-checked="checked">
+                    <i [ngClass]="['!text-xs','pi',checked ? 'pi-check' : 'pi-times']"></i>
+                    </ng-template>
+                </p-toggleswitch>
+            </div>
         
             <div class="create-form">
                 <label for="date">{{ "HOLIDAYS.MODAL.DATE" | translate }}</label>
                 <div class="datepicker-container w-full">
                     <p-datepicker
                         formControlName="date"
+                        #datePicker
                         [showIcon]="true"
                         inputId="date"
-                        dateFormat="dd.mm"
+                        [dateFormat]="isFixedDate ? fixDateFormatPicker : dateFormatPicker"
                         [showClear]="true"
                         appendTo="body"
-                        [placeholder]="'DD.MM'"
+                        [placeholder]="isFixedDate ? ('HOLIDAYS.LABEL.FIX_DATE_FORMAT' | translate) : ('HOLIDAYS.LABEL.DATE_FORMAT' | translate)"
                         [style]="{ 'width': '100%' , 'max-width': '300px'}"
                         inputStyleClass="centered-date"
                         panelStyleClass="datepicker-panel"

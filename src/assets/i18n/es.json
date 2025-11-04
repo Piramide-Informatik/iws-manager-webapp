@@ -26,7 +26,7 @@
       "DUNNING_LEVELS": "Niveles de Cobranza",
       "EMPLOYEE_QUALIFICATION": "Datos Maestros - Calificación de Empleados",
       "FUNDING_PROGRAMS": "Datos Maestros - Programas de Financiamiento",
-      "HOLIDAYS": "Datos Maestros - Días Festivos",
+      "HOLIDAYS": "Días Festivos",
       "IWS_COMMISSIONS": "Comisiones de IWS",
       "IWS_STAFF": "Personal de IWS",
       "IWS_TEAMS": "Equipos de IWS",
@@ -802,7 +802,9 @@
     "LABEL": {
       "HOLIDAY_NAME": "Nombre del festivo",
       "SORT": "Orden",
-      "FIXED_DATE": "Fecha fija"
+      "FIXED_DATE": "Fecha fija",
+      "FIX_DATE_FORMAT": "DD.MM",
+      "DATE_FORMAT": "DD.MM.AAAA"
     },
     "TABLE": {
       "SORT": "Orden",
@@ -826,8 +828,7 @@
       "ALREADY_EXIST": "ya existe el registro",
       "CREATION_FAILED": "Hubo un error durante la creacion del festivo.",
       "UPDATE_FAILED": "Hubo un error durante la actualización del festivo.",
-      "EMPTY": "Vacío",
-      "HOLIDAY_LABEL_REQUIRED": "El nombre del festivo es obligatorio."
+      "EMPTY": "Vacío"
     },
     "MODAL": {
       "NAME": "Festivo",

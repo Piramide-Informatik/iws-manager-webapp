@@ -5,12 +5,16 @@
     margin-bottom: 1rem;
     
     label {
-        width: 80px; 
+        width: 90px; 
         flex-shrink: 0;
     }
 
-    input {
+    input, p-datepicker {
         width: 100%;
+    }
+
+    ::ng-deep .p-inputnumber-input {
+      width: 100%;
     }
 }
 

@@ -26,7 +26,7 @@
       "DUNNING_LEVELS": "Mahnstufen",
       "EMPLOYEE_QUALIFICATION": "Stammdaten - Mitarbeiter-Qualifikationen",
       "FUNDING_PROGRAMS": "Stammdaten - Förderprogramme",
-      "HOLIDAYS": "Stammdaten - Feiertage",
+      "HOLIDAYS": "Feiertage",
       "IWS_COMMISSIONS": "IWS Provisionen",
       "IWS_STAFF": "IWS Mitarbeiter",
       "IWS_TEAMS": "IWS Teams",
@@ -807,7 +807,9 @@
     "LABEL": {
       "HOLIDAY_NAME": "Feiertag",
       "SORT": "Reihenfolge",
-      "FIXED_DATE": "Festes Datum"
+      "FIXED_DATE": "Festes Datum",
+      "FIX_DATE_FORMAT": "TT.MM",
+      "DATE_FORMAT": "TT.MM.JJJJ"
     },
     "TABLE": {
       "SORT": "Reihenfolge",
@@ -831,8 +833,7 @@
       "ALREADY_EXIST": "Der Datensatz existiert bereits",
       "CREATION_FAILED": "Beim Anlegen des Feiertags ist ein Fehler aufgetreten.",
       "UPDATE_FAILED": "Beim Feiertags-Update ist ein Fehler aufgetreten.",
-      "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten",
-      "HOLIDAY_LABEL_REQUIRED": "Der Name des Feiertags ist erforderlich."
+      "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten"
     },
     "MODAL": {
       "NAME": "Feiertag",
