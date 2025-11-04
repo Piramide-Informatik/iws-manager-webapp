@@ -10,58 +10,65 @@
           pInputText
           #firstInput
           type="text"
-          id="publicHoliday"
+          id="name"
           formControlName="publicHoliday"
-          [ngClass]="{'ng-invalid ng-dirty': editPublicHolidayForm.get('publicHoliday')?.invalid && editPublicHolidayForm.get('projectStatus')?.touched}"
           autocomplete="off"
+          invalid="editPublicHolidayForm.get('publicHoliday')?.invalid &&
+            editPublicHolidayForm.get('publicHoliday')?.dirty &&
+            editPublicHolidayForm.get('publicHoliday')!.hasError('required')"
         />
-        <p-message severity="error" variant="simple" size="small" *ngIf="
-                        editPublicHolidayForm.get('publicHoliday')?.invalid &&
-                        editPublicHolidayForm.get('publicHoliday')?.touched &&
-                        editPublicHolidayForm.get('publicHoliday')!.hasError('required')
-                    ">
-                        {{ 'HOLIDAYS.ERROR.HOLIDAY_LABEL_REQUIRED' | translate }}
-                    </p-message>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            editPublicHolidayForm.get('publicHoliday')?.invalid &&
+            editPublicHolidayForm.get('publicHoliday')?.touched &&
+            editPublicHolidayForm.get('publicHoliday')!.hasError('required')
+        ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
       </div>
 
-      <div class="holiday-form mb-2">
+      <div class="holiday-form mb-3">
         <label for="sequenceNo">{{ "HOLIDAYS.LABEL.SORT" | translate }}</label>
-        <input pInputText type="number" id="sequenceNo" formControlName="sequenceNo" />
+        <p-inputnumber inputId="sequenceNo" formControlName="sequenceNo" autocomplete="off" 
+          [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"/>
       </div>
 
-      <div class="holiday-form flex align-items-center gap-2">
-        <div class="holiday-form-check">
-          <label for="isFixedDate">{{
-            "HOLIDAYS.LABEL.FIXED_DATE" | translate
-          }}</label>
-          <p-toggleswitch formControlName="isFixedDate" class="flex">
+      <div class="holiday-form flex align-items-center gap-4 mb-3 flex-wrap">
+        <div class="holiday-form-check col p-0">
+          <label for="isFixedDate">{{ "HOLIDAYS.LABEL.FIXED_DATE" | translate }}</label>
+          <p-toggleswitch inputId="isFixedDate" formControlName="isFixedDate" class="flex">
             <ng-template #handle let-checked="checked">
-              <i
-                [ngClass]="[
-                  '!text-xs',
-                  'pi',
-                  checked ? 'pi-check' : 'pi-times'
-                ]"
-              ></i>
+              <i [ngClass]="['!text-xs','pi',checked ? 'pi-check' : 'pi-times']"></i>
             </ng-template>
           </p-toggleswitch>
+
+          <p-datepicker
+            formControlName="date"
+            #datePicker
+            [showIcon]="true"
+            [dateFormat]="isFixedDate ? fixDateFormatPicker : dateFormatPicker"
+            [showButtonBar]="true"
+            [placeholder]="isFixedDate ? ('HOLIDAYS.LABEL.FIX_DATE_FORMAT' | translate) : ('HOLIDAYS.LABEL.DATE_FORMAT' | translate)"
+          ></p-datepicker>
         </div>
 
-        <p-datepicker
-          formControlName="date"
-          showIcon="true"
-          dateFormat="dd.mm"
-          [showButtonBar]="true"
-          [placeholder]="'DD.MM'"
-        ></p-datepicker>
-        <p-button
-          type="submit"
-          [label]="'BUTTONS.SAVE' | translate"
-          icon="pi pi-check"
-          class="p-button-sm"
-          [loading]="isSaving"
-          [disabled]="editPublicHolidayForm.invalid || isSaving || !hasChanges"
-        ></p-button>
+        <div class="flex align-items-center gap-3 justify-content-center col p-0">
+          <p-button
+            type="submit"
+            [label]="'BUTTONS.SAVE' | translate"
+            icon="pi pi-check"
+            [loading]="isSaving"
+            [disabled]="editPublicHolidayForm.invalid || isSaving || !hasChanges"
+          ></p-button>
+  
+           <p-button
+              type="button"
+              class="cancel"
+              size="small"
+              [label]="'BUTTONS.CANCEL' | translate"
+              icon="pi pi-times"
+              iconPos="left"
+              [disabled]="isSaving"
+              (onClick)="clearForm()"
+            />
+        </div>
       </div>
     </div>
   </form>
@@ -162,9 +169,7 @@
       size="small"
       [label]="'BUTTONS.NEW_YEAR' | translate"
       icon="pi pi-plus"
-      (click)="addYear(selectedPublicHolidayId)"
-      (keydown.enter)="addYear(selectedPublicHolidayId)"
-      (keydown.space)="addYear(selectedPublicHolidayId)"
+      (onClick)="addYear(selectedPublicHolidayId)"
       [disabled]="!selectedPublicHolidayId"
     ></p-button>
   </div>

@@ -2,7 +2,7 @@
   <div class="align-items-center mb-2">
     <div class="order_input order_id mb-2">
       <label for="orderId">{{ 'ORDERS.FORM.ORDER_ID' | translate }}</label>
-      <p-inputnumber [useGrouping]="false" [inputStyle]="{'text-align': 'right'}"
+      <p-inputnumber [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
         #inputNumber
         inputId="orderId"
         formControlName="orderNo"
@@ -125,7 +125,7 @@
     </div>
     <div class="order_input order_name mb-2">
       <label for="orderValue">{{ 'ORDERS.FORM.ORDER_VALUE' | translate }}</label>
-      <p-inputnumber mode="decimal" [max]="99999.99" [min]="0" [useGrouping]="true" 
+      <p-inputnumber mode="decimal" [useGrouping]="true" 
         [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" [inputStyle]="{'text-align': 'right'}"
         id="orderValue"
         formControlName="orderValue"

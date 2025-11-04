@@ -3,10 +3,19 @@
     <div class="form-column pl-6">
       <div class="field">
         <label for="employeeNumber">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
-        <p-inputnumber #inputNumber class="col-md-6" [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off" formControlName="employeeNumber" id="employeeNumber" />
-        <div *ngIf="employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.touched" class="error-messages1">
-          <small class="p-error">{{ 'MESSAGE.REQUIRED_FIELD' | translate }}</small>
-        </div>
+        <div class="input-message">
+        <p-inputnumber #inputNumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off" formControlName="employeeNumber" id="employeeNumber" 
+        [attr.invalid]="(employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.dirty) || employeeNumberAlreadyExist"/>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.dirty) || employeeNumberAlreadyExist">
+            <span *ngIf="employeeForm.get('employeeNumber')?.errors?.['required'] && employeeForm.get('employeeNumber')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="employeeNumberAlreadyExist && !employeeForm.get('employeeNumber')?.errors?.['required']">
+              {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+          </div>
       </div>
 
       <div class="field">
@@ -23,44 +32,42 @@
 
       <div class="field">
         <label for="employeeFirstName">{{ 'EMPLOYEE.FORM.FIRST_NAME' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="employeeFirstName" id="employeeFirstName" autocomplete="off"/>
+        <input  type="text" pInputText formControlName="employeeFirstName" id="employeeFirstName" autocomplete="off"/>
       </div>
 
       <div class="field">
         <label for="employeeLastName">{{ 'EMPLOYEE.FORM.LAST_NAME' | translate }}</label>
+        <div class="input-message">
         <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName" autocomplete="off"/>
-        <div *ngIf="employeeForm.get('employeeLastName')?.invalid && employeeForm.get('employeeLastName')?.touched" class="error-messages1">
-          <small class="p-error">{{ 'MESSAGE.REQUIRED_FIELD' | translate }}</small>
-        </div>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (employeeForm.get('employeeLastName')?.invalid && employeeForm.get('employeeLastName')?.dirty) ">
+            <span *ngIf="employeeForm.get('employeeLastName')?.errors?.['required'] && employeeForm.get('employeeLastName')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="!employeeForm.get('employeeLastName')?.errors?.['required']">
+              {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+          </div>
       </div>
 
     <div class="field">
       <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
+      <div class="input-message">
       <input
         type="text"
         pInputText
         formControlName="employeeEmail"
         id="employeeEmail"
-        [class]="
-          employeeForm.get('employeeEmail')?.invalid &&
-          employeeForm.get('employeeEmail')?.touched
-            ? 'ng-invalid ng-dirty'
-            : ''
-        "
+        autocomplete="off"
+        [attr.invalid]="(employeeForm.get('employeeEmail')?.invalid && employeeForm.get('employeeEmail')?.dirty)"
       />
-      <div
-        *ngIf="
-          employeeForm.get('employeeEmail')?.invalid &&
-          employeeForm.get('employeeEmail')?.touched
-        "
-        class="error-messages1"
-      >
-        <small
-          *ngIf="employeeForm.get('employeeEmail')?.errors?.['email']"
-          class="p-error"
-        >
-          {{ 'MESSAGE.INVALID_EMAIL' | translate }}
-        </small>
+      <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (employeeForm.get('employeeEmail')?.invalid && employeeForm.get('employeeEmail')?.dirty)">
+            <span *ngIf="employeeForm.get('employeeEmail')?.errors?.['email'] && employeeForm.get('employeeEmail')?.dirty">
+              {{ 'MESSAGE.INVALID_EMAIL' | translate }}
+            </span>
+      </p-message>
       </div>
     </div>
     </div>
