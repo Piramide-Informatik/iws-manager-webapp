@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import {  finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -34,7 +34,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
   constructor(private readonly commonMessageService: CommonMessagesService) {}
   
   readonly createdProjectStatusForm = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl('', [Validators.required])
   });
 
   ngOnInit(): void {

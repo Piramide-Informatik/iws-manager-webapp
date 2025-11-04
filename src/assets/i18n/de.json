@@ -1126,7 +1126,7 @@
       "ALREADY_EXISTS": "Der Datensatz existiert bereits"
     },
     "DELETE": {
-      "CONFIRMATION": "Projektstatus löschen Projekt"
+      "CONFIRMATION": "Projektstatus löschen"
     },
     "TABLE_PROJECT_STATUS": {
       "PROJECT_STATUS_LABEL": "Projektstatus",
