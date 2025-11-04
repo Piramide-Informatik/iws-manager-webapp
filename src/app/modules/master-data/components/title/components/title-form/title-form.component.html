@@ -7,7 +7,7 @@
                     [ngClass]="{'ng-invalid ng-dirty': (editTitleForm.get('title')?.invalid && editTitleForm.get('title')?.touched) || titleAlreadyExist}"
                     autocomplete="off" />
 
-                <p-message severity="error" variant="simple" size="small" *ngIf="
+                <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                     (editTitleForm.get('title')?.invalid && editTitleForm.get('title')?.dirty) || 
                     titleAlreadyExist">
                     <span

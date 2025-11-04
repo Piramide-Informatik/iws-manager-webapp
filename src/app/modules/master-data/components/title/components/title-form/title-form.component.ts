@@ -53,6 +53,12 @@ export class TitleFormComponent implements OnInit, OnDestroy {
     this.editTitleForm = new FormGroup({
       title: new FormControl('', [Validators.required])
     });
+
+    this.editTitleForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.titleAlreadyExist) {
+        this.titleAlreadyExist = false;
+      }
+    });
   }
 
   private setupTitleSubscription(): void {
@@ -169,6 +175,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         if (this.firstInput?.nativeElement) {
           this.firstInput.nativeElement.focus();
+          this.titleAlreadyExist = false;
         }
       }, 200);
     }
