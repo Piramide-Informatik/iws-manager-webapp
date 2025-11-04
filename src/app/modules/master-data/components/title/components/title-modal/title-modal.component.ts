@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators, AsyncValidatorFn } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
-import { finalize, map, take } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -52,7 +52,7 @@ export class TitleModalComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     
-    if (changes['isVisibleModal'] && changes['isVisibleModal'].currentValue === true && this.isCreateMode) {
+    if (changes['isVisibleModal']?.currentValue === true && this.isCreateMode) {
       setTimeout(() => {
         this.focusInputIfNeeded();
       }, 150);
