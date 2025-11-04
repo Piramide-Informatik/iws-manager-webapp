@@ -5,20 +5,28 @@
                 <label for="titleName" class="block">
                     {{ 'TITLE.FORM.NEW_TITLE' | translate }}
                 </label>
-                <input #titleInput pInputText type="text" id="titleName" formControlName="name" autocomplete="off"
-                    [attr.aria-invalid]="createTitleForm.get('name')?.invalid"
-                    [attr.aria-describedby]="createTitleForm.get('name')?.invalid ? 'titleError' : null"
-                    class="w-full" />
+                <div class="input-message">
+                    <input #titleInput pInputText type="text" id="titleName" formControlName="name" autocomplete="off"
+                        [attr.aria-invalid]="createTitleForm.get('name')?.invalid"
+                        [attr.aria-describedby]="createTitleForm.get('name')?.invalid ? 'titleError' : null"
+                        class="w-full" />
 
-                <small *ngIf="createTitleForm.get('name')?.invalid && createTitleForm.get('name')?.touched"
-                    id="titleError" class="text-red-500 block mt-1">
-                </small>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small"
+                        *ngIf="(createTitleForm.get('name')?.invalid && createTitleForm.get('name')?.dirty) || titleAlreadyExist">
+                        <span
+                            *ngIf="createTitleForm.get('name')?.errors?.['required'] && createTitleForm.get('name')?.dirty">
+                            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                        </span>
+                        <span *ngIf="titleAlreadyExist && !createTitleForm.get('name')?.errors?.['required']">
+                            {{ 'TITLE.ERROR.TITLE_ALREADY_EXISTS' | translate }}
+                        </span>
+                    </p-message>
+                </div>
             </div>
 
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
-                    icon="pi pi-check" iconPos="left" [loading]="isLoading"
-                    [disabled]="isSaveDisabled" />
+                    icon="pi pi-check" iconPos="left" [loading]="isLoading" [disabled]="isSaveDisabled" />
 
                 <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                     icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
@@ -42,9 +50,6 @@
         </div>
     </div>
 </ng-template>
-<app-occ-error-modal
-  *ngIf="showOCCErrorModaTitle"
-  [errorType]="occErrorType"
-  [reloadCurrentPage]="true"
-  (close)="showOCCErrorModaTitle = false">
+<app-occ-error-modal *ngIf="showOCCErrorModaTitle" [errorType]="occErrorType" [reloadCurrentPage]="true"
+    (close)="showOCCErrorModaTitle = false">
 </app-occ-error-modal>

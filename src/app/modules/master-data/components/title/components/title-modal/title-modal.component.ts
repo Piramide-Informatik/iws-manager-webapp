@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, EventEmitter, Output, inject, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TitleUtils } from '../../utils/title-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -13,12 +13,13 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   styleUrls: ['./title-modal.component.scss']
 })
 
-export class TitleModalComponent implements OnInit, OnDestroy {
+export class TitleModalComponent implements OnInit, OnChanges, OnDestroy {
   private readonly titleUtils = inject(TitleUtils);
   private readonly subscriptions = new Subscription();
 
   public showOCCErrorModaTitle = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public titleAlreadyExist = false;
 
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
   @Input() modalType: 'create' | 'delete' = 'create';
@@ -32,15 +33,30 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string | null = null;
 
-  constructor(private readonly commonMessageService: CommonMessagesService) {}
-  
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
+
   readonly createTitleForm = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl('', [Validators.required])
   });
 
   ngOnInit(): void {
     this.loadInitialData();
     this.resetForm();
+
+     this.createTitleForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.titleAlreadyExist) {
+        this.titleAlreadyExist = false;
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    
+    if (changes['isVisibleModal']?.currentValue === true && this.isCreateMode) {
+      setTimeout(() => {
+        this.focusInputIfNeeded();
+      }, 150);
+    }
   }
 
   private loadInitialData() {
@@ -83,7 +99,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
     }
   }
   private handleEntityRelatedError(error: any): void {
-    if(error.error?.message?.includes('a foreign key constraint fails')) {
+    if (error.error?.message?.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
       this.closeModal();
     }
@@ -126,13 +142,29 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   private handleError(error: any): void {
     this.errorMessage = error?.message ?? 'TITLE.ERROR.CREATION_FAILED';
 
-    const detail = this.getErrorDetail(error.message);
-
-    this.toastMessage.emit({
-      severity: 'error',
-      summary: 'MESSAGE.ERROR',
-      detail
-    });
+    if (error?.message?.includes('title name already exists') ||
+      error?.message?.includes('title already exists') ||
+      error?.message?.includes('already exists')) {
+      this.titleAlreadyExist = true;
+      this.toastMessage.emit({
+        severity: 'error',
+        summary: 'MESSAGE.ERROR',
+        detail: 'MESSAGE.CREATE_FAILED'
+      });
+    } else if (error?.message?.includes('Title name is required')) {
+      this.toastMessage.emit({
+        severity: 'error',
+        summary: 'MESSAGE.ERROR',
+        detail: 'ERROR.FIELD_REQUIRED'
+      });
+    } else {
+      const detail = this.getErrorDetail(error.message);
+      this.toastMessage.emit({
+        severity: 'error',
+        summary: 'MESSAGE.ERROR',
+        detail
+      });
+    }
 
     console.error('Creation error:', error);
   }
@@ -191,7 +223,7 @@ export class TitleModalComponent implements OnInit, OnDestroy {
   }
 
   get isSaveDisabled(): boolean {
-  const nameValue = this.createTitleForm.get('name')?.value?.trim();  
-  return this.createTitleForm.invalid || this.isLoading || !nameValue;
-}
+    const nameValue = this.createTitleForm.get('name')?.value?.trim();
+    return this.createTitleForm.invalid || this.isLoading || !nameValue;
+  }
 }

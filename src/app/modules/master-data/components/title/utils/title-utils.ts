@@ -41,7 +41,25 @@ export class TitleUtils {
    */
 
   addTitle(nameTitle: string): Observable<Title> {
-    return this.titleService.addTitle({name: nameTitle});
+    const name = nameTitle?.trim() || '';
+    if (!name) {
+      return throwError(() => new Error('Title name is required'));
+    }
+
+    return this.titleNameExists(name).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('title name already exists'));
+        }
+        return this.titleService.addTitle({ name });
+      }),
+      catchError((err) => {
+        if (err.message === 'title name already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('TITLE.ERROR.CREATION_FAILED'));
+      })
+    );
   }
 
   getAllTitles(): Observable<Title[]> {
@@ -80,7 +98,7 @@ export class TitleUtils {
  * @returns Observable that completes when the deletion is done
  */
   deleteTitle(id: number): Observable<void> {
-    return this.titleService.deleteTitle(id)      
+    return this.titleService.deleteTitle(id)
   }
 
   /**
@@ -93,6 +111,11 @@ export class TitleUtils {
       return throwError(() => new Error('Invalid title data'));
     }
 
+    const name = title.name?.trim() || '';
+    if (!name) {
+      return throwError(() => new Error('Title name is required'));
+    }
+
     return this.titleService.getTitleById(title.id).pipe(
       take(1),
       switchMap((currentTitle) => {
@@ -102,12 +125,31 @@ export class TitleUtils {
         if (currentTitle.version !== title.version) {
           return throwError(() => createUpdateConflictError('Title'));
         }
-        return this.titleService.updateTitle(title);
 
+         return this.titleNameExists(name, title.id).pipe(
+          switchMap((exists) => {
+            if (exists) {
+              return throwError(() => new Error('title name already exists'));
+            }
+            return this.titleService.updateTitle(title);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating title:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  private titleNameExists(name: string, excludeId?: number): Observable<boolean> {
+    return this.titleService.getAllTitles().pipe(
+      map(titles => titles.some(
+        title => title.id !== excludeId &&
+          title.name?.toLowerCase() === name?.toLowerCase()
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check title name existence'));
       })
     );
   }
