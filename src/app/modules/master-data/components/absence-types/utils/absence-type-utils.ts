@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { AbsenceTypeService } from '../../../../../Services/absence-type.service';
 import { AbsenceType } from '../../../../../Entities/absenceType';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -36,7 +36,25 @@ export class AbsenceTypeUtils {
    * Creates a new absence type with validation
    */
   addAbsenceType(absenceType: Omit<AbsenceType, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<AbsenceType> {
-    return this.absenceTypeService.addAbsenceType(absenceType);
+    const name = absenceType.name?.trim() || '';
+    if (!name) {
+      return throwError(() => new Error('Absence Type is required'));
+    }
+
+    return this.absencetypeExists(name).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('absence type already exists'));
+        }
+        return this.absenceTypeService.addAbsenceType(absenceType);
+      }),
+      catchError((err) => {
+        if (err.message === 'absence type already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('ABSENCE_TYPE.ERROR.CREATION_FAILED'));
+      })
+    );
   }
 
   /**
@@ -108,6 +126,18 @@ export class AbsenceTypeUtils {
       catchError((err) => {
         console.error('Error updating absence type:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  private absencetypeExists(name: string, excludeId?: number): Observable<boolean> {
+    return this.absenceTypeService.getAllAbsenceTypes().pipe(
+      map(absenceTypes => absenceTypes.some(
+        absenceType => absenceType.id !== excludeId &&
+          absenceType.name?.toLowerCase() === name?.toLowerCase()
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check absence type existence'));
       })
     );
   }
