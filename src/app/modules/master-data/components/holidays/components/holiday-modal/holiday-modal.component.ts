@@ -1,12 +1,13 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import { momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { DatePicker } from 'primeng/datepicker';
 @Component({
   selector: 'app-holiday-modal',
   standalone: false,
@@ -19,6 +20,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly commonMessageService = inject(CommonMessagesService); 
   private readonly subscriptions = new Subscription();
   @ViewChild('publicHolidayInput') publicHolidayInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('datePicker') datePicker!: DatePicker;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible: boolean = false;
   @Input() publicHolidayToDelete: number | null = null;
@@ -35,11 +37,15 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   errorMessage: string | null = null;
   showOCCErrorModalHoliday = false;
   public occErrorHolidayType: OccErrorType = 'DELETE_UNEXISTED';
+  fixDateFormatPicker: string = 'dd.mm';
+  dateFormatPicker: string = 'dd.mm.yy';
+  isFixedDate: boolean = false;
 
   readonly createdPublicHolidayForm = new FormGroup({
-    name: new FormControl(''),
-    date: new FormControl(''),
-    sequenceNo: new FormControl({value: null, disabled: true}),
+    name: new FormControl('', [Validators.required]),
+    sequenceNo: new FormControl(null),
+    isFixedDate: new FormControl(false),
+    date: new FormControl(null),
   });
 
   constructor() {} 
@@ -47,6 +53,17 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.loadInitialData();
     this.resetForm();
+    this.createdPublicHolidayForm.get('isFixedDate')?.valueChanges.subscribe(value => {
+      this.isFixedDate = value ?? false;
+      if (this.datePicker) {
+        const currentValue = this.datePicker.value;
+
+        setTimeout(() => {
+          this.datePicker.writeValue(currentValue);
+          this.datePicker.updateInputfield();
+        });
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,13 +71,6 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
       setTimeout(() => {
         this.focusInputIfNeeded();
       });
-    }
-    
-    if (changes['visible'] && this.visible && this.isCreateMode) {
-      this.resetForm();
-      this.publicHolidayUtils.getPublicHolidaysSequenceSort().subscribe(sequence => {
-        this.createdPublicHolidayForm.get('sequenceNo')?.setValue(sequence as any);
-      })
     }
   }
 
@@ -119,7 +129,6 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
                     : 'MESSAGE.DELETE_FAILED',
                 });
               }
-              console.error('Error deleting publicHoliday:', error);
               this.closeModel();
             }
           },
@@ -138,10 +147,10 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     if (this.shouldPreventSubmission()) return;
 
     this.prepareForSubmission();
-    const publicHoliday = this.getSanitizedPublicHolidayValues();
+    const newPublicHoliday = this.getSanitizedPublicHolidayValues();
 
     const sub = this.publicHolidayUtils
-      .addPublicHoliday(publicHoliday)
+      .addPublicHoliday(newPublicHoliday)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => this.handleSuccess(),
@@ -197,13 +206,9 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   private getSanitizedPublicHolidayValues() {
     return {
       name: this.createdPublicHolidayForm.value.name?.trim() ?? '',
-      date: this.createdPublicHolidayForm.value.date
-        ? momentFormatDate(
-            momentCreateDate(this.createdPublicHolidayForm.value.date)
-          )
-        : '',
-      sequenceNo: Number(this.createdPublicHolidayForm.getRawValue().sequenceNo),
-      isFixedDate: true,
+      sequenceNo: this.createdPublicHolidayForm.value.sequenceNo ?? 0,
+      isFixedDate: this.createdPublicHolidayForm.value.isFixedDate ?? false,
+      date: momentFormatDate(this.createdPublicHolidayForm.value.date),
     };
   }
 
