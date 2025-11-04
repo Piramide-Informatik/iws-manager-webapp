@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Title } from '../../../../../../Entities/title';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { TitleStateService } from '../../utils/title-state.service';
 import { TitleUtils } from '../../utils/title-utils';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,6 +17,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 })
 export class TitleFormComponent implements OnInit, OnDestroy {
   public showOCCErrorModaTitle = false;
+  public titleAlreadyExist = false;
   currentTitle: Title | null = null;
   editTitleForm!: FormGroup;
   isSaving = false;
@@ -50,7 +51,7 @@ export class TitleFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.editTitleForm = new FormGroup({
-      title: new FormControl('')
+      title: new FormControl('', [Validators.required])
     });
   }
 
@@ -105,7 +106,10 @@ export class TitleFormComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.titleUtils.updateTitle(updatedTitle).subscribe({
-        next: (savedTitle) => this.handleSaveSuccess(savedTitle),
+        next: (savedTitle) => {
+          this.titleUtils.loadInitialData();
+          this.handleSaveSuccess(savedTitle)
+        },
         error: (err) => this.handleError(err)
       })
     );
@@ -125,7 +129,17 @@ export class TitleFormComponent implements OnInit, OnDestroy {
       this.showOCCErrorModaTitle = true;
       this.occErrorType = error.errorType;
       this.handleSaveError(error);
-    } else {
+    }
+    else if (error?.message?.includes('already exists')) {
+      this.titleAlreadyExist = true;
+      this.editTitleForm.get('name')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.titleAlreadyExist = false);
+
+      this.commonMessageService.showErrorEditMessage();
+    } else if (error?.message?.includes('Biller name is required')) {
+      this.commonMessageService.showErrorEditMessage();
+    }
+    else {
       this.handleSaveError(error);
     }
     this.isSaving = false;

@@ -111,6 +111,11 @@ export class TitleUtils {
       return throwError(() => new Error('Invalid title data'));
     }
 
+    const name = title.name?.trim() || '';
+    if (!name) {
+      return throwError(() => new Error('Title name is required'));
+    }
+
     return this.titleService.getTitleById(title.id).pipe(
       take(1),
       switchMap((currentTitle) => {
@@ -120,8 +125,15 @@ export class TitleUtils {
         if (currentTitle.version !== title.version) {
           return throwError(() => createUpdateConflictError('Title'));
         }
-        return this.titleService.updateTitle(title);
 
+         return this.titleNameExists(name, title.id).pipe(
+          switchMap((exists) => {
+            if (exists) {
+              return throwError(() => new Error('title name already exists'));
+            }
+            return this.titleService.updateTitle(title);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating title:', err);
