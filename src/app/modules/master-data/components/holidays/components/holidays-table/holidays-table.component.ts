@@ -112,6 +112,7 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
         useSameAsEdit: true,
         header: this.translate.instant(_('HOLIDAYS.TABLE.SORT')),
         customClasses: ['align-right'],
+        filter: { type: 'numeric'}
       },
       {
         field: 'name',

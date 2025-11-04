@@ -1,27 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormArray,
-  FormControl,
-  Validators,
-} from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { PublicHoliday } from '../../../../../../Entities/publicholiday';
 import { State } from '../../../../../../Entities/state';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import {
-  momentCreateDate,
-  momentFormatDate,
-} from '../../../../../shared/utils/moment-date-utils';
-import moment from 'moment';
+import {  momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayService } from '../../../../../../Services/public-holiday.service';
 import { HolidayYearService } from '../../../../../../Services/holiday-year.service';
 import { HolidayYear } from '../../../../../../Entities/holidayYear';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-edit-holiday',
@@ -33,6 +23,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   years: HolidayYear[] = [];
   selectedPublicHolidayId!: number;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('datePicker') datePicker!: DatePicker;
   public showOCCErrorModalPublicHoliday = false;
   currentPublicHoliday: PublicHoliday | null = null;
   editPublicHolidayForm!: FormGroup;
@@ -47,12 +38,14 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   private yearsModified = false;
   public occErrorHolidayType: OccErrorType = 'UPDATE_UPDATED';
 
+  fixDateFormatPicker: string = 'dd.mm';
+  dateFormatPicker: string = 'dd.mm.yy';
+  isFixedDate: boolean = false;
+
   constructor(
-    private readonly fb: FormBuilder,
     private readonly publicHolidayUtils: PublicHolidayUtils,
     private readonly publicHolidayStateService: PublicHolidayStateService,
     private readonly commonMessageService: CommonMessagesService,
-    private readonly translate: TranslateService,
     private readonly publicHolidayService: PublicHolidayService,
     private readonly holidayYearService: HolidayYearService
   ) {}
@@ -96,7 +89,6 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   }
 
   formatDate(date: string): string {
-    console.log('Formatting date:', date);
     if (!date) return '';
     let day: string, month: string, year: string;
 
@@ -145,9 +137,20 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   private initForm(): void {
     this.editPublicHolidayForm = new FormGroup({
       publicHoliday: new FormControl('', [Validators.required]),
+      sequenceNo: new FormControl(null),
+      isFixedDate: new FormControl(false),
       date: new FormControl(''),
-      sequenceNo: new FormControl({value: null, disabled: true}),
-      isFixedDate: new FormControl(true),
+    });
+    this.editPublicHolidayForm.get('isFixedDate')?.valueChanges.subscribe(value => {
+      this.isFixedDate = value ?? false;
+      if (this.datePicker) {
+        const currentValue = this.datePicker.value;
+        // Update format
+        setTimeout(() => {
+          this.datePicker.writeValue(currentValue);
+          this.datePicker.updateInputfield();
+        });
+      }
     });
   }
 
@@ -167,9 +170,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   private loadPublicHolidayData(publicHoliday: PublicHoliday): void {
     this.editPublicHolidayForm.patchValue({
       publicHoliday: publicHoliday.name,
-      date: publicHoliday.date
-        ? moment(publicHoliday.date, 'YYYY-MM-DD').toDate()
-        : null,
+      date: momentCreateDate(publicHoliday.date),
       sequenceNo: publicHoliday.sequenceNo,
       isFixedDate: publicHoliday.isFixedDate,
     });
@@ -221,12 +222,8 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     const updatePublicHoliday: PublicHoliday = {
       ...this.currentPublicHoliday,
       name: this.editPublicHolidayForm.value.publicHoliday?.trim(),
-      date: this.editPublicHolidayForm.value.date
-        ? momentFormatDate(
-            momentCreateDate(this.editPublicHolidayForm.value.date as string)
-          )
-        : '',
-      sequenceNo: this.editPublicHolidayForm.getRawValue().sequenceNo,
+      date: momentFormatDate(this.editPublicHolidayForm.value.date),
+      sequenceNo: this.editPublicHolidayForm.value.sequenceNo,
       isFixedDate: this.editPublicHolidayForm.value.isFixedDate,
     };
     this.subscriptions.add(
@@ -243,10 +240,10 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   }
 
   private markAllAsTouched(): void {
-    Object.values(this.editPublicHolidayForm.controls).forEach((control) => {
+    for(const control of Object.values(this.editPublicHolidayForm.controls)) {
       control.markAsTouched();
       control.markAsDirty();
-    });
+    }
   }
 
   private handleSaveSuccess(): void {
@@ -267,11 +264,6 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     } else {
       this.commonMessageService.showErrorEditMessage();
     }
-  }
-
-  private handleSaveError(error: any): void {
-    console.error('Error saving holiday:', error);
-    this.isSaving = false;
   }
 
   get bundeslandsArray(): FormArray {

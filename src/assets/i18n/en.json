@@ -806,7 +806,9 @@
     "LABEL": {
       "HOLIDAY_NAME": "Holiday Name",
       "SORT": "Sort Order",
-      "FIXED_DATE": "Fixed Date"
+      "FIXED_DATE": "Fixed Date",
+      "FIX_DATE_FORMAT": "DD.MM",
+      "DATE_FORMAT": "DD.MM.YYYY"
     },
     "TABLE": {
       "SORT": "Sort",
@@ -830,8 +832,7 @@
       "ALREADY_EXIST": "The record already exists",
       "CREATION_FAILED": "There was an error during the creation of the holiday.",
       "UPDATE_FAILED": "There was an error during the holiday update.",
-      "EMPTY": "The name of the holiday must have at least one character",
-      "HOLIDAY_LABEL_REQUIRED": "The name of the holiday is required."
+      "EMPTY": "The name of the holiday must have at least one character"
     },
     "MODAL": {
       "NAME": "Holiday",
