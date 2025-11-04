@@ -1,26 +1,26 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
     <form [formGroup]="createdProjectStatusForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form flex align-items-center mb-4">
-                <label for="projectStatusName">{{ 'PROJECT_STATUS.FORM.NEW_PROJECT_STATUS' | translate}}</label>
-                <input #projectStatusInput pInputText type="text" id="projectStatusName" formControlName="name" autocomplete="off"
-                    [attr.aria-invalid]="createdProjectStatusForm.get('name')?.invalid"
-                    [attr.aria-describedby]="createdProjectStatusForm.get('name')?.invalid ? 'projectStatusError' : null"
-                    />
-                <small *ngIf="createdProjectStatusForm.get('name')?.invalid && createdProjectStatusForm.get('name')?.touched"
-                    id="projectStatusError" class="text-red-500 block mt-1">
-                </small>
-            </div>
-
-            <div class="flex justify-content-center gap-2 mt-4">
-                <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
-                    icon="pi pi-check" iconPos="left" [loading]="isLoading"
-                    [disabled]="createdProjectStatusForm.invalid || isLoading || !createdProjectStatusForm.dirty"/>
-
-                <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-                    icon="pi pi-times" iconPos="left" (onClick)="closeModel()" [disabled]="isLoading"/>
-            </div>
+    <div class="create-form flex align-items-center mb-4">
+        <label for="projectStatusName">{{ 'PROJECT_STATUS.FORM.NEW_PROJECT_STATUS' | translate}}</label>
+        <div class="input-message">
+            <input #projectStatusInput pInputText type="text" id="projectStatusName" formControlName="name" autocomplete="off"
+                invalid="createdProjectStatusForm.get('name')?.invalid  
+                && createdProjectStatusForm.get('name')?.dirty 
+                || createdProjectStatusForm.get('name')?.touched"
+                [attr.aria-invalid]="createdProjectStatusForm.get('name')?.invalid"
+                [attr.aria-describedby]="createdProjectStatusForm.get('name')?.invalid ? 'projectStatusError' : null"
+                />
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                createdProjectStatusForm.get('name')?.invalid && 
+                createdProjectStatusForm.get('name')?.dirty
+                ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
         </div>
+        <small *ngIf="createdProjectStatusForm.get('name')?.invalid && createdProjectStatusForm.get('name')?.touched"
+            id="projectStatusError" class="text-red-500 block mt-1">
+        </small>
+    </div>
+</div>
     </form>
 </ng-container>
 
