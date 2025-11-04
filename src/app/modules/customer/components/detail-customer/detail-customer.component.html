@@ -20,47 +20,31 @@
             >{{ "CUSTOMERS.FORM.COMPANY_NAME" | translate }}</label
           >
           <div class="flex flex-column w-full">
-            <div class="field-content">
+            <div class="input-message">
               <input
                 #inputText
                 type="text"
                 id="companyText1"
-                class="mb-2"
+                class="mb-4"
                 pInputText
                 formControlName="companyText1"
-                [class]="
-                  formDetailCustomer.get('companyText1')?.invalid &&
-                  formDetailCustomer.get('companyText1')?.touched
-                    ? 'ng-invalid ng-dirty'
-                    : ''
-                "
+                [attr.invalid]="(formDetailCustomer.get('companyText1')?.invalid && formDetailCustomer.get('companyText1')?.dirty)"
               />
-              <div
-                *ngIf="
-                  formDetailCustomer.get('companyText1')?.invalid &&
-                  formDetailCustomer.get('companyText1')?.touched
-                "
-                class="error-messages1"
-              >
-                <small
-                  *ngIf="formDetailCustomer.get('companyText1')?.errors?.['required']"
-                  class="p-error"
-                >
-                  {{
-                    "CUSTOMERS.VALIDATION.COMPANY_TEXT1_REQUIRED" | translate
-                  }}
-                </small>
-              </div>
-            </div>
-            <input
-              type="text"
-              id="companyText2"
-              pInputText
-              formControlName="companyText2"
-            />
-          </div>
+             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (formDetailCustomer.get('companyText1')?.invalid && formDetailCustomer.get('companyText1')?.dirty)">
+            <span *ngIf="formDetailCustomer.get('companyText1')?.errors?.['required'] && formDetailCustomer.get('companyText1')?.dirty">
+              {{ 'CUSTOMERS.VALIDATION.COMPANY_TEXT1_REQUIRED' | translate }}
+            </span>
+          </p-message>
+          <input
+            type="text"
+            id="companyText2"
+            pInputText
+            formControlName="companyText2"
+          />
         </div>
-
+      </div>
+        </div>
         <!-- Select country -->
         <div class="field">
           <label for="country">{{
@@ -191,33 +175,20 @@
           <label for="invoiceEmail">{{
             "CUSTOMERS.FORM.EMAIL_INVOICE" | translate
           }}</label>
-          <div class="field-content">
+          <div class="input-message">
             <input
               type="text"
               id="invoiceEmail"
               pInputText
               formControlName="invoiceEmail"
-              [class]="
-                formDetailCustomer.get('invoiceEmail')?.invalid &&
-                formDetailCustomer.get('invoiceEmail')?.touched
-                  ? 'ng-invalid ng-dirty'
-                  : ''
-              "
+              [attr.invalid]="(formDetailCustomer.get('invoiceEmail')?.invalid && formDetailCustomer.get('invoiceEmail')?.dirty)"
             />
-            <div
-              *ngIf="
-                formDetailCustomer.get('invoiceEmail')?.invalid &&
-                formDetailCustomer.get('invoiceEmail')?.touched
-              "
-              class="error-messages2"
-            >
-              <small
-                *ngIf="formDetailCustomer.get('invoiceEmail')?.errors?.['email']"
-                class="p-error"
-              >
-                {{ "CUSTOMERS.VALIDATION.INVALID_EMAIL" | translate }}
-              </small>
-            </div>
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+              (formDetailCustomer.get('invoiceEmail')?.invalid && formDetailCustomer.get('invoiceEmail')?.dirty)">
+              <span *ngIf="formDetailCustomer.get('invoiceEmail')?.errors?.['email'] && formDetailCustomer.get('invoiceEmail')?.dirty">
+                {{ 'CUSTOMERS.VALIDATION.INVALID_EMAIL' | translate }}
+              </span>
+            </p-message>
           </div>
         </div>
 
