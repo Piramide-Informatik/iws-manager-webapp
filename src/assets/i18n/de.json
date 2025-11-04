@@ -1258,7 +1258,8 @@
       "TITLE_LABEL": "Titel"
     },
     "ERROR": {
-      "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
+      "TITLE_LABEL_REQUIRED": "Titel ist erforderlich",
+      "TITLE_ALREADY_EXISTS": "Titel existiert bereits"
     },
     "DELETE": {
       "CONFIRMATION": "Titel löschen"
