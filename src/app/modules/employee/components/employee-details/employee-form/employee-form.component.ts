@@ -46,6 +46,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   public isLoadingDelete = false;
   public customer: any;
   public customerEmployees: Employee[] = [];
+  public employeeNumberAlreadyExist = false;
 
   public salutations = toSignal(
     this.salutationUtils.getSalutationsSortedByName().pipe(
@@ -123,6 +124,12 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
             error: (err) => console.error('Error loading employee:', err)
           })
         );
+      }
+    });
+
+    this.employeeForm.get('employeeNumber')?.valueChanges.subscribe(() => {
+      if (this.employeeNumberAlreadyExist) {
+        this.employeeNumberAlreadyExist = false;
       }
     });
   }
@@ -264,7 +271,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     );
 
     if (exists) {
-      this.commonMessageService.showErrorRecordAlreadyExistWithNumberEmployee();
+      this.commonMessageService.showErrorRecordAlreadyExist();
+      this.employeeNumberAlreadyExist = true;
       return; // sale sin llamar al backend
     }
 
@@ -298,7 +306,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     );
 
     if (duplicate) {
-      this.commonMessageService.showErrorRecordAlreadyExistWithNumberEmployee();
+      this.commonMessageService.showErrorRecordAlreadyExist();
+      this.employeeNumberAlreadyExist = true;
       return;
     }
   }

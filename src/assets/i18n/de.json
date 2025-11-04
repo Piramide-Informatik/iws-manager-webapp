@@ -261,7 +261,7 @@
       "FEDERAL_STATE": "Bundesland",
       "WEB_SITE": "Webseite",
       "PHONE": "Telefon",
-      "EMAIL_INVOICE": "Email Rechnung",
+      "EMAIL_INVOICE": "E-Mail Rechnung",
       "ENTREPRENEURIAL_WEEKLY_WORKING_HOURS": "Unternehmerische Wochenarbeitszeit",
       "TAX_NUMBER": "Steuernummer",
       "FINANCE": "Finanzamt",
@@ -810,7 +810,9 @@
     "LABEL": {
       "HOLIDAY_NAME": "Feiertag",
       "SORT": "Reihenfolge",
-      "FIXED_DATE": "Festes Datum"
+      "FIXED_DATE": "Festes Datum",
+      "FIX_DATE_FORMAT": "TT.MM",
+      "DATE_FORMAT": "TT.MM.JJJJ"
     },
     "TABLE": {
       "SORT": "Reihenfolge",
@@ -834,8 +836,7 @@
       "ALREADY_EXIST": "Der Datensatz existiert bereits",
       "CREATION_FAILED": "Beim Anlegen des Feiertags ist ein Fehler aufgetreten.",
       "UPDATE_FAILED": "Beim Feiertags-Update ist ein Fehler aufgetreten.",
-      "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten",
-      "HOLIDAY_LABEL_REQUIRED": "Der Name des Feiertags ist erforderlich."
+      "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten"
     },
     "MODAL": {
       "NAME": "Feiertag",
@@ -1125,7 +1126,7 @@
       "ALREADY_EXISTS": "Der Datensatz existiert bereits"
     },
     "DELETE": {
-      "CONFIRMATION": "Projektstatus löschen Projekt"
+      "CONFIRMATION": "Projektstatus löschen"
     },
     "TABLE_PROJECT_STATUS": {
       "PROJECT_STATUS_LABEL": "Projektstatus",
@@ -1258,7 +1259,8 @@
       "TITLE_LABEL": "Titel"
     },
     "ERROR": {
-      "TITLE_LABEL_REQUIRED": "Titel ist erforderlich"
+      "TITLE_LABEL_REQUIRED": "Titel ist erforderlich",
+      "TITLE_ALREADY_EXISTS": "Titel existiert bereits"
     },
     "DELETE": {
       "CONFIRMATION": "Titel löschen"

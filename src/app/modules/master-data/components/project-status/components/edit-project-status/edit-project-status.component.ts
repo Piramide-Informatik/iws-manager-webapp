@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
 import { Subscription } from 'rxjs';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
@@ -43,7 +43,7 @@ export class EditProjectStatusComponent implements OnInit {
 
   private initForm(): void {
     this.editProjectStatusForm = new FormGroup({
-      projectStatus: new FormControl('')
+      projectStatus: new FormControl('', [Validators.required])
     })
   }
   
