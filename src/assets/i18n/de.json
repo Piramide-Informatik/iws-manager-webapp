@@ -639,6 +639,10 @@
     "MODAL": {
       "NEW": "Neue Abwesenheitsart",
       "DELETE": "Abwesenheitsart löschen"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Abwesenheitsart existiert bereits",
+      "LABEL_ALREADY_EXIST": "Kürzel existiert bereits"
     }
   },
   "SALUTATION": {

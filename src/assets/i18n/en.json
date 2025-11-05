@@ -635,6 +635,10 @@
     "MODAL": {
       "NEW": "New Absence Type",
       "DELETE": "Delete Absence Type"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Absence type already exists",
+      "LABEL_ALREADY_EXIST": "Abbreviation already exists"
     }
   },
   "SALUTATION": {

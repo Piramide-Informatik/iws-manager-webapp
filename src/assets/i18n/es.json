@@ -634,6 +634,10 @@
     "MODAL": {
       "NEW": "Nuevo Tipo de Ausencia",
       "DELETE": "Eliminar Tipo de Ausencia"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "El tipo de ausencia ya existe",
+      "LABEL_ALREADY_EXIST": "La abreviatura ya existe"
     }
   },
   "SALUTATION": {
