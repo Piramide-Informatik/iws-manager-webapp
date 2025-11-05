@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { Promoter } from '../../../../../Entities/promoter';
 import { PromoterService } from '../../../../../Services/promoter.service';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -40,7 +40,42 @@ export class PromoterUtils {
    * @returns Observable that completes when promoter is created
    */
   addPromoter(promoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Promoter> {
-    return this.promoterService.addPromoter(promoter);
+    const projectPromoter = promoter.projectPromoter?.trim();
+    if (!projectPromoter) {
+      return throwError(() => new Error('Abbreviation is required'));
+    }
+
+    return this.promoterExists(projectPromoter).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('abbreviation already exists'));
+        }
+        return this.promoterService.addPromoter(promoter);
+      }),
+      catchError((err) => {
+        if (err.message === 'abbreviation already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('PROMOTER.ERROR.CREATION_FAILED'));
+      })
+    );
+  }
+
+  /**
+   * Check if promoter abbreviation already exists
+   */
+  promoterExists(abbreviation: string): Observable<boolean> {
+    const cleanAbbreviation = abbreviation?.toString().toLowerCase() || '';
+    
+    return this.promoterService.getAllPromoters().pipe(
+      map(promoters => promoters.some(
+        p => p.projectPromoter?.toString().toLowerCase() === cleanAbbreviation
+      )),
+      catchError(err => {
+        console.error('Error checking promoter existence:', err);
+        return throwError(() => new Error('Failed to check promoter existence'));
+      })
+    );
   }
 
   /**
@@ -81,6 +116,10 @@ export class PromoterUtils {
     if (!promoter?.id) {
       return throwError(() => new Error('Invalid promoter data'));
     }
+    const projectPromoter = promoter.projectPromoter?.trim();
+    if (!projectPromoter) {
+      return throwError(() => new Error('Abbreviation is required'));
+    }
 
     return this.promoterService.getPromoterById(promoter.id).pipe(
       take(1),
@@ -91,9 +130,17 @@ export class PromoterUtils {
         if (currentPromoter.version !== promoter.version) {
           return throwError(() => createUpdateConflictError('ProjectStatus'));
         }
-        return this.promoterService.updatePromoter(promoter);
+        
+        return this.promoterExists(projectPromoter).pipe(
+          switchMap((exists) => {
+            const currentAbbreviation = currentPromoter.projectPromoter?.toLowerCase() || '';
+            if (exists && currentAbbreviation !== projectPromoter.toLowerCase()) {
+              return throwError(() => new Error('abbreviation already exists'));
+            }
+            return this.promoterService.updatePromoter(promoter);
+          })
+        );
       }),
-      switchMap((validatedPromoter: Promoter) => this.promoterService.updatePromoter(validatedPromoter)),
       catchError((err) => {
         console.error('Error updating promoter:', err);
         return throwError(() => err);

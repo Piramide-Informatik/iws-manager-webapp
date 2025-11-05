@@ -1100,6 +1100,9 @@
     "MODAL": {
       "NEW": "New Project Sponsor",
       "DELETE": "Delete Project Sponsor"
+    },
+    "ERROR": {
+      "ABBREVIATION_ALREADY_EXIST": "Abbreviation already exists"
     }
   },
   "PROJECT_STATUS": {

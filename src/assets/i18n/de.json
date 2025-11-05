@@ -1104,6 +1104,9 @@
     "MODAL": {
       "NEW": "Neuer Projektträger",
       "DELETE": "Projektträger löschen"
+    },
+    "ERROR": {
+      "ABBREVIATION_ALREADY_EXIST": "Projektträger existiert bereits"
     }
   },
   "PROJECT_STATUS": {

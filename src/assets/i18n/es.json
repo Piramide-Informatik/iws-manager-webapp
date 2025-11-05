@@ -1099,6 +1099,9 @@
     "MODAL": {
       "NEW": "Nuevo Patrocinador del Proyecto",
       "DELETE": "Eliminar Patrocinador del Proyecto"
+    },
+    "ERROR": {
+      "ABBREVIATION_ALREADY_EXIST": "Patrocinador del proyecto ya existe"
     }
   },
   "PROJECT_STATUS": {
