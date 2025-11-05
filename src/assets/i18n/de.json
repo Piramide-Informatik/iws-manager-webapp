@@ -711,8 +711,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Genehmigungsstatus erforderlich",
       "ORDER_REQUIRED": "Bestellung erforderlich",
-      "CHECKING_DUPLICATE": "Duplikatprüfung",
-      "CREATION_FAILED": "Beim Erstellen des Genehmigungsstatus ist ein Fehler aufgetreten."
+      "STATUS_ALREADY_EXIST": "Bewilligungsstatus existiert bereits"
     },
     "LABEL": {
       "NAME": "Bewilligungsstatus",
@@ -1120,10 +1119,7 @@
       "PROJECT_STATUS_LABEL": "Projektstatus"
     },
     "ERROR": {
-      "PROJECT_STATUS_LABEL_REQUIRED": "Der Projektstatus ist erforderlich",
-      "CREATION_FAILED": "Bei der Erstellung des Projektstatus ist ein Fehler aufgetreten.",
-      "EMPTY": "Der Name des Projektstatus muss aus mindestens einem Zeichen bestehen",
-      "ALREADY_EXISTS": "Der Datensatz existiert bereits"
+      "NAME_ALREADY_EXIST": "Projektstatus existiert bereits"
     },
     "DELETE": {
       "CONFIRMATION": "Projektstatus löschen"

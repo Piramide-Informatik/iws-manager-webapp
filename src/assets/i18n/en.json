@@ -707,8 +707,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Approval Status Required",
       "ORDER_REQUIRED": "Order Required",
-      "CHECKING_DUPLICATE": "Checking for Duplicate",
-      "CREATION_FAILED": "There was an error creating the Approval Status."
+      "STATUS_ALREADY_EXIST": "Approval status already exists"
     },
     "LABEL": {
       "NAME": "Approval Status",
@@ -1116,10 +1115,7 @@
       "PROJECT_STATUS_LABEL": "Project Status"
     },
     "ERROR": {
-      "PROJECT_STATUS_LABEL_REQUIRED": "The project status is required",
-      "CREATION_FAILED": "There was an error creating the project status.",
-      "EMPTY": "The project status name must be at least one character",
-      "ALREADY_EXISTS": "The record already exists"
+      "NAME_ALREADY_EXIST": "Project status already exists"
     },
     "DELETE": {
       "CONFIRMATION": "Delete Project Status Project"
