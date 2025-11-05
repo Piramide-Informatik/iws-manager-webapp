@@ -3,35 +3,48 @@
     <div class="create-form my-4">
       <div class="absence-form">
         <label for="name">{{ "ABSENCE_TYPES.LABEL.TYPE" | translate }}</label>
-        <input #firstInput
-          pInputText
-          type="text"
-          id="name"
-          formControlName="name"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input #firstInput pInputText type="text" name="name" id="name" formControlName="name" autocomplete="off" 
+           invalid="absenceTypeForm.get('name')?.invalid  
+          && absenceTypeForm.get('name')?.dirty 
+          || absenceTypeForm.get('name')?.touched
+          || nameAlreadyExist"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          absenceTypeForm.get('name')?.invalid &&
+          absenceTypeForm.get('name')?.dirty || nameAlreadyExists">
+            {{ nameAlreadyExists ? ('ABSENCE_TYPES.ERROR.NAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' |
+            translate) }}
+          </p-message>
+        </div>
       </div>
 
       <div class="absence-form">
         <label for="label">{{ "ABSENCE_TYPES.LABEL.ABBREVIATION" | translate }}</label>
-        <input pInputText
-          type="text"
-          id="label"
-          formControlName="label"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input pInputText type="text" id="label" formControlName="label" autocomplete="off" 
+          invalid="absenceTypeForm.get('label')?.invalid  
+          && absenceTypeForm.get('label')?.dirty 
+          || absenceTypeForm.get('label')?.touched
+          || labelAlreadyExist"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          absenceTypeForm.get('label')?.invalid && 
+          absenceTypeForm.get('label')?.dirty || labelAlreadyExists
+          ">
+            {{ labelAlreadyExists ? ('ABSENCE_TYPES.ERROR.LABEL_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' |
+            translate) }}
+          </p-message>
+        </div>
       </div>
 
       <div class="absence-form">
         <label for="shareOfDay">{{ "ABSENCE_TYPES.LABEL.FRACTION_OF_DAY" | translate }}</label>
         <div class="input-message">
-          <p-inputnumber mode="decimal" [min]="0" [max]="1" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE"
-            inputId="shareOfDay" [inputStyle]="{'text-align': 'right'}"
-            formControlName="shareOfDay" [step]="0.1"
-            autocomplete="off" invalid="
+          <p-inputnumber mode="decimal" [min]="0" [max]="1" [useGrouping]="true" [minFractionDigits]="1"
+            [maxFractionDigits]="1" locale="de-DE" inputId="shareOfDay" [inputStyle]="{'text-align': 'right'}"
+            formControlName="shareOfDay" [step]="0.1" autocomplete="off" invalid="
               absenceTypeForm.get('shareOfDay')?.invalid  
               && absenceTypeForm.get('shareOfDay')?.dirty 
-              || absenceTypeForm.get('shareOfDay')?.touched"/>
+              || absenceTypeForm.get('shareOfDay')?.touched" />
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
               absenceTypeForm.get('shareOfDay')?.invalid && 
               absenceTypeForm.get('shareOfDay')?.dirty
@@ -59,12 +72,12 @@
     </div>
 
     <div class="flex justify-content-center gap-2 mt-4">
-        <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
-            icon="pi pi-check" iconPos="left" [loading]="isLoading"
-            [disabled]="absenceTypeForm.invalid || isLoading || !absenceTypeForm.dirty" />
+      <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+        iconPos="left" [loading]="isLoading"
+        [disabled]="absenceTypeForm.invalid || isLoading || !absenceTypeForm.dirty" />
 
-        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-            icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
     </div>
   </form>
 </ng-container>
@@ -74,18 +87,14 @@
     <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedAbsenceType.name }"></p>
 
     <div class="flex justify-content-center gap-2">
-      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-        icon="pi pi-trash" iconPos="left" (onClick)="onDelete()" severity="danger" [loading]="isLoading"
-        [disabled]="isLoading" />
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onDelete()" severity="danger" [loading]="isLoading" [disabled]="isLoading" />
 
-      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
     </div>
   </div>
 </ng-template>
-<app-occ-error-modal
-  *ngIf="showOCCErrorModalAbscenseType"
-  [errorType]="occErrorAbscenseType"
-  [reloadCurrentPage]="true"
+<app-occ-error-modal *ngIf="showOCCErrorModalAbscenseType" [errorType]="occErrorAbscenseType" [reloadCurrentPage]="true"
   (close)="showOCCErrorModalAbscenseType = false">
 </app-occ-error-modal>
