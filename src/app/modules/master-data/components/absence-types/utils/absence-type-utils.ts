@@ -41,20 +41,7 @@ export class AbsenceTypeUtils {
       return throwError(() => new Error('Absence Type is required'));
     }
 
-    return this.absencetypeExists(name).pipe(
-      switchMap((exists) => {
-        if (exists) {
-          return throwError(() => new Error('absence type already exists'));
-        }
-        return this.absenceTypeService.addAbsenceType(absenceType);
-      }),
-      catchError((err) => {
-        if (err.message === 'absence type already exists') {
-          return throwError(() => err);
-        }
-        return throwError(() => new Error('ABSENCE_TYPE.ERROR.CREATION_FAILED'));
-      })
-    );
+    return this.absenceTypeService.addAbsenceType(absenceType);
   }
 
   /**
@@ -126,18 +113,6 @@ export class AbsenceTypeUtils {
       catchError((err) => {
         console.error('Error updating absence type:', err);
         return throwError(() => err);
-      })
-    );
-  }
-
-  private absencetypeExists(name: string, excludeId?: number): Observable<boolean> {
-    return this.absenceTypeService.getAllAbsenceTypes().pipe(
-      map(absenceTypes => absenceTypes.some(
-        absenceType => absenceType.id !== excludeId &&
-          absenceType.name?.toLowerCase() === name?.toLowerCase()
-      )),
-      catchError(() => {
-        return throwError(() => new Error('Failed to check absence type existence'));
       })
     );
   }
