@@ -707,8 +707,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Approval Status Required",
       "ORDER_REQUIRED": "Order Required",
-      "CHECKING_DUPLICATE": "Checking for Duplicate",
-      "CREATION_FAILED": "There was an error creating the Approval Status."
+      "STATUS_ALREADY_EXIST": "Approval status already exists"
     },
     "LABEL": {
       "NAME": "Approval Status",

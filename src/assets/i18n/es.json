@@ -706,8 +706,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Estado de Aprobación requerido",
       "ORDER_REQUIRED": "Orden requerido",
-      "CHECKING_DUPLICATE": "Verificando duplicado",
-      "CREATION_FAILED": "Hubo un error durante la creacion del Estado de Aprobación."
+      "STATUS_ALREADY_EXIST": "Estado de Aprobación ya existe"
     },
     "LABEL": {
       "NAME": "Estado de Aprobación",
