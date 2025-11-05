@@ -24,6 +24,7 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
   @ViewChild('firstInput') firstInput!: InputNumber;
   public dunningLevelForm!: FormGroup;
   public isLoading = false;
+  public levelNoAlreadyExist = false;
   showOCCErrorModalDunningLEvel = false;
   occErrorDunningLevelType: OccErrorType = 'UPDATE_UNEXISTED';
 
@@ -37,6 +38,11 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
       interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
       payPeriod: new FormControl(null),
       reminderText: new FormControl('')
+    });
+    this.dunningLevelForm.get('levelNo')?.valueChanges.subscribe(() => {
+      if (this.levelNoAlreadyExist) {
+        this.levelNoAlreadyExist = false;
+      }
     });
   }
 
@@ -57,7 +63,8 @@ export class DunningLevelModalComponent implements OnInit, OnChanges {
     );
 
     if (isDuplicate) {
-      this.commonMessageService.showErrorRecordAlreadyExistWithDunningLevel();
+      this.commonMessageService.showErrorRecordAlreadyExist();
+      this.levelNoAlreadyExist = true;
       return;
     }
     this.isLoading = true;
