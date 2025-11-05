@@ -1302,7 +1302,8 @@
       "CONTRACT_STATUS": "Contract Status"
     },
     "ERROR": {
-      "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
+      "CONTRACT_STATUS_REQUIRED": "Contract Status is required",
+      "ALREADY_EXIST" :"Contract Status already exists"
     },
     "MODAL": {
       "TITLE_CREATE": "New Contract Status",

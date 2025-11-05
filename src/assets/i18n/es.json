@@ -1299,7 +1299,8 @@
       "CONTRACT_STATUS": "Estado del Contrato"
     },
     "ERROR": {
-      "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido"
+      "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido",
+      "ALREADY_EXIST" :"Estado del Contrato ya existe"
     },
     "MODAL": {
       "TITLE_CREATE": "Nuevo Estado del Contrato",
