@@ -711,8 +711,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Genehmigungsstatus erforderlich",
       "ORDER_REQUIRED": "Bestellung erforderlich",
-      "CHECKING_DUPLICATE": "Duplikatprüfung",
-      "CREATION_FAILED": "Beim Erstellen des Genehmigungsstatus ist ein Fehler aufgetreten."
+      "STATUS_ALREADY_EXIST": "Bewilligungsstatus existiert bereits"
     },
     "LABEL": {
       "NAME": "Bewilligungsstatus",

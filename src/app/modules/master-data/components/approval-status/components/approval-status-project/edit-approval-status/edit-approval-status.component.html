@@ -10,13 +10,19 @@
                         type="text"
                         id="status"
                         formControlName="status"
+                        autocomplete="off"
                         [ngClass]="{'ng-invalid': editApprovalStatusForm.get('status')?.invalid && 
-                        (editApprovalStatusForm.get('status')?.dirty || editApprovalStatusForm.get('status')?.touched)}"
-                        autocomplete="off" />
+                        (editApprovalStatusForm.get('status')?.dirty || editApprovalStatusForm.get('status')?.touched) ||
+                        statusAlreadyExist}"
+                        invalid="editApprovalStatusForm.get('status')?.invalid  
+                        && editApprovalStatusForm.get('status')?.dirty 
+                        || editApprovalStatusForm.get('status')?.touched
+                        || statusAlreadyExist" />
                     <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
                         *ngIf="editApprovalStatusForm.get('status')?.invalid && 
-                        (editApprovalStatusForm.get('status')?.dirty || editApprovalStatusForm.get('status')?.touched)">
-                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                        (editApprovalStatusForm.get('status')?.dirty || editApprovalStatusForm.get('status')?.touched) ||
+                        statusAlreadyExist">
+                        {{ statusAlreadyExist ? ('APPROVAL_STATUS.ERROR.STATUS_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
                     </p-message>
                 </div>
             </div>
@@ -82,7 +88,7 @@
                     icon="pi pi-check"
                     iconPos="left"
                     [loading]="isLoading"
-                    [disabled]="editApprovalStatusForm.invalid || !editApprovalStatusForm.dirty || isLoading"/>
+                    [disabled]="editApprovalStatusForm.invalid || !editApprovalStatusForm.dirty || isLoading || statusAlreadyExist"/>
                 <p-button
                     type="button"
                     class="cancel"
