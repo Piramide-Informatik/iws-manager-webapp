@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatus } from '../../../../../../Entities/projectStatus';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ProjectStatusStateService } from '../../utils/project-status-state.service';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,7 +17,8 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 export class EditProjectStatusComponent implements OnInit {
   public showOCCErrorModalProjectStatus = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
-    public isLoading: boolean = false;
+  public isLoading: boolean = false;
+  public nameAlreadyExist = false;
   currentProjectStatus: ProjectStatus | null = null;
   editProjectStatusForm!: FormGroup;
   isSaving = false;
@@ -82,10 +83,11 @@ export class EditProjectStatusComponent implements OnInit {
     this.editProjectStatusForm.reset();
     this.currentProjectStatus = null;
     this.isSaving = false;
+    this.nameAlreadyExist = false;
   }
 
   onSubmit(): void {
-    if(this.editProjectStatusForm.invalid || !this.currentProjectStatus || this.isSaving){
+    if(this.editProjectStatusForm.invalid || !this.currentProjectStatus || this.isSaving || this.nameAlreadyExist){
       this.markAllAsTouched();
       return;
     };
@@ -99,25 +101,29 @@ export class EditProjectStatusComponent implements OnInit {
     this.subscriptions.add(
       this.projectStatusUtils.updateProjectStatus(updateProjectStatus).subscribe({
         next:() =>{
-          this.isLoading = false;
+          this.isSaving = false;
           this.clearForm();
           this.commonMessageService.showEditSucessfullMessage();
         },
         error: (error: Error) => {
-                  if (error instanceof OccError) {
-                  console.log('OCC Error occurred:', error);
-                  this.showOCCErrorModalProjectStatus = true;
-                  this.occErrorType = error.errorType;
-                  this.commonMessageService.showErrorEditMessage();
-                }else {
-                  this.commonMessageService.showErrorEditMessage();
-                }
+          this.isSaving = false;
+          if (error instanceof OccError) {
+            console.log('OCC Error occurred:', error);
+            this.showOCCErrorModalProjectStatus = true;
+            this.occErrorType = error.errorType;
+            this.commonMessageService.showErrorEditMessage();
+          } else if (error.message.includes('name already exists')) {
+            this.nameAlreadyExist = true;
+            this.editProjectStatusForm.get('projectStatus')?.valueChanges.pipe(take(1))
+              .subscribe(() => this.nameAlreadyExist = false);
+            this.commonMessageService.showErrorEditMessage();
+          } else {
+            this.commonMessageService.showErrorEditMessage();
           }
+        }
       })
     );
   }
-
-  
 
   private markAllAsTouched(): void {
     Object.values(this.editProjectStatusForm.controls).forEach(control => {
