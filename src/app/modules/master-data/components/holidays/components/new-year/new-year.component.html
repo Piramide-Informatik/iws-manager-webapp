@@ -1,0 +1,103 @@
+<form [formGroup]="yearForm">
+  <div class="mt-4">
+    <div class="year-form">
+      <label for="year">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
+      <div class="input-message">
+        <p-datepicker #datePicker formControlName="year" inputId="year" view="year" dateFormat="yy" appendTo="body"
+          showIcon showClear />
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" 
+            *ngIf="yearForm.get('year')?.invalid &&  yearForm.get('year')?.dirty">
+          {{ yearForm.get('year')?.errors?.['yearExists'] ?
+            ('SUB-CONTRACTS.ERROR.YEAR_ALREADY_EXISTS' | translate) :
+            ('ERROR.FIELD_REQUIRED' | translate)
+          }}
+        </p-message>
+      </div>
+    </div>
+    <div class="year-form mb-5">
+      <label for="date">{{ "HOLIDAYS.MODAL.DATE" | translate }}</label>
+      <div class="input-message">
+        <p-datepicker
+          #datePicker
+          formControlName="date"
+          [showIcon]="true"
+          inputId="date"
+          dateFormat="dd.mm.yy"
+          [showClear]="true"
+          appendTo="body"
+        />
+      </div>
+    </div>
+
+    <div class="flex justify-content-center gap-4">
+      @if(isCreateMode){
+        <p-button
+          class="save"
+          size="small"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          (onClick)="onSubmit('save')"
+          [loading]="isLoading"
+          [disabled]="yearForm.invalid || isLoadingAndNew || !yearForm.dirty"
+        />
+  
+        <p-button
+          class="save"
+          size="small"
+          [label]="'BUTTONS.SAVE_AND_NEW' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          (onClick)="onSubmit('saveAndNew')"
+          [loading]="isLoadingAndNew"
+          [disabled]="yearForm.invalid || isLoading || !yearForm.dirty"
+        />
+      }@else {
+        <p-button
+          class="save"
+          [label]="'BUTTONS.SAVE' | translate"
+          icon="pi pi-check"
+          iconPos="left"
+          (onClick)="onSubmit()"
+          [loading]="isLoading"
+          [disabled]="yearForm.invalid || isLoadingDelete || !yearForm.dirty"
+        />
+
+        <p-button
+          class="delete"
+          [label]="'BUTTONS.DELETE' | translate"
+          icon="pi pi-trash"
+          iconPos="left"
+          (onClick)="visibleDeleteModal = true"
+          [disabled]="isLoading || isLoadingDelete"
+        />
+      }
+
+      <p-button
+        type="button"
+        class="cancel"
+        size="small"
+        [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times"
+        iconPos="left"
+        (onClick)="onCancel()"
+        [disabled]="isLoading || isLoadingAndNew || isLoadingDelete"
+      />
+    </div>
+  </div>
+</form>
+
+<p-dialog [header]="('HOLIDAYS.MODAL.DELETE_HOLIDAY_YEAR') | translate" [modal]="true"
+  [(visible)]="visibleDeleteModal" [style]="{ width: 'auto' }">
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentHolidayYear?.year | date:'yyyy' }"></p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeHolidayYear()" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="visibleDeleteModal = false;" [disabled]="isLoadingDelete" />
+    </div>
+  </div>
+</p-dialog>

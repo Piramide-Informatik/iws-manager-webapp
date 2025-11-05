@@ -145,6 +145,7 @@
   "BUTTONS": {
     "NEW": "New",
     "SAVE": "Save",
+    "SAVE_AND_NEW": "Save and New",
     "DELETE": "Delete",
     "CANCEL": "Cancel",
     "NEW_YEAR": "New Year",
@@ -801,7 +802,9 @@
   },
   "HOLIDAYS": {
     "HEADER": {
-      "EDIT_HOLIDAY": "Edit Holiday"
+      "EDIT_HOLIDAY": "Edit Holiday",
+      "NEW_YEAR": "New Year",
+      "EDIT_YEAR": "Edit Year"
     },
     "LABEL": {
       "HOLIDAY_NAME": "Holiday Name",
@@ -837,7 +840,9 @@
     "MODAL": {
       "NAME": "Holiday",
       "DATE": "Date",
-      "ORDEN": "Sort"
+      "ORDEN": "Sort",
+      "YEAR": "Year",
+      "DELETE_HOLIDAY_YEAR": "Delete year"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "No states available"

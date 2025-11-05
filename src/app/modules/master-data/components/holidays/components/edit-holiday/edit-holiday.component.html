@@ -45,6 +45,7 @@
             [showIcon]="true"
             [dateFormat]="isFixedDate ? fixDateFormatPicker : dateFormatPicker"
             [showButtonBar]="true"
+            [showClear]="true"
             [placeholder]="isFixedDate ? ('HOLIDAYS.LABEL.FIX_DATE_FORMAT' | translate) : ('HOLIDAYS.LABEL.DATE_FORMAT' | translate)"
           ></p-datepicker>
         </div>
@@ -73,6 +74,7 @@
     </div>
   </form>
 
+  <!-- Table States -->
   <div class="grid">
     <div class="col-6">
       <p-table
@@ -131,6 +133,7 @@
       </p-table>
     </div>
 
+    <!-- Tables Years -->
     <div class="col-6">
       <p-table
         class="states-table"
@@ -155,25 +158,38 @@
 
         <ng-template #body let-year let-i="rowIndex">
           <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-            <td>{{ year.year | date:'yyyy' }}</td>
-            <td>{{ formatDate(year.date) }}</td>
+            <td (click)="onEditYear(year)" (keypress)="onEditYear(year)" class="clickable-title">{{ year.year | date:'yyyy' }}</td>
+            <td>{{ year.date | date:'dd.MM.yyyy' }}</td>
           </tr>
         </ng-template>
       </p-table>
     </div>
   </div>
 
-  <div class="buttons mt-3 flex gap-2 justify-content-left">
+  <div class="buttons mt-3 flex gap-2 justify-content-end">
     <p-button
-      class="p-button-sm"
-      size="small"
       [label]="'BUTTONS.NEW_YEAR' | translate"
       icon="pi pi-plus"
-      (onClick)="addYear(selectedPublicHolidayId)"
-      [disabled]="!selectedPublicHolidayId"
+      (onClick)="visibleModal = true"
+      [disabled]="!selectedPublicHolidayId || isFixedDate"
     ></p-button>
   </div>
 </p-card>
+
+<p-dialog
+  [header]="modalType === 'create' 
+    ? ('HOLIDAYS.HEADER.NEW_YEAR' | translate)
+    : ('HOLIDAYS.HEADER.EDIT_YEAR' | translate)"
+  [modal]="true"
+  [(visible)]="visibleModal">
+  <app-new-year
+    [modalType]="modalType"
+    [visible]="visibleModal"
+    [currentPublicHolday]="currentPublicHoliday"
+    [currentHolidayYear]="holidayYearToEdit"
+    (isVisibleModal)="visibleModal = $event"
+  ></app-new-year>
+</p-dialog>
 
 <app-occ-error-modal
   *ngIf="showOCCErrorModalPublicHoliday"
