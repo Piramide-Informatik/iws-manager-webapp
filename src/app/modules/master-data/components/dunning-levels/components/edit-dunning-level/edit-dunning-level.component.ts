@@ -20,6 +20,7 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
   private readonly dunningLevelUtils = inject(DunningLevelUtils);
   editDunningLevelForm!: FormGroup;
   isLoading = false;
+  levelNoAlreadyExist=false
   public showOCCErrorModalDunningLevel = false;
   public occErrorDunningLevelType: OccErrorType = 'UPDATE_UPDATED';
   
@@ -34,6 +35,11 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
       interestRate: new FormControl(null, [Validators.min(0), Validators.max(100)]),
       payPeriod: new FormControl(null),
       reminderText: new FormControl('')
+    });
+    this.editDunningLevelForm.get('levelNo')?.valueChanges.subscribe(() => {
+      if (this.levelNoAlreadyExist) {
+        this.levelNoAlreadyExist = false;
+      }
     });
   }
 
@@ -52,13 +58,14 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
   onSubmit(): void {
     if(this.editDunningLevelForm.invalid || !this.editDunningLevelForm) return
     if (this.selectedDunningLevel === null) return;
-    const levelNo = this.editDunningLevelForm.value.levelNo;
-    const isDuplicate = this.existingDunningLevels.some(
-      level => level.levelNo === levelNo
-    );
-
+    const levelNo = Number(this.editDunningLevelForm.value.levelNo);
+    const isDuplicate = this.existingDunningLevels.some(level => {
+      if (String(level.id) === String(this.selectedDunningLevel?.id)) return false;
+      return Number(level.levelNo) === levelNo;
+    });
     if (isDuplicate) {
-      this.commonMessageService.showErrorRecordAlreadyExistWithDunningLevel();
+      this.commonMessageService.showErrorRecordAlreadyExist();
+      this.levelNoAlreadyExist = true;
       return;
     }
     this.isLoading = true;
@@ -80,7 +87,7 @@ export class EditDunningLevelComponent implements OnInit, OnChanges {
       error: (error) => {
         console.log(error)
         this.isLoading = false;
-        if (error instanceof OccError) { 
+        if (error instanceof OccError) {
           this.showOCCErrorModalDunningLevel = true;
           this.occErrorDunningLevelType = error.errorType;
         }
