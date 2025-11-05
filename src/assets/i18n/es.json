@@ -1115,10 +1115,7 @@
       "PROJECT_STATUS_LABEL": "Estado del Proyecto"
     },
     "ERROR": {
-      "PROJECT_STATUS_LABEL_REQUIRED": "El estado del proyecto es requerido",
-      "CREATION_FAILED": "Hubo un error durante la creacion del estado del proyecto.",
-      "EMPTY": "El nombre del estado del proyecto tiene que tener al menos un caracter",
-      "ALREADY_EXISTS": "El registro ya existe"
+      "NAME_ALREADY_EXIST": "Estado del proyecto ya existe"
     },
     "DELETE": {
       "CONFIRMATION": "Eliminar Estado del Proyecto"
