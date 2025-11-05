@@ -885,7 +885,7 @@
       "DELETE": "Delete Dunning level"
     },
     "VALIDATION":{
-      "DUNNING_LVL_EXISTS": "A Dunning Level already exists"
+      "DUNNING_LVL_EXISTS": "Dunning Level already exists"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
