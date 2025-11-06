@@ -4,6 +4,7 @@ import { Network } from '../../../../../../Entities/network';
 import { NetowrkUtils } from '../../utils/ network.utils';
 import { Subscription } from 'rxjs';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-network-modal',
@@ -31,11 +32,18 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   public showOCCErrorModalNetwork = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
-  constructor() { }
+  constructor(
+    private readonly commonMessageService: CommonMessagesService,
+  ) {}
 
   ngOnInit(): void {
     this.networkForm = new FormGroup({
       name: new FormControl('',[Validators.required])
+    });
+    this.networkForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
     });
   }
 
@@ -52,31 +60,49 @@ export class NetworkModalComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if (this.networkForm.invalid || this.isLoading) return
+    if (this.networkForm.invalid || this.isLoading) return;
 
-    this.isLoading = true;
-    const newNetwork: Omit<Network, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.networkForm.value.name?.trim()
-    }
+  const trimmedName = this.networkForm.value.name?.trim();
+  if (!trimmedName) return;
 
-    const sub = this.networkUtils.createNewNetwork(newNetwork).subscribe({
-      next: (created) => {
+  this.isLoading = true;
+  this.nameAlreadyExist = false;
+
+  this.networkUtils.networkExists(trimmedName).subscribe({
+    next: (exists) => {
+      if (exists) {
         this.isLoading = false;
-        this.closeModal();
-        this.createNetwork.emit({ created, status: 'success' });
-      },
-      error: () => {
-        this.isLoading = false;
-        this.createNetwork.emit({ status: 'error' });
+        this.nameAlreadyExist = true;
+        this.commonMessageService.showErrorRecordAlreadyExist();
+        this.networkForm.get('name')?.setErrors({ duplicate: true });
+        return;
       }
-    });
 
-    this.subscriptions.add(sub);
+      const newNetwork: Omit<Network, 'id' | 'createdAt' | 'updatedAt' | 'version'> = { name: trimmedName };
+
+      this.networkUtils.createNewNetwork(newNetwork).subscribe({
+        next: (created) => {
+          this.isLoading = false;
+          this.closeModal();
+          this.createNetwork.emit({ created, status: 'success' });
+        },
+        error: () => {
+          this.isLoading = false;
+          this.createNetwork.emit({ status: 'error' });
+        }
+      });
+    },
+    error: () => {
+      this.isLoading = false;
+      this.createNetwork.emit({ status: 'error' });
+    }
+  });
   }
 
   closeModal() {
     this.resetForm();
     this.isVisibleModal.emit(false);
+    this.nameAlreadyExist = false;
   }
 
   onDeleteConfirm() {

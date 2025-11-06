@@ -1166,6 +1166,9 @@
       "COMMENT": "Comentario",
       "CUSTOMER": "Cliente",
       "CONTACT": "Contacto"
+    },
+    "ERROR": {
+      "ALREADY_EXIST": "La red ya existe"
     }
   },
   "SALES_TAX": {
