@@ -2,23 +2,48 @@
     <form [formGroup]="editProjectCarrierForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2">
             <div class="absence-form">
-              <label for="name">{{ 'ABSENCE_TYPES.LABEL.TYPE' | translate }}</label>
-              <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" />
+                <label for="name">{{ 'ABSENCE_TYPES.LABEL.TYPE' | translate }}</label>
+                <div class="input-message">
+                    <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off"
+                        invalid="editProjectCarrierForm.get('name')?.invalid  
+          && editProjectCarrierForm.get('name')?.dirty 
+          || editProjectCarrierForm.get('name')?.touched
+          || nameAlreadyExist" />
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          editProjectCarrierForm.get('name')?.invalid &&
+          editProjectCarrierForm.get('name')?.dirty || nameAlreadyExists">
+                        {{ nameAlreadyExists ? ('ERROR.ALREADY_EXIST' | translate) :
+                        ('ERROR.FIELD_REQUIRED' |
+                        translate) }}
+                    </p-message>
+                </div>
             </div>
             <div class="absence-form">
                 <label for="label">{{ 'ABSENCE_TYPES.LABEL.ABBREVIATION' | translate }}</label>
-                <input pInputText type="text" id="label" formControlName="label" autocomplete="off" />
+                <div class="input-message">
+                    <input pInputText type="text" id="label" formControlName="label" autocomplete="off" 
+                    invalid="editProjectCarrierForm.get('label')?.invalid  
+                            && editProjectCarrierForm.get('label')?.dirty 
+                            || editProjectCarrierForm.get('label')?.touched
+                            || labelAlreadyExist"/>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                                editProjectCarrierForm.get('label')?.invalid && 
+                                editProjectCarrierForm.get('label')?.dirty || labelAlreadyExists
+                                ">
+                                    {{ labelAlreadyExists ? ('ERROR.ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' |
+                                    translate) }}
+                    </p-message>
+                </div>
             </div>
             <div class="absence-form">
                 <label for="shareOfDay">{{ 'ABSENCE_TYPES.LABEL.FRACTION_OF_DAY' | translate }}</label>
                 <div class="input-message">
-                    <p-inputnumber mode="decimal" [min]="0" [max]="1" [useGrouping]="true" [minFractionDigits]="1" [maxFractionDigits]="1" locale="de-DE" [step]="0.1"
-                        inputId="shareOfDay" [inputStyle]="{'text-align': 'right'}"
-                        formControlName="shareOfDay"
-                        autocomplete="off" invalid="
+                    <p-inputnumber mode="decimal" [min]="0" [max]="1" [useGrouping]="true" [minFractionDigits]="1"
+                        [maxFractionDigits]="1" locale="de-DE" [step]="0.1" inputId="shareOfDay"
+                        [inputStyle]="{'text-align': 'right'}" formControlName="shareOfDay" autocomplete="off" invalid="
                     editProjectCarrierForm.get('shareOfDay')?.invalid  
                     && editProjectCarrierForm.get('shareOfDay')?.dirty 
-                    || editProjectCarrierForm.get('shareOfDay')?.touched"/>
+                    || editProjectCarrierForm.get('shareOfDay')?.touched" />
                     <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                         editProjectCarrierForm.get('shareOfDay')?.invalid && 
                         editProjectCarrierForm.get('shareOfDay')?.dirty
@@ -42,17 +67,16 @@
                 </p-toggleswitch>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
-                <p-button size="small" type="submit" [loading]="isLoading" [disabled]="editProjectCarrierForm.invalid || isLoading || !editProjectCarrierForm.dirty" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                <p-button size="small" type="submit" [loading]="isLoading"
+                    [disabled]="editProjectCarrierForm.invalid || isLoading || !editProjectCarrierForm.dirty"
+                    [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                <p-button class="cancel" (onClick)="clearForm()" [disabled]="isLoading" size="small"
+                    [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
             </div>
         </div>
     </form>
 </p-card>
-<app-occ-error-modal
-  *ngIf="showOCCErrorModaAbsence"
-  [useEmitter]="occErrorAbscenceType === 'UPDATE_UPDATED'"
-  (refresh)="onRefresh()"
-  [errorType]="occErrorAbscenceType"
-  [reloadCurrentPage]="true"
-  (close)="showOCCErrorModaAbsence = false">
+<app-occ-error-modal *ngIf="showOCCErrorModaAbsence" [useEmitter]="occErrorAbscenceType === 'UPDATE_UPDATED'"
+    (refresh)="onRefresh()" [errorType]="occErrorAbscenceType" [reloadCurrentPage]="true"
+    (close)="showOCCErrorModaAbsence = false">
 </app-occ-error-modal>
