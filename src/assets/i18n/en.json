@@ -665,7 +665,8 @@
       "UPDATE_FAILED": "Update failed"
     },
     "ERROR": {
-      "SALUTATION_REQUIRED": "Salutation required"
+      "SALUTATION_REQUIRED": "Salutation required",
+      "ALREADY_EXIST":"Salutation already exists"
     }
   },
   "STATES": {

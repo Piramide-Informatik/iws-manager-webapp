@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SalutationUtils } from '../../utils/salutation.utils';
 import { of } from 'rxjs';
@@ -13,7 +13,7 @@ import { SalutationStateService } from '../../utils/salutation-state.service';
   templateUrl: './salutation-modal.component.html',
   styleUrl: './salutation-modal.component.scss'
 })
-export class SalutationModalComponent implements OnChanges {
+export class SalutationModalComponent implements OnChanges , OnInit {
   private readonly salutationUtils = inject(SalutationUtils);
   private readonly salutationStateService = inject(SalutationStateService);
   @ViewChild('salutationInput') salutationInput!: ElementRef<HTMLInputElement>;
@@ -53,6 +53,14 @@ export class SalutationModalComponent implements OnChanges {
 
   get isCreateMode(): boolean {
     return this.modalType === 'create';
+  }
+
+  ngOnInit(): void {
+    this.createSalutationForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.salutationAlreadyExist) {
+        this.salutationAlreadyExist = false;
+      }
+    });
   }
 
   onDeleteConfirm(): void {
@@ -116,7 +124,7 @@ export class SalutationModalComponent implements OnChanges {
     if (exists) {
       this.errorMessage = 'SALUTATION.ERROR.ALREADY_EXISTS';
       this.isLoading = false;
-      this.handleClose();
+      this.salutationAlreadyExist = true;
       return;
     }
     this.salutationUtils.createNewSalutation(salutationName).subscribe({
