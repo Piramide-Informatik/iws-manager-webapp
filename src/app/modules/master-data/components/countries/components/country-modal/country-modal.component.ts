@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CountryUtils } from '../../utils/country-util';
-import { of } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { take } from 'rxjs/operators';
