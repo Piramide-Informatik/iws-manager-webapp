@@ -77,6 +77,12 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
       this.loadColHeadersPartner();
       this.userEditNetworkPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldPartner);
     });
+
+    this.editNetworkForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -97,24 +103,52 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.editNetworkForm.invalid || !this.networkToEdit) return
+    if (this.editNetworkForm.invalid || !this.networkToEdit || this.isLoading) return;
 
-    this.isLoading = true;
-    const editedNetwork: Network = {
-      ...this.networkToEdit,
-      name: this.editNetworkForm.value.name?.trim()
-    }
+  this.isLoading = true;
+  this.nameAlreadyExist = false;
 
-    this.networkUtils.updateNetwork(editedNetwork).subscribe({
-      next: () => {
+  const trimmedName = this.editNetworkForm.value.name?.trim();
+  if (!trimmedName) {
+    this.isLoading = false;
+    return;
+  }
+  this.networkUtils['networkService'].getAllNetworks().subscribe({
+    next: (networks) => {
+      const duplicate = networks.some(
+        n =>
+          n.name?.trim().toLowerCase() === trimmedName.toLowerCase() &&
+          n.id !== this.networkToEdit!.id
+      );
+
+      if (duplicate) {
         this.isLoading = false;
-        this.clearForm();
-        this.commonMessageService.showEditSucessfullMessage();
-      },
-      error: (error: Error) => {
-        this.handleUpdateError(error);
+        this.nameAlreadyExist = true;
+        this.commonMessageService.showErrorRecordAlreadyExist();
+        this.editNetworkForm.get('name')?.setErrors({ duplicate: true });
+        return;
       }
-    });
+      const editedNetwork: Network = {
+        ...this.networkToEdit!,
+        name: trimmedName
+      };
+
+      this.networkUtils.updateNetwork(editedNetwork).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.clearForm();
+          this.commonMessageService.showEditSucessfullMessage();
+        },
+        error: (error: Error) => {
+          this.handleUpdateError(error);
+        }
+      });
+    },
+    error: () => {
+      this.isLoading = false;
+      this.commonMessageService.showErrorEditMessage();
+    }
+  });
   }
 
   handleUpdateError(error: Error) {
@@ -122,7 +156,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
     if (error instanceof OccError) {
       this.showOCCErrorModalNetwork = true;
       this.occErrorType = error.errorType;
-      this.commonMessageService.showErrorEditMessage(); 
+      this.commonMessageService.showErrorEditMessage();
     } else {
       this.commonMessageService.showErrorEditMessage();
     }
@@ -193,6 +227,7 @@ export class EditNetworkComponent implements OnInit, OnDestroy {
     this.networkToEdit = null;
     this.networkPartnerService.clearNetworkPartners();
     this.isCreateButtonEnable = false;
+    this.nameAlreadyExist = false;
   }
 
   private setupNetworkSubscription(): void {

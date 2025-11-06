@@ -1170,6 +1170,9 @@
       "COMMENT": "Kommentar",
       "CUSTOMER": "Kunde",
       "CONTACT": "Kontakt"
+    },
+    "ERROR": {
+      "ALREADY_EXIST": "Netzwerk existiert bereits"
     }
   },
   "SALES_TAX": {
