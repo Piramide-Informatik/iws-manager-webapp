@@ -1099,7 +1099,7 @@
       "LABEL_ALREADY_EXIST":"Textlabel existiert bereits"
     },
     "MODAL": {
-      "NEW": "Neu Text",
+      "NEW": "Neuer Text",
       "DELETE": "Text löschen"
     }
   },
