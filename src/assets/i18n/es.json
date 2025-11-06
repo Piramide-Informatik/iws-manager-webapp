@@ -967,7 +967,8 @@
     "ERROR": {
       "NAME_REQUIRED": "Nombre es requerido",
       "ONLY_NUMBER_REQUIRED": "Ingrese solo numeros",
-      "ONLY_ALPHANUMERIC_REQUIRED": "Ingrese solo valores alfanumericos"
+      "ONLY_ALPHANUMERIC_REQUIRED": "Ingrese solo valores alfanumericos",
+      "NAME_ALREADY_EXISTS": "El nombre ya existe"
     },
     "MODAL": {
       "NEW": "Nueva Constante del Sistema",
