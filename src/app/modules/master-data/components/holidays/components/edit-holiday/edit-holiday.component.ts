@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicHoliday } from '../../../../../../Entities/publicholiday';
 import { State } from '../../../../../../Entities/state';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
@@ -21,6 +21,7 @@ import { DatePicker } from 'primeng/datepicker';
 })
 export class EditHolidayComponent implements OnInit, OnDestroy {
   years: HolidayYear[] = [];
+  holidayYearToEdit!: HolidayYear | null;
   selectedPublicHolidayId!: number;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   @ViewChild('datePicker') datePicker!: DatePicker;
@@ -32,7 +33,6 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   private readonly editProjectStatusSource =
     new BehaviorSubject<PublicHoliday | null>(null);
 
-  holidayForm!: FormGroup;
   bundeslands: State[] = [];
   private statesModified = false;
   private yearsModified = false;
@@ -41,6 +41,8 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   fixDateFormatPicker: string = 'dd.mm';
   dateFormatPicker: string = 'dd.mm.yy';
   isFixedDate: boolean = false;
+  visibleModal: boolean = false;
+  modalType: 'create' | 'edit' = 'create';
 
   constructor(
     private readonly publicHolidayUtils: PublicHolidayUtils,
@@ -61,7 +63,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   }
 
   loadYears(publicHolidayId: number): void {
-    this.holidayYearService.getByPublicHoliday(publicHolidayId).subscribe({
+    this.holidayYearService.getAllHolidayYearsByPublicHolidayId(publicHolidayId).subscribe({
       next: (years) => {
         this.years = years;
       },
@@ -88,23 +90,6 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     });
   }
 
-  formatDate(date: string): string {
-    if (!date) return '';
-    let day: string, month: string, year: string;
-
-    if (date.includes('.')) {
-      [day, month, year] = date.split('.');
-    } else if (date.includes('-')) {
-      [year, month, day] = date.split('-');
-    } else {
-      return date; 
-    }
-    day = day.padStart(2, '0');
-    month = month.padStart(2, '0');
-
-    return `${day}.${month}.${year}`;
-  }
-
   loadStates(publicHolidayId: number): void {
     this.publicHolidayService
       .getStatesByHolidayId(publicHolidayId)
@@ -127,7 +112,6 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
       .saveSelectedStates(publicHolidayId, selectedStateIds)
       .subscribe({
         next: () => {
-          console.log('States saved successfully'); 
           this.statesModified = false;
         },
         error: (err) => console.error('Error saving states:', err),
@@ -266,16 +250,12 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     }
   }
 
-  get bundeslandsArray(): FormArray {
-    return this.holidayForm.get('bundeslands') as FormArray;
-  }
-
-  getControl(index: number): FormControl {
-    return this.bundeslandsArray.at(index) as FormControl;
-  }
-
   clearForm(): void {
     this.editPublicHolidayForm.reset();
+    setTimeout(() => {
+      this.datePicker.writeValue(null);
+      this.datePicker.updateInputfield();
+    });
     this.currentPublicHoliday = null;
     this.isSaving = false;
     this.bundeslands = [];
@@ -292,6 +272,17 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
       );
       globalThis.location.reload();
     }
+  }
+
+  onEditYear(holidayYear: HolidayYear): void {
+    this.modalType = 'edit';
+    this.holidayYearToEdit = holidayYear;
+    this.visibleModal = true;
+  }
+
+  onNewYear(): void {
+    this.modalType = 'create';
+    this.visibleModal = true;
   }
 
   private focusInputIfNeeded() {

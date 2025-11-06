@@ -145,6 +145,7 @@
   "BUTTONS": {
     "NEW": "New",
     "SAVE": "Save",
+    "SAVE_AND_NEW": "Save and New",
     "DELETE": "Delete",
     "CANCEL": "Cancel",
     "NEW_YEAR": "New Year",
@@ -635,6 +636,10 @@
     "MODAL": {
       "NEW": "New Absence Type",
       "DELETE": "Delete Absence Type"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Absence type already exists",
+      "LABEL_ALREADY_EXIST": "Abbreviation already exists"
     }
   },
   "SALUTATION": {
@@ -800,7 +805,9 @@
   },
   "HOLIDAYS": {
     "HEADER": {
-      "EDIT_HOLIDAY": "Edit Holiday"
+      "EDIT_HOLIDAY": "Edit Holiday",
+      "NEW_YEAR": "New Year",
+      "EDIT_YEAR": "Edit Year"
     },
     "LABEL": {
       "HOLIDAY_NAME": "Holiday Name",
@@ -831,12 +838,15 @@
       "ALREADY_EXIST": "The record already exists",
       "CREATION_FAILED": "There was an error during the creation of the holiday.",
       "UPDATE_FAILED": "There was an error during the holiday update.",
-      "EMPTY": "The name of the holiday must have at least one character"
+      "EMPTY": "The name of the holiday must have at least one character",
+      "YEAR_ALREADY_EXISTS":"Year already exists"
     },
     "MODAL": {
       "NAME": "Holiday",
       "DATE": "Date",
-      "ORDEN": "Sort"
+      "ORDEN": "Sort",
+      "YEAR": "Year",
+      "DELETE_HOLIDAY_YEAR": "Delete year"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "No states available"
@@ -1037,6 +1047,10 @@
     },
     "DELETE": {
       "CONFIRMATION": "Delete Country"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Country name already exists",
+      "ABBREVIATION_ALREADY_EXIST": "Country abbreviation already exists"
     }
   },
   "COSTS": {

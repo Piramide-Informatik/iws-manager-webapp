@@ -149,6 +149,7 @@ import { ModalRealizationProbabilitiesComponent } from './components/realitation
 import { SystemConstantModalComponent } from './components/system-constants/components/system-constant-modal/system-constant.modal.component';
 import { NetworkPartnerModalComponent } from './components/networks/components/network-partner-modal/network-partner-modal.component';
 import { ModalSalesTaxRateComponent } from './components/sales-tax/components/sales-tax-form/modal-sales-tax-rate/modal-sales-tax-rate.component';
+import { NewYearComponent } from './components/holidays/components/new-year/new-year.component';
 
 
 registerLocaleData(localeDe, 'de-DE');
@@ -264,6 +265,7 @@ registerLocaleData(localeDe, 'de-DE');
     SystemConstantModalComponent,
     NetworkPartnerModalComponent,
     ModalSalesTaxRateComponent,
+    NewYearComponent,
   ],
   imports: [
     ButtonModule,
