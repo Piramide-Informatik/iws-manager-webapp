@@ -1223,6 +1223,9 @@
     "MODAL": {
       "NEW": "New Realization Probabilities",
       "DELETE": "Delete Realization Probabilities"
+    },
+      "ERROR": {
+      "PROBABILITY_ALREADY_EXIST": "Realization Probabilities already exists"
     }
   },
   "TYPE_OF_COMPANIES": {

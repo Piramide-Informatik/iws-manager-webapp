@@ -1227,6 +1227,9 @@
     "MODAL": {
       "NEW": "Neue Realisierungswahrscheinlichkeit",
       "DELETE": "Realisierungswahrscheinlichkeit löschen"
+    },
+    "ERROR": {
+      "PROBABILITY_ALREADY_EXIST": "Realisierungswahrscheinlichkeit existiert bereits"
     }
   },
   "TYPE_OF_COMPANIES": {

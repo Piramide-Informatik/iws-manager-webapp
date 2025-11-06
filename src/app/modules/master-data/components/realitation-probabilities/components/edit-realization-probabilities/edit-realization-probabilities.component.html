@@ -9,16 +9,20 @@
                     autocomplete="off" invalid="
                         editProbablitiesForm.get('probability')?.invalid  
                         && editProbablitiesForm.get('probability')?.dirty 
-                        || editProbablitiesForm.get('probability')?.touched"/>
+                        || editProbablitiesForm.get('probability')?.touched
+                        || probabilityAlreadyExist"/>
                     <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                         editProbablitiesForm.get('probability')?.invalid && 
                         editProbablitiesForm.get('probability')?.dirty
                     ">{{ 'ERROR.NUMBER_MAX' | translate }}</p-message>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="probabilityAlreadyExist">
+                        {{ 'REALIZATION_PROBABILITIES.ERROR.PROBABILITY_ALREADY_EXIST' | translate }}
+                    </p-message>
                 </div>
             </div>
             <div class="row mt-2">
                 <div class="col flex justify-content-center">
-                    <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="editProbablitiesForm.invalid || !editProbablitiesForm.dirty || isLoading" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
+                    <p-button class="save me-2" type="submit" [loading]="isLoading" [disabled]="editProbablitiesForm.invalid || !editProbablitiesForm.dirty || isLoading || probabilityAlreadyExist" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                     <p-button class="cancel me-2" size="small" (onClick)="clearForm()" [disabled]="isLoading" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>

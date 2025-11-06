@@ -1222,6 +1222,9 @@
     "MODAL": {
       "NEW": "Nueva Probabilidad de Ejecución",
       "DELETE": "Eliminar Probabilidad de Ejecución"
+    },
+      "ERROR": {
+      "PROBABILITY_ALREADY_EXIST": "Probabilidad de Ejecución ya existe"
     }
   },
   "TYPE_OF_COMPANIES": {
