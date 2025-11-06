@@ -77,4 +77,19 @@ export class NetowrkUtils {
       })
     );
   }
+
+  networkExists(name: string): Observable<boolean> {
+    if (!name?.trim()) {
+      return throwError(() => new Error('Invalid network name'));
+    }
+
+    return this.networkService.getAllNetworks().pipe(
+      take(1),
+      // Normalizamos a minúsculas para evitar falsos negativos
+      switchMap(networks =>
+        [networks.some(n => n.name?.trim().toLowerCase() === name.trim().toLowerCase())]
+      ),
+      catchError(() => [false])
+    );
+  }
 }

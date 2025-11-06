@@ -40,6 +40,11 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.companyTypeForm.reset();
+    this.companyTypeForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -103,24 +108,39 @@ export class TypeOfCompaniesModalComponent implements OnInit, OnChanges {
   onCompanyTypeSubmit(): void {
     if (this.companyTypeForm.invalid || this.isLoading) return;
 
-    this.isLoading = true;
-    this.errorMessage = null;
-    const companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      name: this.companyTypeForm.value.name?.trim() ?? ''
-    };
+  this.isLoading = true;
+  this.errorMessage = null;
+  const name = this.companyTypeForm.value.name?.trim() ?? '';
 
-    this.companyTypeUtils.createNewCompanyType(companyType).subscribe({
-      next: () => {
+  this.companyTypeUtils.companyTypeExists(name).subscribe({
+    next: (exists) => {
+      if (exists) {
         this.isLoading = false;
-        this.companyTypeUtils.loadInitialData().subscribe();
-        this.commonMessageService.showCreatedSuccesfullMessage();
-        this.closeModal();      
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.handleError(err.message, err)
+        this.nameAlreadyExist = true;
+        this.errorMessage = 'El nombre ya existe';
+        this.companyTypeInput.nativeElement.focus();
+        return;
       }
-    });
+
+      const companyType: Omit<CompanyType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = { name };
+      this.companyTypeUtils.createNewCompanyType(companyType).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.companyTypeUtils.loadInitialData().subscribe();
+          this.commonMessageService.showCreatedSuccesfullMessage();
+          this.closeModal();
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.handleError(err.message, err);
+        }
+      });
+    },
+    error: (err) => {
+      this.isLoading = false;
+      this.handleError(err.message, err);
+    }
+  });
   }
 
   private handleError(messageKey: string, error: any) {

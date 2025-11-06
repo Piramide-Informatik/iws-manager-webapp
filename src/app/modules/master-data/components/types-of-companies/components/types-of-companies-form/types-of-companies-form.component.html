@@ -4,14 +4,14 @@
             <label for="name">{{ 'TYPE_OF_COMPANIES.LABEL.COMPANY_TYPE' | translate }}</label>
             <div class="input-message">
                 <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" 
-                invalid= "createUserForm.get('name')?.invalid  
-                        && createUserForm.get('name')?.dirty 
-                        || createUserForm.get('name')?.touched
+                invalid= "companyTypeEditForm.get('name')?.invalid  
+                        && companyTypeEditForm.get('name')?.dirty 
+                        || companyTypeEditForm.get('name')?.touched
                         || nameAlreadyExist"/>
                  <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                     companyTypeEditForm.get('name')?.invalid && 
                     companyTypeEditForm.get('name')?.dirty || nameAlreadyExist
-                    ">{{ nameAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message> 
+                    ">{{ nameAlreadyExist ? ('TYPE_OF_COMPANIES.ERROR.COMPANY_TYPE_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message> 
             </div>
             
         </div>

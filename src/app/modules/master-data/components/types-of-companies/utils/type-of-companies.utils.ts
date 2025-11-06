@@ -94,4 +94,20 @@ export class CompanyTypeUtils {
       })
     );
   }
+  /**
+ * Checks if a company type with the given name already exists
+ * @param name - Name of the company type to check
+ * @returns Observable emitting true if exists, false otherwise
+ */
+companyTypeExists(name: string): Observable<boolean> {
+  return this.companyTypeService.getAllCompanyTypes().pipe(
+    map((companyTypes: CompanyType[]) =>
+      companyTypes.some(ct => ct.name.toLowerCase() === name.toLowerCase())
+    ),
+    catchError(err => {
+      console.error('Error checking company type existence:', err);
+      return throwError(() => new Error('Failed to check company type existence'));
+    })
+  );
+}
 }
