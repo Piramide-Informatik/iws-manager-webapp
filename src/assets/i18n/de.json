@@ -1383,6 +1383,7 @@
     "chance": "Realisierungswahrscheinlichkeit",
     "system": "Systemkonstanten",
     "text": "Texte",
-    "companytype": "Unternehmensarten"
+    "companytype": "Unternehmensarten",
+    "stateholiday": "Feiertage"
   }
 }

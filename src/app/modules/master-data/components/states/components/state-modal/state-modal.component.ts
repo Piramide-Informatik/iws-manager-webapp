@@ -32,9 +32,10 @@ export class StateModalComponent implements OnInit, OnChanges {
   @Output() confirmStateDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
   
   isStateLoading = false;
+  nameAlreadyExist = false;
   errorStateMessage: string | null = null;
   showOCCErrorModalState = false;
-  occErrorStateType: OccErrorType = 'DELETE_UNEXISTED'; 
+  occErrorStateType: OccErrorType = 'DELETE_UNEXISTED';
   
   readonly stateForm = new FormGroup({
     name: new FormControl('', [
@@ -50,6 +51,11 @@ export class StateModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.stateForm.reset();
+    this.stateForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -122,12 +128,18 @@ export class StateModalComponent implements OnInit, OnChanges {
 
   onCreateStateFormSubmit(): void {
     if (this.shouldStatePreventSubmission()) return;
-
+    
     this.prepareForStateSubmission();
     const stateName = this.stateForm.value.name?.trim() ?? '';
+    
+    if (!stateName) {
+      this.isStateLoading = false;
+      return;
+    }
 
     this.stateUtils.stateExists(stateName).subscribe({
       next: (exists) => {
+        this.nameAlreadyExist = exists;
         this.handleStateExistence(exists, stateName)
       },
       error: (err) => this.handleStateError('STATES.ERROR.CHECKING_DUPLICATE', err)
@@ -179,6 +191,7 @@ export class StateModalComponent implements OnInit, OnChanges {
 
   closeStateModal(): void {
     this.isVisibleModalChange.emit(false);
+    this.nameAlreadyExist = false;
     this.resetModal();
   }
 

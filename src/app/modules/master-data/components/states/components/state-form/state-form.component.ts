@@ -21,6 +21,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
   state: State | null = null;
   editStateForm!: FormGroup;
   isSaving = false;
+  nameAlreadyExist = false;
   private readonly subscriptions = new Subscription();
   public occErrorStateType: OccErrorType = 'UPDATE_UPDATED';
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
@@ -38,6 +39,11 @@ export class StateFormComponent implements OnInit, OnDestroy {
     this.setupStateSubscription();
     // Check if we need to load a state after page refresh
     this.loadStateAfterRefresh();
+    this.editStateForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -106,8 +112,15 @@ export class StateFormComponent implements OnInit, OnDestroy {
     this.markAllFieldsAsTouched();
     return;
   }
+  const stateName = this.editStateForm.value.name?.trim() ?? '';
+  if (stateName.toLowerCase() === this.state.name.toLowerCase()) {
+    this.commonMessageService.showErrorRecordAlreadyExist();
+    return;
+  }
 
   this.isSaving = true;
+  this.nameAlreadyExist = false;
+  
   const stateFormValue = this.editStateForm.value;
   const trimmedName = stateFormValue.name?.trim() ?? '';
   const updatedState: State = { ...this.state, ...stateFormValue, name: trimmedName };
@@ -115,6 +128,7 @@ export class StateFormComponent implements OnInit, OnDestroy {
   this.subscriptions.add(
     this.stateServiceUtils.stateExists(trimmedName).subscribe({
       next: (exists) => {
+        this.nameAlreadyExist = exists;
         if (exists && trimmedName.toLowerCase() !== this.state!.name.toLowerCase()) {
           this.isSaving = false;
           this.editStateForm.get('name')?.setErrors({ duplicate: true });

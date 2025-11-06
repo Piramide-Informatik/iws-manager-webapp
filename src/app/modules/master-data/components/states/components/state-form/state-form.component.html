@@ -4,20 +4,15 @@
             <div class="state-form">
                 <label for="name">{{ 'STATES.LABEL.STATE' | translate }}</label>
                 <div class="input-message">
-                    <input #firstInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': editStateForm.get('name')?.invalid && 
-                      editStateForm.get('name')?.dirty && editStateForm.get('name')?.touched}" autocomplete="off" />
-                     <p-message severity="error" variant="simple" size="small" *ngIf="
-                         editStateForm.get('name')?.invalid && 
-                         editStateForm.get('name')?.dirty && 
-                         editStateForm.get('name')!.hasError('required')
-                         ">
-                         {{ 'STATES.ERROR.STATE_REQUIRED' | translate }}</p-message>
-                    <p-message severity="error" variant="simple" size="small" *ngIf="
-                         editStateForm.get('name')?.invalid && 
-                         editStateForm.get('name')?.dirty && 
-                         editStateForm.get('name')!.hasError('emptyValue')
-                         ">
-                         {{ 'STATES.ERROR.STATE_EMPTY' | translate }}</p-message>      
+                    <input #firstInput pInputText type="text" id="name" formControlName="name" autocomplete="off" 
+                    invalid="editStateForm.get('name')?.invalid  
+                            && editStateForm.get('name')?.dirty 
+                            || editStateForm.get('name')?.touched
+                            || nameAlreadyExist"/>
+                     <p-message severity="error" [showTransitionOptions]="'1ms'" variant="simple" size="small" *ngIf="
+                        editStateForm.get('name')?.invalid && 
+                        editStateForm.get('name')?.dirty || nameAlreadyExist
+                        ">{{ nameAlreadyExist ? ('STATES.ERROR.STATE_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
                 </div>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">

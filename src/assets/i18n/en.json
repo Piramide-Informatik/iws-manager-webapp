@@ -1379,6 +1379,7 @@
     "chance": "Chance",
     "system": "System",
     "text": "Text",
-    "companytype": "Company Type"
+    "companytype": "Company Type",
+    "stateholiday": "Holiday"
   }
 }
