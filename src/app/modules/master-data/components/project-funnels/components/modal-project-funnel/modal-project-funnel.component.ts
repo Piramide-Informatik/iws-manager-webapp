@@ -7,6 +7,7 @@ import { CountryUtils } from '../../../countries/utils/country-util';
 import { Country } from '../../../../../../Entities/country';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-project-funnel',
@@ -27,6 +28,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalPromoter = false;
+  public abbreviationAlreadyExist = false;
   public countries = toSignal( this.countryUtils.getCountriesSortedByName(), { initialValue: [] } )
 
   public readonly projectFunnelForm = new FormGroup({
@@ -50,7 +52,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    if(this.projectFunnelForm.invalid || this.isLoading) return 
+    if(this.projectFunnelForm.invalid || this.isLoading || this.abbreviationAlreadyExist) return 
 
     this.isLoading = true;
     const newPromoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
@@ -70,9 +72,16 @@ export class ModalProjectFunnelComponent implements OnChanges {
         this.closeModal();
         this.createPromoter.emit({created, status: 'success'});
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
-        this.createPromoter.emit({ status: 'error',  });
+        if (error.message?.includes('abbreviation already exists')) {
+          this.abbreviationAlreadyExist = true;
+          this.projectFunnelForm.get('projectPromoter')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.abbreviationAlreadyExist = false);
+          this.commonMessageService.showErrorCreatedMessage();
+        } else {
+          this.createPromoter.emit({ status: 'error' });
+        }
       } 
     })
   }
@@ -121,6 +130,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
   public closeModal(): void {
     this.isVisibleModal.emit(false);
     this.projectFunnelForm.reset();
+    this.abbreviationAlreadyExist = false;
   }
 
   public focusInputIfNeeded(): void {
