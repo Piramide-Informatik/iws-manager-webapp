@@ -28,6 +28,7 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
   public modalType: 'create' | 'delete' = 'create';
   public visibleModal: boolean = false;
   public selectedChance!: Chance;
+  public language: string = '';
   public readonly probabilities = computed(() => {
     return this.chanceService.chances();
   });
@@ -49,6 +50,7 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(): void {
+    this.language = this.translate.currentLang
     this.pageTitleService.setTranslatedTitle('PAGETITLE.MASTER_DATA.REALIZATION_PROBABILITIES');
     this.chanceUtils.loadInitialData().subscribe();
     this.loadColHeadersProbabilities();
@@ -57,6 +59,7 @@ export class RealitationProbabilitiesComponent implements OnInit, OnDestroy {
       this.loadColHeadersProbabilities();
       this.routerUtils.reloadComponent(true);
       this.userRealitationProbabilitiesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.columsHeaderFieldProbabilities);
+      this.language = this.translate.currentLang;
     });
   }
 

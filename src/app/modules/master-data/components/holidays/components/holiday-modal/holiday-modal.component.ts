@@ -8,6 +8,7 @@ import { PublicHolidayStateService } from '../../utils/public-holiday-state.serv
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { DatePicker } from 'primeng/datepicker';
+import { PublicHoliday } from '../../../../../../Entities/publicholiday';
 @Component({
   selector: 'app-holiday-modal',
   standalone: false,
@@ -153,7 +154,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
       .addPublicHoliday(newPublicHoliday)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: () => this.handleSuccess(),
+        next: (created) => this.handleSuccess(created),
         error: (error) => {
           this.handleError(error);
         },
@@ -161,7 +162,8 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptions.add(sub);
   }
 
-  private handleSuccess(): void {
+  private handleSuccess(created: PublicHoliday): void {
+    this.publicHolidayStateService.setPublicHolidayToEdit(created);
     this.toastMessage.emit({
       severity: 'success',
       summary: 'MESSAGE.SUCCESS',

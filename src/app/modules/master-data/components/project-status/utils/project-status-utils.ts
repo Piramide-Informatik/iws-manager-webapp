@@ -13,7 +13,20 @@ export class ProjectStatusUtils {
     }
 
     addProjectStatus(nameProjectStatus: string): Observable<ProjectStatus>{
-        return this.projectStatusService.addProjectStatus({ name: nameProjectStatus });
+        return this.projectStatusExists(nameProjectStatus).pipe(
+            switchMap((exists) => {
+                if (exists) {
+                    return throwError(() => new Error('name already exists'));
+                }
+                return this.projectStatusService.addProjectStatus({ name: nameProjectStatus });
+            }),
+            catchError((err) => {
+                if (err.message === 'name already exists') {
+                    return throwError(() => err);
+                }
+                return throwError(() => new Error('PROJECT_STATUS.ERROR.CREATION_FAILED'));
+            })
+        );
     }
 
     //Get a projectStatus by ID
@@ -28,25 +41,38 @@ export class ProjectStatusUtils {
             })
         );
     }
-    //Creates a new projectStatus with validation
     createNewProjectStatus(nameProjectStatus: string): Observable<void> {
         if (!nameProjectStatus?.trim()) {
             return throwError(() => new Error('ProjectStatus name cannot be empty'));
         }
-        return new Observable<void>(subscriber => {
-            this.projectStatusService.addProjectStatus({
-                name: nameProjectStatus.trim()
-            });
-            subscriber.next();
-            subscriber.complete();
-        });
+        
+        return this.projectStatusExists(nameProjectStatus).pipe(
+            switchMap((exists) => {
+                if (exists) {
+                    return throwError(() => new Error('name already exists'));
+                }
+                return new Observable<void>(subscriber => {
+                    this.projectStatusService.addProjectStatus({
+                        name: nameProjectStatus.trim()
+                    });
+                    subscriber.next();
+                    subscriber.complete();
+                });
+            }),
+            catchError((err) => {
+                if (err.message === 'name already exists') {
+                    return throwError(() => err);
+                }
+                return throwError(() => new Error('PROJECT_STATUS.ERROR.CREATION_FAILED'));
+            })
+        );
     }
 
     //Check if a projectStatus exists
-    projectExists(name: string): Observable<boolean> {
+    projectStatusExists(name: string): Observable<boolean> {
         return this.projectStatusService.getAllProjectStatuses().pipe(
             map(projectStatuses => projectStatuses.some(
-                t => t.name.toLowerCase() === name.toLowerCase()
+                t => t.name?.toString().toLowerCase() === name.toString().toLowerCase()
             )),
             catchError(err => {
                 console.error('Error checking projectStatus existence:', err);
@@ -85,6 +111,7 @@ export class ProjectStatusUtils {
         if (!projectStatus?.id) {
             return throwError(() => new Error('Invalid projectStatus data'));
         }
+
         return this.projectStatusService.getProjectStatusById(projectStatus.id).pipe(
             take(1),
             switchMap((currentProjectStatus) => {
@@ -95,7 +122,19 @@ export class ProjectStatusUtils {
                 if (currentProjectStatus.version !== projectStatus.version) {
                     return throwError(() => createUpdateConflictError('ProjectStatus'));
                 }
-                return this.projectStatusService.updateProjectStatus(projectStatus);
+                
+                return this.projectStatusExists(projectStatus.name).pipe(
+                    switchMap((exists) => {
+                        if (exists && currentProjectStatus.name?.toLowerCase() !== projectStatus.name?.toLowerCase()) {
+                            return throwError(() => new Error('name already exists'));
+                        }
+                        return this.projectStatusService.updateProjectStatus(projectStatus);
+                    })
+                );
+            }),
+            catchError((err) => {
+                console.error('Error updating projectStatus:', err);
+                return throwError(() => err);
             })
         );
     }

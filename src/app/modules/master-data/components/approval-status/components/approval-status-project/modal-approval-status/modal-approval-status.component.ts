@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, Input, inject, OnInit, ViewChild, ElementRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'; 
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
 import { OccError, OccErrorType } from '../../../../../../shared/utils/occ-error';
@@ -39,6 +39,7 @@ export class ModalApprovalStatusComponent
   public occErrorApprovalStatusType: OccErrorType = 'DELETE_UNEXISTED';
   isLoading = false;
   errorMessage: string | null = null;
+  statusAlreadyExist = false;
 
   readonly createApprovalStatusForm = new FormGroup({
     status: new FormControl('', [Validators.required]),
@@ -83,7 +84,7 @@ export class ModalApprovalStatusComponent
   }
 
   onSubmit(): void {
-    if (this.createApprovalStatusForm.invalid || this.isLoading) return;
+    if (this.createApprovalStatusForm.invalid || this.isLoading || this.statusAlreadyExist) return;
     const ApprovalStatusData = this.getSanitizedApprovalStatusValues();
 
     this.runOperation(
@@ -144,11 +145,11 @@ export class ModalApprovalStatusComponent
             if (error instanceof OccError) {
               this.showOCCErrorModalApprovalStatus = true;
               this.occErrorApprovalStatusType = error.errorType;
-              this.commonMessageService.showErrorDeleteMessage();
+              this.commonMessageService.showErrorDeleteMessage(); // Mensaje genérico
             } else if (error?.message.includes('404')) {
               this.showOCCErrorModalApprovalStatus = true;
               this.occErrorApprovalStatusType = 'DELETE_UNEXISTED';
-              this.commonMessageService.showErrorDeleteMessage();
+              this.commonMessageService.showErrorDeleteMessage(); // Mensaje genérico
             } else {
               this.handleOperationError(error, messages.fail, messages.inUse);
             }
@@ -175,6 +176,20 @@ export class ModalApprovalStatusComponent
     inUseDetail?: string
   ): void {
     this.errorMessage = error?.message ?? defaultDetail;
+
+    if (error.message?.includes('status already exists')) {
+      this.statusAlreadyExist = true;
+      this.createApprovalStatusForm.get('status')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.statusAlreadyExist = false);
+      if (defaultDetail.includes('CREATE')) {
+        this.commonMessageService.showErrorCreatedMessage();
+      } else if (defaultDetail.includes('DELETE')) {
+        this.commonMessageService.showErrorDeleteMessage();
+      } else {
+        this.commonMessageService.showErrorEditMessage();
+      }
+      return;
+    }
 
     const detail = this.errorMessage?.includes('it is in use by other entities')
       ? inUseDetail ?? defaultDetail
@@ -219,12 +234,14 @@ export class ModalApprovalStatusComponent
 
   private closeModal(reset: boolean = true): void {
     this.isLoading = false;
+    this.statusAlreadyExist = false;
     this.isVisibleModal.emit(false);
     if (reset) this.resetForm();
   }
 
   private resetForm(): void {
     this.createApprovalStatusForm.reset();
+    this.statusAlreadyExist = false;
   }
 
   public focusInputIfNeeded(): void {

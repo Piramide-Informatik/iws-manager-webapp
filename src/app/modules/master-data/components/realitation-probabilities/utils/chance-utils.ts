@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap, of } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { ChanceService } from '../../../../../Services/chance.service';
 import { Chance } from '../../../../../Entities/chance';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -40,7 +40,37 @@ export class ChanceUtils {
    * @returns Observable that completes when chance is created
    */
   addChance(chance: Omit<Chance, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Chance> {
-    return this.chanceService.addChance(chance);
+    const probability = chance.probability ?? 0;
+    
+    return this.chanceExists(probability).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('probability already exists'));
+        }
+        return this.chanceService.addChance(chance);
+      }),
+      catchError((err) => {
+        if (err.message === 'probability already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('CHANCE.ERROR.CREATION_FAILED'));
+      })
+    );
+  }
+
+  /**
+   * Check if chance probability already exists
+   */
+  chanceExists(probability: number): Observable<boolean> {
+    return this.chanceService.getAllChances().pipe(
+      map(chances => chances.some(
+        c => c.probability === probability
+      )),
+      catchError(err => {
+        console.error('Error checking chance existence:', err);
+        return throwError(() => new Error('Failed to check chance existence'));
+      })
+    );
   }
 
   /**
@@ -85,17 +115,26 @@ export class ChanceUtils {
     if (!chance?.id) {
       return throwError(() => new Error('Invalid chance data'));
     }
+    const probability = chance.probability ?? 0;
 
     return this.chanceService.getChanceById(chance.id).pipe(
       take(1),
       switchMap((currentChance) => {
         if (!currentChance) {
           return throwError(() => createNotFoundUpdateError('chance'));
-
         }
         if (currentChance.version !== chance.version) {
-          return throwError(() => createUpdateConflictError('chance'));        }
-        return this.chanceService.updateChance(chance);
+          return throwError(() => createUpdateConflictError('chance'));
+        }
+        
+        return this.chanceExists(probability).pipe(
+          switchMap((exists) => {
+            if (exists && currentChance.probability !== probability) {
+              return throwError(() => new Error('probability already exists'));
+            }
+            return this.chanceService.updateChance(chance);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating chance:', err);

@@ -12,7 +12,7 @@ import { CountryUtils } from '../../../countries/utils/country-util';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PromoterStateService } from '../../utils/promoter-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { Country } from '../../../../../../Entities/country';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
@@ -34,6 +34,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   public showOCCErrorModaPromoter = false;
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public abbreviationAlreadyExist = false;
   public editProjectFunnelForm!: FormGroup;
 
   public countries = toSignal(this.countryUtils.getCountriesSortedByName(), {
@@ -69,7 +70,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.editProjectFunnelForm.invalid || !this.promoterToEdit) return;
+    if (this.editProjectFunnelForm.invalid || !this.promoterToEdit || this.abbreviationAlreadyExist) return;
 
     this.isLoading = true;
     const editedPromoter: Promoter = {
@@ -94,10 +95,16 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
         this.commonMessageService.showEditSucessfullMessage();
       },
       error: (error: Error) => {
+        this.isLoading = false;
         if (error instanceof OccError) {
           console.log('OCC Error occurred:', error);
           this.showOCCErrorModaPromoter = true;
           this.occErrorType = error.errorType;
+          this.commonMessageService.showErrorEditMessage();
+        } else if (error.message.includes('abbreviation already exists')) {
+          this.abbreviationAlreadyExist = true;
+          this.editProjectFunnelForm.get('projectPromoter')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.abbreviationAlreadyExist = false);
           this.commonMessageService.showErrorEditMessage();
         } else {
           this.commonMessageService.showErrorEditMessage();
@@ -154,6 +161,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
     this.editProjectFunnelForm.reset();
     this.promoterStateService.clearPromoter();
     this.promoterToEdit = null;
+    this.abbreviationAlreadyExist = false;
   }
 
   public onRefresh(): void {

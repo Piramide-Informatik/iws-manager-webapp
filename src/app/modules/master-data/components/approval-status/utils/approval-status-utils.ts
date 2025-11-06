@@ -29,14 +29,29 @@ export class ApprovalStatusUtils {
   createNewApprovalStatus(
     approvalStatus: Omit<ApprovalStatus, 'id' | 'createdAt' | 'updatedAt' | 'version'>
   ): Observable<ApprovalStatus> {
-    return this.approvalStatusService.addApprovalStatus(approvalStatus);
+    return this.approvalStatusExists(approvalStatus.status).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('status already exists'));
+        }
+        return this.approvalStatusService.addApprovalStatus(approvalStatus);
+      }),
+      catchError((err) => {
+        if (err.message === 'status already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('APPROVAL_STATUS.ERROR.CREATION_FAILED'));
+      })
+    );
   }
 
   // Check if approvalStatus already exists
   approvalStatusExists(status: string): Observable<boolean> {
     return this.approvalStatusService.getAllApprovalStatuses().pipe(
       map((approvalStatuses: ApprovalStatus[]) =>
-        approvalStatuses.some((t: ApprovalStatus) => t.status.toLowerCase() === status.toLowerCase())
+        approvalStatuses.some((t: ApprovalStatus) => 
+          t.status?.toString().toLowerCase() === status.toString().toLowerCase()
+        )
       ),
       catchError(err => {
         console.error('Error checking approvalStatus existence:', err);
@@ -73,7 +88,15 @@ export class ApprovalStatusUtils {
         if (currentApprovalStatus.version !== approvalStatus.version) {
           return throwError(() => createUpdateConflictError('ApprovalStatus'));
         }
-        return this.approvalStatusService.updateApprovalStatus(approvalStatus);
+        
+        return this.approvalStatusExists(approvalStatus.status).pipe(
+          switchMap((exists) => {
+            if (exists && currentApprovalStatus.status?.toLowerCase() !== approvalStatus.status?.toLowerCase()) {
+              return throwError(() => new Error('status already exists'));
+            }
+            return this.approvalStatusService.updateApprovalStatus(approvalStatus);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating approvalStatus:', err);

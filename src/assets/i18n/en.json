@@ -145,6 +145,7 @@
   "BUTTONS": {
     "NEW": "New",
     "SAVE": "Save",
+    "SAVE_AND_NEW": "Save and New",
     "DELETE": "Delete",
     "CANCEL": "Cancel",
     "NEW_YEAR": "New Year",
@@ -635,6 +636,10 @@
     "MODAL": {
       "NEW": "New Absence Type",
       "DELETE": "Delete Absence Type"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Absence type already exists",
+      "LABEL_ALREADY_EXIST": "Abbreviation already exists"
     }
   },
   "SALUTATION": {
@@ -707,8 +712,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Approval Status Required",
       "ORDER_REQUIRED": "Order Required",
-      "CHECKING_DUPLICATE": "Checking for Duplicate",
-      "CREATION_FAILED": "There was an error creating the Approval Status."
+      "STATUS_ALREADY_EXIST": "Approval status already exists"
     },
     "LABEL": {
       "NAME": "Approval Status",
@@ -801,7 +805,9 @@
   },
   "HOLIDAYS": {
     "HEADER": {
-      "EDIT_HOLIDAY": "Edit Holiday"
+      "EDIT_HOLIDAY": "Edit Holiday",
+      "NEW_YEAR": "New Year",
+      "EDIT_YEAR": "Edit Year"
     },
     "LABEL": {
       "HOLIDAY_NAME": "Holiday Name",
@@ -832,12 +838,15 @@
       "ALREADY_EXIST": "The record already exists",
       "CREATION_FAILED": "There was an error during the creation of the holiday.",
       "UPDATE_FAILED": "There was an error during the holiday update.",
-      "EMPTY": "The name of the holiday must have at least one character"
+      "EMPTY": "The name of the holiday must have at least one character",
+      "YEAR_ALREADY_EXISTS":"Year already exists"
     },
     "MODAL": {
       "NAME": "Holiday",
       "DATE": "Date",
-      "ORDEN": "Sort"
+      "ORDEN": "Sort",
+      "YEAR": "Year",
+      "DELETE_HOLIDAY_YEAR": "Delete year"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "No states available"
@@ -886,7 +895,7 @@
       "DELETE": "Delete Dunning level"
     },
     "VALIDATION":{
-      "DUNNING_LVL_EXISTS": "A Dunning Level already exists"
+      "DUNNING_LVL_EXISTS": "Dunning Level already exists"
     }
   },
   "EMPLOYEE_QUALIFICATION": {
@@ -1038,6 +1047,10 @@
     },
     "DELETE": {
       "CONFIRMATION": "Delete Country"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Country name already exists",
+      "ABBREVIATION_ALREADY_EXIST": "Country abbreviation already exists"
     }
   },
   "COSTS": {
@@ -1100,6 +1113,9 @@
     "MODAL": {
       "NEW": "New Project Sponsor",
       "DELETE": "Delete Project Sponsor"
+    },
+    "ERROR": {
+      "ABBREVIATION_ALREADY_EXIST": "Abbreviation already exists"
     }
   },
   "PROJECT_STATUS": {
@@ -1116,10 +1132,7 @@
       "PROJECT_STATUS_LABEL": "Project Status"
     },
     "ERROR": {
-      "PROJECT_STATUS_LABEL_REQUIRED": "The project status is required",
-      "CREATION_FAILED": "There was an error creating the project status.",
-      "EMPTY": "The project status name must be at least one character",
-      "ALREADY_EXISTS": "The record already exists"
+      "NAME_ALREADY_EXIST": "Project status already exists"
     },
     "DELETE": {
       "CONFIRMATION": "Delete Project Status Project"
@@ -1210,6 +1223,9 @@
     "MODAL": {
       "NEW": "New Realization Probabilities",
       "DELETE": "Delete Realization Probabilities"
+    },
+      "ERROR": {
+      "PROBABILITY_ALREADY_EXIST": "Realization Probabilities already exists"
     }
   },
   "TYPE_OF_COMPANIES": {

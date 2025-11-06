@@ -1,10 +1,12 @@
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ChanceUtils } from '../../utils/chance-utils';
 import { Chance } from '../../../../../../Entities/chance';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { ChanceStateService } from '../../utils/chance-state.service';
+import { take } from 'rxjs/operators';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-modal-realization-probabilities',
@@ -12,12 +14,15 @@ import { ChanceStateService } from '../../utils/chance-state.service';
   templateUrl: './modal-realization-probabilities.component.html',
   styleUrl: './modal-realization-probabilities.component.scss'
 })
-export class ModalRealizationProbabilitiesComponent implements OnChanges {
+export class ModalRealizationProbabilitiesComponent implements OnInit, OnChanges {
   private readonly chanceUtils = inject(ChanceUtils);
   private readonly chanceStateService = inject(ChanceStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
+  
   @Input() selectedChance!: Chance;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible: boolean = false;
+  @Input() language: string = '';
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createChance = new EventEmitter<{created?: Chance, status: 'success' | 'error'}>();
   @Output() deleteChance = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
@@ -26,10 +31,22 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
   private existingChances: Chance[] = [];
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalChance = false;
-
+  public probabilityAlreadyExist = false;
+  dynamicSize = {
+    'width': '300px'
+  }
+  private readonly sizes: any = {
+    de: '280px',
+    en: '220px',
+    es: '210px'
+  }
   public readonly chanceForm = new FormGroup({
     probability: new FormControl(null, [Validators.max(100), this.duplicateProbabilityValidator.bind(this)])
   });
+
+  ngOnInit(): void {
+    this.dynamicSize['width'] = this.sizes[this.language];
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible && this.isCreateMode) {
@@ -37,6 +54,10 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
       setTimeout(()=> {
         this.focusInputIfNeeded();
       })
+    }
+    let sizeChange = changes['language'];
+    if (sizeChange && !sizeChange.firstChange) {
+      this.dynamicSize['width'] = this.sizes[sizeChange.currentValue];
     }
   } 
 
@@ -66,7 +87,7 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
   }
 
   public onSubmit(): void {
-    if(this.chanceForm.invalid || this.isLoading) return
+    if(this.chanceForm.invalid || this.isLoading || this.probabilityAlreadyExist) return
 
     this.isLoading = true;
     const newChance: Omit<Chance, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
@@ -79,9 +100,17 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
         this.closeModal();
         this.createChance.emit({created, status: 'success'})
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
-        this.createChance.emit({status: 'error'})
+        if (error.message?.includes('probability already exists')) {
+          this.probabilityAlreadyExist = true;
+          this.chanceForm.get('probability')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.probabilityAlreadyExist = false);
+          this.commonMessageService.showErrorCreatedMessage();
+        } else {
+          this.createChance.emit({status: 'error'})
+          this.commonMessageService.showErrorCreatedMessage();
+        }
       }
     })
   }
@@ -100,6 +129,7 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
           this.isLoading = false;
           this.handleDeleteError(errorResponse);
           this.deleteChance.emit({status: 'error', error:errorResponse});
+          this.commonMessageService.showErrorDeleteMessage(); 
         }
       })
     }
@@ -115,6 +145,7 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
   public closeModal(): void {
     this.isVisibleModal.emit(false);
     this.chanceForm.reset();
+    this.probabilityAlreadyExist = false;
   }
 
   get isCreateMode(): boolean {

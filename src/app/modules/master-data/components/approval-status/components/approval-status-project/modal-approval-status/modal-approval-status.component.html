@@ -12,11 +12,17 @@
                         formControlName="status"
                         autocomplete="off"
                         [ngClass]="{'ng-invalid': createApprovalStatusForm.get('status')?.invalid && 
-                        (createApprovalStatusForm.get('status')?.dirty || createApprovalStatusForm.get('status')?.touched)}" />
+                        (createApprovalStatusForm.get('status')?.dirty || createApprovalStatusForm.get('status')?.touched) ||
+                        statusAlreadyExist}"
+                        invalid="createApprovalStatusForm.get('status')?.invalid  
+                        && createApprovalStatusForm.get('status')?.dirty 
+                        || createApprovalStatusForm.get('status')?.touched
+                        || statusAlreadyExist" />
                     <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
                         *ngIf="createApprovalStatusForm.get('status')?.invalid && 
-                        (createApprovalStatusForm.get('status')?.dirty || createApprovalStatusForm.get('status')?.touched)">
-                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                        (createApprovalStatusForm.get('status')?.dirty || createApprovalStatusForm.get('status')?.touched) ||
+                        statusAlreadyExist">
+                        {{ statusAlreadyExist ? ('APPROVAL_STATUS.ERROR.STATUS_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
                     </p-message>
                 </div>
             </div>
@@ -56,7 +62,7 @@
                 icon="pi pi-check"
                 iconPos="left"
                 [loading]="isLoading"
-                [disabled]="createApprovalStatusForm.invalid || isLoading || !createApprovalStatusForm.dirty"
+                [disabled]="createApprovalStatusForm.invalid || isLoading || !createApprovalStatusForm.dirty || statusAlreadyExist"
                 />
 
                 <p-button

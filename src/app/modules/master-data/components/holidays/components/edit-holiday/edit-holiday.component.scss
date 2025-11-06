@@ -5,22 +5,22 @@
   gap: 0.5rem;
 
   label {
-    width: 130px;       // ancho fijo para alinear todos los labels
+    width: 120px;       // ancho fijo para alinear todos los labels
     flex-shrink: 0;
   }
 
   input[pInputText] {
-    width: 180px;
+    width: 190px;
     flex-shrink: 0;
 
   }
 
   ::ng-deep .p-inputnumber-input {
-    width: 180px !important;
+    width: 190px !important;
   }
 
   ::ng-deep .p-datepicker input {
-    width: 110px !important; // ancho fijo para el campo de fecha
+    width: 120px !important; // ancho fijo para el campo de fecha
     text-align: center;
   }
 }
@@ -28,7 +28,7 @@
 .holiday-form-check {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .holiday-form.mb-2.flex {
@@ -45,4 +45,10 @@
 
 .magin-bottom-form {
   margin-bottom: 0;
+}
+
+.clickable-title:hover {
+  text-decoration: underline !important;
+  color: #1976d2 !important;
+  cursor: pointer;
 }
