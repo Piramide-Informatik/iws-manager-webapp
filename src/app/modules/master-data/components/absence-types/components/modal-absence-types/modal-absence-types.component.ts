@@ -88,12 +88,14 @@ export class ModalAbsenceTypesComponent implements OnInit, OnChanges {
   }
 
   private handleCreateDuplicityError(error: any): void {
-    if (error.error.message.includes(this.absenceTypeForm.value.name?.trim())) {
-      this.nameAlreadyExists = true;
-    }
+    if (error.error.message.includes("duplication with")) {
+      if (error.error.message.includes(this.absenceTypeForm.value.name?.trim())) {
+        this.nameAlreadyExists = true;
+      }
 
-    if(error.error.message.includes(this.absenceTypeForm.value.label?.trim())){
-      this.labelAlreadyExists = true;
+      if (error.error.message.includes(this.absenceTypeForm.value.label?.trim())) {
+        this.labelAlreadyExists = true;
+      }
     }
   }
 

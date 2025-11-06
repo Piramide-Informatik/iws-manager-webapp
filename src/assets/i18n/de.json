@@ -66,7 +66,8 @@
     "NUMBER_MAX_12": "Maximalwert 12 erwartet",
     "FIELD_REQUIRED": "Pflichtfeld",
     "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet",
-    "RECORD_ARLEADY_EXISTS": "Dieser Datensatz existiert bereits"
+    "RECORD_ARLEADY_EXISTS": "Dieser Datensatz existiert bereits",
+    "ALREADY_EXIST": "Bereits vergeben"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
@@ -670,7 +671,7 @@
     },
     "ERROR": {
       "SALUTATION_REQUIRED": "Anrede erforderlich",
-      "ALREADY_EXIST":"Anrede existiert bereits"
+      "ALREADY_EXIST": "Anrede existiert bereits"
     }
   },
   "STATES": {
@@ -844,7 +845,7 @@
       "CREATION_FAILED": "Beim Anlegen des Feiertags ist ein Fehler aufgetreten.",
       "UPDATE_FAILED": "Beim Feiertags-Update ist ein Fehler aufgetreten.",
       "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten",
-      "YEAR_ALREADY_EXISTS":"Jahr existiert bereits"
+      "YEAR_ALREADY_EXISTS": "Jahr existiert bereits"
     },
     "MODAL": {
       "NAME": "Feiertag",
@@ -1172,6 +1173,9 @@
       "COMMENT": "Kommentar",
       "CUSTOMER": "Kunde",
       "CONTACT": "Kontakt"
+    },
+    "ERROR": {
+      "ALREADY_EXIST": "Netzwerk existiert bereits"
     }
   },
   "SALES_TAX": {
@@ -1255,7 +1259,7 @@
     "ERROR": {
       "COMPANY_TYPE_REQUIRED": "Unternehmensart ist erforderlich",
       "COMPANY_TYPE_EMPTY": "Der Firmentyp sollte mindestens ein Zeichen haben",
-      "COMPANY_TYPE_ALREADY_EXIST": "Der Unternehmenstyp ist bereits vorhanden",
+      "COMPANY_TYPE_ALREADY_EXIST": "Unternehmensart existiert bereits",
       "CREATION_FAILED": "Beim Erstellen des Firmentyps ist ein Fehler aufgetreten.",
       "CHECKING_DUPLICATE": "Duplikat prüfen"
     },
@@ -1325,7 +1329,7 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich",
-      "ALREADY_EXIST" : "Vertragsstatus existiert bereits"
+      "ALREADY_EXIST": "Vertragsstatus existiert bereits"
     },
     "MODAL": {
       "TITLE_CREATE": "Neuer Vertragsstatus",
