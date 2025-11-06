@@ -5,13 +5,14 @@ import {
   inject,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Text } from '../../../../../../Entities/text';
 import { TextUtils } from '../../utils/text-utils';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { TextStateService } from '../../utils/text-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -22,7 +23,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   templateUrl: './text-modal.component.html',
   styleUrl: './text-modal.component.scss',
 })
-export class TextModalComponent implements OnChanges {
+export class TextModalComponent implements OnInit, OnChanges {
   private readonly textUtils = inject(TextUtils);
   private readonly textStateService = inject(TextStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
@@ -44,11 +45,20 @@ export class TextModalComponent implements OnChanges {
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalText = false;
+  public labelAlreadyExists = false;
 
   public readonly textForm = new FormGroup({
-    label: new FormControl(''),
+    label: new FormControl('', [Validators.required]),
     content: new FormControl(''),
   });
+
+  ngOnInit(): void {
+      this.textForm.get('label')?.valueChanges.subscribe(() => {
+      if (this.labelAlreadyExists) {
+        this.labelAlreadyExists = false;
+      }
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.modalType === 'create') {
@@ -73,11 +83,18 @@ export class TextModalComponent implements OnChanges {
         this.closeModal();
         this.createText.emit({ created, status: 'success' });
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
+        this.handleCreateDuplicityError(error);
         this.createText.emit({ status: 'error' });
       },
     });
+  }
+
+  private handleCreateDuplicityError(error: any): void{
+    if(error.error.message.includes("duplication with")){
+      this.labelAlreadyExists = true;
+    }
   }
 
   deleteSelectedText() {
