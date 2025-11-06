@@ -145,6 +145,7 @@
   "BUTTONS": {
     "NEW": "Nuevo",
     "SAVE": "Guardar",
+    "SAVE_AND_NEW": "Guardar y Nuevo",
     "DELETE": "Eliminar",
     "CANCEL": "Cancelar",
     "NEW_YEAR": "Nuevo año",
@@ -634,6 +635,10 @@
     "MODAL": {
       "NEW": "Nuevo Tipo de Ausencia",
       "DELETE": "Eliminar Tipo de Ausencia"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "El tipo de ausencia ya existe",
+      "LABEL_ALREADY_EXIST": "La abreviatura ya existe"
     }
   },
   "SALUTATION": {
@@ -799,7 +804,9 @@
   },
   "HOLIDAYS": {
     "HEADER": {
-      "EDIT_HOLIDAY": "Editar festivo"
+      "EDIT_HOLIDAY": "Editar festivo",
+      "NEW_YEAR": "Nuevo año",
+      "EDIT_YEAR": "Editar año"
     },
     "LABEL": {
       "HOLIDAY_NAME": "Nombre del festivo",
@@ -830,12 +837,15 @@
       "ALREADY_EXIST": "ya existe el registro",
       "CREATION_FAILED": "Hubo un error durante la creacion del festivo.",
       "UPDATE_FAILED": "Hubo un error durante la actualización del festivo.",
-      "EMPTY": "Vacío"
+      "EMPTY": "Vacío",
+      "YEAR_ALREADY_EXISTS": "El año ya existe"
     },
     "MODAL": {
       "NAME": "Festivo",
       "DATE": "Fecha",
-      "ORDEN": "Orden"
+      "ORDEN": "Orden",
+      "YEAR": "Año",
+      "DELETE_HOLIDAY_YEAR": "Eliminar año"
     },
     "MESSAGE": {
       "NO_BUNDESLANDS": "No hay estados disponibles"
