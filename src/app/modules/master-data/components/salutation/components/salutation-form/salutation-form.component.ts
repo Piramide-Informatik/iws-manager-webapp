@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Salutation } from '../../../../../../Entities/salutation';
 import { SalutationUtils } from '../../utils/salutation.utils';
@@ -41,6 +41,11 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
       this.loadSalutationAfterRefresh(savedSalutationId);
       localStorage.removeItem('selectedSalutationId');
     }
+    this.editSalutationForm.get('salutation')?.valueChanges.subscribe(() => {
+      if (this.salutationAlreadyExist) {
+        this.salutationAlreadyExist = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -93,6 +98,7 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
     this.editSalutationForm.reset();
     this.currentSalutation = null;
     this.isSaving = false;
+    this.salutationAlreadyExist = false;
   }
 
   onSubmit(): void {
@@ -102,29 +108,52 @@ export class SalutationFormComponent implements OnInit, OnDestroy {
     }
 
     this.isSaving = true;
-    const updatedSalutation: Salutation = {
-      ...this.currentSalutation,
-      name: this.editSalutationForm.value.salutation?.trim()
-    };
+    const newName = this.editSalutationForm.value.salutation?.trim();
 
-    
-      this.salutationUtils.updateSalutation(updatedSalutation).subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.clearForm();
-          this.commonMessageService.showEditSucessfullMessage();
-        },
-        error: (error: Error) => {
-          this.isLoading = false;
-          if (error instanceof OccError) {
-            this.showOCCErrorModalSalutation = true;
-            this.occErrorType = error.errorType;
-            this.commonMessageService.showErrorEditMessage();
-          } else {
+    if (!newName) {
+      this.isSaving = false;
+      this.commonMessageService.showErrorEditMessage();
+      return;
+    }
+
+    // 🔍 Verificar si ya existe otro salutation con el mismo nombre
+    this.salutationUtils.salutationExists(newName).pipe(take(1)).subscribe({
+      next: (exists) => {
+        // Si existe y es distinto al actual → error
+        if (exists && newName.toLowerCase() !== this.currentSalutation!.name.toLowerCase()) {
+          this.isSaving = false;
+          this.salutationAlreadyExist = true;
+          this.commonMessageService.showErrorRecordAlreadyExist();
+          return;
+        }
+
+        // Si no hay duplicado, proceder con la actualización
+        const updatedSalutation: Salutation = {
+          ...this.currentSalutation!,
+          name: newName
+        };
+
+        this.salutationUtils.updateSalutation(updatedSalutation).subscribe({
+          next: () => {
+            this.isSaving = false;
+            this.clearForm();
+            this.commonMessageService.showEditSucessfullMessage();
+          },
+          error: (error: Error) => {
+            this.isSaving = false;
+            if (error instanceof OccError) {
+              this.showOCCErrorModalSalutation = true;
+              this.occErrorType = error.errorType;
+            }
             this.commonMessageService.showErrorEditMessage();
           }
-          }
-      })
+        });
+      },
+      error: () => {
+        this.isSaving = false;
+        this.commonMessageService.showErrorEditMessage();
+      }
+    });
   }
 
   private markAllAsTouched(): void {
