@@ -13,11 +13,14 @@
             autocomplete="off"
             invalid="createCountryForm.get('name')?.invalid
               && createCountryForm.get('name')?.dirty
-              || createCountryForm.get('name')?.touched"/>
+              || createCountryForm.get('name')?.touched
+              || nameAlreadyExist"/>
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             createCountryForm.get('name')?.invalid && 
-            createCountryForm.get('name')?.dirty
-            ">{{ ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+            createCountryForm.get('name')?.dirty ||
+            nameAlreadyExist">
+            {{ nameAlreadyExist ? ('COUNTRIES.ERROR.NAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+          </p-message>
         </div>
       </div>
 
@@ -32,11 +35,14 @@
             autocomplete="off"
             invalid="createCountryForm.get('abbreviation')?.invalid
               && createCountryForm.get('abbreviation')?.dirty
-              || createCountryForm.get('abbreviation')?.touched"/>
+              || createCountryForm.get('abbreviation')?.touched
+              || abbreviationAlreadyExist"/>
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             createCountryForm.get('abbreviation')?.invalid && 
-            createCountryForm.get('abbreviation')?.dirty
-            ">{{ ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+            createCountryForm.get('abbreviation')?.dirty ||
+            abbreviationAlreadyExist">
+            {{ abbreviationAlreadyExist ? ('COUNTRIES.ERROR.ABBREVIATION_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+          </p-message>
         </div>
       </div>
 
@@ -58,7 +64,7 @@
           icon="pi pi-check"
           iconPos="left"
           [loading]="isLoading"
-          [disabled]="isSaveDisabled"
+          [disabled]="isSaveDisabled || nameAlreadyExist || abbreviationAlreadyExist"
         ></p-button>  
 
         <p-button

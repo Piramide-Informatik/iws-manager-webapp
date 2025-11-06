@@ -1041,6 +1041,10 @@
     },
     "DELETE": {
       "CONFIRMATION": "Land löschen"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Land existiert bereits",
+      "ABBREVIATION_ALREADY_EXIST": "Kürzel existiert bereits"
     }
   },
   "COSTS": {

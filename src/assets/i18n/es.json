@@ -1036,6 +1036,10 @@
     },
     "DELETE": {
       "CONFIRMATION": "Eliminar País"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "El nombre ya existe",
+      "ABBREVIATION_ALREADY_EXIST": "La abreviatura ya existe"
     }
   },
   "COSTS": {

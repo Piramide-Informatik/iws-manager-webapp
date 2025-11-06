@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Country } from '../../../../../../Entities/country';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { CountryStateService } from '../../utils/country-state.service';
 import { CountryUtils } from '../../utils/country-util';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+
 @Component({
   selector: 'app-edit-country',
   templateUrl: './edit-country.component.html',
@@ -23,14 +24,15 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   public showOCCErrorModalCountry = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public isLoading: boolean = false;
+  public nameAlreadyExist = false;
+  public abbreviationAlreadyExist = false;
 
   constructor(
     private readonly countryUtils: CountryUtils,
     private readonly countryStateService: CountryStateService,
     private readonly messageService: MessageService,
     private readonly translate: TranslateService,
-        private readonly commonMessageService: CommonMessagesService,
-    
+    private readonly commonMessageService: CommonMessagesService,
   ) {}
 
   ngOnInit(): void {
@@ -78,10 +80,12 @@ export class EditCountryComponent implements OnInit, OnDestroy {
     this.countryForm.reset();
     this.currentCountry = null;
     this.isSaving = false;
+    this.nameAlreadyExist = false;
+    this.abbreviationAlreadyExist = false;
   }
 
   onSubmit(): void {
-    if (this.countryForm.invalid || !this.currentCountry || this.isSaving) {
+    if (this.countryForm.invalid || !this.currentCountry || this.isSaving || this.nameAlreadyExist || this.abbreviationAlreadyExist) {
       this.markAllAsTouched();
       return;
     }
@@ -97,20 +101,32 @@ export class EditCountryComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.countryUtils.updateCountry(updatedCountry).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isSaving = false;
           this.clearForm();
           this.commonMessageService.showEditSucessfullMessage();
         },
         error: (error: Error) => {
+          this.isSaving = false;
           if (error instanceof OccError) {
-          console.log('OCC Error occurred:', error);
-          this.showOCCErrorModalCountry = true;
-          this.occErrorType = error.errorType;
-          this.commonMessageService.showErrorEditMessage();
-        }else {
-          this.commonMessageService.showErrorEditMessage();
+            console.log('OCC Error occurred:', error);
+            this.showOCCErrorModalCountry = true;
+            this.occErrorType = error.errorType;
+            this.commonMessageService.showErrorEditMessage();
+          } else if (error.message.includes('name already exists')) {
+            this.nameAlreadyExist = true;
+            this.countryForm.get('name')?.valueChanges.pipe(take(1))
+              .subscribe(() => this.nameAlreadyExist = false);
+            this.commonMessageService.showErrorEditMessage();
+          } else if (error.message.includes('abbreviation already exists')) {
+            this.abbreviationAlreadyExist = true;
+            this.countryForm.get('abbreviation')?.valueChanges.pipe(take(1))
+              .subscribe(() => this.abbreviationAlreadyExist = false);
+            this.commonMessageService.showErrorEditMessage();
+          } else {
+            this.commonMessageService.showErrorEditMessage();
+          }
         }
-  }})
+      })
     );
   }
 

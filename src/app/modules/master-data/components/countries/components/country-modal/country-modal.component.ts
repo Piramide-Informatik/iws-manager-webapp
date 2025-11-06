@@ -4,6 +4,7 @@ import { CountryUtils } from '../../utils/country-util';
 import { of } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-country-modal',
@@ -26,6 +27,8 @@ export class CountryModalComponent implements OnInit {
   errorMessage: string | null = null;
   public showOCCErrorModalCountry = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public nameAlreadyExist = false;
+  public abbreviationAlreadyExist = false;
 
   constructor(private readonly commonMessageService: CommonMessagesService) {}
 
@@ -49,11 +52,33 @@ export class CountryModalComponent implements OnInit {
     this.prepareForSubmission();
     const { name, label, isDefault } = this.getCountryFormValues();
 
-    this.countryUtils.countryExists(name).subscribe({
-      next: (exists) => this.handleCountryExistence(exists, name, label, isDefault),
-      error: (err) => this.handleError('COUNTRY.ERROR.CHECKING_DUPLICATE', err),
-    })
+    this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
+      next: () => {
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.countryCreated.emit();
+        this.handleClose();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        if (error.message?.includes('name already exists')) {
+          this.nameAlreadyExist = true;
+          this.createCountryForm.get('name')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.nameAlreadyExist = false);
+          this.commonMessageService.showErrorCreatedMessage();
+        } else if (error.message?.includes('abbreviation already exists')) {
+          this.abbreviationAlreadyExist = true;
+          this.createCountryForm.get('abbreviation')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.abbreviationAlreadyExist = false);
+          this.commonMessageService.showErrorCreatedMessage();
+        } else {
+          this.commonMessageService.showErrorCreatedMessage();
+          this.handleClose();
+        }
+      }
+    });
   }
+
   onDeleteConfirm(): void {
     this.isLoading = true;
     if (this.countryToDelete) {
@@ -80,12 +105,14 @@ export class CountryModalComponent implements OnInit {
       });
     }
   }
+
   private handleEntityRelatedError(error: any): void {
     if(error.error?.message?.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
       this.closeModal();
     }
   }
+
   private handleOccDeleteError(error: any): void {
     if (error instanceof OccError || error?.message.includes('404')) {
       this.commonMessageService.showErrorDeleteMessage();
@@ -93,38 +120,9 @@ export class CountryModalComponent implements OnInit {
       this.occErrorType = 'DELETE_UNEXISTED';
     }
   }
-  private handleCountryExistence(
-    exists: boolean,
-    name: string,
-    label: string,
-    isDefault: boolean
-  ) {
-    if (exists) {
-      this.errorMessage = 'COUNTRY.ERROR.ALREADY_EXISTS';
-      this.countryCreated.emit();
-      this.handleClose();
-      this.isLoading = false;
-      return;
-    }
-    this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
-      next: () => {
-        this.commonMessageService.showCreatedSuccesfullMessage();
-      },
-      error: () => {
-        this.commonMessageService.showErrorCreatedMessage();
-        this.isLoading = false;
-        this.handleClose();
-      },
-      complete: () => {
-        this.countryCreated.emit();
-        this.handleClose();
-        this.isLoading = false;
-      }
-    })
-    
-  }
+
   private shouldPreventSubmission(): boolean {
-    return this.createCountryForm.invalid || this.isLoading || this.isSaveDisabled;
+    return this.createCountryForm.invalid || this.isLoading || this.isSaveDisabled || this.nameAlreadyExist || this.abbreviationAlreadyExist;
   }
 
   private prepareForSubmission(): void {
@@ -132,18 +130,16 @@ export class CountryModalComponent implements OnInit {
     this.errorMessage = null;
   }
 
-  private handleError(messageKey: string, error: any) {
-    this.errorMessage = messageKey;
-    console.error('Error:', error);
-    return of(null);
-  }
-
   private resetForm(): void {
     this.createCountryForm.reset();
+    this.nameAlreadyExist = false;
+    this.abbreviationAlreadyExist = false;
   }
 
   handleClose(): void {
     this.isLoading = false;
+    this.nameAlreadyExist = false;
+    this.abbreviationAlreadyExist = false;
     this.isVisibleModal.emit(false);
     this.resetForm();
   }
@@ -151,6 +147,8 @@ export class CountryModalComponent implements OnInit {
   closeModal(): void {
     this.isVisibleModal.emit(false);
     this.createCountryForm.reset();
+    this.nameAlreadyExist = false;
+    this.abbreviationAlreadyExist = false;
   }
 
   onCancel(): void {
@@ -173,10 +171,10 @@ export class CountryModalComponent implements OnInit {
     }
   }
   get isSaveDisabled(): boolean {
-  const nameValue = this.createCountryForm.get('name')?.value?.trim();
-  const abbreviationValue = this.createCountryForm.get('abbreviation')?.value?.trim();
-  const hasAtLeastOneField = !!nameValue || !!abbreviationValue;
-  
-  return this.createCountryForm.invalid || this.isLoading || !hasAtLeastOneField;
-}
+    const nameValue = this.createCountryForm.get('name')?.value?.trim();
+    const abbreviationValue = this.createCountryForm.get('abbreviation')?.value?.trim();
+    const hasAtLeastOneField = !!nameValue || !!abbreviationValue;
+    
+    return this.createCountryForm.invalid || this.isLoading || !hasAtLeastOneField;
+  }
 }

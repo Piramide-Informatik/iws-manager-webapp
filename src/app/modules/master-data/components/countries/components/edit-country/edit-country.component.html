@@ -9,12 +9,18 @@
             type="text"
             id="name"
             formControlName="name"
-            [ngClass]="{'ng-invalid ng-dirty': countryForm.get('name')?.invalid && countryForm.get('name')?.touched}"
+            [ngClass]="{'ng-invalid ng-dirty': countryForm.get('name')?.invalid && countryForm.get('name')?.touched ||
+            nameAlreadyExist}"
             autocomplete="off"
+            invalid="countryForm.get('name')?.invalid  
+            && countryForm.get('name')?.dirty 
+            || countryForm.get('name')?.touched
+            || nameAlreadyExist"
           />
           <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
-            *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required')">
-            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required') ||
+            nameAlreadyExist">
+            {{ nameAlreadyExist ? ('COUNTRIES.ERROR.NAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
           </p-message>
         </div>
       </div>
@@ -27,12 +33,18 @@
             type="text"
             id="abbreviation"
             formControlName="abbreviation"
-            [ngClass]="{'ng-invalid ng-dirty': countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched}"
+            [ngClass]="{'ng-invalid ng-dirty': countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched ||
+            abbreviationAlreadyExist}"
             autocomplete="off"
+            invalid="countryForm.get('abbreviation')?.invalid  
+            && countryForm.get('abbreviation')?.dirty 
+            || countryForm.get('abbreviation')?.touched
+            || abbreviationAlreadyExist"
           />
           <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
-            *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required')">
-            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required') ||
+            abbreviationAlreadyExist">
+            {{ abbreviationAlreadyExist ? ('COUNTRIES.ERROR.ABBREVIATION_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
           </p-message>
         </div>
       </div>
@@ -53,7 +65,7 @@
         [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check"
         iconPos="left"
-        [disabled]="countryForm.invalid || !countryForm.dirty || isSaving"
+        [disabled]="countryForm.invalid || !countryForm.dirty || isSaving || nameAlreadyExist || abbreviationAlreadyExist"
         [loading]="isSaving"
       ></p-button>
       <p-button
