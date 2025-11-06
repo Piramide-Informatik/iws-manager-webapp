@@ -683,7 +683,7 @@
       "STATE_EMPTY": "Estado Federal debe de tener al menos un caracter.",
       "UPDATE_FAILED": "Hubo un error durante la actualización del Estado Federal.",
       "CHECKING_DUPLICATE": "Verificar duplicado",
-      "STATE_ALREADY_EXIST": "ya existe el Estado Federal",
+      "STATE_ALREADY_EXIST": "Ya existe el Estado Federal",
       "CREATION_FAILED": "Hubo un error durante la creacion del Estado Federal."
     },
     "MESSAGE": {
@@ -1377,6 +1377,7 @@
     "chance": "Oportunidad",
     "system": "Sistema",
     "text": "Texto",
-    "companytype": "Tipo de Empresa"
+    "companytype": "Tipo de Empresa",
+    "stateholiday": "Feriado"
   }
 }
