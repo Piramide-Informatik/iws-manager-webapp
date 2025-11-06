@@ -20,7 +20,7 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
   @Output() contractStatusToEdit = new EventEmitter<ContractStatus | null>();
   @Output() cancelEditContractStatus = new EventEmitter<any>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
-
+  statusAlreadyExist = false;
   // Variables OCC
   public showOCCErrorModalContractStatus = false;
   public occErrorContractStatusType: OccErrorType = 'UPDATE_UPDATED';
@@ -46,16 +46,24 @@ export class ContractStatusFormComponent implements OnInit, OnChanges {
       status: new FormControl('', [Validators.required])
     });
     this.loadContractStatusAfterRefresh();
+    this.contractStatusForm.get('status')?.valueChanges.subscribe(() => {
+      this.statusAlreadyExist = false;
+    });
   }
 
   onSubmit(): void {
     if (this.contractStatusForm.valid && this.contractStatusForm.dirty && this.contractStatus) {
       const statusName = this.contractStatusForm.value.status?.trim();
+    
+      if (!statusName) return;
       const isDuplicate = this.existingContractStatus.some(
-        status => status.status === statusName
+        status =>
+        status.status?.toLowerCase() === statusName.toLowerCase() &&
+        status.id !== this.contractStatus?.id
       );
 
       if (isDuplicate) {
+        this.statusAlreadyExist = true;
         this.commonMessageService.showErrorRecordAlreadyExist();
         return;
       }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApprovalStatus } from '../../../../../../../Entities/approvalStatus';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ApprovalStatusUtils } from '../../../utils/approval-status-utils';
 import { ApprovalStatusStateService } from '../../../utils/approval-status-state.service';
 import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
@@ -20,6 +20,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   public showOCCErrorModalApprovalStatus = false;
   public isLoading: boolean = false;
   public occErrorApprovalStatus: OccErrorType = 'UPDATE_UPDATED';
+  public statusAlreadyExist = false;
   
   editApprovalStatusForm!: FormGroup;
   private readonly subscriptions = new Subscription();
@@ -47,7 +48,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.editApprovalStatusForm.invalid || !this.currentApprovalStatus) return;
+    if (this.editApprovalStatusForm.invalid || !this.currentApprovalStatus || this.statusAlreadyExist) return;
     
     this.isLoading = true;
     const updatedApprovalStatus: ApprovalStatus = {
@@ -69,6 +70,11 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
         if (error instanceof OccError) { 
           this.showOCCErrorModalApprovalStatus = true;
           this.occErrorApprovalStatus = error.errorType;
+          this.commonMessageService.showErrorEditMessage();
+        } else if (error.message.includes('status already exists')) {
+          this.statusAlreadyExist = true;
+          this.editApprovalStatusForm.get('status')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.statusAlreadyExist = false);
           this.commonMessageService.showErrorEditMessage();
         } else {
           this.commonMessageService.showErrorEditMessage();
@@ -107,6 +113,7 @@ export class EditApprovalStatusComponent implements OnInit, OnDestroy {
     this.editApprovalStatusForm.reset();
     this.approvalStatusStateService.clearApprovalStatus();
     this.currentApprovalStatus = null;
+    this.statusAlreadyExist = false;
   }
 
   private loadApprovalStatusAfterRefresh(): void {

@@ -636,6 +636,10 @@
     "MODAL": {
       "NEW": "New Absence Type",
       "DELETE": "Delete Absence Type"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Absence type already exists",
+      "LABEL_ALREADY_EXIST": "Abbreviation already exists"
     }
   },
   "SALUTATION": {
@@ -708,8 +712,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Approval Status Required",
       "ORDER_REQUIRED": "Order Required",
-      "CHECKING_DUPLICATE": "Checking for Duplicate",
-      "CREATION_FAILED": "There was an error creating the Approval Status."
+      "STATUS_ALREADY_EXIST": "Approval status already exists"
     },
     "LABEL": {
       "NAME": "Approval Status",
@@ -1106,6 +1109,9 @@
     "MODAL": {
       "NEW": "New Project Sponsor",
       "DELETE": "Delete Project Sponsor"
+    },
+    "ERROR": {
+      "ABBREVIATION_ALREADY_EXIST": "Abbreviation already exists"
     }
   },
   "PROJECT_STATUS": {
@@ -1122,10 +1128,7 @@
       "PROJECT_STATUS_LABEL": "Project Status"
     },
     "ERROR": {
-      "PROJECT_STATUS_LABEL_REQUIRED": "The project status is required",
-      "CREATION_FAILED": "There was an error creating the project status.",
-      "EMPTY": "The project status name must be at least one character",
-      "ALREADY_EXISTS": "The record already exists"
+      "NAME_ALREADY_EXIST": "Project status already exists"
     },
     "DELETE": {
       "CONFIRMATION": "Delete Project Status Project"
@@ -1308,7 +1311,8 @@
       "CONTRACT_STATUS": "Contract Status"
     },
     "ERROR": {
-      "CONTRACT_STATUS_REQUIRED": "Contract Status is required"
+      "CONTRACT_STATUS_REQUIRED": "Contract Status is required",
+      "ALREADY_EXIST" :"Contract Status already exists"
     },
     "MODAL": {
       "TITLE_CREATE": "New Contract Status",

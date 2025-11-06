@@ -36,6 +36,11 @@ export class AbsenceTypeUtils {
    * Creates a new absence type with validation
    */
   addAbsenceType(absenceType: Omit<AbsenceType, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<AbsenceType> {
+    const name = absenceType.name?.trim() || '';
+    if (!name) {
+      return throwError(() => new Error('Absence Type is required'));
+    }
+
     return this.absenceTypeService.addAbsenceType(absenceType);
   }
 
