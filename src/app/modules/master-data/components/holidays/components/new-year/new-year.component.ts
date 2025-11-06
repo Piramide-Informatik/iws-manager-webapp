@@ -6,6 +6,7 @@ import { HolidayYear } from '../../../../../../Entities/holidayYear';
 import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { DatePicker } from 'primeng/datepicker';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-new-year',
@@ -28,6 +29,8 @@ export class NewYearComponent implements OnChanges {
   public isLoading = false;
   public isLoadingAndNew = false;
   public isLoadingDelete = false;
+
+  public yearAlreadyExists = false;
 
   public yearForm: FormGroup = new FormGroup({
     year: new FormControl('', [Validators.required]),
@@ -61,9 +64,9 @@ export class NewYearComponent implements OnChanges {
     if(typeSumbit === 'save'){this.isLoading = true }else{ this.isLoadingAndNew = true }
 
     const newHolidayYear: Omit<HolidayYear, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      year: this.yearForm.get('year')?.value,
+      year: momentFormatDate(this.yearForm.get('year')?.value) ?? '',
       date: momentFormatDate(this.yearForm.get('date')?.value) ?? '',
-      publicHoliday: this.currentPublicHolday,
+      publicHoliday: this.currentPublicHolday!,
       weekday: 1
     }
 
@@ -73,9 +76,14 @@ export class NewYearComponent implements OnChanges {
         this.commonMessageService.showCreatedSuccesfullMessage();
         typeSumbit === 'save' ? this.onCancel() : this.yearForm.reset();
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = this.isLoadingAndNew = false;
         this.commonMessageService.showErrorCreatedMessage();
+        if(error.message === 'year already exists'){
+          this.yearAlreadyExists = true;
+          this.yearForm.get('year')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.yearAlreadyExists = false);
+        }
       }
     })
   }
@@ -86,18 +94,24 @@ export class NewYearComponent implements OnChanges {
     this.isLoading = true;
     const updatedHolidayYear = {
       ...this.currentHolidayYear,
-      year: this.yearForm.get('year')?.value,
-      date: this.yearForm.get('date')?.value
+      year: momentFormatDate(this.yearForm.get('year')?.value) ?? '',
+      date: momentFormatDate(this.yearForm.get('date')?.value) ?? ''
     }
 
     this.holidayYearUtils.updateHolidayYear(updatedHolidayYear).subscribe({
       next: () => {
         this.isLoading = false;
         this.commonMessageService.showEditSucessfullMessage();
+        this.onCancel();
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
         this.commonMessageService.showErrorEditMessage();
+        if(error.message === 'year already exists'){
+          this.yearAlreadyExists = true;
+          this.yearForm.get('year')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.yearAlreadyExists = false);
+        }
       }
     });
   }

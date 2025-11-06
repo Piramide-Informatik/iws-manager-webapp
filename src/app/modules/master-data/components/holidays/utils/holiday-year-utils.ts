@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 import { HolidayYearService } from '../../../../../Services/holiday-year.service';
 import { HolidayYear } from '../../../../../Entities/holidayYear';
@@ -41,7 +41,38 @@ export class HolidayYearUtils {
    * @returns Observable that completes when holiday year is created
    */
   createHolidayYear(holidayYear: Omit<HolidayYear, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<HolidayYear> {
-    return this.holidayYearService.createHolidayYear(holidayYear);
+    return this.yearExists(holidayYear.year, holidayYear.publicHoliday).pipe(
+      switchMap((exists) => {
+        if(exists){
+          return throwError(() => new Error('year already exists'));
+        }
+
+        return this.holidayYearService.createHolidayYear(holidayYear);
+      }),
+      catchError((err) => {
+        if (err.message === 'year already exists') {
+          return throwError(() => err);
+        }
+
+        return throwError(() => new Error('Failed create year'));
+      })
+    );
+  }
+
+  /**
+  * Checks if a holiday year exists by holidayYear.year
+  * @param holidayYear.year - HolidayYear year to check
+  * @returns Observable emitting boolean indicating existence
+  */
+  private yearExists(year: string, publicHoliday: PublicHoliday): Observable<boolean> {
+    return this.holidayYearService.getAllHolidayYearsByPublicHolidayId(publicHoliday.id).pipe(
+      map(holidayYears => holidayYears.some(
+        h => h.id !== null && h.year?.slice(0,4) === year.slice(0,4)
+      )),
+      catchError(() => {
+        return throwError(() => new Error('Failed to check holiday year existence'));
+      })
+    );
   }
 
   /**
@@ -101,7 +132,15 @@ export class HolidayYearUtils {
         if (currentHolidayYear.version !== holidayYear.version) {
           return throwError(() => createUpdateConflictError('Holiday Year'));
         }
-        return this.holidayYearService.updateHolidayYear(holidayYear);
+
+        return this.yearExists(holidayYear.year, holidayYear.publicHoliday).pipe(
+          switchMap((exists) => {
+            if (exists && currentHolidayYear.year.toString() !== holidayYear.year.toString()) {
+              return throwError(() => new Error('year already exists'));
+            }
+            return this.holidayYearService.updateHolidayYear(holidayYear);
+          })
+        );
       }),
       catchError((err) => {
         console.error('Error updating holiday year:', err);

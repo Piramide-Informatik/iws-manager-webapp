@@ -73,7 +73,7 @@ export class HolidayYearService {
   }
 
   // GET: /api/v1/holiday-year/public-holiday/{id}
-  getByPublicHoliday(id: number): Observable<HolidayYear[]> {
+  getAllHolidayYearsByPublicHolidayId(id: number): Observable<HolidayYear[]> {
     const url = `${this.apiUrl}/public-holiday/${id}`;
     return this.http.get<HolidayYear[]>(url, this.httpOptions).pipe(
       tap(() => this._error.set(null)),

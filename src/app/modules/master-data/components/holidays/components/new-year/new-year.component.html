@@ -3,12 +3,13 @@
     <div class="year-form">
       <label for="year">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
       <div class="input-message">
-        <p-datepicker #datePicker formControlName="year" inputId="year" view="year" dateFormat="yy" appendTo="body"
-          showIcon showClear />
+        <p-datepicker #datePicker formControlName="year" inputId="year" view="year" 
+          dateFormat="yy" appendTo="body"
+          showIcon showClear 
+          [ngClass]="{'ng-invalid ng-dirty': yearForm.get('year')?.errors?.['required'] && yearForm.get('year')?.dirty || yearAlreadyExists}"/>
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" 
-            *ngIf="yearForm.get('year')?.invalid &&  yearForm.get('year')?.dirty">
-          {{ yearForm.get('year')?.errors?.['yearExists'] ?
-            ('SUB-CONTRACTS.ERROR.YEAR_ALREADY_EXISTS' | translate) :
+            *ngIf="yearForm.get('year')?.invalid &&  yearForm.get('year')?.dirty || yearAlreadyExists">
+          {{ yearAlreadyExists ? ('HOLIDAYS.ERROR.YEAR_ALREADY_EXISTS' | translate) :
             ('ERROR.FIELD_REQUIRED' | translate)
           }}
         </p-message>

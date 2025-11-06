@@ -63,7 +63,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   }
 
   loadYears(publicHolidayId: number): void {
-    this.holidayYearService.getByPublicHoliday(publicHolidayId).subscribe({
+    this.holidayYearService.getAllHolidayYearsByPublicHolidayId(publicHolidayId).subscribe({
       next: (years) => {
         this.years = years;
       },
@@ -277,6 +277,11 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   onEditYear(holidayYear: HolidayYear): void {
     this.modalType = 'edit';
     this.holidayYearToEdit = holidayYear;
+    this.visibleModal = true;
+  }
+
+  onNewYear(): void {
+    this.modalType = 'create';
     this.visibleModal = true;
   }
 

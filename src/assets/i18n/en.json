@@ -835,7 +835,8 @@
       "ALREADY_EXIST": "The record already exists",
       "CREATION_FAILED": "There was an error during the creation of the holiday.",
       "UPDATE_FAILED": "There was an error during the holiday update.",
-      "EMPTY": "The name of the holiday must have at least one character"
+      "EMPTY": "The name of the holiday must have at least one character",
+      "YEAR_ALREADY_EXISTS":"Year already exists"
     },
     "MODAL": {
       "NAME": "Holiday",

@@ -839,7 +839,8 @@
       "ALREADY_EXIST": "Der Datensatz existiert bereits",
       "CREATION_FAILED": "Beim Anlegen des Feiertags ist ein Fehler aufgetreten.",
       "UPDATE_FAILED": "Beim Feiertags-Update ist ein Fehler aufgetreten.",
-      "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten"
+      "EMPTY": "Der Name des Feiertags muss mindestens ein Zeichen enthalten",
+      "YEAR_ALREADY_EXISTS":"Jahr existiert bereits"
     },
     "MODAL": {
       "NAME": "Feiertag",
