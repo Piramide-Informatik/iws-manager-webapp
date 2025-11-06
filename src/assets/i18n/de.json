@@ -976,7 +976,7 @@
       "NAME_ALREADY_EXISTS": "Konstante existiert bereits"
     },
     "MODAL": {
-      "NEW": "Neu Systemkonstante",
+      "NEW": "Neue Systemkonstante",
       "DELETE": "Systemkonstante löschen"
     }
   },
