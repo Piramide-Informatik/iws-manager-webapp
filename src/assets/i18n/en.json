@@ -665,7 +665,8 @@
       "UPDATE_FAILED": "Update failed"
     },
     "ERROR": {
-      "SALUTATION_REQUIRED": "Salutation required"
+      "SALUTATION_REQUIRED": "Salutation required",
+      "ALREADY_EXIST":"Salutation already exists"
     }
   },
   "STATES": {
@@ -1382,6 +1383,7 @@
     "chance": "Chance",
     "system": "System",
     "text": "Text",
-    "companytype": "Company Type"
+    "companytype": "Company Type",
+    "stateholiday": "Holiday"
   }
 }
