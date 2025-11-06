@@ -9,7 +9,9 @@
             autocomplete="off" invalid="
                 chanceForm.get('probability')?.invalid  
                 && chanceForm.get('probability')?.dirty 
-                || chanceForm.get('probability')?.touched"/>
+                || chanceForm.get('probability')?.touched
+                || probabilityAlreadyExist"/>
+            
             <p-message 
               severity="error" 
               variant="simple" 
@@ -24,8 +26,8 @@
               variant="simple" 
               [showTransitionOptions]="'0ms'" 
               size="small" 
-              *ngIf="isDuplicateProbability">
-              {{ 'ERROR.DUPLICATE_PROBABILITY' | translate }}
+              *ngIf="isDuplicateProbability || probabilityAlreadyExist">
+              {{ 'REALIZATION_PROBABILITIES.ERROR.PROBABILITY_ALREADY_EXIST' | translate }}
             </p-message>
         </div>
       </div>
@@ -34,7 +36,7 @@
     <div class="flex justify-content-center gap-2 mt-4">
         <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
             icon="pi pi-check" iconPos="left" [loading]="isLoading"
-            [disabled]="chanceForm.invalid || isLoading || !chanceForm.dirty" />
+            [disabled]="chanceForm.invalid || isLoading || !chanceForm.dirty || probabilityAlreadyExist" />
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />

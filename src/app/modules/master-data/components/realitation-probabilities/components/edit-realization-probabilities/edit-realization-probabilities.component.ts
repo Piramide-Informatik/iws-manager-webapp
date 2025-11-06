@@ -4,10 +4,9 @@ import { Chance } from '../../../../../../Entities/chance';
 import { ChanceUtils } from '../../utils/chance-utils';
 import { ChanceStateService } from '../../utils/chance-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
-
 
 @Component({
   selector: 'master-data-edit-realization-probabilities',
@@ -26,7 +25,7 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
   @ViewChild('firstInput') firstInput!: InputNumber;
   public editProbablitiesForm!: FormGroup;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
-
+  public probabilityAlreadyExist = false;
 
   ngOnInit(): void {
     this.editProbablitiesForm = new FormGroup({
@@ -46,7 +45,7 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
   }
 
   onSubmit(): void {
-    if(this.editProbablitiesForm.invalid || !this.chanceToEdit) return
+    if(this.editProbablitiesForm.invalid || !this.chanceToEdit || this.probabilityAlreadyExist) return
 
     this.isLoading = true;
     const editedChance: Chance = {
@@ -66,7 +65,12 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
           this.showOCCErrorModalChance = true;
           this.occErrorType = error.errorType;
           this.commonMessageService.showErrorEditMessage();
-        }else{
+        } else if (error.message.includes('probability already exists')) {
+          this.probabilityAlreadyExist = true;
+          this.editProbablitiesForm.get('probability')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.probabilityAlreadyExist = false);
+          this.commonMessageService.showErrorEditMessage();
+        } else {
           this.commonMessageService.showErrorEditMessage();
         }
       }
@@ -100,6 +104,7 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
     this.editProbablitiesForm.reset();
     this.chanceStateService.clearChance();
     this.chanceToEdit = null;
+    this.probabilityAlreadyExist = false;
   }
 
   private loadChanceAfterRefresh(chanceId: string): void {
