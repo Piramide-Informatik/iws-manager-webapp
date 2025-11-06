@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ChanceUtils } from '../../utils/chance-utils';
 import { Chance } from '../../../../../../Entities/chance';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
@@ -14,7 +14,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   templateUrl: './modal-realization-probabilities.component.html',
   styleUrl: './modal-realization-probabilities.component.scss'
 })
-export class ModalRealizationProbabilitiesComponent implements OnChanges {
+export class ModalRealizationProbabilitiesComponent implements OnInit, OnChanges {
   private readonly chanceUtils = inject(ChanceUtils);
   private readonly chanceStateService = inject(ChanceStateService);
   private readonly commonMessageService = inject(CommonMessagesService);
@@ -22,6 +22,7 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
   @Input() selectedChance!: Chance;
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() visible: boolean = false;
+  @Input() language: string = '';
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createChance = new EventEmitter<{created?: Chance, status: 'success' | 'error'}>();
   @Output() deleteChance = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
@@ -31,10 +32,21 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalChance = false;
   public probabilityAlreadyExist = false;
-
+  dynamicSize = {
+    'width': '300px'
+  }
+  private sizes: any = {
+    de: '280px',
+    en: '220px',
+    es: '210px'
+  }
   public readonly chanceForm = new FormGroup({
     probability: new FormControl(null, [Validators.max(100), this.duplicateProbabilityValidator.bind(this)])
   });
+
+  ngOnInit(): void {
+    this.dynamicSize['width'] = this.sizes[this.language];
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible && this.isCreateMode) {
@@ -42,6 +54,10 @@ export class ModalRealizationProbabilitiesComponent implements OnChanges {
       setTimeout(()=> {
         this.focusInputIfNeeded();
       })
+    }
+    let sizeChange = changes['language'];
+    if (sizeChange && !sizeChange.firstChange) {
+      this.dynamicSize['width'] = this.sizes[sizeChange.currentValue];
     }
   } 
 
