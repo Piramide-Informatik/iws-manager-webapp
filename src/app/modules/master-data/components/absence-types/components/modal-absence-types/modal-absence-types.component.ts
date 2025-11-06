@@ -4,7 +4,6 @@ import { AbsenceTypeUtils } from '../../utils/absence-type-utils';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { ToggleSwitchStyle } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-modal-absence-types',

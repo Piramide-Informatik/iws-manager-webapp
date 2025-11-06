@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
+import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
 import { AbsenceTypeService } from '../../../../../Services/absence-type.service';
 import { AbsenceType } from '../../../../../Entities/absenceType';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
