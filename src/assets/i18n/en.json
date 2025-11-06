@@ -1093,7 +1093,8 @@
     },
     "ERROR": {
       "TEXT_LABEL_REQUIRED": "Text label is required",
-      "TEXT_VALUE_REQUIRED": "Text value is required"
+      "TEXT_VALUE_REQUIRED": "Text value is required",
+      "LABEL_ALREADY_EXIST": "Abbreviation already exists"
     },
     "MODAL": {
       "NEW": "New Text",

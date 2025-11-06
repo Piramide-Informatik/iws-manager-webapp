@@ -1097,10 +1097,11 @@
     },
     "ERROR": {
       "TEXT_LABEL_REQUIRED": "Textlabel ist erforderlich",
-      "TEXT_VALUE_REQUIRED": "Text ist erforderlich"
+      "TEXT_VALUE_REQUIRED": "Text ist erforderlich",
+      "LABEL_ALREADY_EXIST":"Textlabel existiert bereits"
     },
     "MODAL": {
-      "NEW": "Neu Text",
+      "NEW": "Neuer Text",
       "DELETE": "Text löschen"
     }
   },

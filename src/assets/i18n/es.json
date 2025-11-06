@@ -1092,7 +1092,8 @@
     },
     "ERROR": {
       "TEXT_LABEL_REQUIRED": "Etiqueta de texto es requerido",
-      "TEXT_VALUE_REQUIRED": "Texto es requerido"
+      "TEXT_VALUE_REQUIRED": "Texto es requerido",
+      "LABEL_ALREADY_EXIST": "La abreviatura ya existe"
     },
     "MODAL": {
       "NEW": "Nuevo Texto",
