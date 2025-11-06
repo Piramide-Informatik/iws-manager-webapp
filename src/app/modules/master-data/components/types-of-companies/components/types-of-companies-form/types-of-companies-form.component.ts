@@ -4,7 +4,7 @@ import { TypeOfCompaniesStateService } from '../../utils/types-of-companies.stat
 import { CompanyType } from '../../../../../../Entities/companyType';
 import { emptyValidator } from '../../utils/empty.validator';
 import { CompanyTypeUtils } from '../../utils/type-of-companies.utils';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
@@ -54,6 +54,11 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+    this.companyTypeEditForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExist) {
+        this.nameAlreadyExist = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -68,17 +73,37 @@ export class TypesOfCompaniesFormComponent implements OnInit, OnDestroy {
   onCompanyTypeEditFormSubmit(): void {
     if (this.companyTypeEditForm.invalid || !this.companyType || this.isSaving) return;
 
+    const name = this.companyTypeEditForm.value.name?.trim() ?? '';
     this.isSaving = true;
-    const companyTypeEditFormValue = this.companyTypeEditForm.value;
-    companyTypeEditFormValue.name = companyTypeEditFormValue.name?.trim();
-    const companyType = Object.assign(this.companyType, companyTypeEditFormValue);
+    this.nameAlreadyExist = false;
 
-    this.subscriptions.add(
-      this.companyTypeServiceUtils.updateCompanyType(companyType).subscribe({
-        next: () => this.handleSaveSuccess(),
-        error: (err) => this.handleSaveError(err)
-      })
-    );
+    this.companyTypeServiceUtils.companyTypeExists(name).pipe(take(1)).subscribe({
+      next: (exists) => {
+        if (exists && name.toLowerCase() !== this.companyType?.name.toLowerCase()) {
+          this.commonMessageService.showErrorRecordAlreadyExist();
+          this.nameAlreadyExist = true;
+          this.isSaving = false;
+          this.companyTypeEditForm.get('name')?.setErrors({ notUnique: true });
+          this.focusInputIfNeeded();
+          return;
+        }
+
+        const updatedCompanyType = { ...this.companyType!, name };
+        this.saveCompanyType(updatedCompanyType);
+      },
+      error: (err) => {
+        this.isSaving = false;
+        this.commonMessageService.showErrorEditMessage();
+        console.error('Error checking uniqueness:', err);
+      }
+    });
+  }
+
+  private saveCompanyType(companyType: CompanyType): void {
+    this.companyTypeServiceUtils.updateCompanyType(companyType).pipe(take(1)).subscribe({
+      next: () => this.handleSaveSuccess(),
+      error: (err) => this.handleSaveError(err)
+    });
   }
 
   private handleSaveSuccess(): void {

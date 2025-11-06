@@ -23,18 +23,35 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
   public isLoading: boolean = false;
   public editProjectCarrierForm!: FormGroup;
   public occErrorAbscenceType: OccErrorType = 'UPDATE_UPDATED';
+  public nameAlreadyExists = false;
+  public labelAlreadyExists = false;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
     this.editProjectCarrierForm = new FormGroup({
-      name: new FormControl(''),
-      label: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
+      label: new FormControl('', [Validators.required]),
       shareOfDay: new FormControl(null, [Validators.min(0), Validators.max(1.0)]),
       isHoliday: new FormControl(false),
       hours: new FormControl(false),
     });
     this.setupAbsenceTypeSubscription();
     this.loadAbsenceTypeAfterRefresh();
+    this.cleanErrorMessages();
+  }
+
+  private cleanErrorMessages(): void{
+    this.editProjectCarrierForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExists) {
+        this.nameAlreadyExists = false;
+      }
+    });
+
+    this.editProjectCarrierForm.get('label')?.valueChanges.subscribe(() => {
+      if (this.labelAlreadyExists) {
+        this.labelAlreadyExists = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -63,8 +80,25 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
         this.clearForm();
         this.commonMessageService.showEditSucessfullMessage();
       },
-      error: (error: Error) => this.handleAbsenceTypeEditError(error),
+      error: (error: Error) => {
+        this.handleAbsenceTypeEditError(error);
+        this.handleUpdateDuplicationError(error);
+        this.commonMessageService.showErrorEditMessage();
+      }
     });
+  }
+
+  private handleUpdateDuplicationError(error: any): void {
+    console.log("error: ", error.error.message)
+    if (error.error.message.includes("duplication with")) {
+      if (error.error.message.includes(this.editProjectCarrierForm.value.name?.trim())) {
+        this.nameAlreadyExists = true;
+      }
+
+      if (error.error.message.includes(this.editProjectCarrierForm.value.label?.trim())) {
+        this.labelAlreadyExists = true;
+      }
+    }
   }
 
   private handleAbsenceTypeEditError(err: any): void {
@@ -72,9 +106,6 @@ export class EditProjectCarrierComponent implements OnInit, OnDestroy{
     if (err instanceof OccError) { 
       this.showOCCErrorModaAbsence = true;
       this.occErrorAbscenceType = err.errorType;
-      this.commonMessageService.showErrorEditMessage();
-    } else {
-      this.commonMessageService.showErrorEditMessage();
     }
   }
 
