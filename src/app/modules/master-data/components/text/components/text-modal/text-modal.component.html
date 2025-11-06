@@ -3,7 +3,20 @@
         <div class="flex flex-column mt-4">
             <div class="text-form mb-2 flex align-items-center">
                 <label for="label">{{ 'TEXT.LABEL.TEXT_LABEL' | translate }}</label>
-                <input #firstInput pInputText type="text" id="label" formControlName="label" autocomplete="off" />
+                <div class="input-message">
+                    <input #firstInput pInputText type="text" id="label" formControlName="label" autocomplete="off" 
+                    invalid="textForm.get('label')?.invalid  
+                            && textForm.get('label')?.dirty 
+                            || textForm.get('label')?.touched
+                            || labelAlreadyExist"/>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                                textForm.get('label')?.invalid && 
+                                textForm.get('label')?.dirty || labelAlreadyExists
+                                ">
+                                    {{ labelAlreadyExists ? ('TEXT.ERROR.LABEL_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' |
+                                    translate) }}
+                    </p-message>
+                </div>
             </div>
             <div class="text-form mb-2 flex">
                 <label for="content">{{ 'TEXT.LABEL.TEXT_VALUE' | translate }}</label>
