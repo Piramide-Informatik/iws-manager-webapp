@@ -6,16 +6,18 @@
         <input #firstInput pInputText type="text" id="projectStatus" formControlName="projectStatus" autocomplete="off"
             invalid="editProjectStatusForm.get('projectStatus')?.invalid  
             && editProjectStatusForm.get('projectStatus')?.dirty 
-            || editProjectStatusForm.get('projectStatus')?.touched"/>
+            || editProjectStatusForm.get('projectStatus')?.touched
+            || nameAlreadyExist"/>
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             editProjectStatusForm.get('projectStatus')?.invalid && 
-            editProjectStatusForm.get('projectStatus')?.dirty
-            ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
+            editProjectStatusForm.get('projectStatus')?.dirty ||
+            nameAlreadyExist
+            ">{{ nameAlreadyExist ? ('PROJECT_STATUS.ERROR.NAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
     </div>
 </div>
         <div class="flex justify-content-center gap-2 mt-4">
             <p-button  type="submit" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left"
-                [disabled]="editProjectStatusForm.invalid || !editProjectStatusForm.dirty || isSaving" [loading]="isSaving"/>
+                [disabled]="editProjectStatusForm.invalid || !editProjectStatusForm.dirty || isSaving || nameAlreadyExist" [loading]="isSaving"/>
             <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times" iconPos="left" (onClick)="clearForm()" [disabled]="isSaving" />
         </div>

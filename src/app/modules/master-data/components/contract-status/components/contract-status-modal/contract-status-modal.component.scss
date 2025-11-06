@@ -1,27 +1,15 @@
 .contract-status-form {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
     
     label {
         width: auto;
+        margin-right: 10px;
     }
 
     input {
-        flex: 1;
         max-width: 300px;
-        margin-left: 1rem;
+        
     }
 
-    .input-wrapper {
-        width: 100%;
-    }
-
-    .error-messages {
-        display: block;
-        color: #e24c4c !important;
-        font-size: 0.60rem;
-        margin-bottom: -0.5rem;
-        margin-left: 1rem;
-    }
 }
