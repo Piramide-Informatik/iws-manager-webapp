@@ -1047,6 +1047,10 @@
     },
     "DELETE": {
       "CONFIRMATION": "Delete Country"
+    },
+    "ERROR": {
+      "NAME_ALREADY_EXIST": "Country name already exists",
+      "ABBREVIATION_ALREADY_EXIST": "Country abbreviation already exists"
     }
   },
   "COSTS": {
