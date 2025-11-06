@@ -664,7 +664,8 @@
       "UPDATE_FAILED": "Actualización fallida"
     },
     "ERROR": {
-      "SALUTATION_REQUIRED": "Saludo requerido"
+      "SALUTATION_REQUIRED": "Saludo requerido",
+      "ALREADY_EXIST":"Saludo ya existe"
     }
   },
   "STATES": {

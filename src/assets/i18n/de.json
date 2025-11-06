@@ -669,7 +669,8 @@
       "UPDATE_FAILED": "Update fehlgeschlagen"
     },
     "ERROR": {
-      "SALUTATION_REQUIRED": "Anrede erforderlich"
+      "SALUTATION_REQUIRED": "Anrede erforderlich",
+      "ALREADY_EXIST":"Anrede existiert bereits"
     }
   },
   "STATES": {

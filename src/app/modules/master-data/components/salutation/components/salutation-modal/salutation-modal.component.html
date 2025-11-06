@@ -12,7 +12,7 @@
                 <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                     createSalutationForm.get('name')?.invalid && 
                     createSalutationForm.get('name')?.dirty || salutationAlreadyExist
-                    ">{{ salutationAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                    ">{{ salutationAlreadyExist ? ('SALUTATION.ERROR.ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
                 </div>
             </div>
 
