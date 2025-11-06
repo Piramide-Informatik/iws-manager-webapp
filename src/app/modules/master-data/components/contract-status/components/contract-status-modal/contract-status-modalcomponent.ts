@@ -22,6 +22,7 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   @Output() contractStatusCreated = new EventEmitter<any>();
   @Output() contractStatusDeleted = new EventEmitter<ContractStatus>();
 
+  statusAlreadyExist = false;
   readonly createContractStatusForm = new FormGroup({
     status: new FormControl('',[Validators.required])
   });
@@ -30,15 +31,22 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.createContractStatusForm.reset();
+
+    this.createContractStatusForm.get('status')?.valueChanges.subscribe(() => {
+      this.statusAlreadyExist = false;
+    });
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isVisible'] && this.isVisible){
+      this.statusAlreadyExist = false;
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
     }
     if(changes['isVisible'] && !this.isVisible){
+      this.statusAlreadyExist = false;
       this.createContractStatusForm.reset();
     }
   }
@@ -54,13 +62,17 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if (this.createContractStatusForm.invalid) return;
+    if (this.createContractStatusForm.invalid || this.statusAlreadyExist) return;
     const statusName = this.createContractStatusForm.value.status?.trim();
+    
+    if (!statusName) return;
+    
     const isDuplicate = this.existingContractStatus.some(
-      status => status.status === statusName
+      status => status.status?.toLowerCase() === statusName.toLowerCase()
     );
 
     if (isDuplicate) {
+      this.statusAlreadyExist = true;
       this.commonMessageService.showErrorRecordAlreadyExist();
       return;
     }
@@ -71,6 +83,7 @@ export class ContractStatusModalComponent implements OnInit, OnChanges {
   }
 
   handleClose(): void {
+    this.statusAlreadyExist = false;
     this.isVisibleModal.emit(false);
     this.createContractStatusForm.reset();
   }

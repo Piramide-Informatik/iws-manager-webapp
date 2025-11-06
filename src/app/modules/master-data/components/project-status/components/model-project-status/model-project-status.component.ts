@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProjectStatusUtils } from '../../utils/project-status-utils';
-import {  finalize } from 'rxjs/operators';
+import {  finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
@@ -30,6 +30,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
   public showOCCErrorModalProjectStatus = false;
   isLoading = false;
   errorMessage: string | null = null;
+  nameAlreadyExist = false;
 
   constructor(private readonly commonMessageService: CommonMessagesService) {}
   
@@ -58,6 +59,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
     const sub = this.projectStatusUtils.loadInitialData().subscribe()
     this.subscriptions.add(sub);
   }
+
   onDeleteConfirm(): void {
     this.isLoading = true;
     if(this.projectStatusToDelete){
@@ -112,7 +114,8 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
     ).subscribe({
       next: () => this.handleSuccess(),
       error: (error) => {
-        this.handleError(error);}
+        this.handleError(error);
+      }
     });
     this.subscriptions.add(sub);
   }
@@ -130,6 +133,14 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
   private handleError(error: any): void {
     this.errorMessage = error?.message ?? 'PROJECT_STATUS.ERROR.CREATION_FAILED';
 
+    if (error.message?.includes('name already exists')) {
+      this.nameAlreadyExist = true;
+      this.createdProjectStatusForm.get('name')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.nameAlreadyExist = false);
+      this.commonMessageService.showErrorCreatedMessage();
+      return;
+    }
+
     const detail = this.getErrorDetail(error.message);
 
     this.toastMessage.emit({
@@ -137,7 +148,6 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
       summary: 'MESSAGE.ERROR',
       detail
     });
-
   }
 
   private getErrorDetail(errorCode: string): string {
@@ -152,7 +162,7 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
   }
 
   private shouldPreventSubmission(): boolean {
-    return this.createdProjectStatusForm.invalid || this.isLoading;
+    return this.createdProjectStatusForm.invalid || this.isLoading || this.nameAlreadyExist;
   }
 
   private prepareForSubmission(): void {
@@ -164,25 +174,28 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
     return this.createdProjectStatusForm.value.name?.trim() ?? '';
   }
 
-
   handleClose(): void {
     this.isLoading = false;
+    this.nameAlreadyExist = false;
     this.isVisibleModel.emit(false);
     this.resetForm();
   }
 
   private resetForm(): void {
     this.createdProjectStatusForm.reset();
+    this.nameAlreadyExist = false;
   }
 
   closeModel(): void {
     this.isVisibleModel.emit(false);
     this.createdProjectStatusForm.reset();
+    this.nameAlreadyExist = false;
   }
 
   onCancel(): void {
     this.handleClose();
   }
+
   public focusInputIfNeeded() {
     if (this.isCreateMode && this.projectStatusInput) {
       setTimeout(() => {
@@ -192,5 +205,4 @@ export class ModelProjectStatusComponent implements OnInit, OnChanges{
       }, 200);
     }
   }
-
 }

@@ -710,8 +710,7 @@
     "ERROR": {
       "APPROVAL_STATUS_REQUIRED": "Estado de Aprobación requerido",
       "ORDER_REQUIRED": "Orden requerido",
-      "CHECKING_DUPLICATE": "Verificando duplicado",
-      "CREATION_FAILED": "Hubo un error durante la creacion del Estado de Aprobación."
+      "STATUS_ALREADY_EXIST": "Estado de Aprobación ya existe"
     },
     "LABEL": {
       "NAME": "Estado de Aprobación",
@@ -1103,6 +1102,9 @@
     "MODAL": {
       "NEW": "Nuevo Patrocinador del Proyecto",
       "DELETE": "Eliminar Patrocinador del Proyecto"
+    },
+    "ERROR": {
+      "ABBREVIATION_ALREADY_EXIST": "Patrocinador del proyecto ya existe"
     }
   },
   "PROJECT_STATUS": {
@@ -1119,10 +1121,7 @@
       "PROJECT_STATUS_LABEL": "Estado del Proyecto"
     },
     "ERROR": {
-      "PROJECT_STATUS_LABEL_REQUIRED": "El estado del proyecto es requerido",
-      "CREATION_FAILED": "Hubo un error durante la creacion del estado del proyecto.",
-      "EMPTY": "El nombre del estado del proyecto tiene que tener al menos un caracter",
-      "ALREADY_EXISTS": "El registro ya existe"
+      "NAME_ALREADY_EXIST": "Estado del proyecto ya existe"
     },
     "DELETE": {
       "CONFIRMATION": "Eliminar Estado del Proyecto"
@@ -1303,7 +1302,8 @@
       "CONTRACT_STATUS": "Estado del Contrato"
     },
     "ERROR": {
-      "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido"
+      "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido",
+      "ALREADY_EXIST" :"Estado del Contrato ya existe"
     },
     "MODAL": {
       "TITLE_CREATE": "Nuevo Estado del Contrato",
