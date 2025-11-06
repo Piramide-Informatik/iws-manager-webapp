@@ -1302,7 +1302,8 @@
       "CONTRACT_STATUS": "Vertragsstatus"
     },
     "ERROR": {
-      "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich"
+      "CONTRACT_STATUS_REQUIRED": "Vertragsstatus ist erforderlich",
+      "ALREADY_EXIST" : "Vertragsstatus existiert bereits"
     },
     "MODAL": {
       "TITLE_CREATE": "Neuer Vertragsstatus",
