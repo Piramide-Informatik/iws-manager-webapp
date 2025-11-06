@@ -12,7 +12,7 @@
                      <p-message severity="error" [showTransitionOptions]="'1ms'" variant="simple" size="small" *ngIf="
                         stateForm.get('name')?.invalid && 
                         stateForm.get('name')?.dirty || nameAlreadyExist
-                        ">{{ nameAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                        ">{{ nameAlreadyExist ? ('STATES.ERROR.STATE_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
                 </div>
             </div>
 
