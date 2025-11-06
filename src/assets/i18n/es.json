@@ -1360,6 +1360,7 @@
     "chance": "Oportunidad",
     "system": "Sistema",
     "text": "Texto",
-    "companytype": "Tipo de Empresa"
+    "companytype": "Tipo de Empresa",
+    "stateholiday": "Feriado"
   }
 }

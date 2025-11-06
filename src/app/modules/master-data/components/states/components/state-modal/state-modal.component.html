@@ -4,20 +4,15 @@
             <div class="create-state-form flex align-items-center mb-4">
                 <label for="name">{{ 'STATES.LABEL.STATE' | translate }}</label>
                 <div class="input-message">
-                    <input #stateInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': stateForm.get('name')?.invalid && 
-                      stateForm.get('name')?.dirty && stateForm.get('name')?.touched}" autocomplete="off" />
-                     <p-message severity="error" variant="simple" size="small" *ngIf="
-                         stateForm.get('name')?.invalid && 
-                         stateForm.get('name')?.dirty && 
-                         stateForm.get('name')!.hasError('required')
-                         ">
-                         {{ 'STATES.ERROR.STATE_REQUIRED' | translate }}</p-message>
-                    <p-message severity="error" variant="simple" size="small" *ngIf="
-                         stateForm.get('name')?.invalid && 
-                         stateForm.get('name')?.dirty && 
-                         stateForm.get('name')!.hasError('emptyValue')
-                         ">
-                         {{ 'STATES.ERROR.STATE_EMPTY' | translate }}</p-message>     
+                    <input #stateInput pInputText type="text" id="name" formControlName="name" autocomplete="off" 
+                        invalid="stateForm.get('name')?.invalid  
+                            && stateForm.get('name')?.dirty 
+                            || stateForm.get('name')?.touched
+                            || nameAlreadyExist"/>
+                     <p-message severity="error" [showTransitionOptions]="'1ms'" variant="simple" size="small" *ngIf="
+                        stateForm.get('name')?.invalid && 
+                        stateForm.get('name')?.dirty || nameAlreadyExist
+                        ">{{ nameAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
                 </div>
             </div>
 
