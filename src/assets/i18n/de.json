@@ -615,7 +615,7 @@
       "MODAL_TITLE_EDIT": "Unterauftrag - Projekt bearbeiten"
     },
     "ERROR": {
-      "PROJECT_ALREADY_EXISTS": "Das Projekt wird bereits beendet.",
+      "PROJECT_ALREADY_EXISTS": "Das Projekt ist bereits ausgewählt",
       "YEAR_ALREADY_EXISTS": "Jahr existiert bereits"
     },
     "WARNING": {
