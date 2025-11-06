@@ -35,7 +35,7 @@ export class ModalRealizationProbabilitiesComponent implements OnInit, OnChanges
   dynamicSize = {
     'width': '300px'
   }
-  private sizes: any = {
+  private readonly sizes: any = {
     de: '280px',
     en: '220px',
     es: '210px'
