@@ -24,8 +24,8 @@ export class EditCountryComponent implements OnInit, OnDestroy {
   public showOCCErrorModalCountry = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public isLoading: boolean = false;
-  public nameAlreadyExist = false;
-  public abbreviationAlreadyExist = false;
+  public editNameAlreadyExist = false;
+  public editAbbreviationAlreadyExist = false;
 
   constructor(
     private readonly countryUtils: CountryUtils,
@@ -80,12 +80,12 @@ export class EditCountryComponent implements OnInit, OnDestroy {
     this.countryForm.reset();
     this.currentCountry = null;
     this.isSaving = false;
-    this.nameAlreadyExist = false;
-    this.abbreviationAlreadyExist = false;
+    this.editNameAlreadyExist = false;
+    this.editAbbreviationAlreadyExist = false;
   }
 
   onSubmit(): void {
-    if (this.countryForm.invalid || !this.currentCountry || this.isSaving || this.nameAlreadyExist || this.abbreviationAlreadyExist) {
+    if (this.countryForm.invalid || !this.currentCountry || this.isSaving || this.editNameAlreadyExist || this.editAbbreviationAlreadyExist) {
       this.markAllAsTouched();
       return;
     }
@@ -113,14 +113,14 @@ export class EditCountryComponent implements OnInit, OnDestroy {
             this.occErrorType = error.errorType;
             this.commonMessageService.showErrorEditMessage();
           } else if (error.message.includes('name already exists')) {
-            this.nameAlreadyExist = true;
+            this.editNameAlreadyExist = true;
             this.countryForm.get('name')?.valueChanges.pipe(take(1))
-              .subscribe(() => this.nameAlreadyExist = false);
+              .subscribe(() => this.editNameAlreadyExist = false);
             this.commonMessageService.showErrorEditMessage();
           } else if (error.message.includes('abbreviation already exists')) {
-            this.abbreviationAlreadyExist = true;
+            this.editAbbreviationAlreadyExist = true;
             this.countryForm.get('abbreviation')?.valueChanges.pipe(take(1))
-              .subscribe(() => this.abbreviationAlreadyExist = false);
+              .subscribe(() => this.editAbbreviationAlreadyExist = false);
             this.commonMessageService.showErrorEditMessage();
           } else {
             this.commonMessageService.showErrorEditMessage();

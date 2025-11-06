@@ -10,17 +10,17 @@
             id="name"
             formControlName="name"
             [ngClass]="{'ng-invalid ng-dirty': countryForm.get('name')?.invalid && countryForm.get('name')?.touched ||
-            nameAlreadyExist}"
+            editNameAlreadyExist}"
             autocomplete="off"
             invalid="countryForm.get('name')?.invalid  
             && countryForm.get('name')?.dirty 
             || countryForm.get('name')?.touched
-            || nameAlreadyExist"
+            || editNameAlreadyExist"
           />
           <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
             *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched && countryForm.get('name')!.hasError('required') ||
-            nameAlreadyExist">
-            {{ nameAlreadyExist ? ('COUNTRIES.ERROR.NAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+            editNameAlreadyExist">
+            {{ editNameAlreadyExist ? ('COUNTRIES.ERROR.NAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
           </p-message>
         </div>
       </div>
@@ -34,17 +34,17 @@
             id="abbreviation"
             formControlName="abbreviation"
             [ngClass]="{'ng-invalid ng-dirty': countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched ||
-            abbreviationAlreadyExist}"
+            editAbbreviationAlreadyExist}"
             autocomplete="off"
             invalid="countryForm.get('abbreviation')?.invalid  
             && countryForm.get('abbreviation')?.dirty 
             || countryForm.get('abbreviation')?.touched
-            || abbreviationAlreadyExist"
+            || editAbbreviationAlreadyExist"
           />
           <p-message severity="error" variant="simple" size="small" [showTransitionOptions]="'0ms'"
             *ngIf="countryForm.get('abbreviation')?.invalid && countryForm.get('abbreviation')?.touched && countryForm.get('abbreviation')!.hasError('required') ||
-            abbreviationAlreadyExist">
-            {{ abbreviationAlreadyExist ? ('COUNTRIES.ERROR.ABBREVIATION_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+            editAbbreviationAlreadyExist">
+            {{ editAbbreviationAlreadyExist ? ('COUNTRIES.ERROR.ABBREVIATION_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
           </p-message>
         </div>
       </div>
@@ -65,7 +65,7 @@
         [label]="'BUTTONS.SAVE' | translate"
         icon="pi pi-check"
         iconPos="left"
-        [disabled]="countryForm.invalid || !countryForm.dirty || isSaving || nameAlreadyExist || abbreviationAlreadyExist"
+        [disabled]="countryForm.invalid || !countryForm.dirty || isSaving || editNameAlreadyExist || editAbbreviationAlreadyExist"
         [loading]="isSaving"
       ></p-button>
       <p-button
