@@ -6,13 +6,13 @@
                 <div class="input-message">
                   <input #firstInput pInputText type="text" id="name" formControlName="name" [ngClass]="{'ng-invalid': createSystemConstantForm.get('name')?.invalid && 
                   createSystemConstantForm.get('name')?.dirty && createSystemConstantForm.get('name')?.touched}" autocomplete="off" />
-                  <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="
-                      createSystemConstantForm.get('name')?.invalid && 
-                      createSystemConstantForm.get('name')?.dirty && 
-                      createSystemConstantForm.get('name')!.hasError('required')
-                      ">
-                      {{ 'SYSTEM_CONSTANT.ERROR.NAME_REQUIRED' | translate }}
-                  </p-message>   
+                  <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                            createSystemConstantForm.get('name')?.invalid && 
+                            createSystemConstantForm.get('name')?.dirty || nameAlreadyExists
+                            ">
+                                {{ nameAlreadyExists ? ('SYSTEM_CONSTANT.ERROR.NAME_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' |
+                                translate) }}
+                </p-message>
                 </div>             
             </div>
             <div class="create-system-constant-form">

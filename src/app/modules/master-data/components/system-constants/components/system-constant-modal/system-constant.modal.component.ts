@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SystemConstantUtils } from '../../utils/system-constant.utils';
 import { System } from '../../../../../../Entities/system';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
@@ -23,13 +23,24 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
   public isLoading = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalSystem = false;
+  public nameAlreadyExists = false;
   constructor(){}
 
   ngOnInit(): void {
     this.createSystemConstantForm  = new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
       valueNum: new FormControl(null),
       valueChar: new FormControl(''),
+    });
+
+    this.cleanFormErrorMessages();
+  }
+
+  private cleanFormErrorMessages(): void {
+    this.createSystemConstantForm.get('name')?.valueChanges.subscribe(() => {
+      if (this.nameAlreadyExists) {
+        this.nameAlreadyExists = false;
+      }
     });
   }
 
@@ -58,11 +69,18 @@ export class SystemConstantModalComponent implements OnInit, OnChanges {
         this.closeModal();
         this.createSystemConstant.emit({created, status: 'success'});
       },
-      error: () => {
+      error: (error) => {
         this.isLoading = false;
+        this.handleCreateDuplicityError(error);
         this.createSystemConstant.emit({ status: 'error' });
       } 
     })
+  }
+
+  private handleCreateDuplicityError(error: any): void {
+    if (error.error.message.includes("duplication with")) {
+      this.nameAlreadyExists = true;
+    }
   }
 
   onDeleteSystemConstantConfirm() {
