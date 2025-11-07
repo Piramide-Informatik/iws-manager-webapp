@@ -90,6 +90,22 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     });
   }
 
+  onCreate(newHolidayYear: HolidayYear): void {
+    this.years = [...this.years, newHolidayYear].sort((a, b) =>
+      a.year.localeCompare(b.year)
+    );
+  }
+
+  onEdit(edited: HolidayYear): void {
+    this.years = this.years.map(y => y.id === edited.id ? edited : y).sort((a, b) =>
+      a.year.localeCompare(b.year)
+    );
+  }
+
+  onDelete(deleted: HolidayYear): void {
+    this.years = this.years.filter(y => y.id !== deleted.id);
+  }
+
   loadStates(publicHolidayId: number): void {
     this.publicHolidayService
       .getStatesByHolidayId(publicHolidayId)

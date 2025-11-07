@@ -14,8 +14,8 @@ export class HolidayYearService {
   private readonly httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      Accept: 'application/json',
-    }),
+      'Accept': 'application/json'
+    })
   };
 
   private readonly _holidayYear = signal<HolidayYear[]>([]);
@@ -103,7 +103,7 @@ export class HolidayYearService {
     );
   }
 
-  // POST: /api/v1/holiday-year/public-holiday/{id}
+  // POST: /api/v1/holiday-year
   createHolidayYear(holidayYear: Omit<HolidayYear, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<HolidayYear> {
     return this.http.post<HolidayYear>(this.apiUrl, holidayYear, this.httpOptions).pipe(
       tap({

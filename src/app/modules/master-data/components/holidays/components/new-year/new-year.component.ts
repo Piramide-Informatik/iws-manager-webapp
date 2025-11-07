@@ -23,7 +23,11 @@ export class NewYearComponent implements OnChanges {
   @Input() modalType: 'create' | 'edit' = 'create';
   @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @ViewChild('datePicker') firstInput!: DatePicker;
+  @Output() created = new EventEmitter<HolidayYear>();
+  @Output() updated = new EventEmitter<HolidayYear>();
+  @Output() deleted = new EventEmitter<HolidayYear>();
+  @ViewChild('yearPicker') firstInput!: DatePicker;
+  private defaultDateCache: Date = new Date();
 
   visibleDeleteModal = false;
   public isLoading = false;
@@ -40,6 +44,12 @@ export class NewYearComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['visible'] && this.visible && this.yearForm) {
       this.firstInputFocus();
+      this.yearForm.get('year')?.valueChanges.subscribe(selectedYear => {
+        if (selectedYear) {
+          const year = selectedYear.getFullYear();
+          this.defaultDateCache = new Date(year, 0, 1); // 1 january of selected year
+        }
+      });
     }
 
     if(changes['visible'] && this.visible && this.currentHolidayYear && this.yearForm){
@@ -48,11 +58,17 @@ export class NewYearComponent implements OnChanges {
         date: momentCreateDate(this.currentHolidayYear.date)
       });
     }
+
+    if(changes['visible'] && !this.visible){
+      this.yearForm.reset();
+    }
+  }
+
+  getDefaultDate(): Date {
+    return this.defaultDateCache;
   }
 
   onSubmit(typeSumbit?: 'save' | 'saveAndNew'): void {
-    if(!this.currentPublicHolday) return;
-
     if(this.modalType === 'create'){
       this.createHolidayYear(typeSumbit);
     }else{
@@ -61,18 +77,26 @@ export class NewYearComponent implements OnChanges {
   }
 
   private createHolidayYear(typeSumbit?: 'save' | 'saveAndNew'): void {
+    if(!this.currentPublicHolday) return;
     if(typeSumbit === 'save'){this.isLoading = true }else{ this.isLoadingAndNew = true }
 
     const newHolidayYear: Omit<HolidayYear, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       year: momentFormatDate(this.yearForm.get('year')?.value) ?? '',
       date: momentFormatDate(this.yearForm.get('date')?.value) ?? '',
-      publicHoliday: this.currentPublicHolday!,
-      weekday: 1
+      publicHoliday: {
+        id: this.currentPublicHolday?.id,
+        version: this.currentPublicHolday?.version,
+        createdAt: '',
+        updatedAt: '',
+        name: ''
+      },
+      weekday: 5
     }
 
     this.holidayYearUtils.createHolidayYear(newHolidayYear).subscribe({
-      next: () => {
+      next: (created) => {
         this.isLoading = this.isLoadingAndNew = false;
+        this.created.emit(created);
         this.commonMessageService.showCreatedSuccesfullMessage();
         typeSumbit === 'save' ? this.onCancel() : this.yearForm.reset();
       },
@@ -99,8 +123,9 @@ export class NewYearComponent implements OnChanges {
     }
 
     this.holidayYearUtils.updateHolidayYear(updatedHolidayYear).subscribe({
-      next: () => {
+      next: (updated) => {
         this.isLoading = false;
+        this.updated.emit(updated);
         this.commonMessageService.showEditSucessfullMessage();
         this.onCancel();
       },
@@ -123,6 +148,7 @@ export class NewYearComponent implements OnChanges {
     this.holidayYearUtils.deleteHolidayYear(this.currentHolidayYear.id).subscribe({
       next: () => {
         this.isLoadingDelete = false;
+        this.deleted.emit(this.currentHolidayYear!)
         this.commonMessageService.showDeleteSucessfullMessage();
         this.visibleDeleteModal = false;
         this.onCancel();
@@ -138,6 +164,7 @@ export class NewYearComponent implements OnChanges {
   onCancel(): void {
     this.yearForm.reset();
     this.isVisibleModal.emit(false);
+    this.currentHolidayYear = null;
   }
 
   get isCreateMode(): boolean {
