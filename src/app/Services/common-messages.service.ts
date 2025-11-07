@@ -134,4 +134,13 @@ export class CommonMessagesService {
       detail: this.translateService.instant('DUNNING_LEVELS.VALIDATION.DUNNING_LVL_EXISTS')
     })
   }
+
+  showInformationMessageUpdatedRecordNumber(numberRegister: number) {
+    this.messageService.add({
+      severity: 'info',
+      summary: this.translateService.instant('MESSAGE.INFO'),
+      detail: this.translateService.instant('MESSAGE.INFO_UPDATED_NUMBER', { value: numberRegister }),
+      sticky: true
+    })
+  }
 }

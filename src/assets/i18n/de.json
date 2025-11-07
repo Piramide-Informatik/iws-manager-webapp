@@ -159,6 +159,8 @@
   "MESSAGE": {
     "SUCCESS": "ERFOLG",
     "ERROR": "FEHLER",
+    "INFO": "INFORMATION",
+    "INFO_UPDATED_NUMBER": "Dieser Datensatz wurde mit der Nummer {{ value }} erstellt.",
     "UPDATE_SUCCESS": "Datensatz erfolgreich bearbeitet.",
     "CREATE_SUCCESS": "Datensatz erfolgreich erstellt.",
     "DELETE_SUCCESS": "Datensatz erfolgreich gelöscht.",
