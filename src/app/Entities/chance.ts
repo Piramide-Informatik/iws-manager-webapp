@@ -4,5 +4,5 @@ export interface Chance {
   updatedAt: string;
   version: number;
 
-  probability?: number; //max 100.00
+  probability: number; //max 100.00
 }

@@ -6,7 +6,8 @@
                 <div class="input-message">
                     <p-inputnumber #firstInput mode="decimal" [min]="0" [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
                     inputId="probability" formControlName="probability" [inputStyle]="{'text-align': 'right'}"
-                    autocomplete="off" invalid="
+                    autocomplete="off" [class.ng-invalid]="probabilityAlreadyExist"
+                        [class.ng-dirty]="probabilityAlreadyExist" invalid="
                         editProbablitiesForm.get('probability')?.invalid  
                         && editProbablitiesForm.get('probability')?.dirty 
                         || editProbablitiesForm.get('probability')?.touched
