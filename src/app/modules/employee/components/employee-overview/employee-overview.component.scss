@@ -30,4 +30,17 @@ p-button{
 }
 .align-right {
     text-align: right;
-  }
+}
+
+::ng-deep .p-datatable table {
+    table-layout: fixed !important; /* sets the cell width */
+    width: 100% !important;
+}
+
+::ng-deep .p-datatable td,
+::ng-deep .p-datatable th {
+    width: calc(100% / 10); /* 10 columns: adjust according to the actual quantity */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
