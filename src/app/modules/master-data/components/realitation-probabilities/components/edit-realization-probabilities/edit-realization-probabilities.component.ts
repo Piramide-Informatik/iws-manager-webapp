@@ -29,7 +29,7 @@ export class EditRealizationProbabilitiesComponent implements OnInit, OnDestroy 
 
   ngOnInit(): void {
     this.editProbablitiesForm = new FormGroup({
-      probability: new FormControl(null, [Validators.max(100.00)])
+      probability: new FormControl(null, [Validators.max(100)])
     });
     this.setupChanceSubscription();
     // Check if we need to load an chance after page refresh for OCC
