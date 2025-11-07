@@ -3,7 +3,7 @@
     <div class="year-form">
       <label for="year">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
       <div class="input-message">
-        <p-datepicker #datePicker formControlName="year" inputId="year" view="year" 
+        <p-datepicker #yearPicker formControlName="year" inputId="year" view="year" 
           dateFormat="yy" appendTo="body"
           showIcon showClear 
           [ngClass]="{'ng-invalid ng-dirty': yearForm.get('year')?.errors?.['required'] && yearForm.get('year')?.dirty || yearAlreadyExists}"/>
@@ -26,6 +26,7 @@
           dateFormat="dd.mm.yy"
           [showClear]="true"
           appendTo="body"
+          [defaultDate]="getDefaultDate()"
         />
       </div>
     </div>

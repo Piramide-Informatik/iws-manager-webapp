@@ -187,6 +187,9 @@
     [visible]="visibleModal"
     [currentPublicHolday]="currentPublicHoliday"
     [currentHolidayYear]="holidayYearToEdit"
+    (created)="onCreate($event)"
+    (updated)="onEdit($event)"
+    (deleted)="onDelete($event)"
     (isVisibleModal)="visibleModal = $event"
   ></app-new-year>
 </p-dialog>
