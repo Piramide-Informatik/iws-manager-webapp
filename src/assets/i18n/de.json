@@ -973,10 +973,11 @@
     "ERROR": {
       "NAME_REQUIRED": "Name ist erforderlich",
       "ONLY_NUMBER_REQUIRED": "Geben Sie nur Zahlen ein",
-      "ONLY_ALPHANUMERIC_REQUIRED": "Geben Sie nur alphanumerische Zeichen ein"
+      "ONLY_ALPHANUMERIC_REQUIRED": "Geben Sie nur alphanumerische Zeichen ein",
+      "NAME_ALREADY_EXISTS": "Konstante existiert bereits"
     },
     "MODAL": {
-      "NEW": "Neu Systemkonstante",
+      "NEW": "Neue Systemkonstante",
       "DELETE": "Systemkonstante löschen"
     }
   },

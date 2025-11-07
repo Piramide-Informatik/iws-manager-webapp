@@ -969,7 +969,8 @@
     "ERROR": {
       "NAME_REQUIRED": "Name is required",
       "ONLY_NUMBER_REQUIRED": "Enter only numbers",
-      "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters."
+      "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters.",
+      "NAME_ALREADY_EXISTS":"Constant already exists"
     },
     "MODAL": {
       "NEW": "New System Constant",
