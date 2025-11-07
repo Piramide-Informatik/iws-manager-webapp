@@ -159,6 +159,8 @@
   "MESSAGE": {
     "SUCCESS": "ÉXITO",
     "ERROR": "ERROR",
+    "INFO": "INFORMACIÓN",
+    "INFO_UPDATED_NUMBER": "Este registro se creó con el número {{ value }}.",
     "UPDATE_SUCCESS": "Registro editado exitosamente.",
     "CREATE_SUCCESS": "Registro creado exitosamente.",
     "DELETE_SUCCESS": "Registro eliminado exitosamente.",
