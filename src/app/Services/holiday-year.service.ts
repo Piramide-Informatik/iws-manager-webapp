@@ -74,7 +74,7 @@ export class HolidayYearService {
 
   // GET: /api/v1/holiday-year/public-holiday/{id}
   getAllHolidayYearsByPublicHolidayId(id: number): Observable<HolidayYear[]> {
-    const url = `${this.apiUrl}/public-holiday/${id}`;
+    const url = `${this.apiUrl}/public-holiday/${id}/ordered-by-year`;
     return this.http.get<HolidayYear[]>(url, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError((error) => {
