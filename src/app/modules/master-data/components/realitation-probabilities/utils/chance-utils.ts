@@ -115,7 +115,6 @@ export class ChanceUtils {
     if (!chance?.id) {
       return throwError(() => new Error('Invalid chance data'));
     }
-    const probability = chance.probability ?? 0;
 
     return this.chanceService.getChanceById(chance.id).pipe(
       take(1),
@@ -127,9 +126,9 @@ export class ChanceUtils {
           return throwError(() => createUpdateConflictError('chance'));
         }
         
-        return this.chanceExists(probability).pipe(
+        return this.chanceExists(chance.probability).pipe(
           switchMap((exists) => {
-            if (exists && currentChance.probability !== probability) {
+            if (exists && currentChance.probability !== chance.probability) {
               return throwError(() => new Error('probability already exists'));
             }
             return this.chanceService.updateChance(chance);
