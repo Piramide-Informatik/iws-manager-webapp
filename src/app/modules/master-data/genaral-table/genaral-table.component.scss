@@ -32,6 +32,11 @@ p-button {
   text-align: right;
 }
 
+.td-fix-max-min-width {
+  max-width: 30rem !important;
+  min-width: 30rem !important;
+}
+
 .nowrap-row {
   cursor: default;
   white-space: nowrap;
@@ -53,7 +58,7 @@ p-button {
   }
 
   .p-inputtext {
-    min-width: 75px;
+    min-width: 70px;
     width: 100% !important;
   }
 
@@ -61,9 +66,16 @@ p-button {
     width: 100% !important;
   }
 
+  //class: fix-width -> th -> classesTHead
   p-table#iwstable table.p-datatable-resizable-table>thead.p-datatable-thead>tr>th.p-datatable-resizable-column.fix-width:not(.p-datatable-frozen-column) {
     width: 100px !important;
     max-width: 130px !important;
+  }
+
+  //class: fix-td-width -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width:not(.p-datatable-frozen-column) {
+    width: 150px !important;
+    max-width: none !important;
   }
 
   @for $i from 1 through 100 {

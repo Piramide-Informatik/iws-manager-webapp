@@ -74,7 +74,7 @@
               (click)="deleteRegister(row[removeKey])" [disabled]="disableButtons"></button>
           </div>
         </td>
-        <td *ngFor="let col of columns; let i = index" [ngClass]="col.customClasses ? col.customClasses : ''">
+        <td *ngFor="let col of columns; let i = index" [ngClass]="col.customClasses ? col.customClasses : ''" [ngStyle]="col.styleTd">
           <!-- Add link by an <a> tag -->
           @if(col.routerLink) {
           <a [routerLink]="col.routerLink(row)" class="clickable-title" (click)="$event.stopPropagation()"
