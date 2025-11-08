@@ -7,6 +7,7 @@ export interface Column {
     data?: any 
   };
   styles?: {},
+  styleTd?: {},
   routerLink?: (row: any) => string;
   type?: 'double' | 'integer' | 'date' | 'dateYear';
   customClasses?: string[];

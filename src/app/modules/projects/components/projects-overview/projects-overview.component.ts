@@ -171,16 +171,16 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   loadProjectColHeaders(): void {
     this.cols = [
-      { field: 'projectLabel', header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL')), classesTHead: ['width-10']},
+      { field: 'projectLabel', header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL')), customClasses: ['fix-td-width'] },
       {
         field: 'projectName',
         routerLink: (row: any) => `./projects-detail/${row.projectName}`,
         header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME')),
-        classesTHead: ['width-40']
+        customClasses: ['td-fix-max-min-width']
       },
       { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM')), classesTHead: ['width-10'] },
       { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER')), classesTHead: ['width-10'] },
-      { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL')), classesTHead: ['width-15'] },
+      { field: 'fundingLabel', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_LABEL')), customClasses: ['fix-td-width'] },
       { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.START_DATE')), classesTHead: ['width-10']  },
       { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.END_DATE')), classesTHead: ['width-10']  },
       { field: 'authDate', type: 'date', header: this.translate.instant(_('PROJECTS.TABLE.AUTH_DATE')), classesTHead: ['width-10']  },

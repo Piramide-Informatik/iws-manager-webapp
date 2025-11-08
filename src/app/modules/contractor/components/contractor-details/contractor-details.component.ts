@@ -72,7 +72,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
     if (this.modalContractType === 'create') {
       this.getCurrentCustomer();
-      console.log(this.contractors);
     }
   }
 
