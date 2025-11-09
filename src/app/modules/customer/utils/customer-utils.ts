@@ -194,4 +194,42 @@ export class CustomerUtils {
             catchError(() => throwError(() => new Error('Failed to load contacts')))
         );
     }
+
+    /**
+   * Creates a new employeeIws with auto-generated employee number
+   * @param employeeIws - Employee data without technical fields and without employeeNo
+   * @returns Observable that completes when employeeIws is created
+   */
+    addCustomerWithAutoNumber(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'customerno'>): Observable<Customer> {
+        const customername1 = customer.customername1?.trim() || '';
+        if (!customername1) {
+        return throwError(() => new Error('customername1 is required'));
+        }
+
+        return this.customerNameExists(customername1).pipe(
+        switchMap((exists) => {
+            if (exists) {
+            return throwError(() => new Error('short name already exists'));
+            }
+            return this.customerService.addCustomerWithAutoNumber(customer);
+        }),
+        catchError((err) => {
+            if (err.message === 'short name already exists') {
+            return throwError(() => err);
+            }
+            return throwError(() => new Error('IWS_STAFF.ERROR.CREATION_FAILED'));
+        })
+        );
+    }
+    private customerNameExists(customerName: string, excludeId?: number): Observable<boolean> {
+        return this.customerService.getAllCustomers().pipe(
+        map(customers => customers.some(
+            cus => cus.id !== excludeId &&
+            cus.customername1?.toLowerCase() === customerName?.toLowerCase()
+        )),
+        catchError(() => {
+            return throwError(() => new Error('Failed to check short name existence'));
+        })
+        );
+    }
 }
