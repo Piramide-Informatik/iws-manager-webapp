@@ -22,17 +22,17 @@ export class ModalProjectFunnelComponent implements OnChanges {
   @Input() modalType: 'create' | 'delete' = 'create';
   @Input() selectedProjectFunnels!: Promoter;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() createPromoter = new EventEmitter<{created?: Promoter, status: 'success' | 'error'}>();
-  @Output() deletePromoter = new EventEmitter<{status: 'success' | 'error', error?: Error}>();
+  @Output() createPromoter = new EventEmitter<{ created?: Promoter, status: 'success' | 'error' }>();
+  @Output() deletePromoter = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalPromoter = false;
   public abbreviationAlreadyExist = false;
-  public countries = toSignal( this.countryUtils.getCountriesSortedByName(), { initialValue: [] } )
+  public countries = toSignal(this.countryUtils.getCountriesSortedByName(), { initialValue: [] })
 
   public readonly projectFunnelForm = new FormGroup({
-    promoterNo: new FormControl<string | null>(null),
+    promoterNo: new FormControl<string | null>({ value: null, disabled: true }),
     projectPromoter: new FormControl('', [Validators.required]),
     promoterName1: new FormControl('', [Validators.required]),
     promoterName2: new FormControl(''),
@@ -41,10 +41,14 @@ export class ModalProjectFunnelComponent implements OnChanges {
     zipCode: new FormControl(''),
     city: new FormControl('')
   });
-  constructor(private readonly commonMessageService: CommonMessagesService) {}
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visible'] && this.visible){
+    if (changes['visible'] && this.visible) {
+      if (this.isCreateMode) {
+        this.loadNextPromoterNo();
+      }
+
       setTimeout(() => {
         this.focusInputIfNeeded();
       })
@@ -52,11 +56,12 @@ export class ModalProjectFunnelComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    if(this.projectFunnelForm.invalid || this.isLoading || this.abbreviationAlreadyExist) return 
+    if (this.projectFunnelForm.invalid || this.isLoading || this.abbreviationAlreadyExist) return
 
     this.isLoading = true;
+    const expectedPromoterNo = this.projectFunnelForm.get('promoterNo')?.value;
     const newPromoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      promoterNo: this.projectFunnelForm.value.promoterNo?.toString() || null,
+      // promoterNo: this.projectFunnelForm.value.promoterNo?.toString() || null,
       projectPromoter: this.projectFunnelForm.value.projectPromoter?.trim(),
       promoterName1: this.projectFunnelForm.value.promoterName1?.trim(),
       promoterName2: this.projectFunnelForm.value.promoterName2?.trim(),
@@ -66,11 +71,12 @@ export class ModalProjectFunnelComponent implements OnChanges {
       city: this.projectFunnelForm.value.city?.trim()
     }
 
-    this.promoterUtils.addPromoter(newPromoter).subscribe({
+    this.promoterUtils.addPromoterWithAutoNumber(newPromoter).subscribe({
       next: (created) => {
         this.isLoading = false;
+        this.handlePromoterNoComparison(expectedPromoterNo!, created.promoterNo!);
         this.closeModal();
-        this.createPromoter.emit({created, status: 'success'});
+        this.createPromoter.emit({ created, status: 'success' });
       },
       error: (error) => {
         this.isLoading = false;
@@ -82,7 +88,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
         } else {
           this.createPromoter.emit({ status: 'error' });
         }
-      } 
+      }
     })
   }
 
@@ -92,28 +98,28 @@ export class ModalProjectFunnelComponent implements OnChanges {
       this.promoterUtils.deletePromoter(this.selectedProjectFunnels.id).subscribe({
         next: () => {
           this.isLoading = false;
-          this.deletePromoter.emit({status: 'success'});
+          this.deletePromoter.emit({ status: 'success' });
           this.closeModal();
         },
         error: (error) => {
           this.isLoading = false;
           this.handleEntityRelatedError(error);
           this.handleOccDeleteError(error);
-        } 
+        }
       })
     }
   }
   private handleEntityRelatedError(error: any): void {
-    if(error.error?.message?.includes('a foreign key constraint fails')) {
+    if (error.error?.message?.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
-    }else{
+    } else {
       this.deletePromoter.emit({ status: 'error', error });
     }
   }
 
   private handleOccDeleteError(error: any): void {
     if (error instanceof OccError || error?.message.includes('404')) {
-      this.showOCCErrorModalPromoter= true;
+      this.showOCCErrorModalPromoter = true;
       this.occErrorType = 'DELETE_UNEXISTED';
       this.deletePromoter.emit({ status: 'error', error });
     }
@@ -131,6 +137,28 @@ export class ModalProjectFunnelComponent implements OnChanges {
     this.isVisibleModal.emit(false);
     this.projectFunnelForm.reset();
     this.abbreviationAlreadyExist = false;
+  }
+
+  private loadNextPromoterNo(): void {
+    this.promoterUtils.getNextPromoterNo().subscribe({
+      next: (nextNo) => {
+        if (nextNo) {
+          this.projectFunnelForm.patchValue({ promoterNo: nextNo });
+        }
+      },
+      error: (err) => console.error('Error loading next promoterNo', err)
+    });
+  }
+
+  private handlePromoterNoComparison(expectedPromoterNo: string | undefined, actualPromoterNo: string | undefined): void {
+    if (expectedPromoterNo === null) {
+      console.log(`Promoter creado con auto-number: ${actualPromoterNo}`);
+      return;
+    }
+
+    if (expectedPromoterNo !== actualPromoterNo) {
+      this.commonMessageService.showInformationMessageUpdatedRecordNumber(actualPromoterNo);
+    }
   }
 
   public focusInputIfNeeded(): void {
