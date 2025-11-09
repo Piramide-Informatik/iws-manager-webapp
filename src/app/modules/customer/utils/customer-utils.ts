@@ -194,4 +194,17 @@ export class CustomerUtils {
             catchError(() => throwError(() => new Error('Failed to load contacts')))
         );
     }
+
+    /**
+   * Creates a new employeeIws with auto-generated employee number
+   * @param employeeIws - Employee data without technical fields and without employeeNo
+   * @returns Observable that completes when employeeIws is created
+   */
+    addCustomerWithAutoNumber(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'customerno'>): Observable<Customer> {
+        const customername1 = customer.customername1?.trim() || '';
+        if (!customername1) {
+        return throwError(() => new Error('customername is required'));
+        }
+        return this.customerService.addCustomerWithAutoNumber(customer);
+    }
 }

@@ -21,7 +21,7 @@ export class CountryService {
   public error = this._error.asReadonly();
 
   private readonly httpOptions = {
-  //  withCredentials: true,
+    //  withCredentials: true,
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -33,8 +33,8 @@ export class CountryService {
   }
 
   private sortAlphabetically(list: Country[]): Country[] {
-      return [...list].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
-    }
+    return [...list].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+  }
 
   public loadInitialData(): Observable<Country[]> {
     this._loading.set(true);
@@ -70,6 +70,30 @@ export class CountryService {
     )
   }
 
+  /**
+ * Creates a new country with automatic default handling
+ * If the new country is set as default, other countries will be updated to non-default
+ * @param country Country data (without id and timestamps)
+ * @returns Observable with the created Country object
+ * @throws Error when validation fails or server error occurs
+ */
+  addCountryWithDefaultHandling(country: Omit<Country, 'id' | 'createdAt' | 'updatedAt'>): Observable<Country> {
+    const createUrl = `${this.apiUrl}/with-default-handling`;
+
+    return this.http.post<Country>(createUrl, country, this.httpOptions).pipe(
+      tap({
+        next: (newCountry) => {
+          this._countries.update(countries => this.sortAlphabetically([...countries, newCountry]));
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add country with default handling');
+          console.error('Error adding country with default handling:', err);
+        }
+      })
+    );
+  }
+
   // ==================== READ OPERATIONS ====================
   /**
    * Retrieves all countries
@@ -102,7 +126,7 @@ export class CountryService {
         return of(undefined as unknown as Country);
       })
     );
-  }  
+  }
 
   // ==================== UPDATE OPERATIONS ====================
   /**
@@ -152,7 +176,7 @@ export class CountryService {
         }
       })
     );
-  }  
+  }
 
   // ==================== ERROR HANDLING ====================
   /**

@@ -62,7 +62,7 @@
           iconPos="left"
           (onClick)="onSubmit()"
           [loading]="isLoading"
-          [disabled]="yearForm.invalid || isLoadingDelete || !yearForm.dirty"
+          [disabled]="yearForm.invalid || !yearForm.dirty"
         />
 
         <p-button
@@ -70,8 +70,8 @@
           [label]="'BUTTONS.DELETE' | translate"
           icon="pi pi-trash"
           iconPos="left"
-          (onClick)="visibleDeleteModal = true"
-          [disabled]="isLoading || isLoadingDelete"
+          (onClick)="openModalDelete()"
+          [disabled]="isLoading"
         />
       }
 
@@ -83,23 +83,8 @@
         icon="pi pi-times"
         iconPos="left"
         (onClick)="onCancel()"
-        [disabled]="isLoading || isLoadingAndNew || isLoadingDelete"
+        [disabled]="isLoading || isLoadingAndNew"
       />
     </div>
   </div>
 </form>
-
-<p-dialog [header]="('HOLIDAYS.MODAL.DELETE_HOLIDAY_YEAR') | translate" [modal]="true"
-  [(visible)]="visibleDeleteModal" [style]="{ width: 'auto' }">
-  <div class="confirmation-content mb-2 mt-4">
-    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentHolidayYear?.year | date:'yyyy' }"></p>
-
-    <div class="flex justify-content-center gap-2">
-      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [loading]="isLoadingDelete" (onClick)="removeHolidayYear()" />
-
-      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="visibleDeleteModal = false;" [disabled]="isLoadingDelete" />
-    </div>
-  </div>
-</p-dialog>
