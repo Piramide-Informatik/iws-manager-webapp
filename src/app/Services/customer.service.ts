@@ -216,4 +216,22 @@ export class CustomerService {
         this._contactsError.set('Failed to fetch contacts');
         console.error('Error fetching contacts:', error);
     }
+
+    // POST -> /api/v1/customers/with-auto-customer-no
+    addCustomerWithAutoNumber(customer: Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'customerno'>): Observable<Customer> {
+    const createUrl = `${this.apiUrl}/with-auto-customer-no`;
+    return this.http.post<Customer>(createUrl, customer, this.httpOptions).pipe(
+        tap({
+        next: (newCustomer) => {
+            this._customers.update(customers => [newCustomer, ...customers]);
+            this._error.set(null);
+        },
+        error: (err) => {
+            this._error.set('Failed to create customer with auto number');
+            console.error('Error creating customer with auto number:', err);
+        },
+        finalize: () => this._loading.set(false)
+        })
+    );
+    }
 }
