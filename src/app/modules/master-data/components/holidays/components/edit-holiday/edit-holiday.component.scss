@@ -52,3 +52,8 @@
   color: #1976d2 !important;
   cursor: pointer;
 }
+
+.unispace-font-style {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}

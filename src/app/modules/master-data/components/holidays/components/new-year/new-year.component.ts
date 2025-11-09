@@ -25,14 +25,12 @@ export class NewYearComponent implements OnChanges {
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() created = new EventEmitter<HolidayYear>();
   @Output() updated = new EventEmitter<HolidayYear>();
-  @Output() deleted = new EventEmitter<HolidayYear>();
+  @Output() showModalDelete = new EventEmitter<boolean>();
   @ViewChild('yearPicker') firstInput!: DatePicker;
   private defaultDateCache: Date = new Date();
 
-  visibleDeleteModal = false;
   public isLoading = false;
   public isLoadingAndNew = false;
-  public isLoadingDelete = false;
 
   public yearAlreadyExists = false;
 
@@ -141,24 +139,8 @@ export class NewYearComponent implements OnChanges {
     });
   }
 
-  public removeHolidayYear(): void {
-    if(!this.currentHolidayYear) return;
-
-    this.isLoadingDelete = true;
-    this.holidayYearUtils.deleteHolidayYear(this.currentHolidayYear.id).subscribe({
-      next: () => {
-        this.isLoadingDelete = false;
-        this.deleted.emit(this.currentHolidayYear!)
-        this.commonMessageService.showDeleteSucessfullMessage();
-        this.visibleDeleteModal = false;
-        this.onCancel();
-      },
-      error: (error) => {
-        this.isLoadingDelete = false;
-        console.log(error);
-        this.commonMessageService.showErrorDeleteMessage();
-      }
-    });
+  public openModalDelete(): void {
+    this.showModalDelete.emit(true);
   }
 
   onCancel(): void {
