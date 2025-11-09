@@ -61,12 +61,34 @@ export class PromoterUtils {
     );
   }
 
+  addPromoterWithAutoNumber(promoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'promoterNo'>): Observable<Promoter> {
+    const projectPromoter = promoter.projectPromoter?.trim();
+    if (!projectPromoter) {
+      return throwError(() => new Error('Abbreviation is required'));
+    }
+
+    return this.promoterExists(projectPromoter).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('abbreviation already exists'));
+        }
+        return this.promoterService.addPromoterWithAutoNumber(promoter);
+      }),
+      catchError((err) => {
+        if (err.message === 'abbreviation already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('PROMOTER.ERROR.CREATION_FAILED'));
+      })
+    );
+  }
+
   /**
    * Check if promoter abbreviation already exists
    */
   promoterExists(abbreviation: string): Observable<boolean> {
     const cleanAbbreviation = abbreviation?.toString().toLowerCase() || '';
-    
+
     return this.promoterService.getAllPromoters().pipe(
       map(promoters => promoters.some(
         p => p.projectPromoter?.toString().toLowerCase() === cleanAbbreviation
@@ -130,7 +152,7 @@ export class PromoterUtils {
         if (currentPromoter.version !== promoter.version) {
           return throwError(() => createUpdateConflictError('ProjectStatus'));
         }
-        
+
         return this.promoterExists(projectPromoter).pipe(
           switchMap((exists) => {
             const currentAbbreviation = currentPromoter.projectPromoter?.toLowerCase() || '';
@@ -144,6 +166,19 @@ export class PromoterUtils {
       catchError((err) => {
         console.error('Error updating promoter:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  /**
+   * Gets the next available promoter number
+   * @returns Observable with the next promoter number as string
+   */
+  getNextPromoterNo(): Observable<string> {
+    return this.promoterService.getNextPromoterNo().pipe(
+      catchError(err => {
+        console.error('Error fetching next promoter number:', err);
+        return throwError(() => new Error('Failed to load next promoter number'));
       })
     );
   }
