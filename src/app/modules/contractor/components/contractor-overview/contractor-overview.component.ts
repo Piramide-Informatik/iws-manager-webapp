@@ -109,13 +109,13 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'label', classesTHead: ['fix-width'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL')) },
-      { field: 'name', classesTHead: ['contractor-name'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
+      { field: 'label', customClasses:['fix-td-width-contractor-label'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_LABEL')) },
+      { field: 'name', customClasses:['fix-td-width-contractor-name'], header: this.translate.instant(_('CONTRACTS.TABLE.CONTRACTOR_NAME')) },
       { field: 'country.label', header: this.translate.instant(_('CONTRACTS.TABLE.COUNTRY_LABEL')) },
-      { field: 'street', header: this.translate.instant(_('CONTRACTS.TABLE.STREET')) },
+      { field: 'street', customClasses:['fix-td-width-contractor-street'], header: this.translate.instant(_('CONTRACTS.TABLE.STREET')) },
       { field: 'zipCode', header: this.translate.instant(_('CONTRACTS.TABLE.ZIP_CODE')) },
       { field: 'city', header: this.translate.instant(_('CONTRACTS.TABLE.CITY')) },
-      { field: 'taxNumber', header: this.translate.instant(_('CONTRACTS.TABLE.TAX_NUMBER')) }
+      { field: 'taxNumber', customClasses:['fix-td-width-contractor-taxNo'], header: this.translate.instant(_('CONTRACTS.TABLE.TAX_NUMBER')) }
     ];
   }
 

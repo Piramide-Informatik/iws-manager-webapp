@@ -67,6 +67,23 @@ export class EmployeeIwsService {
     );
   }
 
+  addEmployeeIwsWithAutoNumber(employeeIws: Omit<EmployeeIws, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'employeeNo'>): Observable<EmployeeIws> {
+  const createUrl = `${this.apiUrl}/with-auto-employeeno`;
+  return this.http.post<EmployeeIws>(createUrl, employeeIws, this.httpOptions).pipe(
+    tap({
+      next: (newEmployeeIws) => {
+        this._employeeIws.update(employeeIws => [newEmployeeIws, ...employeeIws]);
+        this._error.set(null);
+      },
+      error: (err) => {
+        this._error.set('Failed to create employeeIws with auto number');
+        console.error('Error creating employeeIws with auto number:', err);
+      },
+      finalize: () => this._loading.set(false)
+    })
+  );
+}
+
   // UPDATE
   updateEmployeeIws(updatedEmployeeIws: EmployeeIws): Observable<EmployeeIws> {
     const url = `${this.apiUrl}/${updatedEmployeeIws.id}`;
