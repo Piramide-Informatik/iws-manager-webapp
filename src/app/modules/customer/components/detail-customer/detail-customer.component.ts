@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, computed, signal, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, map } from 'rxjs';
+import { Subscription, finalize, map } from 'rxjs';
 import { TranslateService, _ } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
@@ -500,13 +500,32 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
 
     this.isSaving = true;
     const newCustomer = this.buildCustomerFromForm();
+    const expectedCustomerNo = this.buildCustomerFromForm().customerno;
+    console.log('Expected Customer No:', expectedCustomerNo);
 
-    this.subscriptions.add(
-      this.customerUtils.createNewCustomer(newCustomer).subscribe({
-        next: (customer) => this.handleSuccess(customer),
-        error: (err) => this.handleError(err)
-      })
-    )
+    const sub = this.customerUtils.addCustomerWithAutoNumber(newCustomer)
+      .pipe(finalize(()=> (this.isSaving = false)))
+      .subscribe({
+        next: (createdCustomer) => {
+          this.handleCustomerNoComparison(expectedCustomerNo, createdCustomer.customerno!);
+          this.handleSuccess(createdCustomer);
+        },
+        error: (err) => {
+          this.handleError(err);
+        }
+      });
+      this.subscriptions.add(sub);
+  }
+
+  private handleCustomerNoComparison(expectedCustomerNumber: number | undefined, actualCustomerNo: number): void {
+    if (expectedCustomerNumber === undefined) {
+      console.log(`ℹ️ Employee created with auto-number: ${actualCustomerNo}`);
+      return;
+    }
+
+    if (expectedCustomerNumber !== actualCustomerNo) {
+      this.commonMessageService.showInformationMessageUpdatedRecordNumber(actualCustomerNo);
+    }
   }
 
   private buildCustomerFromForm(): Omit<Customer, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
