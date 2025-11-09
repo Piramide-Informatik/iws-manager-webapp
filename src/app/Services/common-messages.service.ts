@@ -135,7 +135,7 @@ export class CommonMessagesService {
     })
   }
 
-  showInformationMessageUpdatedRecordNumber(numberRegister: number) {
+  showInformationMessageUpdatedRecordNumber(numberRegister: any) {
     this.messageService.add({
       severity: 'info',
       summary: this.translateService.instant('MESSAGE.INFO'),

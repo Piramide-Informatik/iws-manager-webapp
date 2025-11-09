@@ -32,12 +32,12 @@ export class PromoterService {
   }
 
   private sortAlphabetically(list: Promoter[]): Promoter[] {
-      return [...list].sort((a, b) => {
-        const projectPA = a.promoterNo || '';
-        const projectPB = b.promoterNo || '';
-        return projectPA.localeCompare(projectPB, undefined, { sensitivity: 'base' });
-      });
-    }
+    return [...list].sort((a, b) => {
+      const projectPA = a.promoterNo || '';
+      const projectPB = b.promoterNo || '';
+      return projectPA.localeCompare(projectPB, undefined, { sensitivity: 'base' });
+    });
+  }
 
   public loadInitialData(): Observable<Promoter[]> {
     this._loading.set(true);
@@ -68,6 +68,23 @@ export class PromoterService {
         error: (err) => {
           this._error.set('Failed to add promoter');
           console.error('Error adding promoter:', err);
+        },
+        finalize: () => this._loading.set(false)
+      })
+    );
+  }
+
+  addPromoterWithAutoNumber(promoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'promoterNo'>): Observable<Promoter> {
+    const createUrl = `${this.apiUrl}/with-auto-promoterno`;
+    return this.http.post<Promoter>(createUrl, promoter, this.httpOptions).pipe(
+      tap({
+        next: (newPromoter) => {
+          this._promoters.update(promoters => this.sortAlphabetically([...promoters, newPromoter]));
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add promoter with auto number');
+          console.error('Error adding promoter with auto number:', err);
         },
         finalize: () => this._loading.set(false)
       })
@@ -131,6 +148,22 @@ export class PromoterService {
         this._error.set('Failed to fetch promoter by id');
         console.error(err);
         return of(undefined as unknown as Promoter);
+      })
+    );
+  }
+
+  /**
+  * Gets the next available promoter number
+  * @returns Observable with the next promoter number as string
+  */
+  getNextPromoterNo(): Observable<string> {
+    const url = `${this.apiUrl}/next-promoter-no`;
+    return this.http.get<string>(url, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch next promoter number');
+        console.error('Error fetching next promoter number:', err);
+        return of('');
       })
     );
   }
