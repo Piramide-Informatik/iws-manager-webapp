@@ -67,7 +67,7 @@ export class CountryUtils {
           return throwError(() => new Error('abbreviation already exists'));
         }
         
-        return this.countryService.addCountry({
+        return this.countryService.addCountryWithDefaultHandling({
           name: name,
           label: label,
           isDefault: isDefaultC,

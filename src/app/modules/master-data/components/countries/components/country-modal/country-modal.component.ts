@@ -53,6 +53,7 @@ export class CountryModalComponent implements OnInit {
 
     this.countryUtils.createNewCountry(name, label, isDefault).subscribe({
       next: () => {
+        // this.countryUtils.loadInitialData().subscribe();
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.countryCreated.emit();
         this.handleClose();
