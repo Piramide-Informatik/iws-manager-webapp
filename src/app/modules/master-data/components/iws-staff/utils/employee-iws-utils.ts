@@ -62,6 +62,33 @@ export class EmployeeIwsUtils {
     );
   }
 
+  /**
+   * Creates a new employeeIws with auto-generated employee number
+   * @param employeeIws - Employee data without technical fields and without employeeNo
+   * @returns Observable that completes when employeeIws is created
+   */
+  addEmployeeIwsWithAutoNumber(employeeIws: Omit<EmployeeIws, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'employeeNo'>): Observable<EmployeeIws> {
+    const employeeLabel = employeeIws.employeeLabel?.trim() || '';
+    if (!employeeLabel) {
+      return throwError(() => new Error('Employee label is required'));
+    }
+
+    return this.employeeIwsShortNameExists(employeeLabel).pipe(
+      switchMap((exists) => {
+        if (exists) {
+          return throwError(() => new Error('short name already exists'));
+        }
+        return this.employeeIwsService.addEmployeeIwsWithAutoNumber(employeeIws);
+      }),
+      catchError((err) => {
+        if (err.message === 'short name already exists') {
+          return throwError(() => err);
+        }
+        return throwError(() => new Error('IWS_STAFF.ERROR.CREATION_FAILED'));
+      })
+    );
+  }
+
   getAllEmployeeIws(): Observable<EmployeeIws[]> {
     return this.employeeIwsService.getAllEmployeeIws();
   }
@@ -116,7 +143,7 @@ export class EmployeeIwsUtils {
         if (currentEmployeeIws.version !== employeeIws.version) {
           return throwError(() => createUpdateConflictError('IWS Employee'));
         }
-        
+
         return this.employeeIwsShortNameExists(employeeLabel, employeeIws.id).pipe(
           switchMap((exists) => {
             if (exists) {
@@ -149,8 +176,8 @@ export class EmployeeIwsUtils {
   private employeeIwsShortNameExists(shortName: string, excludeId?: number): Observable<boolean> {
     return this.employeeIwsService.getAllEmployeeIws().pipe(
       map(employees => employees.some(
-        emp => emp.id !== excludeId && 
-               emp.employeeLabel?.toLowerCase() === shortName?.toLowerCase()
+        emp => emp.id !== excludeId &&
+          emp.employeeLabel?.toLowerCase() === shortName?.toLowerCase()
       )),
       catchError(() => {
         return throwError(() => new Error('Failed to check short name existence'));
