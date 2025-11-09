@@ -170,8 +170,8 @@
     <p-button
       [label]="'BUTTONS.NEW_YEAR' | translate"
       icon="pi pi-plus"
-      (onClick)="onNewYear()"
-      [disabled]="!selectedPublicHolidayId || isFixedDate"
+      (onClick)="isFixedDate ? addYear(selectedPublicHolidayId) : onNewYear()"
+      [disabled]="!selectedPublicHolidayId || !currentPublicHoliday"
     ></p-button>
   </div>
 </p-card>
