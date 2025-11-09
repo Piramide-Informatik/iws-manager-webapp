@@ -137,7 +137,7 @@ export class CountryService {
    * @throws Error when country not found or validation fails
    */
   updateCountry(updatedCountry: Country): Observable<Country> {
-    const url = `${this.apiUrl}/${updatedCountry.id}`;
+    const url = `${this.apiUrl}/${updatedCountry.id}/with-default-handling`;
     return this.http.put<Country>(url, updatedCountry, this.httpOptions).pipe(
       tap({
         next: (res) => {
