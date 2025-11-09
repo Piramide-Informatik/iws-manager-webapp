@@ -43,7 +43,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() employeeIwsToDelete: number | null = null;
   @Input() employeeIwsName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
-  @Output() employeeIwsCreated = new EventEmitter<{ status: 'success' | 'error'}>();
+  @Output() employeeIwsCreated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() employeeIwsDeleted = new EventEmitter<{ status: 'success' | 'error', error?: any }>();
   @Output() toastMessage = new EventEmitter<{
     severity: string;
@@ -80,7 +80,7 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
     this.loadInitialData();
     this.loadTeams();
     this.resetForm();
-    
+
     this.createEmployeeIwsForm.get('employeeLabel')?.valueChanges.subscribe(() => {
       if (this.shortNameAlreadyExist) {
         this.shortNameAlreadyExist = false;
@@ -135,16 +135,16 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe({
         next: () => {
           this.isLoading = false;
-          this.employeeIwsDeleted.emit( { status: 'success' });
+          this.employeeIwsDeleted.emit({ status: 'success' });
           this.commonMessagesService.showDeleteSucessfullMessage();
           this.showToastAndClose('success', 'MESSAGE.DELETE_SUCCESS');
         },
         error: (error) => {
           this.handleDeleteError(error);
-          if(error.error.message.includes('a foreign key constraint fails')){
+          if (error.error.message.includes('a foreign key constraint fails')) {
             this.isVisibleModal.emit(false);
           }
-          this.employeeIwsDeleted.emit({ status: 'error', error: error});
+          this.employeeIwsDeleted.emit({ status: 'error', error: error });
         },
       });
 
@@ -166,12 +166,13 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
     this.shortNameAlreadyExist = false;
 
     const EmployeeIwsData = this.getSanitizedEmployeeIwsValues();
+    const expectedEmployeeNo = this.createEmployeeIwsForm.get('employeeNo')?.value;
 
-    const sub = this.employeeIwsUtils
-      .addEmployeeIws(EmployeeIwsData)
+    const sub = this.employeeIwsUtils.addEmployeeIwsWithAutoNumber(EmployeeIwsData)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: () => {
+        next: (createdEmployee) => {
+          this.handleEmployeeNoComparison(expectedEmployeeNo!, createdEmployee.employeeNo!);
           this.employeeIwsCreated.emit({ status: 'success' });
           this.showToastAndClose('success', 'MESSAGE.CREATE_SUCCESS');
         },
@@ -181,6 +182,17 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
       });
 
     this.subscriptions.add(sub);
+  }
+
+  private handleEmployeeNoComparison(expectedEmployeeNumber: number | undefined, actualEmployeeNo: number): void {
+    if (expectedEmployeeNumber === undefined) {
+      console.log(`ℹ️ Employee created with auto-number: ${actualEmployeeNo}`);
+      return;
+    }
+
+    if (expectedEmployeeNumber !== actualEmployeeNo) {
+      this.commonMessagesService.showInformationMessageUpdatedRecordNumber(actualEmployeeNo);
+    }
   }
 
   private handleCreateError(error: any): void {
@@ -263,7 +275,6 @@ export class IwsStaffModalComponent implements OnInit, OnDestroy, OnChanges {
           momentCreateDate(this.createEmployeeIwsForm.value.endDate)
         )
         : '',
-      employeeNo: Number(this.createEmployeeIwsForm.value.employeeNo),
       employeeLabel:
         this.createEmployeeIwsForm.value.employeeLabel?.trim() ?? '',
       teamIws: this.createEmployeeIwsForm.value.teamIws ?? null,
