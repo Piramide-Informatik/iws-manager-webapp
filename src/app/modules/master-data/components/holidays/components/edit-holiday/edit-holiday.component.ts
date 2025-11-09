@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicHoliday } from '../../../../../../Entities/publicholiday';
 import { State } from '../../../../../../Entities/state';
@@ -12,6 +12,7 @@ import { HolidayYear } from '../../../../../../Entities/holidayYear';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { DatePicker } from 'primeng/datepicker';
+import { HolidayYearUtils } from '../../utils/holiday-year-utils';
 
 @Component({
   selector: 'app-edit-holiday',
@@ -30,6 +31,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   editPublicHolidayForm!: FormGroup;
   isSaving = false;
   private readonly subscriptions = new Subscription();
+  private readonly holidayYearUtils = inject(HolidayYearUtils);
   private readonly editProjectStatusSource =
     new BehaviorSubject<PublicHoliday | null>(null);
 
@@ -43,6 +45,9 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   isFixedDate: boolean = false;
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' = 'create';
+  // Modal delete holiday year
+  visibleDeleteModal = false;
+  isLoadingDelete = false;
 
   constructor(
     private readonly publicHolidayUtils: PublicHolidayUtils,
@@ -73,6 +78,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Use for create holiday year with date fix
   addYear(publicHolidayId: number | undefined): void {
     if (!publicHolidayId) return;
 
@@ -309,5 +315,26 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
         }
       }, 200);
     }
+  }
+
+  public removeHolidayYear(): void {
+    if(!this.holidayYearToEdit) return;
+
+    this.isLoadingDelete = true;
+    this.holidayYearUtils.deleteHolidayYear(this.holidayYearToEdit.id).subscribe({
+      next: () => {
+        this.isLoadingDelete = false;
+        this.years = this.years.filter(y => y.id !== this.holidayYearToEdit!.id);
+        this.commonMessageService.showDeleteSucessfullMessage();
+        this.visibleDeleteModal = false;
+        this.visibleModal = false;
+        this.holidayYearToEdit = null;
+      },
+      error: (error) => {
+        this.isLoadingDelete = false;
+        console.log(error);
+        this.commonMessageService.showErrorDeleteMessage();
+      }
+    });
   }
 }
