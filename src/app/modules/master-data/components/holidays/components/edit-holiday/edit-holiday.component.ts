@@ -23,7 +23,7 @@ import { HolidayYearUtils } from '../../utils/holiday-year-utils';
 export class EditHolidayComponent implements OnInit, OnDestroy {
   years: HolidayYear[] = [];
   holidayYearToEdit!: HolidayYear | null;
-  selectedPublicHolidayId!: number;
+  selectedPublicHolidayId!: number | undefined;
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
   @ViewChild('datePicker') datePicker!: DatePicker;
   public showOCCErrorModalPublicHoliday = false;
