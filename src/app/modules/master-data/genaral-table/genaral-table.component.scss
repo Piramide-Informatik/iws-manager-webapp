@@ -78,6 +78,30 @@ p-button {
     max-width: none !important;
   }
 
+  //class: fix-td-width-contractor-taxNo -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-contractor-taxNo:not(.p-datatable-frozen-column) {
+    width: 200px !important;
+    max-width: 13rem !important;
+  }
+
+  //class: fix-td-width-contractor-label -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-contractor-label:not(.p-datatable-frozen-column) {
+    width: 150px !important;
+    max-width: 10rem !important;
+  }
+
+  //class: fix-td-width-contractor-name -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-contractor-name:not(.p-datatable-frozen-column) {
+    width: 400px !important;
+    max-width: 65rem !important;
+  }
+
+  //class: fix-td-width-contractor-street -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-contractor-street:not(.p-datatable-frozen-column) {
+    width: 150px !important;
+    max-width: 16rem !important;
+  }
+
   @for $i from 1 through 100 {
     p-table#iwstable table.p-datatable-resizable-table>thead.p-datatable-thead>tr>th.p-datatable-resizable-column.width-#{$i}:not(.p-datatable-frozen-column) {
       width: #{$i * 1%} !important;
