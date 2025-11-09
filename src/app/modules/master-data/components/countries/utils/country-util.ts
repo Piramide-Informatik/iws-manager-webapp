@@ -21,6 +21,9 @@ import {
 export class CountryUtils {
   private readonly countryService = inject(CountryService);
 
+  loadInitialData(): Observable<Country[]> {
+    return this.countryService.loadInitialData();
+  }
   /**
    * Gets a country by ID with proper error handling
    * @param id - ID of the country to retrieve
