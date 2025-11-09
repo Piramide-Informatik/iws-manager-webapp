@@ -103,6 +103,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
         next: () => {
           this.isSaving = false;
           this.clearForm();
+          this.countryUtils.loadInitialData().subscribe();
           this.commonMessageService.showEditSucessfullMessage();
         },
         error: (error: Error) => {
