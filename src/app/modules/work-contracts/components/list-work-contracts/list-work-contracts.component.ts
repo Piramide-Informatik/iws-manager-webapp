@@ -54,7 +54,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
           switchMap(customer => {
             if (customer) {
               this.currentCustomer = customer;
-              this.updateTitle(customer?.customername1!);
+              this.updateTitle();
               return this.employmentContractUtils.getAllContractsByCustomerIdSortedByEmployeeNo(customer.id);
             } else {
               const customerId = Number(this.route.snapshot.params['id']);
@@ -63,7 +63,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
                   switchMap(c => {
                     if (c) {
                       this.currentCustomer = c;
-                      this.updateTitle(c.customername1!)
+                      this.updateTitle()
                     };
                     return this.employmentContractUtils.getAllContractsByCustomerIdSortedByEmployeeNo(customerId);
                   })
@@ -157,9 +157,9 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateTitle(name: string): void {
+  private updateTitle(): void {
     this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYMENT_CONTRACTS')}`
+      `${this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYMENT_CONTRACTS')}`
     );
   }
 }

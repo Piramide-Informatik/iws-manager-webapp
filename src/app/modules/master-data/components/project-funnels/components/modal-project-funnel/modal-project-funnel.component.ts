@@ -61,7 +61,6 @@ export class ModalProjectFunnelComponent implements OnChanges {
     this.isLoading = true;
     const expectedPromoterNo = this.projectFunnelForm.get('promoterNo')?.value;
     const newPromoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      // promoterNo: this.projectFunnelForm.value.promoterNo?.toString() || null,
       projectPromoter: this.projectFunnelForm.value.projectPromoter?.trim(),
       promoterName1: this.projectFunnelForm.value.promoterName1?.trim(),
       promoterName2: this.projectFunnelForm.value.promoterName2?.trim(),
