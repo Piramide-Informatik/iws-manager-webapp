@@ -74,9 +74,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         }
         this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
           if (currentCustomer) {
-            this.updateTitle(currentCustomer.customername1!);
-          } else {
-            this.getTitleByCustomerId(customerId);
+            this.updateTitle();
           }
         })
 
@@ -106,18 +104,8 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
     })
   }
 
-  private getTitleByCustomerId(customerId: any): void {
-    this.customerUtils.getCustomerById(customerId).subscribe(customer => {
-      if (customer) {
-        this.updateTitle(customer.customername1!);
-      } else {
-        this.updateTitle('');
-      }
-    });
-  }
-
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.RECEIVABLES')}`);
+  private updateTitle(): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMERS.RECEIVABLES')}`);
   }
 
   openDeleteModal(id: any) {
@@ -191,11 +179,9 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/${url}`]).then(() => {
-        //console.log(`After navigation I am on:${this.router.url}`)
       })
     })
   }

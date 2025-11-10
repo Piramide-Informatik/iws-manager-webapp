@@ -9,6 +9,7 @@ import { UserPreference } from '../../../../Entities/user-preference';
 import { OrderUtils } from '../../utils/order-utils';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Order } from '../../../../Entities/order';
+import { Customer } from '../../../../Entities/customer';
 import { Column } from '../../../../Entities/column';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { Title } from '@angular/platform-browser';
@@ -42,6 +43,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   tableKey: string = 'OrdersOverview';
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public redirectRoute = "";
+  private currentCustomer: Customer | undefined;
   public showOCCErrorModalOrder = false;
   dataKeys = ['orderNr', 'orderLabel', 'orderType', 'orderDate', 'acronym', 'fundingProgram', 'value', 'contractStatus', 'contractNr', 'contractTitle', 'iwsPercent', 'iwsPercentValue'];
 
@@ -54,6 +56,7 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.updateTitle();
     this.loadOrdersOverviewColHeaders();
     this.selectedColumns = this.cols;
     this.userOrdersOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
@@ -67,18 +70,16 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       const customerId = params['id'];
       if (!customerId) {
-        this.updateTitle('...');
+        this.updateTitle();
         return;
       }
       this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
         if (currentCustomer) {
-          this.updateTitle(currentCustomer.customername1!);
+          this.currentCustomer = currentCustomer;
         } else {
           this.customerUtils.getCustomerById(customerId).subscribe(customer => {
             if (customer) {
-              this.updateTitle(customer.customername1!);
-            } else {
-              this.updateTitle('');
+              this.currentCustomer = customer;
             }
           });
         }
@@ -177,8 +178,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')}`);
+  private updateTitle(): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')}`);
   }
 
   ngOnDestroy(): void {

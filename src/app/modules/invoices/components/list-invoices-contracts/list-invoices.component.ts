@@ -63,12 +63,12 @@ export class ListInvoicesComponent implements OnInit, OnDestroy {
     this.customerId = this.route.snapshot.params['id'];
 
     if (!this.customerId) {
-      this.updateTitle('...');
+      this.updateTitle();
     }
 
     this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(customer => {
       if (customer) {
-        this.updateTitle(customer.customername1!);
+        this.updateTitle();
         this.currentCustomer = customer;
       } else {
         this.getTitleByCustomerId(Number(this.customerId));
@@ -83,10 +83,10 @@ export class ListInvoicesComponent implements OnInit, OnDestroy {
   private getTitleByCustomerId(customerId: number): void {
     this.customerUtils.getCustomerById(customerId).subscribe(customer => {
       if (customer) {
-        this.updateTitle(customer.customername1!);
+        this.updateTitle();
         this.currentCustomer = customer;
       } else {
-        this.updateTitle('');
+        this.updateTitle();
       }
     });
   }
@@ -143,9 +143,9 @@ export class ListInvoicesComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private updateTitle(name: string): void {
+  private updateTitle(): void {
     this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.INVOICES')}`
+      `${this.translate.instant('PAGETITLE.CUSTOMERS.INVOICES')}`
     );
   }
 

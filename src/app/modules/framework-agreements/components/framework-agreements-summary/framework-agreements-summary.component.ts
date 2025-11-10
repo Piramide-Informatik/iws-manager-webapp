@@ -65,13 +65,13 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
 
     this.customerId = this.route.snapshot.params['id'];
     if (!this.customerId) {
-      this.updateTitle('...');
+      this.updateTitle();
     }
 
     this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
       if (currentCustomer) {
         this.currentCustomer = currentCustomer;
-        this.updateTitle(currentCustomer.customername1!);
+        this.updateTitle();
       } else {
         this.getTitleByCustomerId(Number(this.customerId));
       }
@@ -84,15 +84,15 @@ export class FrameworkAgreementsSummaryComponent implements OnInit, OnDestroy {
     this.customerUtils.getCustomerById(customerId).subscribe(customer => {
       if (customer) {
         this.currentCustomer = customer;
-        this.updateTitle(customer.customername1!);
+        this.updateTitle();
       } else {
-        this.updateTitle('');
+        this.updateTitle();
       }
     });
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.BASIC_CONTRACTS')}`);
+  private updateTitle(): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMERS.BASIC_CONTRACTS')}`);
   }
 
   loadFrameworkAgreementsColHeaders(): void {
