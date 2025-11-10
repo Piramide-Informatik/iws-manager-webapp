@@ -12,6 +12,8 @@
                         formControlName="name"
                         autocomplete="off"
                         class="w-full"
+                        [class.ng-invalid]="holidayAlreadyExists"
+                        [class.ng-dirty]="holidayAlreadyExists"
                         invalid="createdPublicHolidayForm.get('name')?.invalid &&
                         createdPublicHolidayForm.get('name')?.dirty &&
                         createdPublicHolidayForm.get('name')!.hasError('required')"
@@ -19,8 +21,8 @@
                     <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                         createdPublicHolidayForm.get('name')?.invalid &&
                         createdPublicHolidayForm.get('name')?.dirty &&
-                        createdPublicHolidayForm.get('name')!.hasError('required')
-                    ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
+                        createdPublicHolidayForm.get('name')!.hasError('required') || holidayAlreadyExists
+                    ">{{ holidayAlreadyExists ? ('HOLIDAYS.ERROR.HOLIDAY_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
                 </div>
             </div>
         
@@ -95,7 +97,7 @@
                 [label]="'BUTTONS.CANCEL' | translate"
                 icon="pi pi-times"
                 iconPos="left"
-                (onClick)="closeModel()"
+                (onClick)="closeModal()"
                 [disabled]="isLoading"
                 />
             </div>
@@ -128,7 +130,7 @@
             [label]="'BUTTONS.CANCEL' | translate"
             icon="pi pi-times"
             iconPos="left"
-            (onClick)="closeModel()"
+            (onClick)="closeModal()"
             [disabled]="isLoading"
         />
         </div>

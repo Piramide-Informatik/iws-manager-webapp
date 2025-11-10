@@ -12,10 +12,23 @@ export class PublicHolidayUtils {
         return this.publicHolidayService.loadInitialData();
     }
 
-    addPublicHoliday(
-        publicHoliday: Omit<PublicHoliday, 'id' | 'createdAt' | 'updatedAt' | 'version'>
-    ): Observable<PublicHoliday> {
-        return this.publicHolidayService.addPublicHoliday(publicHoliday);
+    addPublicHoliday(publicHoliday: Omit<PublicHoliday, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<PublicHoliday> {
+        return this.publicHolidayExists(publicHoliday.name).pipe(
+            switchMap((exists) => {
+                if (exists) {
+                    return throwError(() => new Error('holiday already exists'));
+                }
+
+                return this.publicHolidayService.addPublicHoliday(publicHoliday);
+            }),
+            catchError((err) => {
+                if (err.message === 'holiday already exists') {
+                    return throwError(() => err);
+                }
+
+                return throwError(() => new Error('Failed create holiday'));
+            })
+        );
     }
 
     //Get a publicHoliday by ID
@@ -96,7 +109,14 @@ export class PublicHolidayUtils {
                 if (currentPublicHoliday.version !== publicHoliday.version) {
                     return throwError(() => createUpdateConflictError('Holiday'));
                 }
-                return this.publicHolidayService.updatePublicHoliday(publicHoliday);
+                return this.publicHolidayExists(publicHoliday.name).pipe(
+                    switchMap((exists) => {
+                        if (exists && currentPublicHoliday.name.toLowerCase() !== publicHoliday.name.toLowerCase()) {
+                            return throwError(() => new Error('holiday already exists'));
+                        }
+                        return this.publicHolidayService.updatePublicHoliday(publicHoliday);
+                    })
+                );
             }),
             switchMap((validatedPublicHoliday: PublicHoliday) => this.publicHolidayService.updatePublicHoliday(validatedPublicHoliday)),
             catchError((err) => {

@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
@@ -41,6 +41,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   fixDateFormatPicker: string = 'dd.mm';
   dateFormatPicker: string = 'dd.mm.yy';
   isFixedDate: boolean = false;
+  holidayAlreadyExists = false;
 
   readonly createdPublicHolidayForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -71,6 +72,12 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     if(changes['visible'] && this.visible) {
       setTimeout(() => {
         this.focusInputIfNeeded();
+      });
+    }else if(changes['visible'] && !this.visible){
+      this.resetForm();
+      setTimeout(() => {
+        this.datePicker.writeValue(null);
+        this.datePicker.updateInputfield();
       });
     }
   }
@@ -103,7 +110,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
               detail: 'MESSAGE.DELETE_SUCCESS',
             });
             this.publicHolidayStateService.setPublicHolidayToEdit(null);
-            this.closeModel();
+            this.closeModal();
           },
           error: (error) => {
             this.isLoading = false;
@@ -130,7 +137,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
                     : 'MESSAGE.DELETE_FAILED',
                 });
               }
-              this.closeModel();
+              this.closeModal();
             }
           },
         });
@@ -178,6 +185,11 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
 
     const detail = this.getErrorDetail(error.message);
 
+    if(error.message.includes('holiday already exists')){
+      this.holidayAlreadyExists = true;
+      this.createdPublicHolidayForm.get('name')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.holidayAlreadyExists = false);
+    }
     this.toastMessage.emit({
       severity: 'error',
       summary: 'MESSAGE.ERROR',
@@ -224,9 +236,13 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     this.handleClose();
   }
 
-  closeModel(): void {
+  closeModal(): void {
     this.isVisibleModel.emit(false);
     this.resetForm();
+    setTimeout(() => {
+      this.datePicker.writeValue(null);
+      this.datePicker.updateInputfield();
+    });
   }
 
   private resetForm(): void {

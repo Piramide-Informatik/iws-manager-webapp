@@ -842,7 +842,8 @@
       "CREATION_FAILED": "Hubo un error durante la creacion del festivo.",
       "UPDATE_FAILED": "Hubo un error durante la actualización del festivo.",
       "EMPTY": "Vacío",
-      "YEAR_ALREADY_EXISTS": "El año ya existe"
+      "YEAR_ALREADY_EXISTS": "El año ya existe",
+      "HOLIDAY_ALREADY_EXISTS": "El día festivo ya existe"
     },
     "MODAL": {
       "NAME": "Festivo",
