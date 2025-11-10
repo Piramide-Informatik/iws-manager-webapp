@@ -67,18 +67,18 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       const customerId = params['id'];
       if (!customerId) {
-        this.updateTitle('...');
+        this.updateTitle();
         return;
       }
       this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
         if (currentCustomer) {
-          this.updateTitle(currentCustomer.customername1!);
+          this.updateTitle();
         } else {
           this.customerUtils.getCustomerById(customerId).subscribe(customer => {
             if (customer) {
-              this.updateTitle(customer.customername1!);
+              this.updateTitle();
             } else {
-              this.updateTitle('');
+              this.updateTitle();
             }
           });
         }
@@ -177,8 +177,8 @@ export class OrdersOverviewComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')}`);
+  private updateTitle(): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')}`);
   }
 
   ngOnDestroy(): void {
