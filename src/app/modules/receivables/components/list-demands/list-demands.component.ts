@@ -75,8 +75,6 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
           if (currentCustomer) {
             this.updateTitle();
-          } else {
-            this.getTitleByCustomerId(customerId);
           }
         })
 
@@ -104,16 +102,6 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         }, [])
       })
     })
-  }
-
-  private getTitleByCustomerId(customerId: any): void {
-    this.customerUtils.getCustomerById(customerId).subscribe(customer => {
-      if (customer) {
-        this.updateTitle();
-      } else {
-        this.updateTitle();
-      }
-    });
   }
 
   private updateTitle(): void {
@@ -191,11 +179,9 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
 
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     //skipLocationChange:true means dont update the url to / when navigating
-    //console.log("Current route I am on:",this.router.url);
     const url = self ? this.router.url : urlToNavigateTo;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/${url}`]).then(() => {
-        //console.log(`After navigation I am on:${this.router.url}`)
       })
     })
   }
