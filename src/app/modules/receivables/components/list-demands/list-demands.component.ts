@@ -74,7 +74,7 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
         }
         this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
           if (currentCustomer) {
-            this.updateTitle(currentCustomer.customername1!);
+            this.updateTitle();
           } else {
             this.getTitleByCustomerId(customerId);
           }
@@ -109,15 +109,15 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
   private getTitleByCustomerId(customerId: any): void {
     this.customerUtils.getCustomerById(customerId).subscribe(customer => {
       if (customer) {
-        this.updateTitle(customer.customername1!);
+        this.updateTitle();
       } else {
-        this.updateTitle('');
+        this.updateTitle();
       }
     });
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.RECEIVABLES')}`);
+  private updateTitle(): void {
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.CUSTOMERS.RECEIVABLES')}`);
   }
 
   openDeleteModal(id: any) {
