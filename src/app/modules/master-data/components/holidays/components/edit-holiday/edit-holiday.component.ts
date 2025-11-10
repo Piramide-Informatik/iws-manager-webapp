@@ -4,7 +4,7 @@ import { PublicHoliday } from '../../../../../../Entities/publicholiday';
 import { State } from '../../../../../../Entities/state';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, take } from 'rxjs';
 import {  momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayService } from '../../../../../../Services/public-holiday.service';
 import { HolidayYearService } from '../../../../../../Services/holiday-year.service';
@@ -45,6 +45,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   isFixedDate: boolean = false;
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' = 'create';
+  holidayAlreadyExists = false;
   // Modal delete holiday year
   visibleDeleteModal = false;
   isLoadingDelete = false;
@@ -263,12 +264,14 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
 
   private handleError(err: any): void {
     this.isSaving = false;
+    this.commonMessageService.showErrorEditMessage();
     if (err instanceof OccError) { 
       this.showOCCErrorModalPublicHoliday = true;
       this.occErrorHolidayType = err.errorType;
-      this.commonMessageService.showErrorEditMessage();
-    } else {
-      this.commonMessageService.showErrorEditMessage();
+    } else if (err.message.includes('holiday already exists')) {
+      this.holidayAlreadyExists = true;
+      this.editPublicHolidayForm.get('publicHoliday')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.holidayAlreadyExists = false);
     }
   }
 

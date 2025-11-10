@@ -31,7 +31,6 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
   public selectedColumns!: Column[];
 
   userContractorOverviewPreferences: UserPreference = {};
-  loading: boolean = true;
   tableKey: string = 'ContractorOverview'
 
   dataKeys = ['label', 'name', 'countryLabel', 'street', 'zipCode', 'city', 'taxNro'];
@@ -59,10 +58,9 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.updateTitle();
     this.loadColHeaders();
     this.selectedColumns = this.cols;
-
-    this.loading = false;
 
     this.userContractorOverviewPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.subscription = this.translate.onLangChange.subscribe(() => {
@@ -73,17 +71,12 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
 
     this.route.params.subscribe(params => {
       this.customerId = params['id'];
-      if (!this.customerId) {
-        this.updateTitle();
-        return;
-      }
 
       this.customerStateService.currentCustomer$.pipe(take(1)).subscribe(currentCustomer => {
         if (currentCustomer) {
           this.customer = currentCustomer;
-          this.updateTitle();
         } else {
-          this.getTitleByCustomerId(this.customerId);
+          this.getCustomerById(this.customerId);
         }
       })
 
@@ -98,12 +91,11 @@ export class ContractorOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getTitleByCustomerId(customerId: number): void {
+  private getCustomerById(customerId: number): void {
     this.customerUtils.getCustomerById(customerId).subscribe(customer => {
       if (customer) {
         this.customer = customer;
       }
-      this.updateTitle();
     });
   }
 

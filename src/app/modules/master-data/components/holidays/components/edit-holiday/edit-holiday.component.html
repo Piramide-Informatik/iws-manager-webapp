@@ -13,6 +13,8 @@
           id="name"
           formControlName="publicHoliday"
           autocomplete="off"
+          [class.ng-invalid]="holidayAlreadyExists"
+          [class.ng-dirty]="holidayAlreadyExists"
           invalid="editPublicHolidayForm.get('publicHoliday')?.invalid &&
             editPublicHolidayForm.get('publicHoliday')?.dirty &&
             editPublicHolidayForm.get('publicHoliday')!.hasError('required')"
@@ -20,8 +22,8 @@
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             editPublicHolidayForm.get('publicHoliday')?.invalid &&
             editPublicHolidayForm.get('publicHoliday')?.touched &&
-            editPublicHolidayForm.get('publicHoliday')!.hasError('required')
-        ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
+            editPublicHolidayForm.get('publicHoliday')!.hasError('required') || holidayAlreadyExists
+        ">{{ holidayAlreadyExists ? ('HOLIDAYS.ERROR.HOLIDAY_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
       </div>
 
       <div class="holiday-form mb-3">
