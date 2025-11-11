@@ -124,6 +124,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     private readonly titleService: Title,
     private readonly commonMessageService: CommonMessagesService
   ) {
+    const EMAIL_STRICT = '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$';
     this.formDetailCustomer = this.fb.group({
       customerNo: [null],
       companyText1: ['',[Validators.required]],
@@ -137,7 +138,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       selectedState: [''],
       homepage: [''],
       phone: [''],
-      invoiceEmail: ['',[Validators.email]],
+      invoiceEmail: ['',[Validators.email,Validators.pattern(EMAIL_STRICT)]],
       weekWorkingHours: ['', [Validators.min(0), Validators.max(99999.99), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
       taxNumber: [''],
       headcount: [''],
