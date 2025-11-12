@@ -3,8 +3,18 @@
         <div class="flex flex-column mb-2 mt-4">
             <div class="network-partner-form">
                 <label for="partnerno">{{ 'NETWORKS.PARTNER.NO' | translate }}</label>
+                <div class="input-message">
                 <p-inputNumber #firstInput class="p-inputnumber-input" inputId="partnerno" formControlName="partnerno" [inputStyle]="{'text-align': 'right'}"
-                [max]="999999" [min]="0" [useGrouping]="false" locale="de-DE"/>
+                [max]="999999" [min]="0" [useGrouping]="false" locale="de-DE"
+                invalid="networkPartnerForm.get('partnerno')?.invalid  
+                        && networkPartnerForm.get('partnerno')?.dirty 
+                        || networkPartnerForm.get('partnerno')?.touched
+                        || partnernoAlreadyExist"/>
+                <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    networkPartnerForm.get('partnerno')?.invalid && 
+                    networkPartnerForm.get('partnerno')?.dirty || partnernoAlreadyExist
+                    ">{{ partnernoAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                </div>
             </div>
             <div class="network-partner-form">
                 <label for="comment">{{ 'NETWORKS.PARTNER.COMMENT' | translate }}</label>
