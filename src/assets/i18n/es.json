@@ -1171,7 +1171,9 @@
       "NO": "No",
       "COMMENT": "Comentario",
       "CUSTOMER": "Cliente",
-      "CONTACT": "Contacto"
+      "CONTACT": "Contacto",
+      "NO_ALREADY_EXIST": "El numero de socio ya existe",
+      "PARTNER_ALREADY_EXISTS": "Ya está asociado"
     },
     "ERROR": {
       "ALREADY_EXIST": "La red ya existe"

@@ -13,7 +13,7 @@
                 <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                     networkPartnerForm.get('partnerno')?.invalid && 
                     networkPartnerForm.get('partnerno')?.dirty || partnernoAlreadyExist
-                    ">{{ partnernoAlreadyExist ? ('USERS.ERROR.USERNAME_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                    ">{{ partnernoAlreadyExist ? ('NETWORKS.PARTNER.NO_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
                 </div>
             </div>
             <div class="network-partner-form">
@@ -23,6 +23,7 @@
 
             <div class="network-partner-form">
                 <label for="customer">{{ 'NETWORKS.PARTNER.CUSTOMER' | translate }}</label>
+                <div class="input-message">
                 <p-select 
                   [options]="customers()" 
                   class="search-box w-auto"
@@ -44,6 +45,11 @@
                         </div>
                     </ng-template>
                 </p-select>
+                <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    networkPartnerForm.get('partner')?.invalid && 
+                    networkPartnerForm.get('partner')?.dirty || partnerAlreadyExist
+                    ">{{ partnerAlreadyExist ? ('NETWORKS.PARTNER.PARTNER_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}</p-message>
+                </div>
             </div>
             <div class="network-partner-form">
                 <label for="contacts">{{ 'NETWORKS.PARTNER.CONTACT' | translate }}</label>
@@ -60,6 +66,7 @@
                   [appendTo]="'body'"
                   [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
                   [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+                  (onClear)="networkPartnerForm.patchValue({ contact: null })"
                   formControlName="contact">
                     <ng-template #selectedItem let-selectedOption>
                         <div class="flex items-center gap-2">

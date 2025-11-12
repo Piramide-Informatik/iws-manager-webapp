@@ -1172,7 +1172,9 @@
       "NO": "No",
       "COMMENT": "Comment",
       "CUSTOMER": "Customer",
-      "CONTACT": "Contact"
+      "CONTACT": "Contact",
+      "NO_ALREADY_EXIST": "Partner Number already exists",
+      "PARTNER_ALREADY_EXISTS": "Already associated"
     },
     "ERROR": {
       "ALREADY_EXIST": "Network already exists"
