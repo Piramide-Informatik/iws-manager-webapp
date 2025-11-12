@@ -1046,7 +1046,8 @@
       "SUCCESS": "SUCCESS",
       "ERROR": "ERROR",
       "UPDATE_SUCCESS": "Successfully updated",
-      "UPDATE_FAILED": "Update failed"
+      "UPDATE_FAILED": "Update failed",
+      "DEFAULT_COUNTRY": "The country '{{ value }}' is the default country."
     },
     "MODAL_CREATE": {
       "NEW_COUNTRY": "New Country"

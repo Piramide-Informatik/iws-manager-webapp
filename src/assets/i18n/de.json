@@ -1050,7 +1050,8 @@
       "SUCCESS": "ERFOLG",
       "ERROR": "FEHLER",
       "UPDATE_SUCCESS": "Erfolgreich aktualisiert",
-      "UPDATE_FAILED": "Update fehlgeschlagen"
+      "UPDATE_FAILED": "Update fehlgeschlagen",
+      "DEFAULT_COUNTRY": "Das Land '{{ value }}' ist das Standardland."
     },
     "MODAL_CREATE": {
       "NEW_COUNTRY": "Neues Land"
@@ -1101,7 +1102,7 @@
     "ERROR": {
       "TEXT_LABEL_REQUIRED": "Textlabel ist erforderlich",
       "TEXT_VALUE_REQUIRED": "Text ist erforderlich",
-      "LABEL_ALREADY_EXIST":"Textlabel existiert bereits"
+      "LABEL_ALREADY_EXIST": "Textlabel existiert bereits"
     },
     "MODAL": {
       "NEW": "Neuer Text",
