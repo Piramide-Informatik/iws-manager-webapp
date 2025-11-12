@@ -119,6 +119,15 @@ export class CommonMessagesService {
     })
   }
 
+  showCustomSeverityAndMessageWithValue(severity: string, message: string, detail: string, value: any, sticky: boolean) {
+    this.messageService.add({
+      severity: severity,
+      summary: this.translateService.instant(message),
+      detail: this.translateService.instant(detail, { value }),
+      sticky: sticky
+    })
+  }
+
   private extractRelatedEntity(errorMessage: string): string {
     const match = errorMessage.match(/foreign key constraint fails \(`[^`]+`\.`([^`]+)`/i);
     if (match?.[1]) {
