@@ -136,7 +136,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
     const isDefaultCountry = this.countryForm.value?.isStandard!;
     if (isDefaultCountry === true) {
       this.commonMessageService.showCustomSeverityAndMessageWithValue(
-        'info',
+        'warn',
         'COUNTRIES.MESSAGE.SUCCESS',
         'COUNTRIES.MESSAGE.DEFAULT_COUNTRY',
         this.countryForm.value.name?.toString(),

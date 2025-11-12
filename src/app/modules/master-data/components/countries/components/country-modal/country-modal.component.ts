@@ -83,7 +83,7 @@ export class CountryModalComponent implements OnInit {
     const isDefaultCountry = this.createCountryForm.value?.isStandard!;
     if (isDefaultCountry === true) {
       this.commonMessageService.showCustomSeverityAndMessageWithValue(
-        'info',
+        'warn',
         'COUNTRIES.MESSAGE.SUCCESS',
         'COUNTRIES.MESSAGE.DEFAULT_COUNTRY',
         this.createCountryForm.value.name?.toString(),
