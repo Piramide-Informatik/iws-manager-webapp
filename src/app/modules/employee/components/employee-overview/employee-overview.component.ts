@@ -34,6 +34,8 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
 
   public selectedColumns!: Column[];
+  public qualificationsFZ!: any[];
+
   userEmployeeOverviewPreferences: UserPreference = {};
   tableKey: string = 'EmployeeOverview'
   dataKeys = ['id', 'firstname', 'lastname', 'email', 'generalmanagersince', 'shareholdersince', 'soleproprietorsince', 'coentrepreneursince', 'qualificationFZ', 'qualificationkmui'];
@@ -70,11 +72,11 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.updateTitle('...');
     this.route.params.subscribe(params => {
       this.customerUtils.getCustomerById(params['id']).subscribe(customer => {
-        this.customer = customer; 
+        this.customer = customer;
         this.updateTitle(this.customer?.customername1!);
       });
 
-      this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
+      this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe(employees => {
         this.employees = employees;
       })
     })
@@ -84,28 +86,31 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { 
+      {
         field: 'employeeno',
         routerLink: (row: any) => `./employee-details/${row.id}`,
         header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')),
-        customClasses: ['align-right','date-font-style']
+        customClasses: ['align-right', 'date-font-style']
       },
       { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
       { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
       { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
       { field: 'generalmanagersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'shareholdersince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'soleproprietorsince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'coentrepreneursince',  type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'qualificationFZ.qualification', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')),filter: {type: 'multiple',
-        data: []
-      } },
+      { field: 'shareholdersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')), customClasses: ['align-right'] },
+      { field: 'soleproprietorsince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), customClasses: ['align-right'] },
+      { field: 'coentrepreneursince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')), customClasses: ['align-right'] },
+      {
+        field: 'qualificationFZ.qualification', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')), filter: {
+          type: 'multiple',
+          data: this.qualificationsFZ
+        }
+      },
       { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
 
     ];
     // Load grades dynamically
     this.qualificationFZUtils.getAllQualifications().pipe(
-      map(qualifications => 
+      map(qualifications =>
         qualifications
           .filter(q => q.qualification) // Filter null/undefined values
           .map(q => ({
@@ -116,14 +121,22 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       )
     ).subscribe({
       next: (filterData) => {
+        console.log("filterData: ", filterData)
+        const noneLabel = this.translate.instant(('FILTER.OPTIONS.SELECT_NONE'));
+        
+        this.qualificationsFZ = [
+          { label: noneLabel, value: null },
+          ...filterData.map(qualificationFz => ({ label: qualificationFz.label, value: qualificationFz.value }))
+        ];
+
         const qualificationCol = this.cols.find(col => col.field === 'qualificationFZ.qualification');
+
         if (qualificationCol?.filter) {
-          qualificationCol.filter.data = filterData;
+          qualificationCol.filter.data = this.qualificationsFZ;
         }
       },
       error: (err) => {
         console.error('Error loading qualifications for filter:', err);
-        // Keep the array empty in case of error
       }
     });
   }
@@ -148,9 +161,9 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
 
   goToEmployeeDetails(currentEmployee: Employee) {
-    this.router.navigate(['employee-details', currentEmployee.id], { 
+    this.router.navigate(['employee-details', currentEmployee.id], {
       relativeTo: this.route,
-      state: { customer: this.customer, employee: currentEmployee } 
+      state: { customer: this.customer, employee: currentEmployee }
     });
   }
 
@@ -162,23 +175,23 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
     this.employeeType = event.type;
     if (event.type === 'delete' && event.data) {
       this.selectedEmployee = event.data;
-      
+
       const localEmployee = this.employees.find(emp => emp.id === this.selectedEmployee);
-      
+
       if (localEmployee) {
 
         const firstName = localEmployee.firstname ?? (localEmployee as any).firstname ?? '';
         const lastName = localEmployee.lastname ?? (localEmployee as any).lastname ?? '';
-        
+
         this.employeeName = `${firstName} ${lastName}`.trim();
         this.visibleEmployeeModal = true;
       } else {
         this.employeeUtils.getEmployeeById(this.selectedEmployee!).subscribe({
           next: (employee) => {
-            
+
             const firstName = employee?.firstname ?? (employee as any)?.firstname ?? '';
             const lastName = employee?.lastname ?? (employee as any)?.lastname ?? '';
-            
+
             this.employeeName = `${firstName} ${lastName}`.trim();
             this.visibleEmployeeModal = true;
           },
@@ -191,7 +204,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         return;
       }
     }
-    
+
     if (event.type !== 'delete') {
       this.visibleEmployeeModal = true;
     }
@@ -199,28 +212,28 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
   onEmployeeDeleteConfirm() {
     this.isLoading = true;
-    if(this.selectedEmployee){
+    if (this.selectedEmployee) {
       this.employeeUtils.deleteEmployee(this.selectedEmployee).subscribe({
         next: () => {
           this.isLoading = false;
           this.visibleEmployeeModal = false;
           this.commonMessageService.showDeleteSucessfullMessage();
           this.route.params.subscribe(params => {
-            this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe( employees => {
-             this.employees = employees;
+            this.employeeUtils.getAllEmployeesByCustomerId(params['id']).subscribe(employees => {
+              this.employees = employees;
             })
           })
         },
         error: (error) => {
           this.isLoading = false;
           this.visibleEmployeeModal = false;
-          if(error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED'){
+          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
             this.showOCCErrorModaEmployee = true;
             this.commonMessageService.showErrorDeleteMessage();
             this.occErrorType = 'DELETE_UNEXISTED';
-          }else if(error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')){
+          } else if (error instanceof HttpErrorResponse && error.status === 500 && error.error.message.includes('foreign key constraint')) {
             this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
-          }else{
+          } else {
             this.commonMessageService.showErrorDeleteMessage();
           }
         }
