@@ -87,7 +87,7 @@ p-button {
   //class: fix-td-width-contractor-label -> td -> customClasses
   p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-contractor-label:not(.p-datatable-frozen-column) {
     width: 90px !important;
-    max-width: 90px !important;
+    max-width: 10rem !important;
   }
 
   //class: fix-td-width-contractor-name -> td -> customClasses
@@ -99,7 +99,7 @@ p-button {
   //class: fix-td-width-contractor-street -> td -> customClasses
   p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-contractor-street:not(.p-datatable-frozen-column) {
     width: 180px !important;
-    min-width: 180px !important;
+    min-width: 19rem !important;
   }
 
   @for $i from 1 through 100 {
