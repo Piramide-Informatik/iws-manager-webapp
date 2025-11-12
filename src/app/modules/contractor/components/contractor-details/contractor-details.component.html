@@ -5,19 +5,18 @@
         <div class="contract_input">
           <label for="contractorlabel">{{ 'CONTRACTS.FORM.CONTRACTOR_LABEL' | translate }}</label>
           <div class="input-container">
-            <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"
-              [appAutoFocusOnVisible]="isVisibleModal"
-              [ngClass]="{'ng-invalid': contractorForm.get('contractorlabel')?.invalid && contractorForm.get('contractorlabel')?.dirty}" />
+            <input pInputText type="text" id="contractorlabel" formControlName="contractorlabel" autocomplete="off"  [appAutoFocusOnVisible]="isVisibleModal"
+              invalid="contractorForm.get('contractorlabel')?.invalid  
+                    && contractorForm.get('contractorlabel')?.dirty 
+                    || contractorForm.get('contractorlabel')?.touched
+                    || labelAlreadyExist" />
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
-      contractorForm.get('contractorlabel')?.invalid && 
-      contractorForm.get('contractorlabel')?.dirty || 
-      contractorForm.get('contractorlabel')?.hasError('labelExists')
-  ">
-              {{ contractorForm.get('contractorlabel')?.hasError('labelExists') ?
-              ('CONTRACTS.ERROR.LABEL_ALREADY_EXISTS' | translate) :
-              ('ERROR.FIELD_REQUIRED' | translate)
-              }}
-            </p-message>
+          contractorForm.get('contractorlabel')?.invalid && 
+          contractorForm.get('contractorlabel')?.dirty || labelAlreadyExists
+          ">
+            {{ labelAlreadyExists ? ('CONTRACTS.ERROR.LABEL_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' |
+            translate) }}
+          </p-message>
           </div>
         </div>
         <div class="contract_input">

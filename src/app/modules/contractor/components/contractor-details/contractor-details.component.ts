@@ -30,6 +30,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   public contractorForm!: FormGroup;
   public isLoading = false;
   public isLoadingDelete = false;
+  public labelAlreadyExists = false;
   visibleContractorDeleteEntityModal = false;
   @Output() showOCCErrorModalContractor = new EventEmitter<boolean>();
   @Output() occErrorType = new EventEmitter<OccErrorType>();
@@ -57,7 +58,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   constructor(private readonly fb: FormBuilder, private readonly commonMessageService: CommonMessagesService) {
     this.contractorForm = this.fb.group({
-      contractorlabel: ['', [Validators.required, this.uniqueLabelValidator.bind(this)]],
+      contractorlabel: ['', [Validators.required]],
       contractorname: ['', [Validators.required]],
       country: [null],
       street: [''],
@@ -73,6 +74,12 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     if (this.modalContractType === 'create') {
       this.getCurrentCustomer();
     }
+
+    this.contractorForm.get('contractorlabel')?.valueChanges.subscribe(() => {
+      if (this.labelAlreadyExists) {
+        this.labelAlreadyExists = false;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -95,7 +102,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
   private initFormContractor(): void {
     this.contractorForm = new FormGroup({
-      contractorlabel: new FormControl('', [Validators.required, this.uniqueLabelValidator.bind(this)]),
+      contractorlabel: new FormControl('', [Validators.required]),
       contractorname: new FormControl('', [Validators.required]),
       country: new FormControl(''),
       street: new FormControl(''),
@@ -103,27 +110,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
       city: new FormControl(''),
       taxno: new FormControl('')
     })
-  }
-
-  private uniqueLabelValidator(control: FormControl): { [key: string]: any } | null {
-    const value = control.value;
-
-    if (!value || !this.contractors) {
-      return null;
-    }
-    // verify case sensitive
-    const labelExists = this.contractors.some(contractor => {
-      const existingLabel = contractor.label?.trim();
-      const newLabel = value?.trim(); 
-
-      if (this.modalContractType === 'edit' && this.contractor) {
-        return existingLabel === newLabel && contractor.id !== this.contractor.id;
-      }
-
-      return existingLabel === newLabel;
-    });
-
-    return labelExists ? { labelExists: true } : null;
   }
 
   hasAtLeastOneFieldFilled(): boolean {
@@ -203,16 +189,22 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
 
     this.subscription.add(this.contractorUtils.updateContractor(updatedContractor)
       .subscribe({
-        next: (updated) => this.handleUpdateSuccess(updated),
-        error: (err) => this.handleUpdateError(err)
+        next: (updated) => {
+          this.handleUpdateSuccess(updated);
+        },
+        error: (err) => {
+          this.handleCreateDuplicityError(err)
+          this.handleUpdateError(err)
+        }
       }));
   }
 
   handleUpdateError(error: Error): void {
     this.isLoading = false;
-    this.isContractVisibleModal.emit(false);
+    console.log(error)
     this.commonMessageService.showErrorEditMessage();
     if (error instanceof OccError) {
+      this.isContractVisibleModal.emit(false);
       this.showOCCErrorModalContractor.emit(true);
       this.occErrorType.emit(error.errorType);
     }
@@ -252,14 +244,23 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
           this.commonMessageService.showCreatedSuccesfullMessage();
           this.closeModal();
         },
-        error: () => {
+        error: (error) => {
           this.isLoading = false;
+          this.handleCreateDuplicityError(error);
           this.onContractorCreated.emit({ status: 'error' });
-          this.commonMessageService.showErrorCreatedMessage();
         }
       })
     )
   }
+
+  private handleCreateDuplicityError(error: any): void {
+    if (error.error?.message?.includes("duplication with")) {
+      if (error.error.message.includes(this.contractorForm.value.contractorlabel?.trim())) {
+        this.labelAlreadyExists = true;
+      }
+    }
+  }
+
 
   private buildContractorFromForm(): Omit<Contractor, 'id'> {
     const selectedCountryId = this.contractorForm.value.country;
