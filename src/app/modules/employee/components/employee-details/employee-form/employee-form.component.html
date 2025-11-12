@@ -64,7 +64,8 @@
       />
       <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             (employeeForm.get('employeeEmail')?.invalid && employeeForm.get('employeeEmail')?.dirty)">
-            <span *ngIf="employeeForm.get('employeeEmail')?.errors?.['email'] && employeeForm.get('employeeEmail')?.dirty">
+            <span *ngIf="(employeeForm.get('employeeEmail')?.errors?.['email']||
+                employeeForm.get('employeeEmail')?.errors?.['pattern']) && employeeForm.get('employeeEmail')?.dirty">
               {{ 'MESSAGE.INVALID_EMAIL' | translate }}
             </span>
       </p-message>
