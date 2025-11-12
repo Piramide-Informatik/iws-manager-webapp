@@ -1,5 +1,5 @@
 import { Component, computed, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Network } from '../../../../../../Entities/network';
 import { CustomerUtils } from '../../../../../customer/utils/customer-utils';
 import { ContactUtils } from '../../../../../customer/utils/contact-utils';
@@ -37,6 +37,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   @ViewChild('firstInput') firstInput!: InputNumber;
   public networkPartnerForm!: FormGroup;
   public isLoading = false;
+  public partnernoAlreadyExist = false;
   selectedCustomer = signal(0);
   selectedContact = signal(0);
   isCreateButtonEnable = false;
@@ -68,7 +69,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     this.customerUtils.loadInitialData().subscribe();
     this.contactUtils.loadInitialData().subscribe();
     this.networkPartnerForm = new FormGroup({
-      partnerno: new FormControl(null),
+      partnerno: new FormControl(null, [Validators.required]),
       comment: new FormControl(''),
       partner: new FormControl(''),
       contact: new FormControl(''),
@@ -78,6 +79,11 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
       this.selectedCustomer.set(partnerId || 0);
       this.networkPartnerForm.patchValue({ contact: '' }, { emitEvent: false });
       this.selectedContact.set(0);
+    });
+    this.networkPartnerForm.get('partnerno')?.valueChanges.subscribe(() => {
+      if (this.partnernoAlreadyExist) {
+        this.partnernoAlreadyExist = false;
+      }
     });
   }
 
@@ -111,53 +117,74 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     if(this.networkPartnerForm.invalid || this.isLoading || !this.network) return
-    this.isLoading = true;
     const networkPartnerData = this.networkPartnerForm.value;
-    if (!this.selectedNetworkPartner) {
-      const newNetworkPartner: Omit<NetworkPartner, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-        partnerno: networkPartnerData.partnerno,
-        comment: networkPartnerData.comment?.trim(),
-        partner: this.customers().find(ct => ct.id == networkPartnerData.partner),
-        contact: this.contactsMap.get(networkPartnerData.contact),
-        network: this.network
+    this.isLoading = true;
+    this.partnernoAlreadyExist = false;
+    this.networkPartnerUtils.checkPartnernoExists(
+    networkPartnerData.partnerno,
+    this.network.id,
+    this.selectedNetworkPartner?.id
+  ).subscribe({
+    next: (exists) => {
+      if (exists) {
+        this.isLoading = false;
+        this.partnernoAlreadyExist = true;
+        return;
       }
-      this.networkPartnerUtils.createNewNetworkPartner(newNetworkPartner).subscribe({
-        next: (created) => {
-          this.isLoading = false;
-          this.closeModal();
-          this.createNetworkPartner.emit({created, status: 'success'});
-        },
-        error: () => {
-          this.isLoading = false;
-          this.createNetworkPartner.emit({ status: 'error' });
-        } 
-      })
-    } else {
-      const editedNetworkPartner: NetworkPartner = {
-        ...this.selectedNetworkPartner,
-        partnerno: networkPartnerData.partnerno,
-        comment: networkPartnerData.comment?.trim(),
-        partner: this.customers().find(ct => ct.id == networkPartnerData.partner),
-        contact: this.contactsMap.get(networkPartnerData.contact),
-        network: this.network
-      }
-      this.networkPartnerUtils.updateNetworkPartner(editedNetworkPartner).subscribe({
-        next: (edited) => {
-          this.isLoading = false;
-          this.closeModal();
-          this.editNetworkPartner.emit({edited, status: 'success'});
-        },
-        error: (error) => {
-          this.isLoading = false;
-          console.log(error)
-          if (error instanceof OccError) {
-            this.showOCCErrorModalNetworkPartner = true;
-            this.occErrorNetworkPartnerType = error.errorType;
-          }
-          this.editNetworkPartner.emit({ status: 'error' });
-        }
-      });
+      this.saveNetworkPartner(networkPartnerData);
+    },
+    error: () => {
+      this.isLoading = false;
     }
+  });
+  }
+
+  private saveNetworkPartner(networkPartnerData: any): void {
+    if (!this.selectedNetworkPartner) {
+    const newNetworkPartner: Omit<NetworkPartner, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      partnerno: networkPartnerData.partnerno,
+      comment: networkPartnerData.comment?.trim(),
+      partner: this.customers().find(ct => ct.id == networkPartnerData.partner),
+      contact: this.contactsMap.get(networkPartnerData.contact),
+      network: this.network!
+    }
+    this.networkPartnerUtils.createNewNetworkPartner(newNetworkPartner).subscribe({
+      next: (created) => {
+        this.isLoading = false;
+        this.closeModal();
+        this.createNetworkPartner.emit({created, status: 'success'});
+      },
+      error: () => {
+        this.isLoading = false;
+        this.createNetworkPartner.emit({ status: 'error' });
+      } 
+    })
+  } else {
+    const editedNetworkPartner: NetworkPartner = {
+      ...this.selectedNetworkPartner,
+      partnerno: networkPartnerData.partnerno,
+      comment: networkPartnerData.comment?.trim(),
+      partner: this.customers().find(ct => ct.id == networkPartnerData.partner),
+      contact: this.contactsMap.get(networkPartnerData.contact),
+      network: this.network!
+    }
+    this.networkPartnerUtils.updateNetworkPartner(editedNetworkPartner).subscribe({
+      next: (edited) => {
+        this.isLoading = false;
+        this.closeModal();
+        this.editNetworkPartner.emit({edited, status: 'success'});
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.log(error)
+        if (error instanceof OccError) {
+          this.showOCCErrorModalNetworkPartner = true;
+          this.occErrorNetworkPartnerType = error.errorType;
+        }
+        this.editNetworkPartner.emit({ status: 'error' });
+      }
+    });
+  }
   }
 
   closeModal() {
@@ -204,6 +231,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     this.networkPartnerForm.reset();
     this.selectedCustomer.set(0);
     this.selectedContact.set(0);
+    this.partnernoAlreadyExist = false;
     this.networkPartnerForm.markAsPristine();
     this.networkPartnerForm.markAsUntouched();
   }
