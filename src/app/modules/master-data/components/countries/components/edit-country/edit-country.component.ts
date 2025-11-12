@@ -102,6 +102,7 @@ export class EditCountryComponent implements OnInit, OnDestroy {
       this.countryUtils.updateCountry(updatedCountry).subscribe({
         next: () => {
           this.isSaving = false;
+          this.sendDefaultCountryMessage();
           this.clearForm();
           this.countryUtils.loadInitialData().subscribe();
           this.commonMessageService.showEditSucessfullMessage();
@@ -129,6 +130,19 @@ export class EditCountryComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+  
+  private sendDefaultCountryMessage(): void {
+    const isDefaultCountry = this.countryForm.value?.isStandard!;
+    if (isDefaultCountry === true) {
+      this.commonMessageService.showCustomSeverityAndMessageWithValue(
+        'warn',
+        'COUNTRIES.MESSAGE.SUCCESS',
+        'COUNTRIES.MESSAGE.DEFAULT_COUNTRY',
+        this.countryForm.value.name?.toString(),
+        true
+      )
+    }
   }
 
   private handleSaveSuccess(): void {
