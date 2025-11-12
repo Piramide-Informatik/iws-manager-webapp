@@ -38,6 +38,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   public networkPartnerForm!: FormGroup;
   public isLoading = false;
   public partnernoAlreadyExist = false;
+  public partnerAlreadyExist = false;
   selectedCustomer = signal(0);
   selectedContact = signal(0);
   isCreateButtonEnable = false;
@@ -71,18 +72,23 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     this.networkPartnerForm = new FormGroup({
       partnerno: new FormControl(null, [Validators.required]),
       comment: new FormControl(''),
-      partner: new FormControl(''),
+      partner: new FormControl('',[Validators.required]),
       contact: new FormControl(''),
     });
 
     this.networkPartnerForm.get('partner')?.valueChanges.subscribe(partnerId => {
       this.selectedCustomer.set(partnerId || 0);
-      this.networkPartnerForm.patchValue({ contact: '' }, { emitEvent: false });
       this.selectedContact.set(0);
+      this.networkPartnerForm.patchValue({ contact: null }, { emitEvent: false });
     });
     this.networkPartnerForm.get('partnerno')?.valueChanges.subscribe(() => {
       if (this.partnernoAlreadyExist) {
         this.partnernoAlreadyExist = false;
+      }
+    });
+    this.networkPartnerForm.get('partner')?.valueChanges.subscribe(() => {
+      if (this.partnerAlreadyExist) {
+        this.partnerAlreadyExist = false;
       }
     });
   }
@@ -118,20 +124,43 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
   onSubmit(): void {
     if(this.networkPartnerForm.invalid || this.isLoading || !this.network) return
     const networkPartnerData = this.networkPartnerForm.value;
+    const networkId = this.network.id;
     this.isLoading = true;
     this.partnernoAlreadyExist = false;
-    this.networkPartnerUtils.checkPartnernoExists(
-    networkPartnerData.partnerno,
+    this.partnerAlreadyExist = false;
+
+  this.networkPartnerUtils.checkPartnerExists(
+    networkPartnerData.partner,
     this.network.id,
     this.selectedNetworkPartner?.id
   ).subscribe({
-    next: (exists) => {
-      if (exists) {
+    next: (partnerExists) => {
+      if (partnerExists) {
         this.isLoading = false;
-        this.partnernoAlreadyExist = true;
+        this.partnerAlreadyExist = true;
         return;
       }
-      this.saveNetworkPartner(networkPartnerData);
+      
+      // Si el partner no existe, validar el partnerno
+      this.networkPartnerUtils.checkPartnernoExists(
+        networkPartnerData.partnerno,
+        networkId,
+        this.selectedNetworkPartner?.id
+      ).subscribe({
+        next: (partnernoExists) => {
+          if (partnernoExists) {
+            this.isLoading = false;
+            this.partnernoAlreadyExist = true;
+            return;
+          }
+          
+          // Si todo está bien, proceder con la creación/edición
+          this.saveNetworkPartner(networkPartnerData);
+        },
+        error: () => {
+          this.isLoading = false;
+        }
+      });
     },
     error: () => {
       this.isLoading = false;
@@ -232,6 +261,7 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
     this.selectedCustomer.set(0);
     this.selectedContact.set(0);
     this.partnernoAlreadyExist = false;
+    this.partnerAlreadyExist = false;
     this.networkPartnerForm.markAsPristine();
     this.networkPartnerForm.markAsUntouched();
   }
