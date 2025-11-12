@@ -141,7 +141,6 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
         return;
       }
       
-      // Si el partner no existe, validar el partnerno
       this.networkPartnerUtils.checkPartnernoExists(
         networkPartnerData.partnerno,
         networkId,
@@ -154,7 +153,6 @@ export class NetworkPartnerModalComponent implements OnInit, OnChanges {
             return;
           }
           
-          // Si todo está bien, proceder con la creación/edición
           this.saveNetworkPartner(networkPartnerData);
         },
         error: () => {
