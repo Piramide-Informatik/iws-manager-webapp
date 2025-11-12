@@ -816,7 +816,7 @@
       "HOLIDAY_NAME": "Nombre del festivo",
       "SORT": "Orden",
       "FIXED_DATE": "Fecha fija",
-      "FIX_DATE_FORMAT": "DD.MM",
+      "FIX_DATE_FORMAT": "DD.MM.",
       "DATE_FORMAT": "DD.MM.AAAA"
     },
     "TABLE": {

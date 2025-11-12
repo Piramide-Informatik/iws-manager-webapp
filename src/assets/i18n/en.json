@@ -817,7 +817,7 @@
       "HOLIDAY_NAME": "Holiday Name",
       "SORT": "Sort Order",
       "FIXED_DATE": "Fixed Date",
-      "FIX_DATE_FORMAT": "DD.MM",
+      "FIX_DATE_FORMAT": "DD.MM.",
       "DATE_FORMAT": "DD.MM.YYYY"
     },
     "TABLE": {

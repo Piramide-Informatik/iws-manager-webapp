@@ -18,7 +18,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
   styleUrls: ['./holidays-table.component.scss'],
 })
 export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
-  private readonly publicHolidayUtils = new PublicHolidayUtils();
+  private readonly publicHolidayUtils = inject(PublicHolidayUtils);
   private readonly publicHolidayService = inject(PublicHolidayService);
   private readonly messageService = inject(MessageService);
   
@@ -183,5 +183,9 @@ export class HolidaysTableComponent implements OnInit, OnDestroy, OnChanges {
 
   editPublicHoliday(publicHoliday: PublicHoliday) {
     this.publicHolidayStateService.setPublicHolidayToEdit(publicHoliday);
+  }
+
+  createdHoliday(){
+    this.publicHolidayUtils.loadInitialData().subscribe()
   }
 }

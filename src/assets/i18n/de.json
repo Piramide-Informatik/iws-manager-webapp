@@ -821,7 +821,7 @@
       "HOLIDAY_NAME": "Feiertag",
       "SORT": "Reihenfolge",
       "FIXED_DATE": "Festes Datum",
-      "FIX_DATE_FORMAT": "TT.MM",
+      "FIX_DATE_FORMAT": "TT.MM.",
       "DATE_FORMAT": "TT.MM.JJJJ"
     },
     "TABLE": {

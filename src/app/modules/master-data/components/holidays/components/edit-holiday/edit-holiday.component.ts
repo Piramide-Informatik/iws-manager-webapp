@@ -40,7 +40,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   private yearsModified = false;
   public occErrorHolidayType: OccErrorType = 'UPDATE_UPDATED';
 
-  fixDateFormatPicker: string = 'dd.mm';
+  fixDateFormatPicker: string = 'dd.mm.';
   dateFormatPicker: string = 'dd.mm.yy';
   isFixedDate: boolean = false;
   visibleModal: boolean = false;
@@ -287,6 +287,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     this.years = [];
     this.statesModified = false;
     this.yearsModified = false;
+    this.selectedPublicHolidayId = undefined;
   }
 
   public onRefresh(): void {
