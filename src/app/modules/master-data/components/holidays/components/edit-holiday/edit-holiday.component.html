@@ -160,7 +160,11 @@
 
         <ng-template #body let-year let-i="rowIndex">
           <tr [ngClass]="{ 'odd-row': i % 2 !== 0, 'even-row': i % 2 === 0 }">
-            <td (click)="onEditYear(year)" (keypress)="onEditYear(year)" class="clickable-title unispace-font-style">{{ year.year | date:'yyyy' }}</td>
+            @if(currentPublicHoliday?.isFixedDate){
+              <td class="unispace-font-style">{{ year.year | date:'yyyy' }}</td>
+            }@else{
+              <td (click)="onEditYear(year)" (keypress)="onEditYear(year)" class="clickable-title unispace-font-style">{{ year.year | date:'yyyy' }}</td>
+            }
             <td class="unispace-font-style">{{ year.date | date:'dd.MM.yyyy' }}</td>
           </tr>
         </ng-template>
@@ -172,8 +176,8 @@
     <p-button
       [label]="'BUTTONS.NEW_YEAR' | translate"
       icon="pi pi-plus"
-      (onClick)="isFixedDate ? addYear(selectedPublicHolidayId) : onNewYear()"
-      [disabled]="!selectedPublicHolidayId || !currentPublicHoliday"
+      (onClick)="onNewYear()"
+      [disabled]="!selectedPublicHolidayId || isFixedDate"
     ></p-button>
   </div>
 </p-card>

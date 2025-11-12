@@ -107,7 +107,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   private initForm(): void {
     this.depreciationForm = new FormGroup({
       year: new FormControl('', [Validators.required, this.uniqueYearValidator.bind(this)]),
-      months: new FormControl(null, [Validators.min(0), Validators.max(12)]),
+      months: new FormControl(null, [Validators.min(0), Validators.max(127)]),
       depreciationAmount: new FormControl(null),
     });
     this.depreciationForm.get('depreciationAmount')?.disable();

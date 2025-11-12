@@ -62,7 +62,7 @@
     "NUMBER_FORMAT_ERROR": "A number with the next format 1.234,56 is expected.",
     "NUMBER_MAX": "Max value 100 expected",
     "NUMBER_BETWEEN_0_1": "Values between 0 - 1",
-    "NUMBER_MAX_12": "Max value 12 expected",
+    "NUMBER_MAX_127": "Max value 127 expected",
     "DUPLICATE_PROBABILITY": "This probability already exists",
     "FIELD_REQUIRED": "Field required",
     "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected",
@@ -599,7 +599,7 @@
     "DEPRECIATION_COLUMNS": {
       "TABLE_NAME": "Allocation by years",
       "YEAR": "Year",
-      "SERVICE_LIFE": "Usage Percentage",
+      "SERVICE_LIFE": "Share",
       "AFA_BY_YEAR": "AfA per Year",
       "MODAL_TITLE_NEW": "Subcontract - New depreciation year",
       "MODAL_TITLE_EDIT": "Subcontract - Edit depreciation year"
@@ -817,7 +817,7 @@
       "HOLIDAY_NAME": "Holiday Name",
       "SORT": "Sort Order",
       "FIXED_DATE": "Fixed Date",
-      "FIX_DATE_FORMAT": "DD.MM",
+      "FIX_DATE_FORMAT": "DD.MM.",
       "DATE_FORMAT": "DD.MM.YYYY"
     },
     "TABLE": {

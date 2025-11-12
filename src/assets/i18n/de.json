@@ -63,7 +63,7 @@
     "NUMBER_MAX": "Maximalwert 100 erwartet",
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
-    "NUMBER_MAX_12": "Maximalwert 12 erwartet",
+    "NUMBER_MAX_127": "Maximalwert 127 erwartet",
     "FIELD_REQUIRED": "Pflichtfeld",
     "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet",
     "RECORD_ARLEADY_EXISTS": "Dieser Datensatz existiert bereits",
@@ -821,7 +821,7 @@
       "HOLIDAY_NAME": "Feiertag",
       "SORT": "Reihenfolge",
       "FIXED_DATE": "Festes Datum",
-      "FIX_DATE_FORMAT": "TT.MM",
+      "FIX_DATE_FORMAT": "TT.MM.",
       "DATE_FORMAT": "TT.MM.JJJJ"
     },
     "TABLE": {

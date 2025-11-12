@@ -34,7 +34,7 @@ export class PublicHolidayUtils {
     //Get a publicHoliday by ID
     getPublicHolidayById(id: number): Observable<PublicHoliday | undefined> {
         if (!id || id <= 0) {
-            return throwError(() => new Error('Invalid projectStatus ID'));
+            return throwError(() => new Error('Invalid public holiday ID'));
         }
         return this.publicHolidayService.getPublicHolidayById(id).pipe(
             catchError(err => {
@@ -42,6 +42,10 @@ export class PublicHolidayUtils {
                 return throwError(() => new Error('Failed to load PublicHoliday'));
             })
         );
+    }
+
+    getAllPublicHolidays(): Observable<PublicHoliday[]> {
+        return this.publicHolidayService.getAllPublicHolidays();
     }
 
     //Creates a new publicHoliday with validation

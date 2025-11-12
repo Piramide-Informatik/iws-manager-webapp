@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicHolidayUtils } from '../../utils/public-holiday-utils';
-import { finalize, take } from 'rxjs/operators';
+import { finalize, map, switchMap, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { PublicHolidayStateService } from '../../utils/public-holiday-state.service';
@@ -9,6 +9,7 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { DatePicker } from 'primeng/datepicker';
 import { PublicHoliday } from '../../../../../../Entities/publicholiday';
+import { HolidayYearUtils } from '../../utils/holiday-year-utils';
 @Component({
   selector: 'app-holiday-modal',
   standalone: false,
@@ -17,6 +18,7 @@ import { PublicHoliday } from '../../../../../../Entities/publicholiday';
 })
 export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
+  private readonly holidayYearUtils = inject(HolidayYearUtils);
   private readonly publicHolidayStateService = inject(PublicHolidayStateService);
   private readonly commonMessageService = inject(CommonMessagesService); 
   private readonly subscriptions = new Subscription();
@@ -38,7 +40,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
   errorMessage: string | null = null;
   showOCCErrorModalHoliday = false;
   public occErrorHolidayType: OccErrorType = 'DELETE_UNEXISTED';
-  fixDateFormatPicker: string = 'dd.mm';
+  fixDateFormatPicker: string = 'dd.mm.';
   dateFormatPicker: string = 'dd.mm.yy';
   isFixedDate: boolean = false;
   holidayAlreadyExists = false;
@@ -156,27 +158,50 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
 
     this.prepareForSubmission();
     const newPublicHoliday = this.getSanitizedPublicHolidayValues();
-
-    const sub = this.publicHolidayUtils
-      .addPublicHoliday(newPublicHoliday)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: (created) => this.handleSuccess(created),
-        error: (error) => {
-          this.handleError(error);
-        },
+    let sub;
+    if(newPublicHoliday.isFixedDate){
+      sub = this.publicHolidayUtils
+        .addPublicHoliday(newPublicHoliday)
+        .pipe(finalize(() => (this.isLoading = false)))
+        .subscribe({
+          next: (created) => this.handleSuccess(created),
+          error: (error) => {
+            this.handleError(error);
+          },
+        });
+    } else {
+      sub = this.publicHolidayUtils.addPublicHoliday(newPublicHoliday)
+      .pipe(
+        switchMap((created) => {
+          return this.holidayYearUtils.createHolidayYear({
+            date: created.date ?? '',
+            year: created.date ?? '',
+            publicHoliday: created,
+            weekday: 1
+          }).pipe(
+            map(createdHolidayYear => ({
+              publicHoliday: created,
+              holidayYear: createdHolidayYear
+            }))
+          )
+        }),
+        finalize(() => (this.isLoading = false))
+      ).subscribe({
+        next: (result) => this.handleSuccess(result.publicHoliday),
+        error: (error) => this.handleError(error),
       });
+    }
     this.subscriptions.add(sub);
   }
 
   private handleSuccess(created: PublicHoliday): void {
+    this.publicHolidayCreated.emit();
     this.publicHolidayStateService.setPublicHolidayToEdit(created);
     this.toastMessage.emit({
       severity: 'success',
       summary: 'MESSAGE.SUCCESS',
       detail: 'MESSAGE.CREATE_SUCCESS',
     });
-    this.publicHolidayCreated.emit();
     this.handleClose();
   }
 
