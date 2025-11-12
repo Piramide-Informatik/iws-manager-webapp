@@ -147,13 +147,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
+    const EMAIL_STRICT = String.raw`^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$`;
     this.employeeForm = new FormGroup({
       employeeNumber: new FormControl(null,[Validators.required]),
       salutation: new FormControl(''),
       title: new FormControl(''),
       employeeFirstName: new FormControl(''),
       employeeLastName: new FormControl('', [Validators.required]),
-      employeeEmail: new FormControl('', [Validators.email]),
+      employeeEmail: new FormControl('', [Validators.email, Validators.pattern(EMAIL_STRICT)]),
       generalManagerSinceDate: new FormControl(''),
       shareholderSinceDate: new FormControl(''),
       solePropietorSinceDate: new FormControl(''),

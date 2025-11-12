@@ -185,7 +185,8 @@
             />
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
               (formDetailCustomer.get('invoiceEmail')?.invalid && formDetailCustomer.get('invoiceEmail')?.dirty)">
-              <span *ngIf="formDetailCustomer.get('invoiceEmail')?.errors?.['email'] && formDetailCustomer.get('invoiceEmail')?.dirty">
+              <span *ngIf="(formDetailCustomer.get('invoiceEmail')?.errors?.['email']||
+                formDetailCustomer.get('invoiceEmail')?.errors?.['pattern']) && formDetailCustomer.get('invoiceEmail')?.dirty">
                 {{ 'CUSTOMERS.VALIDATION.INVALID_EMAIL' | translate }}
               </span>
             </p-message>
