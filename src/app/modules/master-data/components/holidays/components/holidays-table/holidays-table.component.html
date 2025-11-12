@@ -30,6 +30,7 @@
         [publicHolidayToDelete]="selectedPublicHoliday"
         (isVisibleModel)="onModalVisibilityChange($event)"
         (toastMessage)="toastMessageDisplay($event)"
+        (publicHolidayCreated)="createdHoliday()"
         #holidayModal>
     </app-holiday-modal>
 </p-dialog>
