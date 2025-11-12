@@ -1177,7 +1177,9 @@
       "NO": "Nr.",
       "COMMENT": "Kommentar",
       "CUSTOMER": "Kunde",
-      "CONTACT": "Kontakt"
+      "CONTACT": "Kontakt",
+      "NO_ALREADY_EXIST": "Die Partnernummer existiert bereits",
+      "PARTNER_ALREADY_EXISTS": "Bereits verknüpft"
     },
     "ERROR": {
       "ALREADY_EXIST": "Netzwerk existiert bereits"

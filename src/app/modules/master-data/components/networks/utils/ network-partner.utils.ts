@@ -112,4 +112,25 @@ checkPartnernoExists(partnerno: number, networkId: number, excludePartnerId?: nu
     catchError(() => of(false))
   );
 }
+
+/**
+ * Checks if a partner (customer) already exists for a given network
+ * @param partnerId - Customer ID to check
+ * @param networkId - ID of the network
+ * @param excludeNetworkPartnerId - Optional ID of network partner to exclude (for edit mode)
+ * @returns Observable<boolean> - true if exists, false otherwise
+ */
+checkPartnerExists(partnerId: number, networkId: number, excludeNetworkPartnerId?: number): Observable<boolean> {
+  return this.getNetworkPartnerByNetworkId(networkId).pipe(
+    map(partners => {
+      if (!partners) return false;
+      
+      return partners.some(networkPartner => 
+        networkPartner.partner?.id === partnerId && 
+        networkPartner.id !== excludeNetworkPartnerId
+      );
+    }),
+    catchError(() => of(false))
+  );
+}
 }
