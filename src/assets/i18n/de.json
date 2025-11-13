@@ -290,7 +290,7 @@
     },
     "VALIDATION": {
       "INVALID_EMAIL": "Ungültiges E-Mail-Format",
-      "COMPANY_TEXT1_REQUIRED": "Firmenname ist erforderlich"
+      "COMPANY_TEXT1_REQUIRED": "Unternehmensname ist erforderlich"
     }
   },
   "EMPLOYEE": {
@@ -1176,7 +1176,9 @@
       "NO": "Nr.",
       "COMMENT": "Kommentar",
       "CUSTOMER": "Kunde",
-      "CONTACT": "Kontakt"
+      "CONTACT": "Kontakt",
+      "NO_ALREADY_EXIST": "Die Partnernummer existiert bereits",
+      "PARTNER_ALREADY_EXISTS": "Bereits verknüpft"
     },
     "ERROR": {
       "ALREADY_EXIST": "Netzwerk existiert bereits"
