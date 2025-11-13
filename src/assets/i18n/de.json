@@ -290,7 +290,7 @@
     },
     "VALIDATION": {
       "INVALID_EMAIL": "Ungültiges E-Mail-Format",
-      "COMPANY_TEXT1_REQUIRED": "Firmenname ist erforderlich"
+      "COMPANY_TEXT1_REQUIRED": "Unternehmensname ist erforderlich"
     }
   },
   "EMPLOYEE": {
