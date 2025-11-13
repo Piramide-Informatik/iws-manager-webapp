@@ -121,7 +121,6 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       )
     ).subscribe({
       next: (filterData) => {
-        console.log("filterData: ", filterData)
         const noneLabel = this.translate.instant(('FILTER.OPTIONS.SELECT_NONE'));
         
         this.qualificationsFZ = [
