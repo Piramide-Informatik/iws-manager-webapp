@@ -116,9 +116,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   private inputMonthsChange(): void {
     this.depreciationForm.get('months')?.valueChanges.subscribe(value => {
       const months = value;
-      const invoiceNet = this.currentSubcontract?.invoiceNet ?? 0;
+      const invoiceAmount = this.currentSubcontract?.invoiceAmount ?? 0;
       const afamonths = this.currentSubcontract?.afamonths ?? 0;
-      const depreciationAmount = this.calculateDepreciationAmount(invoiceNet, afamonths, months);
+      const depreciationAmount = this.calculateDepreciationAmount(invoiceAmount, afamonths, months);
       this.depreciationForm.get('depreciationAmount')?.setValue(depreciationAmount, { emitEvent: false });
       this.calculateTotalMonths();
     });
@@ -165,8 +165,8 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
     this.visibleSubcontractYearModal = false;
   }
 
-  private calculateDepreciationAmount(invoiceNet: number, afamonths: number, months: number): number {
-    return afamonths === 0 || months === 0 ? 0 : invoiceNet / afamonths * months;
+  private calculateDepreciationAmount(invoiceAmount: number, afamonths: number, months: number): number {
+    return afamonths === 0 || months === 0 ? 0 : invoiceAmount / afamonths * months;
   }
 
   public onSubmit(): void {
@@ -272,7 +272,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   private loadSubcontractYears(subcontractId: number): void {
     this.subcontractYearUtils.getAllSubcontractsYearSortedByYear(subcontractId).subscribe(sc => {
       this.subcontractsYear = sc.reduce((acc: any, curr: SubcontractYear) => {
-        const invoiceNet = curr.subcontract?.invoiceNet ?? 0;
+        const invoiceAmount = curr.subcontract?.invoiceAmount ?? 0;
         const afamonths = curr.subcontract?.afamonths ?? 0;
         const subcontractsYearMonths = curr.months ?? 0;
         acc.push({
@@ -282,7 +282,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
           version: curr.version,
           year: curr.year,
           usagePercentage: curr.months,
-          depreciationAmount: this.calculateDepreciationAmount(invoiceNet, afamonths, subcontractsYearMonths)
+          depreciationAmount: this.calculateDepreciationAmount(invoiceAmount, afamonths, subcontractsYearMonths)
         } as DepreciationEntry);
         return acc;
       }, [])
