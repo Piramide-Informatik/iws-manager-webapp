@@ -668,7 +668,7 @@
     },
     "ERROR": {
       "SALUTATION_REQUIRED": "Saludo requerido",
-      "ALREADY_EXIST":"Saludo ya existe"
+      "ALREADY_EXIST": "Saludo ya existe"
     }
   },
   "STATES": {
@@ -1045,7 +1045,8 @@
       "SUCCESS": "ÉXITO",
       "ERROR": "ERROR",
       "UPDATE_SUCCESS": "Actualización exitosa",
-      "UPDATE_FAILED": "Actualización fallida"
+      "UPDATE_FAILED": "Actualización fallida",
+      "DEFAULT_COUNTRY": "El país '{{ value }}' es el país por defecto."
     },
     "MODAL_CREATE": {
       "NEW_COUNTRY": "Nuevo País"
@@ -1171,7 +1172,9 @@
       "NO": "No",
       "COMMENT": "Comentario",
       "CUSTOMER": "Cliente",
-      "CONTACT": "Contacto"
+      "CONTACT": "Contacto",
+      "NO_ALREADY_EXIST": "El numero de socio ya existe",
+      "PARTNER_ALREADY_EXISTS": "Ya está asociado"
     },
     "ERROR": {
       "ALREADY_EXIST": "La red ya existe"
@@ -1233,7 +1236,7 @@
       "NEW": "Nueva Probabilidad de Ejecución",
       "DELETE": "Eliminar Probabilidad de Ejecución"
     },
-      "ERROR": {
+    "ERROR": {
       "PROBABILITY_ALREADY_EXIST": "Probabilidad de Ejecución ya existe"
     }
   },
@@ -1326,7 +1329,7 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Estado del Contrato es requerido",
-      "ALREADY_EXIST" :"Estado del Contrato ya existe"
+      "ALREADY_EXIST": "Estado del Contrato ya existe"
     },
     "MODAL": {
       "TITLE_CREATE": "Nuevo Estado del Contrato",

@@ -19,9 +19,9 @@ export class CountryModalComponent implements OnInit {
   @Input() countryName: string | null = null;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() countryCreated = new EventEmitter<void>();
-  @Output() confirmDelete = new EventEmitter<{severity: string, summary: string, detail: string}>();
+  @Output() confirmDelete = new EventEmitter<{ severity: string, summary: string, detail: string }>();
   @ViewChild('countryNameInput') countryNameInput!: ElementRef<HTMLInputElement>;
-  
+
   isLoading = false;
   errorMessage: string | null = null;
   public showOCCErrorModalCountry = false;
@@ -29,7 +29,7 @@ export class CountryModalComponent implements OnInit {
   public nameAlreadyExist = false;
   public abbreviationAlreadyExist = false;
 
-  constructor(private readonly commonMessageService: CommonMessagesService) {}
+  constructor(private readonly commonMessageService: CommonMessagesService) { }
 
   readonly createCountryForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -55,7 +55,7 @@ export class CountryModalComponent implements OnInit {
       next: () => {
         this.countryUtils.loadInitialData().subscribe();
         this.commonMessageService.showCreatedSuccesfullMessage();
-        this.countryCreated.emit();
+        this.sendDefaultCountryMessage();
         this.handleClose();
         this.isLoading = false;
       },
@@ -77,6 +77,22 @@ export class CountryModalComponent implements OnInit {
         }
       }
     });
+  }
+
+  private sendDefaultCountryMessage(): void {
+    const isDefaultCountry = this.createCountryForm.value?.isStandard!;
+    if (isDefaultCountry === true) {
+      this.commonMessageService.showCustomSeverityAndMessageWithValue(
+        'warn',
+        'COUNTRIES.MESSAGE.SUCCESS',
+        'COUNTRIES.MESSAGE.DEFAULT_COUNTRY',
+        this.createCountryForm.value.name?.toString(),
+        true
+      )
+    }
+    else {
+      this.countryCreated.emit();
+    }
   }
 
   onDeleteConfirm(): void {
@@ -107,7 +123,7 @@ export class CountryModalComponent implements OnInit {
   }
 
   private handleEntityRelatedError(error: any): void {
-    if(error.error?.message?.includes('a foreign key constraint fails')) {
+    if (error.error?.message?.includes('a foreign key constraint fails')) {
       this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
       this.closeModal();
     }
@@ -154,7 +170,7 @@ export class CountryModalComponent implements OnInit {
   onCancel(): void {
     this.handleClose();
   }
-  
+
   private getCountryFormValues() {
     return {
       name: this.createCountryForm.value.name?.trim() ?? '',
@@ -174,7 +190,7 @@ export class CountryModalComponent implements OnInit {
     const nameValue = this.createCountryForm.get('name')?.value?.trim();
     const abbreviationValue = this.createCountryForm.get('abbreviation')?.value?.trim();
     const hasAtLeastOneField = !!nameValue || !!abbreviationValue;
-    
+
     return this.createCountryForm.invalid || this.isLoading || !hasAtLeastOneField;
   }
 }

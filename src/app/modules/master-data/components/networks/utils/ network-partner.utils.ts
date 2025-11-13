@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, take, throwError } from 'rxjs';
 import { Network } from '../../../../../Entities/network';
 import { NetworkPartnerService } from '../../../../../Services/network-partner.service';
 import { NetworkPartner } from '../../../../../Entities/network-partner';
@@ -92,4 +92,45 @@ export class NetowrkPartnerUtils {
       })
     );
   }
+  /**
+ * Checks if a partner number already exists for a given network
+ * @param partnerno - Partner number to check
+ * @param networkId - ID of the network
+ * @param excludePartnerId - Optional ID of partner to exclude (for edit mode)
+ * @returns Observable<boolean> - true if exists, false otherwise
+ */
+checkPartnernoExists(partnerno: number, networkId: number, excludePartnerId?: number): Observable<boolean> {
+  return this.getNetworkPartnerByNetworkId(networkId).pipe(
+    map(partners => {
+      if (!partners) return false;
+      
+      return partners.some(partner => 
+        partner.partnerno === partnerno && 
+        partner.id !== excludePartnerId
+      );
+    }),
+    catchError(() => of(false))
+  );
+}
+
+/**
+ * Checks if a partner (customer) already exists for a given network
+ * @param partnerId - Customer ID to check
+ * @param networkId - ID of the network
+ * @param excludeNetworkPartnerId - Optional ID of network partner to exclude (for edit mode)
+ * @returns Observable<boolean> - true if exists, false otherwise
+ */
+checkPartnerExists(partnerId: number, networkId: number, excludeNetworkPartnerId?: number): Observable<boolean> {
+  return this.getNetworkPartnerByNetworkId(networkId).pipe(
+    map(partners => {
+      if (!partners) return false;
+      
+      return partners.some(networkPartner => 
+        networkPartner.partner?.id === partnerId && 
+        networkPartner.id !== excludeNetworkPartnerId
+      );
+    }),
+    catchError(() => of(false))
+  );
+}
 }
