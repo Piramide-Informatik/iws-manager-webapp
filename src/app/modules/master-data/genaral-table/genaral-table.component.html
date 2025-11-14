@@ -49,7 +49,14 @@
                   [placeholder]="'COMMON.SEARCH' | translate"/>
               </ng-template>
             </p-columnFilter>
-          } @else {          
+          } @else if (col.filter && col.filter.type === 'date') {
+            <p-columnFilter type="date" [field]="col.field" locale="DE">
+              <ng-template #filter let-value let-filter="filterCallback">
+                <input type="date" pInputText [ngModel]="value" (ngModelChange)="filter($event)" class="p-inputtext"
+                  [placeholder]="'COMMON.SEARCH' | translate" />
+              </ng-template>
+            </p-columnFilter>
+          } @else {      
           <p-columnFilter type="text" [field]="col.field" matchMode="contains" ariaLabel="Filter Name">
             <ng-template #filter let-value let-filter="filterCallback">
               <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" class="p-inputtext"
