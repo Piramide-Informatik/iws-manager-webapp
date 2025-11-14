@@ -1,3 +1,4 @@
+//employee-overview.component.ts
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Employee } from '../../../../Entities/employee';
@@ -90,22 +91,23 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
         field: 'employeeno',
         routerLink: (row: any) => `./employee-details/${row.id}`,
         header: this.translate.instant(_('EMPLOYEE.TABLE.EMPLOYEE_ID')),
-        customClasses: ['align-right', 'date-font-style']
+        customClasses: ['align-right', 'date-font-style','narrow-column','employee-narrow'],
+        classesTHead: ['employee-narrow']
       },
-      { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')) },
-      { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')) },
-      { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')) },
-      { field: 'generalmanagersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'shareholdersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'soleproprietorsince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), customClasses: ['align-right'] },
-      { field: 'coentrepreneursince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')), customClasses: ['align-right'] },
+      { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')), customClasses: ['employee-wide'], classesTHead: ['employee-wide'] },
+      { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')), customClasses: ['employee-wide'], classesTHead: ['employee-wide'] },
+      { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')),  customClasses: ['employee-medium'], classesTHead: ['employee-medium'] },
+      { field: 'generalmanagersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')), customClasses: ['align-right','employee-narrow-date'], classesTHead: ['employee-narrow-date']  }, //GF
+      { field: 'shareholdersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')), customClasses: ['align-right', 'employee-narrow-date'], classesTHead: ['employee-narrow-date'] }, //Gest
+      { field: 'soleproprietorsince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), customClasses: ['align-right', 'employee-narrow-date'], classesTHead: ['employee-narrow-date'] }, //EU
+      { field: 'coentrepreneursince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')), customClasses: ['align-right', 'employee-narrow-date'], classesTHead: ['employee-narrow-date'] }, //MU
       {
         field: 'qualificationFZ.qualification', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')), filter: {
           type: 'multiple',
           data: this.qualificationsFZ
-        }
+        },customClasses: ['employee-medium'], classesTHead: ['employee-medium']
       },
-      { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')) },
+      { field: 'qualificationkmui', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_MKUI')),customClasses: ['employee-medium'], classesTHead: ['employee-medium']},
 
     ];
     // Load grades dynamically

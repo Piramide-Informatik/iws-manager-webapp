@@ -128,11 +128,55 @@ p-button {
     max-width: 100px !important;
   }
 
-
   thead.p-datatable-thead>tr>th#hide-columns.thead-bg-blue {
     width: 75px !important;
     max-width: 75px !important;
   }
+
+  // Classes for Employee Overview - Narrow Columns (No., GF, EU, MU)
+  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.employee-narrow:not(.p-datatable-frozen-column),
+  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.employee-narrow-date:not(.p-datatable-frozen-column) {
+    width: 80px !important;
+    min-width: 80px !important;
+    max-width: 100px !important;
+  }
+
+  p-table#iwstable table.p-datatable-resizable-table > tbody.p-datatable-tbody > tr > td.employee-narrow:not(.p-datatable-frozen-column),
+  p-table#iwstable table.p-datatable-resizable-table > tbody.p-datatable-tbody > tr > td.employee-narrow-date:not(.p-datatable-frozen-column) {
+    width: 80px !important;
+    min-width: 80px !important;
+    max-width: 100px !important;
+  }
+
+  // Classes for Employee Overview - Wide Columns (First name, Last name)
+  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.employee-wide:not(.p-datatable-frozen-column) {
+    width: 180px !important;
+    min-width: 150px !important;
+    max-width: 200px !important;
+  }
+
+  p-table#iwstable table.p-datatable-resizable-table > tbody.p-datatable-tbody > tr > td.employee-wide:not(.p-datatable-frozen-column) {
+    width: 180px !important;
+    min-width: 150px !important;
+    max-width: 200px !important;
+  }
+
+  // Classes for Employee Overview - Medium Columns (Email, SH, Quali FZ, Quali MKUI)
+  p-table#iwstable table.p-datatable-resizable-table > thead.p-datatable-thead > tr > th.p-datatable-resizable-column.employee-medium:not(.p-datatable-frozen-column),
+  p-table#iwstable table.p-datatable-thead > tr > th.p-datatable-resizable-column.employee-medium-date:not(.p-datatable-frozen-column) {
+    width: 120px !important;
+    min-width: 100px !important;
+    max-width: 150px !important;
+  }
+
+  p-table#iwstable table.p-datatable-resizable-table > tbody.p-datatable-tbody > tr > td.employee-medium:not(.p-datatable-frozen-column),
+  p-table#iwstable table.p-datatable-tbody > tr > td.employee-medium-date:not(.p-datatable-frozen-column) {
+    width: 120px !important;
+    min-width: 100px !important;
+    max-width: 150px !important;
+  }
+
+
 }
 
 .clickable-title:hover {
