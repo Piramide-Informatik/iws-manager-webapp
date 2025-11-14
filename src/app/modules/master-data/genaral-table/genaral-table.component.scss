@@ -32,11 +32,6 @@ p-button {
   text-align: right;
 }
 
-.td-fix-max-min-width {
-  max-width: 30rem !important;
-  min-width: 30rem !important;
-}
-
 .nowrap-row {
   cursor: default;
   white-space: nowrap;
@@ -58,7 +53,8 @@ p-button {
   }
 
   .p-inputtext {
-    min-width: 70px;
+    min-width: 55px;
+    padding-inline: 6px;
     width: 100% !important;
   }
 
@@ -76,6 +72,24 @@ p-button {
   p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width:not(.p-datatable-frozen-column) {
     width: 150px !important;
     max-width: none !important;
+  }
+
+  //class: fix-td-width-project-label -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-project-label:not(.p-datatable-frozen-column) {
+    width: 12rem !important;
+    max-width: 14rem !important;
+  }
+
+  //class: fix-td-width-project-name -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-project-name:not(.p-datatable-frozen-column) {
+    width: 35rem !important;
+    max-width: 40rem !important;
+  }
+
+  //class: fix-td-width-project-funding-label -> td -> customClasses
+  p-table#iwstable table.p-datatable-resizable-table>tbody.p-datatable-tbody>tr>td.fix-td-width-project-funding-label:not(.p-datatable-frozen-column) {
+    min-width: 16rem !important;
+    max-width: 16rem !important;
   }
 
   //class: fix-td-width-contractor-taxNo -> td -> customClasses
