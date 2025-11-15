@@ -45,20 +45,7 @@ export class PromoterUtils {
       return throwError(() => new Error('Abbreviation is required'));
     }
 
-    return this.promoterExists(projectPromoter).pipe(
-      switchMap((exists) => {
-        if (exists) {
-          return throwError(() => new Error('abbreviation already exists'));
-        }
-        return this.promoterService.addPromoter(promoter);
-      }),
-      catchError((err) => {
-        if (err.message === 'abbreviation already exists') {
-          return throwError(() => err);
-        }
-        return throwError(() => new Error('PROMOTER.ERROR.CREATION_FAILED'));
-      })
-    );
+    return this.promoterService.addPromoter(promoter);
   }
 
   addPromoterWithAutoNumber(promoter: Omit<Promoter, 'id' | 'createdAt' | 'updatedAt' | 'version' | 'promoterNo'>): Observable<Promoter> {
@@ -67,20 +54,7 @@ export class PromoterUtils {
       return throwError(() => new Error('Abbreviation is required'));
     }
 
-    return this.promoterExists(projectPromoter).pipe(
-      switchMap((exists) => {
-        if (exists) {
-          return throwError(() => new Error('abbreviation already exists'));
-        }
-        return this.promoterService.addPromoterWithAutoNumber(promoter);
-      }),
-      catchError((err) => {
-        if (err.message === 'abbreviation already exists') {
-          return throwError(() => err);
-        }
-        return throwError(() => new Error('PROMOTER.ERROR.CREATION_FAILED'));
-      })
-    );
+    return this.promoterService.addPromoterWithAutoNumber(promoter);
   }
 
   /**

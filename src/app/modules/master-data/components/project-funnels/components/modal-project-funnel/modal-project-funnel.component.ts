@@ -79,6 +79,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
       },
       error: (error) => {
         this.isLoading = false;
+        this.handleDuplicateCreateError(error);
         if (error.message?.includes('abbreviation already exists')) {
           this.abbreviationAlreadyExist = true;
           this.projectFunnelForm.get('projectPromoter')?.valueChanges.pipe(take(1))
@@ -89,6 +90,15 @@ export class ModalProjectFunnelComponent implements OnChanges {
         }
       }
     })
+  }
+
+  private handleDuplicateCreateError(error: any): void {
+    console.log(error);
+    if (error.error?.message?.includes("duplication with")) {
+      if (error.error.message.includes(this.projectFunnelForm.value.projectPromoter?.trim())) {
+        this.abbreviationAlreadyExist = true;
+      }
+    }
   }
 
   deleteProjectFunnel() {
