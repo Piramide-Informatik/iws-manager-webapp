@@ -15,10 +15,7 @@
             <div class="project-funnel-form">
                 <label for="projectPromoter">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>
                 <div class="input-message">
-                    <input pInputText type="text" id="projectPromoter" formControlName="projectPromoter" autocomplete="off"
-                        [ngClass]="{'ng-invalid': projectFunnelForm.get('projectPromoter')?.invalid && 
-                        (projectFunnelForm.get('projectPromoter')?.dirty || projectFunnelForm.get('projectPromoter')?.touched) ||
-                        abbreviationAlreadyExist}"
+                    <input pInputText type="text" id="projectPromoter" formControlName="projectPromoter" autocomplete="off" [appAutoFocusOnVisible]="visible"
                         invalid="projectFunnelForm.get('projectPromoter')?.invalid  
                         && projectFunnelForm.get('projectPromoter')?.dirty 
                         || projectFunnelForm.get('projectPromoter')?.touched
@@ -74,7 +71,7 @@
             <div class="row">
                 <div class="col flex justify-content-center mt-2">
                     <p-button class="save me-2" type="submit" [loading]="isLoading" 
-                        [disabled]="projectFunnelForm.invalid || !projectFunnelForm.dirty || abbreviationAlreadyExist" size="small" 
+                        [disabled]=" !projectFunnelForm.dirty || projectFunnelForm.invalid" size="small" 
                         [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
                     <p-button class="cancel me-2" size="small" (onClick)="closeModal()" 
                         [disabled]="isLoading" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />

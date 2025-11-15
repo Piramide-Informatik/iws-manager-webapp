@@ -90,6 +90,12 @@ export class ModalProjectFunnelComponent implements OnChanges {
         }
       }
     })
+
+    this.projectFunnelForm.get('projectPromoter')?.valueChanges.subscribe(() => {
+      if (this.abbreviationAlreadyExist) {
+        this.abbreviationAlreadyExist = false;
+      }
+    });
   }
 
   private handleDuplicateCreateError(error: any): void {
