@@ -8,14 +8,20 @@
     flex-shrink: 0;
   }
 
-  input, p-select {
+  input,
+  p-select {
     width: 100%;
     max-width: 300px;
   }
+
   p-inputnumber {
-      width: 100%;
-      max-width: 300px;
-    }
+    width: 100%;
+    max-width: 300px;
+  }
+
+  #promoterName2{
+    margin-top: 0.4rem;
+  }
 }
 
 .group {

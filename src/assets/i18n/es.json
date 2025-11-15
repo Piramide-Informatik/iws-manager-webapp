@@ -1122,7 +1122,8 @@
       "DELETE": "Eliminar Patrocinador del Proyecto"
     },
     "ERROR": {
-      "ABBREVIATION_ALREADY_EXIST": "Patrocinador del proyecto ya existe"
+      "ABBREVIATION_ALREADY_EXIST": "Patrocinador del proyecto ya existe",
+      "NAME_ALREADY_EXIST": "El nombre del patrocinador del proyecto ya existe"
     }
   },
   "PROJECT_STATUS": {
