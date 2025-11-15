@@ -127,15 +127,7 @@ export class PromoterUtils {
           return throwError(() => createUpdateConflictError('ProjectStatus'));
         }
 
-        return this.promoterExists(projectPromoter).pipe(
-          switchMap((exists) => {
-            const currentAbbreviation = currentPromoter.projectPromoter?.toLowerCase() || '';
-            if (exists && currentAbbreviation !== projectPromoter.toLowerCase()) {
-              return throwError(() => new Error('abbreviation already exists'));
-            }
-            return this.promoterService.updatePromoter(promoter);
-          })
-        );
+        return this.promoterService.updatePromoter(promoter);
       }),
       catchError((err) => {
         console.error('Error updating promoter:', err);
