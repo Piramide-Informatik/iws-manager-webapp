@@ -12,7 +12,7 @@ import { CountryUtils } from '../../../countries/utils/country-util';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PromoterStateService } from '../../utils/promoter-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { Country } from '../../../../../../Entities/country';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';

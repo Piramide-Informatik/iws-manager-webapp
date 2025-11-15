@@ -7,7 +7,6 @@ import { CountryUtils } from '../../../countries/utils/country-util';
 import { Country } from '../../../../../../Entities/country';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-project-funnel',
