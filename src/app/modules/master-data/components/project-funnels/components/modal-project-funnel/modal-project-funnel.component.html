@@ -33,7 +33,7 @@
                         <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="projectFunnelForm.get('promoterName1')?.invalid && 
                         (projectFunnelForm.get('promoterName1')?.dirty || projectFunnelForm.get('promoterName1')?.touched) ||
                         name1AlreadyExist">
-                            {{ name1AlreadyExist ? ('PROJECT_FUNNELS.ERROR.ABBREVIATION_ALREADY_EXIST' |
+                            {{ name1AlreadyExist ? ('PROJECT_FUNNELS.ERROR.NAME_ALREADY_EXIST' |
                             translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
                         </p-message>
                     </div>
