@@ -8,14 +8,19 @@
     margin-right: 5px;
   }
 
-  input, p-select {
+  input,
+  p-select {
     width: 100%;
   }
 
   p-inputnumber {
-      width: 100%;
-      max-width: 450px;
-    }
+    width: 100%;
+    max-width: 450px;
+  }
+
+  #promoterName2{
+    margin-top: 0.4rem;
+  }
 }
 
 .group {
