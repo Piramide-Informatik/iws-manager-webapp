@@ -7,7 +7,6 @@ import { CountryUtils } from '../../../countries/utils/country-util';
 import { Country } from '../../../../../../Entities/country';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-project-funnel',
@@ -29,6 +28,7 @@ export class ModalProjectFunnelComponent implements OnChanges {
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalPromoter = false;
   public abbreviationAlreadyExist = false;
+  public name1AlreadyExist = false;
   public countries = toSignal(this.countryUtils.getCountriesSortedByName(), { initialValue: [] })
 
   public readonly projectFunnelForm = new FormGroup({
@@ -79,16 +79,37 @@ export class ModalProjectFunnelComponent implements OnChanges {
       },
       error: (error) => {
         this.isLoading = false;
-        if (error.message?.includes('abbreviation already exists')) {
-          this.abbreviationAlreadyExist = true;
-          this.projectFunnelForm.get('projectPromoter')?.valueChanges.pipe(take(1))
-            .subscribe(() => this.abbreviationAlreadyExist = false);
-          this.commonMessageService.showErrorCreatedMessage();
-        } else {
-          this.createPromoter.emit({ status: 'error' });
-        }
+        this.handleDuplicateCreateError(error);
       }
     })
+
+    this.projectFunnelForm.get('projectPromoter')?.valueChanges.subscribe(() => {
+      if (this.abbreviationAlreadyExist) {
+        this.abbreviationAlreadyExist = false;
+      }
+    });
+
+    this.projectFunnelForm.get('promoterName1')?.valueChanges.subscribe(() => {
+      if (this.name1AlreadyExist) {
+        this.name1AlreadyExist = false;
+      }
+    });
+  }
+
+  private handleDuplicateCreateError(error: any): void {
+    if (error.error?.message?.includes("duplication with")) {
+      if (error.error.message.includes(this.projectFunnelForm.value.projectPromoter?.trim())) {
+        this.abbreviationAlreadyExist = true;
+      }
+      if (error.error.message.includes(this.projectFunnelForm.value.promoterName1?.trim())) {
+        this.name1AlreadyExist = true;
+      }
+
+      this.commonMessageService.showErrorCreatedMessage();
+
+    } else {
+      this.createPromoter.emit({ status: 'error' });
+    }
   }
 
   deleteProjectFunnel() {

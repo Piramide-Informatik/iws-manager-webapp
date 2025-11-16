@@ -3,35 +3,23 @@
         <div class="flex flex-column mb-2 px-4">
             <div class="project-funnel-form mb-3">
                 <label for="promoterNo">{{ 'PROJECT_FUNNELS.FORM.PROJECT_SPONSOR_ID' | translate }}</label>
-                <input
-                    pInputText
-                    type="text"
-                    id="promoterNo"
-                    formControlName="promoterNo"
-                    autocomplete="off"
-                />
+                <input pInputText type="text" id="promoterNo" formControlName="promoterNo" autocomplete="off" />
             </div>
             <div class="project-funnel-form mb-3">
                 <label for="projectPromoter">{{ 'PROJECT_FUNNELS.FORM.ABBREVIATION' | translate }}</label>
                 <div class="input-message">
-                    <input #firstInput 
-                        pInputText 
-                        type="text" 
-                        id="projectPromoter" 
-                        formControlName="projectPromoter" 
-                        autocomplete="off"
-                        [ngClass]="{'ng-invalid': editProjectFunnelForm.get('projectPromoter')?.invalid && 
+                    <input #firstInput pInputText type="text" id="projectPromoter" formControlName="projectPromoter"
+                        autocomplete="off" [ngClass]="{'ng-invalid': editProjectFunnelForm.get('projectPromoter')?.invalid && 
                         (editProjectFunnelForm.get('projectPromoter')?.dirty || editProjectFunnelForm.get('projectPromoter')?.touched) ||
-                        abbreviationAlreadyExist}"
-                        invalid="editProjectFunnelForm.get('projectPromoter')?.invalid  
+                        abbreviationAlreadyExist}" invalid="editProjectFunnelForm.get('projectPromoter')?.invalid  
                         && editProjectFunnelForm.get('projectPromoter')?.dirty 
                         || editProjectFunnelForm.get('projectPromoter')?.touched
                         || abbreviationAlreadyExist" />
-                    <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
-                        *ngIf="editProjectFunnelForm.get('projectPromoter')?.invalid && 
+                    <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="editProjectFunnelForm.get('projectPromoter')?.invalid && 
                         (editProjectFunnelForm.get('projectPromoter')?.dirty || editProjectFunnelForm.get('projectPromoter')?.touched) ||
                         abbreviationAlreadyExist">
-                        {{ abbreviationAlreadyExist ? ('PROJECT_FUNNELS.ERROR.ABBREVIATION_ALREADY_EXIST' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+                        {{ abbreviationAlreadyExist ? ('PROJECT_FUNNELS.ERROR.ABBREVIATION_ALREADY_EXIST' | translate) :
+                        ('ERROR.FIELD_REQUIRED' | translate) }}
                     </p-message>
                 </div>
             </div>
@@ -39,29 +27,25 @@
                 <label for="promoterName1" class="mt-1">{{ 'PROJECT_FUNNELS.FORM.NAME' | translate }}</label>
                 <div class="flex flex-column gap-2 group">
                     <div class="input-message">
-                        <input pInputText type="text" id="promoterName1" formControlName="promoterName1" autocomplete="off"
+                        <input pInputText type="text" id="promoterName1" formControlName="promoterName1"
+                            autocomplete="off"
                             [ngClass]="{'ng-invalid': editProjectFunnelForm.get('promoterName1')?.invalid && 
                             (editProjectFunnelForm.get('promoterName1')?.dirty || editProjectFunnelForm.get('promoterName1')?.touched)}" />
-                        <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small"
-                            *ngIf="editProjectFunnelForm.get('promoterName1')?.invalid && 
-                            (editProjectFunnelForm.get('promoterName1')?.dirty || editProjectFunnelForm.get('promoterName1')?.touched)"
-                            [ngStyle]="{'margin-top': '0.5rem'}">
-                            {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                        <p-message severity="error" variant="simple" [showTransitionOptions]="'0ms'" size="small" *ngIf="editProjectFunnelForm.get('promoterName1')?.invalid && 
+                        (editProjectFunnelForm.get('promoterName1')?.dirty || editProjectFunnelForm.get('promoterName1')?.touched) ||
+                        name1AlreadyExist">
+                            {{ name1AlreadyExist ? ('PROJECT_FUNNELS.ERROR.NAME_ALREADY_EXIST' |
+                            translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
                         </p-message>
                     </div>
-                    <input pInputText type="text" id="promoterName2" formControlName="promoterName2" autocomplete="off" />
+                    <input pInputText type="text" id="promoterName2" formControlName="promoterName2"
+                        autocomplete="off" />
                 </div>
             </div>
             <div class="project-funnel-form mb-3">
                 <label for="country">{{ 'PROJECT_FUNNELS.FORM.LAND' | translate }}</label>
-                <p-select formControlName="country" 
-                    inputId="country"
-                    [options]="countries()" 
-                    optionLabel="name"
-                    optionValue="id" 
-                    [showClear]="true"
-                    [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
-                />
+                <p-select formControlName="country" inputId="country" [options]="countries()" optionLabel="name"
+                    optionValue="id" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
             </div>
             <div class="project-funnel-form mb-3">
                 <label for="street">{{ 'PROJECT_FUNNELS.FORM.STREET' | translate }}</label>
@@ -70,28 +54,24 @@
             <div class="project-funnel-form mb-3 flex">
                 <label for="zipCode">{{ 'PROJECT_FUNNELS.FORM.ZIP_CITY' | translate }}</label>
                 <div class="flex flex-row gap-1 group">
-                    <input pInputText type="text" class="w-4" id="zipCode" formControlName="zipCode" autocomplete="off" />
-                    <input pInputText type="text"  id="city" formControlName="city" autocomplete="off" />
+                    <input pInputText type="text" class="w-4" id="zipCode" formControlName="zipCode"
+                        autocomplete="off" />
+                    <input pInputText type="text" id="city" formControlName="city" autocomplete="off" />
                 </div>
             </div>
             <div class="row">
                 <div class="col flex justify-content-center mt-4">
-                    <p-button class="save me-2" size="small" type="submit" [loading]="isLoading" 
-                        [disabled]="editProjectFunnelForm.invalid || !editProjectFunnelForm.dirty || abbreviationAlreadyExist" 
+                    <p-button class="save me-2" size="small" type="submit" [loading]="isLoading"
+                        [disabled]="editProjectFunnelForm.invalid || !editProjectFunnelForm.dirty "
                         [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" iconPos="left" />
-                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" 
-                        (onClick)="clearForm()" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
+                    <p-button class="cancel me-2" size="small" [disabled]="isLoading" (onClick)="clearForm()"
+                        [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left" />
                 </div>
             </div>
         </div>
     </form>
 </p-card>
-<app-occ-error-modal
-  *ngIf="showOCCErrorModaPromoter"
-  [useEmitter]="occErrorType==='UPDATE_UPDATED'"
-  (refresh)="onRefresh()"
-  [errorType]="occErrorType"
-  [reloadCurrentPage]="true"
-  (close)="showOCCErrorModaPromoter = false"
-  >
+<app-occ-error-modal *ngIf="showOCCErrorModaPromoter" [useEmitter]="occErrorType==='UPDATE_UPDATED'"
+    (refresh)="onRefresh()" [errorType]="occErrorType" [reloadCurrentPage]="true"
+    (close)="showOCCErrorModaPromoter = false">
 </app-occ-error-modal>

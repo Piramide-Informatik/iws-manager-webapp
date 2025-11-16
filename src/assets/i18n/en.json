@@ -1123,7 +1123,8 @@
       "DELETE": "Delete Project Sponsor"
     },
     "ERROR": {
-      "ABBREVIATION_ALREADY_EXIST": "Abbreviation already exists"
+      "ABBREVIATION_ALREADY_EXIST": "Abbreviation already exists",
+      "NAME_ALREADY_EXIST": "Project sponsor already exists"
     }
   },
   "PROJECT_STATUS": {

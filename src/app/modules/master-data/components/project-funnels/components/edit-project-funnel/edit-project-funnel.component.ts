@@ -12,7 +12,7 @@ import { CountryUtils } from '../../../countries/utils/country-util';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PromoterStateService } from '../../utils/promoter-state.service';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Promoter } from '../../../../../../Entities/promoter';
 import { Country } from '../../../../../../Entities/country';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
@@ -35,6 +35,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
   public isLoading: boolean = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public abbreviationAlreadyExist = false;
+  public name1AlreadyExist = false;
   public editProjectFunnelForm!: FormGroup;
 
   public countries = toSignal(this.countryUtils.getCountriesSortedByName(), {
@@ -50,6 +51,18 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
       this.loadPromoterAfterRefresh(savedPromoterId);
       localStorage.removeItem('selectedPromoterId');
     }
+
+    this.editProjectFunnelForm.get('projectPromoter')?.valueChanges.subscribe(() => {
+      if (this.abbreviationAlreadyExist) {
+        this.abbreviationAlreadyExist = false;
+      }
+    });
+
+    this.editProjectFunnelForm.get('promoterName1')?.valueChanges.subscribe(() => {
+      if (this.name1AlreadyExist) {
+        this.name1AlreadyExist = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -76,7 +89,7 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
     const editedPromoter: Promoter = {
       ...this.promoterToEdit,
       promoterNo:
-        this.editProjectFunnelForm.value.promoterNo?.toString() || null,
+        this.promoterToEdit.promoterNo || null,
       projectPromoter: this.editProjectFunnelForm.value.projectPromoter?.trim(),
       promoterName1: this.editProjectFunnelForm.value.promoterName1?.trim(),
       promoterName2: this.editProjectFunnelForm.value.promoterName2?.trim(),
@@ -96,15 +109,10 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
       },
       error: (error: Error) => {
         this.isLoading = false;
+        this.handleDuplicateUpdateError(error);
         if (error instanceof OccError) {
-          console.log('OCC Error occurred:', error);
           this.showOCCErrorModaPromoter = true;
           this.occErrorType = error.errorType;
-          this.commonMessageService.showErrorEditMessage();
-        } else if (error.message.includes('abbreviation already exists')) {
-          this.abbreviationAlreadyExist = true;
-          this.editProjectFunnelForm.get('projectPromoter')?.valueChanges.pipe(take(1))
-            .subscribe(() => this.abbreviationAlreadyExist = false);
           this.commonMessageService.showErrorEditMessage();
         } else {
           this.commonMessageService.showErrorEditMessage();
@@ -113,10 +121,23 @@ export class EditProjectFunnelComponent implements OnInit, OnDestroy {
     });
   }
 
+  private handleDuplicateUpdateError(error: any): void {
+    if (error.error?.message?.includes("duplication with")) {
+      if (error.error.message.includes(this.editProjectFunnelForm.value.projectPromoter?.trim())) {
+        this.abbreviationAlreadyExist = true;
+      }
+      if (error.error.message.includes(this.editProjectFunnelForm.value.promoterName1?.trim())) {
+        this.name1AlreadyExist = true;
+      }
+
+    }
+  }
+
   private setupPromoterSubscription(): void {
     this.subscriptions.add(
       this.promoterStateService.currentPromoter$.subscribe((promoter) => {
         if (promoter) {
+          console.log('Loaded promoter for editing:', promoter);
           this.promoterToEdit = promoter;
           this.editProjectFunnelForm.patchValue({
             promoterNo: this.promoterToEdit.promoterNo,

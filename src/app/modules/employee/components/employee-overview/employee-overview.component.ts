@@ -96,7 +96,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       },
       { field: 'firstname', header: this.translate.instant(_('EMPLOYEE.TABLE.FIRST_NAME')), customClasses: ['employee-wide'], classesTHead: ['employee-wide'] },
       { field: 'lastname', header: this.translate.instant(_('EMPLOYEE.TABLE.LAST_NAME')), customClasses: ['employee-wide'], classesTHead: ['employee-wide'] },
-      { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')),  customClasses: ['employee-medium'], classesTHead: ['employee-medium'] },
+      { field: 'email', header: this.translate.instant(_('EMPLOYEE.TABLE.EMAIL')),  customClasses: ['employee-medium'], classesTHead: ['employee-wide'] },
       { field: 'generalmanagersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.GM_SINCE_DATE')), customClasses: ['align-right','employee-narrow-date'], classesTHead: ['employee-narrow-date']  }, //GF
       { field: 'shareholdersince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SH_SINCE_DATE')), customClasses: ['align-right', 'employee-narrow-date'], classesTHead: ['employee-narrow-date'] }, //Gest
       { field: 'soleproprietorsince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), customClasses: ['align-right', 'employee-narrow-date'], classesTHead: ['employee-narrow-date'] }, //EU

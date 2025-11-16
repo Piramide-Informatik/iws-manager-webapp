@@ -1127,7 +1127,8 @@
       "DELETE": "Projektträger löschen"
     },
     "ERROR": {
-      "ABBREVIATION_ALREADY_EXIST": "Projektträger existiert bereits"
+      "ABBREVIATION_ALREADY_EXIST": "Projektträger existiert bereits",
+      "NAME_ALREADY_EXIST": "Projektträgername existiert bereits"
     }
   },
   "PROJECT_STATUS": {
