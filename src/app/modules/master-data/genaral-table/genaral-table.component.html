@@ -49,7 +49,15 @@
                   [placeholder]="'COMMON.SEARCH' | translate"/>
               </ng-template>
             </p-columnFilter>
-          } @else {          
+          }@else if (col.filter && col.filter.type === 'numericOperators') {
+            <p-columnFilter type="numeric" [field]="col.field" locale="DE">
+              <ng-template #filter let-value let-filter="filterCallback">
+                <p-inputNumber class="p-inputnumber-input" [ngModel]="value" (ngModelChange)="filter($event)" [inputStyle]="{'text-align': 'right'}"
+                 [max]="99999" [min]="0" [useGrouping]="true" locale="de-DE"
+                  [placeholder]="'COMMON.SEARCH' | translate"/>
+              </ng-template>
+            </p-columnFilter>
+          }@else {          
           <p-columnFilter type="text" [field]="col.field" matchMode="contains" ariaLabel="Filter Name">
             <ng-template #filter let-value let-filter="filterCallback">
               <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" class="p-inputtext"
