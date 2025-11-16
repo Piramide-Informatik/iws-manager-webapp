@@ -76,6 +76,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
       this.subcontractsUtils.getAllSubcontractsByCustomerId(params['id']).subscribe(subcontracts => {
         this.subcontracts = subcontracts;
+        this.subcontracts.forEach(sc => (sc.date = sc.date ? new Date(sc.date): null))
       })
     })
 
