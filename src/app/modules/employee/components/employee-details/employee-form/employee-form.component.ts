@@ -8,7 +8,7 @@ import { TitleUtils } from '../../../../master-data/components/title/utils/title
 import { QualificationFZUtils } from '../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
 import { Employee } from '../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
-import { momentCreateDate, momentFormatDate } from '../../../../shared/utils/moment-date-utils';
+import { momentFormatDate, momentSafeCreateDate } from '../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
@@ -111,10 +111,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
                   employeeFirstName: employee.firstname,
                   employeeLastName: employee.lastname,
                   employeeEmail: employee.email,
-                  generalManagerSinceDate: momentCreateDate(employee.generalmanagersince),
-                  shareholderSinceDate: momentCreateDate(employee.shareholdersince),
-                  solePropietorSinceDate: momentCreateDate(employee.soleproprietorsince),
-                  coentrepreneurSinceDate: momentCreateDate(employee.coentrepreneursince),
+                  generalManagerSinceDate: momentSafeCreateDate(employee.generalmanagersince),
+                  shareholderSinceDate: momentSafeCreateDate(employee.shareholdersince),
+                  solePropietorSinceDate: momentSafeCreateDate(employee.soleproprietorsince),
+                  coentrepreneurSinceDate: momentSafeCreateDate(employee.coentrepreneursince),
                   qualificationFzId: employee.qualificationFZ?.id ?? '',
                   qualificationKMUi: employee.qualificationkmui ?? ''
                 });

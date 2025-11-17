@@ -3,6 +3,8 @@ import { Customer } from "./customer";
 import { Title } from "./title";
 import { QualificationFZ } from "./qualificationfz";
 
+export type EmployeeDate = string | Date | null;
+
 export interface Employee {
     id: number;
     version: number;
@@ -22,10 +24,10 @@ export interface Employee {
     label?: string;
     phone?: string;
 
-    generalmanagersince?: string;
-    shareholdersince?: string;
-    soleproprietorsince?: string;
-    coentrepreneursince?: string;
+    generalmanagersince?: EmployeeDate;
+    shareholdersince?: EmployeeDate;
+    soleproprietorsince?: EmployeeDate;
+    coentrepreneursince?: EmployeeDate;
 
     qualificationFZ?: QualificationFZ | null;
     qualificationkmui?: string;

@@ -1,4 +1,4 @@
-<div class="card">
+<div #card class="card">
   <p-table id="iwstable" #dt2 [value]="tableValues" dataKey="id" [rows]="15"
     [columns]="this.userPreferences[this.tableId]?.displayedColumns" [rowsPerPageOptions]="[15, 30, 50]"
     [paginator]="true" [currentPageReportTemplate]="'TABLES.PAGINATION_LABEL' | translate"
@@ -58,6 +58,19 @@
               </ng-template>
             </p-columnFilter>
           }@else {          
+          } @else if (col.filter && col.filter.type === 'date') {
+            <p-columnFilter #date type="date" [field]="col.field" locale="de-DE">
+              <ng-template #filter let-value let-filter="filterCallback">
+                <p-datepicker 
+                  [ngModel]="value" 
+                  (ngModelChange)="filter($event)" 
+                  dateFormat="dd.mm.yy"
+                  [appendTo]="'body'"
+                  [panelStyleClass]="'compact-calendar'"
+                  [placeholder]="'COMMON.SEARCH' | translate"/>
+              </ng-template>
+            </p-columnFilter>
+          } @else {      
           <p-columnFilter type="text" [field]="col.field" matchMode="contains" ariaLabel="Filter Name">
             <ng-template #filter let-value let-filter="filterCallback">
               <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" class="p-inputtext"
