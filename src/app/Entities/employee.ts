@@ -22,10 +22,10 @@ export interface Employee {
     label?: string;
     phone?: string;
 
-    generalmanagersince?: string;
-    shareholdersince?: string;
-    soleproprietorsince?: string;
-    coentrepreneursince?: string;
+    generalmanagersince?: string | Date | null;
+    shareholdersince?: string | Date | null;
+    soleproprietorsince?: string | Date | null;
+    coentrepreneursince?: string | Date | null;
 
     qualificationFZ?: QualificationFZ | null;
     qualificationkmui?: string;
