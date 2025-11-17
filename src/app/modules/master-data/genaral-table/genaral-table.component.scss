@@ -15,6 +15,27 @@ p-button {
   }
 }
 
+::ng-deep .compact-calendar {
+  width: 200px !important;
+  font-size: 0.75rem;
+}
+
+::ng-deep .compact-calendar table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+::ng-deep .compact-calendar table td,
+::ng-deep .compact-calendar table th {
+  padding: 2px !important;
+  font-size: 0.7rem !important;
+  height: 24px !important;
+}
+
+::ng-deep .compact-calendar .p-datepicker-header {
+  padding: 0.4rem 0.2rem !important;
+}
+
 .thead-bg-blue {
   background: $primary-color;
 }

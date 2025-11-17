@@ -76,6 +76,10 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
 
       this.subcontractsUtils.getAllSubcontractsByCustomerId(params['id']).subscribe(subcontracts => {
         this.subcontracts = subcontracts;
+        for (let i = 0; i < this.subcontracts.length; i++) {
+          const dateSubcontracts = this.subcontracts[i].date;
+          this.subcontracts[i].date = dateSubcontracts ? new Date(dateSubcontracts) : null;
+        }
       })
     })
 
@@ -108,11 +112,11 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
       },
       { field: 'contractor.name', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.CONTRACTOR')) },
       { field: 'projectCostCenter.costCenter', classesTHead: ['width-13'], customClasses: ['text-center'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.PROJECT')) },
-      { field: 'date', type: 'date', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE')) },
+      { field: 'date', type: 'date', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.DATE')), filter: { type: 'date'} },
       { field: 'invoiceNo', classesTHead: ['width-13'], customClasses: ['align-left'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.INVOICE_NUMBER')) },
-      { field: 'invoiceNet', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE')) },
-      { field: 'invoiceGross', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE')) },
-      { field: 'share', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE')) }
+      { field: 'invoiceNet', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.NET_INVOICE')), filter : { type: 'numeric' } },
+      { field: 'invoiceGross', classesTHead: ['width-13'], customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('SUB-CONTRACTS.TABLE.GROSS_INVOICE')), filter : { type: 'numeric' } },
+      { field: 'share', classesTHead: ['width-13'], header: this.translate.instant(_('SUB-CONTRACTS.TABLE.SHARE')), filter : { type: 'numeric' } }
     ];
   }
 

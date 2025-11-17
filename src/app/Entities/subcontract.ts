@@ -14,7 +14,7 @@ export interface Subcontract {
 
   afamonths: number;
   contractTitle: string;
-  date: string;
+  date: string | Date | null;
   description: string;
   invoiceAmount: number;
   invoiceDate?: string; 
