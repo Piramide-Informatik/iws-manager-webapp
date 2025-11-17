@@ -150,7 +150,14 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
     });
     this.editPublicHolidayForm.get('isFixedDate')?.valueChanges.subscribe(value => {
       this.isFixedDate = value ?? false;
-      if (this.datePicker) {
+      if (!this.isFixedDate) {
+        this.editPublicHolidayForm.get('date')?.setValue(null);
+        setTimeout(() => {
+          this.datePicker.writeValue(null);
+          this.datePicker.updateInputfield();
+        });
+      }
+      else {
         const currentValue = this.datePicker.value;
         // Update format
         setTimeout(() => {
