@@ -57,7 +57,6 @@
                   [placeholder]="'COMMON.SEARCH' | translate"/>
               </ng-template>
             </p-columnFilter>
-          }@else {          
           } @else if (col.filter && col.filter.type === 'date') {
             <p-columnFilter #date type="date" [field]="col.field" locale="de-DE">
               <ng-template #filter let-value let-filter="filterCallback">
