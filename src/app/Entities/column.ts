@@ -3,7 +3,7 @@ export interface Column {
   header: string;
   minWidth?: number;
   filter?: { 
-    type: 'multiple' | 'boolean' | 'numeric' | 'date',
+    type: 'multiple' | 'boolean' | 'numeric' | 'date' | 'numericOperators',
     data?: any 
   };
   styles?: {},
