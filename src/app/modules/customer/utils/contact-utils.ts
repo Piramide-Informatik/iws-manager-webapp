@@ -45,7 +45,7 @@ export class ContactUtils {
    * @param contact - Contact person data
    * @returns Observable that completes when contact person is created
    */
-  createNewContactPerson(contact: Omit<ContactPerson, 'id'>): Observable<void> {
+  createNewContactPerson(contact: Omit<ContactPerson, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<void> {
 
     return this.contactPersonService.addContactPerson({
       firstName: contact.firstName?.trim() ?? '',

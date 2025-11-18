@@ -234,7 +234,7 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     this.contractorUpdated.emit(updatedContractor);
   }
 
-  private createContractor(newContractor: Omit<Contractor, 'id'>): void {
+  private createContractor(newContractor: Omit<Contractor, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
     this.isLoading = true;
     this.subscription.add(
       this.contractorUtils.createNewContractor(newContractor).subscribe({
@@ -262,11 +262,11 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
   }
 
 
-  private buildContractorFromForm(): Omit<Contractor, 'id'> {
+  private buildContractorFromForm(): Omit<Contractor, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
     const selectedCountryId = this.contractorForm.value.country;
     const country = selectedCountryId ? {
       id: selectedCountryId,
-      version: 0,
+      version: 1,
       createdAt: '',
       updatedAt: '',
       isDefault: false,
@@ -275,9 +275,6 @@ export class ContractorDetailsComponent implements OnInit, OnChanges, OnDestroy 
     } : null;
 
     return {
-      version: 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
       city: this.contractorForm.value.city,
       label: this.contractorForm.value.contractorlabel,
       name: this.contractorForm.value.contractorname,

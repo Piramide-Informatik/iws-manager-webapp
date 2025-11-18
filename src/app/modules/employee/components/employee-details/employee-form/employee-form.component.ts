@@ -215,7 +215,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     const employee = this.buildEmployeeData(this.customer);
     return {
       ...employee,
-      version: 0,
+      version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -231,20 +231,20 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private buildCustomerFromSource(source: any): any {
     return {
       id: source?.id ?? 0,
-      version: 0,
+      version: 1,
       createdAt: '',
       updatedAt: '',
       branch: {
         id: source?.branch?.id ?? 0,
         name: '',
-        version: 0
+        version: 1
       },
       companytype: {
         id: source?.companytype?.id ?? 0,
         createdAt: '',
         updatedAt: '',
         name: '',
-        version: 0
+        version: 1
       },
       country: {
         id: source?.country?.id ?? 0,
@@ -253,24 +253,24 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
         isDefault: source?.country?.isDefault ?? false,
         createdAt: '',
         updatedAt: '',
-        version: 0
+        version: 1
       },
       state: {
         id: source?.state?.id ?? 0,
         name: '',
         createdAt: '',
         updatedAt: '',
-        version: 0
+        version: 1
       }
     };
   }
 
   private mapIdToEntity(id: number | null): any {
-    return id ? { id, name: '', createdAt: '', updatedAt: '', version: 0 } : null;
+    return id ? { id, name: '', createdAt: '', updatedAt: '', version: 1 } : null;
   }
 
   private mapQualificationFZIdToEntity(id: number | null): any {
-    return id ? { id, qualification: '', createdAt: '', updatedAt: '', version: 0 } : null;
+    return id ? { id, qualification: '', createdAt: '', updatedAt: '', version: 1 } : null;
   }
 
   private createEmployee(newEmployee: Omit<Employee, 'id'>): void {

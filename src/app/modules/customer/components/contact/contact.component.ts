@@ -177,7 +177,7 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
     return this.contactForm.invalid || this.isLoading || this.isSaving;
   }
 
-  private getContactFormValues(): Omit<ContactPerson, 'id'> {
+  private getContactFormValues(): Omit<ContactPerson, 'id' | 'createdAt' | 'updatedAt' | 'version'> {
     return {
       lastName: this.contactForm.value.lastName?.trim() ?? '',
       firstName: this.contactForm.value.firstName?.trim() ?? '',
@@ -270,10 +270,10 @@ export class ContactComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private markAllAsTouched(): void {
-    Object.values(this.contactForm.controls).forEach(control => {
+    for(const control of Object.values(this.contactForm.controls)){
       control.markAsTouched();
       control.markAsDirty();
-    });
+    }
   }
 }
 
