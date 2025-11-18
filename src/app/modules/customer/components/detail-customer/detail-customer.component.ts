@@ -384,7 +384,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       isDefault: false,
       createdAt: '',
       updatedAt: '',
-      version: 0
+      version: 1
     };
   }
 
@@ -396,7 +396,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       name: '',
       createdAt: '',
       updatedAt: '',
-      version: 0
+      version: 1
     };
   }
 
@@ -408,7 +408,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       name: '',
       createdAt: '',
       updatedAt: '',
-      version: 0
+      version: 1
     };
   }
 
@@ -418,7 +418,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     return {
       id: branchId,
       name: '',
-      version: 0,
+      version: 1,
       updatedAt: '',
       createdAt: ''
     };
@@ -535,13 +535,13 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
     return {
       city: formValues.city,
       companytype: formValues.selectedTypeCompany
-        ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 0 }
+        ? { id: formValues.selectedTypeCompany, name: '', createdAt: '', updatedAt: '', version: 1 }
         : null,
       branch: formValues.selectedSector
-        ? { id: formValues.selectedSector, name: '', version: 0, createdAt: '', updatedAt: '' }
+        ? { id: formValues.selectedSector, name: '', version: 1, createdAt: '', updatedAt: '' }
         : null,
       country: formValues.selectedCountry
-        ? { id: formValues.selectedCountry, version: 0, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
+        ? { id: formValues.selectedCountry, version: 1, name: '', label: '', isDefault: false, createdAt: '', updatedAt: '' }
         : null,
       customerno: this.formDetailCustomer.getRawValue().customerNo,
       customername1: formValues.companyText1,
@@ -554,7 +554,7 @@ export class DetailCustomerComponent implements OnInit, OnDestroy {
       note: formValues.textAreaComment,
       phone: formValues.phone,
       state: formValues.selectedState
-        ? { id: formValues.selectedState, name: '', createdAt: '', updatedAt: '', version: 0 }
+        ? { id: formValues.selectedState, name: '', createdAt: '', updatedAt: '', version: 1 }
         : null,
       street: formValues.street,
       taxno: formValues.taxNumber,

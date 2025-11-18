@@ -222,7 +222,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
       months: this.depreciationForm.value.months,
       subcontract: {
         id: this.currentSubcontract.id,
-        version: 0
+        version: 1
       } as Subcontract,
     };
 
