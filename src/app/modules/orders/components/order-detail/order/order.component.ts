@@ -19,8 +19,6 @@ import { EmployeeIwsUtils } from '../../../../master-data/components/iws-staff/u
 import { EmployeeIws } from '../../../../../Entities/employeeIws';
 import { InputNumber } from 'primeng/inputnumber';
 import { FormStateService } from '../../../utils/form-state.service';
-import { Title } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order',
@@ -38,8 +36,6 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly route = inject(ActivatedRoute);
   private readonly subscriptions = new Subscription();
-  private readonly titleService = inject(Title);
-  private readonly translate = inject(TranslateService);
 
   @Input() orderToEdit!: Order;
   @Output() onCreateOrder = new EventEmitter<Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'version'>>();
@@ -94,12 +90,6 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
     this.getCurrentCustomer();
     this.firstInputFocus();
     this.initForm();
-  }
-
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.CUSTOMER')} ${name} ${this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')}`
-    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -207,7 +197,6 @@ export class OrderComponent implements OnInit, OnDestroy, OnChanges {
     this.subscriptions.add(
       this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
         this.currentCustomer = customer!;
-        this.updateTitle(customer?.customername1!);
       })
     );
   }

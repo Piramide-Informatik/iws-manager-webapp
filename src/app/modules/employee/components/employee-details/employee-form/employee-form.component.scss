@@ -15,13 +15,12 @@
 
 .field {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 0.6rem;
+  align-items: center;
+  margin-bottom: 1.2rem;
 
   label {
     min-width: 200px;
     width: 200px;
-    padding-top: 8px;
     text-align: left;
     flex-shrink: 0;
   }
@@ -44,7 +43,8 @@
   .p-dropdown,
   .p-calendar {
     width: 100% !important;
-    max-width: 400px !important;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   

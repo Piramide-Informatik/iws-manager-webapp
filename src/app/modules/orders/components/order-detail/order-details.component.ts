@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { OrderUtils } from '../../utils/order-utils';
@@ -9,6 +9,9 @@ import { Project } from '../../../../Entities/project';
 import { Order } from '../../../../Entities/order';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-order-details',
@@ -16,11 +19,14 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.scss'
 })
-export class OrderDetailsComponent implements OnInit {
+export class OrderDetailsComponent implements OnInit, OnDestroy {
   private readonly orderUtils = inject(OrderUtils);
   private readonly commonMessageService = inject(CommonMessagesService);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly titleService = inject(Title);
+  private readonly translate = inject(TranslateService);
+  private readonly subscriptions = new Subscription();
 
   @ViewChild(OrderComponent) orderComponent!: OrderComponent;
   @ViewChild(ProjectComponent) projectComponent!: ProjectComponent;
@@ -40,6 +46,12 @@ export class OrderDetailsComponent implements OnInit {
   public currentOrder!: Order;
 
   ngOnInit(): void {
+    this.updateTitle();
+    this.subscriptions.add(
+      this.translate.onLangChange.subscribe(()=>{
+        this.updateTitle();
+      })
+    )
     if (this.orderId) {
       this.orderUtils.getOrderById(Number(this.orderId)).subscribe(order => {
         if (order) {
@@ -47,6 +59,16 @@ export class OrderDetailsComponent implements OnInit {
         }
       })
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  private updateTitle(): void {
+    this.orderId ?
+    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')) :
+    this.titleService.setTitle(this.translate.instant('ORDERS.NEW_ORDER'));
   }
 
   public onSubmit(): void {

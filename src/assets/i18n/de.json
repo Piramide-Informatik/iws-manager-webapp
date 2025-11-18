@@ -360,7 +360,8 @@
       "QUALI_MKUI": "Quali KMU-i"
     },
     "LABELS": {
-      "DELETE_EMPLOYEE": "Mitarbeiter löschen"
+      "DELETE_EMPLOYEE": "Mitarbeiter löschen",
+      "NEW_EMPLOYEE": "Neuer Mitarbeiter"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Datum",
@@ -499,7 +500,8 @@
       "TITLE_DIALOG_EDIT": "IWS Provision bearbeiten",
       "TITLE_DIALOG_DELETE": "IWS Provision löschen"
     },
-    "ORDER_DIALOG_REMOVE": "Bestellung löschen"
+    "ORDER_DIALOG_REMOVE": "Bestellung löschen",
+    "NEW_ORDER": "Neue Auftrag"
   },
   "RECEIVABLES": {
     "TABLE": {
