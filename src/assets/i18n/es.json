@@ -4,15 +4,15 @@
     "CUSTOMER": "Cliente - ",
     "NEW_CUSTOMER": "Nuevo Cliente",
     "CUSTOMERS": {
-      "BASIC_CONTRACTS": " - Contratos Básicos",
+      "BASIC_CONTRACTS": "Contratos Básicos",
       "CONTRACTORS": "Contratistas",
-      "DETAILS": " - Detalles",
+      "DETAILS": "Detalles",
       "EMPLOYEES": "Empleados",
-      "EMPLOYMENT_CONTRACTS": " - Contratos Laborales",
-      "INVOICES": " - Facturas",
-      "ORDERS": " - Pedidos",
-      "PROJECTS": " - Proyectos",
-      "RECEIVABLES": " - Cuentas por Cobrar",
+      "EMPLOYMENT_CONTRACTS": "Contratos Laborales",
+      "INVOICES": "Facturas",
+      "ORDERS": "Pedidos",
+      "PROJECTS": "Proyectos",
+      "RECEIVABLES": "Cuentas por Cobrar",
       "SUBCONTRACTS": "Subcontratos"
     },
     "MASTER_DATA": {
@@ -317,7 +317,8 @@
       "QUALI_MKUI": "Quali KMU-i"
     },
     "LABELS": {
-      "DELETE_EMPLOYEE": "Eliminar Empleado"
+      "DELETE_EMPLOYEE": "Eliminar Empleado",
+      "NEW_EMPLOYEE": "Nuevo Empleado"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Fecha Incio",
@@ -457,7 +458,8 @@
       "TITLE_DIALOG_EDIT": "Editar comisión IWS",
       "TITLE_DIALOG_DELETE": "Eliminar comisión IWS"
     },
-    "ORDER_DIALOG_REMOVE": "Eliminar Orden"
+    "ORDER_DIALOG_REMOVE": "Eliminar Orden",
+    "NEW_ORDER": "Nueva Orden"
   },
   "RECEIVABLES": {
     "TABLE": {

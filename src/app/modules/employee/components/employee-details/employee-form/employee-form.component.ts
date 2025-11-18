@@ -33,6 +33,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly subscriptions = new Subscription();
+  private employeeId!: number;
 
   public employeeForm!: FormGroup;
   public formType: 'create' | 'update' = 'create';
@@ -76,31 +77,18 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.firstInputFocus();
-    this.updateTitle('...');
     this.activatedRoute.params.subscribe(params => {
-      const employeeId = params['employeeId'];
+      this.employeeId = params['employeeId'];
+      this.updateTitle();
+      this.setupLangSubcription();
       const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
-      if (!employeeId) {
-        this.formType = 'create';
-        const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
-        if (customerId) {
-          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
-            this.customer = customer;
-            this.updateTitle(customer?.customername1!);
-
-            this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe(employees => {
-            this.customerEmployees = employees;
-          });
-          });
-        }
-
-      } else {
+      if (this.employeeId) {
         this.formType = 'update';
         if (customerId) {
-          this.loadCustomerEmployees(customerId); // 👈 agrega esto
+          this.loadCustomerEmployees(customerId);
         }
         this.subscriptions.add(
-          this.employeeUtils.getEmployeeById(employeeId).subscribe({
+          this.employeeUtils.getEmployeeById(this.employeeId).subscribe({
             next: (employee) => {
               if (employee) {
                 this.currentEmployee = employee;
@@ -118,12 +106,24 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
                   qualificationFzId: employee.qualificationFZ?.id ?? '',
                   qualificationKMUi: employee.qualificationkmui ?? ''
                 });
-                this.updateTitle(employee.customer?.customername1!);
               }
             },
             error: (err) => console.error('Error loading employee:', err)
           })
         );
+
+      } else {
+        this.formType = 'create';
+        const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
+        if (customerId) {
+          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+            this.customer = customer;
+          });
+
+          this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe(employees => {
+            this.customerEmployees = employees;
+          });
+        }
       }
     });
 
@@ -136,6 +136,14 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  private setupLangSubcription(): void {
+    this.subscriptions.add(
+      this.translate.onLangChange.subscribe(()=>{
+        this.updateTitle();
+      })
+    )
   }
 
   private firstInputFocus(): void {
@@ -402,8 +410,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     return `${this.currentEmployee?.firstname} ${this.currentEmployee?.lastname}`.trim();
   }
 
-  private updateTitle(name: string): void {
-    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYEES'));
+  private updateTitle(): void {
+    this.employeeId ?
+    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYEES')):
+    this.titleService.setTitle(this.translate.instant('EMPLOYEE.LABELS.NEW_EMPLOYEE'));
   }
 
   private employeeNumberUniqueValidator(control: AbstractControl): ValidationErrors | null {

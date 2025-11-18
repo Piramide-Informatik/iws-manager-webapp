@@ -3,15 +3,15 @@
     "CUSTOMER_OVERVIEW": "Customer Overview",
     "CUSTOMER": "Customer - ",
     "CUSTOMERS": {
-      "BASIC_CONTRACTS": " - Framework Agreements",
+      "BASIC_CONTRACTS": "Framework Agreements",
       "CONTRACTORS": "Contractors",
-      "DETAILS": " - Details",
+      "DETAILS": "Details",
       "EMPLOYEES": "Employees",
-      "EMPLOYMENT_CONTRACTS": " - Employment Contracts",
-      "INVOICES": " - Invoices",
-      "ORDERS": " - Orders",
-      "PROJECTS": " - Projects",
-      "RECEIVABLES": " - Receivables",
+      "EMPLOYMENT_CONTRACTS": "Employment Contracts",
+      "INVOICES": "Invoices",
+      "ORDERS": "Orders",
+      "PROJECTS": "Projects",
+      "RECEIVABLES": "Receivables",
       "SUBCONTRACTS": "Subcontracts"
     },
     "NEW_CUSTOMER": "New Customer",
@@ -326,7 +326,8 @@
       "QUALI_MKUI": "Quali KMU-i"
     },
     "LABELS": {
-      "DELETE_EMPLOYEE": "Delete Employee"
+      "DELETE_EMPLOYEE": "Delete Employee",
+      "NEW_EMPLOYEE": "New Employee"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Start Date",
@@ -391,10 +392,10 @@
       "HOURLY_REAL_RATE": "Hourly Real Rate"
     },
     "LABEL": {
-      "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Are you sure you want to delete the Employee Contract",
-      "CREATE_EMPLOYEE_CONTRACT": "Create Employee Contract",
-      "EDIT_EMPLOYEE_CONTRACT": "Edit Employee Contract",
-      "DELETE_EMPLOYEE_CONTRACT": "Delete Employee Contract",
+      "REMOVE_EMPLOYEE_CONTRACT_QUESTION": "Are you sure you want to delete the Employment Contract",
+      "CREATE_EMPLOYEE_CONTRACT": "New Employment Contract",
+      "EDIT_EMPLOYEE_CONTRACT": "Edit Employment Contract",
+      "DELETE_EMPLOYEE_CONTRACT": "Delete Employment Contract",
       "START_DATE_ALREADY_EXISTS": "A contract already exists for this date"
     }
   },
@@ -462,7 +463,8 @@
       "TITLE_DIALOG_EDIT": "Edit IWS Commission",
       "TITLE_DIALOG_DELETE": "Delete IWS Commission"
     },
-    "ORDER_DIALOG_REMOVE": "Delete Order"
+    "ORDER_DIALOG_REMOVE": "Delete Order",
+    "NEW_ORDER": "New Order"
   },
   "RECEIVABLES": {
     "TABLE": {
