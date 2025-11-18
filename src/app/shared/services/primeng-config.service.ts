@@ -18,7 +18,8 @@ export class PrimeNGConfigService {
         dayNamesShort: translations.dayNamesShort,
         dayNamesMin: translations.dayNamesMin,
         monthNames: translations.monthNames,
-        monthNamesShort: translations.monthNamesShort
+        monthNamesShort: translations.monthNamesShort,
+        ...translations.filters
       });
     });
   }
