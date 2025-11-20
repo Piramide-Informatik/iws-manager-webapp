@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, take, throwError, switchMap, of } from 'rxjs';
-import { InvoiceUtils } from '../../../../invoices/utils/invoice.utils';
 import { InvoiceType } from '../../../../../Entities/invoiceType';
 import { InvoiceTypeService } from '../../../../../Services/invoice-type.service';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -12,7 +11,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' })
 export class InvoiceTypeUtils {
   private readonly invoiceTypeService = inject(InvoiceTypeService);
-  private readonly invoiceUtils = inject(InvoiceUtils);
 
   loadInitialData(): Observable<InvoiceType[]> {
     return this.invoiceTypeService.loadInitialData();
