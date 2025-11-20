@@ -24,12 +24,14 @@ import { ProjectsOverviewComponent } from './components/projects-overview/projec
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { WorkPackagesComponent } from './components/project-details/work-packages/work-packages.component';
 
 
 @NgModule({
     declarations: [
         ProjectsOverviewComponent,
-        ProjectDetailsComponent
+        ProjectDetailsComponent,
+        WorkPackagesComponent
     ],
     imports: [
         ButtonModule,
