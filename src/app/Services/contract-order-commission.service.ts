@@ -10,7 +10,7 @@ import { ContractOrderCommission } from '../Entities/contractOrderCommission';
 })
 export class ContractOrderCommissionService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/contract-order-commissions`;
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV_V2}/contract-order-commissions`;
 
   private readonly httpOptions = {
     headers: new HttpHeaders({
