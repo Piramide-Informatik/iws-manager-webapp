@@ -1,7 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, take, throwError, switchMap } from 'rxjs';
-import { OrderUtils } from '../../../../orders/utils/order-utils';
-import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 import { ContractStatus } from '../../../../../Entities/contractStatus';
 import { ContractStatusService } from '../../../../../Services/contract-status.service';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
@@ -13,8 +11,6 @@ import { createNotFoundUpdateError, createUpdateConflictError } from '../../../.
 @Injectable({ providedIn: 'root' })
 export class ContractStatusUtils {
   private readonly contractStatusService = inject(ContractStatusService);
-  private readonly orderUtils = inject(OrderUtils);
-  private readonly frameworkUtils = inject(FrameworkAgreementsUtils);
 
   loadInitialData(): Observable<ContractStatus[]> {
     return this.contractStatusService.loadInitialData();
