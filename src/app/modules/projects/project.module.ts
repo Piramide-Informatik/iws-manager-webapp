@@ -23,11 +23,13 @@ import { ProjectsOverviewComponent } from './components/projects-overview/projec
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
 
 @NgModule({
     declarations: [
-        ProjectsOverviewComponent
+        ProjectsOverviewComponent,
+        ProjectDetailsComponent
     ],
     imports: [
         ButtonModule,
