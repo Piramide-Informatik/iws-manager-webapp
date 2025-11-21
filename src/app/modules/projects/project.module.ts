@@ -1,6 +1,6 @@
 // Angular
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
 
 //Modulos
@@ -19,35 +19,51 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 //Components
-import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MasterDataModule } from '../../../master-data/master-data.module';
-
+import { MasterDataModule } from '../master-data/master-data.module';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { WorkPackagesComponent } from './components/project-details/work-packages/work-packages.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SharedModule } from 'primeng/api';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
+import { SelectModule } from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
     declarations: [
-        ProjectsOverviewComponent
+        ProjectDetailsComponent,
+        WorkPackagesComponent,
     ],
     imports: [
         ButtonModule,
         CommonModule,
+        CalendarModule,
+        CardModule,
+        DatePickerModule,
         DialogModule,
         FormsModule,
         IconFieldModule,
         InputIconModule,
         InputTextModule,
+        InputNumberModule,
+        MasterDataModule,
         MessageModule,
         MultiSelectModule,
         ProjectRoutingModule,
+        ReactiveFormsModule,
+        SelectModule,
         TableModule,
         ToastModule,
         ToolbarModule,
         TranslateModule,
         TranslatePipe,
         TranslateDirective,
-        MasterDataModule
+        ProgressSpinnerModule,
+        SharedModule
     ]
 
 })
-export class ProjectModule {}
+export class ProjectModule { }

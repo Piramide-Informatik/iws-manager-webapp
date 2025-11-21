@@ -39,11 +39,12 @@ import { WorkContractsModule } from './sub-modules/work-contracts/work-contracts
 import { ContractorModule } from './sub-modules/contractor/contractor.module';
 import { SubcontractsModule } from './sub-modules/subcontracts/subcontracts.module';
 import { ReceivablesModule } from './sub-modules/receivables/receivables.module';
-import { ProjectModule } from './sub-modules/projects/project.module';
+
 import { FrameworkAgreementsModule } from './sub-modules/framework-agreements/framework-agreements.module';
 import { OrdersModule } from './sub-modules/orders/orders.module';
 import { InvoicesModule } from './sub-modules/invoices/invoices.module';
 import { LayoutModule } from '../../core/layout/layout.module';
+import { ProjectModule } from './sub-modules/projects/project.module';
 
 
 @NgModule({
@@ -90,8 +91,8 @@ import { LayoutModule } from '../../core/layout/layout.module';
     InvoicesModule,
     LayoutModule
   ],
-  providers: [ 
-    UserPreferenceService 
+  providers: [
+    UserPreferenceService
   ]
 })
 export class CustomerModule {}
