@@ -4,7 +4,7 @@ import { ProjectDetailsComponent } from "./components/project-details/project-de
 import { BlankComponent } from "../../core/components/blank/blank.component";
 
 const routes: Routes = [
-    { path: '', component: BlankComponent }, // ← Sin redirección
+    { path: '', component: BlankComponent },
     { path: 'create', component: ProjectDetailsComponent },
 ]
 
