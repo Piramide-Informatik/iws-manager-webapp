@@ -4,6 +4,7 @@ import { ProjectPackage } from '../../../../../Entities/ProjectPackage';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { PageTitleService } from '../../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-work-packages',
@@ -14,6 +15,7 @@ import { Subscription } from 'rxjs';
 export class WorkPackagesComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly pageTitleService = inject(PageTitleService);
 
   private subscription!: Subscription;
 
@@ -25,6 +27,7 @@ export class WorkPackagesComponent implements OnInit {
   dataKeys = ['packageNo', 'serial', 'packageTitle', 'startDate', 'endDate'];
 
   ngOnInit(): void {
+    this.pageTitleService.setTranslatedTitle('PAGETITLE.PROJECT.NEW_PROJECT');
     this.loadColumns();
     this.projectPackageUserPreferences =
       this.userPreferenceService.getUserPreferences(
@@ -54,34 +57,34 @@ export class WorkPackagesComponent implements OnInit {
       {
         field: 'packageNo',
         useSameAsEdit: true,
-        header: this.translate.instant(_('PROJECT_PACKAGES.PACKAGE_NUMBER')),
+        header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_NUMBER')),
       },
       {
         field: 'serial',
         type: 'double',
         customClasses: ['align-right'],
-        header: this.translate.instant(_('PROJECT_PACKAGES.PACKAGE_SERIAL')),
+        header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_SERIAL')),
         filter: { type: 'numeric' },
       },
       {
         field: 'packageTitle',
         type: 'string',
         customClasses: ['align-right'],
-        header: this.translate.instant(_('PROJECT_PACKAGES.PACKAGE_NAME')),
+        header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_NAME')),
         filter: { type: 'text' },
       },
       {
         field: 'startDate',
         type: 'date',
         customClasses: ['align-right'],
-        header: this.translate.instant(_('PROJECT_PACKAGES.START_DATE')),
+        header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.START_DATE')),
         filter: { type: 'date' },
       },
       {
         field: 'endDate',
         type: 'date',
         customClasses: ['align-right'],
-        header: this.translate.instant(_('PROJECT_PACKAGES.END_DATE')),
+        header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.END_DATE')),
         filter: { type: 'date' },
       },
     ];
