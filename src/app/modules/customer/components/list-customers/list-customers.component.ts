@@ -280,7 +280,7 @@ export class ListCustomersComponent implements OnInit, OnDestroy {
 
   goToCustomerRegister() {
     this.customerStateService.clearCustomer();
-    this.router.navigate(['customer-create'], { relativeTo: this.route });
+    this.router.navigate(['create'], { relativeTo: this.route });
   }
 
   onCustomerDeleteConfirm() {

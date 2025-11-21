@@ -30,12 +30,10 @@ const routes: Routes = [
   {
     path: 'projects',
     component: MainLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: BlankComponent
-      }
-    ]
+    loadChildren: () =>
+      import('./modules/projects/project.module').then(
+        (p) => p.ProjectModule
+      )
   },
   {
     path: 'invoicing',
@@ -71,4 +69,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

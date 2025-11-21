@@ -44,6 +44,9 @@
       "TITLE": "Título",
       "TYPE_OF_COMPANIES": "Tipos de Empresas",
       "USER": "Usuario"
+    },
+    "PROJECT": {
+      "NEW_PROJECT": "Nuevo Proyecto"
     }
   },
   "ERROR": {
@@ -225,24 +228,8 @@
       "Viernes",
       "Sábado"
     ],
-    "dayNamesShort": [
-      "Dom",
-      "Lun",
-      "Mar",
-      "Mié",
-      "Jue",
-      "Vie",
-      "Sáb"
-    ],
-    "dayNamesMin": [
-      "Do",
-      "Lu",
-      "Ma",
-      "Mi",
-      "Ju",
-      "Vi",
-      "Sá"
-    ],
+    "dayNamesShort": ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+    "dayNamesMin": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
     "monthNames": [
       "Enero",
       "Febrero",
@@ -442,7 +429,36 @@
       "AUTH_DATE": "Fecha de Aprobación",
       "FUNDING_RATE": "Tasa de Financiación"
     },
+    "FORM": {
+      "PROJECT": "Projecto",
+      "LONGTEXT": "Texto largo",
+      "CUSTOMER": "Cliente",
+      "R_D_ORDER_NUMBER": "Pedido I+D / Nº",
+      "FUNDING_PROGRAM": "Programa de financiación",
+      "PROMOTER_NUMBER": "Nº de promotor",
+      "PROMOTER": "Promotor",
+      "FUNDING_LABEL": "Etiqueta de financiación",
+      "AUTHORIZATION_DATE": "Fecha de autorización",
+      "DURATION_START": "Inicio de duración",
+      "DURATION_END": "Fin de duración",
+      "FUNDING_RATE": "Tasa de financiación",
+      "STAFF_FLAT_RATE": "Tarifa plana de personal",
+      "RESEARCH_SHARE": "Participación en investigación",
+      "HOURLY_RATE_MU_EU": "Tarifa horaria MU UE",
+      "PRODUCTIVE_HOURS_YEAR": "Horas productivas / Año",
+      "ADMIN_ORDER_NUMBER": "Pedido administración / Nº"
+    },
     "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto"
+  },
+  "PROJECT_PACKAGES": {
+    "TABLE": {
+      "PACKAGE_NUMBER": "Paquete de trabajo",
+      "PACKAGE_SERIAL": "Nº WP",
+      "PACKAGE_NAME": "Descripción",
+      "START_DATE": "Inicio",
+      "END_DATE": "Fin",
+      "TITLE": "Paquetes de Trabajo"
+    }
   },
   "ORDERS": {
     "FORM": {

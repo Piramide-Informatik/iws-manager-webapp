@@ -30,7 +30,6 @@ import { BillingMethodsComponent } from './components/billing-methods/billing-me
 import { ContractStatusComponent } from './components/contract-status/contract-status.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'absence-types' },
   { path: 'absence-types', component: AbsenceTypesComponent },
   { path: 'salutation', component: SalutationComponent },
   { path: 'user', component: UserComponent },

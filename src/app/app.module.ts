@@ -16,7 +16,6 @@ import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 
 //Modules
 import { AppRoutingModule } from './app-routing.module';
-import { CustomerModule } from './modules/customer/customer.module';
 import { LayoutModule } from './core/layout/layout.module';
 import { MasterDataModule } from './modules/master-data/master-data.module';
 
@@ -37,7 +36,6 @@ import { AppComponent } from './app.component';
 import { BlankComponent } from './core/components/blank/blank.component';
 import { UserPreferenceService } from './Services/user-preferences.service';
 
-
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -49,7 +47,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     BrowserModule,
     ButtonModule,
-    CustomerModule,
     MatButtonModule,
     LayoutModule,
     MatButtonModule,

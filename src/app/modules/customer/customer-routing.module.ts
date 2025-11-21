@@ -7,7 +7,7 @@ import { PageCustomerComponent } from './components/page-customer/page-customer.
 
 const routes: Routes = [
   { path: '', component: ListCustomersComponent },
-  { path: 'customer-create', component: DetailCustomerComponent },
+  { path: 'create', component: DetailCustomerComponent },
   {
     path: '',
     component: PageCustomerComponent,

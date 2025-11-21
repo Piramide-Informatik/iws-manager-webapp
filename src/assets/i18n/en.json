@@ -44,6 +44,9 @@
       "TITLE": "Titles",
       "TYPE_OF_COMPANIES": "Company Types",
       "USER": "User"
+    },
+    "PROJECT": {
+      "NEW_PROJECT": "New Project"
     }
   },
   "ERROR": {
@@ -225,24 +228,8 @@
       "Friday",
       "Saturday"
     ],
-    "dayNamesShort": [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat"
-    ],
-    "dayNamesMin": [
-      "Su",
-      "Mo",
-      "Tu",
-      "We",
-      "Th",
-      "Fr",
-      "Sa"
-    ],
+    "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "dayNamesMin": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
     "monthNames": [
       "January",
       "February",
@@ -448,7 +435,36 @@
       "AUTH_DATE": "Appr. Date",
       "FUNDING_RATE": "Funding Rate"
     },
+    "FORM": {
+      "PROJECT": "Project",
+      "LONGTEXT": "Long text",
+      "CUSTOMER": "Customer",
+      "R_D_ORDER_NUMBER": "R&D Order / No.",
+      "FUNDING_PROGRAM": "Funding Program",
+      "PROMOTER_NUMBER": "Promoter Number",
+      "PROMOTER": "Promoter",
+      "FUNDING_LABEL": "Funding Label",
+      "AUTHORIZATION_DATE": "Authorization Date",
+      "DURATION_START": "Duration Start",
+      "DURATION_END": "Duration End",
+      "FUNDING_RATE": "Funding Rate",
+      "STAFF_FLAT_RATE": "Staff Flat Rate",
+      "RESEARCH_SHARE": "Research Share",
+      "HOURLY_RATE_MU_EU": "Hourly Rate MU EU",
+      "PRODUCTIVE_HOURS_YEAR": "Productive Hours / Year",
+      "ADMIN_ORDER_NUMBER": "Administration Order / No."
+    },
     "PROJECTS_DIALOG_REMOVE": "Delete Project"
+  },
+  "PROJECT_PACKAGES": {
+    "TABLE": {
+      "PACKAGE_NUMBER": "Work Package",
+      "PACKAGE_SERIAL": "WP No.",
+      "PACKAGE_NAME": "Description",
+      "START_DATE": "Start",
+      "END_DATE": "End",
+      "TITLE": "Work Packages"
+    }
   },
   "ORDERS": {
     "FORM": {
@@ -708,7 +724,7 @@
     },
     "ERROR": {
       "SALUTATION_REQUIRED": "Salutation required",
-      "ALREADY_EXIST":"Salutation already exists"
+      "ALREADY_EXIST": "Salutation already exists"
     }
   },
   "STATES": {
@@ -882,7 +898,7 @@
       "CREATION_FAILED": "There was an error during the creation of the holiday.",
       "UPDATE_FAILED": "There was an error during the holiday update.",
       "EMPTY": "The name of the holiday must have at least one character",
-      "YEAR_ALREADY_EXISTS":"Year already exists",
+      "YEAR_ALREADY_EXISTS": "Year already exists",
       "HOLIDAY_ALREADY_EXISTS": "Holiday already exists"
     },
     "MODAL": {
@@ -938,7 +954,7 @@
       "NEW": "New Dunning level",
       "DELETE": "Delete Dunning level"
     },
-    "VALIDATION":{
+    "VALIDATION": {
       "DUNNING_LVL_EXISTS": "Dunning Level already exists"
     }
   },
@@ -1012,7 +1028,7 @@
       "NAME_REQUIRED": "Name is required",
       "ONLY_NUMBER_REQUIRED": "Enter only numbers",
       "ONLY_ALPHANUMERIC_REQUIRED": "Enter only alphanumeric characters.",
-      "NAME_ALREADY_EXISTS":"Constant already exists"
+      "NAME_ALREADY_EXISTS": "Constant already exists"
     },
     "MODAL": {
       "NEW": "New System Constant",
@@ -1117,7 +1133,7 @@
       "DELETE_COST_TYPE": "Delete Cost Type"
     },
     "ERROR": {
-    "TYPE_ALREADY_EXIST": "Cost type already exists"
+      "TYPE_ALREADY_EXIST": "Cost type already exists"
     }
   },
   "PAGINATION": {
@@ -1277,7 +1293,7 @@
       "NEW": "New Realization Probabilities",
       "DELETE": "Delete Realization Probabilities"
     },
-      "ERROR": {
+    "ERROR": {
       "PROBABILITY_ALREADY_EXIST": "Realization Probabilities already exists"
     }
   },
@@ -1372,7 +1388,7 @@
     },
     "ERROR": {
       "CONTRACT_STATUS_REQUIRED": "Contract Status is required",
-      "ALREADY_EXIST" :"Contract Status already exists"
+      "ALREADY_EXIST": "Contract Status already exists"
     },
     "MODAL": {
       "TITLE_CREATE": "New Contract Status",
