@@ -1,0 +1,38 @@
+@use 'variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+  align-items: center;
+  width: 100%;
+  
+  label {
+    margin-bottom: 0;
+    width: 180px;
+    flex-shrink: 0;
+  }
+
+  .p-select {
+    width: 100%;
+  }
+
+  input, p-inputnumber {
+    width: 100%;
+  }
+
+  .datepicker-container{
+    width: 100%;
+  }
+}
+
+.align-right {
+  text-align: right;
+}
+
+// Input inválido con borde rojo
+.field input.ng-invalid.ng-dirty {
+  border-color: #e24c4c !important;
+  box-shadow: 0 0 0 1px #e24c4c !important;
+}
+
