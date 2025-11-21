@@ -24,12 +24,12 @@
                             optionLabel="companyText1" optionValue="id" [showClear]="true">
                             <ng-template let-customer pTemplate="selectedItem">
                                 <div class="flex align-items-center gap-2" *ngIf="customer">
-                                    <span>{{ customer.companyText1 }}</span>
+                                    <span>{{ customer.customername1 }}</span>
                                 </div>
                             </ng-template>
                             <ng-template let-customer pTemplate="item">
                                 <div class="flex align-items-center gap-2">
-                                    <span>{{ customer.companyText1 }}</span>
+                                    <span>{{ customer.customername1 }}</span>
                                 </div>
                             </ng-template>
                         </p-select>
@@ -58,7 +58,7 @@
                     <!-- Projektträger -->
                     <div class="field">
                         <label for="promoter">Projektträger</label>
-                        <p-select formControlName="promoter" id="promoter" [options]="promoters()" optionLabel="name"
+                        <p-select formControlName="promoter" id="promoter" [options]="promoters()" optionLabel="promoterName1"
                             optionValue="id" />
                     </div>
 

@@ -265,7 +265,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private buildCustomerEntity(customerId?: number): Project['customer'] {
     if (!customerId) return null;
-    
     const customer = this.customers().find(c => c.id === customerId);
     return customer || { id: customerId } as Customer;
   }
