@@ -114,7 +114,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   private setupProjectSubscription(): void {
-    // Aquí puedes agregar un ProjectStateService si lo necesitas
+    // Add ProjectStateService if needed
   }
 
   private loadProject(projectId: number): void {
@@ -140,7 +140,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       customer: project.customer?.id,
       orderIdFue: project.orderIdFue,
       fundingProgram: project.fundingProgram?.id,
-      promoterNumber: project.promoter?.id, // Ajustar según necesidad
+      promoterNumber: project.promoter?.id,
       promoter: project.promoter?.id,
       fundingLabel: project.fundingLabel,
       authorizationDate: project.authorizationDate ? new Date(project.authorizationDate) : null,
