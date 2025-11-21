@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, computed, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
@@ -218,22 +218,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
     const projectData = {
       ...this.currentProject,
-      projectName: formValue.projectName,
-      title: formValue.title,
-      customer: this.buildCustomerEntity(formValue.customer),
-      orderIdFue: formValue.orderIdFue,
-      fundingProgram: this.buildFundingProgramEntity(formValue.fundingProgram),
-      promoter: this.buildPromoterEntity(formValue.promoter),
-      fundingLabel: formValue.fundingLabel,
-      authorizationDate: formValue.authorizationDate?.toISOString(),
-      startDate: formValue.startDate?.toISOString(),
-      endDate: formValue.endDate?.toISOString(),
-      fundingRate: formValue.fundingRate,
-      stuffFlat: formValue.stuffFlat,
-      shareResearch: formValue.shareResearch,
-      hourlyRateMueu: formValue.hourlyRateMueu,
-      productiveHoursPerYear: formValue.productiveHoursPerYear,
-      orderIdAdmin: formValue.orderIdAdmin
+      ...this.buildCommonProjectData(formValue)
     };
 
     return buildProject(projectData);
@@ -243,6 +228,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     const formValue = this.formProject.value;
 
     const projectData = {
+      ...this.buildCommonProjectData(formValue)
+    };
+
+    return buildProject(projectData);
+  }
+
+  private buildCommonProjectData(formValue: any): any {
+    return {
       projectName: formValue.projectName,
       title: formValue.title,
       customer: this.buildCustomerEntity(formValue.customer),
@@ -260,8 +253,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       productiveHoursPerYear: formValue.productiveHoursPerYear,
       orderIdAdmin: formValue.orderIdAdmin
     };
-
-    return buildProject(projectData);
   }
 
   private buildCustomerEntity(customerId?: number): Project['customer'] {
