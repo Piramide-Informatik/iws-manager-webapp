@@ -225,24 +225,8 @@
       "Freitag",
       "Samstag"
     ],
-    "dayNamesShort": [
-      "Son",
-      "Mon",
-      "Die",
-      "Mit",
-      "Don",
-      "Fre",
-      "Sam"
-    ],
-    "dayNamesMin": [
-      "So",
-      "Mo",
-      "Di",
-      "Mi",
-      "Do",
-      "Fr",
-      "Sa"
-    ],
+    "dayNamesShort": ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
+    "dayNamesMin": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
     "monthNames": [
       "Januar",
       "Februar",
@@ -448,7 +432,7 @@
       "AUTH_DATE": "Bewilligt",
       "FUNDING_RATE": "Fördersatz"
     },
-    "FORM":{
+    "FORM": {
       "PROJECT": "Projekt",
       "LONGTEXT": "Longtext",
       "CUSTOMER": "Kunde",
@@ -468,6 +452,13 @@
       "ADMIN_ORDER_NUMBER": "Verwaltung-Auftrag / Nr."
     },
     "PROJECTS_DIALOG_REMOVE": "Projekt löschen"
+  },
+  "PROJECT_PACKAGES": {
+    "PACKAGE_NUMBER": "Arbeitspaket",
+    "PACKAGE_SERIAL": "AP-Nr.",
+    "PACKAGE_NAME": "Bezeichnung",
+    "START_DATE": "Start",
+    "END_DATE": "Ende"
   },
   "ORDERS": {
     "FORM": {

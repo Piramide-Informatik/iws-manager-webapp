@@ -225,24 +225,8 @@
       "Viernes",
       "Sábado"
     ],
-    "dayNamesShort": [
-      "Dom",
-      "Lun",
-      "Mar",
-      "Mié",
-      "Jue",
-      "Vie",
-      "Sáb"
-    ],
-    "dayNamesMin": [
-      "Do",
-      "Lu",
-      "Ma",
-      "Mi",
-      "Ju",
-      "Vi",
-      "Sá"
-    ],
+    "dayNamesShort": ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+    "dayNamesMin": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
     "monthNames": [
       "Enero",
       "Febrero",
@@ -442,7 +426,7 @@
       "AUTH_DATE": "Fecha de Aprobación",
       "FUNDING_RATE": "Tasa de Financiación"
     },
-    "FORM":{
+    "FORM": {
       "PROJECT": "Projecto",
       "LONGTEXT": "Texto largo",
       "CUSTOMER": "Cliente",
@@ -462,6 +446,13 @@
       "ADMIN_ORDER_NUMBER": "Pedido administración / Nº"
     },
     "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto"
+  },
+  "PROJECT_PACKAGES": {
+    "PACKAGE_NUMBER": "Paquete de trabajo",
+    "PACKAGE_SERIAL": "Nº WP",
+    "PACKAGE_NAME": "Descripción",
+    "START_DATE": "Inicio",
+    "END_DATE": "Fin"
   },
   "ORDERS": {
     "FORM": {
