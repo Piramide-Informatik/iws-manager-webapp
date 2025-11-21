@@ -69,21 +69,18 @@ export class WorkPackagesComponent implements OnInit {
       {
         field: 'packageTitle',
         type: 'string',
-        customClasses: ['align-right'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_NAME')),
         filter: { type: 'text' },
       },
       {
         field: 'startDate',
         type: 'date',
-        customClasses: ['align-right'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.START_DATE')),
         filter: { type: 'date' },
       },
       {
         field: 'endDate',
         type: 'date',
-        customClasses: ['align-right'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.END_DATE')),
         filter: { type: 'date' },
       },
