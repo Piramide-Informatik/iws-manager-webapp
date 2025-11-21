@@ -5,21 +5,21 @@
                 <div class="grid justify-content-center">
                     <!-- Projekt -->
                     <div class="field">
-                        <label for="projectName">Projekt</label>
+                        <label for="projectName"> {{ "PROJECTS.FORM.PROJECT" | translate }} </label>
                         <input type="text" id="projectName" pInputText formControlName="projectName"
                             [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
                     </div>
 
                     <!-- Longtext -->
                     <div class="field">
-                        <label for="title">Longtext</label>
+                        <label for="title"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
                         <textarea id="title" pInputTextarea formControlName="title" rows="3"
                             style="width: 100%;"></textarea>
                     </div>
 
                     <!-- Kunde -->
                     <div class="field">
-                        <label for="customer">Kunde</label>
+                        <label for="customer"> {{ "PROJECTS.FORM.CUSTOMER" | translate }}</label>
                         <p-select formControlName="customer" id="customer" [options]="customers()"
                             optionLabel="companyText1" optionValue="id" [showClear]="true">
                             <ng-template let-customer pTemplate="selectedItem">
@@ -37,40 +37,40 @@
 
                     <!-- FuE-Auftrag / Nr. -->
                     <div class="field">
-                        <label for="orderIdFue">FuE-Auftrag / Nr.</label>
+                        <label for="orderIdFue"> {{ "PROJECTS.FORM.R_D_ORDER_NUMBER" | translate }}</label>
                         <p-inputnumber inputId="orderIdFue" [useGrouping]="false" formControlName="orderIdFue"
                             [inputStyle]="{ 'text-align': 'right' }" />
                     </div>
 
                     <!-- Förderprogramm -->
                     <div class="field">
-                        <label for="fundingProgram">Förderprogramm</label>
+                        <label for="fundingProgram"> {{ "PROJECTS.FORM.FUNDING_PROGRAM" | translate }}</label>
                         <p-select formControlName="fundingProgram" id="fundingProgram" [options]="fundingPrograms()"
                             optionLabel="name" optionValue="id" />
                     </div>
 
                     <!-- Projektträger-Nr. -->
                     <div class="field">
-                        <label for="promoterNumber">Projektträger-Nr.</label>
+                        <label for="promoterNumber"> {{ "PROJECTS.FORM.PROMOTER_NUMBER" | translate }}</label>
                         <input type="text" id="promoterNumber" pInputText formControlName="promoterNumber" />
                     </div>
 
                     <!-- Projektträger -->
                     <div class="field">
-                        <label for="promoter">Projektträger</label>
-                        <p-select formControlName="promoter" id="promoter" [options]="promoters()" optionLabel="promoterName1"
-                            optionValue="id" />
+                        <label for="promoter"> {{ "PROJECTS.FORM.PROMOTER" | translate }}</label>
+                        <p-select formControlName="promoter" id="promoter" [options]="promoters()"
+                            optionLabel="promoterName1" optionValue="id" />
                     </div>
 
                     <!-- Förderkennzeichen -->
                     <div class="field">
-                        <label for="fundingLabel">Förderkennzeichen</label>
+                        <label for="fundingLabel"> {{ "PROJECTS.FORM.FUNDING_LABEL" | translate }}</label>
                         <input type="text" id="fundingLabel" pInputText formControlName="fundingLabel" />
                     </div>
 
                     <!-- Bewilligungsdatum -->
                     <div class="field">
-                        <label for="authorizationDate">Bewilligungsdatum</label>
+                        <label for="authorizationDate"> {{ "PROJECTS.FORM.AUTHORIZATION_DATE" | translate }}</label>
                         <div class="datepicker-container">
                             <p-datepicker id="authorizationDate" formControlName="authorizationDate" [showIcon]="true"
                                 [style]="{'width':'100%'}" dateFormat="dd.mm.yy" [readonlyInput]="true" />
@@ -79,7 +79,7 @@
 
                     <!-- Laufzeit Start -->
                     <div class="field">
-                        <label for="startDate">Laufzeit Start</label>
+                        <label for="startDate"> {{ "PROJECTS.FORM.DURATION_START" | translate }}</label>
                         <div class="datepicker-container">
                             <p-datepicker id="startDate" formControlName="startDate" [showIcon]="true"
                                 dateFormat="dd.mm.yy" [readonlyInput]="true" [style]="{'width':'100%'}" />
@@ -88,7 +88,7 @@
 
                     <!-- Laufzeit Ende -->
                     <div class="field">
-                        <label for="endDate">Laufzeit Ende</label>
+                        <label for="endDate"> {{ "PROJECTS.FORM.DURATION_END" | translate }}</label>
                         <div class="datepicker-container">
                             <p-datepicker id="endDate" formControlName="endDate" [showIcon]="true" dateFormat="dd.mm.yy"
                                 [readonlyInput]="true" [style]="{'width':'100%'}" />
@@ -97,7 +97,7 @@
 
                     <!-- Fördersatz -->
                     <div class="field">
-                        <label for="fundingRate">Fördersatz</label>
+                        <label for="fundingRate"> {{ "PROJECTS.FORM.FUNDING_RATE" | translate }}</label>
                         <p-inputNumber inputId="fundingRate" formControlName="fundingRate"
                             [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="100" [min]="0" [suffix]="'%'"
                             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
@@ -105,7 +105,7 @@
 
                     <!-- Personalpauschale -->
                     <div class="field">
-                        <label for="stuffFlat">Personalpauschale</label>
+                        <label for="stuffFlat"> {{ "PROJECTS.FORM.STAFF_FLAT_RATE" | translate }}</label>
                         <p-inputNumber inputId="stuffFlat" formControlName="stuffFlat"
                             [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="999999.99" [min]="0"
                             [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
@@ -113,7 +113,7 @@
 
                     <!-- Anteil Forschungsauftrag -->
                     <div class="field">
-                        <label for="shareResearch">Anteil Forschungsauftrag</label>
+                        <label for="shareResearch"> {{ "PROJECTS.FORM.RESEARCH_SHARE" | translate }}</label>
                         <p-inputNumber inputId="shareResearch" formControlName="shareResearch"
                             [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="100" [min]="0" [suffix]="'%'"
                             [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
@@ -121,7 +121,7 @@
 
                     <!-- Std.-Satz MU EU -->
                     <div class="field">
-                        <label for="hourlyRateMueu">Std.-Satz MU EU</label>
+                        <label for="hourlyRateMueu"> {{ "PROJECTS.FORM.HOURLY_RATE_MU_EU" | translate }}</label>
                         <p-inputNumber inputId="hourlyRateMueu" formControlName="hourlyRateMueu"
                             [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="9999.99" [min]="0"
                             [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
@@ -129,7 +129,8 @@
 
                     <!-- Produktive Stunden / Jahr -->
                     <div class="field">
-                        <label for="productiveHoursPerYear">Produktive Stunden / Jahr</label>
+                        <label for="productiveHoursPerYear"> {{ "PROJECTS.FORM.PRODUCTIVE_HOURS_YEAR" | translate
+                            }}</label>
                         <p-inputNumber inputId="productiveHoursPerYear" formControlName="productiveHoursPerYear"
                             [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="9999" [min]="0"
                             [useGrouping]="false" locale="de-DE" />
@@ -137,7 +138,7 @@
 
                     <!-- Verwaltung-Auftrag / Nr. -->
                     <div class="field">
-                        <label for="orderIdAdmin">Verwaltung-Auftrag / Nr.</label>
+                        <label for="orderIdAdmin"> {{ "PROJECTS.FORM.ADMIN_ORDER_NUMBER" | translate }}</label>
                         <p-inputnumber inputId="orderIdAdmin" [useGrouping]="false" formControlName="orderIdAdmin"
                             [inputStyle]="{ 'text-align': 'right' }" />
                     </div>
@@ -153,12 +154,14 @@
 
     <!-- Botones de acción -->
     <div class="form-row flex flex-wrap gap-3 justify-content-center py-3">
-        <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check" [loading]="isSaving"
-            iconPos="left" (onClick)="onSubmit()" [disabled]="formProject.invalid || !formProject.dirty" />
-        <p-button class="Delete me-2" size="small" label="Löschen" icon="pi pi-trash" [disabled]="isSaving"
-            iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="showDeleteProjectModal = true" />
-        <p-button class="cancel" size="small" label="Abbrechen" icon="pi pi-times" iconPos="left" routerLink="/projects"
-            [disabled]="isSaving" />
+        <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+            [loading]="isSaving" iconPos="left" (onClick)="onSubmit()"
+            [disabled]="formProject.invalid || !formProject.dirty" />
+        <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+            [disabled]="isSaving" iconPos="left" [style]="{ background: '#ef4444' }"
+            (onClick)="showDeleteProjectModal = true" />
+        <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+            routerLink="/projects" [disabled]="isSaving" />
     </div>
 </div>
 
