@@ -1,6 +1,6 @@
 // Angular
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from "@angular/core";
 
 //Modulos
@@ -25,6 +25,12 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
 import { MasterDataModule } from '../master-data/master-data.module';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { WorkPackagesComponent } from './components/project-details/work-packages/work-packages.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SharedModule } from 'primeng/api';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
+import { SelectModule } from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
 
 
 @NgModule({
@@ -36,22 +42,29 @@ import { WorkPackagesComponent } from './components/project-details/work-package
     imports: [
         ButtonModule,
         CommonModule,
-        DialogModule, 
+        CalendarModule,
+        DatePickerModule,
+        DialogModule,
         FormsModule,
         IconFieldModule,
         InputIconModule,
         InputTextModule,
+        InputNumberModule,
+        MasterDataModule,
         MessageModule,
         MultiSelectModule,
         ProjectRoutingModule,
+        ReactiveFormsModule,
+        SelectModule,
         TableModule,
         ToastModule,
         ToolbarModule,
         TranslateModule,
         TranslatePipe,
         TranslateDirective,
-        MasterDataModule
+        ProgressSpinnerModule,
+        SharedModule
     ]
 
 })
-export class ProjectModule {}
+export class ProjectModule { }
