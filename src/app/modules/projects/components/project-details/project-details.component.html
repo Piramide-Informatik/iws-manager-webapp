@@ -1,1 +1,180 @@
-<p>project-details works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form [formGroup]="formProject" action="">
+                <div class="grid justify-content-center">
+                    <!-- Projekt -->
+                    <div class="field">
+                        <label for="projectName">Projekt</label>
+                        <input type="text" id="projectName" pInputText formControlName="projectName"
+                            [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
+                    </div>
+
+                    <!-- Longtext -->
+                    <div class="field">
+                        <label for="title">Longtext</label>
+                        <textarea id="title" pInputTextarea formControlName="title" rows="3"
+                            style="width: 100%;"></textarea>
+                    </div>
+
+                    <!-- Kunde -->
+                    <div class="field">
+                        <label for="customer">Kunde</label>
+                        <p-select formControlName="customer" id="customer" [options]="customers()"
+                            optionLabel="companyText1" optionValue="id" [showClear]="true">
+                            <ng-template let-customer pTemplate="selectedItem">
+                                <div class="flex align-items-center gap-2" *ngIf="customer">
+                                    <span>{{ customer.companyText1 }}</span>
+                                </div>
+                            </ng-template>
+                            <ng-template let-customer pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <span>{{ customer.companyText1 }}</span>
+                                </div>
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <!-- FuE-Auftrag / Nr. -->
+                    <div class="field">
+                        <label for="orderIdFue">FuE-Auftrag / Nr.</label>
+                        <p-inputnumber inputId="orderIdFue" [useGrouping]="false" formControlName="orderIdFue"
+                            [inputStyle]="{ 'text-align': 'right' }" />
+                    </div>
+
+                    <!-- Förderprogramm -->
+                    <div class="field">
+                        <label for="fundingProgram">Förderprogramm</label>
+                        <p-select formControlName="fundingProgram" id="fundingProgram" [options]="fundingPrograms()"
+                            optionLabel="name" optionValue="id" />
+                    </div>
+
+                    <!-- Projektträger-Nr. -->
+                    <div class="field">
+                        <label for="promoterNumber">Projektträger-Nr.</label>
+                        <input type="text" id="promoterNumber" pInputText formControlName="promoterNumber" />
+                    </div>
+
+                    <!-- Projektträger -->
+                    <div class="field">
+                        <label for="promoter">Projektträger</label>
+                        <p-select formControlName="promoter" id="promoter" [options]="promoters()" optionLabel="name"
+                            optionValue="id" />
+                    </div>
+
+                    <!-- Förderkennzeichen -->
+                    <div class="field">
+                        <label for="fundingLabel">Förderkennzeichen</label>
+                        <input type="text" id="fundingLabel" pInputText formControlName="fundingLabel" />
+                    </div>
+
+                    <!-- Bewilligungsdatum -->
+                    <div class="field">
+                        <label for="authorizationDate">Bewilligungsdatum</label>
+                        <div class="datepicker-container">
+                            <p-datepicker id="authorizationDate" formControlName="authorizationDate" [showIcon]="true"
+                                [style]="{'width':'100%'}" dateFormat="dd.mm.yy" [readonlyInput]="true" />
+                        </div>
+                    </div>
+
+                    <!-- Laufzeit Start -->
+                    <div class="field">
+                        <label for="startDate">Laufzeit Start</label>
+                        <div class="datepicker-container">
+                            <p-datepicker id="startDate" formControlName="startDate" [showIcon]="true"
+                                dateFormat="dd.mm.yy" [readonlyInput]="true" [style]="{'width':'100%'}" />
+                        </div>
+                    </div>
+
+                    <!-- Laufzeit Ende -->
+                    <div class="field">
+                        <label for="endDate">Laufzeit Ende</label>
+                        <div class="datepicker-container">
+                            <p-datepicker id="endDate" formControlName="endDate" [showIcon]="true" dateFormat="dd.mm.yy"
+                                [readonlyInput]="true" [style]="{'width':'100%'}" />
+                        </div>
+                    </div>
+
+                    <!-- Fördersatz -->
+                    <div class="field">
+                        <label for="fundingRate">Fördersatz</label>
+                        <p-inputNumber inputId="fundingRate" formControlName="fundingRate"
+                            [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="100" [min]="0" [suffix]="'%'"
+                            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
+                    </div>
+
+                    <!-- Personalpauschale -->
+                    <div class="field">
+                        <label for="stuffFlat">Personalpauschale</label>
+                        <p-inputNumber inputId="stuffFlat" formControlName="stuffFlat"
+                            [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="999999.99" [min]="0"
+                            [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
+                    </div>
+
+                    <!-- Anteil Forschungsauftrag -->
+                    <div class="field">
+                        <label for="shareResearch">Anteil Forschungsauftrag</label>
+                        <p-inputNumber inputId="shareResearch" formControlName="shareResearch"
+                            [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="100" [min]="0" [suffix]="'%'"
+                            [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
+                    </div>
+
+                    <!-- Std.-Satz MU EU -->
+                    <div class="field">
+                        <label for="hourlyRateMueu">Std.-Satz MU EU</label>
+                        <p-inputNumber inputId="hourlyRateMueu" formControlName="hourlyRateMueu"
+                            [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="9999.99" [min]="0"
+                            [useGrouping]="true" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" />
+                    </div>
+
+                    <!-- Produktive Stunden / Jahr -->
+                    <div class="field">
+                        <label for="productiveHoursPerYear">Produktive Stunden / Jahr</label>
+                        <p-inputNumber inputId="productiveHoursPerYear" formControlName="productiveHoursPerYear"
+                            [inputStyle]="{ 'text-align': 'right' }" mode="decimal" [max]="9999" [min]="0"
+                            [useGrouping]="false" locale="de-DE" />
+                    </div>
+
+                    <!-- Verwaltung-Auftrag / Nr. -->
+                    <div class="field">
+                        <label for="orderIdAdmin">Verwaltung-Auftrag / Nr.</label>
+                        <p-inputnumber inputId="orderIdAdmin" [useGrouping]="false" formControlName="orderIdAdmin"
+                            [inputStyle]="{ 'text-align': 'right' }" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <!-- Tabla de paquetes de trabajo -->
+            <app-work-packages></app-work-packages>
+        </div>
+    </div>
+
+
+    <!-- Botones de acción -->
+    <div class="form-row flex flex-wrap gap-3 justify-content-center py-3">
+        <p-button class="Save me-2" size="small" label="Speichern" icon="pi pi-check" [loading]="isSaving"
+            iconPos="left" (onClick)="onSubmit()" [disabled]="formProject.invalid || !formProject.dirty" />
+        <p-button class="Delete me-2" size="small" label="Löschen" icon="pi pi-trash" [disabled]="isSaving"
+            iconPos="left" [style]="{ background: '#ef4444' }" (onClick)="showDeleteProjectModal = true" />
+        <p-button class="cancel" size="small" label="Abbrechen" icon="pi pi-times" iconPos="left" routerLink="/projects"
+            [disabled]="isSaving" />
+    </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<p-dialog header="Projekt löschen" [modal]="true" [(visible)]="showDeleteProjectModal">
+    <div class="confirmation-content mb-2 mt-4">
+        <p class="mb-4">Möchten Sie das Projekt "{{ formProject.get('projectName')?.value }}" wirklich löschen?</p>
+
+        <div class="flex justify-content-center gap-2">
+            <p-button type="button" class="delete" size="small" label="Löschen" icon="pi pi-trash" iconPos="left"
+                (onClick)="onProjectDeleteConfirm()" severity="danger" [loading]="isLoadingProject"
+                [disabled]="isLoadingProject" />
+            <p-button type="button" class="cancel" size="small" label="Abbrechen" icon="pi pi-times" iconPos="left"
+                (onClick)="showDeleteProjectModal = false" [disabled]="isLoadingProject" />
+        </div>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>
