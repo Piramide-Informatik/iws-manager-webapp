@@ -38,15 +38,15 @@ const routes: Routes = [
       {
         path: 'projects/:id',
         loadChildren: () =>
-          import('../../modules/customer/sub-modules/projects/project-routing.module').then(
-            (w) => w.ProjectRoutingModule
+          import('../../modules/customer/sub-modules/projects/project.module').then(
+            (w) => w.ProjectModule
           ),
       },
       {
         path: 'orders/:id',
         loadChildren: () =>
-          import('../../modules/customer/sub-modules/orders/order-routing.module').then(
-            (o) => o.OrderRountingModule
+          import('../../modules/customer/sub-modules/orders/orders.module').then(
+            (o) => o.OrdersModule
           ),
       },
       {
@@ -72,8 +72,8 @@ const routes: Routes = [
       {
         path: 'contractors/:id',
         loadChildren: () =>
-          import('../../modules/customer/sub-modules/contractor/contractor-routing.module').then(
-            (c) => c.ContractorRoutingModule
+          import('../../modules/customer/sub-modules/contractor/contractor.module').then(
+            (c) => c.ContractorModule
           ),
       },
       {

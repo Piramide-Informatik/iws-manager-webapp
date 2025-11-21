@@ -31,11 +31,16 @@ import { CalendarModule } from 'primeng/calendar';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CardModule } from 'primeng/card';
+import { LayoutModule } from '../../core/layout/layout.module';
+import { PageProjectComponent } from './components/page-project/page-project.component';
+import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
 
 @NgModule({
     declarations: [
         ProjectDetailsComponent,
         WorkPackagesComponent,
+        PageProjectComponent,
+        ProjectsOverviewComponent
     ],
     imports: [
         ButtonModule,
@@ -62,7 +67,8 @@ import { CardModule } from 'primeng/card';
         TranslatePipe,
         TranslateDirective,
         ProgressSpinnerModule,
-        SharedModule
+        SharedModule,
+        LayoutModule
     ]
 
 })

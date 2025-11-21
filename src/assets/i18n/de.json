@@ -131,6 +131,14 @@
     "CONTRACT_STATUS": "Vertragsstatus",
     "TERMS_OF_PAYMENT": "Zahlungsbedingungen"
   },
+  "MENU_PROJECT": {
+    "PROJECT": "Projekt",
+    "ACCOUNTING_YEARS": "Abrechnungsjahre",
+    "BLOCKS": "Blöcke",
+    "EMPLOYEES": "Mitarbeiter",
+    "SUBCONTRACTS": "Unteraufträge",
+    "TIMESHEET": "Stundenzettel"
+  },
   "COMMON": {
     "CUSTOMER_NAME": "Kunde",
     "YES": "Ja",
