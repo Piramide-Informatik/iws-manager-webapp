@@ -90,5 +90,7 @@ export class WorkPackagesComponent implements OnInit {
   handleProjectpackageTableEvents(event: {
     type: 'create' | 'delete' | 'edit';
     data?: any;
-  }): void {}
+  }): void {
+    // implement handling function
+  }
 }
