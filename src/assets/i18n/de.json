@@ -44,6 +44,9 @@
       "TITLE": "Titel",
       "TYPE_OF_COMPANIES": "Unternehmensarten",
       "USER": "Benutzer"
+    },
+    "PROJECT": {
+      "NEW_PROJECT": "Neues Projekt"
     }
   },
   "ERROR": {
@@ -454,11 +457,14 @@
     "PROJECTS_DIALOG_REMOVE": "Projekt löschen"
   },
   "PROJECT_PACKAGES": {
-    "PACKAGE_NUMBER": "Arbeitspaket",
-    "PACKAGE_SERIAL": "AP-Nr.",
-    "PACKAGE_NAME": "Bezeichnung",
-    "START_DATE": "Start",
-    "END_DATE": "Ende"
+    "TABLE": {
+      "PACKAGE_NUMBER": "Arbeitspaket",
+      "PACKAGE_SERIAL": "AP-Nr.",
+      "PACKAGE_NAME": "Bezeichnung",
+      "START_DATE": "Start",
+      "END_DATE": "Ende",
+      "TITLE": "Arbeitspakete"
+    }
   },
   "ORDERS": {
     "FORM": {

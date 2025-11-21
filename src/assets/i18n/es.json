@@ -44,6 +44,9 @@
       "TITLE": "Título",
       "TYPE_OF_COMPANIES": "Tipos de Empresas",
       "USER": "Usuario"
+    },
+    "PROJECT": {
+      "NEW_PROJECT": "Nuevo Proyecto"
     }
   },
   "ERROR": {
@@ -448,11 +451,14 @@
     "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto"
   },
   "PROJECT_PACKAGES": {
-    "PACKAGE_NUMBER": "Paquete de trabajo",
-    "PACKAGE_SERIAL": "Nº WP",
-    "PACKAGE_NAME": "Descripción",
-    "START_DATE": "Inicio",
-    "END_DATE": "Fin"
+    "TABLE": {
+      "PACKAGE_NUMBER": "Paquete de trabajo",
+      "PACKAGE_SERIAL": "Nº WP",
+      "PACKAGE_NAME": "Descripción",
+      "START_DATE": "Inicio",
+      "END_DATE": "Fin",
+      "TITLE": "Paquetes de Trabajo"
+    }
   },
   "ORDERS": {
     "FORM": {

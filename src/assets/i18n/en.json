@@ -44,6 +44,9 @@
       "TITLE": "Titles",
       "TYPE_OF_COMPANIES": "Company Types",
       "USER": "User"
+    },
+    "PROJECT": {
+      "NEW_PROJECT": "New Project"
     }
   },
   "ERROR": {
@@ -454,11 +457,14 @@
     "PROJECTS_DIALOG_REMOVE": "Delete Project"
   },
   "PROJECT_PACKAGES": {
-    "PACKAGE_NUMBER": "Work Package",
-    "PACKAGE_SERIAL": "WP No.",
-    "PACKAGE_NAME": "Description",
-    "START_DATE": "Start",
-    "END_DATE": "End"
+    "TABLE": {
+      "PACKAGE_NUMBER": "Work Package",
+      "PACKAGE_SERIAL": "WP No.",
+      "PACKAGE_NAME": "Description",
+      "START_DATE": "Start",
+      "END_DATE": "End",
+      "TITLE": "Work Packages"
+    }
   },
   "ORDERS": {
     "FORM": {
