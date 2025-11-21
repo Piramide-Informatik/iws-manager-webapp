@@ -30,7 +30,6 @@ import { DetailCustomerComponent } from './components/detail-customer/detail-cus
 import { ListCustomersComponent } from './components/list-customers/list-customers.component';
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { PageCustomerComponent } from './components/page-customer/page-customer.component';
-import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
 
 import { UserPreferenceService } from '../../Services/user-preferences.service';
 import { MasterDataModule } from '../master-data/master-data.module';
@@ -44,6 +43,7 @@ import { ProjectModule } from './sub-modules/projects/project.module';
 import { FrameworkAgreementsModule } from './sub-modules/framework-agreements/framework-agreements.module';
 import { OrdersModule } from './sub-modules/orders/orders.module';
 import { InvoicesModule } from './sub-modules/invoices/invoices.module';
+import { LayoutModule } from '../../core/layout/layout.module';
 
 
 @NgModule({
@@ -52,7 +52,6 @@ import { InvoicesModule } from './sub-modules/invoices/invoices.module';
     ListCustomersComponent,
     DetailCustomerComponent,
     PageCustomerComponent,
-    SubMenuComponent,
   ],
   imports: [
     ButtonModule,
@@ -88,7 +87,8 @@ import { InvoicesModule } from './sub-modules/invoices/invoices.module';
     ProjectModule,
     FrameworkAgreementsModule,
     OrdersModule,
-    InvoicesModule
+    InvoicesModule,
+    LayoutModule
   ],
   providers: [ 
     UserPreferenceService 

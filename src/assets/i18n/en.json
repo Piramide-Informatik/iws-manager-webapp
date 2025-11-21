@@ -128,6 +128,14 @@
     "CONTRACT_STATUS": "Contract Status",
     "TERMS_OF_PAYMENT": "Terms of Payment"
   },
+  "MENU_PROJECT": {
+    "PROJECT": "Project",
+    "ACCOUNTING_YEARS": "Accounting Years",
+    "BLOCKS": "Blocks",
+    "EMPLOYEES": "Employees",
+    "SUBCONTRACTS": "Subcontracts",
+    "TIMESHEET": "Timesheet"
+  },
   "COMMON": {
     "CUSTOMER_NAME": "Customer",
     "YES": "Yes",

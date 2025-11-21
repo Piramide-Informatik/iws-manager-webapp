@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { MenuModule } from 'primeng/menu';
@@ -16,6 +14,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +22,11 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     SidebarComponent,
     HeaderComponent,
     MainMenuComponent,
+    SubMenuComponent
   ],
   imports: [
     CommonModule,
     LayoutRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
     ButtonModule,
     SidebarModule,
     TooltipModule,
@@ -40,6 +38,6 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     TranslatePipe,
     TieredMenuModule
   ],
-  exports: [MainLayoutComponent],
+  exports: [MainLayoutComponent, SubMenuComponent ],
 })
 export class LayoutModule {}

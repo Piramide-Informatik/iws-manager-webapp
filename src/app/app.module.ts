@@ -19,6 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { LayoutModule } from './core/layout/layout.module';
 import { MasterDataModule } from './modules/master-data/master-data.module';
+import { ProjectsModule } from './modules/projects/projects.module';
 
 //Prime NG
 import { ButtonModule } from 'primeng/button';
@@ -64,6 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DatePipe,
     TranslateDirective,
     ToastModule,
+    ProjectsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

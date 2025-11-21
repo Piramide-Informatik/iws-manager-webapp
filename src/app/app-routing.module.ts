@@ -30,12 +30,10 @@ const routes: Routes = [
   {
     path: 'projects',
     component: MainLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: BlankComponent
-      }
-    ]
+    loadChildren: () => 
+      import('./modules/projects/projects.module').then(
+        (p) => p.ProjectsModule
+      )
   },
   {
     path: 'invoicing',
