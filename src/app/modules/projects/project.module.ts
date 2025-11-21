@@ -31,6 +31,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { DatePickerModule } from 'primeng/datepicker';
         ButtonModule,
         CommonModule,
         CalendarModule,
+        CardModule,
         DatePickerModule,
         DialogModule,
         FormsModule,
