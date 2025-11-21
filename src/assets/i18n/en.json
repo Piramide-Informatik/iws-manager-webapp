@@ -448,6 +448,25 @@
       "AUTH_DATE": "Appr. Date",
       "FUNDING_RATE": "Funding Rate"
     },
+    "FORM":{
+      "PROJECT": "Project",
+      "LONGTEXT": "Long text",
+      "CUSTOMER": "Customer",
+      "R_D_ORDER_NUMBER": "R&D Order / No.",
+      "FUNDING_PROGRAM": "Funding Program",
+      "PROMOTER_NUMBER": "Promoter Number",
+      "PROMOTER": "Promoter",
+      "FUNDING_LABEL": "Funding Label",
+      "AUTHORIZATION_DATE": "Authorization Date",
+      "DURATION_START": "Duration Start",
+      "DURATION_END": "Duration End",
+      "FUNDING_RATE": "Funding Rate",
+      "STAFF_FLAT_RATE": "Staff Flat Rate",
+      "RESEARCH_SHARE": "Research Share",
+      "HOURLY_RATE_MU_EU": "Hourly Rate MU EU",
+      "PRODUCTIVE_HOURS_YEAR": "Productive Hours / Year",
+      "ADMIN_ORDER_NUMBER": "Administration Order / No."
+    },
     "PROJECTS_DIALOG_REMOVE": "Delete Project"
   },
   "ORDERS": {

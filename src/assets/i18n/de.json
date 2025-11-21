@@ -448,6 +448,25 @@
       "AUTH_DATE": "Bewilligt",
       "FUNDING_RATE": "Fördersatz"
     },
+    "FORM":{
+      "PROJECT": "Projekt",
+      "LONGTEXT": "Longtext",
+      "CUSTOMER": "Kunde",
+      "R_D_ORDER_NUMBER": "FuE-Auftrag / Nr.",
+      "FUNDING_PROGRAM": "Förderprogramm",
+      "PROMOTER_NUMBER": "Projektträger-Nr.",
+      "PROMOTER": "Projektträger",
+      "FUNDING_LABEL": "Förderkennzeichen",
+      "AUTHORIZATION_DATE": "Bewilligungsdatum",
+      "DURATION_START": "Laufzeit Start",
+      "DURATION_END": "Laufzeit Ende",
+      "FUNDING_RATE": "Fördersatz",
+      "STAFF_FLAT_RATE": "Personalpauschale",
+      "RESEARCH_SHARE": "Anteil Forschungsauftrag",
+      "HOURLY_RATE_MU_EU": "Std.-Satz MU EU",
+      "PRODUCTIVE_HOURS_YEAR": "Produktive Stunden / Jahr",
+      "ADMIN_ORDER_NUMBER": "Verwaltung-Auftrag / Nr."
+    },
     "PROJECTS_DIALOG_REMOVE": "Projekt löschen"
   },
   "ORDERS": {
