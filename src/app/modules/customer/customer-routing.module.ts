@@ -7,7 +7,7 @@ import { PageCustomerComponent } from './components/page-customer/page-customer.
 
 const routes: Routes = [
   { path: '', component: ListCustomersComponent },
-  { path: 'customer-create', component: DetailCustomerComponent },
+  { path: 'create', component: DetailCustomerComponent },
   {
     path: '',
     component: PageCustomerComponent,
@@ -24,62 +24,62 @@ const routes: Routes = [
       {
         path: 'employees/:id',
         loadChildren: () =>
-          import('../../modules/employee/employee.module').then(
+          import('../../modules/customer/sub-modules/employee/employee.module').then(
             (e) => e.EmployeeModule
           ),
       },
       {
         path: 'work-contracts/:id',
         loadChildren: () =>
-          import('../../modules/work-contracts/work-contracts.module').then(
+          import('../../modules/customer/sub-modules/work-contracts/work-contracts.module').then(
             (w) => w.WorkContractsModule
           ),
       },
       {
         path: 'projects/:id',
         loadChildren: () =>
-          import('../../modules/projects/project-routing.module').then(
+          import('../../modules/customer/sub-modules/projects/project-routing.module').then(
             (w) => w.ProjectRoutingModule
           ),
       },
       {
         path: 'orders/:id',
         loadChildren: () =>
-          import('../../modules/orders/order-routing.module').then(
+          import('../../modules/customer/sub-modules/orders/order-routing.module').then(
             (o) => o.OrderRountingModule
           ),
       },
       {
         path: 'demands/:id',
         loadChildren: () =>
-          import('../../modules/receivables/receivables.module').then(
+          import('../../modules/customer/sub-modules/receivables/receivables.module').then(
             (r) => r.ReceivablesModule
           ),
       },
       {
         path: 'invoices/:id',
         loadChildren: () =>
-          import('../../modules/invoices/invoices.module').then(
+          import('../../modules/customer/sub-modules/invoices/invoices.module').then(
             (m) => m.InvoicesModule
           ),
       },
       {
         path: 'framework-agreements/:id',
         loadChildren: () =>
-          import('../../modules/framework-agreements/framework-agreements.module'
+          import('../../modules/customer/sub-modules/framework-agreements/framework-agreements.module'
           ).then((f) => f.FrameworkAgreementsModule),
       },
       {
         path: 'contractors/:id',
         loadChildren: () =>
-          import('../../modules/contractor/contractor-routing.module').then(
+          import('../../modules/customer/sub-modules/contractor/contractor-routing.module').then(
             (c) => c.ContractorRoutingModule
           ),
       },
       {
         path: 'subcontracts/:id',
         loadChildren: () =>
-          import('../../modules/subcontracts/subcontracts.module').then(
+          import('../../modules/customer/sub-modules/subcontracts/subcontracts.module').then(
             (s) => s.SubcontractsModule
           ),
       }

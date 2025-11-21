@@ -19,7 +19,6 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 //Components
-import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
@@ -33,12 +32,10 @@ import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CardModule } from 'primeng/card';
 
-
 @NgModule({
     declarations: [
-        ProjectsOverviewComponent,
         ProjectDetailsComponent,
-        WorkPackagesComponent
+        WorkPackagesComponent,
     ],
     imports: [
         ButtonModule,

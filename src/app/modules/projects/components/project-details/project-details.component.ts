@@ -12,11 +12,12 @@ import { Customer } from '../../../../Entities/customer';
 import { FundingProgram } from '../../../../Entities/fundingProgram';
 import { Promoter } from '../../../../Entities/promoter';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
-import { ProjectUtils } from '../../utils/project.utils';
+
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
 import { FundingProgramUtils } from '../../../master-data/components/funding-programs/utils/funding-program-utils';
 import { PromoterUtils } from '../../../master-data/components/project-funnels/utils/promoter-utils';
 import { buildProject } from '../../../shared/utils/builders/project';
+import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 
 @Component({
   selector: 'app-project-details',
@@ -69,7 +70,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setupProjectSubscription();
-    
+
     this.activatedRoute.params.subscribe(params => {
       this.projectId = params['id'];
 
@@ -194,7 +195,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private updateProject(): void {
     const updatedProject = this.buildUpdatedProject();
-    
+
     this.projectUtils.updateProject(updatedProject).subscribe({
       next: (savedProject) => this.handleSaveSuccess(savedProject),
       error: (error) => this.handleSaveError(error)
@@ -203,7 +204,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private createProject(): void {
     const newProject = this.buildNewProject();
-    
+
     this.projectUtils.createProject(newProject)
       .pipe(finalize(() => this.isSaving = false))
       .subscribe({
@@ -214,7 +215,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private buildUpdatedProject(): Project {
     const formValue = this.formProject.value;
-    
+
     const projectData = {
       ...this.currentProject,
       projectName: formValue.projectName,
@@ -240,7 +241,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private buildNewProject(): Project {
     const formValue = this.formProject.value;
-    
+
     const projectData = {
       projectName: formValue.projectName,
       title: formValue.title,
@@ -271,14 +272,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private buildFundingProgramEntity(fundingProgramId?: number): Project['fundingProgram'] {
     if (!fundingProgramId) return null;
-    
+
     const fundingProgram = this.fundingPrograms().find(f => f.id === fundingProgramId);
     return fundingProgram || { id: fundingProgramId } as FundingProgram;
   }
 
   private buildPromoterEntity(promoterId?: number): Project['promoter'] {
     if (!promoterId) return null;
-    
+
     const promoter = this.promoters().find(p => p.id === promoterId);
     return promoter || { id: promoterId } as Promoter;
   }

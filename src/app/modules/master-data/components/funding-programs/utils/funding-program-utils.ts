@@ -1,10 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, take, throwError, switchMap, map } from 'rxjs';
 import { FundingProgramService } from '../../../../../Services/funding-program.service';
-import { ProjectUtils } from '../../../../projects/utils/project.utils';
-import { OrderUtils } from '../../../../orders/utils/order-utils';
 import { FundingProgram } from '../../../../../Entities/fundingProgram';
-import { FrameworkAgreementsUtils } from '../../../../framework-agreements/utils/framework-agreement.util';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 type FundingProgramCreateUpdate = Omit<FundingProgram, 'id' | 'createdAt' | 'updatedAt' | 'version'>;
 
@@ -15,9 +12,6 @@ type FundingProgramCreateUpdate = Omit<FundingProgram, 'id' | 'createdAt' | 'upd
 @Injectable({ providedIn: 'root' })
 export class FundingProgramUtils {
   private readonly fundingProgramService = inject(FundingProgramService);
-  private readonly projectUtils = inject(ProjectUtils);
-  private readonly orderUtils = inject(OrderUtils);
-  private readonly basicContractUtils = inject(FrameworkAgreementsUtils);
 
   loadInitialData(): Observable<FundingProgram[]> {
     return this.fundingProgramService.loadInitialData();
