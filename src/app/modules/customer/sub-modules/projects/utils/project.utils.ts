@@ -15,6 +15,10 @@ export class ProjectUtils {
   private readonly debtUtils = inject(ReceivableUtils);
   private readonly orderUtils = inject(OrderUtils);
 
+  loadInitialData(): Observable<Project[]> {
+    return this.projectService.loadInitialData();
+  }
+
   /**
   * Gets all projects without any transformation
   * @returns Observable emitting the raw list of projects
