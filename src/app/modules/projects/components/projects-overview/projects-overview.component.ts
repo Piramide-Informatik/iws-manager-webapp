@@ -50,7 +50,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   public customer!: number;
 
-  private langSubscription!: Subscription;
+  private projectLangSubscription!: Subscription;
 
   @ViewChild('dt2') dt2!: Table;
 
@@ -82,7 +82,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     this.projectUtils.loadInitialData().subscribe();
 
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+    this.projectLangSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadProjectColHeaders();
       this.selectedColumns = this.cols;
       this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
@@ -153,23 +153,8 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
-    }
-  }
-
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-      })
-    })
-  }
-
-  applyFilter(event: Event, field: string) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      this.dt2.filter(inputElement.value, field, 'contains');
+    if (this.projectLangSubscription) {
+      this.projectLangSubscription.unsubscribe();
     }
   }
 
