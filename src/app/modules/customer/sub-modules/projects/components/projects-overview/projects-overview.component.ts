@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
-import { TranslateService, _, TranslatePipe, TranslateDirective } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
