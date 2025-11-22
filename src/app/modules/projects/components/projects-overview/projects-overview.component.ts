@@ -29,7 +29,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   public cols!: Column[];
 
-  public selectedColumns!: Column[];
+  public selectedProjectTableColumns!: Column[];
 
   public selectedFilterColumns!: Column[];
 
@@ -52,19 +52,17 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   private projectLangSubscription!: Subscription;
 
-  @ViewChild('dt2') dt2!: Table;
-
   userProjectPreferences: UserPreference = {};
 
-  tableKey: string = 'Projects'
+  projectTableKey: string = 'Projects'
 
-  dataKeys = ['projectLabel', 'projectName', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
+  projectDataKeys = ['projectLabel', 'projectName', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
 
-  visibleProjectModal = false;
+  visibleProjectTableModal = false;
 
-  isProjectLoading = false;
+  isProjectTableLoading = false;
 
-  selectedProject!: any;
+  selectedProjectTableItem!: any;
 
   constructor(
 
@@ -78,47 +76,47 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadProjectColHeaders();
-    this.selectedColumns = this.cols;
-    this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    this.selectedProjectTableColumns = this.cols;
+    this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.projectTableKey, this.selectedProjectTableColumns);
     this.projectUtils.loadInitialData().subscribe();
 
     this.projectLangSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadProjectColHeaders();
-      this.selectedColumns = this.cols;
-      this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+      this.selectedProjectTableColumns = this.cols;
+      this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.projectTableKey, this.selectedProjectTableColumns);
     });
   }
 
   openDeleteModal(id: any) {
-    this.visibleProjectModal = true;
+    this.visibleProjectTableModal = true;
     const project = this.projects().find(project => project.id == id);
     if (project) {
-      this.selectedProject = project;
+      this.selectedProjectTableItem = project;
     }
   }
 
   onProjectDelete() {
-    if (this.selectedProject) {
-      this.isProjectLoading = true;
-      this.projectUtils.deleteProject(this.selectedProject.id).subscribe({
+    if (this.selectedProjectTableItem) {
+      this.isProjectTableLoading = true;
+      this.projectUtils.deleteProject(this.selectedProjectTableItem.id).subscribe({
         next: () => {
           this.commonMessage.showDeleteSucessfullMessage();
         },
         error: (errorDelete) => {
-          this.isProjectLoading = false;
+          this.isProjectTableLoading = false;
           if (errorDelete.message.includes('have associated receivables')
             || errorDelete.message.includes('have associated orders')) {
             this.commonMessage.showErrorDeleteMessageContainsOtherEntities();
           } else {
             this.commonMessage.showErrorDeleteMessage();
           }
-          this.visibleProjectModal = false;
-          this.selectedProject = undefined;
+          this.visibleProjectTableModal = false;
+          this.selectedProjectTableItem = undefined;
         },
         complete: () => {
-          this.visibleProjectModal = false;
-          this.selectedProject = undefined;
-          this.isProjectLoading = false;
+          this.visibleProjectTableModal = false;
+          this.selectedProjectTableItem = undefined;
+          this.isProjectTableLoading = false;
         }
       })
     }

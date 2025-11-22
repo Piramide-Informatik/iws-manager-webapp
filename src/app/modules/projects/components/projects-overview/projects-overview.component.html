@@ -1,10 +1,10 @@
 <div class="card">
   <master-data-genaral-table
-    [tableId]="tableKey"
+    [tableId]="projectTableKey"
     [tableValues]="projects()"
-    [columns]="selectedColumns"
+    [columns]="selectedProjectTableColumns"
     [userPreferences]="userProjectPreferences"
-    [dataKeys]="dataKeys"
+    [dataKeys]="projectDataKeys"
     (onColumnChanges)="onUserProjectPreferencesChanges($event)"
     (onDeleteRegister)="openDeleteModal($event)"
     (onEditRegister)="editProject($event)"
@@ -12,18 +12,18 @@
    <p-dialog 
     [header]="('PROJECTS.PROJECTS_DIALOG_REMOVE' | translate)" 
     [modal]="true" 
-    [(visible)]="visibleProjectModal"
+    [(visible)]="visibleProjectTableModal"
   >
     <div class="confirmation-content mb-2 mt-4">
-      <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedProject?.projectLabel }"></p>
+      <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedProjectTableItem?.projectLabel }"></p>
 
       <div class="flex justify-content-center gap-2">
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-            icon="pi pi-trash" iconPos="left" (onClick)="onProjectDelete()" severity="danger" [loading]="isProjectLoading"
-            [disabled]="isProjectLoading" />
+            icon="pi pi-trash" iconPos="left" (onClick)="onProjectDelete()" severity="danger" [loading]="isProjectTableLoading"
+            [disabled]="isProjectTableLoading" />
 
         <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-            icon="pi pi-times" iconPos="left" (onClick)="this.visibleProjectModal = false;" [disabled]="isProjectLoading" />
+            icon="pi pi-times" iconPos="left" (onClick)="this.visibleProjectTableModal = false;" [disabled]="isProjectTableLoading" />
 
       </div>
     </div>
