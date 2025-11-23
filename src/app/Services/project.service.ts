@@ -26,6 +26,28 @@ export class ProjectService {
     })
   };
 
+  constructor() {
+    this.loadInitialData();
+  }
+
+  public loadInitialData(): Observable<Project[]> {
+    this._loading.set(true);
+    return this.http.get<Project[]>(this.apiUrl, this.httpOptions).pipe(
+      tap({
+        next: (projects) => {
+          this._projects.set(projects);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to load project types');
+          console.error('Error loading project types:', err);
+        }
+      }),
+      catchError(() => of([])),
+      tap(() => this._loading.set(false))
+    );
+  }
+
   // ==================== CREATE OPERATIONS ====================
   /**
    * Creates a new project record
