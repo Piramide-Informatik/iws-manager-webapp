@@ -6,6 +6,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
 import { SalutationUtils } from '../../../../../../master-data/components/salutation/utils/salutation.utils';
 import { TitleUtils } from '../../../../../../master-data/components/title/utils/title-utils';
 import { QualificationFZUtils } from '../../../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
+import { EmployeeCategoryUtils } from '../../../../../../master-data/components/employee-qualification/utils/employee-category-utils';
 import { Employee } from '../../../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { momentFormatDate, momentSafeCreateDate } from '../../../../../../shared/utils/moment-date-utils';
@@ -28,6 +29,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   private readonly salutationUtils = inject(SalutationUtils);
   private readonly titleUtils = inject(TitleUtils);
   private readonly qualificationFZUtils = inject(QualificationFZUtils);
+  private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
   private readonly router = inject(Router);
   private readonly titleService = inject(Title);
   private readonly activatedRoute = inject(ActivatedRoute);
@@ -63,9 +65,9 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
-  public qualificationsFZ = toSignal(
-    this.qualificationFZUtils.getAllQualifications().pipe(
-      map(q => q.map(({ qualification, id }) => ({ name: qualification, id })))
+  public employeeCategories = toSignal(
+    this.employeeCategoryUtils.getEmployeeCategories().pipe(
+      map(q => q.map(({ label, id }) => ({ name: label, id })))
     ),
     { initialValue: [] }
   );
@@ -104,6 +106,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
                   solePropietorSinceDate: momentSafeCreateDate(employee.soleproprietorsince),
                   coentrepreneurSinceDate: momentSafeCreateDate(employee.coentrepreneursince),
                   qualificationFzId: employee.qualificationFZ?.id ?? '',
+                  employeeCategoryId: employee.employeeCategory?.id ?? '',
                   qualificationKMUi: employee.qualificationkmui ?? ''
                 });
               }
@@ -168,6 +171,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       solePropietorSinceDate: new FormControl(''),
       coentrepreneurSinceDate: new FormControl(''),
       qualificationFzId: new FormControl(''),
+      employeeCategoryId: new FormControl(''),
       qualificationKMUi: new FormControl('')
     });
   }
@@ -207,6 +211,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       soleproprietorsince: momentFormatDate(formValues.solePropietorSinceDate),
       coentrepreneursince: momentFormatDate(formValues.coentrepreneurSinceDate),
       qualificationFZ: this.mapQualificationFZIdToEntity(formValues.qualificationFzId),
+      employeeCategory: this.mapEmployeeCategoryIdToEntity(formValues.employeeCategoryId),
       qualificationkmui: formValues.qualificationKMUi,
     };
   }
@@ -271,6 +276,10 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private mapQualificationFZIdToEntity(id: number | null): any {
     return id ? { id, qualification: '', createdAt: '', updatedAt: '', version: 1 } : null;
+  }
+
+  private mapEmployeeCategoryIdToEntity(id: number | null): any {
+    return id ? { id, label: '', title: '', createdAt: '', updatedAt: '', version: 1 } : null;
   }
 
   private createEmployee(newEmployee: Omit<Employee, 'id'>): void {
