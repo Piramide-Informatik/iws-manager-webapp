@@ -4,7 +4,7 @@ import { Table } from 'primeng/table';
 import { UserPreferenceService } from '../../../../../../../Services/user-preferences.service';
 import { UserPreference } from '../../../../../../../Entities/user-preference';
 import { TranslateService, _ } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { SubcontractYearUtils } from '../../../utils/subcontract-year-utils';
 import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
 import { ActivatedRoute } from '@angular/router';
@@ -341,7 +341,9 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
     setTimeout(() => {
       if (this.firstInput.inputfieldViewChild) {
         this.firstInput.inputfieldViewChild.nativeElement.focus();
+        this.depreciationForm.get('year')?.valueChanges.pipe(take(1))
+                  .subscribe(() => this.firstInput.showOverlay());
       }
-    }, 300)
+    }, 200)
   }
 }
