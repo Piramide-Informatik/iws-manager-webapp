@@ -3,73 +3,43 @@
 
     <div class="order_input">
       <label for="contractTitle">{{ 'SUB-CONTRACTS.FORM.ORDER_TITLE' | translate }}</label>
-      <input #inputText
-        pInputText
-        type="text"
-        id="contractTitle"
-        formControlName="contractTitle"
-        autocomplete="off"
-      />
+      <input #inputText pInputText type="text" id="contractTitle" formControlName="contractTitle" autocomplete="off" />
     </div>
 
     <div class="order_input">
       <label for="contractor">{{ 'SUB-CONTRACTS.FORM.CONTRACTOR' | translate }}</label>
-      <p-select
-        [style]="{ width: '20vw' }"
-        inputId="contractor"
-        [options]="contractorsName()"
-        formControlName="contractor"
-        optionLabel="name"
-        optionValue="id"
-        showClear
-        [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
-      ></p-select>
+      <p-select [style]="{ width: '20vw' }" inputId="contractor" [options]="contractorsName()"
+        formControlName="contractor" optionLabel="name" optionValue="id" showClear
+        [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"></p-select>
     </div>
     <div class="order_input">
       <label for="invoiceNumber">{{ 'SUB-CONTRACTS.FORM.INVOICE_NUMBER' | translate }}</label>
-      <input
-        pInputText
-        type="text"
-        id="invoiceNumber"
-        formControlName="invoiceNumber"
-        autocomplete="off"
-      />
+      <input pInputText type="text" id="invoiceNumber" formControlName="invoiceNumber" autocomplete="off" />
     </div>
 
     <div class="order_input">
       <label for="invoiceDate">{{ 'SUB-CONTRACTS.FORM.INVOICE_DATE' | translate }}</label>
-      <p-datepicker
-        inputId="invoiceDate"
-        [showIcon]="true"
-        [showClear]="true"
-        formControlName="invoiceDate"
-        dateFormat="dd.mm.yy"
-      ></p-datepicker>
+      <p-datepicker inputId="invoiceDate" [showIcon]="true" [showClear]="true" formControlName="invoiceDate"
+        dateFormat="dd.mm.yy"></p-datepicker>
     </div>
 
     <div class="order_input">
       <label for="netOrGross">{{ 'SUB-CONTRACTS.FORM.INVOICE_NET_OR_GROSS' | translate }}</label>
-      <p-select
-        [style]="{ width: '20vw' }"
-        inputId="netOrGross"
-        [options]="optionsNetOrGross"
-        formControlName="netOrGross"
-        optionLabel="label"
-        optionValue="value"
-        [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
-      ></p-select>
+      <p-select [style]="{ width: '20vw' }" inputId="netOrGross" [options]="optionsNetOrGross"
+        formControlName="netOrGross" optionLabel="label" optionValue="value"
+        [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"></p-select>
     </div>
 
     <!-- Monto -->
     <div class="order_input">
       <label for="invoiceAmount">{{ 'SUB-CONTRACTS.FORM.INVOICE_AMOUNT' | translate }}</label>
       <div class="input-message">
-        <p-inputNumber class="p-inputnumber-input" id="invoiceAmount" formControlName="invoiceAmount" 
-          mode="decimal" [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}"
-          [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE" invalid="
+        <p-inputNumber class="p-inputnumber-input" id="invoiceAmount" formControlName="invoiceAmount" mode="decimal"
+          [min]="0" [useGrouping]="true" [inputStyle]="{'text-align': 'right'}" [minFractionDigits]="2"
+          [maxFractionDigits]="2" locale="de-DE" invalid="
             subcontractForm.get('invoiceAmount')?.invalid  
             && subcontractForm.get('invoiceAmount')?.dirty 
-            || subcontractForm.get('invoiceAmount')?.touched"/>
+            || subcontractForm.get('invoiceAmount')?.touched" />
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
           subcontractForm.get('invoiceAmount')?.invalid && 
           subcontractForm.get('invoiceAmount')?.dirty
@@ -79,46 +49,32 @@
 
     <div class="order_input mb-2">
       <label for="afa">{{ 'SUB-CONTRACTS.FORM.IS_AFA' | translate }}</label>
-      <p-checkbox
-        inputId="afa"
-        formControlName="afa"
-        binary="true"
-      ></p-checkbox>
+      <p-checkbox inputId="afa" formControlName="afa" binary="true"></p-checkbox>
     </div>
 
     <div class="order_input mb-2">
       <label for="afaDurationMonths">{{ 'SUB-CONTRACTS.FORM.AFA_MONTHS' | translate }}</label>
       <div class="input-message">
-        <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false"
-          inputId="afaDurationMonths"
-          formControlName="afaDurationMonths"
-          autocomplete="off" invalid="
+        <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" inputId="afaDurationMonths"
+          formControlName="afaDurationMonths" autocomplete="off" invalid="
                 subcontractForm.get('afaDurationMonths')?.invalid  
                 && subcontractForm.get('afaDurationMonths')?.dirty 
-                || subcontractForm.get('afaDurationMonths')?.touched"/>
+                || subcontractForm.get('afaDurationMonths')?.touched" />
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
           subcontractForm.get('afaDurationMonths')?.invalid && 
           subcontractForm.get('afaDurationMonths')?.dirty
-        ">{{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: "12" } }}</p-message>
+        ">{{ 'ERROR.NUMBER_MAX_CUSTOM' | translate:{ value: "999" } }}</p-message>
       </div>
     </div>
 
     <!-- Descripción -->
     <div class="order_input mb-2 flex">
       <label for="description">{{ 'SUB-CONTRACTS.FORM.DESCRIPTION' | translate }}</label>
-      <textarea
-        id="description"
-        pTextarea
-        rows="6"
-        formControlName="description"
-        style="resize: none; width: 20vw;"
-      ></textarea>
+      <textarea id="description" pTextarea rows="6" formControlName="description"
+        style="resize: none; width: 20vw;"></textarea>
     </div>
   </div>
 </form>
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModalSubcontract" 
-  [errorType]="occErrorType"
-  [redirectRoute]="redirectRoute"
+<app-occ-error-modal *ngIf="showOCCErrorModalSubcontract" [errorType]="occErrorType" [redirectRoute]="redirectRoute"
   (onClose)="showOCCErrorModalSubcontract = false">
 </app-occ-error-modal>
