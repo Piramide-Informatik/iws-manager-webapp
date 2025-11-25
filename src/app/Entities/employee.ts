@@ -2,6 +2,7 @@ import { Salutation } from "./salutation";
 import { Customer } from "./customer";
 import { Title } from "./title";
 import { QualificationFZ } from "./qualificationfz";
+import { EmployeeCategory } from "./employee-category ";
 
 export type EmployeeDate = string | Date | null;
 
@@ -30,5 +31,6 @@ export interface Employee {
     coentrepreneursince?: EmployeeDate;
 
     qualificationFZ?: QualificationFZ | null;
+    employeeCategory?: EmployeeCategory | null;
     qualificationkmui?: string;
 }
