@@ -121,7 +121,7 @@ export class SubcontractComponent implements OnInit, OnDestroy, OnChanges {
       netOrGross: new FormControl(''),
       invoiceAmount: new FormControl('', [Validators.max(99999999.99)]),
       afa: new FormControl(false), // checkbox
-      afaDurationMonths: new FormControl({ value: null, disabled: true }, [Validators.max(12)]), // solo si afa = true
+      afaDurationMonths: new FormControl({ value: null, disabled: true }, [Validators.max(999)]), // solo si afa = true
       description: new FormControl(''),
     });
     this.subcontractForm.reset();
