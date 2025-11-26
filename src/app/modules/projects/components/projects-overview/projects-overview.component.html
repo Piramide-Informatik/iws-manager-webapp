@@ -8,24 +8,36 @@
     (onColumnChanges)="onUserProjectPreferencesChanges($event)"
     (onDeleteRegister)="openDeleteModal($event)"
     (onEditRegister)="editProject($event)"
+    (onCreateRegister)="visibleModalNewProject = true"
   ></master-data-genaral-table>
-   <p-dialog 
-    [header]="('PROJECTS.PROJECTS_DIALOG_REMOVE' | translate)" 
-    [modal]="true" 
-    [(visible)]="visibleProjectTableModal"
-  >
-    <div class="confirmation-content mb-2 mt-4">
-      <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedProjectTableItem?.projectLabel }"></p>
-
-      <div class="flex justify-content-center gap-2">
-        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-            icon="pi pi-trash" iconPos="left" (onClick)="onProjectDelete()" severity="danger" [loading]="isProjectTableLoading"
-            [disabled]="isProjectTableLoading" />
-
-        <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-            icon="pi pi-times" iconPos="left" (onClick)="this.visibleProjectTableModal = false;" [disabled]="isProjectTableLoading" />
-
-      </div>
-    </div>
-  </p-dialog>
 </div>
+<p-dialog 
+ [header]="('PROJECTS.PROJECTS_DIALOG_REMOVE' | translate)" 
+ [modal]="true" 
+ [(visible)]="visibleProjectTableModal"
+>
+ <div class="confirmation-content mb-2 mt-4">
+   <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedProjectTableItem?.projectLabel }"></p>
+
+   <div class="flex justify-content-center gap-2">
+     <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+         icon="pi pi-trash" iconPos="left" (onClick)="onProjectDelete()" severity="danger" [loading]="isProjectTableLoading"
+         [disabled]="isProjectTableLoading" />
+
+     <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+         icon="pi pi-times" iconPos="left" (onClick)="this.visibleProjectTableModal = false;" [disabled]="isProjectTableLoading" />
+
+   </div>
+ </div>
+</p-dialog>
+<p-dialog 
+  [header]="'PROJECTS.PROJECTS_DIALOG_CREATE' | translate" 
+  [(visible)]="visibleModalNewProject"
+  [modal]="true"
+  [style]="{ width: '70rem' }">
+ <app-project-modal 
+  [visible]="visibleModalNewProject"
+  (visibleModal)="visibleModalNewProject = false"
+  (createProject)="createProject($event)"
+ ></app-project-modal>
+</p-dialog>
