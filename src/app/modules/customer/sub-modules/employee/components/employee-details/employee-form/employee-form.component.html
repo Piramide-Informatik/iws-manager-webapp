@@ -4,18 +4,21 @@
       <div class="field">
         <label for="employeeNumber">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
         <div class="input-message">
-        <p-inputnumber #inputNumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off" formControlName="employeeNumber" id="employeeNumber" 
-        [attr.invalid]="(employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.dirty) || employeeNumberAlreadyExist"/>
-        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          <p-inputnumber #inputNumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off"
+            formControlName="employeeNumber" id="employeeNumber"
+            [attr.invalid]="(employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.dirty) || employeeNumberAlreadyExist" />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small"
+            *ngIf="
             (employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.dirty) || employeeNumberAlreadyExist">
-            <span *ngIf="employeeForm.get('employeeNumber')?.errors?.['required'] && employeeForm.get('employeeNumber')?.dirty">
+            <span
+              *ngIf="employeeForm.get('employeeNumber')?.errors?.['required'] && employeeForm.get('employeeNumber')?.dirty">
               {{ 'ERROR.FIELD_REQUIRED' | translate }}
             </span>
             <span *ngIf="employeeNumberAlreadyExist && !employeeForm.get('employeeNumber')?.errors?.['required']">
               {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
             </span>
           </p-message>
-          </div>
+        </div>
       </div>
 
       <div class="field">
@@ -32,45 +35,41 @@
 
       <div class="field">
         <label for="employeeFirstName">{{ 'EMPLOYEE.FORM.FIRST_NAME' | translate }}</label>
-        <input  type="text" pInputText formControlName="employeeFirstName" id="employeeFirstName" autocomplete="off"/>
+        <input type="text" pInputText formControlName="employeeFirstName" id="employeeFirstName" autocomplete="off" />
       </div>
 
       <div class="field">
         <label for="employeeLastName">{{ 'EMPLOYEE.FORM.LAST_NAME' | translate }}</label>
         <div class="input-message">
-        <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName" autocomplete="off"/>
-        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          <input class="col-md-6" type="text" pInputText formControlName="employeeLastName" id="employeeLastName"
+            autocomplete="off" />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             (employeeForm.get('employeeLastName')?.invalid && employeeForm.get('employeeLastName')?.dirty) ">
-            <span *ngIf="employeeForm.get('employeeLastName')?.errors?.['required'] && employeeForm.get('employeeLastName')?.dirty">
+            <span
+              *ngIf="employeeForm.get('employeeLastName')?.errors?.['required'] && employeeForm.get('employeeLastName')?.dirty">
               {{ 'ERROR.FIELD_REQUIRED' | translate }}
             </span>
             <span *ngIf="!employeeForm.get('employeeLastName')?.errors?.['required']">
               {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
             </span>
           </p-message>
-          </div>
+        </div>
       </div>
 
-    <div class="field">
-      <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
-      <div class="input-message">
-      <input
-        type="text"
-        pInputText
-        formControlName="employeeEmail"
-        id="employeeEmail"
-        autocomplete="off"
-        [attr.invalid]="(employeeForm.get('employeeEmail')?.invalid && employeeForm.get('employeeEmail')?.dirty)"
-      />
-      <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+      <div class="field">
+        <label for="employeeEmail">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
+        <div class="input-message">
+          <input type="text" pInputText formControlName="employeeEmail" id="employeeEmail" autocomplete="off"
+            [attr.invalid]="(employeeForm.get('employeeEmail')?.invalid && employeeForm.get('employeeEmail')?.dirty)" />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             (employeeForm.get('employeeEmail')?.invalid && employeeForm.get('employeeEmail')?.dirty)">
             <span *ngIf="(employeeForm.get('employeeEmail')?.errors?.['email']||
                 employeeForm.get('employeeEmail')?.errors?.['pattern']) && employeeForm.get('employeeEmail')?.dirty">
               {{ 'MESSAGE.INVALID_EMAIL' | translate }}
             </span>
-      </p-message>
+          </p-message>
+        </div>
       </div>
-    </div>
     </div>
 
     <div class="form-column flex flex-column pl-6">
@@ -107,14 +106,16 @@
       </div>
 
       <div class="field">
-        <label for="employeeCategoryId">{{ 'EMPLOYEE.FORM.QUALIFICATION_FZ' | translate }}</label>
-        <p-select [options]="employeeCategories()" optionLabel="name" optionValue="id" formControlName="employeeCategoryId"
-          [showClear]="true" inputId="employeeCategoryId" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
+        <label for="employeeCategoryId">{{ 'EMPLOYEE.FORM.EMPLOYEE_CATEGORY' | translate }}</label>
+        <p-select [options]="employeeCategories()" optionLabel="name" optionValue="id"
+          formControlName="employeeCategoryId" [showClear]="true" inputId="employeeCategoryId"
+          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
       </div>
 
       <div class="field">
         <label for="qualificationKMUi">{{ 'EMPLOYEE.FORM.QUALIFICATION_KMU_I' | translate }}</label>
-        <input class="col-md-6" type="text" pInputText formControlName="qualificationKMUi" id="qualificationKMUi" autocomplete="off"/>
+        <input class="col-md-6" type="text" pInputText formControlName="qualificationKMUi" id="qualificationKMUi"
+          autocomplete="off" />
       </div>
     </div>
   </div>
@@ -147,9 +148,6 @@
   </div>
 </p-dialog>
 <p-toast />
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModaEmployee" 
-  [errorType]="occErrorType"
-  [redirectRoute]="occRoute"
+<app-occ-error-modal *ngIf="showOCCErrorModaEmployee" [errorType]="occErrorType" [redirectRoute]="occRoute"
   (onClose)="showOCCErrorModaEmployee = false">
 </app-occ-error-modal>
