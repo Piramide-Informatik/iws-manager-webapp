@@ -223,7 +223,13 @@
       "emptyMessage": "No records found",
       "emptyFilterMessage": "No results found",
       "pending": "Pending",
-      "fileSizeTypes": ["B", "KB", "MB", "GB", "TB"],
+      "fileSizeTypes": [
+        "B",
+        "KB",
+        "MB",
+        "GB",
+        "TB"
+      ],
       "chooseFile": "Choose File",
       "chooseFiles": "Choose Files",
       "noFileChosenMessage": "No file chosen"
@@ -237,8 +243,24 @@
       "Friday",
       "Saturday"
     ],
-    "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "dayNamesMin": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    "dayNamesShort": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "dayNamesMin": [
+      "Su",
+      "Mo",
+      "Tu",
+      "We",
+      "Th",
+      "Fr",
+      "Sa"
+    ],
     "monthNames": [
       "January",
       "February",
@@ -340,6 +362,7 @@
       "SOLE_PROPRIETOR_SINCE": "Sole proprietor since",
       "CO_ENTREPRENEUR_SINCE": "Co-entrepreneur since",
       "QUALIFICATION_FZ": "Qualification FZ",
+      "EMPLOYEE_CATEGORY": "Employee Category",
       "QUALIFICATION_KMU_I": "Qualification KMU-i",
       "EMPLOYMENT_CONTRACTS": "Employment Contracts"
     },
