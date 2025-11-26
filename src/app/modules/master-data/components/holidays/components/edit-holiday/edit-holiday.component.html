@@ -45,7 +45,7 @@
             formControlName="date"
             #datePicker
             [showIcon]="true"
-            [dateFormat]="isFixedDate ? fixDateFormatPicker : dateFormatPicker"
+            [dateFormat]="isFixedDate ? 'dd.mm.' : 'dd.mm.yy'"
             [showButtonBar]="true"
             [showClear]="true"
             [placeholder]="isFixedDate ? ('HOLIDAYS.LABEL.FIX_DATE_FORMAT' | translate) : ('HOLIDAYS.LABEL.DATE_FORMAT' | translate)"
