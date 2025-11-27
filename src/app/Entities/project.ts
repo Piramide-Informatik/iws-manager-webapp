@@ -2,6 +2,7 @@ import { Customer } from "./customer";
 import { EmployeeIws } from "./employeeIws";
 import { FundingProgram } from "./fundingProgram";
 import { Network } from "./network";
+import { Order } from "./order";
 import { ProjectStatus } from "./projectStatus";
 import { Promoter } from "./promoter";
 
@@ -19,7 +20,9 @@ export interface Project {
   network: Network | null;
   promoter: Promoter | null;
   status: ProjectStatus | null;
-  
+  orderIdFue?: Order | null;
+  orderIdAdmin?: Order | null;
+
   approvalDate?: string;
   authorizationDate?: string;
   chance?: number;
@@ -45,8 +48,6 @@ export interface Project {
   income5?: number;
   maxHoursPerMonth?: number;
   maxHoursPerYear?: number;
-  orderIdFue?: number;
-  orderIdAdmin?: number;
   stuffFlat?: number;
   productiveHoursPerYear?: number;
   projectLabel?: string;
@@ -55,5 +56,5 @@ export interface Project {
   shareResearch?: number;
   startApproval?: string;
   startDate?: string;
-  title?: string; 
+  title?: string;
 }
