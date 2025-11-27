@@ -66,6 +66,7 @@
     "NUMBER_MAX": "Maximalwert 100 erwartet",
     "NUMBER_BETWEEN_0_1": "Werte zwischen 0 - 1",
     "DUPLICATE_PROBABILITY": "Diese Wahrscheinlichkeit besteht bereits",
+    "NUMBER_MAX_12": "Maximalwert 12 erwartet",
     "NUMBER_MAX_127": "Maximalwert 127 erwartet",
     "FIELD_REQUIRED": "Pflichtfeld",
     "NUMBER_MAX_CUSTOM": "Maximalwert {{ value }} erwartet",
@@ -222,7 +223,13 @@
       "emptyMessage": "Keine Einträge gefunden",
       "emptyFilterMessage": "Keine Ergebnisse gefunden",
       "pending": "Ausstehend",
-      "fileSizeTypes": ["B", "KB", "MB", "GB", "TB"],
+      "fileSizeTypes": [
+        "B",
+        "KB",
+        "MB",
+        "GB",
+        "TB"
+      ],
       "chooseFile": "Datei auswählen",
       "chooseFiles": "Dateien auswählen",
       "noFileChosenMessage": "Keine Datei ausgewählt"
@@ -236,8 +243,24 @@
       "Freitag",
       "Samstag"
     ],
-    "dayNamesShort": ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
-    "dayNamesMin": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+    "dayNamesShort": [
+      "Son",
+      "Mon",
+      "Die",
+      "Mit",
+      "Don",
+      "Fre",
+      "Sam"
+    ],
+    "dayNamesMin": [
+      "So",
+      "Mo",
+      "Di",
+      "Mi",
+      "Do",
+      "Fr",
+      "Sa"
+    ],
     "monthNames": [
       "Januar",
       "Februar",
@@ -339,6 +362,7 @@
       "SOLE_PROPRIETOR_SINCE": "Einzelunternehmer seit",
       "CO_ENTREPRENEUR_SINCE": "Mitunternehmer seit",
       "QUALIFICATION_FZ": "Qualifikation FZ",
+      "EMPLOYEE_CATEGORY": "Mitarbeiterkategorie",
       "QUALIFICATION_KMU_I": "Qualifikation KMU-i",
       "EMPLOYMENT_CONTRACTS": "Arbeitsverträge"
     },

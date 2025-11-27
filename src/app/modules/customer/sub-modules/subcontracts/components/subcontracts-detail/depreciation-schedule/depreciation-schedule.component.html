@@ -19,7 +19,7 @@
           <label for="year" class="label-modal">{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.YEAR' | translate }}</label>
           <div class="input-message">
             <p-datepicker #datePicker formControlName="year" inputId="year" view="year" dateFormat="yy" appendTo="body"
-              showIcon showClear />
+              [showOnFocus]="false" showIcon showClear />
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
         depreciationForm.get('year')?.invalid && 
         depreciationForm.get('year')?.touched">
@@ -43,7 +43,7 @@
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
               depreciationForm.get('months')?.invalid && 
               depreciationForm.get('months')?.dirty
-            ">{{ 'ERROR.NUMBER_MAX_127' | translate }}</p-message>
+            ">{{ 'ERROR.NUMBER_MAX_12' | translate }}</p-message>
           </div>
         </div>
         <div class="form-item-container flex gap-4 mb-3">
@@ -59,7 +59,8 @@
           <span class="p-message-icon pi pi-exclamation-triangle"></span>
           <div class="p-message-content warning-content">
             <small class="warning-line">{{ 'SUB-CONTRACTS.WARNING.MONTHS_TOTAL_MISMATCH' | translate }}</small>
-            <small class="warning-line">{{ 'SUB-CONTRACTS.WARNING.CURRENT_TOTAL_MONTHS' | translate }}: {{ currentTotalMonths }} / {{
+            <small class="warning-line">{{ 'SUB-CONTRACTS.WARNING.CURRENT_TOTAL_MONTHS' | translate }}: {{
+              currentTotalMonths }} / {{
               expectedTotalMonths }}</small>
           </div>
         </div>

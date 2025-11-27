@@ -17,6 +17,7 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
 import { QualificationFZUtils } from '../../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
 import { momentSafeCreateDate } from '../../../../../shared/utils/moment-date-utils';
+import { EmployeeCategoryUtils } from '../../../../../master-data/components/employee-qualification/utils/employee-category-utils';
 
 @Component({
   selector: 'app-employee-overview',
@@ -29,6 +30,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly titleService = inject(Title);
   private readonly qualificationFZUtils = inject(QualificationFZUtils);
+  private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
   public customer!: Customer | undefined;
   employees: Employee[] = [];
   @ViewChild('dt2') dt2!: Table;
@@ -109,7 +111,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
       { field: 'soleproprietorsince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.SP_SINCE_DATE')), customClasses: ['align-right', 'employee-narrow-date'], classesTHead: ['employee-narrow-date'], filter: { type: 'date'} }, //EU
       { field: 'coentrepreneursince', type: 'date', header: this.translate.instant(_('EMPLOYEE.TABLE.CE_SINCE_DATE')), customClasses: ['align-right', 'employee-narrow-date'], classesTHead: ['employee-narrow-date'], filter: { type: 'date'} }, //MU
       {
-        field: 'qualificationFZ.qualification', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')), filter: {
+        field: 'employeeCategory.label', header: this.translate.instant(_('EMPLOYEE.TABLE.QUALI_FZ')), filter: {
           type: 'multiple',
           data: this.qualificationsFZ
         },customClasses: ['employee-medium'], classesTHead: ['employee-medium']
@@ -118,13 +120,13 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
 
     ];
     // Load grades dynamically
-    this.qualificationFZUtils.getAllQualifications().pipe(
+    this.employeeCategoryUtils.getEmployeeCategories().pipe(
       map(qualifications =>
         qualifications
-          .filter(q => q.qualification) // Filter null/undefined values
+          .filter(q => q.label) // Filter null/undefined values
           .map(q => ({
-            label: q.qualification!,
-            value: q.qualification!
+            label: q.label!,
+            value: q.label!
           }))
           .sort((a, b) => a.label.localeCompare(b.label)) // Sort alphabetically
       )
@@ -137,7 +139,7 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
           ...filterData.map(qualificationFz => ({ label: qualificationFz.label, value: qualificationFz.value }))
         ];
 
-        const qualificationCol = this.cols.find(col => col.field === 'qualificationFZ.qualification');
+        const qualificationCol = this.cols.find(col => col.field === 'employeeCategory.label');
 
         if (qualificationCol?.filter) {
           qualificationCol.filter.data = this.qualificationsFZ;

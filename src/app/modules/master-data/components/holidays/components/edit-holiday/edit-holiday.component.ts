@@ -40,8 +40,6 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
   private yearsModified = false;
   public occErrorHolidayType: OccErrorType = 'UPDATE_UPDATED';
 
-  fixDateFormatPicker: string = 'dd.mm.';
-  dateFormatPicker: string = 'dd.mm.yy';
   isFixedDate: boolean = false;
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' = 'create';
@@ -148,10 +146,10 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
       isFixedDate: new FormControl(false),
       date: new FormControl(''),
     });
-    this.editPublicHolidayForm.get('isFixedDate')?.valueChanges.subscribe(isFixed => {
-      this.isFixedDate = isFixed ?? false;
+    this.editPublicHolidayForm.get('isFixedDate')?.valueChanges.subscribe((isFixed: boolean) => {
+      this.isFixedDate = isFixed;
 
-      if (this.isFixedDate) {
+      if (this.datePicker?.value) {
         const currentValue = this.datePicker.value;
         // Update format
         setTimeout(() => {
@@ -310,7 +308,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
 
   onEditYear(holidayYear: HolidayYear): void {
     this.modalType = 'edit';
-    this.holidayYearToEdit = holidayYear;
+    this.holidayYearToEdit = {...holidayYear};
     this.visibleModal = true;
   }
 

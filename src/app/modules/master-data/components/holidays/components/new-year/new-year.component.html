@@ -5,7 +5,7 @@
       <div class="input-message">
         <p-datepicker #yearPicker formControlName="year" inputId="year" view="year" 
           dateFormat="yy" appendTo="body"
-          showIcon showClear 
+          showIcon showClear [showOnFocus]="false"
           [ngClass]="{'ng-invalid ng-dirty': yearForm.get('year')?.errors?.['required'] && yearForm.get('year')?.dirty || yearAlreadyExists}"/>
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" 
             *ngIf="yearForm.get('year')?.invalid &&  yearForm.get('year')?.dirty || yearAlreadyExists">
