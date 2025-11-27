@@ -1,5 +1,7 @@
 @use 'variables' as *;
 
+$input-width: 254px;
+
 .field {
   display: flex;
   flex-direction: row;
@@ -15,21 +17,25 @@
 
   .p-select {
     width: 100%;
+    max-width: $input-width;
   }
 
   input,
   p-inputnumber {
     width: 100%;
+    max-width: $input-width;
   }
 
   .datepicker-container {
     width: 100%;
+    max-width: $input-width;
   }
 
   .fue-field {
     display: flex;
     flex-direction: row;
     width: 100%;
+    max-width: $input-width;
     gap: 0.5rem;
 
     input {
