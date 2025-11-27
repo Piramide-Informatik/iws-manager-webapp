@@ -72,7 +72,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.setupProjectSubscription();
 
     this.activatedRoute.params.subscribe(params => {
-      this.projectId = params['id'];
+      this.projectId = params['idProject'];
+      console.log('ID recibido:', params['idProject']);
 
       // Modo creación
       if (!this.projectId) {
@@ -97,6 +98,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       title: [''],
       customer: [null],
       orderIdFue: [null],
+      orderIdFueNumber: [''],
       fundingProgram: [null],
       promoterNumber: [''],
       promoter: [null],
@@ -120,6 +122,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private loadProject(projectId: number): void {
     this.projectUtils.getProjectById(projectId).subscribe({
       next: (project) => {
+        console.log('Project loaded:', project);
         if (project) {
           this.currentProject = project;
           this.loadProjectFormData(project);
@@ -134,13 +137,16 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   private loadProjectFormData(project: Project): void {
+    this.currentProject = project;
+
     this.formProject.patchValue({
       projectName: project.projectName,
       title: project.title,
       customer: project.customer?.id,
-      orderIdFue: project.orderIdFue,
+      orderIdFue: '',
+      orderIdFueNumber: project.orderIdFue,
       fundingProgram: project.fundingProgram?.id,
-      promoterNumber: project.promoter?.id,
+      promoterNumber: project.promoter?.promoterNo,
       promoter: project.promoter?.id,
       fundingLabel: project.fundingLabel,
       authorizationDate: project.authorizationDate ? new Date(project.authorizationDate) : null,
@@ -153,6 +159,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       productiveHoursPerYear: project.productiveHoursPerYear,
       orderIdAdmin: project.orderIdAdmin
     });
+
+    this.formProject.markAsPristine();
   }
 
   private updateTitle(name: string): void {
@@ -240,6 +248,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       title: formValue.title,
       customer: this.buildCustomerEntity(formValue.customer),
       orderIdFue: formValue.orderIdFue,
+      orderIdFueNumber: formValue.orderIdFueNumber,
       fundingProgram: this.buildFundingProgramEntity(formValue.fundingProgram),
       promoter: this.buildPromoterEntity(formValue.promoter),
       fundingLabel: formValue.fundingLabel,

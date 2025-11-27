@@ -13,15 +13,14 @@
                     <!-- Longtext -->
                     <div class="field">
                         <label for="title"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
-                        <textarea id="title" pInputTextarea formControlName="title" rows="3"
-                            style="width: 100%;"></textarea>
+                        <textarea id="title" pTextarea formControlName="title" rows="3" style="width: 100%;"></textarea>
                     </div>
 
                     <!-- Kunde -->
                     <div class="field">
                         <label for="customer"> {{ "PROJECTS.FORM.CUSTOMER" | translate }}</label>
                         <p-select formControlName="customer" id="customer" [options]="customers()"
-                            optionLabel="companyText1" optionValue="id" [showClear]="true">
+                            optionLabel="customername1" optionValue="id" [showClear]="true">
                             <ng-template let-customer pTemplate="selectedItem">
                                 <div class="flex align-items-center gap-2" *ngIf="customer">
                                     <span>{{ customer.customername1 }}</span>
@@ -41,8 +40,8 @@
                         <div class="fue-field">
                             <p-select formControlName="orderIdFue" id="orderIdFue" [options]="fundingPrograms()"
                                 optionLabel="name" optionValue="id" />
-                            <input type="text" id="orderIdFue" pInputText formControlName="orderIdFue"
-                                [attr.invalid]="(formProject.get('orderIdFue')?.invalid && formProject.get('orderIdFue')?.dirty)" />
+                            <input type="text" id="orderIdFueNumber" pInputText formControlName="orderIdFueNumber"
+                                [attr.invalid]="(formProject.get('orderIdFueNumber')?.invalid && formProject.get('orderIdFueNumber')?.dirty)" />
                         </div>
                     </div>
 
