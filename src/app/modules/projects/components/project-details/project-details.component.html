@@ -38,8 +38,12 @@
                     <!-- FuE-Auftrag / Nr. -->
                     <div class="field">
                         <label for="orderIdFue"> {{ "PROJECTS.FORM.R_D_ORDER_NUMBER" | translate }}</label>
-                        <p-inputnumber inputId="orderIdFue" [useGrouping]="false" formControlName="orderIdFue"
-                            [inputStyle]="{ 'text-align': 'right' }" />
+                        <div class="fue-field">
+                            <p-select formControlName="orderIdFue" id="orderIdFue" [options]="fundingPrograms()"
+                                optionLabel="name" optionValue="id" />
+                            <input type="text" id="orderIdFue" pInputText formControlName="orderIdFue"
+                                [attr.invalid]="(formProject.get('orderIdFue')?.invalid && formProject.get('orderIdFue')?.dirty)" />
+                        </div>
                     </div>
 
                     <!-- Förderprogramm -->

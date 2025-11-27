@@ -17,12 +17,28 @@
     width: 100%;
   }
 
-  input, p-inputnumber {
+  input,
+  p-inputnumber {
     width: 100%;
   }
 
-  .datepicker-container{
+  .datepicker-container {
     width: 100%;
+  }
+
+  .fue-field {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 0.5rem;
+
+    input {
+      width: 30%;
+    }
+
+    p-select {
+      width: 70%;
+    }
   }
 }
 
@@ -36,6 +52,6 @@
   box-shadow: 0 0 0 1px #e24c4c !important;
 }
 
-.container{
+.container {
   margin-top: 0.5rem;
 }
