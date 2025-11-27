@@ -47,6 +47,7 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
   public expectedTotalMonths: number = 0;
 
   @Input() currentSubcontract!: Subcontract;
+  disabledButtonsSubcontractYearTable = false;
 
   depreciationForm!: FormGroup;
   subcontractsYear: DepreciationEntry[] = [];
@@ -87,6 +88,11 @@ export class DepreciationScheduleComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentSubcontract'] && this.currentSubcontract) {
+      if(this.currentSubcontract.isAfa){
+        this.disabledButtonsSubcontractYearTable = false;
+      }else{
+        this.disabledButtonsSubcontractYearTable = true;
+      }
       this.subcontractStateService.currentSubcontract$.subscribe((updatedSubcontract) => {
         if (updatedSubcontract && (updatedSubcontract?.netOrGross !== this.currentSubcontract.netOrGross ||
           updatedSubcontract.afamonths !== this.currentSubcontract.afamonths ||
