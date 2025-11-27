@@ -2,7 +2,8 @@
   <ng-template #title>{{ 'SUB-CONTRACTS.DEPRECIATION_COLUMNS.TABLE_NAME' | translate }}</ng-template>
 
   <master-data-genaral-table [tableId]="tableKey" [tableValues]="subcontractsYear" [columns]="depreciationColumns"
-    [userPreferences]="userDepreciationPreferences" [dataKeys]="dataKeys"
+    [userPreferences]="userDepreciationPreferences" [dataKeys]="dataKeys" 
+    [disableButtons]="disabledButtonsSubcontractYearTable"
     (onColumnChanges)="onUserDepreciationPreferencesChanges($event)" (onCreateRegister)="showModal('new')"
     (onEditRegister)="showModal('edit', $event.id)"
     (onDeleteRegister)="showModal('delete', $event)"></master-data-genaral-table>
