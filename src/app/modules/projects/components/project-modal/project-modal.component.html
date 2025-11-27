@@ -1,0 +1,230 @@
+<form [formGroup]="formNewProject" (ngSubmit)="onSubmit()">
+  <div class="grid mt-3">
+    <!-- First column -->
+    <div class="col-6 first-col">
+
+      <div class="project-field">
+        <label for="projectLabel">{{ 'PROJECTS.FORM.PROJECT' | translate }}</label>
+        <input #firstInput
+          pInputText
+          type="text"
+          id="projectLabel"
+          formControlName="projectLabel"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="projectName">{{ 'PROJECTS.FORM.LONGTEXT' | translate }}</label>
+        <input pInputText
+          type="text"
+          id="projectName"
+          formControlName="projectName"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="customer">{{ 'PROJECTS.FORM.CUSTOMER' | translate }}</label>
+        <p-select
+          inputId="customer"
+          [options]="customers()"
+          formControlName="customer"
+          optionLabel="customername1"
+          optionValue="id"
+          showClear
+          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+        ></p-select>
+      </div>
+
+      <div class="project-field">
+        <label for="orderFueLabel">{{ 'PROJECTS.FORM.R_D_ORDER_NUMBER' | translate }}</label>
+        <div class="double-inputs">
+          <p-select
+            inputId="orderFueLabel"
+            [options]="orders()"
+            formControlName="orderFueLabel"
+            optionLabel="orderLabel"
+            optionValue="id"
+            showClear
+            autocomplete="off"
+          />
+          <p-inputnumber 
+            inputId="orderFueNo"
+            formControlName="orderFueNo"
+            [inputStyle]="{ 'text-align': 'right' }"
+            [useGrouping]="true"
+            autocomplete="off"
+          />
+        </div>
+
+      </div>
+
+      <div class="project-field">
+        <label for="fundingProgram">{{ 'PROJECTS.FORM.FUNDING_PROGRAM' | translate }}</label>
+        <p-select
+          inputId="fundingProgram"
+          [options]="fundingPrograms()"
+          formControlName="fundingProgram"
+          optionLabel="name"
+          optionValue="id"
+          showClear
+          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+        ></p-select>
+      </div>
+
+      <div class="project-field">
+        <label for="promoterNo">{{ 'PROJECTS.FORM.PROMOTER_NUMBER' | translate }}</label>
+        <p-select
+          inputId="promoterNo"
+          [options]="promoters()"
+          formControlName="promoterNo"
+          optionLabel="promoterNo"
+          optionValue="id"
+          showClear
+          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+        ></p-select>
+      </div>
+
+      <div class="project-field">
+        <label for="projectPromoter">{{ 'PROJECTS.FORM.PROMOTER' | translate }}</label>
+        <input pInputText
+          type="text"
+          id="projectPromoter"
+          formControlName="projectPromoter"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="fundingLabel">{{ 'PROJECTS.FORM.FUNDING_LABEL' | translate }}</label>
+        <input pInputText
+          type="text"
+          id="fundingLabel"
+          formControlName="fundingLabel"
+          autocomplete="off"
+        />
+      </div>
+      
+      <div class="project-field">
+        <label for="authorizationDate">{{ 'PROJECTS.FORM.AUTHORIZATION_DATE' | translate }}</label>
+        <p-datepicker
+          inputId="authorizationDate"
+          [showIcon]="true"
+          [showClear]="true"
+          formControlName="authorizationDate"
+          dateFormat="dd.mm.yy"
+        ></p-datepicker>
+      </div> 
+    </div>
+
+    <!-- Second column -->
+    <div class="col-6 second-col">
+
+      <div class="project-field">
+        <label for="startDate">{{ 'PROJECTS.FORM.DURATION_START' | translate }}</label>
+        <p-datepicker
+          inputId="startDate"
+          [showIcon]="true"
+          [showClear]="true"
+          formControlName="startDate"
+          dateFormat="dd.mm.yy"
+        ></p-datepicker>
+      </div> 
+
+      <div class="project-field">
+        <label for="endDate">{{ 'PROJECTS.FORM.DURATION_END' | translate }}</label>
+        <p-datepicker
+          inputId="endDate"
+          [showIcon]="true"
+          [showClear]="true"
+          formControlName="endDate"
+          dateFormat="dd.mm.yy"
+        ></p-datepicker>
+      </div> 
+
+      <div class="project-field">
+        <label for="fundingRate">{{ 'PROJECTS.FORM.FUNDING_RATE' | translate }}</label>
+        <p-inputnumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="fundingRate"
+          formControlName="fundingRate"
+          [inputStyle]="{ 'text-align': 'right' }"
+          [useGrouping]="true"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="stuffFlat">{{ 'PROJECTS.FORM.STAFF_FLAT_RATE' | translate }}</label>
+        <p-inputnumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="stuffFlat"
+          formControlName="stuffFlat"
+          [inputStyle]="{ 'text-align': 'right' }"
+          [useGrouping]="true"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="shareResearch">{{ 'PROJECTS.FORM.RESEARCH_SHARE' | translate }}</label>
+        <p-inputnumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="shareResearch"
+          formControlName="shareResearch"
+          [inputStyle]="{ 'text-align': 'right' }"
+          [useGrouping]="true"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="hourlyRateMueu">{{ 'PROJECTS.FORM.HOURLY_RATE_MU_EU' | translate }}</label>
+        <p-inputnumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="hourlyRateMueu"
+          formControlName="hourlyRateMueu"
+          [inputStyle]="{ 'text-align': 'right' }"
+          [useGrouping]="true"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="productiveHoursPerYear">{{ 'PROJECTS.FORM.PRODUCTIVE_HOURS_YEAR' | translate }}</label>
+        <p-inputnumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"
+          inputId="productiveHoursPerYear"
+          formControlName="productiveHoursPerYear"
+          [inputStyle]="{ 'text-align': 'right' }"
+          [useGrouping]="true"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="project-field">
+        <label for="orderLabelAdmin">{{ 'PROJECTS.FORM.ADMIN_ORDER_NUMBER' | translate }}</label>
+        <div class="double-inputs">
+          <p-select
+            inputId="orderLabelAdmin"
+            [options]="orders()"
+            formControlName="orderLabelAdmin"
+            optionLabel="orderLabel"
+            optionValue="id"
+            showClear
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+          ></p-select>
+          <p-inputnumber 
+            inputId="orderNoAdmin"
+            formControlName="orderNoAdmin"
+            [inputStyle]="{ 'text-align': 'right' }"
+            [useGrouping]="true"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-content-center gap-2 mt-4">
+      <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+        iconPos="left" [loading]="isLoading" [disabled]="formNewProject.invalid || !formNewProject.dirty" />
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+        (onClick)="closeModal()" [disabled]="isLoading" />
+  </div>
+</form>

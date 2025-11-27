@@ -2,6 +2,7 @@ import { Customer } from "./customer";
 import { EmployeeIws } from "./employeeIws";
 import { FundingProgram } from "./fundingProgram";
 import { Network } from "./network";
+import { Order } from "./order";
 import { ProjectStatus } from "./projectStatus";
 import { Promoter } from "./promoter";
 
@@ -17,6 +18,8 @@ export interface Project {
   empiws50: EmployeeIws | null;
   fundingProgram: FundingProgram | null;
   network: Network | null;
+  orderAdmin: Order | null;
+  orderFue: Order | null;
   promoter: Promoter | null;
   status: ProjectStatus | null;
   
@@ -45,15 +48,13 @@ export interface Project {
   income5?: number;
   maxHoursPerMonth?: number;
   maxHoursPerYear?: number;
-  orderIdFue?: number;
-  orderIdAdmin?: number;
-  stuffFlat?: number;
+  note?: string;
   productiveHoursPerYear?: number;
   projectLabel?: string;
   projectName?: string;
-  note?: string;
   shareResearch?: number;
   startApproval?: string;
   startDate?: string;
+  stuffFlat?: number;
   title?: string; 
 }

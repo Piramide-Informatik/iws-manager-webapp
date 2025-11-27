@@ -480,7 +480,8 @@
       "PRODUCTIVE_HOURS_YEAR": "Horas productivas / Año",
       "ADMIN_ORDER_NUMBER": "Pedido administración / Nº"
     },
-    "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto"
+    "PROJECTS_DIALOG_REMOVE": "Eliminar Proyecto",
+    "PROJECTS_DIALOG_CREATE": "Nuevo Proyecto"
   },
   "PROJECT_PACKAGES": {
     "TABLE": {

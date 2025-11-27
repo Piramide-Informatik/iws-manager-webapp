@@ -23,6 +23,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   private readonly projectUtils = inject(ProjectUtils);
   private readonly projectService = inject(ProjectService);
+  private readonly commonMessageService = inject(CommonMessagesService);
 
   filterIndex = 5;
 
@@ -58,7 +59,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   projectDataKeys = ['projectLabel', 'projectName', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
 
   visibleProjectTableModal = false;
-
+  visibleModalNewProject = false;
   isProjectTableLoading = false;
 
   selectedProjectTableItem!: any;
@@ -159,4 +160,11 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.router.navigate(['./projects/project-details', project.id]);
   }
 
+  createProject(event: {created?: Project, error?: any}): void {
+    if(event.created){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.error){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
 }

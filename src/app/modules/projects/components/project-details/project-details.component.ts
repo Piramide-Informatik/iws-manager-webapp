@@ -96,7 +96,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       projectName: ['', [Validators.required]],
       title: [''],
       customer: [null],
-      orderIdFue: [null],
+      orderFue: [null],
       fundingProgram: [null],
       promoterNumber: [''],
       promoter: [null],
@@ -109,7 +109,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: [null, [Validators.min(0), Validators.max(100)]],
       hourlyRateMueu: [null, [Validators.min(0)]],
       productiveHoursPerYear: [null, [Validators.min(0)]],
-      orderIdAdmin: [null]
+      orderAdmin: [null]
     });
   }
 
@@ -138,7 +138,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       projectName: project.projectName,
       title: project.title,
       customer: project.customer?.id,
-      orderIdFue: project.orderIdFue,
+      orderFue: project.orderFue,
       fundingProgram: project.fundingProgram?.id,
       promoterNumber: project.promoter?.id,
       promoter: project.promoter?.id,
@@ -151,7 +151,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: project.shareResearch,
       hourlyRateMueu: project.hourlyRateMueu,
       productiveHoursPerYear: project.productiveHoursPerYear,
-      orderIdAdmin: project.orderIdAdmin
+      orderAdmin: project.orderAdmin
     });
   }
 
@@ -239,7 +239,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       projectName: formValue.projectName,
       title: formValue.title,
       customer: this.buildCustomerEntity(formValue.customer),
-      orderIdFue: formValue.orderIdFue,
+      orderFue: formValue.orderFue,
       fundingProgram: this.buildFundingProgramEntity(formValue.fundingProgram),
       promoter: this.buildPromoterEntity(formValue.promoter),
       fundingLabel: formValue.fundingLabel,
@@ -251,7 +251,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: formValue.shareResearch,
       hourlyRateMueu: formValue.hourlyRateMueu,
       productiveHoursPerYear: formValue.productiveHoursPerYear,
-      orderIdAdmin: formValue.orderIdAdmin
+      orderAdmin: formValue.orderAdmin
     };
   }
 
