@@ -17,6 +17,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TextareaModule } from 'primeng/textarea';
 
 //Components
 
@@ -61,6 +62,7 @@ import { ProjectsOverviewComponent } from './components/projects-overview/projec
         ReactiveFormsModule,
         SelectModule,
         TableModule,
+        TextareaModule,
         ToastModule,
         ToolbarModule,
         TranslateModule,
