@@ -5,15 +5,16 @@
                 <div class="grid justify-content-center">
                     <!-- Projekt -->
                     <div class="field">
-                        <label for="projectName"> {{ "PROJECTS.FORM.PROJECT" | translate }} </label>
-                        <input type="text" id="projectName" pInputText formControlName="projectName"
-                            [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
+                        <label for="projectLabel"> {{ "PROJECTS.FORM.PROJECT" | translate }} </label>
+                        <input type="text" id="projectLabel" pInputText formControlName="projectLabel"
+                            [attr.invalid]="(formProject.get('projectLabel')?.invalid && formProject.get('projectLabel')?.dirty)" />
                     </div>
 
                     <!-- Longtext -->
                     <div class="field">
-                        <label for="title"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
-                        <textarea id="title" pTextarea formControlName="title" rows="3" style="width: 100%;"></textarea>
+                        <label for="projectName"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
+                        <input id="projectName" pInputText formControlName="projectName"
+                            [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
                     </div>
 
                     <!-- Kunde -->
@@ -37,11 +38,11 @@
                     <!-- FuE-Auftrag / Nr. -->
                     <div class="field">
                         <label for="orderIdFue"> {{ "PROJECTS.FORM.R_D_ORDER_NUMBER" | translate }}</label>
-                        <div class="fue-field">
+                        <div class="two-field">
                             <p-select formControlName="orderIdFue" id="orderIdFue" [options]="fundingPrograms()"
                                 optionLabel="name" optionValue="id" />
-                            <input type="text" id="orderIdFueNumber" pInputText formControlName="orderIdFueNumber"
-                                [attr.invalid]="(formProject.get('orderIdFueNumber')?.invalid && formProject.get('orderIdFueNumber')?.dirty)" />
+                            <input pInputText type="text" id="orderIdFueNumber" formControlName="orderIdFueNumber"
+                                autocomplete="off" readonly [disabled]="true" />
                         </div>
                     </div>
 
@@ -142,8 +143,12 @@
                     <!-- Verwaltung-Auftrag / Nr. -->
                     <div class="field">
                         <label for="orderIdAdmin"> {{ "PROJECTS.FORM.ADMIN_ORDER_NUMBER" | translate }}</label>
-                        <p-inputnumber inputId="orderIdAdmin" [useGrouping]="false" formControlName="orderIdAdmin"
-                            [inputStyle]="{ 'text-align': 'right' }" />
+                        <div class="two-field">
+                            <p-select formControlName="orderIdAdmin" id="orderIdAdmin" [options]="fundingPrograms()"
+                                optionLabel="name" optionValue="id" />
+                            <input pInputText formControlName="orderIdAdminNumber" type="text" id="orderIdAdminNumber"
+                                autocomplete="off" readonly [disabled]="true" />
+                        </div>
                     </div>
                 </div>
             </form>

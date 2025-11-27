@@ -94,8 +94,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private initializeForm(): void {
     this.formProject = this.fb.group({
-      projectName: ['', [Validators.required]],
-      title: [''],
+      projectLabel: ['', [Validators.required]],
+      projectName: [''],
       customer: [null],
       orderIdFue: [null],
       orderIdFueNumber: [''],
@@ -111,8 +111,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: [null, [Validators.min(0), Validators.max(100)]],
       hourlyRateMueu: [null, [Validators.min(0)]],
       productiveHoursPerYear: [null, [Validators.min(0)]],
-      orderIdAdmin: [null]
+      orderIdAdmin: [null],
+      orderIdAdminNumber: ['']
     });
+
+    this.formProject.get('orderIdAdminNumber')?.disable();
+    this.formProject.get('orderIdFueNumber')?.disable();
   }
 
   private setupProjectSubscription(): void {
@@ -126,7 +130,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         if (project) {
           this.currentProject = project;
           this.loadProjectFormData(project);
-          this.updateTitle(project.projectName || 'Unnamed Project');
+          this.updateTitle(project.projectLabel || 'Unnamed Project');
         }
       },
       error: (error) => {
@@ -140,8 +144,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.currentProject = project;
 
     this.formProject.patchValue({
+      projectLabel: project.projectLabel,
       projectName: project.projectName,
-      title: project.title,
       customer: project.customer?.id,
       orderIdFue: '',
       orderIdFueNumber: project.orderIdFue,
@@ -157,7 +161,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: project.shareResearch,
       hourlyRateMueu: project.hourlyRateMueu,
       productiveHoursPerYear: project.productiveHoursPerYear,
-      orderIdAdmin: project.orderIdAdmin
+      orderIdAdmin: '',
+      orderIdAdminNumber: project.orderIdAdmin
     });
 
     this.formProject.markAsPristine();
@@ -244,8 +249,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private buildCommonProjectData(formValue: any): any {
     return {
+      projectLabel: formValue.projectLabel,
       projectName: formValue.projectName,
-      title: formValue.title,
       customer: this.buildCustomerEntity(formValue.customer),
       orderIdFue: formValue.orderIdFue,
       orderIdFueNumber: formValue.orderIdFueNumber,
@@ -260,7 +265,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: formValue.shareResearch,
       hourlyRateMueu: formValue.hourlyRateMueu,
       productiveHoursPerYear: formValue.productiveHoursPerYear,
-      orderIdAdmin: formValue.orderIdAdmin
+      orderIdAdmin: formValue.orderIdAdmin,
+      orderIdAdminNumber: formValue.orderIdAdminNumber
     };
   }
 
