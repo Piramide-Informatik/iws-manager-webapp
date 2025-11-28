@@ -1,4 +1,5 @@
 import { buildCustomer } from "./customer";
+import { buildOrder } from "./order";
 
 export function buildProject(source: any): any {
   return {
@@ -37,8 +38,8 @@ export function buildProject(source: any): any {
     maxHoursPerMonth: source?.maxHoursPerMonth ?? 0,
     maxHoursPerYear: source?.maxHoursPerYear ?? 0,
     stuffFlat: source?.stuffFlat ?? 0,
-    orderIdFue: source?.orderIdFue ?? 0,
-    orderIdAdmin: source?.orderIdAdmin ?? 0,
+    orderFue: buildOrder(source?.orderFue),
+    orderAdmin: buildOrder(source?.orderAdmin),
     authorizationDate: source?.authorizationDate ?? '',
     approvalDate: source?.approvalDate ?? '',
     customer: buildCustomer(source?.customer)

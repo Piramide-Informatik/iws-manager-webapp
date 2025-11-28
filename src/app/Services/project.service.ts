@@ -9,7 +9,7 @@ import { Project } from '../Entities/project';
 })
 export class ProjectService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/projects`;
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV_V2}/projects`;
   //Signals
   private readonly _projects = signal<Project[]>([]);
   private readonly _loading = signal<boolean>(false);
