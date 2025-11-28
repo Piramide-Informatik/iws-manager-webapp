@@ -4,6 +4,7 @@ import { ProjectService } from '../../../../../Services/project.service';
 import { Project } from '../../../../../Entities/project';
 import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 import { OrderUtils } from '../../orders/utils/order-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -114,11 +115,11 @@ export class ProjectUtils {
       take(1),
       switchMap((currentProject) => {
         if (!currentProject) {
-          return throwError(() => new Error('Project not found'));
+          return throwError(() => createNotFoundUpdateError('Project'));
         }
 
         if (currentProject.version !== project.version) {
-          return throwError(() => new Error('Conflict detected: project version mismatch'));
+          return throwError(() => createUpdateConflictError('Project'));
         }
 
         return this.projectService.updateProject(project);

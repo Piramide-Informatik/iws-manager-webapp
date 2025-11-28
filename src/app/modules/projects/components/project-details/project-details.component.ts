@@ -316,8 +316,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private handleSaveSuccess(savedProject: Project): void {
     this.formProject.markAsPristine();
-    this.commonMessageService.showEditSucessfullMessage();
     this.currentProject = savedProject;
+    this.loadProject(this.projectId);
+    this.commonMessageService.showEditSucessfullMessage();
     this.isSaving = false;
   }
 
