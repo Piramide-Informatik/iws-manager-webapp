@@ -20,7 +20,7 @@ import { buildProject } from '../../../shared/utils/builders/project';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-utils';
 import { Order } from '../../../../Entities/order';
-import { momentCreateDate, momentFormatDate } from '../../../shared/utils/moment-date-utils';
+import { momentCreateDate } from '../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-project-details',
@@ -87,7 +87,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       // Modo creación
       if (!this.projectId) {
         this.clearForm();
-        this.updateTitle(this.translate.instant('PAGETITLE.NEW_PROJECT'));
+        this.updateTitle(this.translate.instant('PAGETITLE.PROJECT.NEW_PROJECT'));
         return;
       }
 
@@ -224,7 +224,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private updateTitle(name: string): void {
     this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.PROJECT')} ${name} ${this.translate.instant('PAGETITLE.PROJECTS.DETAILS')}`
+      `${this.translate.instant('PAGETITLE.PROJECT.PROJECTS')} ${name} ${this.translate.instant('PAGETITLE.PROJECT.DETAILS')}`
     );
   }
 

@@ -1,0 +1,62 @@
+.project-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.2rem;
+
+    input, 
+    p-inputnumber,
+    p-select,
+    p-datepicker {
+        width: 100%;
+        max-width: 220px;
+    }
+
+    .double-inputs {
+        max-width: 220px;
+        display: flex;
+        gap: 5px;
+
+        p-select {
+            width: 30rem !important;
+            min-width: 10rem;
+        }
+    }
+
+    ::ng-deep {
+        .p-inputtext,
+        .p-inputnumber-input,
+        .p-inputnumber,
+        .p-datepicker {
+            width: 100%;
+            max-width: 220px;
+        }
+
+    }
+}
+
+::ng-deep p-inputnumber > input#orderNoAdmin.p-inputnumber-input,
+::ng-deep p-inputnumber > input#orderFueNo.p-inputnumber-input {
+    width: 6rem !important;
+}
+
+.first-col .project-field {
+    label {
+        width: 130px;
+        flex-shrink: 0;
+    }
+}
+
+.second-col .project-field {
+    label {
+        width: 160px;
+        flex-shrink: 0;
+    }
+}
+
+::ng-deep .p-datepicker table,
+::ng-deep .p-datepicker .p-monthpicker,
+::ng-deep .p-datepicker .p-yearpicker,
+::ng-deep .p-datepicker .p-datepicker-group {
+  width: 100%;
+  table-layout: fixed;
+}

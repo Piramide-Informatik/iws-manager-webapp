@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-
+import { Title } from '@angular/platform-browser';
 import { TranslateService, _, TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,6 +23,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   private readonly projectUtils = inject(ProjectUtils);
   private readonly projectService = inject(ProjectService);
+  private readonly commonMessageService = inject(CommonMessagesService);
 
   filterIndex = 5;
 
@@ -58,7 +59,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   projectDataKeys = ['projectLabel', 'projectName', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
 
   visibleProjectTableModal = false;
-
+  visibleModalNewProject = false;
   isProjectTableLoading = false;
 
   selectedProjectTableItem!: any;
@@ -69,7 +70,8 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     private readonly translate: TranslateService,
     private readonly userPreferenceService: UserPreferenceService,
     private readonly router: Router,
-    private readonly commonMessage: CommonMessagesService
+    private readonly commonMessage: CommonMessagesService,
+    private readonly titleService: Title
   ) {
   }
 
@@ -78,11 +80,17 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.selectedProjectTableColumns = this.cols;
     this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.projectTableKey, this.selectedProjectTableColumns);
     this.projectUtils.loadInitialData().subscribe();
+    this.titleService.setTitle(
+      `${this.translate.instant('PAGETITLE.PROJECT.PROJECTS')}`
+    );
 
     this.projectLangSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadProjectColHeaders();
       this.selectedProjectTableColumns = this.cols;
       this.userProjectPreferences = this.userPreferenceService.getUserPreferences(this.projectTableKey, this.selectedProjectTableColumns);
+      this.titleService.setTitle(
+        `${this.translate.instant('PAGETITLE.PROJECT.PROJECTS')}`
+      );
     });
   }
 
@@ -159,4 +167,11 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.router.navigate(['/projects/project-details', project.id]);
   }
 
+  createProject(event: {created?: Project, error?: any}): void {
+    if(event.created){
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.error){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
 }

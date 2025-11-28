@@ -46,7 +46,9 @@
       "USER": "User"
     },
     "PROJECT": {
-      "NEW_PROJECT": "New Project"
+      "PROJECTS": "Projects",
+      "NEW_PROJECT": "New Project",
+      "DETAILS": "Details"
     }
   },
   "ERROR": {
@@ -486,7 +488,8 @@
       "PRODUCTIVE_HOURS_YEAR": "Productive Hours / Year",
       "ADMIN_ORDER_NUMBER": "Administration Order / No."
     },
-    "PROJECTS_DIALOG_REMOVE": "Delete Project"
+    "PROJECTS_DIALOG_REMOVE": "Delete Project",
+    "PROJECTS_DIALOG_CREATE": "New Project" 
   },
   "PROJECT_PACKAGES": {
     "TABLE": {

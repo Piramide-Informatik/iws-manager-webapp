@@ -35,13 +35,15 @@ import { CardModule } from 'primeng/card';
 import { LayoutModule } from '../../core/layout/layout.module';
 import { PageProjectComponent } from './components/page-project/page-project.component';
 import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
+import { ProjectModalComponent } from './components/project-modal/project-modal.component';
 
 @NgModule({
     declarations: [
         ProjectDetailsComponent,
         WorkPackagesComponent,
         PageProjectComponent,
-        ProjectsOverviewComponent
+        ProjectsOverviewComponent,
+        ProjectModalComponent
     ],
     imports: [
         ButtonModule,

@@ -28,7 +28,7 @@ export class ProjectUtils {
       catchError(() => throwError(() => new Error('Failed to load projects')))
     );
   }
- 
+
   /**
   * Gets a project by ID with proper error handling
   * @param id - ID of the project to retrieve
@@ -92,7 +92,7 @@ export class ProjectUtils {
       switchMap(results => {
         const isThereAssociatedEntities = results.find(r => !r.valid);
         if (isThereAssociatedEntities) {
-            return throwError(() => new Error(isThereAssociatedEntities.error));
+          return throwError(() => new Error(isThereAssociatedEntities.error));
         }
 
         return this.projectService.deleteProject(id)
@@ -118,7 +118,7 @@ export class ProjectUtils {
         }
 
         if (currentProject.version !== project.version) {
-          return throwError(() => new Error('Conflict detected: project person version mismatch'));
+          return throwError(() => new Error('Conflict detected: project version mismatch'));
         }
 
         return this.projectService.updateProject(project);
