@@ -36,13 +36,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'projects/:id',
-        loadChildren: () =>
-          import('../../modules/customer/sub-modules/projects/project.module').then(
-            (w) => w.ProjectModule
-          ),
-      },
-      {
         path: 'orders/:id',
         loadChildren: () =>
           import('../../modules/customer/sub-modules/orders/orders.module').then(

@@ -46,7 +46,9 @@
       "USER": "Benutzer"
     },
     "PROJECT": {
-      "NEW_PROJECT": "Neues Projekt"
+      "PROJECTS": "Projekte",
+      "NEW_PROJECT": "Neues Projekt",
+      "DETAILS": "Details"
     }
   },
   "ERROR": {
