@@ -1,6 +1,6 @@
-import { buildCustomer } from "./customer";
-import { buildOrder } from "./order";
+import { momentCreateDate, momentFormatDate, momentSafeCreateDate } from "../moment-date-utils"
 
+// builders/project.ts - VERSIÓN SIMPLIFICADA PARA UPDATE
 export function buildProject(source: any): any {
   return {
     id: source?.id ?? 0,
@@ -12,9 +12,9 @@ export function buildProject(source: any): any {
     title: source?.title ?? '',
     note: source?.note ?? '',
     chance: source?.chance ?? 0,
-    startDate: source?.startDate ?? '',
-    endDate: source?.endDate ?? '',
-    startApproval: source?.startApproval ?? '',
+    startDate: momentFormatDate(source?.startDate ?? ''),
+    endDate: momentFormatDate(source?.endDate ?? ''),
+    startApproval: momentFormatDate(source?.startApproval ?? ''),
     endApproval: source?.endApproval ?? '',
     date1: source?.date1 ?? '',
     date2: source?.date2 ?? '',
@@ -38,10 +38,15 @@ export function buildProject(source: any): any {
     maxHoursPerMonth: source?.maxHoursPerMonth ?? 0,
     maxHoursPerYear: source?.maxHoursPerYear ?? 0,
     stuffFlat: source?.stuffFlat ?? 0,
-    orderFue: buildOrder(source?.orderFue),
-    orderAdmin: buildOrder(source?.orderAdmin),
-    authorizationDate: source?.authorizationDate ?? '',
-    approvalDate: source?.approvalDate ?? '',
-    customer: buildCustomer(source?.customer)
+
+    // relations - just id and version
+    orderFue: source?.orderFue ? { id: source.orderFue.id, version: source.orderFue.version ?? 0 } : null,
+    orderAdmin: source?.orderAdmin ? { id: source.orderAdmin.id, version: source.orderAdmin.version ?? 0 } : null,
+    customer: source?.customer ? { id: source.customer.id, version: source.customer.version ?? 0 } : null,
+    fundingProgram: source?.fundingProgram ? { id: source.fundingProgram.id, version: source.fundingProgram.version ?? 0 } : null,
+    promoter: source?.promoter ? { id: source.promoter.id, version: source.promoter.version ?? 0 } : null,
+
+    authorizationDate: momentFormatDate(source?.authorizationDate ?? ''),
+    approvalDate: momentFormatDate(source?.approvalDate ?? '')
   };
 }
