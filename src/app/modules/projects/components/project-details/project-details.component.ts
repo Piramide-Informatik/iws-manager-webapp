@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, finalize } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MessageService } from 'primeng/api';
@@ -21,6 +21,7 @@ import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/proje
 import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-utils';
 import { Order } from '../../../../Entities/order';
 import { momentCreateDate } from '../../../shared/utils/moment-date-utils';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-project-details',
@@ -44,6 +45,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   public formProject!: FormGroup;
   public currentProject: Project | null = null;
+  public showOCCErrorModal = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public redirectRoute = "";
 
   // Signals para las opciones de los selects
   public customers = toSignal(
@@ -84,15 +88,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       this.projectId = params['idProject'];
 
-      // Modo creación
-      if (!this.projectId) {
-        this.clearForm();
-        this.updateTitle(this.translate.instant('PAGETITLE.PROJECT.NEW_PROJECT'));
-        return;
-      }
-
-      // Modo edición
-      this.updateTitle(' ...');
+      this.updateTitle(this.translate.instant('PAGETITLE.PROJECT.NEW_PROJECT'));
       this.loadProject(Number(this.projectId));
     });
   }
@@ -180,7 +176,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private loadProject(projectId: number): void {
     this.projectUtils.getProjectById(projectId).subscribe({
       next: (project) => {
-        console.log('Project loaded:', project);
+
         if (project) {
           this.currentProject = project;
           this.loadProjectFormData(project);
@@ -263,16 +259,23 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
     this.projectUtils.updateProject(updatedProject).subscribe({
       next: (savedProject) => {
-        console.log('Project updated successfully:', savedProject);
         this.handleSaveSuccess(savedProject)
       },
-      error: (error) => {
-        console.error('Error updating project:', error);
+      error: (error: Error) => {
+        this.handleOCCError(error);
         this.handleSaveError(error)
       }
     });
   }
 
+  private handleOCCError(error: any): void {
+    console.log('Error updating project:', error);
+    if (error instanceof OccError) {
+      this.showOCCErrorModal = true;
+      this.occErrorType = error.errorType;
+      this.redirectRoute = "/projects/" + this.currentProject?.id;
+    }
+  }
   private buildUpdatedProject(): Project {
     const formValue = this.formProject.value;
 

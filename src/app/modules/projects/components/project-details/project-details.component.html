@@ -188,4 +188,8 @@
     </div>
 </p-dialog>
 
+<app-occ-error-modal *ngIf="showOCCErrorModal" [errorType]="occErrorType" [redirectRoute]="redirectRoute"
+    (close)="showOCCErrorModal = false">
+</app-occ-error-modal>
+
 <p-toast></p-toast>
