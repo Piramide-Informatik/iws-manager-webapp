@@ -20,8 +20,8 @@ export interface Project {
   network: Network | null;
   promoter: Promoter | null;
   status: ProjectStatus | null;
-  orderIdFue?: Order | null;
-  orderIdAdmin?: Order | null;
+  orderFue?: Order | null;
+  orderAdmin?: Order | null;
 
   approvalDate?: string;
   authorizationDate?: string;

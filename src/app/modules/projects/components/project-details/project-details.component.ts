@@ -18,6 +18,8 @@ import { FundingProgramUtils } from '../../../master-data/components/funding-pro
 import { PromoterUtils } from '../../../master-data/components/project-funnels/utils/promoter-utils';
 import { buildProject } from '../../../shared/utils/builders/project';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
+import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-utils';
+import { Order } from '../../../../Entities/order';
 
 @Component({
   selector: 'app-project-details',
@@ -37,6 +39,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly promoterUtils = inject(PromoterUtils);
+  private readonly orderUtils = inject(OrderUtils);
 
   public formProject!: FormGroup;
   public currentProject: Project | null = null;
@@ -50,6 +53,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   public fundingPrograms = toSignal(
     this.fundingProgramUtils.getAllFundingPrograms(),
     { initialValue: [] as FundingProgram[] }
+  );
+
+  public orders = toSignal(
+    this.orderUtils.getAllOrders(),
+    { initialValue: [] as Order[] }
   );
 
   public promoters = toSignal(
@@ -70,10 +78,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setupProjectSubscription();
+    this.setupOrderListeners();
 
     this.activatedRoute.params.subscribe(params => {
       this.projectId = params['idProject'];
-      console.log('ID recibido:', params['idProject']);
 
       // Modo creación
       if (!this.projectId) {
@@ -86,6 +94,32 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       this.updateTitle(' ...');
       this.loadProject(Number(this.projectId));
     });
+  }
+
+  private setupOrderListeners(): void {
+    this.subscriptions.add(
+      this.formProject.get('orderIdFue')?.valueChanges.subscribe(orderId => {
+        this.updateOrderNumber('orderIdFueNumber', orderId);
+      })
+    );
+
+    this.subscriptions.add(
+      this.formProject.get('orderIdAdmin')?.valueChanges.subscribe(orderId => {
+        this.updateOrderNumber('orderIdAdminNumber', orderId);
+      })
+    );
+  }
+
+  private updateOrderNumber(controlName: 'orderIdFueNumber' | 'orderIdAdminNumber', orderId: number): void {
+
+    if (orderId) {
+      const order = this.orders().find(order => order.id === orderId);
+      const orderNumber = order?.orderNo?.toString() || '';
+
+      this.formProject.get(controlName)?.setValue(orderNumber, { emitEvent: false });
+    } else {
+      this.formProject.get(controlName)?.setValue('', { emitEvent: false });
+    }
   }
 
   ngOnDestroy(): void {
@@ -147,8 +181,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       projectLabel: project.projectLabel,
       projectName: project.projectName,
       customer: project.customer?.id,
-      orderIdFue: '',
-      orderIdFueNumber: project.orderIdFue,
+      orderIdFue: project.orderFue?.id,
+      orderIdFueNumber: project.orderFue?.orderNo,
       fundingProgram: project.fundingProgram?.id,
       promoterNumber: project.promoter?.promoterNo,
       promoter: project.promoter?.id,
@@ -161,8 +195,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: project.shareResearch,
       hourlyRateMueu: project.hourlyRateMueu,
       productiveHoursPerYear: project.productiveHoursPerYear,
-      orderIdAdmin: '',
-      orderIdAdminNumber: project.orderIdAdmin
+      orderIdAdmin: project.orderAdmin?.id,
+      orderIdAdminNumber: project.orderAdmin?.orderNo
     });
 
     this.formProject.markAsPristine();

@@ -39,8 +39,8 @@
                     <div class="field">
                         <label for="orderIdFue"> {{ "PROJECTS.FORM.R_D_ORDER_NUMBER" | translate }}</label>
                         <div class="two-field">
-                            <p-select formControlName="orderIdFue" id="orderIdFue" [options]="fundingPrograms()"
-                                optionLabel="name" optionValue="id" />
+                            <p-select formControlName="orderIdFue" id="orderIdFue" [options]="orders()"
+                                optionLabel="orderLabel" optionValue="id" />
                             <input pInputText type="text" id="orderIdFueNumber" formControlName="orderIdFueNumber"
                                 autocomplete="off" readonly [disabled]="true" />
                         </div>
@@ -144,8 +144,8 @@
                     <div class="field">
                         <label for="orderIdAdmin"> {{ "PROJECTS.FORM.ADMIN_ORDER_NUMBER" | translate }}</label>
                         <div class="two-field">
-                            <p-select formControlName="orderIdAdmin" id="orderIdAdmin" [options]="fundingPrograms()"
-                                optionLabel="name" optionValue="id" />
+                            <p-select formControlName="orderIdAdmin" id="orderIdAdmin" [options]="orders()"
+                                optionLabel="orderLabel" optionValue="id" />
                             <input pInputText formControlName="orderIdAdminNumber" type="text" id="orderIdAdminNumber"
                                 autocomplete="off" readonly [disabled]="true" />
                         </div>
