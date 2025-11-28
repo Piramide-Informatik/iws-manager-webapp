@@ -2,8 +2,12 @@ import { buildApprovalStatus } from "./approvalStatus";
 import { buildBasicContract } from "./basicContract";
 import { buildContractor } from "./contractor";
 import { buildContractStatus } from "./contractStatus";
+import { buildCostType } from "./costType";
 import { buildCustomer } from "./customer";
+import { buildEmployeeIws } from "./employeeIws";
+import { buildFundingProgram } from "./fundingProgram";
 import { buildProject } from "./project";
+import { buildPromoter } from "./promoter";
 
 
 export function buildOrder(source: any): any {

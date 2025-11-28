@@ -1,3 +1,6 @@
+import { buildTeamIws } from "./teamIws";
+import { buildUser } from "./user";
+
 // builders/employeeIws.ts
 export function buildEmployeeIws(source: any): any {
     return {
@@ -6,8 +9,8 @@ export function buildEmployeeIws(source: any): any {
         updatedAt: source?.updatedAt ?? '',
         version: source?.version ?? 0,
 
-        teamIws: source?.teamIws,
-        user: source?.user,
+        teamIws: buildTeamIws(source?.teamIws),
+        user: buildUser(source?.user),
 
         active: source?.active ?? 0,
         employeeLabel: source?.employeeLabel ?? '',

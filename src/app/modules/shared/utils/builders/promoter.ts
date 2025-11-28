@@ -1,3 +1,5 @@
+import { buildCountry } from "./country";
+
 export function buildPromoter(source: any): any {
     return {
         id: source?.id ?? 0,
@@ -5,7 +7,7 @@ export function buildPromoter(source: any): any {
         updatedAt: source?.updatedAt ?? '',
         version: source?.version ?? 0,
 
-        country: source?.country,
+        country: buildCountry(source?.country),
 
         city: source?.city ?? '',
         projectPromoter: source?.projectPromoter ?? '',
