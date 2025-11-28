@@ -72,12 +72,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.setupProjectSubscription();
 
     this.activatedRoute.params.subscribe(params => {
-      this.projectId = params['id'];
+      this.projectId = params['idProject'];
 
       // Modo creación
       if (!this.projectId) {
         this.clearForm();
-        this.updateTitle(this.translate.instant('PAGETITLE.NEW_PROJECT'));
+        this.updateTitle(this.translate.instant('PAGETITLE.PROJECT.NEW_PROJECT'));
         return;
       }
 
@@ -157,7 +157,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private updateTitle(name: string): void {
     this.titleService.setTitle(
-      `${this.translate.instant('PAGETITLE.PROJECT')} ${name} ${this.translate.instant('PAGETITLE.PROJECTS.DETAILS')}`
+      `${this.translate.instant('PAGETITLE.PROJECT.PROJECTS')} ${name} ${this.translate.instant('PAGETITLE.PROJECT.DETAILS')}`
     );
   }
 
