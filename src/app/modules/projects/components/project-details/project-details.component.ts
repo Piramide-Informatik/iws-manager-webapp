@@ -184,7 +184,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        console.error('Error loading project:', error);
         this.clearForm();
       }
     });
@@ -269,11 +268,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   private handleOCCError(error: any): void {
-    console.log('Error updating project:', error);
     if (error instanceof OccError) {
       this.showOCCErrorModal = true;
       this.occErrorType = error.errorType;
-      this.redirectRoute = "/projects/" + this.currentProject?.id;
+      if (this.occErrorType === "UPDATE_UPDATED") {
+        this.redirectRoute = "/projects/" + this.currentProject?.id;
+      } else if (this.occErrorType === "UPDATE_UNEXISTED") {
+        this.redirectRoute = "/projects";
+      }
     }
   }
   private buildUpdatedProject(): Project {
@@ -327,7 +329,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private handleSaveError(error: any): void {
     this.isSaving = false;
-    console.error('Error saving project:', error);
     this.commonMessageService.showErrorEditMessage();
   }
 
@@ -351,7 +352,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   private handleErrorDelete(error: any): void {
-    console.error('Error deleting project:', error);
     this.commonMessageService.showErrorDeleteMessage();
   }
 }
