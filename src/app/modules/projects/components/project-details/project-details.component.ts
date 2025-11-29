@@ -346,9 +346,17 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.isLoadingProject = false;
         this.showDeleteProjectModal = false;
+        this.handleDeleteOCCError(error);
         this.handleErrorDelete(error);
       }
     });
+  }
+
+  private handleDeleteOCCError(error: any) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModal = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
   }
 
   private handleErrorDelete(error: any): void {
