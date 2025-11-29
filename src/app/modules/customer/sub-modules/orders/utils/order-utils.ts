@@ -21,7 +21,13 @@ export class OrderUtils {
       catchError(() => throwError(() => new Error('Failed to load orders')))
     );
   }
- 
+
+  getAllOrdersSortedByOrderLabel(): Observable<Order[]> {
+    return this.orderService.getAllOrdersSortedByOrderLabel().pipe(
+      catchError(() => throwError(() => new Error('Failed to load orders sorted')))
+    );
+  }
+
   /**
   * Gets a order by ID with proper error handling
   * @param id - ID of the order to retrieve

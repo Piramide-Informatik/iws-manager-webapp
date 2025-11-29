@@ -61,7 +61,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   );
 
   public orders = toSignal(
-    this.orderUtils.getAllOrders(),
+    this.orderUtils.getAllOrdersSortedByOrderLabel(),
     { initialValue: [] as Order[] }
   );
 
