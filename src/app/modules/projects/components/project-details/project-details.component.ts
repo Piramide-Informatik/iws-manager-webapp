@@ -66,7 +66,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   );
 
   public promoters = toSignal(
-    this.promoterUtils.getAllPromoters(),
+    this.promoterUtils.getAllPromotersSortedByPromoterName1(),
     { initialValue: [] as Promoter[] }
   );
 
