@@ -4,6 +4,7 @@ import { ProjectService } from '../../../../../Services/project.service';
 import { Project } from '../../../../../Entities/project';
 import { ReceivableUtils } from '../../receivables/utils/receivable-utils';
 import { OrderUtils } from '../../orders/utils/order-utils';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -28,7 +29,7 @@ export class ProjectUtils {
       catchError(() => throwError(() => new Error('Failed to load projects')))
     );
   }
- 
+
   /**
   * Gets a project by ID with proper error handling
   * @param id - ID of the project to retrieve
@@ -92,7 +93,7 @@ export class ProjectUtils {
       switchMap(results => {
         const isThereAssociatedEntities = results.find(r => !r.valid);
         if (isThereAssociatedEntities) {
-            return throwError(() => new Error(isThereAssociatedEntities.error));
+          return throwError(() => new Error(isThereAssociatedEntities.error));
         }
 
         return this.projectService.deleteProject(id)
@@ -114,11 +115,11 @@ export class ProjectUtils {
       take(1),
       switchMap((currentProject) => {
         if (!currentProject) {
-          return throwError(() => new Error('Project not found'));
+          return throwError(() => createNotFoundUpdateError('Project'));
         }
 
         if (currentProject.version !== project.version) {
-          return throwError(() => new Error('Conflict detected: project person version mismatch'));
+          return throwError(() => createUpdateConflictError('Project'));
         }
 
         return this.projectService.updateProject(project);

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, finalize } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MessageService } from 'primeng/api';
@@ -18,6 +18,10 @@ import { FundingProgramUtils } from '../../../master-data/components/funding-pro
 import { PromoterUtils } from '../../../master-data/components/project-funnels/utils/promoter-utils';
 import { buildProject } from '../../../shared/utils/builders/project';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
+import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-utils';
+import { Order } from '../../../../Entities/order';
+import { momentCreateDate } from '../../../shared/utils/moment-date-utils';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-project-details',
@@ -37,9 +41,13 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private readonly customerUtils = inject(CustomerUtils);
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly promoterUtils = inject(PromoterUtils);
+  private readonly orderUtils = inject(OrderUtils);
 
   public formProject!: FormGroup;
   public currentProject: Project | null = null;
+  public showOCCErrorModal = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
+  public redirectRoute = "";
 
   // Signals para las opciones de los selects
   public customers = toSignal(
@@ -52,8 +60,13 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     { initialValue: [] as FundingProgram[] }
   );
 
+  public orders = toSignal(
+    this.orderUtils.getAllOrdersSortedByOrderLabel(),
+    { initialValue: [] as Order[] }
+  );
+
   public promoters = toSignal(
-    this.promoterUtils.getAllPromoters(),
+    this.promoterUtils.getAllPromotersSortedByPromoterName1(),
     { initialValue: [] as Promoter[] }
   );
 
@@ -70,21 +83,58 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setupProjectSubscription();
+    this.setupOrderListeners();
 
     this.activatedRoute.params.subscribe(params => {
       this.projectId = params['idProject'];
 
-      // Modo creación
-      if (!this.projectId) {
-        this.clearForm();
-        this.updateTitle(this.translate.instant('PAGETITLE.PROJECT.NEW_PROJECT'));
-        return;
-      }
-
-      // Modo edición
-      this.updateTitle(' ...');
+      this.updateTitle(this.translate.instant('PAGETITLE.PROJECT.NEW_PROJECT'));
       this.loadProject(Number(this.projectId));
     });
+  }
+
+  private setupOrderListeners(): void {
+    this.subscriptions.add(
+      this.formProject.get('orderIdFue')?.valueChanges.subscribe(orderId => {
+        this.updateOrderNumber('orderIdFueNumber', orderId);
+      })
+    );
+
+    this.subscriptions.add(
+      this.formProject.get('promoter')?.valueChanges.subscribe(promoterId => {
+        this.updatePromoterNumber('promoterNumber', promoterId);
+      })
+    );
+
+    this.subscriptions.add(
+      this.formProject.get('orderIdAdmin')?.valueChanges.subscribe(orderId => {
+        this.updateOrderNumber('orderIdAdminNumber', orderId);
+      })
+    );
+  }
+
+  private updateOrderNumber(controlName: 'orderIdFueNumber' | 'orderIdAdminNumber', orderId: number): void {
+
+    if (orderId) {
+      const order = this.orders().find(order => order.id === orderId);
+      const orderNumber = order?.orderNo?.toString() || '';
+
+      this.formProject.get(controlName)?.setValue(orderNumber, { emitEvent: false });
+    } else {
+      this.formProject.get(controlName)?.setValue('', { emitEvent: false });
+    }
+  }
+
+  private updatePromoterNumber(controlName: 'promoterNumber', promoterId: number): void {
+
+    if (promoterId) {
+      const promoter = this.promoters().find(promoter => promoter.id === promoterId);
+      const promoterNumber = promoter?.promoterNo?.toString() || '';
+
+      this.formProject.get(controlName)?.setValue(promoterNumber, { emitEvent: false });
+    } else {
+      this.formProject.get(controlName)?.setValue('', { emitEvent: false });
+    }
   }
 
   ngOnDestroy(): void {
@@ -93,10 +143,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private initializeForm(): void {
     this.formProject = this.fb.group({
-      projectName: ['', [Validators.required]],
-      title: [''],
+      projectLabel: ['', [Validators.required]],
+      projectName: [''],
       customer: [null],
-      orderFue: [null],
+      orderIdFue: [null],
+      orderIdFueNumber: [''],
       fundingProgram: [null],
       promoterNumber: [''],
       promoter: [null],
@@ -109,8 +160,13 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       shareResearch: [null, [Validators.min(0), Validators.max(100)]],
       hourlyRateMueu: [null, [Validators.min(0)]],
       productiveHoursPerYear: [null, [Validators.min(0)]],
-      orderAdmin: [null]
+      orderIdAdmin: [null],
+      orderIdAdminNumber: ['']
     });
+
+    this.formProject.get('orderIdAdminNumber')?.disable();
+    this.formProject.get('promoterNumber')?.disable();
+    this.formProject.get('orderIdFueNumber')?.disable();
   }
 
   private setupProjectSubscription(): void {
@@ -120,39 +176,45 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private loadProject(projectId: number): void {
     this.projectUtils.getProjectById(projectId).subscribe({
       next: (project) => {
+
         if (project) {
           this.currentProject = project;
           this.loadProjectFormData(project);
-          this.updateTitle(project.projectName || 'Unnamed Project');
+          this.updateTitle(project.projectLabel || 'Unnamed Project');
         }
       },
       error: (error) => {
-        console.error('Error loading project:', error);
         this.clearForm();
       }
     });
   }
 
   private loadProjectFormData(project: Project): void {
+    this.currentProject = project;
+
     this.formProject.patchValue({
+      projectLabel: project.projectLabel,
       projectName: project.projectName,
-      title: project.title,
       customer: project.customer?.id,
-      orderFue: project.orderFue,
+      orderIdFue: project.orderFue?.id,
+      orderIdFueNumber: project.orderFue?.orderNo,
       fundingProgram: project.fundingProgram?.id,
-      promoterNumber: project.promoter?.id,
+      promoterNumber: project.promoter?.promoterNo,
       promoter: project.promoter?.id,
       fundingLabel: project.fundingLabel,
-      authorizationDate: project.authorizationDate ? new Date(project.authorizationDate) : null,
-      startDate: project.startDate ? new Date(project.startDate) : null,
-      endDate: project.endDate ? new Date(project.endDate) : null,
+      authorizationDate: momentCreateDate(project.authorizationDate),
+      startDate: momentCreateDate(project.startDate),
+      endDate: momentCreateDate(project.endDate),
       fundingRate: project.fundingRate,
       stuffFlat: project.stuffFlat,
       shareResearch: project.shareResearch,
       hourlyRateMueu: project.hourlyRateMueu,
       productiveHoursPerYear: project.productiveHoursPerYear,
-      orderAdmin: project.orderAdmin
+      orderIdAdmin: project.orderAdmin?.id,
+      orderIdAdminNumber: project.orderAdmin?.orderNo
     });
+
+    this.formProject.markAsPristine();
   }
 
   private updateTitle(name: string): void {
@@ -177,8 +239,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
     if (this.projectId) {
       this.updateProject();
-    } else {
-      this.createProject();
     }
   }
 
@@ -197,22 +257,27 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     const updatedProject = this.buildUpdatedProject();
 
     this.projectUtils.updateProject(updatedProject).subscribe({
-      next: (savedProject) => this.handleSaveSuccess(savedProject),
-      error: (error) => this.handleSaveError(error)
+      next: (savedProject) => {
+        this.handleSaveSuccess(savedProject)
+      },
+      error: (error: Error) => {
+        this.handleOCCError(error);
+        this.handleSaveError(error)
+      }
     });
   }
 
-  private createProject(): void {
-    const newProject = this.buildNewProject();
-
-    this.projectUtils.createProject(newProject)
-      .pipe(finalize(() => this.isSaving = false))
-      .subscribe({
-        next: (createdProject) => this.handleCreateSuccess(createdProject),
-        error: (error) => this.handleSaveError(error)
-      });
+  private handleOCCError(error: any): void {
+    if (error instanceof OccError) {
+      this.showOCCErrorModal = true;
+      this.occErrorType = error.errorType;
+      if (this.occErrorType === "UPDATE_UPDATED") {
+        this.redirectRoute = "/projects/" + this.currentProject?.id;
+      } else if (this.occErrorType === "UPDATE_UNEXISTED") {
+        this.redirectRoute = "/projects";
+      }
+    }
   }
-
   private buildUpdatedProject(): Project {
     const formValue = this.formProject.value;
 
@@ -224,73 +289,46 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return buildProject(projectData);
   }
 
-  private buildNewProject(): Project {
-    const formValue = this.formProject.value;
-
-    const projectData = {
-      ...this.buildCommonProjectData(formValue)
-    };
-
-    return buildProject(projectData);
-  }
-
   private buildCommonProjectData(formValue: any): any {
     return {
+      projectLabel: formValue.projectLabel,
       projectName: formValue.projectName,
-      title: formValue.title,
-      customer: this.buildCustomerEntity(formValue.customer),
-      orderFue: formValue.orderFue,
-      fundingProgram: this.buildFundingProgramEntity(formValue.fundingProgram),
-      promoter: this.buildPromoterEntity(formValue.promoter),
+      customer: this.buildEntityWithIdVersion(formValue.customer),
+      orderFue: this.buildEntityWithIdVersion(formValue.orderIdFue),
+      orderAdmin: this.buildEntityWithIdVersion(formValue.orderIdAdmin),
+      fundingProgram: this.buildEntityWithIdVersion(formValue.fundingProgram),
+      promoter: this.buildEntityWithIdVersion(formValue.promoter),
       fundingLabel: formValue.fundingLabel,
-      authorizationDate: formValue.authorizationDate?.toISOString(),
-      startDate: formValue.startDate?.toISOString(),
-      endDate: formValue.endDate?.toISOString(),
+      authorizationDate: formValue.authorizationDate,
+      startDate: formValue.startDate,
+      endDate: formValue.endDate,
       fundingRate: formValue.fundingRate,
       stuffFlat: formValue.stuffFlat,
       shareResearch: formValue.shareResearch,
       hourlyRateMueu: formValue.hourlyRateMueu,
-      productiveHoursPerYear: formValue.productiveHoursPerYear,
-      orderAdmin: formValue.orderAdmin
+      productiveHoursPerYear: formValue.productiveHoursPerYear
     };
   }
 
-  private buildCustomerEntity(customerId?: number): Project['customer'] {
-    if (!customerId) return null;
-    const customer = this.customers().find(c => c.id === customerId);
-    return customer || { id: customerId } as Customer;
-  }
+  private buildEntityWithIdVersion(entityId?: number): any {
+    if (!entityId) return null;
 
-  private buildFundingProgramEntity(fundingProgramId?: number): Project['fundingProgram'] {
-    if (!fundingProgramId) return null;
-
-    const fundingProgram = this.fundingPrograms().find(f => f.id === fundingProgramId);
-    return fundingProgram || { id: fundingProgramId } as FundingProgram;
-  }
-
-  private buildPromoterEntity(promoterId?: number): Project['promoter'] {
-    if (!promoterId) return null;
-
-    const promoter = this.promoters().find(p => p.id === promoterId);
-    return promoter || { id: promoterId } as Promoter;
+    return {
+      id: entityId,
+      version: 0
+    };
   }
 
   private handleSaveSuccess(savedProject: Project): void {
     this.formProject.markAsPristine();
-    this.commonMessageService.showEditSucessfullMessage();
     this.currentProject = savedProject;
+    this.loadProject(this.projectId);
+    this.commonMessageService.showEditSucessfullMessage();
     this.isSaving = false;
-  }
-
-  private handleCreateSuccess(createdProject: Project): void {
-    this.isSaving = false;
-    this.commonMessageService.showCreatedSuccesfullMessage();
-    this.router.navigate(['../edit', createdProject.id], { relativeTo: this.activatedRoute });
   }
 
   private handleSaveError(error: any): void {
     this.isSaving = false;
-    console.error('Error saving project:', error);
     this.commonMessageService.showErrorEditMessage();
   }
 
@@ -308,13 +346,20 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.isLoadingProject = false;
         this.showDeleteProjectModal = false;
+        this.handleDeleteOCCError(error);
         this.handleErrorDelete(error);
       }
     });
   }
 
+  private handleDeleteOCCError(error: any) {
+    if (error instanceof OccError || error?.message.includes('404')) {
+      this.showOCCErrorModal = true;
+      this.occErrorType = 'DELETE_UNEXISTED';
+    }
+  }
+
   private handleErrorDelete(error: any): void {
-    console.error('Error deleting project:', error);
     this.commonMessageService.showErrorDeleteMessage();
   }
 }

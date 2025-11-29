@@ -66,6 +66,17 @@ export class OrderService {
     );
   }
 
+  getAllOrdersSortedByOrderLabel(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/sort-by-orderlabel`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch orders sorted');
+        console.error('Error fetching orders sorted:', err);
+        return of([]);
+      })
+    );
+  }
+
   /**
    * Retrieves a single order by ID
    * @param id Order identifier

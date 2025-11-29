@@ -17,15 +17,16 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TextareaModule } from 'primeng/textarea';
 
 //Components
 
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MasterDataModule } from '../master-data/master-data.module';
+import { SharedModule } from '../shared/shared.module';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { WorkPackagesComponent } from './components/project-details/work-packages/work-packages.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SharedModule } from 'primeng/api';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectModule } from 'primeng/select';
@@ -62,14 +63,15 @@ import { ProjectModalComponent } from './components/project-modal/project-modal.
         ProjectRoutingModule,
         ReactiveFormsModule,
         SelectModule,
+        SharedModule,
         TableModule,
+        TextareaModule,
         ToastModule,
         ToolbarModule,
         TranslateModule,
         TranslatePipe,
         TranslateDirective,
         ProgressSpinnerModule,
-        SharedModule,
         LayoutModule
     ]
 

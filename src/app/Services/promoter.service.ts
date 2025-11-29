@@ -141,6 +141,18 @@ export class PromoterService {
     );
   }
 
+  getAllPromotersSortedByPromoterName1(): Observable<Promoter[]> {
+    const url = `${this.apiUrl}/sort-by-promotername1`;
+    return this.http.get<Promoter[]>(url, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch promoters sorted by promoter name 1');
+        console.error('Error fetching promoters sorted by promoter name 1:', err);
+        return of([]);
+      })
+    );
+  }
+
   getPromoterById(id: number): Observable<Promoter | undefined> {
     return this.http.get<Promoter>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),

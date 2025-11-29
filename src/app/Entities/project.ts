@@ -22,7 +22,7 @@ export interface Project {
   orderFue: Order | null;
   promoter: Promoter | null;
   status: ProjectStatus | null;
-  
+
   approvalDate?: string;
   authorizationDate?: string;
   chance?: number;
@@ -49,12 +49,12 @@ export interface Project {
   maxHoursPerMonth?: number;
   maxHoursPerYear?: number;
   note?: string;
+  stuffFlat?: number;
   productiveHoursPerYear?: number;
   projectLabel?: string;
   projectName?: string;
   shareResearch?: number;
   startApproval?: string;
   startDate?: string;
-  stuffFlat?: number;
-  title?: string; 
+  title?: string;
 }

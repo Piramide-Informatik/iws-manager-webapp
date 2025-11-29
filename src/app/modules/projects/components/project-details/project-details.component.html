@@ -5,23 +5,23 @@
                 <div class="grid justify-content-center">
                     <!-- Projekt -->
                     <div class="field">
-                        <label for="projectName"> {{ "PROJECTS.FORM.PROJECT" | translate }} </label>
-                        <input type="text" id="projectName" pInputText formControlName="projectName"
-                            [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
+                        <label for="projectLabel"> {{ "PROJECTS.FORM.PROJECT" | translate }} </label>
+                        <input type="text" id="projectLabel" pInputText formControlName="projectLabel"
+                            [attr.invalid]="(formProject.get('projectLabel')?.invalid && formProject.get('projectLabel')?.dirty)" />
                     </div>
 
                     <!-- Longtext -->
                     <div class="field">
-                        <label for="title"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
-                        <textarea id="title" pInputTextarea formControlName="title" rows="3"
-                            style="width: 100%;"></textarea>
+                        <label for="projectName"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
+                        <input id="projectName" pInputText formControlName="projectName"
+                            [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
                     </div>
 
                     <!-- Kunde -->
                     <div class="field">
                         <label for="customer"> {{ "PROJECTS.FORM.CUSTOMER" | translate }}</label>
                         <p-select formControlName="customer" id="customer" [options]="customers()"
-                            optionLabel="companyText1" optionValue="id" [showClear]="true">
+                            optionLabel="customername1" optionValue="id" [showClear]="true">
                             <ng-template let-customer pTemplate="selectedItem">
                                 <div class="flex align-items-center gap-2" *ngIf="customer">
                                     <span>{{ customer.customername1 }}</span>
@@ -37,9 +37,13 @@
 
                     <!-- FuE-Auftrag / Nr. -->
                     <div class="field">
-                        <label for="orderFue"> {{ "PROJECTS.FORM.R_D_ORDER_NUMBER" | translate }}</label>
-                        <p-inputnumber inputId="orderFue" [useGrouping]="false" formControlName="orderFue"
-                            [inputStyle]="{ 'text-align': 'right' }" />
+                        <label for="orderIdFue"> {{ "PROJECTS.FORM.R_D_ORDER_NUMBER" | translate }}</label>
+                        <div class="two-field">
+                            <p-select formControlName="orderIdFue" id="orderIdFue" [options]="orders()"
+                                optionLabel="orderLabel" optionValue="id" />
+                            <input pInputText type="text" id="orderIdFueNumber" formControlName="orderIdFueNumber"
+                                autocomplete="off" readonly [disabled]="true" />
+                        </div>
                     </div>
 
                     <!-- Förderprogramm -->
@@ -138,9 +142,13 @@
 
                     <!-- Verwaltung-Auftrag / Nr. -->
                     <div class="field">
-                        <label for="orderAdmin"> {{ "PROJECTS.FORM.ADMIN_ORDER_NUMBER" | translate }}</label>
-                        <p-inputnumber inputId="orderAdmin" [useGrouping]="false" formControlName="orderAdmin"
-                            [inputStyle]="{ 'text-align': 'right' }" />
+                        <label for="orderIdAdmin"> {{ "PROJECTS.FORM.ADMIN_ORDER_NUMBER" | translate }}</label>
+                        <div class="two-field">
+                            <p-select formControlName="orderIdAdmin" id="orderIdAdmin" [options]="orders()"
+                                optionLabel="orderLabel" optionValue="id" />
+                            <input pInputText formControlName="orderIdAdminNumber" type="text" id="orderIdAdminNumber"
+                                autocomplete="off" readonly [disabled]="true" />
+                        </div>
                     </div>
                 </div>
             </form>
@@ -179,5 +187,9 @@
         </div>
     </div>
 </p-dialog>
+
+<app-occ-error-modal *ngIf="showOCCErrorModal" [errorType]="occErrorType" [redirectRoute]="redirectRoute"
+    (close)="showOCCErrorModal = false">
+</app-occ-error-modal>
 
 <p-toast></p-toast>
