@@ -86,6 +86,14 @@ export class PromoterUtils {
     return this.promoterService.getAllPromotersSortedByPromoterName1();
   }
 
+  getAllPromotersSortedByPromoterNo(): Observable<Promoter[]> {
+    return this.promoterService.getAllPromoters().pipe(
+      map(promoters => 
+        promoters.sort((a, b) => a.promoterNo!.localeCompare(b.promoterNo!))
+      )
+    );
+  }
+
   /**
    * Refreshes customers data
    * @returns Observable that completes when refresh is done
