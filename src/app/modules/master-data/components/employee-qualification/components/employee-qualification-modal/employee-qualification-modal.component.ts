@@ -6,6 +6,7 @@ import { Subscription, Observable } from 'rxjs';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
 import { EmployeeCategoryStateService } from '../../utils/employee-category-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-employee-qualification-modal',
@@ -16,6 +17,7 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, OnChanges {
   private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
   private readonly employeeCategoryStateService = inject(EmployeeCategoryStateService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   private readonly subscriptions = new Subscription();
   public showOCCErrorModalEmployeeCategory = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
@@ -104,7 +106,7 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
   }
 
   private handleDeleteError(error: any): void {
-    if (error.error instanceof OccError  || error?.message.includes('404')) {
+    if (error.error instanceof OccError || error?.message.includes('404')) {
       this.showOCCErrorModalEmployeeCategory = true;
       this.occErrorType = 'DELETE_UNEXISTED';
     }
@@ -118,13 +120,24 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
 
   onDeleteConfirm(): void {
     if (!this.employeeCategoryToDelete) return;
+    this.employeeCategoryUtils.deleteEmployeeCategory(this.employeeCategoryToDelete).subscribe({
+      next: () => {
+        this.employeeCategoryStateService.clearEmployeeCategory();
+        this.commonMessageService.showDeleteSucessfullMessage();
+        this.closeAndReset();
+      },
+      error: (error) => {
+        this.handleDeleteError(error);
+        this.handleEntityRelatedError(error);
+      }
+    });
+  }
 
-    this.executeOperation(
-      this.employeeCategoryUtils.deleteEmployeeCategory(this.employeeCategoryToDelete),
-      'MESSAGE.DELETE_SUCCESS',
-      'MESSAGE.DELETE_FAILED',
-      'MESSAGE.DELETE_ERROR_IN_USE'
-    );
+  private handleEntityRelatedError(error: any): void {
+    if (error.error?.message?.includes('a foreign key constraint fails')) {
+      this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(error.error.message);
+      this.closeAndReset();
+    }
   }
 
   onSubmit(): void {
