@@ -21,7 +21,7 @@
                     <div class="field">
                         <label for="customer"> {{ "PROJECTS.FORM.CUSTOMER" | translate }}</label>
                         <p-select formControlName="customer" id="customer" [options]="customers()"
-                            optionLabel="customername1" optionValue="id" [showClear]="true">
+                            optionLabel="customername1" optionValue="id" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate">
                             <ng-template let-customer pTemplate="selectedItem">
                                 <div class="flex align-items-center gap-2" *ngIf="customer">
                                     <span>{{ customer.customername1 }}</span>
@@ -39,8 +39,12 @@
                     <div class="field">
                         <label for="orderIdFue"> {{ "PROJECTS.FORM.R_D_ORDER_NUMBER" | translate }}</label>
                         <div class="two-field">
-                            <p-select formControlName="orderIdFue" id="orderIdFue" [options]="orders()"
-                                optionLabel="orderLabel" optionValue="id" />
+                            <p-select formControlName="orderIdFue" inputId="orderIdFue" 
+                                [options]="orders()"
+                                optionLabel="orderLabel" 
+                                optionValue="id" 
+                                showClear
+                                [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"/>
                             <input pInputText type="text" id="orderIdFueNumber" formControlName="orderIdFueNumber"
                                 autocomplete="off" readonly [disabled]="true" />
                         </div>
@@ -49,8 +53,8 @@
                     <!-- Förderprogramm -->
                     <div class="field">
                         <label for="fundingProgram"> {{ "PROJECTS.FORM.FUNDING_PROGRAM" | translate }}</label>
-                        <p-select formControlName="fundingProgram" id="fundingProgram" [options]="fundingPrograms()"
-                            optionLabel="name" optionValue="id" />
+                        <p-select formControlName="fundingProgram" inputId="fundingProgram" [options]="fundingPrograms()"
+                            optionLabel="name" optionValue="id" showClear [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"/>
                     </div>
 
                     <!-- Projektträger-Nr. -->
@@ -62,8 +66,8 @@
                     <!-- Projektträger -->
                     <div class="field">
                         <label for="promoter"> {{ "PROJECTS.FORM.PROMOTER" | translate }}</label>
-                        <p-select formControlName="promoter" id="promoter" [options]="promoters()"
-                            optionLabel="promoterName1" optionValue="id" />
+                        <p-select formControlName="promoter" inputId="promoter" [options]="promoters()"
+                            optionLabel="promoterName1" optionValue="id" showClear [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"/>
                     </div>
 
                     <!-- Förderkennzeichen -->
@@ -144,8 +148,8 @@
                     <div class="field">
                         <label for="orderIdAdmin"> {{ "PROJECTS.FORM.ADMIN_ORDER_NUMBER" | translate }}</label>
                         <div class="two-field">
-                            <p-select formControlName="orderIdAdmin" id="orderIdAdmin" [options]="orders()"
-                                optionLabel="orderLabel" optionValue="id" />
+                            <p-select formControlName="orderIdAdmin" inputId="orderIdAdmin" [options]="orders()"
+                                optionLabel="orderLabel" optionValue="id" showClear [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"/>
                             <input pInputText formControlName="orderIdAdminNumber" type="text" id="orderIdAdminNumber"
                                 autocomplete="off" readonly [disabled]="true" />
                         </div>
