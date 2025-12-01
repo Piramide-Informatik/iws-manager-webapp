@@ -87,11 +87,7 @@ export class PromoterUtils {
   }
 
   getAllPromotersSortedByPromoterNo(): Observable<Promoter[]> {
-    return this.promoterService.getAllPromoters().pipe(
-      map(promoters => 
-        promoters.sort((a, b) => a.promoterNo!.localeCompare(b.promoterNo!))
-      )
-    );
+    return this.promoterService.getAllPromotersSortedByPromoterNo();
   }
 
   /**
