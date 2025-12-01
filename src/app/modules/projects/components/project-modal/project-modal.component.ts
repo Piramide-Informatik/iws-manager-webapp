@@ -45,8 +45,8 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
   // Signals
   public customers = toSignal(this.customerUtils.getAllCustomers(), { initialValue: [] });
   public fundingPrograms = toSignal(this.fundingProgramUtils.getAllFundingPrograms(), { initialValue: [] });
-  public promoters = toSignal(this.promoterUtils.getAllPromoters(), { initialValue: [] });
-  public orders = toSignal(this.orderUtils.getAllOrders(), { initialValue: [] });
+  public promoters = toSignal(this.promoterUtils.getAllPromotersSortedByPromoterNo(), { initialValue: [] });
+  public orders = toSignal(this.orderUtils.getAllOrdersSortedByOrderLabel(), { initialValue: [] });
 
   constructor() {
     this.createMapEffect(this.customers, this.customersMap);
