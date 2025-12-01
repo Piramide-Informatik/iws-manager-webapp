@@ -73,32 +73,7 @@ export class ProjectUtils {
   * @returns Observable that completes when the deletion is done
   */
   deleteProject(id: number): Observable<void> {
-    const checks = [
-      this.debtUtils.getAllReceivableByProjectId(id).pipe(
-        take(1),
-        map(debts => ({
-          valid: debts.length === 0,
-          error: 'Cannot be deleted because have associated receivables'
-        }))
-      ),
-      this.orderUtils.getAllOrdersByProjectId(id).pipe(
-        take(1),
-        map(orders => ({
-          valid: orders.length === 0,
-          error: 'Cannot be deleted because have associated orders'
-        }))
-      )
-    ];
-    return forkJoin(checks).pipe(
-      switchMap(results => {
-        const isThereAssociatedEntities = results.find(r => !r.valid);
-        if (isThereAssociatedEntities) {
-          return throwError(() => new Error(isThereAssociatedEntities.error));
-        }
-
-        return this.projectService.deleteProject(id)
-      })
-    )
+    return this.projectService.deleteProject(id)
   }
 
   /**

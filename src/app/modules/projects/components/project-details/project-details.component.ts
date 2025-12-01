@@ -22,6 +22,7 @@ import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-uti
 import { Order } from '../../../../Entities/order';
 import { momentCreateDate } from '../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-project-details',
@@ -343,11 +344,18 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.commonMessageService.showDeleteSucessfullMessage();
         this.router.navigate(['/projects']);
       },
-      error: (error) => {
+      error: (errorEditDelete) => {
         this.isLoadingProject = false;
         this.showDeleteProjectModal = false;
-        this.handleDeleteOCCError(error);
-        this.handleErrorDelete(error);
+        if (errorEditDelete instanceof OccError || errorEditDelete?.message?.includes('404') || errorEditDelete?.errorType === 'DELETE_UNEXISTED') {
+          this.showOCCErrorModal = true;
+          this.occErrorType = 'DELETE_UNEXISTED';
+          this.commonMessageService.showErrorDeleteMessage();
+        } else if (errorEditDelete instanceof HttpErrorResponse && errorEditDelete.status === 500 && errorEditDelete.error.message.includes('foreign key constraint')){
+          this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorEditDelete.error.message);
+        } else {
+          this.commonMessageService.showErrorDeleteMessage();
+        }
       }
     });
   }
