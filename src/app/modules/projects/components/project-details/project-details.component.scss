@@ -49,6 +49,10 @@ $input-width: 254px;
       width: 70%;
     }
   }
+
+  #orderIdFueNumber, #orderIdAdminNumber {
+    text-align: right;
+  }
 }
 
 .align-right {
