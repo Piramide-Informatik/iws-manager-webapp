@@ -1,0 +1,5 @@
+@use 'variables' as *;
+
+:host ::ng-deep  .account-year {
+  width: 50% !important;
+}
