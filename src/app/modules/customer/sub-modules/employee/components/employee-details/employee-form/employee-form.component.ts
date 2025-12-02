@@ -254,7 +254,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     }
 
     const numericId = Number(id);
-    if (isNaN(numericId)) {
+    if (Number.isNaN(numericId)) {
       return null;
     }
 
