@@ -322,10 +322,11 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           this.currentEmployee = editedEmployee;
 
           const index = this.customerEmployees.findIndex(e => e.id === editedEmployee.id);
-          if (index !== -1) {
-            this.customerEmployees[index] = editedEmployee;
-          } else {
+          if (index === -1) {
             console.warn(`Empleado con id ${editedEmployee.id} no encontrado en la lista local.`);
+            this.customerEmployees.push(editedEmployee);
+          } else {
+            this.customerEmployees[index] = editedEmployee;
           }
 
         },
