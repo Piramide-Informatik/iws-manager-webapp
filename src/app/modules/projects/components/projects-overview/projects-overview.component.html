@@ -41,3 +41,6 @@
   (createProject)="createProject($event)"
  ></app-project-modal>
 </p-dialog>
+<app-occ-error-modal *ngIf="showOCCErrorDeleteModal" [errorType]="occErrorDeleteType" [redirectRoute]="redirectCreateRoute"
+    (close)="showOCCErrorDeleteModal = false">
+</app-occ-error-modal>

@@ -180,7 +180,7 @@
 <!-- Modal de confirmación para eliminar -->
 <p-dialog header="Projekt löschen" [modal]="true" [(visible)]="showDeleteProjectModal">
     <div class="confirmation-content mb-2 mt-4">
-        <p class="mb-4">Möchten Sie das Projekt "{{ formProject.get('projectName')?.value }}" wirklich löschen?</p>
+        <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: formProject.get('projectName')?.value }"></p>
 
         <div class="flex justify-content-center gap-2">
             <p-button type="button" class="delete" size="small" label="Löschen" icon="pi pi-trash" iconPos="left"
