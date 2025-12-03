@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="section-project">
+        <label>{{ 'PROJECTS.FORM.PROJECT' | translate }}</label>
+        <div class="inputs-project">
+            <input pInputText type="text" id="projectLabel" disabled>
+            <input pInputText type="text" id="projectName" disabled>
+        </div>
+    </div>
+
+    <master-data-genaral-table
+        [tableId]="tableKey"
+        [tableValues]="projectEmployees"
+        [columns]="selectedColumns"
+        [userPreferences]="userProjectEmployeesPreferences"
+        [dataKeys]="dataKeys"
+        nameNewButton="EMPLOYEE.LABELS.NEW_EMPLOYEE"
+        [isFileUploadButtonVisible]="true"
+        [customerUploadButtonText]="'BUTTONS.IMPORT_EMPLOYEES' | translate"
+        [isAdditionalButtonsVisible]="true"
+        additionalButtonText="BUTTONS.ASSIGN_MORE_EMPLOYEES"
+        (onColumnChanges)="onUserProjectEmployeePreferencesChanges($event)"
+    ></master-data-genaral-table>
+</div>

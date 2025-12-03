@@ -168,7 +168,9 @@
     "IMPORT_INVOICES": "Import Invoices",
     "GENERATE_PDF_ORDER": "Generate PDF",
     "IMPORT_EMPLOYEE_CONTRACTS": "Import Employee Contracts",
-    "IMPORT": "Import"
+    "IMPORT": "Import",
+    "IMPORT_EMPLOYEES": "Import Employees",
+    "ASSIGN_MORE_EMPLOYEES": "Assign More Employees"
   },
   "MESSAGE": {
     "SUCCESS": "SUCCESS",
@@ -1428,6 +1430,11 @@
     "MODAL": {
       "TITLE_CREATE": "New Contract Status",
       "TITLE_DELETE": "Delete Contract Status"
+    }
+  },
+  "PROJECT_EMPLOYEES": {
+    "TABLE": {
+      "FZ_ABBREVIATION_R&H_ACTIVITY": "FZ: Abbreviation R&H Activity"
     }
   },
   "FILTER": {

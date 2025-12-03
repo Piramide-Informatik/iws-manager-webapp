@@ -18,7 +18,7 @@ export class PageProjectComponent implements OnInit {
     { labelKey: 'MENU_PROJECT.PROJECT', route: 'project-details'},
     { labelKey: 'MENU_PROJECT.ACCOUNTING_YEARS', route: 'accounting-years' },
     { labelKey: 'MENU_PROJECT.BLOCKS', route: 'blocks' },
-    { labelKey: 'MENU_PROJECT.EMPLOYEES', route: 'employees' },
+    { labelKey: 'MENU_PROJECT.EMPLOYEES', route: 'employees-project' },
     { labelKey: 'MENU_PROJECT.SUBCONTRACTS', route: 'subcontracts' },
     { labelKey: 'MENU_PROJECT.TIMESHEET', route: 'timesheet' },
   ];

@@ -1,0 +1,24 @@
+.section-project {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 0 1rem 0;
+
+    .inputs-project {
+        display: flex;
+        gap: 1rem;
+
+        #projectLabel {
+            width: 7rem;
+            min-width: 2rem;
+            max-width: 10rem;
+        }
+    
+        #projectName {
+            width: 40rem;
+            min-width: 2rem;
+            max-width: 50rem;
+        }
+    }
+
+}

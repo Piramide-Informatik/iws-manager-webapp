@@ -11,6 +11,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { ProjectService } from '../../../../Services/project.service';
 import { Project } from '../../../../Entities/project';
+import { ProjectStateService } from '../../utils/project-state.service';
 
 @Component({
   selector: 'app-projects-overview',
@@ -20,7 +21,7 @@ import { Project } from '../../../../Entities/project';
   styleUrl: './projects-overview.component.scss'
 })
 export class ProjectsOverviewComponent implements OnInit, OnDestroy {
-
+  private readonly projectStateService = inject(ProjectStateService);
   private readonly projectUtils = inject(ProjectUtils);
   private readonly projectService = inject(ProjectService);
   private readonly commonMessageService = inject(CommonMessagesService);
@@ -138,7 +139,10 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.cols = [
       {
         field: 'projectLabel',
-        routerLink: (row: any) => `./project-details/${row.id}`,
+        routerLink: (row: any) => {
+         this.projectStateService.setProjectToEdit(row);
+         return `./project-details/${row.id}`
+        },
         header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL')),
         customClasses: ['fix-td-width-project-label']
       },
@@ -164,6 +168,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   editProject(project: Project) {
+    this.projectStateService.setProjectToEdit(project);
     this.router.navigate(['/projects/project-details', project.id]);
   }
 

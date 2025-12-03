@@ -163,6 +163,11 @@
   <p-toolbar>
     <ng-template #start>
       <div class="flex gap-2">
+        @if(isAdditionalButtonsVisible) {
+        <p-button [label]="(additionalButtonText || 'BUTTONS.NEW') | translate" icon="pi pi-plus" [disabled]="disableButtons"
+          (click)="additionalButtonAction()" (keydown.enter)="additionalButtonAction()" />
+        }
+
         <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus" [disabled]="disableButtons || enableCreateButton"
           (click)="createRegister('new register')" (keydown.enter)="createRegister('new register')" />
 
