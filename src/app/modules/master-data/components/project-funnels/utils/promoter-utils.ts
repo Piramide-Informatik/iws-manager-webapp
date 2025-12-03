@@ -86,6 +86,10 @@ export class PromoterUtils {
     return this.promoterService.getAllPromotersSortedByPromoterName1();
   }
 
+  getAllPromotersSortedByPromoterNo(): Observable<Promoter[]> {
+    return this.promoterService.getAllPromotersSortedByPromoterNo();
+  }
+
   /**
    * Refreshes customers data
    * @returns Observable that completes when refresh is done

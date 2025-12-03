@@ -18,12 +18,14 @@ $input-width: 254px;
   .p-select {
     width: 100%;
     max-width: $input-width;
+    min-width: 10%;
   }
 
   input,
   p-inputnumber {
     width: 100%;
     max-width: $input-width;
+    min-width: 10%;
   }
 
   .datepicker-container {
@@ -37,6 +39,7 @@ $input-width: 254px;
     width: 100%;
     max-width: $input-width;
     gap: 0.5rem;
+    min-width: 10%;
 
     input {
       width: 30%;
@@ -46,10 +49,18 @@ $input-width: 254px;
       width: 70%;
     }
   }
+
+  #orderIdFueNumber, #orderIdAdminNumber {
+    text-align: right;
+  }
 }
 
 .align-right {
   text-align: right;
+}
+
+::ng-deep .p-inputnumber-input {
+  min-width: 10%;
 }
 
 // Input inválido con borde rojo
