@@ -37,6 +37,7 @@ import { PageProjectComponent } from './components/page-project/page-project.com
 import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
 import { ProjectModalComponent } from './components/project-modal/project-modal.component';
 import { EmployeeProjectComponent } from './components/employee-project/employee-project.component';
+import { EmployeeDetailModalComponent } from './components/employee-project/components/employee-detail-modal/employee-detail-modal.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { EmployeeProjectComponent } from './components/employee-project/employee
         PageProjectComponent,
         ProjectsOverviewComponent,
         ProjectModalComponent,
-        EmployeeProjectComponent
+        EmployeeProjectComponent,
+        EmployeeDetailModalComponent
     ],
     imports: [
         ButtonModule,

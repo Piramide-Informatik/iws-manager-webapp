@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProjectEmployee } from '../../../../Entities/projectEmployee';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { Column } from '../../../../Entities/column';
@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '../../../../Entities/project';
 import { ProjectStateService } from '../../utils/project-state.service';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
+import { EmployeeDetailModalComponent } from './components/employee-detail-modal/employee-detail-modal.component';
 
 @Component({
   selector: 'app-employee-project',
@@ -23,6 +24,12 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  visibleModal: boolean = false;
+  modalType: 'create' | 'edit' | 'delete' = 'create';
+  selectedEmployeeDetails: ProjectEmployee | null = null;
+  isCreateButtonEnable = true;
+
+   @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
 
   projectEmployees: ProjectEmployee[] = [];
   currentProject!: Project | null;
@@ -96,5 +103,36 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.langSubscription.unsubscribe();
     this.subscriptions.unsubscribe();
+  }
+  onModalVisibilityChange(visible: boolean): void {
+    this.visibleModal = visible;
+    if (!visible) {
+      this.selectedEmployeeDetails = null;
+    }
+  }
+
+  onCloseModal() {
+    if (this.employeeDetailModalDialog) {
+    this.employeeDetailModalDialog.onCancel();
+    }
+    this.visibleModal = false;
+    this.selectedEmployeeDetails = null;
+  }
+  
+  onNewEmployeeClick(): void {
+    this.modalType = 'create';
+    this.visibleModal = true;
+    this.selectedEmployeeDetails = null;
+  }
+
+  handleTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
+    this.modalType = event.type;
+    if (event.type === 'edit') {
+      //code to edit
+    }
+    if (event.type === 'delete') {
+      //code to delete
+    }
+    this.visibleModal = true;
   }
 }
