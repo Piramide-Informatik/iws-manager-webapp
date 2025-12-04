@@ -3,7 +3,7 @@ import { ProjectEmployee } from '../../../../Entities/projectEmployee';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { Column } from '../../../../Entities/column';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '../../../../Entities/project';
@@ -34,7 +34,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   dataKeys = ['employeeno', 'firstname', 'lastname', 'hourlyRate', 'qualificationkmui'];
   userProjectEmployeesPreferences: UserPreference = {};
   private langSubscription!: Subscription;
-  private subscriptions: Subscription = new Subscription();
+  private readonly subscriptions: Subscription = new Subscription();
 
   ngOnInit(): void {
     const routeSub = this.route.params.subscribe(params => {
