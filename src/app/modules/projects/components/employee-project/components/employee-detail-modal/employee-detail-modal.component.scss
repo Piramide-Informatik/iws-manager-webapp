@@ -1,0 +1,28 @@
+.create-form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  label {
+    width: 220px;     
+    font-weight: 600;
+  }
+
+ 
+  p-select,
+  p-inputnumber,
+  input[pInputText] {
+    width: 300px;     
+  }
+
+  
+  &.wide input[pInputText] {
+    width: 450px;     
+  }
+}
+
+
+.flex.justify-content-center.gap-2.mt-4 {
+  margin-top: 2rem;
+}

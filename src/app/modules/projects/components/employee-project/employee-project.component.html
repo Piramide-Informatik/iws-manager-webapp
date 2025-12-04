@@ -19,5 +19,24 @@
         [isAdditionalButtonsVisible]="true"
         additionalButtonText="BUTTONS.ASSIGN_MORE_EMPLOYEES"
         (onColumnChanges)="onUserProjectEmployeePreferencesChanges($event)"
+        (onCreateRegister)="handleTableEvents({ type: 'create' })"
+        (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
+        (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+        [enableCreateButton]="!isCreateButtonEnable"
     ></master-data-genaral-table>
+    <p-dialog 
+        [header]="modalType === 'create' 
+          ? ('EMPLOYEE.LABELS.PROJECTEMPLOYEE' | translate) 
+          : ('IWS_STAFF.DELETE.CONFIRMATION' | translate)" 
+        [modal]="true" 
+        [(visible)]="visibleModal"
+        (onHide)="onCloseModal()"
+      >
+        <app-employee-detail-modal
+          [modalType]="modalType"
+          [visibleModal]="visibleModal"
+          (isVisibleModal)="onModalVisibilityChange($event)"
+          #employeeDetailModal
+        ></app-employee-detail-modal>
+      </p-dialog>
 </div>
