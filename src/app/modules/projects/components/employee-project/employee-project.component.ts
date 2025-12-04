@@ -3,11 +3,12 @@ import { ProjectEmployee } from '../../../../Entities/projectEmployee';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { Column } from '../../../../Entities/column';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '../../../../Entities/project';
 import { ProjectStateService } from '../../utils/project-state.service';
+import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 
 @Component({
   selector: 'app-employee-project',
@@ -17,13 +18,14 @@ import { ProjectStateService } from '../../utils/project-state.service';
 })
 export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
+  private readonly projectUtils = inject(ProjectUtils);
   private readonly projectStateService = inject(ProjectStateService);
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   projectEmployees: ProjectEmployee[] = [];
-  currentProject!: Project;
+  currentProject!: Project | null;
   currentProjectId!: number;
   
   public cols!: Column[];
@@ -32,8 +34,15 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   dataKeys = ['employeeno', 'firstname', 'lastname', 'hourlyRate', 'qualificationkmui'];
   userProjectEmployeesPreferences: UserPreference = {};
   private langSubscription!: Subscription;
+  private subscriptions: Subscription = new Subscription();
 
   ngOnInit(): void {
+    const routeSub = this.route.params.subscribe(params => {
+      this.currentProjectId = Number(params['idProject']);
+      this.loadProject();
+    });
+    this.subscriptions.add(routeSub);
+    
     this.loadColHeaders();
     this.selectedColumns = this.cols;
 
@@ -44,8 +53,22 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       this.userProjectEmployeesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
-    this.currentProjectId = Number(this.route.snapshot.params['idProject']);
+  }
 
+  private loadProject(): void {
+    const projectSub = this.projectStateService.currentProject$.subscribe(project => {
+      if(project && project.id === this.currentProjectId) {
+        this.currentProject = project;
+      }else{
+        this.projectUtils.getProjectById(this.currentProjectId).subscribe(proj => {
+          if(proj){
+            this.currentProject = proj;
+            this.projectStateService.setProjectToEdit(proj);
+          }
+        })
+      }
+    });
+    this.subscriptions.add(projectSub);
   }
 
   loadColHeaders(): void {
@@ -72,5 +95,6 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.langSubscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 }

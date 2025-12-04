@@ -2,8 +2,8 @@
     <div class="section-project">
         <label>{{ 'PROJECTS.FORM.PROJECT' | translate }}</label>
         <div class="inputs-project">
-            <input pInputText type="text" id="projectLabel" disabled>
-            <input pInputText type="text" id="projectName" disabled>
+            <input pInputText type="text" id="projectLabel" [value]="currentProject?.projectLabel || ''" disabled>
+            <input pInputText type="text" id="projectName" [value]="currentProject?.projectName ||  ''" disabled>
         </div>
     </div>
 

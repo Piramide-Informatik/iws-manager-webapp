@@ -139,10 +139,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.cols = [
       {
         field: 'projectLabel',
-        routerLink: (row: any) => {
-         this.projectStateService.setProjectToEdit(row);
-         return `./project-details/${row.id}`
-        },
+        routerLink: (row: any) => `./project-details/${row.id}`,
         header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_LABEL')),
         customClasses: ['fix-td-width-project-label']
       },
@@ -168,6 +165,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   editProject(project: Project) {
+    console.log('a guardar proj', project)
     this.projectStateService.setProjectToEdit(project);
     this.router.navigate(['/projects/project-details', project.id]);
   }
