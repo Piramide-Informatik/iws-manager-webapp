@@ -12,6 +12,8 @@ import { CommonMessagesService } from '../../../../Services/common-messages.serv
 import { ProjectService } from '../../../../Services/project.service';
 import { Project } from '../../../../Entities/project';
 import { ProjectStateService } from '../../utils/project-state.service';
+import { OccError } from '../../../shared/utils/occ-error';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-projects-overview',
@@ -33,6 +35,9 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   public selectedProjectTableColumns!: Column[];
 
   public selectedFilterColumns!: Column[];
+  showOCCErrorDeleteModal = false;
+  occErrorDeleteType: any = 'DELETE_UNEXISTED';
+  public redirectCreateRoute = "";
 
   readonly projects = computed(() => {
     return this.projectService.projects().map(curr => ({
@@ -112,11 +117,14 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
         },
         error: (errorDelete) => {
           this.isProjectTableLoading = false;
-          if (errorDelete.message.includes('have associated receivables')
-            || errorDelete.message.includes('have associated orders')) {
-            this.commonMessage.showErrorDeleteMessageContainsOtherEntities();
+          if (errorDelete instanceof OccError || errorDelete?.message?.includes('404') || errorDelete?.errorType === 'DELETE_UNEXISTED') {
+            this.showOCCErrorDeleteModal = true;
+            this.occErrorDeleteType = 'DELETE_UNEXISTED';
+            this.commonMessageService.showErrorDeleteMessage();
+          } else if (errorDelete instanceof HttpErrorResponse && errorDelete.status === 500 && errorDelete.error.message.includes('foreign key constraint')){
+            this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorDelete.error.message);
           } else {
-            this.commonMessage.showErrorDeleteMessage();
+            this.commonMessageService.showErrorDeleteMessage();
           }
           this.visibleProjectTableModal = false;
           this.selectedProjectTableItem = undefined;
