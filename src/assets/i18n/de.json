@@ -168,7 +168,9 @@
     "IMPORT_INVOICES": "Rechnungen importieren",
     "GENERATE_PDF_ORDER": "Auftrags-PDF erzeugen",
     "IMPORT_EMPLOYEE_CONTRACTS": "Arbeitsverträge importieren",
-    "IMPORT": "Importieren"
+    "IMPORT": "Importieren",
+    "IMPORT_EMPLOYEES": "Mitarbeiter importieren",
+    "ASSIGN_MORE_EMPLOYEES": "Weitere Mitarbeiter zuordnen"
   },
   "MESSAGE": {
     "SUCCESS": "ERFOLG",
@@ -1432,6 +1434,11 @@
     "MODAL": {
       "TITLE_CREATE": "Neuer Vertragsstatus",
       "TITLE_DELETE": "Vertragsstatus löschen"
+    }
+  },
+  "PROJECT_EMPLOYEES": {
+    "TABLE": {
+      "FZ_ABBREVIATION_R&H_ACTIVITY": "FZ: Kurzbezeichnung FuE-Tätigkeit"
     }
   },
   "FILTER": {

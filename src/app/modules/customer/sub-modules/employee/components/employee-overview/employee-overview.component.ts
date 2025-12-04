@@ -15,7 +15,6 @@ import { Column } from '../../../../../../Entities/column';
 import { Title } from '@angular/platform-browser';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
-import { QualificationFZUtils } from '../../../../../master-data/components/employee-qualification/utils/qualificationfz-util';
 import { momentSafeCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { EmployeeCategoryUtils } from '../../../../../master-data/components/employee-qualification/utils/employee-category-utils';
 
@@ -29,7 +28,6 @@ export class EmployeeOverviewComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly titleService = inject(Title);
-  private readonly qualificationFZUtils = inject(QualificationFZUtils);
   private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
   public customer!: Customer | undefined;
   employees: Employee[] = [];

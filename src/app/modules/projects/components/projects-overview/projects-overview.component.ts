@@ -11,6 +11,7 @@ import { UserPreferenceService } from '../../../../Services/user-preferences.ser
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { ProjectService } from '../../../../Services/project.service';
 import { Project } from '../../../../Entities/project';
+import { ProjectStateService } from '../../utils/project-state.service';
 import { OccError } from '../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -22,7 +23,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './projects-overview.component.scss'
 })
 export class ProjectsOverviewComponent implements OnInit, OnDestroy {
-
+  private readonly projectStateService = inject(ProjectStateService);
   private readonly projectUtils = inject(ProjectUtils);
   private readonly projectService = inject(ProjectService);
   private readonly commonMessageService = inject(CommonMessagesService);
@@ -172,6 +173,8 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   editProject(project: Project) {
+    console.log('a guardar proj', project)
+    this.projectStateService.setProjectToEdit(project);
     this.router.navigate(['/projects/project-details', project.id]);
   }
 

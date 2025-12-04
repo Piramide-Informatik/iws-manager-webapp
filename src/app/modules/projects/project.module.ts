@@ -36,6 +36,7 @@ import { LayoutModule } from '../../core/layout/layout.module';
 import { PageProjectComponent } from './components/page-project/page-project.component';
 import { ProjectsOverviewComponent } from './components/projects-overview/projects-overview.component';
 import { ProjectModalComponent } from './components/project-modal/project-modal.component';
+import { EmployeeProjectComponent } from './components/employee-project/employee-project.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { ProjectModalComponent } from './components/project-modal/project-modal.
         WorkPackagesComponent,
         PageProjectComponent,
         ProjectsOverviewComponent,
-        ProjectModalComponent
+        ProjectModalComponent,
+        EmployeeProjectComponent
     ],
     imports: [
         ButtonModule,

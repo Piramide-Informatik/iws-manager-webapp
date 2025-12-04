@@ -168,7 +168,9 @@
     "IMPORT_INVOICES": "Importar Facturas",
     "GENERATE_PDF_ORDER": "Generar PDF",
     "IMPORT_EMPLOYEE_CONTRACTS": "Importar Contratos Laborales",
-    "IMPORT": "Importar"
+    "IMPORT": "Importar",
+    "IMPORT_EMPLOYEES": "Importar Empleados",
+    "ASSIGN_MORE_EMPLOYEES": "Asignar Más Empleados"
   },
   "MESSAGE": {
     "SUCCESS": "ÉXITO",
@@ -1425,6 +1427,11 @@
     "MODAL": {
       "TITLE_CREATE": "Nuevo Estado del Contrato",
       "TITLE_DELETE": "Eliminar Estado del Contrato"
+    }
+  },
+  "PROJECT_EMPLOYEES": {
+    "TABLE": {
+      "FZ_ABBREVIATION_R&H_ACTIVITY": "FZ: Abreviatura de Actividad R&H"
     }
   },
   "FILTER": {

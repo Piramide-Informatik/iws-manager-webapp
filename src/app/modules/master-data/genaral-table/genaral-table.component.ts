@@ -24,6 +24,8 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Input() filterByColumns: boolean = true;
   @Input() nameNewButton: string = '';
   @Input() isFileUploadButtonVisible: boolean = false;
+  @Input() isAdditionalButtonsVisible: boolean = false;
+  @Input() additionalButtonText: string = '';
   @Input() acceptFilesFormats: string = '.pdf,.xml,.csv'
   @Input() userPreferences: any = [];
   @Input() customerUploadButtonText = '';
@@ -144,6 +146,10 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
 
   createRegister(register: string) {
     this.onCreateRegister.emit(register);
+  }
+
+  additionalButtonAction() {
+    this.onCreateRegister.emit('additional action');
   }
 
   applyFilter(event: any, field: string) {
