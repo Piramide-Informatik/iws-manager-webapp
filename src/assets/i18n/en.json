@@ -160,6 +160,7 @@
   "BUTTONS": {
     "NEW": "New",
     "SAVE": "Save",
+    "REMOVE_FROM_PROJECT": "Remove from Project",
     "SAVE_AND_NEW": "Save and New",
     "DELETE": "Delete",
     "CANCEL": "Cancel",
@@ -387,7 +388,9 @@
     },
     "LABELS": {
       "DELETE_EMPLOYEE": "Delete Employee",
-      "NEW_EMPLOYEE": "New Employee"
+      "NEW_EMPLOYEE": "New Employee",
+      "EMPLOYEE": "Employee",
+      "PROJECTEMPLOYEE": "Project - Employee"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Start Date",

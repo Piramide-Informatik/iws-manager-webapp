@@ -161,6 +161,7 @@
     "NEW": "Neu",
     "SAVE": "Speichern",
     "SAVE_AND_NEW": "Speichern und Neu",
+    "REMOVE_FROM_PROJECT": "vom Projekt entfernen",
     "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
     "NEW_YEAR": "Neues Jahr",
@@ -384,7 +385,9 @@
     },
     "LABELS": {
       "DELETE_EMPLOYEE": "Mitarbeiter löschen",
-      "NEW_EMPLOYEE": "Neuer Mitarbeiter"
+      "NEW_EMPLOYEE": "Neuer Mitarbeiter",
+      "EMPLOYEE": "Mitarbeiter",
+      "PROJECTEMPLOYEE": "Projekt - Mitarbeiter"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Datum",

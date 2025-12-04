@@ -160,6 +160,7 @@
   "BUTTONS": {
     "NEW": "Nuevo",
     "SAVE": "Guardar",
+    "REMOVE_FROM_PROJECT": "Eliminar de Proyecto",
     "SAVE_AND_NEW": "Guardar y Nuevo",
     "DELETE": "Eliminar",
     "CANCEL": "Cancelar",
@@ -378,7 +379,9 @@
     },
     "LABELS": {
       "DELETE_EMPLOYEE": "Eliminar Empleado",
-      "NEW_EMPLOYEE": "Nuevo Empleado"
+      "NEW_EMPLOYEE": "Nuevo Empleado",
+      "EMPLOYEE": "Empleado",
+      "PROJECTEMPLOYEE": "Proyecto - Empleado"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Fecha Incio",
