@@ -1,0 +1,10 @@
+<div class="card account-year">
+  <master-data-genaral-table
+    [tableId]="projectAccountYearTableKey"
+    [tableValues]="projectsAccountYears"
+    [columns]="selectedProjectAccountYearTableColumns"
+    [userPreferences]="userProjectAccountYearPreferences"
+    [dataKeys]="projectAccountYearDataKeys"
+    (onColumnChanges)="onUserProjectAccountYearPreferencesChanges($event)"
+  ></master-data-genaral-table>
+</div>

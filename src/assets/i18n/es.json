@@ -500,6 +500,13 @@
       "TITLE": "Paquetes de Trabajo"
     }
   },
+  "PROJECT_PERIOD": {
+    "TABLE": {
+      "YEAR": "Año",
+      "BEGINNING": "Inicio",
+      "END": "Fin"
+    }
+  },
   "ORDERS": {
     "FORM": {
       "ORDER_ID": "Nº de Orden",

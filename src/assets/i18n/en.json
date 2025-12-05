@@ -506,6 +506,13 @@
       "TITLE": "Work Packages"
     }
   },
+  "PROJECT_PERIOD": {
+    "TABLE": {
+      "YEAR": "Year",
+      "BEGINNING": "Beginning",
+      "END": "End"
+    }
+  },
   "ORDERS": {
     "FORM": {
       "ORDER_ID": "Order No.",

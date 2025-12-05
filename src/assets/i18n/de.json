@@ -506,6 +506,13 @@
       "TITLE": "Arbeitspakete"
     }
   },
+  "PROJECT_PERIOD": {
+    "TABLE": {
+      "YEAR": "Jahr",
+      "BEGINNING": "Anfang",
+      "END": "Ende"
+    }
+  },
   "ORDERS": {
     "FORM": {
       "ORDER_ID": "Auftrag-Nr.",

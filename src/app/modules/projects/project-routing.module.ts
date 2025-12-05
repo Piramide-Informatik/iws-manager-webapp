@@ -4,6 +4,7 @@ import { ProjectDetailsComponent } from "./components/project-details/project-de
 import { ProjectsOverviewComponent } from "./components/projects-overview/projects-overview.component";
 import { PageProjectComponent } from "./components/page-project/page-project.component";
 import { EmployeeProjectComponent } from "./components/employee-project/employee-project.component";
+import { ProjectsAccountYearOverviewComponent } from "./components/project-details/account-year/account-year.component";
 
 const routes: Routes = [
     { path: '', component: ProjectsOverviewComponent },
@@ -24,6 +25,10 @@ const routes: Routes = [
         {
           path: 'employees-project/:idProject',
           component: EmployeeProjectComponent
+        },
+        {
+          path: 'accounting-years/:idProject',
+          component: ProjectsAccountYearOverviewComponent
         }
       ]
     }
