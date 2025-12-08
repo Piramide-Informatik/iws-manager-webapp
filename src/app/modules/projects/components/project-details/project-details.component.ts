@@ -23,6 +23,7 @@ import { Order } from '../../../../Entities/order';
 import { momentCreateDate } from '../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ProjectStateService } from '../../utils/project-state.service';
 
 @Component({
   selector: 'app-project-details',
@@ -43,6 +44,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private readonly fundingProgramUtils = inject(FundingProgramUtils);
   private readonly promoterUtils = inject(PromoterUtils);
   private readonly orderUtils = inject(OrderUtils);
+  private readonly projectStateService = inject(ProjectStateService);
 
   public formProject!: FormGroup;
   public currentProject: Project | null = null;
@@ -323,6 +325,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private handleSaveSuccess(savedProject: Project): void {
     this.formProject.markAsPristine();
     this.currentProject = savedProject;
+    this.projectStateService.setProjectToEdit(savedProject);
     this.loadProject(this.projectId);
     this.commonMessageService.showEditSucessfullMessage();
     this.isSaving = false;

@@ -43,6 +43,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Output() onEditRegister = new EventEmitter<any>();
   @Output() onDeleteRegister = new EventEmitter<number>();
   @Output() onCreateRegister = new EventEmitter<string>();
+  @Output() onAdditionaAccion = new EventEmitter<void>();
   @Output() onColumnChanges = new EventEmitter<any>();
   @Output() onRowClickEvent = new EventEmitter<any>();
 
@@ -149,7 +150,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   }
 
   additionalButtonAction() {
-    this.onCreateRegister.emit('additional action');
+    this.onAdditionaAccion.emit();
   }
 
   applyFilter(event: any, field: string) {
