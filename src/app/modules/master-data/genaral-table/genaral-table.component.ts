@@ -43,6 +43,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Output() onEditRegister = new EventEmitter<any>();
   @Output() onDeleteRegister = new EventEmitter<number>();
   @Output() onCreateRegister = new EventEmitter<string>();
+  @Output() additionalAccion = new EventEmitter<void>();
   @Output() onColumnChanges = new EventEmitter<any>();
   @Output() onRowClickEvent = new EventEmitter<any>();
 
@@ -149,7 +150,7 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   }
 
   additionalButtonAction() {
-    this.onCreateRegister.emit('additional action');
+    this.additionalAccion.emit();
   }
 
   applyFilter(event: any, field: string) {
@@ -193,24 +194,24 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
     const table = this.dt2?.el?.nativeElement as HTMLElement;
     if (table) {
       const rows = table.querySelectorAll('tbody > tr');
-      rows.forEach(row => {
+      for(const row of rows){
         const firstCell = row.querySelector('td') as HTMLElement;
         if (firstCell) {
           firstCell.style.width = '75px';
           firstCell.style.minWidth = '75px';
           firstCell.style.maxWidth = '75px';
         }
-      });
+      }
     }
   }
 
   isNumeric(value: any): boolean {
-    return typeof value === 'number' && !isNaN(value);
+    return typeof value === 'number' && !Number.isNaN(value);
   }
 
   getNestedValue(obj: any, path: string): any {
     const value = path.split('.').reduce((acc, part) => acc?.[part], obj);
-    return !isNaN(value) && value !== null && value !== '' && typeof value !== 'string'? Number(value) : value;
+    return !Number.isNaN(value) && value !== null && value !== '' && typeof value !== 'string'? Number(value) : value;
   }
 
 }
