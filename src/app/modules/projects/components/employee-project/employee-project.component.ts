@@ -125,14 +125,18 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
     this.selectedEmployeeDetails = null;
   }
 
-  handleTableEvents(event: { type: 'create' | 'edit' | 'delete', data?: any }): void {
-    this.modalType = event.type;
-    if (event.type === 'edit') {
-      //code to edit
+  handleTableEvents(event: { type: 'new employee' | 'create' | 'edit' | 'delete', data?: any }): void {
+    if(event.type === 'new employee'){
+      console.log('modal new emp')
+    }else{
+      this.modalType = event.type;
+      if (event.type === 'edit') {
+        //code to edit
+      }
+      if (event.type === 'delete') {
+        //code to delete
+      }
+      this.visibleModal = true;
     }
-    if (event.type === 'delete') {
-      //code to delete
-    }
-    this.visibleModal = true;
   }
 }
