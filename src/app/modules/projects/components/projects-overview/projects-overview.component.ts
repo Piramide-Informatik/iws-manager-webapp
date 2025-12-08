@@ -37,7 +37,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   public selectedFilterColumns!: Column[];
   showOCCErrorDeleteModal = false;
   occErrorDeleteType: any = 'DELETE_UNEXISTED';
-  public redirectCreateRoute = "";
+  public redirectCreateRoute = "/projects";
 
   readonly projects = computed(() => {
     return this.projectService.projects().map(curr => ({
@@ -144,7 +144,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   loadProjectColHeaders(): void {
-    this.cols = [
+    this.cols = [ 
       {
         field: 'projectLabel',
         routerLink: (row: any) => `./project-details/${row.id}`,

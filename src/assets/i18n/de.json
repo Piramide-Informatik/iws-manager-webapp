@@ -144,6 +144,8 @@
   },
   "COMMON": {
     "CUSTOMER_NAME": "Kunde",
+    "SELECT_PROJECT": "Wählen Sie einen Projekt aus",
+    "PROJECT": "Projekt",
     "YES": "Ja",
     "NO": "Nein",
     "SEARCH": "Suchen",
