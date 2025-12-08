@@ -139,6 +139,10 @@
     "ACCOUNTING_YEARS": "Accounting Years",
     "BLOCKS": "Blocks",
     "EMPLOYEES": "Employees",
+    "SUBMENU_EMPLOYEES": {
+      "EMPLOYEES_OVERVIEW": "Employees Overview",
+      "WORK_PACKAGES": "Work Packages"
+    },
     "SUBCONTRACTS": "Subcontracts",
     "TIMESHEET": "Timesheet"
   },

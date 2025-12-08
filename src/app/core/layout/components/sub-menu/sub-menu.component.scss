@@ -54,3 +54,95 @@
     }
   }
 }
+
+::ng-deep .p-menubar {
+  padding: 0 !important;
+  background: $accent-color !important;
+  gap: 0 !important;
+  height: 100%;
+
+  &:hover {
+    background-color: #83B4DB !important;
+  }
+
+  .p-menubar-item-link {
+    &:hover {
+      background: #82B3DA !important;
+    }
+  }
+
+  p-menubarsub {
+    width: 100%;
+    height: 100%;
+
+    ul.p-menubar-root-list {
+      height: 100%;
+      li.p-menubar-item {
+        width: 100%;
+        height: 100%;
+
+        div.p-menubar-item-content {
+          height: 100%;
+          align-content: center;
+          background: #accde7;
+          border-radius: 0;
+
+          &:hover {
+            background-color: #83B4DB !important;
+          }
+
+          a.p-menubar-item-link {
+            height: 100%;
+            justify-content: center;
+            color: rgb(33, 37, 41) !important;
+
+            .p-iconwrapper.p-menubar-submenu-icon {
+              margin-left: 0;
+              color: rgb(33, 37, 41) !important;
+            }
+          }
+        }
+
+        // popup
+        p-menubarsub > ul.p-menubar-submenu {
+          background: $accent-color !important;
+          left: 58.5% !important;
+          transform: translateX(-50%) !important;
+          gap: 0.2rem;
+          min-width: 14rem !important;
+
+          .p-menubar-item-link-active {
+            background: $primary-color;
+            color: rgb(234, 243, 250);
+
+            &:hover {
+              background: $primary-color !important;
+            }
+          }
+        }
+      }
+
+      // Employee selected someone item
+      li.p-menubar-item.active > div.p-menubar-item-content {
+        background: $primary-color !important;
+
+        a.p-menubar-item-link:hover {
+          background: $primary-color !important;
+        }
+        a.p-menubar-item-link > .p-iconwrapper.p-menubar-submenu-icon {
+          color: white !important;
+        } 
+      }
+
+      li.p-menubar-item.active > p-menubarsub {
+        ul.p-menubar-submenu > li.p-menubar-item > div.p-menubar-item-content > a.p-menubar-item-link > span.p-menubar-item-label {
+          color: rgb(33, 37, 41) !important;
+        }
+
+        ul.p-menubar-submenu > li.p-menubar-item > div.p-menubar-item-content > a.p-menubar-item-link-active > span.p-menubar-item-label {
+          color: white !important;
+        }
+      }
+    }
+  }
+}

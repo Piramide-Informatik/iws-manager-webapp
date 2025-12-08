@@ -139,6 +139,10 @@
     "ACCOUNTING_YEARS": "Abrechnungsjahre",
     "BLOCKS": "Blöcke",
     "EMPLOYEES": "Mitarbeiter",
+    "SUBMENU_EMPLOYEES": {
+      "EMPLOYEES_OVERVIEW": "Mitarbeiter Übersicht",
+      "WORK_PACKAGES": "Arbeitspakete"
+    },
     "SUBCONTRACTS": "Unteraufträge",
     "TIMESHEET": "Stundenzettel"
   },

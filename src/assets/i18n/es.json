@@ -139,6 +139,10 @@
     "ACCOUNTING_YEARS": "Abrechnungsjahre",
     "BLOCKS": "Bloques",
     "EMPLOYEES": "Empleados",
+    "SUBMENU_EMPLOYEES": {
+      "EMPLOYEES_OVERVIEW": "Lista de Empleados",
+      "WORK_PACKAGES": "Paquetes de Trabajo"
+    },
     "SUBCONTRACTS": "Subcontratos",
     "TIMESHEET": "Hoja de Horas"
   },
