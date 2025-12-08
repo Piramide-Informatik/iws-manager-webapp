@@ -15,6 +15,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
+import { MenubarModule } from 'primeng/menubar';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
     TranslateDirective,
     TranslateModule,
     TranslatePipe,
-    TieredMenuModule
+    TieredMenuModule,
+    MenubarModule
   ],
   exports: [MainLayoutComponent, SubMenuComponent ],
 })

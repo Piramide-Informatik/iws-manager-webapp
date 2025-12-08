@@ -1,17 +1,27 @@
 <div class="sidebar">
   <div class="sidebar-content">
-    <div
-      *ngFor="let item of menuItems"
-      class="menu-items"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: false }"
-    >
-      <a class="p-menuitem-link" [routerLink]="item.routerLink">
-        <i *ngIf="item.icon" [class]="item.icon"></i>
-        <span class="menu-item-text">
-          {{ item.label || "" | translate }}
-        </span>
-      </a>
-    </div>
+    @for(item of menuItems; track item.id) {
+      @if(item.id === 'employees-project'){
+        <div class="menu-items p-0">
+          <a class="p-menuitem-link h-100">
+            <span class="menu-item-text h-100 w-100">
+              <p-menubar [model]="itemsPopup" />
+            </span>
+          </a>
+        </div>
+      }@else {
+        <div class="menu-items"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }">
+
+          <a class="p-menuitem-link" [routerLink]="item.routerLink">
+            <i *ngIf="item.icon" [class]="item.icon"></i>
+            <span class="menu-item-text">
+              {{ item.label || "" | translate }}
+            </span>
+          </a>
+        </div>
+      }
+    }
   </div>
 </div>

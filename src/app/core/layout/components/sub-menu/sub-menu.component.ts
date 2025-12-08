@@ -11,6 +11,7 @@ export class SubMenuComponent {
   @Input() isCollapsed: boolean = false;
   @Input() menuItems: MenuItem[] = [];
   @Input() menuKey: string = '';
+  @Input() itemsPopup: MenuItem[] = []
 
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;
