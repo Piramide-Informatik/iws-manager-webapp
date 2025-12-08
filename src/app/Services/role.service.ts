@@ -9,7 +9,7 @@ import { environment } from "../../environments/environment";
 })
 export class RoleService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/roles`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV_V2}/roles`;
 
     private readonly httpOptions = {
         headers: new HttpHeaders({
