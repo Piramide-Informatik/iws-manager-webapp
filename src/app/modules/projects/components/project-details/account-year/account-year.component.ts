@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { TranslateService, _, TranslatePipe, TranslateDirective } from '@ngx-translate/core';
@@ -10,6 +10,9 @@ import { UserPreferenceService } from '../../../../../Services/user-preferences.
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { Project } from '../../../../../Entities/project';
 import { ProjectPeriodUtils } from '../../../utils/project-period.util';
+import { ProjectService } from '../../../../../Services/project.service';
+import { ProjectUtils } from '../../../../customer/sub-modules/projects/utils/project.utils';
+import { SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-projects-account-year',
@@ -21,11 +24,14 @@ import { ProjectPeriodUtils } from '../../../utils/project-period.util';
 export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
   private readonly projectPeriodUtils = inject(ProjectPeriodUtils);
+  private readonly projectUtils = inject(ProjectUtils);
   private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly projectService = inject(ProjectService);
 
   public cols!: Column[];
   public projectId!: string;
   public selectedProjectAccountYearTableColumns!: Column[];
+  selectedProject = signal(0);
 
   projectsAccountYears: any = []
 
@@ -36,6 +42,20 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   projectAccountYearTableKey: string = 'ProjectsAccountYear'
 
   projectAccountYearDataKeys = ['year', 'beginning', 'end'];
+  readonly projects = computed(() => {
+    return this.projectService.projects().map(curr => ({
+      id: curr.id,
+      projectLabel: curr.projectLabel,
+      projectName: curr.projectName,
+      fundingProgram: curr.fundingProgram?.name ?? '',
+      promoter: curr.promoter?.projectPromoter ?? '',
+      fundingLabel: curr.fundingLabel,
+      startDate: curr.startDate,
+      endDate: curr.endDate,
+      authDate: curr.approvalDate,
+      fundingRate: curr.fundingRate
+    }));
+  });
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -48,6 +68,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.projectUtils.loadInitialData().subscribe();
     this.loadProjectColHeaders();
     this.selectedProjectAccountYearTableColumns = this.cols;
     this.userProjectAccountYearPreferences = this.userPreferenceService.getUserPreferences(this.projectAccountYearTableKey, this.selectedProjectAccountYearTableColumns);
@@ -66,15 +87,8 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params.subscribe(params => {
       this.projectId = params['idProject'];
-      this.projectPeriodUtils.getAllProjectPeriodByProject(this.projectId).subscribe(data => {
-        this.projectsAccountYears = data.map( pay => {
-          return {
-            year: pay.periodNo,
-            beginning: pay.startDate,
-            end: pay.endDate
-          }
-        })
-      })
+      this.loadProjectPeriod(this.projectId);
+      this.selectedProject = signal(Number(this.projectId))
     });
   }
 
@@ -106,5 +120,21 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
     }else if(event.error){
       this.commonMessageService.showErrorCreatedMessage();
     }
+  }
+
+  onSelectedItem(event: SelectChangeEvent) {
+    this.loadProjectPeriod(event.value);
+  }
+
+  loadProjectPeriod(id: string) {
+    this.projectPeriodUtils.getAllProjectPeriodByProject(id).subscribe(data => {
+      this.projectsAccountYears = data.map( pay => {
+        return {
+          year: pay.periodNo,
+          beginning: pay.startDate,
+          end: pay.endDate
+        }
+      })
+    })
   }
 }

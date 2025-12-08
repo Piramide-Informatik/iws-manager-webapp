@@ -1,3 +1,25 @@
+<div class="flex px-4 py-3 align-items-center">
+  <label class="search-label-project" for="SearchProject">{{ 'COMMON.PROJECT' | translate }}:</label>
+  <p-select 
+    [options]="projects()" 
+    class="search-box-project w-auto"
+    [(ngModel)]="selectedProject"
+    optionLabel="projectLabel" 
+    optionValue="id" 
+    [filter]="true" 
+    filterBy="projectLabel" 
+    [placeholder]="'COMMON.SELECT_PROJECT' | translate" 
+    [appendTo]="'body'"
+    [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+    [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+    (onChange)="onSelectedItem($event)">
+      <ng-template #selectedItem let-selectedOption>
+          <div class="flex items-center gap-2">
+              <div>{{ selectedOption.projectLabel }}</div>
+          </div>
+      </ng-template>
+  </p-select>
+</div>
 <div class="card account-year">
   <master-data-genaral-table
     [tableId]="projectAccountYearTableKey"
