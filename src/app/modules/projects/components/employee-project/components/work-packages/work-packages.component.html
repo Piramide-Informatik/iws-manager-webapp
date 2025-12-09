@@ -1,0 +1,121 @@
+<div class="work-packages-container">
+    <h2>Work Packages</h2>
+
+    <div class="test-message" *ngIf="testMessage">
+        <p>{{ testMessage }}</p>
+    </div>
+
+
+    <div class="table-container">
+        <table class="excel-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="gray">AP</th>
+                    <th rowspan="2" class="gray">AP-Nr</th>
+                    <th rowspan="2" class="gray">Pers.Nr</th>
+                    <th colspan="2">bewilligt</th>
+                    <th colspan="3">geplant</th>
+                    <th colspan="3">abgerechnet</th>
+                    <th colspan="3">verfügbar</th>
+                </tr>
+                <tr>
+                    <th class="green">PM</th>
+                    <th class="green">Pers.Kosten</th>
+                    <th class="orange">PM</th>
+                    <th class="orange">Std.</th>
+                    <th class="orange">Pers.Kosten</th>
+                    <th class="red">PM</th>
+                    <th class="red">Std.</th>
+                    <th class="red">Pers.Kosten</th>
+                    <th class="blue">PM</th>
+                    <th class="blue">Std.</th>
+                    <th class="blue">Pers.Kosten</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let row of rows; let i = index">
+                    <!-- AP -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ row.ap }}</span>
+                        <input *ngIf="editingRowIndex === i" type="text" [(ngModel)]="row.ap" class="input-field">
+                    </td>
+
+                    <!-- AP-Nr -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ row.apNr }}</span>
+                        <input *ngIf="editingRowIndex === i" type="text" [(ngModel)]="row.apNr" class="input-field">
+                    </td>
+
+                    <!-- Pers.Nr -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ row.persNr }}</span>
+                        <input *ngIf="editingRowIndex === i" type="text" [(ngModel)]="row.persNr" class="input-field">
+                    </td>
+
+                    <!-- bewilligt - PM -->
+                    <td class="green">
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.pmBewilligt) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.pmBewilligt"
+                            (input)="onInputChange()" class="input-field green">
+                    </td>
+
+                    <!-- bewilligt - Pers.Kosten -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.persKostenBewilligt) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01"
+                            [(ngModel)]="row.persKostenBewilligt" (input)="onInputChange()" class="input-field green">
+                    </td>
+
+                    <!-- geplant - PM -->
+                    <td class="green">
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.pmGeplant) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.pmGeplant"
+                            (input)="onInputChange()" class="input-field orange">
+                    </td>
+
+                    <!-- geplant - Std. -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.stdGeplant) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.stdGeplant"
+                            (input)="onInputChange()" class="input-field orange">
+                    </td>
+
+                    <!-- geplant - Pers.Kosten -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.persKostenGeplant) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01"
+                            [(ngModel)]="row.persKostenGeplant" (input)="onInputChange()" class="input-field orange">
+                    </td>
+
+                    <!-- abgerechnet - PM -->
+                    <td class="green">
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.pmAbgerechnet) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.pmAbgerechnet"
+                            (input)="onInputChange()" class="input-field red">
+                    </td>
+
+                    <!-- abgerechnet - Std. -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.stdAbgerechnet) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.stdAbgerechnet"
+                            (input)="onInputChange()" class="input-field red">
+                    </td>
+
+                    <!-- abgerechnet - Pers.Kosten -->
+                    <td>
+                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.persKostenAbgerechnet) }}</span>
+                        <input *ngIf="editingRowIndex === i" type="number" step="0.01"
+                            [(ngModel)]="row.persKostenAbgerechnet" (input)="onInputChange()" class="input-field red">
+                    </td>
+
+                    <!-- verfügbar (solo lectura) -->
+                    <td class="green">{{ formatNumber(row.pmVerfuegbar) }}</td>
+                    <td>{{ formatNumber(row.stdVerfuegbar) }}</td>
+                    <td>{{ formatNumber(row.persKostenVerfuegbar) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button (click)="addRow()" class="btn-add">➕ Añadir Fila</button>
+</div>
