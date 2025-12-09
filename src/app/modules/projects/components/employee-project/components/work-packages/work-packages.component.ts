@@ -23,7 +23,7 @@ export class WorkPackagesComponent implements OnInit {
       persNr: 'ABC123',
       pmBewilligt: 10.5,
       persKostenBewilligt: 12500,
-      pmGeplant: 8.0,
+      pmGeplant: 8.1,
       stdGeplant: 1280,
       persKostenGeplant: 9500,
       pmAbgerechnet: 5.5,
@@ -35,7 +35,7 @@ export class WorkPackagesComponent implements OnInit {
     },
   ];
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private readonly activatedRoute: ActivatedRoute) { }
 
   addRow() {
     this.rows.push({
@@ -86,7 +86,7 @@ export class WorkPackagesComponent implements OnInit {
   formatNumber(value: any): string {
     if (value === null || value === undefined || value === '') return '0.00';
     const num = Number(value);
-    return isNaN(num) ? '0.00' : num.toFixed(2);
+    return Number.isNaN(num) ? '0.00' : num.toFixed(2);
   }
 
   onInputChange() {
