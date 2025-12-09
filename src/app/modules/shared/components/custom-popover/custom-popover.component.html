@@ -10,6 +10,7 @@
                 <ul class="list-none p-0 m-0 flex flex-col">
                     <li *ngFor="let item of values"
                         class="px-3 py-2 rounded cursor-pointer hover:bg-surface-200 flex items-center gap-2"
+                        (keydown)="handleKeyPress($event, item)"
                         (click)="onSelect(item)">
                         <span>{{ item.label }}</span>
                     </li>

@@ -23,4 +23,12 @@ export class CustomPopoverComponent {
     this.selected.emit(item);
     this.op.hide();
   }
+
+  handleKeyPress(event: KeyboardEvent, item: any) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onSelect(item);
+    }
+  }
+
 }
