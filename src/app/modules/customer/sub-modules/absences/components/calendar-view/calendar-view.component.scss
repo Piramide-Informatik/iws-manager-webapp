@@ -49,6 +49,7 @@
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.2s;
+    position: relative;
 
     &:last-child {
         border-right: none;
@@ -59,10 +60,43 @@
     }
 }
 
+// Estilo para celdas de meses pares (febrero, abril, junio, agosto, octubre, diciembre)
+.even-month-cell {
+    background-color: rgba(142, 197, 255, 0.15); // Versión semitransparente de rgb(142, 197, 255)
+
+    &:hover {
+        background-color: rgba(142, 197, 255, 0.3);
+    }
+
+    // Para navegadores que soportan oklch (solo si necesitas)
+    @supports (background-color: oklch(80.9% 0.105 251.813)) {
+        background-color: oklch(80.9% 0.105 251.813 / 0.15);
+
+        &:hover {
+            background-color: oklch(80.9% 0.105 251.813 / 0.3);
+        }
+    }
+}
+
+// Si también quieres que los encabezados de meses pares tengan color
+.month-header.even-month {
+    background-color: rgba(142, 197, 255, 0.25);
+    font-weight: bold;
+    color: #1a5fb4; // Un azul más oscuro para buen contraste
+
+    &:hover {
+        background-color: rgba(142, 197, 255, 0.35);
+    }
+}
+
 .corner-cell {
     background-color: #f8f9fa;
     font-weight: bold;
     min-width: 120px;
+
+    &:hover {
+        background-color: #f8f9fa;
+    }
 }
 
 .day-header {
@@ -96,6 +130,15 @@
 
     &:hover {
         background-color: #bee5eb;
+    }
+
+    // Si es un mes par Y tiene datos
+    &.even-month-cell {
+        background-color: rgba(142, 197, 255, 0.5); // Más opaco para resaltar
+
+        &:hover {
+            background-color: rgba(142, 197, 255, 0.7);
+        }
     }
 }
 
@@ -145,6 +188,19 @@
 
 .legend-color.has-data {
     background-color: #d1ecf1;
+}
+
+.legend-color.even-month {
+    background-color: rgba(142, 197, 255, 0.6);
+}
+
+// Agregar item a la leyenda para meses pares
+.calendar-legend {
+    .legend-item:nth-child(4) {
+        .legend-color.even-month {
+            background-color: rgba(142, 197, 255, 0.6);
+        }
+    }
 }
 
 // Responsive

@@ -9,13 +9,11 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
   styleUrl: './calendar-view.component.scss'
 })
 export class CalendarViewComponent implements OnInit {
-  // Inyectar el servicio de traducción
+  
   private readonly translate = inject(TranslateService);
 
   // Days (1-31)
   days: number[] = [];
-
-  // Month names - ahora vacío, se cargarán desde las traducciones
   months: string[] = [];
 
   // Matrix to store cell data
@@ -23,6 +21,11 @@ export class CalendarViewComponent implements OnInit {
 
   // Current year to display in the title
   currentYear: number = new Date().getFullYear();
+
+  // Array con los índices de meses pares (considerando 0-indexed)
+  // Enero=0, Febrero=1, Marzo=2, Abril=3, Mayo=4, Junio=5, Julio=6, Agosto=7, Septiembre=8, Octubre=9, Noviembre=10, Diciembre=11
+  // Necesitamos: Febrero (1), Abril (3), Junio (5), Agosto (7), Octubre (9), Diciembre (11)
+  evenMonthsIndices: number[] = [1, 3, 5, 7, 9, 11]; // 0-based indexing
 
   constructor() { }
 
@@ -32,9 +35,7 @@ export class CalendarViewComponent implements OnInit {
     this.subscribeToLanguageChanges();
   }
 
-  // Método para cargar las traducciones
   loadTranslations(): void {
-    // Cargar nombres de meses desde las traducciones
     this.months = [
       this.translate.instant('CALENDAR.MONTH.JANUARY'),
       this.translate.instant('CALENDAR.MONTH.FEBRUARY'),
@@ -51,7 +52,7 @@ export class CalendarViewComponent implements OnInit {
     ];
   }
 
-  // Suscribirse a cambios de idioma
+  // Subscribe to language changes
   subscribeToLanguageChanges(): void {
     this.translate.onLangChange.subscribe(() => {
       this.loadTranslations();
@@ -92,6 +93,11 @@ export class CalendarViewComponent implements OnInit {
     return dayIndex < daysInMonth;
   }
 
+  // Check if a month is even (for styling)
+  isEvenMonth(monthIndex: number): boolean {
+    return this.evenMonthsIndices.includes(monthIndex);
+  }
+
   // Get number of days in a month
   private getDaysInMonth(monthIndex: number): number {
     const year = this.currentYear;
@@ -102,17 +108,25 @@ export class CalendarViewComponent implements OnInit {
   getCellClass(monthIndex: number, dayIndex: number): string {
     const baseClass = 'calendar-cell';
     const isValid = this.isValidDay(monthIndex, dayIndex);
+    const isEvenMonth = this.isEvenMonth(monthIndex);
+
+    let classes = baseClass;
+
+    // Add class for even months (if the day is valid)
+    if (isValid && isEvenMonth) {
+      classes += ' even-month-cell';
+    }
 
     if (!isValid) {
-      return `${baseClass} invalid-day`;
+      classes += ' invalid-day';
     }
 
     const cell = this.calendarData[monthIndex][dayIndex];
     if (cell.hasData) {
-      return `${baseClass} has-data`;
+      classes += ' has-data';
     }
 
-    return baseClass;
+    return classes;
   }
 
   // Method to handle cell click
@@ -176,12 +190,10 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
-  // Translated title for the calendar
   getCalendarTitle(): string {
     return this.translate.instant('CALENDAR.TITLE', { YEAR: this.currentYear });
   }
 
-  // Get translated indicator for invalid days
   getInvalidDayIndicator(): string {
     return this.translate.instant('CALENDAR.INVALID_DAY_INDICATOR');
   }

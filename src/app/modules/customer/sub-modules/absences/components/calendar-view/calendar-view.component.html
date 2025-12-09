@@ -5,34 +5,33 @@
 
     <div class="calendar-wrapper">
         <div class="calendar-grid">
-            <!-- Fila de encabezado (días) -->
+            <!-- Days header -->
             <div class="calendar-row header-row">
-                <!-- Celda vacía en la esquina -->
+                <!-- Empty corner cell -->
                 <div class="calendar-cell corner-cell"></div>
 
-                <!-- Días del 1 al 31 -->
+                <!-- Days from 1 to 31 -->
                 <div *ngFor="let day of days" class="calendar-cell day-header">
                     {{ day }}
                 </div>
             </div>
 
-            <!-- Filas de meses -->
+            <!-- Month rows -->
             <div *ngFor="let month of months; let monthIndex = index" class="calendar-row month-row">
-                <!-- Nombre del mes en la primera columna -->
-                <div class="calendar-cell month-header">
+                <div class="calendar-cell month-header" [class.even-month]="isEvenMonth(monthIndex)">
                     {{ month }}
                 </div>
 
-                <!-- Celdas de días para este mes -->
+                <!-- Day cells for this month -->
                 <div *ngFor="let day of days; let dayIndex = index" class="calendar-cell"
                     [ngClass]="getCellClass(monthIndex, dayIndex)" (click)="onCellClick(monthIndex, dayIndex)"
                     [title]="getCellTitle(monthIndex, dayIndex)">
-                    <!-- Mostrar contenido de la celda si existe -->
+                    <!-- Show cell content if it exists -->
                     <div *ngIf="calendarData[monthIndex] && calendarData[monthIndex][dayIndex]?.value">
                         {{ calendarData[monthIndex][dayIndex].value }}
                     </div>
 
-                    <!-- Indicador visual para días inválidos (meses con menos de 31 días) -->
+                    <!-- Visual indicator for invalid days (months with less than 31 days) -->
                     <div *ngIf="!isValidDay(monthIndex, dayIndex)" class="invalid-indicator">
                         {{ getInvalidDayIndicator() }}
                     </div>
@@ -41,7 +40,7 @@
         </div>
     </div>
 
-    <!-- Leyenda -->
+    <!-- Updated legend -->
     <div class="calendar-legend">
         <div class="legend-item">
             <div class="legend-color valid-day"></div>
@@ -54,6 +53,10 @@
         <div class="legend-item">
             <div class="legend-color has-data"></div>
             <span>{{ 'CALENDAR.LEGEND.HAS_DATA' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color even-month"></div>
+            <span>{{ 'CALENDAR.LEGEND.EVEN_MONTH' | translate }}</span>
         </div>
     </div>
 </div>
