@@ -32,7 +32,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
   @Input() visible: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() messageOperation = new EventEmitter<{ severity: string, summary: string, detail: string }>();
-  @Output() onOperationEmploymentContract = new EventEmitter<number>(); // Create
+  @Output() onOperationEmploymentContract = new EventEmitter<number>();
   @Output() onEmployeeContractUpdated = new EventEmitter<EmploymentContract>();
   @Output() onEmployeeContractDeleted = new EventEmitter<number>();
   @ViewChild('datePicker') firstInputForm!: DatePicker;
@@ -225,22 +225,28 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
     this.isLoading = true;
     this.errorMessage = null;
 
-    const newEmploymentContract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-      startDate: momentFormatDate(this.employmentContractForm.value.startDate) ?? '',
-      salaryPerMonth: this.employmentContractForm.value.salaryPerMonth ?? 0,
-      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek ?? 0,
-      workShortTime: this.employmentContractForm.value.workShortTime ?? 0,
-      specialPayment: this.employmentContractForm.value.specialPayment ?? 0,
-      maxHoursPerMonth: this.employmentContractForm.getRawValue().maxHoursPerMonth ?? 0,
-      maxHoursPerDay: this.employmentContractForm.getRawValue().maxHoursPerDay ?? 0,
+    const newEmploymentContract: any = {
       hourlyRate: this.employmentContractForm.getRawValue().hourlyRate ?? 0,
       hourlyRealRate: this.employmentContractForm.getRawValue().hourlyRealRate ?? 0,
-      employee: this.currentEmployee,
-      customer: this.currentEmployee.customer ?? null
+      hoursPerWeek: this.employmentContractForm.value.hoursPerWeek ?? 0,
+      maxHoursPerDay: this.employmentContractForm.getRawValue().maxHoursPerDay ?? 0,
+      maxHoursPerMonth: this.employmentContractForm.getRawValue().maxHoursPerMonth ?? 0,
+      salaryPerMonth: this.employmentContractForm.value.salaryPerMonth ?? 0,
+      specialPayment: this.employmentContractForm.value.specialPayment ?? 0,
+      startDate: momentFormatDate(this.employmentContractForm.value.startDate) ?? '',
+      workShortTime: this.employmentContractForm.value.workShortTime ?? 0,
+      customer: {
+        id: this.currentEmployee?.customer?.id ?? 0,
+        version: this.currentEmployee?.customer?.version ?? 0
+      },
+      employee: {
+        id: this.currentEmployee?.id ?? 0,
+        version: this.currentEmployee?.version?? 0
+      }
     };
 
     this.employmentContractUtils.createNewEmploymentContract(newEmploymentContract).subscribe({
-      next: () => {
+      next: (response) => {
         this.isLoading = false;
         this.onOperationEmploymentContract.emit(this.currentEmployee.id);
         this.isVisibleModal.emit(false);
@@ -251,6 +257,7 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
         this.isLoading = false;
         this.commonMessageService.showErrorCreatedMessage();
         this.errorMessage = error.message;
+        
         if(error.message.includes('start date employment contract already exists for this employee')) {
           this.startDateContractAlreadyExists = true;
           this.employmentContractForm.get('startDate')?.valueChanges.pipe(take(1))
@@ -318,23 +325,25 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
   private buildEmploymentContract(customerSource: any, employeeSource: any): EmploymentContract {
     const formValues = this.employmentContractForm.getRawValue();
-    return {
+    const contract = {
       id: this.employmentContract?.id ?? 0,
       version: this.employmentContract?.version ?? 0,
+      hourlyRate: formValues.hourlyRate ?? 0,
+      hourlyRealRate: formValues.hourlyRealRate ?? 0,
+      hoursPerWeek: formValues.hoursPerWeek ?? 0,
+      maxHoursPerDay: formValues.maxHoursPerDay ?? 0,
+      maxHoursPerMonth: formValues.maxHoursPerMonth ?? 0,
+      salaryPerMonth: formValues.salaryPerMonth ?? 0,
+      specialPayment: formValues.specialPayment ?? 0,
+      startDate: momentFormatDate(formValues.startDate) ?? '',
       customer: this.buildCustomerFromSource(customerSource),
       employee: this.buildEmployeeFromSource(employeeSource),
-      startDate: momentFormatDate(formValues.startDate) ?? '',
-      salaryPerMonth: formValues.salaryPerMonth,
-      hoursPerWeek: formValues.hoursPerWeek,
-      workShortTime: formValues.workShortTime,
-      specialPayment: formValues.specialPayment,
-      maxHoursPerMonth: formValues.maxHoursPerMonth,
-      maxHoursPerDay: formValues.maxHoursPerDay,
-      hourlyRate: formValues.hourlyRate,
-      hourlyRealRate: formValues.hourlyRealRate ?? 0,
+      workShortTime: formValues.workShortTime ?? 0,
+
       createdAt: "",
       updatedAt: ""
     };
+    return contract;
   }
 
   private validateContractForUpdate(): boolean {
@@ -355,20 +364,26 @@ export class EmploymentContractModalComponent implements OnInit, OnChanges, OnDe
 
   updateEmploymentContract() {
     if (!this.validateContractForUpdate()) return;
+    
     this.isLoading = true;
-    const updatedContract = this.buildEmploymentContract(this.employmentContract?.customer, this.employmentContract?.employee);
+    const updatedContract = this.buildEmploymentContract(
+      this.employmentContract?.customer, 
+      this.employmentContract?.employee
+    );
 
-    this.subscription.add(this.employmentContractUtils.updateEmploymentContract(updatedContract)
-      .subscribe({
-        next: (updated) => {
-          this.isLoading = false;
-          this.handleUpdateSuccess(updated)
-        },
-        error: (err) => {
-          this.isLoading = false;
-          this.handleUpdateError(err)
-        }
-      }));
+    this.subscription.add(
+      this.employmentContractUtils.updateEmploymentContract(updatedContract)
+        .subscribe({
+          next: (updated) => {
+            this.isLoading = false;
+            this.handleUpdateSuccess(updated)
+          },
+          error: (err) => {
+            this.isLoading = false;
+            this.handleUpdateError(err)
+          }
+        })
+    );
   }
 
   private focusInputNeeded(): void {
