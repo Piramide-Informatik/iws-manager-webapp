@@ -83,8 +83,9 @@ export class EmploymentContractUtils {
   */
   createNewEmploymentContract(contract: Omit<EmploymentContract, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<EmploymentContract> {
     return this.contractStartDateExistsByEmployee(contract.startDate, contract.employee?.id ?? 0).pipe(
-      switchMap((exist) => {
-        if (exist) {
+      switchMap((count) => {
+        console.log(count)
+        if (count >= 1) {
           return throwError(() => new Error('start date employment contract already exists for this employee'));
         }
         return this.employmentContractService.addEmploymentContract(contract);
@@ -104,11 +105,11 @@ export class EmploymentContractUtils {
   * @param employeeId - Employee ID to check
   * @returns Observable emitting boolean indicating existence
   */
-  private contractStartDateExistsByEmployee(startDate: string, employeeId: number): Observable<boolean> {
+  private contractStartDateExistsByEmployee(startDate: string, employeeId: number): Observable<number> {
     return this.employmentContractService.getContractsByEmployeeId(employeeId).pipe(
-      map(contracts => contracts.some(
+      map(contracts => contracts.filter(
         c =>  c.startDate !== null && c.startDate?.toString().toLowerCase() === startDate.toString().toLowerCase()
-      )),
+      ).length),
       catchError((err) => {
         return throwError(() => new Error('Fail to check employment contract start date existence'));
       })
@@ -187,9 +188,9 @@ export class EmploymentContractUtils {
           return throwError(() => createUpdateConflictError("Employment Contract"));
         }
 
-        return this.contractStartDateExistsByEmployee(contract.startDate, contract.employee?.id ?? 0).pipe(
-          switchMap((exist) => {
-            if (exist) {
+        return this.contractStartDateExistsByEmployee(currentContract.startDate, contract.employee?.id ?? 0).pipe(
+          switchMap((count) => {
+            if (count >= 2) {
               return throwError(() => new Error('start date employment contract already exists for this employee'));
             }
             // Update the contract
