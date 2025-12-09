@@ -73,7 +73,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
         if (this.firstInputForm) {
           setTimeout(() => {
             this.firstInputForm.focus();
-            this.firstInputForm.show();
           }, 300)
         }
       })

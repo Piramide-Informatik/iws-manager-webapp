@@ -17,6 +17,6 @@ export interface EmploymentContract {
     maxHoursPerMonth?: number;
     salaryPerMonth?: number;
     specialPayment?: number;
-    startDate: string; // ISO format: "2025-06-17"
+    startDate: any; // ISO format: "2025-06-17"
     workShortTime?: number;
 }
