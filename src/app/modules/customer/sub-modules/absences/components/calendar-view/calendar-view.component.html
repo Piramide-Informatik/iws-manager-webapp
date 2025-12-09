@@ -1,0 +1,59 @@
+<div class="calendar-container">
+    <div class="calendar-header">
+        <h2>{{ getCalendarTitle() }}</h2>
+    </div>
+
+    <div class="calendar-wrapper">
+        <div class="calendar-grid">
+            <!-- Fila de encabezado (días) -->
+            <div class="calendar-row header-row">
+                <!-- Celda vacía en la esquina -->
+                <div class="calendar-cell corner-cell"></div>
+
+                <!-- Días del 1 al 31 -->
+                <div *ngFor="let day of days" class="calendar-cell day-header">
+                    {{ day }}
+                </div>
+            </div>
+
+            <!-- Filas de meses -->
+            <div *ngFor="let month of months; let monthIndex = index" class="calendar-row month-row">
+                <!-- Nombre del mes en la primera columna -->
+                <div class="calendar-cell month-header">
+                    {{ month }}
+                </div>
+
+                <!-- Celdas de días para este mes -->
+                <div *ngFor="let day of days; let dayIndex = index" class="calendar-cell"
+                    [ngClass]="getCellClass(monthIndex, dayIndex)" (click)="onCellClick(monthIndex, dayIndex)"
+                    [title]="getCellTitle(monthIndex, dayIndex)">
+                    <!-- Mostrar contenido de la celda si existe -->
+                    <div *ngIf="calendarData[monthIndex] && calendarData[monthIndex][dayIndex]?.value">
+                        {{ calendarData[monthIndex][dayIndex].value }}
+                    </div>
+
+                    <!-- Indicador visual para días inválidos (meses con menos de 31 días) -->
+                    <div *ngIf="!isValidDay(monthIndex, dayIndex)" class="invalid-indicator">
+                        {{ getInvalidDayIndicator() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leyenda -->
+    <div class="calendar-legend">
+        <div class="legend-item">
+            <div class="legend-color valid-day"></div>
+            <span>{{ 'CALENDAR.LEGEND.VALID_DAY' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color invalid-day"></div>
+            <span>{{ 'CALENDAR.LEGEND.INVALID_DAY' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color has-data"></div>
+            <span>{{ 'CALENDAR.LEGEND.HAS_DATA' | translate }}</span>
+        </div>
+    </div>
+</div>
