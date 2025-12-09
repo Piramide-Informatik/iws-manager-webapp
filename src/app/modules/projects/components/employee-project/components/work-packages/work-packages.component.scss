@@ -1,0 +1,133 @@
+.work-packages-container {
+  padding: 20px;
+
+  .test-message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+    color: #155724;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.excel-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1400px;
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    min-width: 80px;
+  }
+
+  th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+
+  // Colores de fondo para celdas
+  .green {
+    background-color: #0b8b29;
+  }
+
+  .orange {
+    background-color: #ecbc1e;
+  }
+
+  .red {
+    background-color: #e21526;
+  }
+
+  .blue {
+    background-color: #2785ea;
+  }
+
+  .gray {
+    background-color: #ced4da76
+  }
+}
+
+.input-field {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  font-size: 14px;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  &.green {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+
+  &.orange {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+  }
+
+  &.red {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 5px;
+
+  button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    &.btn-edit {
+      background-color: #ffc107;
+
+    }
+
+    &.btn-save {
+      background-color: #28a745;
+
+    }
+
+    &.btn-delete {
+      background-color: #dc3545;
+    }
+  }
+}
+
+.btn-add {
+  padding: 8px 16px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
