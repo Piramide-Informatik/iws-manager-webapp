@@ -98,6 +98,7 @@
     "CUSTOMER": "Kunde",
     "EMPLOYEES": "Mitarbeiter",
     "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
+    "ABSENCES": "Fehltage",
     "ORDERS": "Aufträge",
     "DEMANDS": "Forderungen",
     "INVOICES": "Rechnungen",
@@ -177,7 +178,8 @@
     "IMPORT_EMPLOYEE_CONTRACTS": "Arbeitsverträge importieren",
     "IMPORT": "Importieren",
     "IMPORT_EMPLOYEES": "Mitarbeiter importieren",
-    "ASSIGN_MORE_EMPLOYEES": "Weitere Mitarbeiter zuordnen"
+    "ASSIGN_MORE_EMPLOYEES": "Weitere Mitarbeiter zuordnen",
+    "IMPORT_ABSENCES": "Fehltage importieren"
   },
   "MESSAGE": {
     "SUCCESS": "ERFOLG",
