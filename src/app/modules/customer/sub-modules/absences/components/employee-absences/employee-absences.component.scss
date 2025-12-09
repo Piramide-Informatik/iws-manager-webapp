@@ -1,0 +1,18 @@
+.field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.2rem;
+
+    label {
+        width: 110px;
+        flex-shrink: 0;
+    }
+
+    input {
+        width: 23rem !important;
+    }
+
+    p-select {
+        width: 10rem;
+    }
+}

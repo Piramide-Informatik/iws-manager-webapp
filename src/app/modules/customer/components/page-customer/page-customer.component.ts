@@ -31,6 +31,7 @@ export class PageCustomerComponent implements OnInit {
     { labelKey: 'SIDEBAR.DETAILS', route: 'customer-details'},
     { labelKey: 'SIDEBAR.EMPLOYEES', route: 'employees' },
     { labelKey: 'SIDEBAR.EMPLOYMENT_CONTRACTS', route: 'work-contracts' },
+    { labelKey: 'SIDEBAR.ABSENCES', route: 'absences' },
     { labelKey: 'SIDEBAR.ORDERS', route: 'orders' },
     { labelKey: 'SIDEBAR.DEMANDS', route: 'demands' },
     { labelKey: 'SIDEBAR.INVOICES', route: 'invoices' },
