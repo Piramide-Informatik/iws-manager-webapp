@@ -10,7 +10,7 @@
                 <ul class="list-none p-0 m-0 flex flex-col">
                     <li *ngFor="let item of values"
                         class="px-3 py-2 rounded cursor-pointer hover:bg-surface-200 flex items-center gap-2"
-                        (keydown)="handleKeyPress($event, item)"
+                        (keydown.enter)="onSelect(item)"
                         (click)="onSelect(item)">
                         <span>{{ item.label }}</span>
                     </li>
@@ -30,5 +30,5 @@
 </p-popover>
 
 <!-- Botón que abre el popover -->
-<p-button icon="pi pi-ellipsis-h" styleClass="p-button-text p-button-sm w-full h-full" (click)="toggle($event)">
+<p-button icon="pi pi-ellipsis-h" styleClass="p-button-text p-button-sm w-full h-full" (click)="toggle($event)" (keydown.enter)="toggle($event)">
 </p-button>
