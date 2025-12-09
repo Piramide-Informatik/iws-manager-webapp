@@ -98,6 +98,7 @@
     "CUSTOMER": "Cliente",
     "EMPLOYEES": "Empleados",
     "EMPLOYMENT_CONTRACTS": "Contratos Laborales",
+    "ABSENCES": "Ausencias",
     "ORDERS": "Pedidos",
     "DEMANDS": "Creditos",
     "INVOICES": "Facturas",
@@ -177,7 +178,8 @@
     "IMPORT_EMPLOYEE_CONTRACTS": "Importar Contratos Laborales",
     "IMPORT": "Importar",
     "IMPORT_EMPLOYEES": "Importar Empleados",
-    "ASSIGN_MORE_EMPLOYEES": "Asignar Más Empleados"
+    "ASSIGN_MORE_EMPLOYEES": "Asignar Más Empleados",
+    "IMPORT_ABSENCES": "Importar Ausencias"
   },
   "MESSAGE": {
     "SUCCESS": "ÉXITO",
