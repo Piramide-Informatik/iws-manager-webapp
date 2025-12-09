@@ -10,7 +10,7 @@ import { EmploymentContract } from '../../../../../../Entities/employment-contra
 import { EmployeeUtils } from '../../../../../customer/sub-modules/employee/utils/employee.utils';
 import { buildCustomer } from '../../../../../shared/utils/builders/customer';
 import { buildEmployee } from '../../../../../shared/utils/builders/employee';
-import { momentFormatDate, momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
+import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { Employee } from '../../../../../../Entities/employee';
 import { Select } from 'primeng/select';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
@@ -306,7 +306,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   private _doCreateWorkContract() {
     const raw = this.ContractDetailsForm.getRawValue();
-    const startDate = momentFormatDate(raw.startDate) ?? '';
+    const startDate = momentCreateDate(raw.startDate) ?? '';
     const salaryPerMonth = raw.salaryPerMonth ?? 0;
     const hoursPerWeek = raw.hoursPerWeek ?? 0;
     const workShortTime = raw.workShortTime ?? 0;
@@ -363,7 +363,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy, OnChanges {
     const updatedEmployment: EmploymentContract = {
       ...this.currentEmploymentContractEntity,
       employee: this.employeesMap.get(this.ContractDetailsForm.value.employeNro),
-      startDate: momentFormatDate(this.ContractDetailsForm.value.startDate) ?? '',
+      startDate:  momentCreateDate(this.ContractDetailsForm.value.startDate) ?? '',
       salaryPerMonth: this.ContractDetailsForm.value.salaryPerMonth,
       hoursPerWeek: this.ContractDetailsForm.value.hoursPerWeek,
       workShortTime: this.ContractDetailsForm.value.workShortTime,

@@ -12,6 +12,7 @@ import { CustomerStateService } from '../../../../../customer/utils/customer-sta
 import { Title } from '@angular/platform-browser';
 import { CustomerUtils } from '../../../../../customer/utils/customer-utils';
 import { Customer } from '../../../../../../Entities/customer';
+import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-list-work-contracts',
@@ -75,7 +76,7 @@ export class ListWorkContractsComponent implements OnInit, OnDestroy {
         )
         .subscribe(employeeContracts => {
           for (let i = 0; i < employeeContracts.length; i++) {
-            employeeContracts[i].startDate = new Date(employeeContracts[i].startDate);
+            employeeContracts[i].startDate = momentCreateDate(employeeContracts[i].startDate);
           }
           this.employmentContracts = employeeContracts;
         })
