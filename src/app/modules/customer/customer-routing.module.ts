@@ -36,6 +36,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'absences/:id',
+        loadChildren: () =>
+          import('../../modules/customer/sub-modules/absences/absences.module').then(
+            (a) => a.AbsencesModule
+          )
+      },
+      {
         path: 'orders/:id',
         loadChildren: () =>
           import('../../modules/customer/sub-modules/orders/orders.module').then(

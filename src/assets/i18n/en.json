@@ -98,6 +98,7 @@
     "CUSTOMER": "Customer",
     "EMPLOYEES": "Employees",
     "EMPLOYMENT_CONTRACTS": "Employment Contracts",
+    "ABSENCES": "Absences",
     "ORDERS": "Orders",
     "DEMANDS": "Receivables",
     "INVOICES": "Invoices",
@@ -177,7 +178,8 @@
     "IMPORT_EMPLOYEE_CONTRACTS": "Import Employee Contracts",
     "IMPORT": "Import",
     "IMPORT_EMPLOYEES": "Import Employees",
-    "ASSIGN_MORE_EMPLOYEES": "Assign More Employees"
+    "ASSIGN_MORE_EMPLOYEES": "Assign More Employees",
+    "IMPORT_ABSENCES": "Import Absences"
   },
   "MESSAGE": {
     "SUCCESS": "SUCCESS",
