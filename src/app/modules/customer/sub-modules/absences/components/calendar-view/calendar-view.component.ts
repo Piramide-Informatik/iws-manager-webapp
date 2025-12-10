@@ -1,5 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
 
 @Component({
   selector: 'app-calendar-view',
@@ -10,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class CalendarViewComponent implements OnInit {
 
   private readonly translate = inject(TranslateService);
+  @ViewChild(CustomPopoverComponent) customPopover!: CustomPopoverComponent;
 
   // Days (1-31)
   days: number[] = [];
@@ -21,10 +23,25 @@ export class CalendarViewComponent implements OnInit {
   // Current year to display in the title
   currentYear: number = new Date().getFullYear();
 
-  // Array con los índices de meses pares (considerando 0-indexed)
-  // Enero=0, Febrero=1, Marzo=2, Abril=3, Mayo=4, Junio=5, Julio=6, Agosto=7, Septiembre=8, Octubre=9, Noviembre=10, Diciembre=11
-  // Necesitamos: Febrero (1), Abril (3), Junio (5), Agosto (7), Octubre (9), Diciembre (11)
+  // Array with even month indices (0-indexed)
+  // January=0, February=1, March=2, April=3, May=4, June=5, July=6, August=7, September=8, October=9, November=10, December=11
+  // We need: February (1), April (3), June (5), August (7), October (9), December (11)
   evenMonthsIndices: number[] = [1, 3, 5, 7, 9, 11]; // 0-based indexing
+
+  // Day and month selected for the popover
+  selectedMonthIndex: number = -1;
+  selectedDayIndex: number = -1;
+
+  // List for the popover
+  defaultList: any[] = [
+    { id: 1, label: 'A', value: 'A' },
+    { id: 2, label: 'B', value: 'B' },
+    { id: 3, label: 'C', value: 'C' },
+    { id: null, label: 'N/A', value: null }
+  ];
+
+  // Reference to the currently selected cell (for the popover)
+  private selectedCellElement: HTMLElement | null = null;
 
   constructor() { }
 
@@ -72,6 +89,7 @@ export class CalendarViewComponent implements OnInit {
           month: month,
           value: '', // Empty cell by default
           hasData: false,
+          data: null // CORRECCIÓN: Agregar esta propiedad para almacenar el item del popover
         });
       }
       this.calendarData.push(monthRow);
@@ -129,21 +147,97 @@ export class CalendarViewComponent implements OnInit {
   }
 
   // Method to handle cell click
-  onCellClick(monthIndex: number, dayIndex: number): void {
+  onCellClick(monthIndex: number, dayIndex: number, event: MouseEvent): void {
     if (this.isValidDay(monthIndex, dayIndex)) {
       console.log(`Cell clicked: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
 
-      const absenceText = this.translate.instant('CALENDAR.ABSENCE');
-      const cell = this.calendarData[monthIndex][dayIndex];
+      // Save the selected cell
+      this.selectedMonthIndex = monthIndex;
+      this.selectedDayIndex = dayIndex;
 
-      if (cell.hasData) {
-        this.calendarData[monthIndex][dayIndex].value = '';
-        this.calendarData[monthIndex][dayIndex].hasData = false;
+      // Save the selected cell element
+      this.selectedCellElement = event.currentTarget as HTMLElement;
 
-      } else {
-        this.setCellValue(monthIndex, dayIndex, absenceText);
+      // Show the popover
+      if (this.customPopover) {
+        this.customPopover.toggle(event);
       }
     }
+  }
+
+  // Method to handle keyboard events
+  onCellKeyUp(event: KeyboardEvent, monthIndex: number, dayIndex: number): void {
+    // Only trigger on Enter key for accessibility
+    if (event.key === 'Enter' && this.isValidDay(monthIndex, dayIndex)) {
+      console.log(`Cell activated via keyboard: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
+
+      // Save the selected cell indices
+      this.selectedMonthIndex = monthIndex;
+      this.selectedDayIndex = dayIndex;
+
+      // Save the selected cell element
+      this.selectedCellElement = event.currentTarget as HTMLElement;
+
+      // Create a synthetic click event for the popover
+      const syntheticEvent = new MouseEvent('click', {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+        clientX: 0,
+        clientY: 0
+      });
+
+      Object.defineProperty(syntheticEvent, 'target', { value: event.currentTarget });
+      Object.defineProperty(syntheticEvent, 'currentTarget', { value: event.currentTarget });
+
+      // Show the popover
+      if (this.customPopover) {
+        setTimeout(() => {
+          this.customPopover.toggle(syntheticEvent);
+        }, 0);
+      }
+    }
+  }
+
+  // Method to handle popover selection
+  onPopoverSelected(item: any): void {
+    console.log(`Item selected from popover:`, item);
+
+    if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1) {
+      const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
+
+      if (item) {
+        // Save the selected value
+        cell.value = item.label || item.value || item;
+        cell.hasData = true;
+        cell.data = item;
+
+        // Translation for the tooltip
+        const translatedValue = this.translate.instant(`CALENDAR.OPTIONS.${item.value || item}`);
+
+        // Update with translated value if exists
+        if (translatedValue !== `CALENDAR.OPTIONS.${item.value || item}`) {
+          cell.value = translatedValue;
+        }
+      } else {
+        // If null/undefined is selected, clear the cell
+        cell.value = '';
+        cell.hasData = false;
+        cell.data = null;
+      }
+
+      console.log(`Updated cell ${this.months[this.selectedMonthIndex]} - Day ${this.selectedDayIndex + 1}:`, cell.value);
+    }
+
+    // Reset selection
+    this.resetSelection();
+  }
+
+  // Method to reset selection
+  private resetSelection(): void {
+    this.selectedMonthIndex = -1;
+    this.selectedDayIndex = -1;
+    this.selectedCellElement = null;
   }
 
   getCellTitle(monthIndex: number, dayIndex: number): string {
@@ -196,5 +290,22 @@ export class CalendarViewComponent implements OnInit {
 
   getInvalidDayIndicator(): string {
     return this.translate.instant('CALENDAR.INVALID_DAY_INDICATOR');
+  }
+
+  // Method to clear a specific cell
+  clearCell(monthIndex: number, dayIndex: number): void {
+    if (this.isValidDay(monthIndex, dayIndex) && this.calendarData[monthIndex]?.[dayIndex]) {
+      this.calendarData[monthIndex][dayIndex].value = '';
+      this.calendarData[monthIndex][dayIndex].hasData = false;
+      this.calendarData[monthIndex][dayIndex].data = null;
+    }
+  }
+
+  // Method to get the current value of a cell
+  getCellValue(monthIndex: number, dayIndex: number): any {
+    if (this.calendarData[monthIndex]?.[dayIndex]) {
+      return this.calendarData[monthIndex][dayIndex].value;
+    }
+    return '';
   }
 }
