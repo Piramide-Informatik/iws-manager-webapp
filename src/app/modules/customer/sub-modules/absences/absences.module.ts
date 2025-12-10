@@ -10,8 +10,6 @@ import { InputText } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
 import { SharedModule } from '../../../shared/shared.module';
-import { CustomPopoverComponent } from '../../../shared/components/custom-popover/custom-popover.component';
-
 
 @NgModule({
   declarations: [
