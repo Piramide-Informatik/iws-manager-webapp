@@ -63,6 +63,7 @@
     </div>
 
     <!-- Popover Component -->
-    <app-custom-popover [type]="'list'" [values]="defaultList" (selected)="onPopoverSelected($event)" #customPopover>
+    <app-custom-popover [type]="'list'" [values]="defaultList" [displayFields]="[ 'label', 'name']"
+        [showAsBadge]="['label']" (selected)="onPopoverSelected($event)" #customPopover>
     </app-custom-popover>
 </div>
