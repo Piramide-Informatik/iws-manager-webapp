@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-calendar-view',
@@ -9,7 +8,7 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
   styleUrl: './calendar-view.component.scss'
 })
 export class CalendarViewComponent implements OnInit {
-  
+
   private readonly translate = inject(TranslateService);
 
   // Days (1-31)
