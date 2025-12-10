@@ -28,6 +28,7 @@ import { ButtonModule } from 'primeng/button';
     TranslatePipe
   ],
   exports: [
+    CustomPopoverComponent,
     OccErrorModalComponent,
     AutoFocusOnVisibleDirective
   ]
