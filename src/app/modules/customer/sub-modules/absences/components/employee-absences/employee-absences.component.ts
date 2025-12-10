@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, Signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, Signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../../../Entities/customer';
@@ -9,6 +9,12 @@ import moment from 'moment';
 import { EmployeeUtils } from '../../../employee/utils/employee.utils';
 import { Employee } from '../../../../../../Entities/employee';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Column } from '../../../../../../Entities/column';
+import { TranslateService } from '@ngx-translate/core';
+import { UserPreference } from '../../../../../../Entities/user-preference';
+import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
+import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
+import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 
 @Component({
   selector: 'app-employee-absences',
@@ -23,6 +29,26 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly customerId: number = this.route.snapshot.params['id'];
   private readonly subscriptions = new Subscription();
+  private readonly translate = inject(TranslateService);
+  private readonly userPreferenceService = inject(UserPreferenceService);
+  private langSubscription!: Subscription;
+  private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
+  private readonly absenceTypeService = inject(AbsenceTypeService);
+
+  readonly absenceTypes = computed(() => {
+    return this.absenceTypeService.absenceTypes().map(aType => ({
+      id: aType.id,
+      version: aType.version,
+      createdAt: aType.createdAt,
+      updatedAt: aType.updatedAt,
+      type: aType.name,
+      abbreviation: aType.label,
+      fractionOfDay: aType.shareOfDay,
+      isVacation: aType.isHoliday && aType.isHoliday == 1,
+      canBeBooked: aType.hours && aType.hours == 1,
+      number: 0
+    }));
+  });
 
   currentCustomer!: Customer;
   employees: Signal<Employee[] | undefined> = toSignal(
@@ -31,7 +57,24 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   years: number[] = [];
   formYearEmployee!: FormGroup;
 
+  //Table absence type-day
+  tableKey = 'AbsenceTypeDay';
+  dataKeys = ['abbreviation', 'type', 'number'];
+  public cols!: Column[];
+  public selectedColumns!: Column[];
+  userAbsenceTypeDayPreferences: UserPreference = {};
+
   ngOnInit(): void {
+    this.absenceTypeUtils.loadInitialData().subscribe();
+    this.loadColHeaders();
+    this.selectedColumns = [...this.cols];
+    this.userAbsenceTypeDayPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+
+    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+      this.loadColHeaders();
+      this.selectedColumns = [...this.cols];
+      this.userAbsenceTypeDayPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    });
     this.initForm();
     this.getCurrentCustomer();
     this.getYears();
@@ -101,4 +144,11 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     }
   }
 
+  private loadColHeaders(): void {
+    this.cols = [
+      { field: 'abbreviation', classesTHead: ['width-10'], header: this.translate.instant('ABSENCE_TYPES.LABEL.ABBREVIATION') },
+      { field: 'type', header: this.translate.instant('ABSENCE_TYPES.LABEL.TYPE') },
+      { field: 'number', classesTHead: ['width-10'], header: this.translate.instant('ORDER_PROYECT.TABLE.NUMBER'), filter: { type: 'numeric' } }
+    ];
+  }
 }
