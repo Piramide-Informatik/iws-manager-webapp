@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import { Popover } from 'primeng/popover';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-custom-popover',
@@ -8,44 +9,46 @@ import { Popover } from 'primeng/popover';
   styleUrls: ['./custom-popover.component.scss']
 })
 export class CustomPopoverComponent {
+  private readonly translate = inject(TranslateService);
+
   @Input() type: 'list' | 'default' = 'default';
   @Input() values: any[] = [];
 
-  // Atributos a mostrar en el popover (en el orden deseado)
+  // Attributes to show in the popover (in the desired order)
   @Input() displayFields: string[] = ['name', 'label'];
 
-  // Campos que se mostrarán como badges (opcional)
+  // Fields to show as badges (optional)
   @Input() showAsBadge: string[] = ['label'];
 
-  // Campos que deben formatearse como porcentaje (opcional)
+  // Fields to format as percentage (optional)
   @Input() percentageFields: string[] = [];
 
   @Output() selected = new EventEmitter<any>();
 
   @ViewChild('op') op!: Popover;
 
-  // Colores suaves para fondos alternados (8 colores diferentes)
+  // Colors for items (8 different colors)
   private itemColors = [
-    '#eff6ff', // azul suave
-    '#f5f3ff', // violeta suave
-    '#f0fdf4', // verde suave
-    '#fefce8', // amarillo suave
-    '#fdf2f8', // rosa suave
-    '#eef2ff', // índigo suave
-    '#f0fdfa', // teal suave
-    '#fff7ed'  // naranja suave
+    '#eff6ff', // blue
+    '#f5f3ff', // purple
+    '#f0fdf4', // green
+    '#fefce8', // yellow
+    '#fdf2f8', // pink
+    '#eef2ff', // indigo
+    '#f0fdfa', // teal
+    '#fff7ed'  // orange
   ];
 
-  // Colores para badges (más oscuros para contraste)
+  // Colors for badges (darker for contrast)
   private badgeColors = [
     { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' }, // azul
-    { bg: '#e9d5ff', text: '#7c3aed', border: '#c4b5fd' }, // violeta
-    { bg: '#bbf7d0', text: '#15803d', border: '#86efac' }, // verde
-    { bg: '#fef3c7', text: '#92400e', border: '#fcd34d' }, // amarillo
-    { bg: '#fce7f3', text: '#be185d', border: '#f9a8d4' }, // rosa
-    { bg: '#e0e7ff', text: '#3730a3', border: '#a5b4fc' }, // índigo
+    { bg: '#e9d5ff', text: '#7c3aed', border: '#c4b5fd' }, // purple
+    { bg: '#bbf7d0', text: '#15803d', border: '#86efac' }, // green
+    { bg: '#fef3c7', text: '#92400e', border: '#fcd34d' }, // yellow
+    { bg: '#fce7f3', text: '#be185d', border: '#f9a8d4' }, // pink
+    { bg: '#e0e7ff', text: '#3730a3', border: '#a5b4fc' }, // indigo
     { bg: '#ccfbf1', text: '#0f766e', border: '#5eead4' }, // teal
-    { bg: '#fed7aa', text: '#c2410c', border: '#fdba74' }  // naranja
+    { bg: '#fed7aa', text: '#c2410c', border: '#fdba74' }  // orange
   ];
 
   toggle(event: Event) {
@@ -57,45 +60,70 @@ export class CustomPopoverComponent {
     this.op.hide();
   }
 
-  // Método para obtener el valor de un campo
+  // Method to get field value with translation if applies
   getFieldValue(item: any, field: string): string {
     if (!item || !field) return '';
 
-    // Acceso a propiedades anidadas (ej: 'user.name')
+    // Access to nested properties (e.g: 'user.name')
     const value = field.split('.').reduce((obj, key) => obj?.[key], item);
 
-    // Formatear valores según el tipo de campo
+    // Try to translate the value (for fields like 'name' that can have translations)
+    const translatedValue = this.tryTranslateValue(field, value);
+    if (translatedValue !== null) {
+      return this.formatValue(field, translatedValue);
+    }
+
+    // If there is no translation, format normally
     return this.formatValue(field, value);
   }
 
-  // Método para formatear valores
+  // Method to try translate a value
+  private tryTranslateValue(field: string, value: any): string | null {
+    if (!value) return null;
+
+    // For specific fields that we know have translations
+    if (field === 'name' || field === 'label') {
+      const translationKey = `CUSTOM_POPOVER.${field.toUpperCase()}.${value}`;
+      const translation = this.translate.instant(translationKey);
+
+      // Si la traducción existe y no es igual a la clave, usar la traducción
+      if (translation !== translationKey) {
+        return translation;
+      }
+    }
+
+    return null;
+  }
+
+  // Method to format value
   private formatValue(field: string, value: any): string {
     if (value === null || value === undefined) return '';
 
-    // Formatear como porcentaje si el campo está en percentageFields
+    // Format as percentage if the field is in percentageFields
     if (this.isPercentageField(field)) {
       return this.formatAsPercentage(value);
     }
 
-    // Formatear booleanos (isHoliday)
+    // Format booleans (isHoliday) with translated icons
     if (field === 'isHoliday') {
-      return value ? '✔' : '✘'; // Usar iconos en lugar de texto
+      return value ? '✔' : '✘';
     }
 
-    // Formatear horas
+    // Format hours
     if (field === 'hours') {
-      return value === 0 ? '' : `${value}h`;
+      if (value === 0 || value === '0') return '';
+      return `${value}h`;
     }
 
     return value.toString();
   }
 
-  // Método para verificar si un campo debe formatearse como porcentaje
+  // Method to verify if a field should be formatted as percentage
   private isPercentageField(field: string): boolean {
     return this.percentageFields.includes(field);
   }
 
-  // Método para formatear un valor como porcentaje
+  // Method to format a value as percentage
   private formatAsPercentage(value: any): string {
     const numValue = parseFloat(value);
 
@@ -103,25 +131,25 @@ export class CustomPopoverComponent {
       return value.toString();
     }
 
-    // Si el valor ya está entre 0 y 1, convertirlo a porcentaje
+    // If the value is between 0 and 1, convert it to percentage
     if (numValue <= 1 && numValue >= 0) {
       const percentage = (numValue * 100);
-      // Redondear a máximo 2 decimales si es necesario
+      // Round to maximum 2 decimals if necessary
       const rounded = percentage % 1 === 0 ? percentage : parseFloat(percentage.toFixed(2));
       return `${rounded}%`;
     }
 
-    // Si el valor ya está como porcentaje (ej: 50), agregar el símbolo %
+    // If the value is already a percentage (e.g: 50), add the % symbol
     return `${numValue}%`;
   }
 
-  // Método para obtener color de fondo basado en el índice
+  // Method to get background color based on index
   getItemColor(index: number): string {
     const colorIndex = index % this.itemColors.length;
     return this.itemColors[colorIndex];
   }
 
-  // Método para obtener estilos de badge basado en el índice
+  // Method to get badge styles based on index
   getBadgeStyles(index: number): any {
     const colorIndex = index % this.badgeColors.length;
     const color = this.badgeColors[colorIndex];
@@ -133,24 +161,35 @@ export class CustomPopoverComponent {
     };
   }
 
-  // Método para verificar si un campo debe mostrarse como badge
+  // Method to verify if a field should be shown as badge
   shouldShowAsBadge(field: string): boolean {
     return this.showAsBadge.includes(field);
   }
 
-  // Método para obtener el valor sin formatear (para comparaciones)
+  // Method to get the value without formatting (for comparisons)
   getRawValue(item: any, field: string): any {
     if (!item || !field) return null;
     return field.split('.').reduce((obj, key) => obj?.[key], item);
   }
 
-  // Método para determinar si mostrar separador
+  // Method to determine if separator should be shown
   shouldShowSeparator(fieldIndex: number): boolean {
     return fieldIndex < this.displayFields.length - 1;
   }
 
-  // Método para obtener la clase CSS del color de fondo
+  // Method to get the CSS class for the background color
   getItemBackgroundColor(index: number): string {
     return this.getItemColor(index);
+  }
+
+  // Method to get translated text
+  getTranslatedText(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
+
+  // Method to verify if it's a holiday (with improved logic)
+  isHoliday(item: any): boolean {
+    const holidayValue = this.getRawValue(item, 'isHoliday');
+    return holidayValue === 1 || holidayValue === true || holidayValue === '1';
   }
 }
