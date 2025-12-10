@@ -136,11 +136,12 @@ export class CalendarViewComponent implements OnInit {
       const absenceText = this.translate.instant('CALENDAR.ABSENCE');
       const cell = this.calendarData[monthIndex][dayIndex];
 
-      if (!cell.hasData) {
-        this.setCellValue(monthIndex, dayIndex, absenceText);
-      } else {
+      if (cell.hasData) {
         this.calendarData[monthIndex][dayIndex].value = '';
         this.calendarData[monthIndex][dayIndex].hasData = false;
+
+      } else {
+        this.setCellValue(monthIndex, dayIndex, absenceText);
       }
     }
   }
