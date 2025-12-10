@@ -28,7 +28,7 @@ export class CustomPopoverComponent {
   @ViewChild('op') op!: Popover;
 
   // Soft colors for alternating backgrounds (8 different colors)
-  private itemColors = [
+  private readonly itemColors = [
     '#eff6ff', // soft blue
     '#f5f3ff', // soft purple
     '#f0fdf4', // soft green
@@ -40,7 +40,7 @@ export class CustomPopoverComponent {
   ];
 
   // Colors for badges (darker for contrast)
-  private badgeColors = [
+  private readonly badgeColors = [
     { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' }, // blue
     { bg: '#e9d5ff', text: '#7c3aed', border: '#c4b5fd' }, // purple
     { bg: '#bbf7d0', text: '#15803d', border: '#86efac' }, // green
@@ -102,9 +102,9 @@ export class CustomPopoverComponent {
 
   // Method to format a value as a percentage
   private formatAsPercentage(value: any): string {
-    const numValue = parseFloat(value);
+    const numValue = Number.parseFloat(value);
 
-    if (isNaN(numValue)) {
+    if (Number.isNaN(numValue)) {
       return value.toString();
     }
 
@@ -112,7 +112,7 @@ export class CustomPopoverComponent {
     if (numValue <= 1 && numValue >= 0) {
       const percentage = (numValue * 100);
       // Round to maximum 2 decimals if necessary
-      const rounded = percentage % 1 === 0 ? percentage : parseFloat(percentage.toFixed(2));
+      const rounded = percentage % 1 === 0 ? percentage : Number.parseFloat(percentage.toFixed(2));
       return `${rounded}%`;
     }
 
