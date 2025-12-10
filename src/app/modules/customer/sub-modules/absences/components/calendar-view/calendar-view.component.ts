@@ -34,10 +34,46 @@ export class CalendarViewComponent implements OnInit {
 
   // List for the popover
   defaultList: any[] = [
-    { id: 1, label: 'A', value: 'A' },
-    { id: 2, label: 'B', value: 'B' },
-    { id: 3, label: 'C', value: 'C' },
-    { id: null, label: 'N/A', value: null }
+    {
+      id: 11,
+      name: "kann nicht gebucht werden",
+      label: "Y",
+      hours: 0,
+      isHoliday: 0,
+      shareOfDay: 1
+    },
+    {
+      id: 8,
+      name: "Krankheit",
+      label: "K",
+      hours: 0,
+      isHoliday: 0,
+      shareOfDay: 1
+    },
+    {
+      id: 10,
+      name: "Sonderurlaub",
+      label: "X",
+      hours: 0,
+      isHoliday: 0,
+      shareOfDay: 1
+    },
+    {
+      id: 7,
+      name: "Urlaub",
+      label: "U",
+      hours: 0,
+      isHoliday: 1,
+      shareOfDay: 1
+    },
+    {
+      id: 9,
+      name: "Urlaub 1/2 Tag",
+      label: "H",
+      hours: 0,
+      isHoliday: 1,
+      shareOfDay: 0.5
+    }
   ];
 
   // Reference to the currently selected cell (for the popover)
