@@ -1,3 +1,18 @@
+.buttons-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .new .p-button {
+  min-width: 100px;
+}
+
+:host ::ng-deep .import .p-button {
+  width: 200px;
+}
+
 .work-packages-container {
   padding: 20px;
 
@@ -25,7 +40,7 @@
 
   th,
   td {
-    border: 1px solid #ddd;
+    border: 1px solid #000 !important;
     padding: 8px;
     text-align: center;
     min-width: 80px;
@@ -36,9 +51,12 @@
     font-weight: bold;
   }
 
-  // Colores de fondo para celdas
   .green {
     background-color: #0b8b29;
+  }
+
+  .light-green {
+    background-color: #7dff9b;
   }
 
   .orange {
@@ -54,7 +72,11 @@
   }
 
   .gray {
-    background-color: #ced4da76
+    background-color: #808080
+  }
+
+  .light-gray {
+    background-color: #D3D3D3;
   }
 }
 
@@ -130,4 +152,70 @@
   &:hover {
     background-color: #0056b3;
   }
+}
+
+// Encabezados PM
+#header-pm-bewilligt,
+#header-pm-geplant,
+#header-pm-abgerechnet,
+#header-pm-verfuegbar,
+#header-pers-kosten-bewilligt,
+#header-pers-kosten-geplant,
+#header-pers-kosten-abgerechnet,
+#header-pers-kosten-verfuegbar,
+#header-std-geplant,
+#header-std-abgerechnet,
+#header-std-verfuegbar,
+#header-ap,
+#header-ap-nr,
+#header-pers-nr,
+#header-pk-in-ap-geplant,
+#header-pk-in-ap-abgerechnet,
+#header-pk-in-ap-verfuegbar,
+#header-pk-in-ap-bewilligt,
+#header-pk-in-ap-kosten-geplant,
+#header-pk-in-ap-kosten-abgerechnet,
+#header-pk-in-ap-kosten-verfuegbar,
+#header-pk-in-ap-std-geplant,
+#header-pk-in-ap-std-abgerechnet,
+#header-pk-in-ap-std-verfuegbar {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+// Celdas PM
+.excel-table td.light-green,
+.excel-table td.orange,
+.excel-table td.red,
+.excel-table td.blue {
+  &.pm-cell {
+    color: #ffffff; // blanco
+    font-weight: bold;
+  }
+}
+
+.section-project {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0 0 1rem 0;
+  margin-left: 2rem;
+
+  .inputs-project {
+    display: flex;
+    gap: 1rem;
+
+    #projectLabel {
+      width: auto;
+      min-width: 2rem;
+      max-width: 10rem;
+    }
+
+    #projectName {
+      width: 40rem;
+      min-width: 2rem;
+      max-width: 50rem;
+    }
+  }
+
 }
