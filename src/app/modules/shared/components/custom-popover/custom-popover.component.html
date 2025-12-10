@@ -1,34 +1,66 @@
-<p-popover #op>
-    <ng-container [ngSwitch]="type">
+<div class="app-custom-popover-container">
+    <p-popover #op>
+        <ng-container [ngSwitch]="type">
 
-        <!-- TYPE: LIST -->
-        <ng-container *ngSwitchCase="'list'">
-            <div class="flex flex-col gap-3 p-3">
+            <!-- TYPE: LIST -->
+            <ng-container *ngSwitchCase="'list'">
+                <div class="popover-content">
+                    <!-- Header with translation JUST of static text -->
+                    <div class="popover-header">
+                        <h3>{{ getTranslatedText('CUSTOM_POPOVER.TITLE.SELECT') }}</h3>
+                    </div>
 
-                <span class="font-medium">Seleccionar</span>
+                    <!-- List of items -->
+                    <div class="popover-list">
+                        <div *ngFor="let item of values; let i = index" class="popover-item"
+                            [ngStyle]="{'backgroundColor': getItemBackgroundColor(i)}" (click)="onSelect(item)"
+                            (keydown.enter)="onSelect(item)">
 
-                <ul class="list-none p-0 m-0 flex flex-col">
-                    <li *ngFor="let item of values"
-                        class="px-3 py-2 rounded cursor-pointer hover:bg-surface-200 flex items-center gap-2"
-                        (keydown.enter)="onSelect(item)"
-                        (click)="onSelect(item)">
-                        <span>{{ item.label }}</span>
-                    </li>
-                </ul>
+                            <!-- Main content (values WITHOUT translation) -->
+                            <div class="item-fields-container">
+                                <ng-container *ngFor="let field of displayFields; let fieldIndex = index">
 
-            </div>
+                                    <!-- Field as badge -->
+                                    <span *ngIf="shouldShowAsBadge(field)" class="badge" [ngStyle]="getBadgeStyles(i)">
+                                        {{ getFieldValue(item, field) }} <!-- WITHOUT translation -->
+                                    </span>
+
+                                    <!-- Field as text -->
+                                    <span *ngIf="!shouldShowAsBadge(field)" class="text-field">
+                                        {{ getFieldValue(item, field) }} <!-- WITHOUT translation -->
+                                    </span>
+
+                                    <!-- Separator (except the last one) -->
+                                    <span *ngIf="shouldShowSeparator(fieldIndex)" class="separator">•</span>
+                                </ng-container>
+                            </div>
+
+                            <!-- Visual indicator for holidays (with translation JUST of static text) -->
+                            <div *ngIf="isHoliday(item)" class="holiday-indicator">
+                                <i class="pi pi-sun"></i>
+                                <span>{{ getTranslatedText('CUSTOM_POPOVER.INDICATOR.HOLIDAY') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer with translation JUST of static text -->
+                    <div class="popover-footer">
+                        <button pButton [label]="getTranslatedText('CUSTOM_POPOVER.BUTTON.CLEAR')" icon="pi pi-times"
+                            class="p-button-text p-button-sm" (click)="onSelect(null)"></button>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- DEFAULT (with translation JUST of static text) -->
+            <ng-container *ngSwitchDefault>
+                <div class="popover-default">
+                    <div class="default-icon">
+                        <i class="pi pi-inbox"></i>
+                    </div>
+                    <span>{{ getTranslatedText('CUSTOM_POPOVER.MESSAGE.NO_OPTIONS') }}</span>
+                </div>
+            </ng-container>
+
         </ng-container>
-
-        <!-- DEFAULT -->
-        <ng-container *ngSwitchDefault>
-            <div class="p-3 w-40 text-center">
-                <span class="font-medium">Contenido vacío</span>
-            </div>
-        </ng-container>
-
-    </ng-container>
-</p-popover>
-
-<!-- Botón que abre el popover -->
-<p-button icon="pi pi-ellipsis-h" styleClass="p-button-text p-button-sm w-full h-full" (click)="toggle($event)" (keydown.enter)="toggle($event)">
-</p-button>
+    </p-popover>
+</div>

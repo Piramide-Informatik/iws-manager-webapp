@@ -1,1 +1,225 @@
 @use "variables" as *;
+
+:host {
+    display: contents;
+}
+
+.app-custom-popover-container {
+    ::ng-deep .p-popover {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+            0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        max-width: 400px;
+        min-width: 280px;
+
+        .p-popover-content {
+            padding: 0;
+        }
+    }
+}
+
+.popover-content {
+    padding: 1rem;
+}
+
+.popover-header {
+    margin-bottom: 1rem;
+
+    h3 {
+        color: #374151;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 0;
+    }
+}
+
+.popover-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f9fafb;
+        border-radius: 3px;
+        margin: 4px 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 3px;
+
+        &:hover {
+            background: #9ca3af;
+        }
+    }
+}
+
+.popover-item {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &:hover {
+        border-color: #e5e7eb;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        filter: brightness(0.95);
+    }
+
+    &:focus,
+    &:focus-visible {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+    }
+}
+
+.item-fields-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border-width: 2px;
+    border-style: solid;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+
+    .popover-item:hover & {
+        transform: scale(1.05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+// Text field
+.text-field {
+    color: #1f2937;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.5;
+
+    .popover-item:hover & {
+        color: #111827;
+    }
+}
+
+// Separator
+.separator {
+    color: #d1d5db;
+    font-size: 1.25rem;
+    line-height: 1;
+    user-select: none;
+}
+
+// Holiday indicator
+.holiday-indicator {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #fde68a;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+        color: #f59e0b;
+        font-size: 0.875rem;
+    }
+
+    span {
+        color: #92400e;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+}
+
+// Footer styles
+.popover-footer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+
+    button {
+        color: #6b7280;
+        width: 100%;
+        justify-content: center;
+
+        &:hover {
+            color: #374151;
+            background-color: #f3f4f6;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+    }
+}
+
+// Default styles
+.popover-default {
+    padding: 2rem;
+    text-align: center;
+    min-width: 200px;
+
+    .default-icon {
+        margin-bottom: 1rem;
+
+        i {
+            color: #9ca3af;
+            font-size: 2.5rem;
+        }
+    }
+
+    span {
+        color: #6b7280;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: #9ca3af;
+        font-size: 0.875rem;
+        margin: 0;
+    }
+}
+
+// Responsive
+@media (max-width: 640px) {
+    .popover-content {
+        padding: 0.75rem;
+    }
+
+    .popover-item {
+        padding: 0.75rem;
+    }
+
+    .badge {
+        padding: 0.125rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .text-field {
+        font-size: 0.8125rem;
+    }
+}

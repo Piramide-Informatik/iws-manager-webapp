@@ -344,6 +344,20 @@
     "ACCEPT_LABEL": "Ja",
     "REJECT_LABEL": "Nein"
   },
+  "CUSTOM_POPOVER": {
+    "TITLE": {
+      "SELECT": "Auswählen"
+    },
+    "BUTTON": {
+      "CLEAR": "Löschen"
+    },
+    "INDICATOR": {
+      "HOLIDAY": "Feiertag"
+    },
+    "MESSAGE": {
+      "NO_OPTIONS": "Keine Optionen verfügbar"
+    }
+  },
   "CUSTOMERS": {
     "TABLE": {
       "CUSTOMER_ID": "Nr.",

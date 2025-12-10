@@ -9,7 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
-
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,12 +17,13 @@ import { CalendarViewComponent } from './components/calendar-view/calendar-view.
     CalendarViewComponent
   ],
   imports: [
-    CommonModule,
     AbsencesRoutingModule,
+    CommonModule,
     MasterDataModule,
     TranslatePipe,
     ReactiveFormsModule,
     SelectModule,
+    SharedModule,
     InputText,
     ButtonModule
   ]
