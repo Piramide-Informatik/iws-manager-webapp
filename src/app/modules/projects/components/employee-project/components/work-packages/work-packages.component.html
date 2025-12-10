@@ -1,11 +1,11 @@
 <div class="work-packages-container">
-    <h2>Work Packages</h2>
-
-    <div class="test-message" *ngIf="testMessage">
-        <p>{{ testMessage }}</p>
+    <div class="section-project">
+        <label for="projectLabel">{{ 'PROJECTS.FORM.PROJECT' | translate }}</label>
+        <div class="inputs-project">
+            <input pInputText type="text" id="projectLabel" value="" disabled>
+            <input pInputText type="text" id="projectName" value="" disabled>
+        </div>
     </div>
-
-
     <div class="table-container">
         <table class="excel-table">
             <thead>
@@ -13,109 +13,97 @@
                     <th rowspan="2" class="gray" id="header-ap">AP</th>
                     <th rowspan="2" class="gray" id="header-ap-nr">AP-Nr</th>
                     <th rowspan="2" class="gray" id="header-pers-nr">Pers.Nr</th>
-                    <th colspan="2" id="header-bewilligt">bewilligt</th>
-                    <th colspan="3" id="header-geplant">geplant</th>
-                    <th colspan="3" id="header-abgerechnet">abgerechnet</th>
+                    <th colspan="3" id="header-bewilligt">bewilligt</th>
+                    <th colspan="4" id="header-geplant">geplant</th>
+                    <th colspan="4" id="header-abgerechnet">abgerechnet</th>
                     <th colspan="3" id="header-verfuegbar">verfügbar</th>
                 </tr>
                 <tr>
                     <th class="green" id="header-pm-bewilligt">PM</th>
                     <th class="green" id="header-pers-kosten-bewilligt">Pers.Kosten</th>
+                    <th class="green" id="header-pk-in-ap-bewilligt">PK inAP</th>
                     <th class="orange" id="header-pm-geplant">PM</th>
                     <th class="orange" id="header-std-geplant">Std.</th>
                     <th class="orange" id="header-pers-kosten-geplant">Pers.Kosten</th>
+                    <th class="orange" id="header-pk-in-ap-geplant">PK inAP</th>
                     <th class="red" id="header-pm-abgerechnet">PM</th>
                     <th class="red" id="header-std-abgerechnet">Std.</th>
                     <th class="red" id="header-pers-kosten-abgerechnet">Pers.Kosten</th>
+                    <th class="red" id="header-pk-in-ap-abgerechnet">PK inAP</th>
                     <th class="blue" id="header-pm-verfuegbar">PM</th>
                     <th class="blue" id="header-std-verfuegbar">Std.</th>
-                    <th class="blue" id="header-pers-kosten-verfuegbar">Pers.Kosten</th>
+                    <th class="blue" id="header-pk-in-ap-verfuegbar">PK inAP</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr *ngFor="let row of rows; let i = index">
-                    <!-- AP -->
-                    <td headers="header-ap">
-                        <span *ngIf="editingRowIndex !== i">{{ row.ap }}</span>
-                        <input *ngIf="editingRowIndex === i" type="text" [(ngModel)]="row.ap" class="input-field">
-                    </td>
+                <ng-container *ngFor="let row of rows; let i = index">
+                    <!-- Fila principal -->
+                    <tr>
+                        <td [attr.rowspan]="row.persNr?.length || 1">{{ row.ap }}</td>
+                        <td [attr.rowspan]="row.persNr?.length || 1">{{ row.apNr }}</td>
 
-                    <!-- AP-Nr -->
-                    <td headers="header-ap-nr">
-                        <span *ngIf="editingRowIndex !== i">{{ row.apNr }}</span>
-                        <input *ngIf="editingRowIndex === i" type="text" [(ngModel)]="row.apNr" class="input-field">
-                    </td>
+                        <!-- Pers.Nr -->
+                        <td>{{ row.persNr[0] }}</td>
 
-                    <!-- Pers.Nr -->
-                    <td headers="header-pers-nr">
-                        <span *ngIf="editingRowIndex !== i">{{ row.persNr }}</span>
-                        <input *ngIf="editingRowIndex === i" type="text" [(ngModel)]="row.persNr" class="input-field">
-                    </td>
+                        <!-- bewilligt -->
+                        <td class="light-green">{{ formatNumber(row.pmBewilligt[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenBewilligt[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApBewilligt?.[0]) }}</td>
 
-                    <!-- bewilligt - PM -->
-                    <td headers="header-pm-bewilligt" class="green">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.pmBewilligt) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.pmBewilligt"
-                            (input)="onInputChange()" class="input-field ">
-                    </td>
+                        <!-- geplant -->
+                        <td class="light-green">{{ formatNumber(row.pmGeplant[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.stdGeplant[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenGeplant[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApGeplant?.[0]) }}</td>
 
-                    <!-- bewilligt - Pers.Kosten -->
-                    <td headers="header-pers-kosten-bewilligt">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.persKostenBewilligt) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01"
-                            [(ngModel)]="row.persKostenBewilligt" (input)="onInputChange()" class="input-field ">
-                    </td>
+                        <!-- abgerechnet -->
+                        <td class="light-gray">{{ formatNumber(row.pmAbgerechnet[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.stdAbgerechnet[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenAbgerechnet[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApAbgerechnet?.[0]) }}</td>
 
-                    <!-- geplant - PM -->
-                    <td headers="header-pm-geplant" class="green">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.pmGeplant) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.pmGeplant"
-                            (input)="onInputChange()" class="input-field ">
-                    </td>
+                        <!-- verfügbar -->
+                        <td class="light-gray">{{ formatNumber(row.pmVerfuegbar[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.stdVerfuegbar[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApVerfuegbar?.[0]) }}</td>
+                    </tr>
 
-                    <!-- geplant - Std. -->
-                    <td headers="header-std-geplant">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.stdGeplant) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.stdGeplant"
-                            (input)="onInputChange()" class="input-field ">
-                    </td>
+                    <!-- Subfilas -->
+                    <tr *ngFor="let _ of row.persNr.slice(1); let j = index">
+                        <td>{{ row.persNr[j + 1] }}</td>
 
-                    <!-- geplant - Pers.Kosten -->
-                    <td headers="header-pers-kosten-geplant">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.persKostenGeplant) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01"
-                            [(ngModel)]="row.persKostenGeplant" (input)="onInputChange()" class="input-field ">
-                    </td>
+                        <!-- bewilligt -->
+                        <td class="light-green">{{ formatNumber(row.pmBewilligt[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenBewilligt[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApBewilligt?.[j + 1]) }}</td>
 
-                    <!-- abgerechnet - PM -->
-                    <td headers="header-pm-abgerechnet" class="green">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.pmAbgerechnet) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.pmAbgerechnet"
-                            (input)="onInputChange()" class="input-field ">
-                    </td>
+                        <!-- geplant -->
+                        <td class="light-green">{{ formatNumber(row.pmGeplant[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.stdGeplant[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenGeplant[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApGeplant?.[j + 1]) }}</td>
 
-                    <!-- abgerechnet - Std. -->
-                    <td headers="header-std-abgerechnet">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.stdAbgerechnet) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01" [(ngModel)]="row.stdAbgerechnet"
-                            (input)="onInputChange()" class="input-field ">
-                    </td>
+                        <!-- abgerechnet -->
+                        <td class="light-gray">{{ formatNumber(row.pmAbgerechnet[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.stdAbgerechnet[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenAbgerechnet[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApAbgerechnet?.[j + 1]) }}</td>
 
-                    <!-- abgerechnet - Pers.Kosten -->
-                    <td headers="header-pers-kosten-abgerechnet">
-                        <span *ngIf="editingRowIndex !== i">{{ formatNumber(row.persKostenAbgerechnet) }}</span>
-                        <input *ngIf="editingRowIndex === i" type="number" step="0.01"
-                            [(ngModel)]="row.persKostenAbgerechnet" (input)="onInputChange()" class="input-field ">
-                    </td>
-
-                    <!-- verfügbar (solo lectura) -->
-                    <td headers="header-pm-verfuegbar" class="green">{{ formatNumber(row.pmVerfuegbar) }}</td>
-                    <td headers="header-std-verfuegbar">{{ formatNumber(row.stdVerfuegbar) }}</td>
-                    <td headers="header-pers-kosten-verfuegbar">{{ formatNumber(row.persKostenVerfuegbar) }}</td>
-                </tr>
+                        <!-- verfügbar -->
+                        <td class="light-gray">{{ formatNumber(row.pmVerfuegbar[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.stdVerfuegbar[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.pkInApVerfuegbar?.[j + 1]) }}</td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>
-    <button (click)="addRow()" class="btn-add">➕ Añadir Fila</button>
+    <div class="flex gap-2 mt-4 buttons-left">
+        <p-button type="submit" class="new" size="small" [label]="'EMPLOYEE.WORK_PACKAGES.NEW' | translate"
+            [loading]="isLoading" [disabled]="isLoading"></p-button>
+
+        <p-button type="button" class="import" size="small" [label]="'EMPLOYEE.WORK_PACKAGES.IMPORT' | translate"
+            [disabled]="isLoading"></p-button>
+    </div>
 </div>
