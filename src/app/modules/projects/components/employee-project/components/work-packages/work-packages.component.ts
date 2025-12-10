@@ -30,8 +30,8 @@ export class WorkPackagesComponent implements OnInit {
         'GHI789',
       ],
       pmBewilligt: [
-        1.50,
-        2.50,
+        1.5,
+        2.5,
         0.75,
       ],
       persKostenBewilligt: [
@@ -48,134 +48,6 @@ export class WorkPackagesComponent implements OnInit {
         240,
         400,
         120,
-      ],
-      persKostenGeplant: [
-        9500,
-        6500,
-        3000,
-      ],
-      pmAbgerechnet: [
-        1.5,
-        2.5,
-        0.75,
-      ],
-      stdAbgerechnet: [
-        880,
-        400,
-        3000,
-      ],
-      persKostenAbgerechnet: [
-        6500,
-        3000,
-        1500,
-      ],
-      pmVerfuegbar: [
-        2.5,
-        400,
-        1500,
-      ],
-      stdVerfuegbar: [
-        400,
-        1500,
-        1500,
-      ],
-      persKostenVerfuegbar: [
-        3000,
-        1500,
-        1500,
-      ],
-    },
-    {
-      ap: 'Ermittlung und Analyse',
-      apNr: 'AP2',
-      persNr: [
-        'ABC123',
-        'DEF456',
-        'GHI789',
-      ],
-      pmBewilligt: [
-        1.50,
-        2.50,
-        0.75,
-      ],
-      persKostenBewilligt: [
-        1250,
-        9500,
-        6500,
-      ],
-      pmGeplant: [
-        1.5,
-        2.5,
-        0.75,
-      ],
-      stdGeplant: [
-        1280,
-        880,
-        400,
-      ],
-      persKostenGeplant: [
-        9500,
-        6500,
-        3000,
-      ],
-      pmAbgerechnet: [
-        1.5,
-        2.5,
-        0.75,
-      ],
-      stdAbgerechnet: [
-        880,
-        400,
-        3000,
-      ],
-      persKostenAbgerechnet: [
-        6500,
-        3000,
-        1500,
-      ],
-      pmVerfuegbar: [
-        2.5,
-        400,
-        1500,
-      ],
-      stdVerfuegbar: [
-        400,
-        1500,
-        1500,
-      ],
-      persKostenVerfuegbar: [
-        3000,
-        1500,
-        1500,
-      ],
-    },
-    {
-      ap: 'Ermittlung und Analyse',
-      apNr: 'AP3',
-      persNr: [
-        'ABC123',
-        'DEF456',
-        'GHI789',
-      ],
-      pmBewilligt: [
-        1.50,
-        2.50,
-        0.75,
-      ],
-      persKostenBewilligt: [
-        1250,
-        9500,
-        6500,
-      ],
-      pmGeplant: [
-        1.5,
-        2.5,
-        0.75,
-      ],
-      stdGeplant: [
-        1280,
-        880,
-        400,
       ],
       persKostenGeplant: [
         9500,
