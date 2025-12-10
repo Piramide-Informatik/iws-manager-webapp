@@ -80,7 +80,7 @@ export class CalendarViewComponent implements OnInit {
 
   // Method to add data to a specific cell
   setCellValue(monthIndex: number, dayIndex: number, value: any): void {
-    if (this.calendarData[monthIndex] && this.calendarData[monthIndex][dayIndex]) {
+    if (this.calendarData[monthIndex]?.[dayIndex]) {
       this.calendarData[monthIndex][dayIndex].value = value;
       this.calendarData[monthIndex][dayIndex].hasData = true;
     }
