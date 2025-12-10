@@ -14,7 +14,7 @@
                     <div class="popover-list">
                         <div *ngFor="let item of values; let i = index" class="popover-item"
                             [ngStyle]="{'backgroundColor': getItemBackgroundColor(i)}" (click)="onSelect(item)"
-                            (keydown.enter)="onSelect(item)" tabindex="0">
+                            (keydown.enter)="onSelect(item)">
 
                             <!-- Main content (values WITHOUT translation) -->
                             <div class="item-fields-container">
