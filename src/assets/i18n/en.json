@@ -158,7 +158,8 @@
     "SELECT_ONE": "Choose One",
     "ANY": "Any",
     "NO_DATA_AVAILABLE": "No data available",
-    "SELECT_CONTACT": "Select a Contact"
+    "SELECT_CONTACT": "Select a Contact",
+    "ITEMS_SELECTED": "{0} items selected"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries",

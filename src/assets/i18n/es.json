@@ -158,7 +158,8 @@
     "SELECT_ONE": "Seleccione uno",
     "ANY": "Seleccione alguno",
     "NO_DATA_AVAILABLE": "No hay datos disponibles",
-    "SELECT_CONTACT": "Seleccionar un Contacto"
+    "SELECT_CONTACT": "Seleccionar un Contacto",
+    "ITEMS_SELECTED": "{0} items seleccionados"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Mostrando de {first} a {last} de {totalRecords} entradas",
