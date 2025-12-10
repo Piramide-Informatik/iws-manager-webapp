@@ -441,6 +441,11 @@
       "MAX_HOURS_PER_DAY": "Max. Hours/Day",
       "HOURLY_RATE": "Hourly Rate",
       "SPECIAL_PAYMENT": "Special Payment"
+    },
+    "WORK_PACKAGES": {
+      "WORK_PACKAGE": "Work Package",
+      "NEW": "New",
+      "IMPORT": "Import PM for Employee"
     }
   },
   "CONTACT": {
