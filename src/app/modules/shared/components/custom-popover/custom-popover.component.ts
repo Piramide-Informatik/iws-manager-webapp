@@ -14,10 +14,10 @@ export class CustomPopoverComponent {
   @Input() type: 'list' | 'default' = 'default';
   @Input() values: any[] = [];
 
-  // Attributes to show in the popover (in the desired order)
+  // Attributes to display in the popover (in the desired order)
   @Input() displayFields: string[] = ['name', 'label'];
 
-  // Fields to show as badges (optional)
+  // Fields to display as badges (optional)
   @Input() showAsBadge: string[] = ['label'];
 
   // Fields to format as percentage (optional)
@@ -27,28 +27,28 @@ export class CustomPopoverComponent {
 
   @ViewChild('op') op!: Popover;
 
-  // Colors for items (8 different colors)
+  // Soft colors for alternating backgrounds (8 different colors)
   private itemColors = [
-    '#eff6ff', // blue
-    '#f5f3ff', // purple
-    '#f0fdf4', // green
-    '#fefce8', // yellow
-    '#fdf2f8', // pink
-    '#eef2ff', // indigo
-    '#f0fdfa', // teal
-    '#fff7ed'  // orange
+    '#eff6ff', // soft blue
+    '#f5f3ff', // soft purple
+    '#f0fdf4', // soft green
+    '#fefce8', // soft yellow
+    '#fdf2f8', // soft pink
+    '#eef2ff', // soft indigo
+    '#f0fdfa', // soft teal
+    '#fff7ed'  // soft orange
   ];
 
   // Colors for badges (darker for contrast)
   private badgeColors = [
-    { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' }, // azul
+    { bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' }, // blue
     { bg: '#e9d5ff', text: '#7c3aed', border: '#c4b5fd' }, // purple
     { bg: '#bbf7d0', text: '#15803d', border: '#86efac' }, // green
     { bg: '#fef3c7', text: '#92400e', border: '#fcd34d' }, // yellow
     { bg: '#fce7f3', text: '#be185d', border: '#f9a8d4' }, // pink
     { bg: '#e0e7ff', text: '#3730a3', border: '#a5b4fc' }, // indigo
     { bg: '#ccfbf1', text: '#0f766e', border: '#5eead4' }, // teal
-    { bg: '#fed7aa', text: '#c2410c', border: '#fdba74' }  // orange
+    { bg: '#fed7aa', text: '#c2410c', border: '#fdba74' }  // naranja
   ];
 
   toggle(event: Event) {
@@ -60,42 +60,18 @@ export class CustomPopoverComponent {
     this.op.hide();
   }
 
-  // Method to get field value with translation if applies
+  // Method to get the value of a field (without value translation)
   getFieldValue(item: any, field: string): string {
     if (!item || !field) return '';
 
     // Access to nested properties (e.g: 'user.name')
     const value = field.split('.').reduce((obj, key) => obj?.[key], item);
 
-    // Try to translate the value (for fields like 'name' that can have translations)
-    const translatedValue = this.tryTranslateValue(field, value);
-    if (translatedValue !== null) {
-      return this.formatValue(field, translatedValue);
-    }
-
-    // If there is no translation, format normally
+    // Format values according to the field type (without value translation)
     return this.formatValue(field, value);
   }
 
-  // Method to try translate a value
-  private tryTranslateValue(field: string, value: any): string | null {
-    if (!value) return null;
-
-    // For specific fields that we know have translations
-    if (field === 'name' || field === 'label') {
-      const translationKey = `CUSTOM_POPOVER.${field.toUpperCase()}.${value}`;
-      const translation = this.translate.instant(translationKey);
-
-      // Si la traducción existe y no es igual a la clave, usar la traducción
-      if (translation !== translationKey) {
-        return translation;
-      }
-    }
-
-    return null;
-  }
-
-  // Method to format value
+  // Method to format values (without value translation)
   private formatValue(field: string, value: any): string {
     if (value === null || value === undefined) return '';
 
@@ -104,7 +80,7 @@ export class CustomPopoverComponent {
       return this.formatAsPercentage(value);
     }
 
-    // Format booleans (isHoliday) with translated icons
+    // Format boolean (isHoliday) with icons (without translation)
     if (field === 'isHoliday') {
       return value ? '✔' : '✘';
     }
@@ -115,15 +91,16 @@ export class CustomPopoverComponent {
       return `${value}h`;
     }
 
+    // Return the value as it is (without translation)
     return value.toString();
   }
 
-  // Method to verify if a field should be formatted as percentage
+  // Method to check if a field should be formatted as a percentage
   private isPercentageField(field: string): boolean {
     return this.percentageFields.includes(field);
   }
 
-  // Method to format a value as percentage
+  // Method to format a value as a percentage
   private formatAsPercentage(value: any): string {
     const numValue = parseFloat(value);
 
@@ -131,7 +108,7 @@ export class CustomPopoverComponent {
       return value.toString();
     }
 
-    // If the value is between 0 and 1, convert it to percentage
+    // If the value is between 0 and 1, convert it to a percentage
     if (numValue <= 1 && numValue >= 0) {
       const percentage = (numValue * 100);
       // Round to maximum 2 decimals if necessary
@@ -143,13 +120,13 @@ export class CustomPopoverComponent {
     return `${numValue}%`;
   }
 
-  // Method to get background color based on index
+  // Method to get the background color of an item based on the index
   getItemColor(index: number): string {
     const colorIndex = index % this.itemColors.length;
     return this.itemColors[colorIndex];
   }
 
-  // Method to get badge styles based on index
+  // Method to get the styles of a badge based on the index
   getBadgeStyles(index: number): any {
     const colorIndex = index % this.badgeColors.length;
     const color = this.badgeColors[colorIndex];
@@ -161,33 +138,33 @@ export class CustomPopoverComponent {
     };
   }
 
-  // Method to verify if a field should be shown as badge
+  // Method to check if a field should be displayed as a badge
   shouldShowAsBadge(field: string): boolean {
     return this.showAsBadge.includes(field);
   }
 
-  // Method to get the value without formatting (for comparisons)
+  // Method to get the raw value of a field (for comparisons)
   getRawValue(item: any, field: string): any {
     if (!item || !field) return null;
     return field.split('.').reduce((obj, key) => obj?.[key], item);
   }
 
-  // Method to determine if separator should be shown
+  // Method to determine if a separator should be shown
   shouldShowSeparator(fieldIndex: number): boolean {
     return fieldIndex < this.displayFields.length - 1;
   }
 
-  // Method to get the CSS class for the background color
+  // Method to get the background color of an item
   getItemBackgroundColor(index: number): string {
     return this.getItemColor(index);
   }
 
-  // Method to get translated text
+  // Method to get translated text (ONLY for static texts)
   getTranslatedText(key: string, params?: any): string {
     return this.translate.instant(key, params);
   }
 
-  // Method to verify if it's a holiday (with improved logic)
+  // Method to check if the item is a holiday
   isHoliday(item: any): boolean {
     const holidayValue = this.getRawValue(item, 'isHoliday');
     return holidayValue === 1 || holidayValue === true || holidayValue === '1';

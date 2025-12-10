@@ -4,59 +4,59 @@
         <!-- TYPE: LIST -->
         <ng-container *ngSwitchCase="'list'">
             <div class="popover-content">
-                <!-- Header -->
+                <!-- Header with translation -->
                 <div class="popover-header">
-                    <h3>Seleccionar</h3>
+                    <h3>{{ getTranslatedText('CUSTOM_POPOVER.TITLE.SELECT') }}</h3>
                 </div>
 
-                <!-- Lista de items -->
+                <!-- List of items -->
                 <div class="popover-list">
                     <div *ngFor="let item of values; let i = index" class="popover-item"
                         [ngStyle]="{'backgroundColor': getItemBackgroundColor(i)}" (click)="onSelect(item)"
                         (keydown.enter)="onSelect(item)" tabindex="0">
 
-                        <!-- Contenido principal -->
+                        <!-- Main content -->
                         <div class="item-fields-container">
                             <ng-container *ngFor="let field of displayFields; let fieldIndex = index">
 
-                                <!-- Campo como badge -->
+                                <!-- Field as badge -->
                                 <span *ngIf="shouldShowAsBadge(field)" class="badge" [ngStyle]="getBadgeStyles(i)">
                                     {{ getFieldValue(item, field) }}
                                 </span>
 
-                                <!-- Campo como texto normal -->
+                                <!-- Field as text -->
                                 <span *ngIf="!shouldShowAsBadge(field)" class="text-field">
                                     {{ getFieldValue(item, field) }}
                                 </span>
 
-                                <!-- Separador (excepto el último) -->
+                                <!-- Separator (except the last one)-->
                                 <span *ngIf="shouldShowSeparator(fieldIndex)" class="separator">•</span>
                             </ng-container>
                         </div>
 
-                        <!-- Indicador visual para feriados -->
-                        <div *ngIf="getRawValue(item, 'isHoliday') === 1" class="holiday-indicator">
+                        <!-- Visual indicator for holidays (with translation)-->
+                        <div *ngIf="isHoliday(item)" class="holiday-indicator">
                             <i class="pi pi-sun"></i>
-                            <span>Es feriado</span>
+                            <span>{{ getTranslatedText('CUSTOM_POPOVER.INDICATOR.HOLIDAY') }}</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Footer -->
+                <!-- Footer with translation -->
                 <div class="popover-footer">
-                    <button pButton label="Limpiar" icon="pi pi-times" class="p-button-text p-button-sm"
-                        (click)="onSelect(null)"></button>
+                    <button pButton [label]="getTranslatedText('CUSTOM_POPOVER.BUTTON.CLEAR')" icon="pi pi-times"
+                        class="p-button-text p-button-sm" (click)="onSelect(null)"></button>
                 </div>
             </div>
         </ng-container>
 
-        <!-- DEFAULT -->
+        <!-- DEFAULT (with translation) -->
         <ng-container *ngSwitchDefault>
             <div class="popover-default">
                 <div class="default-icon">
                     <i class="pi pi-inbox"></i>
                 </div>
-                <span>Sin opciones disponibles</span>
+                <span>{{ getTranslatedText('CUSTOM_POPOVER.MESSAGE.NO_OPTIONS') }}</span>
             </div>
         </ng-container>
 
