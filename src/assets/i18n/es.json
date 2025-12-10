@@ -181,6 +181,38 @@
     "ASSIGN_MORE_EMPLOYEES": "Asignar Más Empleados",
     "IMPORT_ABSENCES": "Importar Ausencias"
   },
+  "CALENDAR": {
+    "TITLE": "Calendario de Ausencias {{YEAR}}",
+    "MONTH": {
+      "JANUARY": "Enero",
+      "FEBRUARY": "Febrero",
+      "MARCH": "Marzo",
+      "APRIL": "Abril",
+      "MAY": "Mayo",
+      "JUNE": "Junio",
+      "JULY": "Julio",
+      "AUGUST": "Agosto",
+      "SEPTEMBER": "Septiembre",
+      "OCTOBER": "Octubre",
+      "NOVEMBER": "Noviembre",
+      "DECEMBER": "Diciembre"
+    },
+    "ERROR": {
+      "INVALID_CELL": "Celda no válida",
+      "INVALID_DAY": "{{MONTH}} tiene {{DAYS}} días. Día {{DAY}} no existe."
+    },
+    "CELL_INFO": {
+      "EMPTY": "{{MONTH}} - Día {{DAY}} (Vacío)",
+      "WITH_DATA": "{{MONTH}} - Día {{DAY}}: {{VALUE}}"
+    },
+    "ABSENCE": "Ausencia",
+    "INVALID_DAY_INDICATOR": "-",
+    "LEGEND": {
+      "VALID_DAY": "Día válido",
+      "INVALID_DAY": "Día no válido para este mes",
+      "HAS_DATA": "Con datos/ausencia"
+    }
+  },
   "MESSAGE": {
     "SUCCESS": "ÉXITO",
     "ERROR": "ERROR",
@@ -403,6 +435,11 @@
     },
     "VALIDATION": {
       "EMPLOYEE_ID_EXISTS": "ID empleado ya existe"
+    },
+    "WORK_PACKAGES": {
+      "WORK_PACKAGE": "Paquete de Trabajo",
+      "NEW": "Nuevo",
+      "IMPORT": "Importar PM para Empleado"
     }
   },
   "CONTACT": {
