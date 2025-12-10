@@ -25,7 +25,8 @@
                 <!-- Day cells for this month -->
                 <div *ngFor="let day of days; let dayIndex = index" class="calendar-cell"
                     [ngClass]="getCellClass(monthIndex, dayIndex)" (click)="onCellClick(monthIndex, dayIndex)"
-                    onkeyup="onCellClick(monthIndex, dayIndex)" [title]="getCellTitle(monthIndex, dayIndex)">
+                    role="button" onkeyup="onCellClick(monthIndex, dayIndex)"
+                    [title]="getCellTitle(monthIndex, dayIndex)">
                     <!-- Show cell content if it exists -->
                     <div *ngIf="calendarData[monthIndex] && calendarData[monthIndex][dayIndex]?.value">
                         {{ calendarData[monthIndex][dayIndex].value }}
