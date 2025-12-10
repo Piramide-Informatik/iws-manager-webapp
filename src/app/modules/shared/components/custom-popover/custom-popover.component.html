@@ -4,7 +4,7 @@
         <!-- TYPE: LIST -->
         <ng-container *ngSwitchCase="'list'">
             <div class="popover-content">
-                <!-- Header with translation -->
+                <!-- Header with translation JUST of static text -->
                 <div class="popover-header">
                     <h3>{{ getTranslatedText('CUSTOM_POPOVER.TITLE.SELECT') }}</h3>
                 </div>
@@ -15,26 +15,26 @@
                         [ngStyle]="{'backgroundColor': getItemBackgroundColor(i)}" (click)="onSelect(item)"
                         (keydown.enter)="onSelect(item)" tabindex="0">
 
-                        <!-- Main content -->
+                        <!-- Main content (values WITHOUT translation) -->
                         <div class="item-fields-container">
                             <ng-container *ngFor="let field of displayFields; let fieldIndex = index">
 
                                 <!-- Field as badge -->
                                 <span *ngIf="shouldShowAsBadge(field)" class="badge" [ngStyle]="getBadgeStyles(i)">
-                                    {{ getFieldValue(item, field) }}
+                                    {{ getFieldValue(item, field) }} <!-- WITHOUT translation -->
                                 </span>
 
                                 <!-- Field as text -->
                                 <span *ngIf="!shouldShowAsBadge(field)" class="text-field">
-                                    {{ getFieldValue(item, field) }}
+                                    {{ getFieldValue(item, field) }} <!-- WITHOUT translation -->
                                 </span>
 
-                                <!-- Separator (except the last one)-->
+                                <!-- Separator (except the last one) -->
                                 <span *ngIf="shouldShowSeparator(fieldIndex)" class="separator">•</span>
                             </ng-container>
                         </div>
 
-                        <!-- Visual indicator for holidays (with translation)-->
+                        <!-- Visual indicator for holidays (with translation JUST of static text) -->
                         <div *ngIf="isHoliday(item)" class="holiday-indicator">
                             <i class="pi pi-sun"></i>
                             <span>{{ getTranslatedText('CUSTOM_POPOVER.INDICATOR.HOLIDAY') }}</span>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <!-- Footer with translation -->
+                <!-- Footer with translation JUST of static text -->
                 <div class="popover-footer">
                     <button pButton [label]="getTranslatedText('CUSTOM_POPOVER.BUTTON.CLEAR')" icon="pi pi-times"
                         class="p-button-text p-button-sm" (click)="onSelect(null)"></button>
@@ -50,7 +50,7 @@
             </div>
         </ng-container>
 
-        <!-- DEFAULT (with translation) -->
+        <!-- DEFAULT (with translation JUST of static text) -->
         <ng-container *ngSwitchDefault>
             <div class="popover-default">
                 <div class="default-icon">
