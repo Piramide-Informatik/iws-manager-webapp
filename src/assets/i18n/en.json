@@ -181,6 +181,38 @@
     "ASSIGN_MORE_EMPLOYEES": "Assign More Employees",
     "IMPORT_ABSENCES": "Import Absences"
   },
+  "CALENDAR": {
+    "TITLE": "Absence Calendar {{YEAR}}",
+    "MONTH": {
+      "JANUARY": "January",
+      "FEBRUARY": "February",
+      "MARCH": "March",
+      "APRIL": "April",
+      "MAY": "May",
+      "JUNE": "June",
+      "JULY": "July",
+      "AUGUST": "August",
+      "SEPTEMBER": "September",
+      "OCTOBER": "October",
+      "NOVEMBER": "November",
+      "DECEMBER": "December"
+    },
+    "ERROR": {
+      "INVALID_CELL": "Invalid cell",
+      "INVALID_DAY": "{{MONTH}} has {{DAYS}} days. Day {{DAY}} does not exist."
+    },
+    "CELL_INFO": {
+      "EMPTY": "{{MONTH}} - Day {{DAY}} (Empty)",
+      "WITH_DATA": "{{MONTH}} - Day {{DAY}}: {{VALUE}}"
+    },
+    "ABSENCE": "Absence",
+    "INVALID_DAY_INDICATOR": "-",
+    "LEGEND": {
+      "VALID_DAY": "Valid day",
+      "INVALID_DAY": "Day not valid for this month",
+      "HAS_DATA": "With data/absence"
+    }
+  },
   "MESSAGE": {
     "SUCCESS": "SUCCESS",
     "ERROR": "ERROR",
@@ -409,6 +441,11 @@
       "MAX_HOURS_PER_DAY": "Max. Hours/Day",
       "HOURLY_RATE": "Hourly Rate",
       "SPECIAL_PAYMENT": "Special Payment"
+    },
+    "WORK_PACKAGES": {
+      "WORK_PACKAGE": "Work Package",
+      "NEW": "New",
+      "IMPORT": "Import PM for Employee"
     }
   },
   "CONTACT": {
@@ -502,7 +539,7 @@
       "ADMIN_ORDER_NUMBER": "Administration Order / No."
     },
     "PROJECTS_DIALOG_REMOVE": "Delete Project",
-    "PROJECTS_DIALOG_CREATE": "New Project" 
+    "PROJECTS_DIALOG_CREATE": "New Project"
   },
   "PROJECT_PACKAGES": {
     "TABLE": {
@@ -519,6 +556,11 @@
       "YEAR": "Year",
       "BEGINNING": "Beginning",
       "END": "End"
+    }
+  },
+  "ORDER_PROYECT": {
+    "TABLE": {
+      "NUMBER": "Number"
     }
   },
   "ORDERS": {

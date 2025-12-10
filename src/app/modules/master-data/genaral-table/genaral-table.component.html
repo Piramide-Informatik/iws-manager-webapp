@@ -8,7 +8,7 @@
     [sortField]="sortField" [sortOrder]="sortOrder">
     <ng-template #header let-columns>
       <tr>
-        <th id="hide-columns" class="thead-bg-blue">
+        <th *ngIf="showButtonsEditDelete" id="hide-columns" class="thead-bg-blue">
           <p-multiselect #hiddenColumns [options]="this.columns"
             [ngModel]="this.userPreferences[this.tableId]?.displayedColumns" (onChange)="changeSelect($event)"
             optionLabel="header" [maxSelectedLabels]="0" [appendTo]="'body'" dropdownIcon="pi pi-eye" />
@@ -21,7 +21,7 @@
         </th>
       </tr>
       <tr *ngIf="filterByColumns">
-        <th scope="col"></th>
+        <th scope="col" *ngIf="showButtonsEditDelete"></th>
         <th scope="col" *ngFor="let col of columns; let i = index">
           @if(col.filter && col.filter.type === 'multiple') {
           <p-columnFilter [field]="col.field" matchMode="in" [showMenu]="false">
@@ -86,7 +86,7 @@
           'odd-row': i % 2 !== 0,
           'even-row': i % 2 === 0
         }">
-        <td>
+        <td *ngIf="showButtonsEditDelete">
           <div class="flex justify-content-center gap-2">
             <button pButton icon="pi pi-pencil" type="button" class="p-button-rounded p-button-info button-option"
               (click)="editRegister(row)" [disabled]="disableButtons"></button>
@@ -167,9 +167,10 @@
         <p-button [label]="(additionalButtonText || 'BUTTONS.NEW') | translate" icon="pi pi-plus" [disabled]="disableButtons"
           (click)="additionalButtonAction()" (keydown.enter)="additionalButtonAction()" />
         }
-
-        <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus" [disabled]="disableButtons || enableCreateButton"
-          (click)="createRegister('new register')" (keydown.enter)="createRegister('new register')" />
+        @if(showButtonNew){
+          <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus" [disabled]="disableButtons || enableCreateButton"
+            (click)="createRegister('new register')" (keydown.enter)="createRegister('new register')" />
+        }
 
         @if(isFileUploadButtonVisible) {
         <p-fileUpload mode="basic" [accept]="acceptFilesFormats" [maxFileSize]="5000000"
