@@ -558,6 +558,11 @@
       "END": "Ende"
     }
   },
+  "ORDER_PROYECT": {
+    "TABLE": {
+      "NUMBER": "Anzahl"
+    }
+  },
   "ORDERS": {
     "FORM": {
       "ORDER_ID": "Auftrag-Nr.",

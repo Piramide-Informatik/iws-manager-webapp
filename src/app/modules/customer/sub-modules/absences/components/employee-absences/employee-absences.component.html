@@ -29,7 +29,15 @@
       <p-button [label]="'BUTTONS.IMPORT_ABSENCES' | translate" />
     </div>
     <div class="col-6">
-      <master-data-genaral-table></master-data-genaral-table>
+      <master-data-genaral-table 
+        [tableId]="tableKey"
+        [tableValues]="absenceTypes()"
+        [dataKeys]="dataKeys"
+        [columns]="selectedColumns"
+        [userPreferences]="userAbsenceTypeDayPreferences"
+        [showButtonNew]="false"
+        [showButtonsEditDelete]="false"
+      ></master-data-genaral-table>
     </div>
   </div>
   <div class="calendar-table-container">
