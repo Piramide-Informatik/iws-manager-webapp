@@ -4,17 +4,18 @@
     display: contents;
 }
 
-// Estilos para el popover
-::ng-deep .p-popover {
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
-        0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    max-width: 400px;
-    min-width: 280px;
+.app-custom-popover-container {
+    ::ng-deep .p-popover {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+            0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        max-width: 400px;
+        min-width: 280px;
 
-    .p-popover-content {
-        padding: 0;
+        .p-popover-content {
+            padding: 0;
+        }
     }
 }
 
@@ -85,7 +86,6 @@
     }
 }
 
-// Contenedor de campos
 .item-fields-container {
     display: flex;
     flex-wrap: wrap;
@@ -93,7 +93,6 @@
     gap: 0.5rem;
 }
 
-// Badge (para campos como label, shareOfDay, etc.)
 .badge {
     display: inline-flex;
     align-items: center;
@@ -113,7 +112,7 @@
     }
 }
 
-// Texto normal (para campos como name)
+// Text field
 .text-field {
     color: #1f2937;
     font-weight: 500;
@@ -125,7 +124,7 @@
     }
 }
 
-// Separador entre campos
+// Separator
 .separator {
     color: #d1d5db;
     font-size: 1.25rem;
@@ -133,7 +132,7 @@
     user-select: none;
 }
 
-// Indicador de feriado
+// Holiday indicator
 .holiday-indicator {
     margin-top: 0.75rem;
     padding-top: 0.75rem;
@@ -154,7 +153,7 @@
     }
 }
 
-// Footer del popover
+// Footer styles
 .popover-footer {
     margin-top: 1rem;
     padding-top: 1rem;
@@ -176,7 +175,7 @@
     }
 }
 
-// Estilos para modo default
+// Default styles
 .popover-default {
     padding: 2rem;
     text-align: center;
