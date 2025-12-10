@@ -181,6 +181,38 @@
     "ASSIGN_MORE_EMPLOYEES": "Weitere Mitarbeiter zuordnen",
     "IMPORT_ABSENCES": "Fehltage importieren"
   },
+  "CALENDAR": {
+    "TITLE": "Abwesenheitskalender {{YEAR}}",
+    "MONTH": {
+      "JANUARY": "Januar",
+      "FEBRUARY": "Februar",
+      "MARCH": "März",
+      "APRIL": "April",
+      "MAY": "Mai",
+      "JUNE": "Juni",
+      "JULY": "Juli",
+      "AUGUST": "August",
+      "SEPTEMBER": "September",
+      "OCTOBER": "Oktober",
+      "NOVEMBER": "November",
+      "DECEMBER": "Dezember"
+    },
+    "ERROR": {
+      "INVALID_CELL": "Ungültige Zelle",
+      "INVALID_DAY": "{{MONTH}} hat {{DAYS}} Tage. Tag {{DAY}} existiert nicht."
+    },
+    "CELL_INFO": {
+      "EMPTY": "{{MONTH}} - Tag {{DAY}} (Leer)",
+      "WITH_DATA": "{{MONTH}} - Tag {{DAY}}: {{VALUE}}"
+    },
+    "ABSENCE": "Abwesenheit",
+    "INVALID_DAY_INDICATOR": "-",
+    "LEGEND": {
+      "VALID_DAY": "Gültiger Tag",
+      "INVALID_DAY": "Tag nicht gültig für diesen Monat",
+      "HAS_DATA": "Mit Daten/Abwesenheit"
+    }
+  },
   "MESSAGE": {
     "SUCCESS": "ERFOLG",
     "ERROR": "FEHLER",
