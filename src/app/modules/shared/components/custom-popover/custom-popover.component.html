@@ -3,32 +3,62 @@
 
         <!-- TYPE: LIST -->
         <ng-container *ngSwitchCase="'list'">
-            <div class="flex flex-col gap-3 p-3">
+            <div class="popover-content">
+                <!-- Header -->
+                <div class="popover-header">
+                    <h3>Seleccionar</h3>
+                </div>
 
-                <span class="font-medium">Seleccionar</span>
+                <!-- Lista de items -->
+                <div class="popover-list">
+                    <div *ngFor="let item of values; let i = index" class="popover-item"
+                        [ngStyle]="{'backgroundColor': getItemBackgroundColor(i)}" (click)="onSelect(item)"
+                        (keydown.enter)="onSelect(item)" tabindex="0">
 
-                <ul class="list-none p-0 m-0 flex flex-col">
-                    <li *ngFor="let item of values"
-                        class="px-3 py-2 rounded cursor-pointer hover:bg-surface-200 flex items-center gap-2"
-                        (keydown.enter)="onSelect(item)"
-                        (click)="onSelect(item)">
-                        <span>{{ item.label }}</span>
-                    </li>
-                </ul>
+                        <!-- Contenido principal -->
+                        <div class="item-fields-container">
+                            <ng-container *ngFor="let field of displayFields; let fieldIndex = index">
 
+                                <!-- Campo como badge -->
+                                <span *ngIf="shouldShowAsBadge(field)" class="badge" [ngStyle]="getBadgeStyles(i)">
+                                    {{ getFieldValue(item, field) }}
+                                </span>
+
+                                <!-- Campo como texto normal -->
+                                <span *ngIf="!shouldShowAsBadge(field)" class="text-field">
+                                    {{ getFieldValue(item, field) }}
+                                </span>
+
+                                <!-- Separador (excepto el último) -->
+                                <span *ngIf="shouldShowSeparator(fieldIndex)" class="separator">•</span>
+                            </ng-container>
+                        </div>
+
+                        <!-- Indicador visual para feriados -->
+                        <div *ngIf="getRawValue(item, 'isHoliday') === 1" class="holiday-indicator">
+                            <i class="pi pi-sun"></i>
+                            <span>Es feriado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="popover-footer">
+                    <button pButton label="Limpiar" icon="pi pi-times" class="p-button-text p-button-sm"
+                        (click)="onSelect(null)"></button>
+                </div>
             </div>
         </ng-container>
 
         <!-- DEFAULT -->
         <ng-container *ngSwitchDefault>
-            <div class="p-3 w-40 text-center">
-                <span class="font-medium">Contenido vacío</span>
+            <div class="popover-default">
+                <div class="default-icon">
+                    <i class="pi pi-inbox"></i>
+                </div>
+                <span>Sin opciones disponibles</span>
             </div>
         </ng-container>
 
     </ng-container>
 </p-popover>
-
-<!-- Botón que abre el popover -->
-<p-button icon="pi pi-ellipsis-h" styleClass="p-button-text p-button-sm w-full h-full" (click)="toggle($event)" (keydown.enter)="toggle($event)">
-</p-button>
