@@ -8,11 +8,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
 
 
 @NgModule({
   declarations: [
-    EmployeeAbsencesComponent
+    EmployeeAbsencesComponent,
+    CalendarViewComponent
   ],
   imports: [
     CommonModule,
