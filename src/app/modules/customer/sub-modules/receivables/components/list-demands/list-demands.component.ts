@@ -11,6 +11,7 @@ import { Column } from '../../../../../../Entities/column';
 import { CustomerUtils } from '../../../../../customer/utils/customer-utils';
 import { CustomerStateService } from '../../../../../customer/utils/customer-state.service';
 import { Title } from '@angular/platform-browser';
+import { momentSafeCreateDate } from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-list-demands',
@@ -87,10 +88,10 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
             fundingProgram: curr.order?.fundingProgram?.name,
             projectSponsor: curr.promoter?.projectPromoter,
             fundingConcentration: curr.fundinglabel,
-            projectStart: curr.project?.startDate,
-            projectEnd: curr.project?.endDate,
-            abrStart: curr.billingStart,
-            abrEnd: curr.billingEnd,
+            projectStart: momentSafeCreateDate(curr.project?.startDate),
+            projectEnd: momentSafeCreateDate(curr.project?.endDate),
+            abrStart: momentSafeCreateDate(curr.billingStart),
+            abrEnd: momentSafeCreateDate(curr.billingEnd),
             forNet: curr.netAmount,
             ofSt: curr.grossAmount,
             zaGross: curr.grossAmount,
@@ -156,10 +157,10 @@ export class ListDemandsComponent implements OnInit, OnDestroy {
       { field: 'fundingProgram', header: this.translate.instant(_('RECEIVABLES.TABLE.FUNDING_PROGRAM')) },
       { field: 'projectSponsor', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_SPONSOR')) },
       { field: 'fundingConcentration', header: this.translate.instant(_('RECEIVABLES.TABLE.FUNDING_CONCENTRATION')) },
-      { field: 'projectStart', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_START_DATE')) },
-      { field: 'projectEnd', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_END_DATE')) },
-      { field: 'abrStart', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.BILLING_START_DATE')) },
-      { field: 'abrEnd', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.BILLING_END_DATE')) },
+      { field: 'projectStart', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_START_DATE')), filter: { type: 'date'}  },
+      { field: 'projectEnd', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.PROJECT_END_DATE')), filter: { type: 'date'}  },
+      { field: 'abrStart', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.BILLING_START_DATE')), filter: { type: 'date'}  },
+      { field: 'abrEnd', type: 'date', header: this.translate.instant(_('RECEIVABLES.TABLE.BILLING_END_DATE')), filter: { type: 'date'}  },
       { field: 'forNet', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('RECEIVABLES.TABLE.NET_AMOUNT')) },
       { field: 'ofSt', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('RECEIVABLES.TABLE.GROSS_AMOUNT')) },
       { field: 'zaGross', customClasses: ['align-right'], type: 'double', header: this.translate.instant(_('RECEIVABLES.TABLE.VAT_AMOUNT')) },

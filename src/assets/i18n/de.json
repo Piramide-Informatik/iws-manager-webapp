@@ -455,6 +455,11 @@
     },
     "VALIDATION": {
       "EMPLOYEE_ID_EXISTS": "Personal-Nr. existiert bereits"
+    },
+    "WORK_PACKAGES": {
+      "WORK_PACKAGE": "Arbeitspaket",
+      "NEW": "Neu",
+      "IMPORT": "PM für Mitarbeiter importieren"
     }
   },
   "CONTACT": {
@@ -565,6 +570,11 @@
       "YEAR": "Jahr",
       "BEGINNING": "Anfang",
       "END": "Ende"
+    }
+  },
+  "ORDER_PROYECT": {
+    "TABLE": {
+      "NUMBER": "Anzahl"
     }
   },
   "ORDERS": {

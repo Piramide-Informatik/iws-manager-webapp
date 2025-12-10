@@ -10,6 +10,7 @@ import { Employee } from '../../../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { MessageService } from 'primeng/api';
 import { Column } from '../../../../../../../Entities/column';
+import { momentSafeCreateDate } from '../../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-employee-contracts-table',
@@ -87,7 +88,7 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
 
   loadEmployeeContractColumns() {
     this.cols = [
-      { field: 'startDate', type: 'date', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.START_DATE')), customClasses: ['align-right'] },
+      { field: 'startDate', type: 'date', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.START_DATE')), customClasses: ['align-right'], filter: { type: 'date'} },
       { field: 'salaryPerMonth', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.SALARY_PER_MONTH')), customClasses: ['align-right'] },
       { field: 'hoursPerWeek', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WEEKLY_HOURS')), customClasses: ['align-right'] },
       { field: 'workShortTime', type: 'double', header: this.translate.instant(_('EMPLOYEE.EMPLOYEE_CONTRACTS_TABLE.WORK_SHORT_TIME')), customClasses: ['align-right'] },
@@ -141,7 +142,12 @@ export class EmployeeContractsTableComponent implements OnInit, OnDestroy {
     if (employeeId && employeeId > 0) {
       this.EmploymentContractUtils.getAllContractsByEmployeeId(employeeId).subscribe({
         next: (data) => {
-          this.employeeContracts = [...data].reverse();
+          this.employeeContracts = data
+            .map(contract => ({
+              ...contract,
+              startDate: momentSafeCreateDate(contract.startDate)
+            }))
+            .reverse();
         },
         error: (err) => {
           console.log('Error load employee contracts', err);
