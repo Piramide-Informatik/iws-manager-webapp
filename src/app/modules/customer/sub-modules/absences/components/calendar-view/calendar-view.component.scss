@@ -81,7 +81,7 @@
 .month-header.even-month {
     background-color: rgba(142, 197, 255, 0.25);
     font-weight: bold;
-    color: #1a5fb4;
+    color: #004faf;
 
     &:hover {
         background-color: rgba(142, 197, 255, 0.35);
@@ -133,7 +133,7 @@
 
     // If it is an even month AND has data
     &.even-month-cell {
-        background-color: rgba(142, 197, 255, 0.5); 
+        background-color: rgba(142, 197, 255, 0.5);
 
         &:hover {
             background-color: rgba(142, 197, 255, 0.7);
@@ -162,6 +162,12 @@
     gap: 20px;
     margin-top: 20px;
     flex-wrap: wrap;
+
+    .legend-item:nth-child(4) {
+        .legend-color.even-month {
+            background-color: rgba(142, 197, 255, 0.6);
+        }
+    }
 }
 
 .legend-item {
@@ -191,15 +197,6 @@
 
 .legend-color.even-month {
     background-color: rgba(142, 197, 255, 0.6);
-}
-
-// Add legend color for even months
-.calendar-legend {
-    .legend-item:nth-child(4) {
-        .legend-color.even-month {
-            background-color: rgba(142, 197, 255, 0.6);
-        }
-    }
 }
 
 // Responsive
