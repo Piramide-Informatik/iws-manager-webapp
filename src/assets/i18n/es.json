@@ -403,6 +403,11 @@
     },
     "VALIDATION": {
       "EMPLOYEE_ID_EXISTS": "ID empleado ya existe"
+    },
+    "WORK_PACKAGES": {
+      "WORK_PACKAGE": "Paquete de Trabajo",
+      "NEW": "Nuevo",
+      "IMPORT": "Importar PM para Empleado"
     }
   },
   "CONTACT": {

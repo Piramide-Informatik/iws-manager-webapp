@@ -409,6 +409,11 @@
       "MAX_HOURS_PER_DAY": "Max. Hours/Day",
       "HOURLY_RATE": "Hourly Rate",
       "SPECIAL_PAYMENT": "Special Payment"
+    },
+    "WORK_PACKAGES": {
+      "WORK_PACKAGE": "Work Package",
+      "NEW": "New",
+      "IMPORT": "Import PM for Employee"
     }
   },
   "CONTACT": {
@@ -502,7 +507,7 @@
       "ADMIN_ORDER_NUMBER": "Administration Order / No."
     },
     "PROJECTS_DIALOG_REMOVE": "Delete Project",
-    "PROJECTS_DIALOG_CREATE": "New Project" 
+    "PROJECTS_DIALOG_CREATE": "New Project"
   },
   "PROJECT_PACKAGES": {
     "TABLE": {

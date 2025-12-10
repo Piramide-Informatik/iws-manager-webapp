@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // ← IMPORTANTE
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-work-packages',
-  standalone: true, // ← CAMBIA A true
-  imports: [CommonModule, FormsModule], // ← IMPORTA MÓDULOS AQUÍ
+  standalone: true,
+  imports: [CommonModule, FormsModule, ButtonModule, TranslatePipe],
   templateUrl: './work-packages.component.html',
   styleUrls: ['./work-packages.component.scss']
 })
@@ -16,23 +18,201 @@ export class WorkPackagesComponent implements OnInit {
   testMessage: string = '';
   editingRowIndex: number | null = null;
 
+  isLoading = false;
+
   rows: any[] = [
     {
       ap: 'Ermittlung und Analyse',
       apNr: 'AP1',
-      persNr: 'ABC123',
-      pmBewilligt: 10.5,
-      persKostenBewilligt: 12500,
-      pmGeplant: 8.1,
-      stdGeplant: 1280,
-      persKostenGeplant: 9500,
-      pmAbgerechnet: 5.5,
-      stdAbgerechnet: 880,
-      persKostenAbgerechnet: 6500,
-      pmVerfuegbar: 2.5,
-      stdVerfuegbar: 400,
-      persKostenVerfuegbar: 3000,
+      persNr: [
+        'ABC123',
+        'DEF456',
+        'GHI789',
+      ],
+      pmBewilligt: [
+        1.50,
+        2.50,
+        0.75,
+      ],
+      persKostenBewilligt: [
+        1250,
+        9500,
+        6500,
+      ],
+      pmGeplant: [
+        1.5,
+        2.5,
+        0.75,
+      ],
+      stdGeplant: [
+        240,
+        400,
+        120,
+      ],
+      persKostenGeplant: [
+        9500,
+        6500,
+        3000,
+      ],
+      pmAbgerechnet: [
+        1.5,
+        2.5,
+        0.75,
+      ],
+      stdAbgerechnet: [
+        880,
+        400,
+        3000,
+      ],
+      persKostenAbgerechnet: [
+        6500,
+        3000,
+        1500,
+      ],
+      pmVerfuegbar: [
+        2.5,
+        400,
+        1500,
+      ],
+      stdVerfuegbar: [
+        400,
+        1500,
+        1500,
+      ],
+      persKostenVerfuegbar: [
+        3000,
+        1500,
+        1500,
+      ],
     },
+    {
+      ap: 'Ermittlung und Analyse',
+      apNr: 'AP2',
+      persNr: [
+        'ABC123',
+        'DEF456',
+        'GHI789',
+      ],
+      pmBewilligt: [
+        1.50,
+        2.50,
+        0.75,
+      ],
+      persKostenBewilligt: [
+        1250,
+        9500,
+        6500,
+      ],
+      pmGeplant: [
+        1.5,
+        2.5,
+        0.75,
+      ],
+      stdGeplant: [
+        1280,
+        880,
+        400,
+      ],
+      persKostenGeplant: [
+        9500,
+        6500,
+        3000,
+      ],
+      pmAbgerechnet: [
+        1.5,
+        2.5,
+        0.75,
+      ],
+      stdAbgerechnet: [
+        880,
+        400,
+        3000,
+      ],
+      persKostenAbgerechnet: [
+        6500,
+        3000,
+        1500,
+      ],
+      pmVerfuegbar: [
+        2.5,
+        400,
+        1500,
+      ],
+      stdVerfuegbar: [
+        400,
+        1500,
+        1500,
+      ],
+      persKostenVerfuegbar: [
+        3000,
+        1500,
+        1500,
+      ],
+    },
+    {
+      ap: 'Ermittlung und Analyse',
+      apNr: 'AP3',
+      persNr: [
+        'ABC123',
+        'DEF456',
+        'GHI789',
+      ],
+      pmBewilligt: [
+        1.50,
+        2.50,
+        0.75,
+      ],
+      persKostenBewilligt: [
+        1250,
+        9500,
+        6500,
+      ],
+      pmGeplant: [
+        1.5,
+        2.5,
+        0.75,
+      ],
+      stdGeplant: [
+        1280,
+        880,
+        400,
+      ],
+      persKostenGeplant: [
+        9500,
+        6500,
+        3000,
+      ],
+      pmAbgerechnet: [
+        1.5,
+        2.5,
+        0.75,
+      ],
+      stdAbgerechnet: [
+        880,
+        400,
+        3000,
+      ],
+      persKostenAbgerechnet: [
+        6500,
+        3000,
+        1500,
+      ],
+      pmVerfuegbar: [
+        2.5,
+        400,
+        1500,
+      ],
+      stdVerfuegbar: [
+        400,
+        1500,
+        1500,
+      ],
+      persKostenVerfuegbar: [
+        3000,
+        1500,
+        1500,
+      ],
+    }
   ];
 
   constructor(private readonly activatedRoute: ActivatedRoute) { }
@@ -57,21 +237,6 @@ export class WorkPackagesComponent implements OnInit {
     this.editingRowIndex = this.rows.length - 1;
   }
 
-  removeRow(index: number) {
-    if (confirm('¿Está seguro de eliminar esta fila?')) {
-      this.rows.splice(index, 1);
-    }
-  }
-
-  startEdit(index: number) {
-    this.editingRowIndex = index;
-  }
-
-  saveRow(index: number) {
-    this.calculateValues(index);
-    this.editingRowIndex = null;
-  }
-
   calculateValues(index: number) {
     const row = this.rows[index];
     row.pmVerfuegbar = (row.pmBewilligt || 0) - (row.pmGeplant || 0);
@@ -84,9 +249,20 @@ export class WorkPackagesComponent implements OnInit {
   }
 
   formatNumber(value: any): string {
-    if (value === null || value === undefined || value === '') return '0.00';
+    // Si es null, undefined o string vacío → mostrar vacío
+    if (value === null || value === undefined || value === '') {
+      return '';
+    }
+
     const num = Number(value);
-    return Number.isNaN(num) ? '0.00' : num.toFixed(2);
+
+    // Si no es número válido → mostrar vacío
+    if (Number.isNaN(num)) {
+      return '';
+    }
+
+    // Mostrar con 2 decimales SOLO si hay valor real
+    return num.toFixed(2);
   }
 
   onInputChange() {
