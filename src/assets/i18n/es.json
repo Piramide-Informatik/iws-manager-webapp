@@ -407,7 +407,11 @@
     "WORK_PACKAGES": {
       "WORK_PACKAGE": "Paquete de Trabajo",
       "NEW": "Nuevo",
-      "IMPORT": "Importar PM para Empleado"
+      "IMPORT": "Importar PM para Empleado",
+      "APPROVED": "Aprobado",
+      "PLANNED": "Planificado",
+      "SETTLED": "Liquidado",
+      "AVAILABLE": "Disponible"
     }
   },
   "CONTACT": {

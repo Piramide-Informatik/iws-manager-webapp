@@ -413,7 +413,11 @@
     "WORK_PACKAGES": {
       "WORK_PACKAGE": "Work Package",
       "NEW": "New",
-      "IMPORT": "Import PM for Employee"
+      "IMPORT": "Import PM for Employee",
+      "APPROVED": "Approved",
+      "PLANNED": "Planned",
+      "SETTLED": "Settled",
+      "AVAILABLE": "Available"
     }
   },
   "CONTACT": {
