@@ -460,7 +460,11 @@
     "WORK_PACKAGES": {
       "WORK_PACKAGE": "Arbeitspaket",
       "NEW": "Neu",
-      "IMPORT": "PM für Mitarbeiter importieren"
+      "IMPORT": "PM für Mitarbeiter importieren",
+      "APPROVED": " Genehmigt",
+      "PLANNED": " Geplant",
+      "SETTLED": " Abgerechnet",
+      "AVAILABLE": " Verfügbar"
     }
   },
   "CONTACT": {
