@@ -213,7 +213,22 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
 
   getNestedValue(obj: any, path: string): any {
     const value = path.split('.').reduce((acc, part) => acc?.[part], obj);
-    return !Number.isNaN(value) && value !== null && value !== '' && typeof value !== 'string'? Number(value) : value;
+    // Si el valor es null o undefined, devolverlo tal cual
+    if (value == null) return value;
+    
+    // Si es un string que representa un número, convertirlo
+    if (typeof value === 'string') {
+        const num = Number(value);
+        // Verificar si la conversión fue exitosa (no es NaN)
+        // y que el string original no esté vacío
+        return value.trim() !== '' && !Number.isNaN(num) ? num : value;
+    }
+    
+    // Si ya es un número, devolverlo
+    if (typeof value === 'number') return value;
+    
+    // Para otros tipos, devolver el valor original
+    return value;
   }
 
 }
