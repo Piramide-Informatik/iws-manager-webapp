@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { BasicContract } from '../Entities/basicContract';
+import { momentCreateDate } from '../modules/shared/utils/moment-date-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,7 @@ export class FrameworkAgreementService {
     return this.http.post<BasicContract>(this.apiUrl, frameworkAgreement, this.httpOptions).pipe(
       tap({
         next: (newFrameworkAgreement) => {
+          newFrameworkAgreement.date = momentCreateDate(newFrameworkAgreement.date)
           this._frameworkAgreements.update(frameworkAgreements => [...frameworkAgreements, newFrameworkAgreement]);
           this._error.set(null);
         },
@@ -109,7 +111,10 @@ export class FrameworkAgreementService {
   getAllFrameworkAgreementsByCustomerIdSortedByContractNo(customerId: number): Observable<BasicContract[]> {
     return this.http.get<BasicContract[]>(`${this.apiUrl}/by-customer/${customerId}/ordered-by-contractno`, this.httpOptions).pipe(
       tap({
-        next: (frameworks) =>{
+        next: (frameworks) => {
+          for (let i = 0; i < frameworks.length; i++) {
+            frameworks[i].date = momentCreateDate(frameworks[i].date)
+          }
           this._frameworkAgreements.set(frameworks);
           this._error.set(null);
         }
@@ -151,6 +156,7 @@ export class FrameworkAgreementService {
     return this.http.put<BasicContract>(url, updatedFrameworkAgreements, this.httpOptions).pipe(
       tap({
         next: (res) => {
+          res.date = momentCreateDate(res.date)
           this._frameworkAgreements.update(frameworkAgreements =>
             frameworkAgreements.map(e => e.id === res.id ? res : e)
           );
