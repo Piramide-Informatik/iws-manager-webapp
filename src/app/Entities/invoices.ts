@@ -22,7 +22,7 @@ export interface Invoice {
   vat: Vat | null;
 
   invoiceNo?: number;
-  invoiceDate?: string;
+  invoiceDate?: any;
   invoiceTitle?: string;
   note?: string;
   amountNet?: number;

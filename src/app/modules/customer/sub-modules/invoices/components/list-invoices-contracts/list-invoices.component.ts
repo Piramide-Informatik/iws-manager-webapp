@@ -13,6 +13,7 @@ import { Title } from '@angular/platform-browser';
 import { CustomerStateService } from '../../../../../customer/utils/customer-state.service';
 import { CustomerUtils } from '../../../../../customer/utils/customer-utils';
 import { Customer } from '../../../../../../Entities/customer';
+import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-list-invoices',
@@ -76,6 +77,9 @@ export class ListInvoicesComponent implements OnInit, OnDestroy {
     })
 
     this.invoiceUtils.getAllInvoicesByCustomerId(Number(this.customerId)).subscribe(invoices => {
+      for (let i = 0; i < invoices.length; i++) {
+        invoices[i].invoiceDate = momentCreateDate(invoices[i].invoiceDate);
+      }
       this.invoices = invoices
     })
   }
@@ -131,7 +135,7 @@ export class ListInvoicesComponent implements OnInit, OnDestroy {
         routerLink: (row: any) => `./invoice-details/${row.invoiceNo}`,
         header: this.translate.instant(_('INVOICES.TABLE.INVOICE_NUMBER'))
       },
-      { field: 'invoiceDate', type: 'date', customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE')) },
+      { field: 'invoiceDate', type: 'date', filter: { type: 'date' }, customClasses: ['text-center'], header: this.translate.instant(_('INVOICES.TABLE.INVOICE_DATE')) },
       { field: 'note', header: this.translate.instant(_('INVOICES.TABLE.DESCRIPTION')) },
       { field: 'invoiceType.name', header: this.translate.instant(_('INVOICES.TABLE.INVOICE_TYPE')) },
       { field: 'network.name', header: this.translate.instant(_('INVOICES.TABLE.NETWORK')) },
