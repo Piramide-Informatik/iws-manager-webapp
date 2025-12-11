@@ -5,6 +5,8 @@ import { UserPreference } from '../../../../../Entities/user-preference';
 import { _, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { PageTitleService } from '../../../../../shared/services/page-title.service';
+import { ActivatedRoute } from '@angular/router';
+import { ProjectPackagesUtils } from '../../../utils/project-packages.util';
 
 @Component({
   selector: 'app-work-packages',
@@ -16,15 +18,18 @@ export class WorkPackagesComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly pageTitleService = inject(PageTitleService);
+  private readonly projectPackagesUtils = inject(ProjectPackagesUtils);
 
   private subscription!: Subscription;
-
+  public projectId!: string;
   loading: boolean = true;
   tableKey: string = 'ProjectPackages';
   projectpackageList!: ProjectPackage[];
   projectpackageColumns: any[] = [];
   projectPackageUserPreferences: UserPreference = {};
   dataKeys = ['packageNo', 'serial', 'packageTitle', 'startDate', 'endDate'];
+
+  constructor(private readonly activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.pageTitleService.setTranslatedTitle('PAGETITLE.PROJECT.NEW_PROJECT');
@@ -43,6 +48,12 @@ export class WorkPackagesComponent implements OnInit {
           this.projectpackageColumns
         );
     });
+    this.activatedRoute.params.subscribe(params => {
+      this.projectId = params['idProject'];
+      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
+        this.projectpackageList = projectPackages;
+      })
+    });
   }
 
   onWorkPackagesUserPreferencesChanges(userAllocationsPreferences: any) {
@@ -60,8 +71,8 @@ export class WorkPackagesComponent implements OnInit {
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_NUMBER')),
       },
       {
-        field: 'serial',
-        type: 'double',
+        field: 'packageSerial',
+        type: 'string',
         customClasses: ['align-right'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_SERIAL')),
         filter: { type: 'numeric' },
