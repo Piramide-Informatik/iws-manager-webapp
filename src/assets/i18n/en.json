@@ -158,7 +158,8 @@
     "SELECT_ONE": "Choose One",
     "ANY": "Any",
     "NO_DATA_AVAILABLE": "No data available",
-    "SELECT_CONTACT": "Select a Contact"
+    "SELECT_CONTACT": "Select a Contact",
+    "ITEMS_SELECTED": "{0} items selected"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Showing {first} to {last} of {totalRecords} entries",
@@ -180,6 +181,38 @@
     "IMPORT_EMPLOYEES": "Import Employees",
     "ASSIGN_MORE_EMPLOYEES": "Assign More Employees",
     "IMPORT_ABSENCES": "Import Absences"
+  },
+  "CALENDAR": {
+    "TITLE": "Absence Calendar {{YEAR}}",
+    "MONTH": {
+      "JANUARY": "January",
+      "FEBRUARY": "February",
+      "MARCH": "March",
+      "APRIL": "April",
+      "MAY": "May",
+      "JUNE": "June",
+      "JULY": "July",
+      "AUGUST": "August",
+      "SEPTEMBER": "September",
+      "OCTOBER": "October",
+      "NOVEMBER": "November",
+      "DECEMBER": "December"
+    },
+    "ERROR": {
+      "INVALID_CELL": "Invalid cell",
+      "INVALID_DAY": "{{MONTH}} has {{DAYS}} days. Day {{DAY}} does not exist."
+    },
+    "CELL_INFO": {
+      "EMPTY": "{{MONTH}} - Day {{DAY}} (Empty)",
+      "WITH_DATA": "{{MONTH}} - Day {{DAY}}: {{VALUE}}"
+    },
+    "ABSENCE": "Absence",
+    "INVALID_DAY_INDICATOR": "-",
+    "LEGEND": {
+      "VALID_DAY": "Valid day",
+      "INVALID_DAY": "Day not valid for this month",
+      "HAS_DATA": "With data/absence"
+    }
   },
   "MESSAGE": {
     "SUCCESS": "SUCCESS",
@@ -311,6 +344,20 @@
     "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Work Contract deleted.",
     "ACCEPT_LABEL": "Yes",
     "REJECT_LABEL": "No"
+  },
+  "CUSTOM_POPOVER": {
+    "TITLE": {
+      "SELECT": "Select"
+    },
+    "BUTTON": {
+      "CLEAR": "Clear"
+    },
+    "INDICATOR": {
+      "HOLIDAY": "Holiday"
+    },
+    "MESSAGE": {
+      "NO_OPTIONS": "No options available"
+    }
   },
   "CUSTOMERS": {
     "TABLE": {
@@ -528,6 +575,11 @@
       "YEAR": "Year",
       "BEGINNING": "Beginning",
       "END": "End"
+    }
+  },
+  "ORDER_PROYECT": {
+    "TABLE": {
+      "NUMBER": "Number"
     }
   },
   "ORDERS": {

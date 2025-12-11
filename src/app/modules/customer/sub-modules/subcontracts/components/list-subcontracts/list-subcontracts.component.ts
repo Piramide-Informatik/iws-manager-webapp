@@ -15,6 +15,7 @@ import { Title } from '@angular/platform-browser';
 import { CustomerStateService } from '../../../../../customer/utils/customer-state.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
+import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-list-subcontracts',
@@ -78,7 +79,7 @@ export class ListSubcontractsComponent implements OnInit, OnDestroy {
         this.subcontracts = subcontracts;
         for (let i = 0; i < this.subcontracts.length; i++) {
           const dateSubcontracts = this.subcontracts[i].date;
-          this.subcontracts[i].date = dateSubcontracts ? new Date(dateSubcontracts) : null;
+          this.subcontracts[i].date = dateSubcontracts ? momentCreateDate(dateSubcontracts) : null;
         }
       })
     })

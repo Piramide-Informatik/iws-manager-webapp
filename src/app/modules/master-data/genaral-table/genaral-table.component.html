@@ -8,7 +8,7 @@
     [sortField]="sortField" [sortOrder]="sortOrder">
     <ng-template #header let-columns>
       <tr>
-        <th id="hide-columns" class="thead-bg-blue">
+        <th *ngIf="showButtonsEditDelete" id="hide-columns" class="thead-bg-blue">
           <p-multiselect #hiddenColumns [options]="this.columns"
             [ngModel]="this.userPreferences[this.tableId]?.displayedColumns" (onChange)="changeSelect($event)"
             optionLabel="header" [maxSelectedLabels]="0" [appendTo]="'body'" dropdownIcon="pi pi-eye" />
@@ -21,13 +21,13 @@
         </th>
       </tr>
       <tr *ngIf="filterByColumns">
-        <th scope="col"></th>
+        <th scope="col" *ngIf="showButtonsEditDelete"></th>
         <th scope="col" *ngFor="let col of columns; let i = index">
           @if(col.filter && col.filter.type === 'multiple') {
           <p-columnFilter [field]="col.field" matchMode="in" [showMenu]="false">
             <ng-template #filter let-value let-filter="filterCallback">
               <p-multiselect [ngModel]="value" [options]="col.filter.data" (onChange)="filter($event.value)"
-                optionLabel="label" optionValue="value" [placeholder]="'COMMON.ANY' | translate"
+                optionLabel="label" optionValue="value" [placeholder]="'COMMON.ANY' | translate" [selectedItemsLabel]="'COMMON.ITEMS_SELECTED' | translate"
                 [style.min-width.rem]="14" [panelStyle]="{ minWidth: '16rem' }" [appendTo]="'body'">
               </p-multiselect>
             </ng-template>
@@ -86,7 +86,7 @@
           'odd-row': i % 2 !== 0,
           'even-row': i % 2 === 0
         }">
-        <td>
+        <td *ngIf="showButtonsEditDelete">
           <div class="flex justify-content-center gap-2">
             <button pButton icon="pi pi-pencil" type="button" class="p-button-rounded p-button-info button-option"
               (click)="editRegister(row)" [disabled]="disableButtons"></button>
@@ -167,9 +167,10 @@
         <p-button [label]="(additionalButtonText || 'BUTTONS.NEW') | translate" icon="pi pi-plus" [disabled]="disableButtons"
           (click)="additionalButtonAction()" (keydown.enter)="additionalButtonAction()" />
         }
-
-        <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus" [disabled]="disableButtons || enableCreateButton"
-          (click)="createRegister('new register')" (keydown.enter)="createRegister('new register')" />
+        @if(showButtonNew){
+          <p-button [label]="nameNewButton || 'BUTTONS.NEW' | translate" icon="pi pi-plus" [disabled]="disableButtons || enableCreateButton"
+            (click)="createRegister('new register')" (keydown.enter)="createRegister('new register')" />
+        }
 
         @if(isFileUploadButtonVisible) {
         <p-fileUpload mode="basic" [accept]="acceptFilesFormats" [maxFileSize]="5000000"

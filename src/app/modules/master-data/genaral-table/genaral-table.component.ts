@@ -23,6 +23,8 @@ export class GenaralTableComponent implements OnInit, OnChanges, AfterViewChecke
   @Input() hideColumns: boolean = true;
   @Input() filterByColumns: boolean = true;
   @Input() nameNewButton: string = '';
+  @Input() showButtonNew: boolean = true;
+  @Input() showButtonsEditDelete: boolean = true;
   @Input() isFileUploadButtonVisible: boolean = false;
   @Input() isAdditionalButtonsVisible: boolean = false;
   @Input() additionalButtonText: string = '';

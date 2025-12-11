@@ -3,12 +3,13 @@
     <div class="col-6">
       <div class="field">
         <label for="customer">{{ 'SIDEBAR.CUSTOMER' | translate }}</label>
-        <input pInputText type="text" id="customer" disabled>
+        <input *ngIf="currentCustomer" pInputText type="text" id="customer" disabled [value]="currentCustomer.customername1">
       </div>
       <form [formGroup]="formYearEmployee" class="mb-7">
         <div class="field">
             <label for="year">{{ 'PROJECT_PERIOD.TABLE.YEAR' | translate }}</label>
             <p-select inputId="year" formControlName="year"
+            [options]="years"
             [showClear]="true"
             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"  />
         </div>
@@ -16,8 +17,11 @@
             <label for="employeeno">{{ 'SIDEBAR.EMPLOYEES' | translate }}</label>
             <div class="inputs flex gap-2">
                 <p-select inputId="employeeno" formControlName="employeeno" 
-                 [showClear]="true"
-                 [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
+                [options]="employees()"
+                optionLabel="employeeno"
+                optionValue="id"
+                [showClear]="true"
+                [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
                 <input pInputText id="employeeFullName" formControlName="employeeFullName">
             </div>
         </div>
@@ -25,10 +29,18 @@
       <p-button [label]="'BUTTONS.IMPORT_ABSENCES' | translate" />
     </div>
     <div class="col-6">
-      <master-data-genaral-table></master-data-genaral-table>
+      <master-data-genaral-table 
+        [tableId]="tableKey"
+        [tableValues]="absenceTypes()"
+        [dataKeys]="dataKeys"
+        [columns]="selectedColumns"
+        [userPreferences]="userAbsenceTypeDayPreferences"
+        [showButtonNew]="false"
+        [showButtonsEditDelete]="false"
+      ></master-data-genaral-table>
     </div>
   </div>
   <div class="calendar-table-container">
-    calendar table
+    <app-calendar-view></app-calendar-view>
   </div>
 </div>

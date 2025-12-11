@@ -8,19 +8,22 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-
+import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [
-    EmployeeAbsencesComponent
+    EmployeeAbsencesComponent,
+    CalendarViewComponent
   ],
   imports: [
-    CommonModule,
     AbsencesRoutingModule,
+    CommonModule,
     MasterDataModule,
     TranslatePipe,
     ReactiveFormsModule,
     SelectModule,
+    SharedModule,
     InputText,
     ButtonModule
   ]

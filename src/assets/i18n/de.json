@@ -158,7 +158,8 @@
     "SELECT_ONE": "Wählen",
     "ANY": "Beliebig",
     "NO_DATA_AVAILABLE": "Keine Daten verfügbar",
-    "SELECT_CONTACT": "Wählen Sie einen Kontakt aus"
+    "SELECT_CONTACT": "Wählen Sie einen Kontakt aus",
+    "ITEMS_SELECTED": "{0} Artikel ausgewählt"
   },
   "TABLES": {
     "PAGINATION_LABEL": "Es werden {first} bis {last} von {totalRecords} Einträgen angezeigt",
@@ -180,6 +181,38 @@
     "IMPORT_EMPLOYEES": "Mitarbeiter importieren",
     "ASSIGN_MORE_EMPLOYEES": "Weitere Mitarbeiter zuordnen",
     "IMPORT_ABSENCES": "Fehltage importieren"
+  },
+  "CALENDAR": {
+    "TITLE": "Abwesenheitskalender {{YEAR}}",
+    "MONTH": {
+      "JANUARY": "Januar",
+      "FEBRUARY": "Februar",
+      "MARCH": "März",
+      "APRIL": "April",
+      "MAY": "Mai",
+      "JUNE": "Juni",
+      "JULY": "Juli",
+      "AUGUST": "August",
+      "SEPTEMBER": "September",
+      "OCTOBER": "Oktober",
+      "NOVEMBER": "November",
+      "DECEMBER": "Dezember"
+    },
+    "ERROR": {
+      "INVALID_CELL": "Ungültige Zelle",
+      "INVALID_DAY": "{{MONTH}} hat {{DAYS}} Tage. Tag {{DAY}} existiert nicht."
+    },
+    "CELL_INFO": {
+      "EMPTY": "{{MONTH}} - Tag {{DAY}} (Leer)",
+      "WITH_DATA": "{{MONTH}} - Tag {{DAY}}: {{VALUE}}"
+    },
+    "ABSENCE": "Abwesenheit",
+    "INVALID_DAY_INDICATOR": "-",
+    "LEGEND": {
+      "VALID_DAY": "Gültiger Tag",
+      "INVALID_DAY": "Tag nicht gültig für diesen Monat",
+      "HAS_DATA": "Mit Daten/Abwesenheit"
+    }
   },
   "MESSAGE": {
     "SUCCESS": "ERFOLG",
@@ -311,6 +344,20 @@
     "WORKCONTRACT_SUCCESS_DELETED_MESSAGE": "Arbeitsvertrag gelöscht",
     "ACCEPT_LABEL": "Ja",
     "REJECT_LABEL": "Nein"
+  },
+  "CUSTOM_POPOVER": {
+    "TITLE": {
+      "SELECT": "Auswählen"
+    },
+    "BUTTON": {
+      "CLEAR": "Löschen"
+    },
+    "INDICATOR": {
+      "HOLIDAY": "Feiertag"
+    },
+    "MESSAGE": {
+      "NO_OPTIONS": "Keine Optionen verfügbar"
+    }
   },
   "CUSTOMERS": {
     "TABLE": {
@@ -528,6 +575,11 @@
       "YEAR": "Jahr",
       "BEGINNING": "Anfang",
       "END": "Ende"
+    }
+  },
+  "ORDER_PROYECT": {
+    "TABLE": {
+      "NUMBER": "Anzahl"
     }
   },
   "ORDERS": {

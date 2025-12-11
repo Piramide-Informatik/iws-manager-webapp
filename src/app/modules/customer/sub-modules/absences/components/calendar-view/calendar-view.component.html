@@ -1,0 +1,70 @@
+<div class="calendar-container">
+    <div class="calendar-header">
+        <h2>{{ getCalendarTitle() }}</h2>
+    </div>
+
+    <div class="calendar-wrapper">
+        <div class="calendar-grid">
+            <!-- Days header -->
+            <div class="calendar-row header-row">
+                <!-- Empty corner cell -->
+                <div class="calendar-cell corner-cell"></div>
+
+                <!-- Days from 1 to 31 -->
+                <div *ngFor="let day of days" class="calendar-cell day-header">
+                    {{ day }}
+                </div>
+            </div>
+
+            <!-- Month rows -->
+            <div *ngFor="let month of months; let monthIndex = index" class="calendar-row month-row">
+                <div class="calendar-cell month-header" [class.even-month]="isEvenMonth(monthIndex)">
+                    {{ month }}
+                </div>
+
+                <!-- Day cells for this month -->
+                <div *ngFor="let day of days; let dayIndex = index" class="calendar-cell"
+                    [ngClass]="getCellClass(monthIndex, dayIndex)" (click)="onCellClick(monthIndex, dayIndex, $event)"
+                    onKeyUp="onCellKeyUp($any($event), monthIndex, dayIndex)"
+                    (keyup.enter)="onCellKeyUp($any($event), monthIndex, dayIndex)" tabIndex="0" role="button"
+                    [title]="getCellTitle(monthIndex, dayIndex)">
+
+                    <!-- Show cell content if it exists     -->
+                    <div *ngIf="calendarData[monthIndex] && calendarData[monthIndex][dayIndex]?.value">
+                        {{ calendarData[monthIndex][dayIndex].value }}
+                    </div>
+
+                    <!-- Visual indicator for invalid days (months with less than 31 days) -->
+                    <div *ngIf="!isValidDay(monthIndex, dayIndex)" class="invalid-indicator">
+                        {{ getInvalidDayIndicator() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Updated legend -->
+    <div class="calendar-legend">
+        <div class="legend-item">
+            <div class="legend-color valid-day"></div>
+            <span>{{ 'CALENDAR.LEGEND.VALID_DAY' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color invalid-day"></div>
+            <span>{{ 'CALENDAR.LEGEND.INVALID_DAY' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color has-data"></div>
+            <span>{{ 'CALENDAR.LEGEND.HAS_DATA' | translate }}</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color even-month"></div>
+            <span>{{ 'CALENDAR.LEGEND.EVEN_MONTH' | translate }}</span>
+        </div>
+    </div>
+
+    <!-- Popover Component -->
+    <app-custom-popover [type]="'list'" [values]="defaultList" [displayFields]="[ 'label', 'name']"
+        [showAsBadge]="['label']" (selected)="onPopoverSelected($event)" #customPopover>
+    </app-custom-popover>
+</div>

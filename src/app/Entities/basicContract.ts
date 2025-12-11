@@ -18,5 +18,5 @@ export interface BasicContract {
   contractLabel?: string;
   contractNo?: number;
   contractTitle?: string;
-  date?: string;
+  date?: any;
 }
