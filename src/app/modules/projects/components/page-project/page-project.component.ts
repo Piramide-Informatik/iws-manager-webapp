@@ -50,6 +50,13 @@ export class PageProjectComponent implements OnInit, OnDestroy {
         })
     );
     
+    // Suscribirse a cambios de idioma para actualizar las traducciones
+    this.routerSubscription.add(
+      this.translate.onLangChange.subscribe(() => {
+        this.loadMenuItems();
+      })
+    );
+    
     this.checkActiveRoutes();
   }
 
