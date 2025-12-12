@@ -464,7 +464,14 @@
       "APPROVED": " Genehmigt",
       "PLANNED": " Geplant",
       "SETTLED": " Abgerechnet",
-      "AVAILABLE": " Verfügbar"
+      "AVAILABLE": " Verfügbar",
+      "AP": "AP",
+      "AP_NR": "AP-Nr.",
+      "PERS_NR": "Pers. No.",
+      "PM": "PM",
+      "PERSONAL_COSTS": "Pers.Kosten",
+      "PK_AP":"PK in AP",
+      "STD": "Std."
     }
   },
   "CONTACT": {

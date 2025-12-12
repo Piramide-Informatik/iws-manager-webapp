@@ -137,7 +137,7 @@
   },
   "MENU_PROJECT": {
     "PROJECT": "Proyecto",
-    "ACCOUNTING_YEARS": "Abrechnungsjahre",
+    "ACCOUNTING_YEARS": "Años de Contabilidad",
     "BLOCKS": "Bloques",
     "EMPLOYEES": "Empleados",
     "SUBMENU_EMPLOYEES": {
@@ -458,7 +458,14 @@
       "APPROVED": "Aprobado",
       "PLANNED": "Planificado",
       "SETTLED": "Liquidado",
-      "AVAILABLE": "Disponible"
+      "AVAILABLE": "Disponible",
+      "AP": "PE",
+      "AP_NR": "PE No.",
+      "PERS_NR": "N° Empl.",
+      "PM": "PM",
+      "PERSONAL_COSTS": "Costos Personales",
+      "PK_AP":"CP en PE",
+      "STD": "Horas"
     }
   },
   "CONTACT": {

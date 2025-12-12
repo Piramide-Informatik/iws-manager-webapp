@@ -464,7 +464,14 @@
       "APPROVED": "Approved",
       "PLANNED": "Planned",
       "SETTLED": "Settled",
-      "AVAILABLE": "Available"
+      "AVAILABLE": "Available",
+      "AP": "PE",
+      "AP_NR": "AP No.",
+      "PERS_NR": "Pers. No.",
+      "PM": "PM",
+      "PERSONAL_COSTS": "Personal Costs",
+      "PK_AP":"PC in PE",
+      "STD": "Hours"
     }
   },
   "CONTACT": {
