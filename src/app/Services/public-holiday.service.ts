@@ -10,7 +10,7 @@ import { State } from '../Entities/state';
 })
 export class PublicHolidayService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/holidays`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV_V2}/holidays`;
 
     private readonly httpOptions = {
         headers: new HttpHeaders({
@@ -34,18 +34,18 @@ export class PublicHolidayService {
     public loadInitialData(): Observable<PublicHoliday[]> {
         this._loading.set(true);
         return this.http.get<PublicHoliday[]>(this.apiUrl, this.httpOptions).pipe(
-        tap({
-            next: (publicHolidays) => {
-            this._publicHolidays.set(publicHolidays);
-            this._error.set(null);
-            },
-            error: (err) => {
-            this._error.set('Failed to load publicHolidays');
-            console.error('Error loading publicHolidays:', err);
-            },
-        }),
-        catchError(() => of([])),
-        tap(() => this._loading.set(false))
+            tap({
+                next: (publicHolidays) => {
+                    this._publicHolidays.set(publicHolidays);
+                    this._error.set(null);
+                },
+                error: (err) => {
+                    this._error.set('Failed to load publicHolidays');
+                    console.error('Error loading publicHolidays:', err);
+                },
+            }),
+            catchError(() => of([])),
+            tap(() => this._loading.set(false))
         );
     }
 
@@ -73,7 +73,7 @@ export class PublicHolidayService {
             tap({
                 next: (res) => {
                     this._publicHolidays.update(publicHolidays =>
-                        publicHolidays.map(p=> p.id === res.id ? res : p)
+                        publicHolidays.map(p => p.id === res.id ? res : p)
                     );
                     this._error.set(null);
                 },
@@ -116,16 +116,16 @@ export class PublicHolidayService {
     }
 
     getPublicHolidayById(id: number): Observable<PublicHoliday | undefined> {
-      return this.http.get<PublicHoliday>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
-        tap(() => this._error.set(null)),
-        catchError(err => {
-          this._error.set('Failed to fetch public holiday by id');
-          console.error(err);
-          return of(undefined as unknown as PublicHoliday);
-        })
-      );
+        return this.http.get<PublicHoliday>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch public holiday by id');
+                console.error(err);
+                return of(undefined as unknown as PublicHoliday);
+            })
+        );
     }
-    
+
     public refreshProjectStatuses(): void {
         this.loadInitialData();
     }
@@ -143,14 +143,14 @@ export class PublicHolidayService {
     }
 
     saveSelectedStates(holidayId: number, stateIds: number[]): Observable<void> {
-    const url = `${this.apiUrl}/${holidayId}/states`;
-    return this.http.post<void>(url, stateIds, this.httpOptions).pipe( 
-        tap(() => this._error.set(null)),
-        catchError(err => {
-            this._error.set('Failed to save states for publicHoliday');
-            console.error('Error saving states for publicHoliday:', err);
-            return throwError(() => err); 
-        })
-    );
-}
+        const url = `${this.apiUrl}/${holidayId}/states`;
+        return this.http.post<void>(url, stateIds, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to save states for publicHoliday');
+                console.error('Error saving states for publicHoliday:', err);
+                return throwError(() => err);
+            })
+        );
+    }
 }
