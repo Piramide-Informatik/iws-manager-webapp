@@ -14,8 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install -g @angular/cli
-      - run: npm ci && ng build
+      - run: npm install -g @angular/cli --ignore-scripts
+      - run: npm ci --ignore-scripts && ng build
       - uses: FirebaseExtended/action-hosting-deploy@e2eda2e106cfa35cdbcf4ac9ddaf6c4756df2c8c
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
