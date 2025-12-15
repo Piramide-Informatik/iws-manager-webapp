@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
+import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
+import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 
 @Component({
   selector: 'app-calendar-view',
@@ -12,6 +14,20 @@ export class CalendarViewComponent implements OnInit {
 
   private readonly translate = inject(TranslateService);
   @ViewChild(CustomPopoverComponent) customPopover!: CustomPopoverComponent;
+
+
+  private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
+  private readonly absenceTypeService = inject(AbsenceTypeService);
+  readonly absenceTypesPopOverList = computed(() => {
+    return this.absenceTypeService.absenceTypes().map(aType => ({
+      id: aType.id,
+      name: aType.name,
+      label: aType.label,
+      shareOfDay: aType.shareOfDay,
+      isHoliday: aType.isHoliday && aType.isHoliday == 1,
+      hours: aType.hours
+    }));
+  });
 
   // Days (1-31)
   days: number[] = [];
@@ -32,50 +48,6 @@ export class CalendarViewComponent implements OnInit {
   selectedMonthIndex: number = -1;
   selectedDayIndex: number = -1;
 
-  // List for the popover
-  defaultList: any[] = [
-    {
-      id: 11,
-      name: "kann nicht gebucht werden",
-      label: "Y",
-      hours: 0,
-      isHoliday: 0,
-      shareOfDay: 1
-    },
-    {
-      id: 8,
-      name: "Krankheit",
-      label: "K",
-      hours: 0,
-      isHoliday: 0,
-      shareOfDay: 1
-    },
-    {
-      id: 10,
-      name: "Sonderurlaub",
-      label: "X",
-      hours: 0,
-      isHoliday: 0,
-      shareOfDay: 1
-    },
-    {
-      id: 7,
-      name: "Urlaub",
-      label: "U",
-      hours: 0,
-      isHoliday: 1,
-      shareOfDay: 1
-    },
-    {
-      id: 9,
-      name: "Urlaub 1/2 Tag",
-      label: "H",
-      hours: 0,
-      isHoliday: 1,
-      shareOfDay: 0.5
-    }
-  ];
-
   // Reference to the currently selected cell (for the popover)
   private selectedCellElement: HTMLElement | null = null;
 
@@ -85,6 +57,7 @@ export class CalendarViewComponent implements OnInit {
     this.initializeCalendar();
     this.loadTranslations();
     this.subscribeToLanguageChanges();
+    this.absenceTypeUtils.loadInitialData().subscribe();
   }
 
   loadTranslations(): void {
