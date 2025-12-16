@@ -42,13 +42,15 @@ export class ModalWorkPackageComponent implements OnInit {
   public onSubmit(): void {
     if (this.workPackageForm.invalid || this.isLoading) return
     const formData = this.workPackageForm.value;
-    const body = {
-      startDate: formData.dates && formData.dates[0],
-      endDate: formData.dates && formData.dates[1],
+    const body: any = {
       packageNo: formData.packageno,
       packageSerial: formData.packageSerial,
       packageTitle: formData.packageTitle,
       projectId: this.projectId
+    }
+    if (formData.dates) {
+      body.startDate = formData.dates[0];
+      body.endDate = formData.dates[1];
     }
     this.projectPackagesUtils.addProjectPage(body).subscribe({
       next: (created) => {
