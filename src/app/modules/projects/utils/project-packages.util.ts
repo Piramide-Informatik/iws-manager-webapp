@@ -17,4 +17,11 @@ export class ProjectPackagesUtils {
   getAllProjectPackageByProject(projectId: string): Observable<ProjectPackage[]> {
     return this.projectPackagesService.getAllProjectsPackagesByProject(projectId);
   }
+
+  /**
+   * Creates a new project package with validation
+   */
+  addProjectPage(projectPackage: Omit<any, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ProjectPackage> {
+    return this.projectPackagesService.addProjectPackage(projectPackage);
+  }
 }

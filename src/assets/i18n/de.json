@@ -575,6 +575,19 @@
       "START_DATE": "Start",
       "END_DATE": "Ende",
       "TITLE": "Arbeitspakete"
+    },
+    "MODAL": {
+      "NEW": "Neu Arbeitspakete",
+      "DELETE": "Arbeitspakete löschen"
+    },
+    "FORM": {
+      "PACKAGE_NUMBER": "Arbeitspaket",
+      "PACKAGE_SERIAL": "AP-Nr.",
+      "PACKAGE_NAME": "Bezeichnung",
+      "DATE_RANGE": "Startdatum - Enddatum"
+    },
+    "LABEL": {
+      "SELECT_DATES": "Wählen Sie Daten aus"
     }
   },
   "PROJECT_PERIOD": {

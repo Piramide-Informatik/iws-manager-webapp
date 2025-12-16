@@ -26,6 +26,28 @@ export class ProjectPackageService {
     })
   };
 
+  // ==================== CREATE OPERATIONS ====================
+  /**
+   * Creates a new project package
+   * @param projectPackage project package(without id, timestamps and version)
+   * @returns Observable with the created basic project package
+   * @throws Error when validation fails or server error occurs
+   */
+  addProjectPackage(projectPackage: Omit<ProjectPackage, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ProjectPackage> {
+    return this.http.post<ProjectPackage>(this.apiUrl, projectPackage, this.httpOptions).pipe(
+      tap({
+        next: (newFrameworkAgreement) => {
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add project package');
+          console.error('Error adding project package:', err);
+          return of(projectPackage);
+        }
+      })
+    );
+  }
+
   // ==================== READ OPERATIONS ====================
   /**
    * Retrieves all projects packages by project id

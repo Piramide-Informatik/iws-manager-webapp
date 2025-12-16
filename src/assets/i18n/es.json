@@ -569,6 +569,19 @@
       "START_DATE": "Inicio",
       "END_DATE": "Fin",
       "TITLE": "Paquetes de Trabajo"
+    },
+    "MODAL": {
+      "NEW": "Nuevo Paquete de Trabajo",
+      "DELETE": "Eliminar Paquete de Trabajo"
+    },
+    "FORM": {
+      "PACKAGE_NUMBER": "Paquete de trabajo",
+      "PACKAGE_SERIAL": "Nº WP",
+      "PACKAGE_NAME": "Descripción",
+      "DATE_RANGE": "Rango de fechas"
+    },
+    "LABEL": {
+      "SELECT_DATES": "Seleccionar Fechas"
     }
   },
   "PROJECT_PERIOD": {

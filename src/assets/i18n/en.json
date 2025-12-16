@@ -575,6 +575,19 @@
       "START_DATE": "Start",
       "END_DATE": "End",
       "TITLE": "Work Packages"
+    },
+    "MODAL": {
+      "NEW": "New Work Package",
+      "DELETE": "Delete Work Package"
+    },
+    "FORM": {
+      "PACKAGE_NUMBER": "Work Package",
+      "PACKAGE_SERIAL": "WP No.",
+      "PACKAGE_NAME": "Description",
+      "DATE_RANGE": "Start Date - End Date"
+    },
+    "LABEL": {
+      "SELECT_DATES": "Select Dates"
     }
   },
   "PROJECT_PERIOD": {

@@ -1,0 +1,59 @@
+@use 'variables' as *;
+
+.create-form {
+
+  .work-package-form {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 1rem;
+
+    label {
+      width: 150px;
+      flex-shrink: 0;
+    }
+  
+    input, p-inputnumber {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}
+
+::ng-deep input.p-inputnumber-input#shareOfDay {
+  width: 100% !important;
+}
+
+::ng-deep .p-datepicker {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 ;
+}
+
+::ng-deep .p-datepicker-panel table,
+::ng-deep .p-datepicker-panel .p-monthpicker,
+::ng-deep .p-datepicker-panel .p-yearpicker,
+::ng-deep .p-datepicker-panel .p-datepicker-group {
+  td, th {
+    padding: 0 !important;
+    text-align: center;
+  }
+}
+
+::ng-deep .p-datepicker-panel {
+  button.p-ripple.p-button.p-component {
+    background-color: initial !important;
+    border: none;
+    color: $primary-color;
+
+    &:hover{
+      background-color: $accent-color !important;
+    }
+  }
+
+  .p-datepicker-day-selected{
+    background: $primary-color !important;
+  }
+}
