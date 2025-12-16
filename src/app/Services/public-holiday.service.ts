@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, of, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { State } from '../Entities/state';
+import { DayOff } from '../Entities/dayOff';
 
 @Injectable({
     providedIn: 'root',
@@ -150,6 +151,19 @@ export class PublicHolidayService {
                 this._error.set('Failed to save states for publicHoliday');
                 console.error('Error saving states for publicHoliday:', err);
                 return throwError(() => err);
+            })
+        );
+    }
+
+    // Get all holidays and weekend by year
+    getAllHolidaysAndWeekendByYear(year: number): Observable<DayOff[]> {
+        const url = `${this.apiUrl}/all-with-weekends?year=${year}`;
+        return this.http.get<DayOff[]>(url, this.httpOptions).pipe(
+            tap(() => this._error.set(null)),
+            catchError(err => {
+                this._error.set('Failed to fetch holidays and weekend for year');
+                console.error('Error fetching holidays and weekend for year:', err);
+                return of([]);
             })
         );
     }

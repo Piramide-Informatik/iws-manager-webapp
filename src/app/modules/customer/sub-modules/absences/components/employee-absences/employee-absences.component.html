@@ -10,7 +10,6 @@
             <label for="year">{{ 'PROJECT_PERIOD.TABLE.YEAR' | translate }}</label>
             <p-select inputId="year" formControlName="year"
             [options]="years"
-            [showClear]="true"
             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"  />
         </div>
         <div class="field">
@@ -41,6 +40,9 @@
     </div>
   </div>
   <div class="calendar-table-container">
-    <app-calendar-view></app-calendar-view>
+    <app-calendar-view 
+      [currentYear]="currentYear"
+      [weekendsHolidaysMap]="holidaysWeekendMap"
+    ></app-calendar-view>
   </div>
 </div>
