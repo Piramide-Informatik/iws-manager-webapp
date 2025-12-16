@@ -28,6 +28,8 @@ export class WorkPackagesComponent implements OnInit {
   tableKey: string = 'ProjectPackages';
   projectpackageList!: ProjectPackage[];
   projectpackageColumns: any[] = [];
+  packageNo: number | null = null;
+  selectedPackage: number | null = null;
   projectPackageUserPreferences: UserPreference = {};
   dataKeys = ['packageNo', 'serial', 'packageTitle', 'startDate', 'endDate'];
   public modalProjectPackageType: 'create' | 'delete' | 'edit' = 'create';
@@ -36,7 +38,7 @@ export class WorkPackagesComponent implements OnInit {
 
   @ViewChild('ProjectPackageModal') projectPackageDialog!: ModalWorkPackageComponent;
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {}
+  constructor(private readonly activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.pageTitleService.setTranslatedTitle('PAGETITLE.PROJECT.NEW_PROJECT');
@@ -111,7 +113,8 @@ export class WorkPackagesComponent implements OnInit {
   }): void {
     this.modalProjectPackageType = event.type;
     if (event.type === 'delete' && event.data) {
-      // logic to handle delete scenario
+      this.selectedPackage = event.data;
+      this.packageNo = this.projectpackageList.find(pack => pack.id == this.selectedPackage)?.packageNo ?? null;
     }
     this.visibleProjectPackageModal = true;
   }
@@ -126,14 +129,22 @@ export class WorkPackagesComponent implements OnInit {
     this.visibleProjectPackageModal = visible;
   }
 
-  onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+  onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error' }): void {
+    if (event.created && event.status === 'success') {
       this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
         this.projectpackageList = projectPackages;
         this.commonMessageService.showCreatedSuccesfullMessage();
       })
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onDeleteProjectPackage(event: { status: 'success' | 'error', error?: Error }): void {
+    if (event.status === 'success') {
+      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
+        this.projectpackageList = projectPackages;
+      });
     }
   }
 }
