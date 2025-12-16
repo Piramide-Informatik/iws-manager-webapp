@@ -1,5 +1,5 @@
 import { UserPreferenceService } from './../../../../../Services/user-preferences.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ProjectPackage } from '../../../../../Entities/ProjectPackage';
 import { UserPreference } from '../../../../../Entities/user-preference';
 import { _, TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { PageTitleService } from '../../../../../shared/services/page-title.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectPackagesUtils } from '../../../utils/project-packages.util';
+import { ModalWorkPackageComponent } from './work-package-modal/work-package-modal.component';
+import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-work-packages',
@@ -19,7 +21,7 @@ export class WorkPackagesComponent implements OnInit {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly pageTitleService = inject(PageTitleService);
   private readonly projectPackagesUtils = inject(ProjectPackagesUtils);
-
+  private readonly commonMessageService = inject(CommonMessagesService);
   private subscription!: Subscription;
   public projectId!: string;
   loading: boolean = true;
@@ -28,6 +30,11 @@ export class WorkPackagesComponent implements OnInit {
   projectpackageColumns: any[] = [];
   projectPackageUserPreferences: UserPreference = {};
   dataKeys = ['packageNo', 'serial', 'packageTitle', 'startDate', 'endDate'];
+  public modalProjectPackageType: 'create' | 'delete' | 'edit' = 'create';
+  public visibleProjectPackageModal: boolean = false;
+  public selectedProjectPackage!: ProjectPackage;
+
+  @ViewChild('ProjectPackageModal') projectPackageDialog!: ModalWorkPackageComponent;
 
   constructor(private readonly activatedRoute: ActivatedRoute) {}
 
@@ -102,6 +109,31 @@ export class WorkPackagesComponent implements OnInit {
     type: 'create' | 'delete' | 'edit';
     data?: any;
   }): void {
-    // implement handling function
+    this.modalProjectPackageType = event.type;
+    if (event.type === 'delete' && event.data) {
+      // logic to handle delete scenario
+    }
+    this.visibleProjectPackageModal = true;
+  }
+
+  onModalProjectPackageClose() {
+    if (this.projectPackageDialog) {
+      this.projectPackageDialog.closeModal();
+    }
+  }
+
+  onModalVisibilityProjectPackageChange(visible: boolean): void {
+    this.visibleProjectPackageModal = visible;
+  }
+
+  onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error'}): void {
+    if(event.created && event.status === 'success'){
+      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
+        this.projectpackageList = projectPackages;
+        this.commonMessageService.showCreatedSuccesfullMessage();
+      })
+    }else if(event.status === 'error'){
+      this.commonMessageService.showErrorCreatedMessage();
+    }
   }
 }

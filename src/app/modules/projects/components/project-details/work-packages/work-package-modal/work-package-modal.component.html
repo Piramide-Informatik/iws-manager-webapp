@@ -1,0 +1,69 @@
+<ng-container *ngIf="isCreateWorkPackageMode; else deleteWorkPackageTemplate">
+  <form [formGroup]="workPackageForm" (ngSubmit)="onSubmit()">
+    <div class="create-form my-4">
+      <div class="work-package-form">
+        <label for="packageno">{{ "PROJECT_PACKAGES.FORM.PACKAGE_NUMBER" | translate }}</label>
+        <div class="input-message">
+          <input #firstInput pInputText type="text" id="packageno" formControlName="packageno" autocomplete="off" 
+          invalid="workPackageForm.get('packageno')?.invalid  
+          && workPackageForm.get('packageno')?.dirty 
+          || workPackageForm.get('packageno')?.touched
+          || labelAlreadyExist"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          workPackageForm.get('packageno')?.invalid && 
+          workPackageForm.get('packageno')?.dirty
+          ">
+            {{ 'ERROR.FIELD_REQUIRED' | translate}}
+          </p-message>
+        </div>
+      </div>
+
+      <div class="work-package-form">
+        <label for="packageSerial">{{ "PROJECT_PACKAGES.FORM.PACKAGE_SERIAL" | translate }}</label>
+        <div class="input-message">
+          <input pInputText type="text" id="packageSerial" formControlName="packageSerial" autocomplete="off"/>
+        </div>
+      </div>
+
+      <div class="work-package-form">
+        <label for="dates">{{ "PROJECT_PACKAGES.FORM.DATE_RANGE" | translate }}</label>
+        <div class="datepicker-container w-full">
+          <p-datepicker
+            formControlName="dates"
+            #datePicker
+            selectionMode="range"
+            [showIcon]="true"
+            inputId="date"
+            [dateFormat]="dateFormatPicker"
+            [showClear]="true"
+            appendTo="body"
+            [placeholder]="('PROJECT_PACKAGES.LABEL.SELECT_DATES' | translate)"
+            [style]="{ 'width': '100%' , 'max-width': '300px'}"
+            inputStyleClass="centered-date"
+            panelStyleClass="datepicker-panel"
+          />
+        </div>
+      </div>
+
+      <div class="work-package-form">
+        <label for="packageTitle">{{ "PROJECT_PACKAGES.FORM.PACKAGE_NUMBER" | translate }}</label>
+        <div class="input-message">
+          <input pInputText type="text" id="packageTitle" formControlName="packageTitle" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-content-center gap-2 mt-4">
+      <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+        iconPos="left" [loading]="isLoading"
+        [disabled]="workPackageForm.invalid || isLoading || !workPackageForm.dirty" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #deleteWorkPackageTemplate>
+
+</ng-template>
