@@ -3,6 +3,7 @@ import {Observable, catchError, map, take, throwError, switchMap} from 'rxjs';
 import { PublicHoliday } from '../../../../../Entities/publicholiday';
 import { PublicHolidayService } from '../../../../../Services/public-holiday.service';
 import { createNotFoundUpdateError, createUpdateConflictError} from '../../../../shared/utils/occ-error';
+import { DayOff } from '../../../../../Entities/dayOff';
 
 @Injectable({ providedIn: 'root' })
 export class PublicHolidayUtils {
@@ -46,6 +47,11 @@ export class PublicHolidayUtils {
 
     getAllPublicHolidays(): Observable<PublicHoliday[]> {
         return this.publicHolidayService.getAllPublicHolidays();
+    }
+
+    // Get all holidays and weekend by year
+    getAllHolidaysAndWeekendByYear(year: number): Observable<DayOff[]> {
+        return this.publicHolidayService.getAllHolidaysAndWeekendByYear(year);
     }
 
     //Creates a new publicHoliday with validation

@@ -15,6 +15,8 @@ import { UserPreference } from '../../../../../../Entities/user-preference';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
 import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
+import { PublicHolidayUtils } from '../../../../../master-data/components/holidays/utils/public-holiday-utils';
+import { DayOff } from '../../../../../../Entities/dayOff';
 
 @Component({
   selector: 'app-employee-absences',
@@ -34,6 +36,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly absenceTypeService = inject(AbsenceTypeService);
+  private readonly publicHolidayUtils = inject(PublicHolidayUtils);
 
   readonly absenceTypes = computed(() => {
     return this.absenceTypeService.absenceTypes().map(aType => ({
@@ -54,8 +57,11 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   employees: Signal<Employee[] | undefined> = toSignal(
     this.employeeUtils.getAllEmployeesByCustomerId(this.customerId)
   );
-  years: number[] = [];
+  years: number[] = []; // Values of dropdown
   formYearEmployee!: FormGroup;
+  holidaysAndWeekend: DayOff[] = [];
+  holidaysWeekendMap = new Map<string, DayOff>();
+  currentYear: number = moment().year();
 
   //Table absence type-day
   tableKey = 'AbsenceTypeDay';
@@ -86,7 +92,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.formYearEmployee = new FormGroup ({
-      year: new FormControl(moment().year()),
+      year: new FormControl(this.currentYear),
       employeeno: new FormControl(),
       employeeFullName: new FormControl({ value: '', disabled: true })
     });
@@ -106,6 +112,31 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
             employeeFullName: ''
           }, { emitEvent: false });
         }
+      })
+    );
+
+    if(this.currentYear){
+      this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(this.currentYear).subscribe(holidaysAndWeekends => {
+        this.holidaysAndWeekend = holidaysAndWeekends;
+        for(const dayOff of holidaysAndWeekends){
+          this.holidaysWeekendMap.set(dayOff.date, dayOff);
+        }
+      });
+    }
+
+    this.checkChangeSelectedYear();
+  }
+
+  private checkChangeSelectedYear(): void {
+    this.subscriptions.add(
+      this.formYearEmployee.get('year')?.valueChanges.subscribe((selectedYear: number) => {
+        this.currentYear = selectedYear;
+        this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(selectedYear).subscribe(holidaysAndWeekends => {
+          this.holidaysAndWeekend = holidaysAndWeekends;
+          for(const dayOff of holidaysAndWeekends){
+            this.holidaysWeekendMap.set(dayOff.date, dayOff);
+          }
+        });
       })
     );
   }

@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, computed, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
 import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
+import { DayOff } from '../../../../../../Entities/dayOff';
 
 @Component({
   selector: 'app-calendar-view',
@@ -37,7 +38,10 @@ export class CalendarViewComponent implements OnInit {
   calendarData: any[][] = [];
 
   // Current year to display in the title
-  currentYear: number = new Date().getFullYear();
+  @Input() currentYear!: number;
+
+  // Map Weekends + holidays
+  @Input() weekendsHolidaysMap!: Map<string,DayOff> | null;
 
   // Array with even month indices (0-indexed)
   // January=0, February=1, March=2, April=3, May=4, June=5, July=6, August=7, September=8, October=9, November=10, December=11
@@ -124,6 +128,12 @@ export class CalendarViewComponent implements OnInit {
     return this.evenMonthsIndices.includes(monthIndex);
   }
 
+  isWeekendOrHoliday(monthIndex: number, dayIndex: number): boolean {
+    const month = monthIndex + 1 < 10 ? `0${monthIndex + 1}` : `${monthIndex + 1}`;
+    const day = dayIndex + 1 < 10 ? `0${dayIndex + 1}` : `${dayIndex + 1}`;
+    return !!this.weekendsHolidaysMap?.get(`${this.currentYear}-${month}-${day}`);
+  }
+
   // Get number of days in a month
   private getDaysInMonth(monthIndex: number): number {
     const year = this.currentYear;
@@ -135,6 +145,7 @@ export class CalendarViewComponent implements OnInit {
     const baseClass = 'calendar-cell';
     const isValid = this.isValidDay(monthIndex, dayIndex);
     const isEvenMonth = this.isEvenMonth(monthIndex);
+    const isWeekendOrHoliday = this.isWeekendOrHoliday(monthIndex, dayIndex);
 
     let classes = baseClass;
 
@@ -147,6 +158,10 @@ export class CalendarViewComponent implements OnInit {
       classes += ' invalid-day';
     }
 
+    if(isWeekendOrHoliday) {
+      classes += ' weekend-holiday'; 
+    }
+
     const cell = this.calendarData[monthIndex][dayIndex];
     if (cell.hasData) {
       classes += ' has-data';
@@ -157,7 +172,7 @@ export class CalendarViewComponent implements OnInit {
 
   // Method to handle cell click
   onCellClick(monthIndex: number, dayIndex: number, event: MouseEvent): void {
-    if (this.isValidDay(monthIndex, dayIndex)) {
+    if (this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex)) {
       console.log(`Cell clicked: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
 
       // Save the selected cell
