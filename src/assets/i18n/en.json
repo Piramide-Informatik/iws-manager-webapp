@@ -578,6 +578,7 @@
     },
     "MODAL": {
       "NEW": "New Work Package",
+      "EDIT": "Edit Work Package",
       "DELETE": "Delete Work Package"
     },
     "FORM": {
