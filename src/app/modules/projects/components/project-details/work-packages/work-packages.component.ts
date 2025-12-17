@@ -28,6 +28,8 @@ export class WorkPackagesComponent implements OnInit {
   tableKey: string = 'ProjectPackages';
   projectpackageList!: ProjectPackage[];
   projectpackageColumns: any[] = [];
+  packageNo: number | null = null;
+  selectedPackage: number | null = null;
   projectPackageUserPreferences: UserPreference = {};
   dataKeys = ['packageNo', 'serial', 'packageTitle', 'startDate', 'endDate'];
   public modalProjectPackageType: 'create' | 'delete' | 'edit' = 'create';
@@ -111,7 +113,8 @@ export class WorkPackagesComponent implements OnInit {
   }): void {
     this.modalProjectPackageType = event.type;
     if (event.type === 'delete' && event.data) {
-      // logic to handle delete scenario
+      this.selectedPackage = event.data;
+      this.packageNo = this.projectpackageList.find(pack => pack.id == this.selectedPackage)?.packageNo ?? null;
     }
     if (event.type === 'edit' && event.data) {
       this.selectedProjectPackage = event.data
@@ -130,10 +133,10 @@ export class WorkPackagesComponent implements OnInit {
   }
 
   onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error'}): void {
-    if(event.created && event.status === 'success'){
+    if (event.created && event.status === 'success') {
       this.projectpackageList.push(event.created);
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
@@ -146,6 +149,14 @@ export class WorkPackagesComponent implements OnInit {
       })
     } else if(event.status === 'error'){
       this.commonMessageService.showErrorEditMessage();
+    }
+  }
+
+  onDeleteProjectPackage(event: { status: 'success' | 'error', error?: Error }): void {
+    if (event.status === 'success') {
+      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
+        this.projectpackageList = projectPackages;
+      });
     }
   }
 }

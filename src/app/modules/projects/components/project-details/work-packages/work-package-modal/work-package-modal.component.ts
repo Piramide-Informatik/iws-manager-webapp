@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectPackagesUtils } from '../../../../utils/project-packages.util';
 import { ProjectPackage } from '../../../../../../Entities/ProjectPackage';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
@@ -14,9 +16,13 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 })
 export class ModalWorkPackageComponent implements OnInit, OnChanges {
   private readonly projectPackagesUtils = inject(ProjectPackagesUtils);
+  private readonly subscriptions = new Subscription();
+  private readonly commonMessagesService = inject(CommonMessagesService);
 
   @Input() modalProjectPackageType: 'create' | 'delete' | 'edit' = 'create';
   @Input() visibleProjectPackage: boolean = false;
+  @Input() packageNo: number | null = null;
+  @Input() packageToDelete: number | null = null;
   @Input() selectedProjectPackage!: any;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() createProjectPackage = new EventEmitter<{ created?: ProjectPackage, status: 'success' | 'error' }>();
@@ -36,7 +42,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   public showOCCErrorModalProjectPackage = false;
   public occErrorProjectPackageType: OccErrorType = 'UPDATE_UNEXISTED';
   constructor(private readonly activatedRoute: ActivatedRoute) { }
-  
+
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.projectId = params['idProject'];
@@ -104,6 +110,26 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
         }
       });
     }
+  }
+  
+  onDeleteConfirm(): void {
+    if (!this.packageToDelete) return;
+    this.isLoading = true;
+
+    const sub = this.projectPackagesUtils
+      .deleteProjectPackage(this.packageToDelete)
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.deleteProjectPackageEvent.emit({ status: 'success' })
+          this.commonMessagesService.showDeleteSucessfullMessage();
+          this.closeModal();
+        },
+        error: (error) => {
+          this.deleteProjectPackageEvent.emit({ status: 'error' })
+        }
+      });
+    this.subscriptions.add(sub);
   }
 
   public fillForm() {

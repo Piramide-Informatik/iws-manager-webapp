@@ -111,4 +111,30 @@ export class ProjectPackageService {
     this._projectsPackages.set([]);
     this._error.set(null);
   }
+
+  // ==================== DELETE OPERATIONS ====================
+  /**
+   * Delete a project package
+   * @param id project package id
+   * @returns Observable with the deleted project package id
+   * @throws Error when validation fails or server error occurs
+   */
+  deleteProjectPackage(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._projectsPackages.update(projectpackages =>
+            projectpackages.filter(s => s.id !== id)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete project package');
+        }
+      }
+      ),
+
+    );
+  }
 }

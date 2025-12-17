@@ -51,4 +51,11 @@ export class ProjectPackagesUtils {
       })
     );
   }
+
+  /**
+   * Delete a project package
+   */
+  deleteProjectPackage(id: number): Observable<void> {
+    return this.projectPackagesService.deleteProjectPackage(id);
+  }
 }

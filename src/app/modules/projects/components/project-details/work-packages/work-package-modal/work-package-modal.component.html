@@ -65,7 +65,18 @@
 </ng-container>
 
 <ng-template #deleteWorkPackageTemplate>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: packageNo }"></p>
 
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading" [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+
+    </div>
+  </div>
 </ng-template>
 <app-occ-error-modal
   *ngIf="showOCCErrorModalProjectPackage"
