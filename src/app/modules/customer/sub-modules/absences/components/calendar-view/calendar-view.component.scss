@@ -159,6 +159,10 @@
     }
 }
 
+.no-employee-selected {
+    cursor: not-allowed;
+}
+
 .invalid-indicator {
     color: #dc3545;
     font-weight: bold;

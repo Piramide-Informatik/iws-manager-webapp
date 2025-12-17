@@ -57,6 +57,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   employees: Signal<Employee[] | undefined> = toSignal(
     this.employeeUtils.getAllEmployeesByCustomerId(this.customerId)
   );
+  selectedEmployee!: Employee | undefined;
   years: number[] = []; // Values of dropdown
   formYearEmployee!: FormGroup;
   holidaysAndWeekend: DayOff[] = [];
@@ -100,14 +101,15 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.formYearEmployee.get('employeeno')?.valueChanges.subscribe((employeeId: number | null) => {
         if(employeeId){
-          const employeeSelected = this.employees()?.find(e => e.id === employeeId);
-          if (employeeSelected) {
-            const fullName = `${employeeSelected.firstname} ${employeeSelected.lastname}`.trim();
+          this.selectedEmployee = this.employees()?.find(e => e.id === employeeId);
+          if (this.selectedEmployee) {
+            const fullName = `${this.selectedEmployee.firstname} ${this.selectedEmployee.lastname}`.trim();
             this.formYearEmployee.patchValue({
               employeeFullName: fullName
             }, { emitEvent: false }); 
           }
         } else {
+          this.selectedEmployee = undefined;
           this.formYearEmployee.patchValue({
             employeeFullName: ''
           }, { emitEvent: false });
@@ -179,7 +181,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     this.cols = [
       { field: 'abbreviation', classesTHead: ['width-10'], header: this.translate.instant('ABSENCE_TYPES.LABEL.ABBREVIATION') },
       { field: 'type', header: this.translate.instant('ABSENCE_TYPES.LABEL.TYPE') },
-      { field: 'number', classesTHead: ['width-10'], header: this.translate.instant('ORDER_PROYECT.TABLE.NUMBER'), filter: { type: 'numeric' } }
+      { field: 'number', classesTHead: ['width-10'], header: this.translate.instant('ORDER_PROYECT.TABLE.NUMBER'), filter: { type: 'numeric' }, customClasses: ['align-right'], type: 'integer' }
     ];
   }
 }

@@ -4,6 +4,8 @@ import { CustomPopoverComponent } from '../../../../../shared/components/custom-
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
 import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 import { DayOff } from '../../../../../../Entities/dayOff';
+import { Employee } from '../../../../../../Entities/employee';
+import { AbsenceType } from '../../../../../../Entities/absenceType';
 
 @Component({
   selector: 'app-calendar-view',
@@ -43,6 +45,11 @@ export class CalendarViewComponent implements OnInit {
   // Map Weekends + holidays
   @Input() weekendsHolidaysMap!: Map<string,DayOff> | null;
 
+  // Selected employee in dropdown
+  @Input() employee!: Employee | undefined;
+
+  isLoading = false;
+
   // Array with even month indices (0-indexed)
   // January=0, February=1, March=2, April=3, May=4, June=5, July=6, August=7, September=8, October=9, November=10, December=11
   // We need: February (1), April (3), June (5), August (7), October (9), December (11)
@@ -54,6 +61,8 @@ export class CalendarViewComponent implements OnInit {
 
   // Reference to the currently selected cell (for the popover)
   private selectedCellElement: HTMLElement | null = null;
+
+  absenceDaysToAdd: {absenceDate: string, employee: Employee, absenceType: AbsenceType}[] = [];
 
   constructor() { }
 
@@ -162,6 +171,10 @@ export class CalendarViewComponent implements OnInit {
       classes += ' weekend-holiday'; 
     }
 
+    if(!this.employee){
+      classes  += ' no-employee-selected';
+    }
+
     const cell = this.calendarData[monthIndex][dayIndex];
     if (cell.hasData) {
       classes += ' has-data';
@@ -172,7 +185,7 @@ export class CalendarViewComponent implements OnInit {
 
   // Method to handle cell click
   onCellClick(monthIndex: number, dayIndex: number, event: MouseEvent): void {
-    if (this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex)) {
+    if (this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex) && this.employee) {
       console.log(`Cell clicked: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
 
       // Save the selected cell
@@ -192,7 +205,7 @@ export class CalendarViewComponent implements OnInit {
   // Method to handle keyboard events
   onCellKeyUp(event: KeyboardEvent, monthIndex: number, dayIndex: number): void {
     // Only trigger on Enter key for accessibility
-    if (event.key === 'Enter' && this.isValidDay(monthIndex, dayIndex)) {
+    if (event.key === 'Enter' && this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex) && this.employee) {
       console.log(`Cell activated via keyboard: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
 
       // Save the selected cell indices
@@ -224,23 +237,32 @@ export class CalendarViewComponent implements OnInit {
   }
 
   // Method to handle popover selection
-  onPopoverSelected(item: any): void {
+  onPopoverSelected(item: AbsenceType): void {
     console.log(`Item selected from popover:`, item);
 
-    if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1) {
+    if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1 && this.employee) {
       const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
 
       if (item) {
+        // Add to array for create
+        const monthNumeric = this.selectedMonthIndex + 1 < 10 ? `0${this.selectedMonthIndex + 1}` : this.selectedMonthIndex + 1;
+        const dayNumeric = this.selectedDayIndex + 1 < 10 ? `0${this.selectedDayIndex + 1}` : this.selectedDayIndex + 1;
+        this.absenceDaysToAdd.push({
+          employee: this.employee,
+          absenceType: item,
+          absenceDate: `${this.currentYear}-${monthNumeric}-${dayNumeric}`
+        });
+
         // Save the selected value
-        cell.value = item.label || item.value || item;
+        cell.value = item.label;
         cell.hasData = true;
         cell.data = item;
 
         // Translation for the tooltip
-        const translatedValue = this.translate.instant(`CALENDAR.OPTIONS.${item.value || item}`);
+        const translatedValue = this.translate.instant(`CALENDAR.OPTIONS.${item.label}`);
 
         // Update with translated value if exists
-        if (translatedValue !== `CALENDAR.OPTIONS.${item.value || item}`) {
+        if (translatedValue !== `CALENDAR.OPTIONS.${item.label}`) {
           cell.value = translatedValue;
         }
       } else {
@@ -265,6 +287,11 @@ export class CalendarViewComponent implements OnInit {
   }
 
   getCellTitle(monthIndex: number, dayIndex: number): string {
+    // Check selected employee
+    if(!this.employee){
+      return this.translate.instant('CALENDAR.ERROR.NO_EMPLOYEE_SELECTED');
+    }
+
     // Check if indices are valid
     if (monthIndex < 0 || monthIndex >= this.months.length ||
       dayIndex < 0 || dayIndex >= this.days.length) {
@@ -331,5 +358,11 @@ export class CalendarViewComponent implements OnInit {
       return this.calendarData[monthIndex][dayIndex].value;
     }
     return '';
+  }
+
+  onSumbit(): void {
+    if(this.absenceDaysToAdd.length > 0){
+      console.log('enviar')
+    }
   }
 }
