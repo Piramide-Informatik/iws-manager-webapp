@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectPackagesUtils } from '../../../../utils/project-packages.util';
 import { ProjectPackage } from '../../../../../../Entities/ProjectPackage';
 import { ActivatedRoute } from '@angular/router';
-import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
