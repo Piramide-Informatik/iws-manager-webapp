@@ -113,6 +113,9 @@ export class WorkPackagesComponent implements OnInit {
     if (event.type === 'delete' && event.data) {
       // logic to handle delete scenario
     }
+    if (event.type === 'edit' && event.data) {
+      this.selectedProjectPackage = event.data
+    }
     this.visibleProjectPackageModal = true;
   }
 
@@ -128,12 +131,21 @@ export class WorkPackagesComponent implements OnInit {
 
   onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error'}): void {
     if(event.created && event.status === 'success'){
-      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
-        this.projectpackageList = projectPackages;
-        this.commonMessageService.showCreatedSuccesfullMessage();
-      })
+      this.projectpackageList.push(event.created);
+      this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error'){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onEditProjectPackage(event: { edited?: ProjectPackage, status: 'success' | 'error'}): void {
+    if(event.edited && event.status === 'success'){
+      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
+        this.projectpackageList = projectPackages;
+        this.commonMessageService.showEditSucessfullMessage();
+      })
+    } else if(event.status === 'error'){
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 }

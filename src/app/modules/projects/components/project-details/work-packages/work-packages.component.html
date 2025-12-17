@@ -21,8 +21,10 @@
       #ProjectPackageModal
       [modalProjectPackageType]="modalProjectPackageType"
       [visibleProjectPackage]="visibleProjectPackageModal"
+      [selectedProjectPackage]="selectedProjectPackage"
       (isVisibleModal)="onModalVisibilityProjectPackageChange($event)"
       (createProjectPackage)="onCreateProjectPackage($event)"
+      (editedProjectPackage)="onEditProjectPackage($event)"
     ></app-modal-project-package>
   </p-dialog>
 

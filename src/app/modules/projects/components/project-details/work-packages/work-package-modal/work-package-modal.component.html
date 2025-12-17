@@ -67,3 +67,9 @@
 <ng-template #deleteWorkPackageTemplate>
 
 </ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalProjectPackage"
+  [errorType]="occErrorProjectPackageType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalProjectPackage = false">
+</app-occ-error-modal>
