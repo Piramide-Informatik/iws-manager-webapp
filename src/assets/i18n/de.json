@@ -579,6 +579,7 @@
     },
     "MODAL": {
       "NEW": "Neu Arbeitspakete",
+      "EDIT": "Arbeitspakete bearbeiten",
       "DELETE": "Arbeitspakete löschen"
     },
     "FORM": {

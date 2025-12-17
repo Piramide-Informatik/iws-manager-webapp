@@ -36,7 +36,7 @@ export class ProjectPackageService {
   addProjectPackage(projectPackage: Omit<ProjectPackage, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ProjectPackage> {
     return this.http.post<ProjectPackage>(this.apiUrl, projectPackage, this.httpOptions).pipe(
       tap({
-        next: (newFrameworkAgreement) => {
+        next: (newProjectPackage) => {
           this._error.set(null);
         },
         error: (err) => {
@@ -47,6 +47,28 @@ export class ProjectPackageService {
       })
     );
   }
+
+  // ==================== UPDATE OPERATIONS ====================
+    /**
+     * Updates an existing project Package
+     * @param data Partial project package data with updates
+     * @returns Observable with updated Project Package object
+     * @throws Error when project package not found or validation fails
+     */
+    updateProjectPackage(updatedProjectPackage: ProjectPackage): Observable<ProjectPackage> {
+      const url = `${this.apiUrl}/${updatedProjectPackage.id}`;
+      return this.http.put<ProjectPackage>(url, updatedProjectPackage, this.httpOptions).pipe(
+        tap({
+          next: (res) => {
+            this._error.set(null);
+          },
+          error: (err) => {
+            this._error.set('Failed to update project package');
+            console.error('Error updating project package:', err);
+          }
+        })
+      )
+    }
 
   // ==================== READ OPERATIONS ====================
   /**
@@ -61,6 +83,23 @@ export class ProjectPackageService {
         this._error.set('Failed to fetch projects packages');
         console.error('Error fetching projects packages:', err);
         return of([]);
+      })
+    );
+  }
+
+  /**
+   * Retrieves a single project package by ID
+   * @param id Project identifier
+   * @returns Observable with Project package object
+   * @throws Error when project pacakge not found or server error occurs
+   */
+  getProjectPackageById(id: number): Observable<ProjectPackage | undefined> {
+    return this.http.get<ProjectPackage>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch project package by id');
+        console.error(err);
+        return of(undefined as unknown as ProjectPackage);
       })
     );
   }

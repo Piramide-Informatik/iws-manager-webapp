@@ -573,6 +573,7 @@
     },
     "MODAL": {
       "NEW": "Nuevo Paquete de Trabajo",
+      "EDIT": "Editar Paquete de Trabajo",
       "DELETE": "Eliminar Paquete de Trabajo"
     },
     "FORM": {

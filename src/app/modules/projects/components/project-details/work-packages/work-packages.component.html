@@ -8,15 +8,29 @@
     (onDeleteRegister)="handleProjectpackageTableEvents({ type: 'delete', data: $event })">
   </master-data-genaral-table>
 
-  <p-dialog [header]="modalProjectPackageType === 'create' 
+  <p-dialog 
+    [header]="modalProjectPackageType === 'create' 
       ? ('PROJECT_PACKAGES.MODAL.NEW' | translate) 
-      : ('PROJECT_PACKAGES.MODAL.DELETE' | translate)" [modal]="true" [(visible)]="visibleProjectPackageModal"
-    [style]="{ width: '35rem' }" (onHide)="onModalProjectPackageClose()">
-    <app-modal-project-package #ProjectPackageModal [modalProjectPackageType]="modalProjectPackageType"
-      [visibleProjectPackage]="visibleProjectPackageModal" [packageToDelete]="selectedPackage" [packageNo]="packageNo"
+      : modalProjectPackageType === 'edit' 
+        ? ('PROJECT_PACKAGES.MODAL.EDIT' | translate) 
+        : ('PROJECT_PACKAGES.MODAL.DELETE' | translate)"
+    [modal]="true" 
+    [(visible)]="visibleProjectPackageModal" 
+    [style]="{ width: '35rem' }"
+    (onHide)="onModalProjectPackageClose()"
+  >
+    <app-modal-project-package
+      #ProjectPackageModal
+      [modalProjectPackageType]="modalProjectPackageType"
+      [visibleProjectPackage]="visibleProjectPackageModal"
+      [selectedProjectPackage]="selectedProjectPackage"
       (isVisibleModal)="onModalVisibilityProjectPackageChange($event)"
+      [packageToDelete]="selectedPackage"
+      [packageNo]="packageNo"
       (createProjectPackage)="onCreateProjectPackage($event)"
-      (deleteProjectPackageEvent)="onDeleteProjectPackage($event)"></app-modal-project-package>
+      (editedProjectPackage)="onEditProjectPackage($event)"
+      (deleteProjectPackageEvent)="onDeleteProjectPackage($event)" 
+    ></app-modal-project-package>
   </p-dialog>
 
 </p-card>

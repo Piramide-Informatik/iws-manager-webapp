@@ -38,7 +38,7 @@ export class WorkPackagesComponent implements OnInit {
 
   @ViewChild('ProjectPackageModal') projectPackageDialog!: ModalWorkPackageComponent;
 
-  constructor(private readonly activatedRoute: ActivatedRoute) { }
+  constructor(private readonly activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.pageTitleService.setTranslatedTitle('PAGETITLE.PROJECT.NEW_PROJECT');
@@ -116,6 +116,9 @@ export class WorkPackagesComponent implements OnInit {
       this.selectedPackage = event.data;
       this.packageNo = this.projectpackageList.find(pack => pack.id == this.selectedPackage)?.packageNo ?? null;
     }
+    if (event.type === 'edit' && event.data) {
+      this.selectedProjectPackage = event.data
+    }
     this.visibleProjectPackageModal = true;
   }
 
@@ -129,14 +132,23 @@ export class WorkPackagesComponent implements OnInit {
     this.visibleProjectPackageModal = visible;
   }
 
-  onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error' }): void {
+  onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error'}): void {
     if (event.created && event.status === 'success') {
-      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
-        this.projectpackageList = projectPackages;
-        this.commonMessageService.showCreatedSuccesfullMessage();
-      })
+      this.projectpackageList.push(event.created);
+      this.commonMessageService.showCreatedSuccesfullMessage();
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  onEditProjectPackage(event: { edited?: ProjectPackage, status: 'success' | 'error'}): void {
+    if(event.edited && event.status === 'success'){
+      this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
+        this.projectpackageList = projectPackages;
+        this.commonMessageService.showEditSucessfullMessage();
+      })
+    } else if(event.status === 'error'){
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 
