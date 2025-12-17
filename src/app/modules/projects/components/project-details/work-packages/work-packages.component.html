@@ -1,29 +1,22 @@
 <p-card [style]="{ background: 'var(--light-cyan)' }">
-  <ng-template #title>{{ 'PROJECT_PACKAGES.TABLE.TITLE' | translate }}</ng-template>  
-  <master-data-genaral-table [tableId]="tableKey" [tableValues]="projectpackageList"
-      [columns]="projectpackageColumns" [userPreferences]="projectPackageUserPreferences" [dataKeys]="dataKeys"
-      removeKey="id" (onColumnChanges)="onWorkPackagesUserPreferencesChanges($event)"
-      (onCreateRegister)="handleProjectpackageTableEvents({ type: 'create'})"
-      (onEditRegister)="handleProjectpackageTableEvents({ type: 'edit', data: $event})"
-      (onDeleteRegister)="handleProjectpackageTableEvents({ type: 'delete', data: $event })">
+  <ng-template #title>{{ 'PROJECT_PACKAGES.TABLE.TITLE' | translate }}</ng-template>
+  <master-data-genaral-table [tableId]="tableKey" [tableValues]="projectpackageList" [columns]="projectpackageColumns"
+    [userPreferences]="projectPackageUserPreferences" [dataKeys]="dataKeys" removeKey="id"
+    (onColumnChanges)="onWorkPackagesUserPreferencesChanges($event)"
+    (onCreateRegister)="handleProjectpackageTableEvents({ type: 'create'})"
+    (onEditRegister)="handleProjectpackageTableEvents({ type: 'edit', data: $event})"
+    (onDeleteRegister)="handleProjectpackageTableEvents({ type: 'delete', data: $event })">
   </master-data-genaral-table>
 
-  <p-dialog 
-    [header]="modalProjectPackageType === 'create' 
+  <p-dialog [header]="modalProjectPackageType === 'create' 
       ? ('PROJECT_PACKAGES.MODAL.NEW' | translate) 
-      : ('PROJECT_PACKAGES.MODAL.DELETE' | translate)" 
-    [modal]="true" 
-    [(visible)]="visibleProjectPackageModal" 
-    [style]="{ width: '35rem' }"
-    (onHide)="onModalProjectPackageClose()"
-  >
-    <app-modal-project-package
-      #ProjectPackageModal
-      [modalProjectPackageType]="modalProjectPackageType"
-      [visibleProjectPackage]="visibleProjectPackageModal"
+      : ('PROJECT_PACKAGES.MODAL.DELETE' | translate)" [modal]="true" [(visible)]="visibleProjectPackageModal"
+    [style]="{ width: '35rem' }" (onHide)="onModalProjectPackageClose()">
+    <app-modal-project-package #ProjectPackageModal [modalProjectPackageType]="modalProjectPackageType"
+      [visibleProjectPackage]="visibleProjectPackageModal" [packageToDelete]="selectedPackage" [packageNo]="packageNo"
       (isVisibleModal)="onModalVisibilityProjectPackageChange($event)"
       (createProjectPackage)="onCreateProjectPackage($event)"
-    ></app-modal-project-package>
+      (deleteProjectPackageEvent)="onDeleteProjectPackage($event)"></app-modal-project-package>
   </p-dialog>
 
 </p-card>

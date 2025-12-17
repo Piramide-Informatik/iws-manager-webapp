@@ -24,4 +24,11 @@ export class ProjectPackagesUtils {
   addProjectPage(projectPackage: Omit<any, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ProjectPackage> {
     return this.projectPackagesService.addProjectPackage(projectPackage);
   }
+
+  /**
+   * Delete a project package
+   */
+  deleteProjectPackage(id: number): Observable<void> {
+    return this.projectPackagesService.deleteProjectPackage(id);
+  }
 }
