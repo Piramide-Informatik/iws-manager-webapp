@@ -1,9 +1,9 @@
-import { Component, computed, inject, OnDestroy, OnInit, Signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal, Signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Customer } from '../../../../../../Entities/customer';
 import { CustomerStateService } from '../../../../utils/customer-state.service';
-import { of, Subscription, switchMap, take, tap } from 'rxjs';
+import { combineLatest, of, Subscription, switchMap, take, tap, startWith } from 'rxjs';
 import { CustomerUtils } from '../../../../utils/customer-utils';
 import moment from 'moment';
 import { EmployeeUtils } from '../../../employee/utils/employee.utils';
@@ -14,9 +14,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
-import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 import { PublicHolidayUtils } from '../../../../../master-data/components/holidays/utils/public-holiday-utils';
 import { DayOff } from '../../../../../../Entities/dayOff';
+import { AbsenceDayCountDTO } from '../../../../../../Entities/AbsenceDayCountDTO';
+import { AbsenceDayUtils } from '../../../../utils/absenceday-utils';
 
 @Component({
   selector: 'app-employee-absences',
@@ -35,22 +36,28 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private langSubscription!: Subscription;
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
-  private readonly absenceTypeService = inject(AbsenceTypeService);
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
+  private readonly absenceDayUtils = inject(AbsenceDayUtils);
 
-  readonly absenceTypes = computed(() => {
-    return this.absenceTypeService.absenceTypes().map(aType => ({
-      id: aType.id,
-      version: aType.version,
-      createdAt: aType.createdAt,
-      updatedAt: aType.updatedAt,
-      type: aType.name,
-      abbreviation: aType.label,
-      fractionOfDay: aType.shareOfDay,
-      isVacation: aType.isHoliday && aType.isHoliday == 1,
-      canBeBooked: aType.hours && aType.hours == 1,
-      number: 0
-    }));
+  private readonly _absenceDayCounts = signal<AbsenceDayCountDTO[]>([]);
+
+  readonly absenceDayCounts = computed(() => {
+    return this._absenceDayCounts().map(countDTO => {
+      const absenceType = countDTO.absenceType;
+      if (!absenceType) return null;
+      return {
+        id: absenceType.id,
+        version: absenceType.version,
+        createdAt: absenceType.createdAt,
+        updatedAt: absenceType.updatedAt,
+        type: absenceType.name,
+        abbreviation: absenceType.label,
+        fractionOfDay: absenceType.shareOfDay,
+        isVacation: absenceType.isHoliday && absenceType.isHoliday == 1,
+        canBeBooked: absenceType.hours && absenceType.hours == 1,
+        number: countDTO.count
+      };
+    }).filter(item => item !== null);
   });
 
   currentCustomer!: Customer;
@@ -89,10 +96,11 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    this.langSubscription.unsubscribe();
   }
 
   private initForm(): void {
-    this.formYearEmployee = new FormGroup ({
+    this.formYearEmployee = new FormGroup({
       year: new FormControl(this.currentYear),
       employeeno: new FormControl(),
       employeeFullName: new FormControl({ value: '', disabled: true })
@@ -100,27 +108,43 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.formYearEmployee.get('employeeno')?.valueChanges.subscribe((employeeId: number | null) => {
-        if(employeeId){
+        if (employeeId) {
           this.selectedEmployee = this.employees()?.find(e => e.id === employeeId);
           if (this.selectedEmployee) {
             const fullName = `${this.selectedEmployee.firstname} ${this.selectedEmployee.lastname}`.trim();
             this.formYearEmployee.patchValue({
               employeeFullName: fullName
-            }, { emitEvent: false }); 
+            }, { emitEvent: false });
           }
         } else {
           this.selectedEmployee = undefined;
           this.formYearEmployee.patchValue({
             employeeFullName: ''
           }, { emitEvent: false });
+          this._absenceDayCounts.set([]); // Clear counts if no employee
         }
       })
     );
 
-    if(this.currentYear){
+    // Observe combined changes to load counts
+    this.subscriptions.add(
+      combineLatest([
+        this.formYearEmployee.get('employeeno')!.valueChanges.pipe(startWith(null)),
+        this.formYearEmployee.get('year')!.valueChanges.pipe(startWith(this.currentYear))
+      ]).subscribe(([employeeId, year]: [number | null, number | null]) => {
+        if (employeeId && year) {
+          this.loadAbsenceDayCounts(employeeId, year);
+        } else if (!employeeId) {
+          this._absenceDayCounts.set([]); // Clear counts if no employee
+        }
+      })
+    );
+
+    // Load holidays and weekends for the current year
+    if (this.currentYear) {
       this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(this.currentYear).subscribe(holidaysAndWeekends => {
         this.holidaysAndWeekend = holidaysAndWeekends;
-        for(const dayOff of holidaysAndWeekends){
+        for (const dayOff of holidaysAndWeekends) {
           this.holidaysWeekendMap.set(dayOff.date, dayOff);
         }
       });
@@ -129,13 +153,29 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     this.checkChangeSelectedYear();
   }
 
+  private loadAbsenceDayCounts(employeeId: number, year: number): void {
+    this.subscriptions.add(
+      this.absenceDayUtils.countAbsenceDaysByTypeForEmployeeAndYear(employeeId, year).subscribe({
+        next: (counts) => {
+          this._absenceDayCounts.set(counts);
+        },
+        error: (err) => {
+          console.error('Error loading absence day counts:', err);
+          this._absenceDayCounts.set([]);
+        }
+      })
+    );
+  }
+
   private checkChangeSelectedYear(): void {
     this.subscriptions.add(
       this.formYearEmployee.get('year')?.valueChanges.subscribe((selectedYear: number) => {
         this.currentYear = selectedYear;
+
+        // Reload holidays and weekends for the new year
         this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(selectedYear).subscribe(holidaysAndWeekends => {
           this.holidaysAndWeekend = holidaysAndWeekends;
-          for(const dayOff of holidaysAndWeekends){
+          for (const dayOff of holidaysAndWeekends) {
             this.holidaysWeekendMap.set(dayOff.date, dayOff);
           }
         });
@@ -145,15 +185,13 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
 
   private getCurrentCustomer(): void {
     if (!this.customerId || Number.isNaN(this.customerId)) return;
-    
+
     this.customerStateService.currentCustomer$.pipe(
       take(1),
       switchMap(customerFromState => {
-        // Verificar si el customer del state es el mismo que necesitamos
         if (customerFromState && customerFromState.id === this.customerId) {
           return of(customerFromState);
         }
-        // Si no, obtener del backend
         return this.customerUtils.getCustomerById(this.customerId);
       }),
       tap(customer => {
@@ -171,7 +209,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     const startYear = 2016;
     const currentYear = moment().year();
     const endYear = currentYear + 5;
-    
+
     for (let year = startYear; year <= endYear; year++) {
       this.years.push(year);
     }
