@@ -1,4 +1,6 @@
 <div class="calendar-container">
+    <p-button [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check" 
+        [disabled]="!employee" [loading]="isLoading" (onClick)="onSumbit()" />
     <div class="calendar-header">
         <h2>{{ getCalendarTitle() }}</h2>
     </div>
@@ -68,3 +70,4 @@
         [showAsBadge]="['label']" (selected)="onPopoverSelected($event)" #customPopover>
     </app-custom-popover>
 </div>
+<p-toast/>

@@ -5,7 +5,7 @@ export interface AbsenceType {
     version: number;
 
     name?: string;
-    label?: string;
+    label: string;
     shareOfDay?: number; //decimal max 1.0
     isHoliday?: number; //boolean 1 or 0
     hours?: number; //boolean 1 or 0

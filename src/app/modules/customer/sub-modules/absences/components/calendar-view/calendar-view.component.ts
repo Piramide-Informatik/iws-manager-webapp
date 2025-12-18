@@ -1,9 +1,16 @@
-import { Component, Input, OnInit, ViewChild, computed, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
 import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 import { DayOff } from '../../../../../../Entities/dayOff';
+import { Employee } from '../../../../../../Entities/employee';
+import { AbsenceType } from '../../../../../../Entities/absenceType';
+import { AbsenceDayUtils } from '../../../../utils/absenceday-utils';
+import { AbsenceDay } from '../../../../../../Entities/absenceDay';
+import { finalize, forkJoin } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-calendar-view',
@@ -11,14 +18,13 @@ import { DayOff } from '../../../../../../Entities/dayOff';
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.scss'
 })
-export class CalendarViewComponent implements OnInit {
-
-  private readonly translate = inject(TranslateService);
+export class CalendarViewComponent implements OnInit, OnChanges {
   @ViewChild(CustomPopoverComponent) customPopover!: CustomPopoverComponent;
-
-
+  private readonly translate = inject(TranslateService);
+  private readonly absenceDayUtils = inject(AbsenceDayUtils);
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly absenceTypeService = inject(AbsenceTypeService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   readonly absenceTypesPopOverList = computed(() => {
     return this.absenceTypeService.absenceTypes().map(aType => ({
       id: aType.id,
@@ -43,6 +49,11 @@ export class CalendarViewComponent implements OnInit {
   // Map Weekends + holidays
   @Input() weekendsHolidaysMap!: Map<string,DayOff> | null;
 
+  // Selected employee in dropdown
+  @Input() employee!: Employee | undefined;
+
+  isLoading = false;
+
   // Array with even month indices (0-indexed)
   // January=0, February=1, March=2, April=3, May=4, June=5, July=6, August=7, September=8, October=9, November=10, December=11
   // We need: February (1), April (3), June (5), August (7), October (9), December (11)
@@ -55,6 +66,8 @@ export class CalendarViewComponent implements OnInit {
   // Reference to the currently selected cell (for the popover)
   private selectedCellElement: HTMLElement | null = null;
 
+  absenceDaysToAdd: {absenceDate: string, employee: Employee, absenceType: AbsenceType}[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
@@ -62,6 +75,26 @@ export class CalendarViewComponent implements OnInit {
     this.loadTranslations();
     this.subscribeToLanguageChanges();
     this.absenceTypeUtils.loadInitialData().subscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if((changes['employee'] && this.employee) || (changes['currentYear'] && this.employee)){
+      this.clearAllCells();
+      this.absenceDayUtils.getAllAbsenceDaysByEmployeeIdByYear(this.employee.id, this.currentYear).subscribe(absenceDays => {
+        if(absenceDays.length > 0){
+          const absenceDaysMapped = absenceDays.map(ad => ({
+            ...ad,
+            absenceDate: momentCreateDate(ad.absenceDate)
+          }));
+  
+          for(const absence of absenceDaysMapped){
+            if(absence.absenceType && absence.absenceDate){
+              this.setCellValue(absence.absenceDate.getMonth(), absence.absenceDate.getDate() - 1, absence.absenceType.label, absence.absenceType);
+            }
+          }
+        }
+      })
+    }
   }
 
   loadTranslations(): void {
@@ -110,10 +143,11 @@ export class CalendarViewComponent implements OnInit {
   }
 
   // Method to add data to a specific cell
-  setCellValue(monthIndex: number, dayIndex: number, value: any): void {
-    if (this.calendarData[monthIndex]?.[dayIndex]) {
+  setCellValue(monthIndex: number, dayIndex: number, value: string, data: AbsenceType): void {
+    if (monthIndex >= 0 && dayIndex >= 0 && this.calendarData[monthIndex]?.[dayIndex]) {
       this.calendarData[monthIndex][dayIndex].value = value;
       this.calendarData[monthIndex][dayIndex].hasData = true;
+      this.calendarData[monthIndex][dayIndex].data = data;
     }
   }
 
@@ -162,6 +196,10 @@ export class CalendarViewComponent implements OnInit {
       classes += ' weekend-holiday'; 
     }
 
+    if(!this.employee){
+      classes  += ' no-employee-selected';
+    }
+
     const cell = this.calendarData[monthIndex][dayIndex];
     if (cell.hasData) {
       classes += ' has-data';
@@ -172,7 +210,7 @@ export class CalendarViewComponent implements OnInit {
 
   // Method to handle cell click
   onCellClick(monthIndex: number, dayIndex: number, event: MouseEvent): void {
-    if (this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex)) {
+    if (this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex) && this.employee) {
       console.log(`Cell clicked: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
 
       // Save the selected cell
@@ -192,7 +230,7 @@ export class CalendarViewComponent implements OnInit {
   // Method to handle keyboard events
   onCellKeyUp(event: KeyboardEvent, monthIndex: number, dayIndex: number): void {
     // Only trigger on Enter key for accessibility
-    if (event.key === 'Enter' && this.isValidDay(monthIndex, dayIndex)) {
+    if (event.key === 'Enter' && this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex) && this.employee) {
       console.log(`Cell activated via keyboard: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
 
       // Save the selected cell indices
@@ -224,23 +262,32 @@ export class CalendarViewComponent implements OnInit {
   }
 
   // Method to handle popover selection
-  onPopoverSelected(item: any): void {
+  onPopoverSelected(item: AbsenceType): void {
     console.log(`Item selected from popover:`, item);
 
-    if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1) {
+    if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1 && this.employee) {
       const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
 
       if (item) {
+        // Add to array for create
+        const monthNumeric = this.selectedMonthIndex + 1 < 10 ? `0${this.selectedMonthIndex + 1}` : this.selectedMonthIndex + 1;
+        const dayNumeric = this.selectedDayIndex + 1 < 10 ? `0${this.selectedDayIndex + 1}` : this.selectedDayIndex + 1;
+        this.absenceDaysToAdd.push({
+          employee: this.employee,
+          absenceType: item,
+          absenceDate: `${this.currentYear}-${monthNumeric}-${dayNumeric}`
+        });
+
         // Save the selected value
-        cell.value = item.label || item.value || item;
+        cell.value = item.label;
         cell.hasData = true;
         cell.data = item;
 
         // Translation for the tooltip
-        const translatedValue = this.translate.instant(`CALENDAR.OPTIONS.${item.value || item}`);
+        const translatedValue = this.translate.instant(`CALENDAR.OPTIONS.${item.label}`);
 
         // Update with translated value if exists
-        if (translatedValue !== `CALENDAR.OPTIONS.${item.value || item}`) {
+        if (translatedValue !== `CALENDAR.OPTIONS.${item.label}`) {
           cell.value = translatedValue;
         }
       } else {
@@ -265,6 +312,11 @@ export class CalendarViewComponent implements OnInit {
   }
 
   getCellTitle(monthIndex: number, dayIndex: number): string {
+    // Check selected employee
+    if(!this.employee){
+      return this.translate.instant('CALENDAR.ERROR.NO_EMPLOYEE_SELECTED');
+    }
+
     // Check if indices are valid
     if (monthIndex < 0 || monthIndex >= this.months.length ||
       dayIndex < 0 || dayIndex >= this.days.length) {
@@ -325,11 +377,62 @@ export class CalendarViewComponent implements OnInit {
     }
   }
 
+  clearAllCells(): void {
+    for(let monthIndex = 0; monthIndex < 12; monthIndex++){
+      for(let dayIndex = 0; dayIndex < 31; dayIndex++){
+        if(this.isValidDay(monthIndex, dayIndex) && this.calendarData[monthIndex]?.[dayIndex]){
+          this.calendarData[monthIndex][dayIndex].value = '';
+          this.calendarData[monthIndex][dayIndex].hasData = false;
+          this.calendarData[monthIndex][dayIndex].data = null;
+        }
+      }
+    }
+  }
+
   // Method to get the current value of a cell
   getCellValue(monthIndex: number, dayIndex: number): any {
     if (this.calendarData[monthIndex]?.[dayIndex]) {
       return this.calendarData[monthIndex][dayIndex].value;
     }
     return '';
+  }
+
+  onSumbit(): void {
+    if(this.absenceDaysToAdd.length > 0){
+      this.isLoading = true;
+      // Map to Omit<AbsenceDay, "id" | "createdAt" | "updatedAt" | "version">
+      const absenceDaysToCreate = this.absenceDaysToAdd.map(item =>  this.mapToAbsenceDay(item));
+      // Create observables
+      const creationObservables = absenceDaysToCreate.map(absenceDay => this.absenceDayUtils.addAbsenceDay(absenceDay));
+
+      // Create in parallel
+      forkJoin(creationObservables)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.commonMessageService.showCreatedSuccesfullMessage();
+          this.absenceDaysToAdd = [];
+        },
+        error: () => {
+          this.commonMessageService.showErrorCreatedMessage();
+        }
+      });
+    }
+  }
+
+  private mapToAbsenceDay(item: {
+    absenceDate: string;
+    employee: Employee;
+    absenceType: AbsenceType;
+  }): Omit<AbsenceDay, "id" | "createdAt" | "updatedAt" | "version"> {
+    return {
+      absenceDate: item.absenceDate,
+      employee: item.employee,
+      absenceType: item.absenceType,
+    };
   }
 }

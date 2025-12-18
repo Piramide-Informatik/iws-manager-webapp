@@ -48,6 +48,16 @@ export class AbsenceDayUtils {
         return this.absenceDayService.getAllAbsenceDays();
     }
 
+    /**
+     * Get all absence days by employee by year
+     */
+    getAllAbsenceDaysByEmployeeIdByYear(employeeId: number, year: number): Observable<AbsenceDay[]> {
+        if (!employeeId || employeeId <= 0) {
+            return throwError(() => new Error('Invalid employee ID'));
+        }
+
+        return this.absenceDayService.getAllAbsenceDaysByEmployeeIdByYear(employeeId, year);
+    }
 
     /**
      * Counts absence days by type for a specific employee and year

@@ -200,7 +200,8 @@
     },
     "ERROR": {
       "INVALID_CELL": "Ungültige Zelle",
-      "INVALID_DAY": "{{MONTH}} hat {{DAYS}} Tage. Tag {{DAY}} existiert nicht."
+      "INVALID_DAY": "{{MONTH}} hat {{DAYS}} Tage. Tag {{DAY}} existiert nicht.",
+      "NO_EMPLOYEE_SELECTED": "Kein Mitarbeiter ausgewählt"
     },
     "CELL_INFO": {
       "EMPTY": "{{MONTH}} - Tag {{DAY}} (Leer)",
