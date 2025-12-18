@@ -38,7 +38,7 @@ export class WorkPackagesComponent implements OnInit {
 
   @ViewChild('ProjectPackageModal') projectPackageDialog!: ModalWorkPackageComponent;
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {}
+  constructor(private readonly activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.pageTitleService.setTranslatedTitle('PAGETITLE.PROJECT.NEW_PROJECT');
@@ -132,7 +132,7 @@ export class WorkPackagesComponent implements OnInit {
     this.visibleProjectPackageModal = visible;
   }
 
-  onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error'}): void {
+  onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error' }): void {
     if (event.created && event.status === 'success') {
       this.projectpackageList.push(event.created);
       this.commonMessageService.showCreatedSuccesfullMessage();
@@ -141,13 +141,13 @@ export class WorkPackagesComponent implements OnInit {
     }
   }
 
-  onEditProjectPackage(event: { edited?: ProjectPackage, status: 'success' | 'error'}): void {
-    if(event.edited && event.status === 'success'){
+  onEditProjectPackage(event: { edited?: ProjectPackage, status: 'success' | 'error' }): void {
+    if (event.edited && event.status === 'success') {
       this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
         this.projectpackageList = projectPackages;
         this.commonMessageService.showEditSucessfullMessage();
       })
-    } else if(event.status === 'error'){
+    } else if (event.status === 'error') {
       this.commonMessageService.showErrorEditMessage();
     }
   }
@@ -157,6 +157,8 @@ export class WorkPackagesComponent implements OnInit {
       this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
         this.projectpackageList = projectPackages;
       });
+    } else if (event.status === 'error') {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 }

@@ -56,7 +56,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       })
     }
 
-    if(changes['visibleProjectPackage'] && !this.visibleProjectPackage && this.workPackageForm){
+    if (changes['visibleProjectPackage'] && !this.visibleProjectPackage && this.workPackageForm) {
       this.workPackageForm.reset();
     }
 
@@ -81,7 +81,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
     }
     if (this.modalProjectPackageType === 'create') {
       this.projectPackagesUtils.addProjectPage(body).subscribe({
-      next: (created) => {
+        next: (created) => {
           this.isLoading = false;
           this.closeModal();
           this.createProjectPackage.emit({ created, status: 'success' })
@@ -91,7 +91,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
           this.createProjectPackage.emit({ status: 'error' });
         }
       })
-    } 
+    }
     else if (this.modalProjectPackageType === 'edit') {
       const updateBody = Object.assign(this.selectedProjectPackage, body);
       this.projectPackagesUtils.updateProjectPackage(updateBody).subscribe({
@@ -111,7 +111,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       });
     }
   }
-  
+
   onDeleteConfirm(): void {
     if (!this.packageToDelete) return;
     this.isLoading = true;
@@ -125,8 +125,14 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
           this.commonMessagesService.showDeleteSucessfullMessage();
           this.closeModal();
         },
-        error: (error) => {
+        error: (error: any) => {
+          this.isLoading = false;
           this.deleteProjectPackageEvent.emit({ status: 'error' })
+          console.log(error.message);
+          if (error instanceof OccError || error?.message.includes('404')) {
+            this.showOCCErrorModalProjectPackage = true;
+            this.occErrorProjectPackageType = 'DELETE_UNEXISTED';
+          }
         }
       });
     this.subscriptions.add(sub);
