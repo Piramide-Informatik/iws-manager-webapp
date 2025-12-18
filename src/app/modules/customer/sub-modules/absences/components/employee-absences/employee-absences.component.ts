@@ -14,7 +14,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserPreference } from '../../../../../../Entities/user-preference';
 import { UserPreferenceService } from '../../../../../../Services/user-preferences.service';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
-import { AbsenceTypeService } from '../../../../../../Services/absence-type.service';
 import { PublicHolidayUtils } from '../../../../../master-data/components/holidays/utils/public-holiday-utils';
 import { DayOff } from '../../../../../../Entities/dayOff';
 import { AbsenceDayCountDTO } from '../../../../../../Entities/AbsenceDayCountDTO';
@@ -40,7 +39,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
   private readonly absenceDayUtils = inject(AbsenceDayUtils);
 
-  private _absenceDayCounts = signal<AbsenceDayCountDTO[]>([]);
+  private readonly _absenceDayCounts = signal<AbsenceDayCountDTO[]>([]);
 
   readonly absenceDayCounts = computed(() => {
     return this._absenceDayCounts().map(countDTO => {
