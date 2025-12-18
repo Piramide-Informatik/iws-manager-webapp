@@ -67,7 +67,7 @@ export class ModalAbsenceTypesComponent implements OnInit, OnChanges {
     this.isLoading = true;
     const newAbsenceType: Omit<AbsenceType, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       name: this.absenceTypeForm.value.name?.trim(),
-      label: this.absenceTypeForm.value.label?.trim(),
+      label: this.absenceTypeForm.value.label?.trim() ?? '',
       shareOfDay: this.absenceTypeForm.value.shareOfDay ?? 0,
       isHoliday: this.absenceTypeForm.value.isHoliday ? 1 : 0,
       hours: this.absenceTypeForm.value.hours ? 1 : 0,

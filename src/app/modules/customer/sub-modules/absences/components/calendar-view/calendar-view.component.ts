@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, computed, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
@@ -6,6 +6,11 @@ import { AbsenceTypeService } from '../../../../../../Services/absence-type.serv
 import { DayOff } from '../../../../../../Entities/dayOff';
 import { Employee } from '../../../../../../Entities/employee';
 import { AbsenceType } from '../../../../../../Entities/absenceType';
+import { AbsenceDayUtils } from '../../../../utils/absenceday-utils';
+import { AbsenceDay } from '../../../../../../Entities/absenceDay';
+import { finalize, forkJoin } from 'rxjs';
+import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
+import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-calendar-view',
@@ -13,14 +18,13 @@ import { AbsenceType } from '../../../../../../Entities/absenceType';
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.scss'
 })
-export class CalendarViewComponent implements OnInit {
-
-  private readonly translate = inject(TranslateService);
+export class CalendarViewComponent implements OnInit, OnChanges {
   @ViewChild(CustomPopoverComponent) customPopover!: CustomPopoverComponent;
-
-
+  private readonly translate = inject(TranslateService);
+  private readonly absenceDayUtils = inject(AbsenceDayUtils);
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly absenceTypeService = inject(AbsenceTypeService);
+  private readonly commonMessageService = inject(CommonMessagesService);
   readonly absenceTypesPopOverList = computed(() => {
     return this.absenceTypeService.absenceTypes().map(aType => ({
       id: aType.id,
@@ -73,6 +77,26 @@ export class CalendarViewComponent implements OnInit {
     this.absenceTypeUtils.loadInitialData().subscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if((changes['employee'] && this.employee) || (changes['currentYear'] && this.employee)){
+      this.clearAllCells();
+      this.absenceDayUtils.getAllAbsenceDaysByEmployeeIdByYear(this.employee.id, this.currentYear).subscribe(absenceDays => {
+        if(absenceDays.length > 0){
+          const absenceDaysMapped = absenceDays.map(ad => ({
+            ...ad,
+            absenceDate: momentCreateDate(ad.absenceDate)
+          }));
+  
+          for(const absence of absenceDaysMapped){
+            if(absence.absenceType && absence.absenceDate){
+              this.setCellValue(absence.absenceDate.getMonth(), absence.absenceDate.getDate() - 1, absence.absenceType.label, absence.absenceType);
+            }
+          }
+        }
+      })
+    }
+  }
+
   loadTranslations(): void {
     this.months = [
       this.translate.instant('CALENDAR.MONTH.JANUARY'),
@@ -119,10 +143,11 @@ export class CalendarViewComponent implements OnInit {
   }
 
   // Method to add data to a specific cell
-  setCellValue(monthIndex: number, dayIndex: number, value: any): void {
-    if (this.calendarData[monthIndex]?.[dayIndex]) {
+  setCellValue(monthIndex: number, dayIndex: number, value: string, data: AbsenceType): void {
+    if (monthIndex >= 0 && dayIndex >= 0 && this.calendarData[monthIndex]?.[dayIndex]) {
       this.calendarData[monthIndex][dayIndex].value = value;
       this.calendarData[monthIndex][dayIndex].hasData = true;
+      this.calendarData[monthIndex][dayIndex].data = data;
     }
   }
 
@@ -352,6 +377,18 @@ export class CalendarViewComponent implements OnInit {
     }
   }
 
+  clearAllCells(): void {
+    for(let monthIndex = 0; monthIndex < 12; monthIndex++){
+      for(let dayIndex = 0; dayIndex < 31; dayIndex++){
+        if(this.isValidDay(monthIndex, dayIndex) && this.calendarData[monthIndex]?.[dayIndex]){
+          this.calendarData[monthIndex][dayIndex].value = '';
+          this.calendarData[monthIndex][dayIndex].hasData = false;
+          this.calendarData[monthIndex][dayIndex].data = null;
+        }
+      }
+    }
+  }
+
   // Method to get the current value of a cell
   getCellValue(monthIndex: number, dayIndex: number): any {
     if (this.calendarData[monthIndex]?.[dayIndex]) {
@@ -362,7 +399,40 @@ export class CalendarViewComponent implements OnInit {
 
   onSumbit(): void {
     if(this.absenceDaysToAdd.length > 0){
-      console.log('enviar')
+      this.isLoading = true;
+      // Map to Omit<AbsenceDay, "id" | "createdAt" | "updatedAt" | "version">
+      const absenceDaysToCreate = this.absenceDaysToAdd.map(item =>  this.mapToAbsenceDay(item));
+      // Create observables
+      const creationObservables = absenceDaysToCreate.map(absenceDay => this.absenceDayUtils.addAbsenceDay(absenceDay));
+
+      // Create in parallel
+      forkJoin(creationObservables)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.commonMessageService.showCreatedSuccesfullMessage();
+          this.absenceDaysToAdd = [];
+        },
+        error: () => {
+          this.commonMessageService.showErrorCreatedMessage();
+        }
+      });
     }
+  }
+
+  private mapToAbsenceDay(item: {
+    absenceDate: string;
+    employee: Employee;
+    absenceType: AbsenceType;
+  }): Omit<AbsenceDay, "id" | "createdAt" | "updatedAt" | "version"> {
+    return {
+      absenceDate: item.absenceDate,
+      employee: item.employee,
+      absenceType: item.absenceType,
+    };
   }
 }

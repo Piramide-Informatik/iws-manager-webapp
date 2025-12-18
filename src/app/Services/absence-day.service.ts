@@ -151,6 +151,28 @@ export class AbsenceDayService {
         );
     }
 
+    // READ - Get by employee by year
+    getAllAbsenceDaysByEmployeeIdByYear(employeeId: number, year: number): Observable<AbsenceDay[]> {
+        this._loading.set(true);
+        const url = `${this.apiUrl}/by-employee/${employeeId}/year/${year}`;
+
+        return this.http.get<AbsenceDay[]>(url, this.httpOptions).pipe(
+            tap({
+                next: () =>  this._error.set(null),
+                error: (err) => {
+                    this._error.set('Failed to get absence days by employee by year');
+                    console.error('Error get absence days by employee by year:', err);
+                }
+            }),
+            catchError(err => {
+                this._error.set('Failed to get absence days by employee by year');
+                console.error('Error get absence days by employee by year:', err);
+                return of([]);
+            }),
+            tap(() => this._loading.set(false))
+        );
+    }
+
     // Additional methods
     countAbsenceDaysByTypeForEmployeeAndYear(employeeId: number, year: number): Observable<AbsenceDayCountDTO[]> {
         this._loading.set(true);
