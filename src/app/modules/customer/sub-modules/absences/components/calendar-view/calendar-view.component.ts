@@ -10,6 +10,7 @@ import { AbsenceDayUtils } from '../../../../utils/absenceday-utils';
 import { AbsenceDay } from '../../../../../../Entities/absenceDay';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
+import { OccErrorType } from '../../../../../shared/utils/occ-error';
 
 interface MonthRow {
   day: number,
@@ -32,6 +33,10 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly absenceTypeService = inject(AbsenceTypeService);
   private readonly commonMessageService = inject(CommonMessagesService);
+
+  public showOCCErrorModalCalendar = false;
+  public errorType: OccErrorType = 'UPDATE_UPDATED';
+
   readonly absenceTypesPopOverList = computed(() => {
     return this.absenceTypeService.absenceTypes().map(aType => ({
       id: aType.id,
@@ -221,8 +226,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   // Method to handle cell click
   onCellClick(monthIndex: number, dayIndex: number, event: MouseEvent): void {
     if (this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex) && this.employee) {
-      console.log(`Cell clicked: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
-      console.log('data cell', this.calendarData[monthIndex][dayIndex])
+
       // Save the selected cell
       this.selectedMonthIndex = monthIndex;
       this.selectedDayIndex = dayIndex;
@@ -246,7 +250,6 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   onCellKeyUp(event: KeyboardEvent, monthIndex: number, dayIndex: number): void {
     // Only trigger on Enter key for accessibility
     if (event.key === 'Enter' && this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex) && this.employee) {
-      console.log(`Cell activated via keyboard: ${this.months[monthIndex]} - Day ${dayIndex + 1}`);
 
       // Save the selected cell indices
       this.selectedMonthIndex = monthIndex;
@@ -278,8 +281,6 @@ export class CalendarViewComponent implements OnInit, OnChanges {
 
   // Method to handle popover selection
   onPopoverSelected(absenceTypeSelectedPopover: AbsenceType | null): void {
-    console.log(`AbsenceType selected from popover:`, absenceTypeSelectedPopover);
-
     if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1 && this.employee) {
       const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
 
@@ -303,7 +304,10 @@ export class CalendarViewComponent implements OnInit, OnChanges {
             cell.data = absenceDayCreated;
             this.absenceChanged.emit();
           },
-          error: () => {
+          error: (err) => {
+            if (err.error.message.includes('Absence already exists')) {
+              this.showOCCErrorModalCalendar = true;
+            }
             this.commonMessageService.showErrorCreatedMessage();
           }
         });
@@ -320,13 +324,14 @@ export class CalendarViewComponent implements OnInit, OnChanges {
             this.absenceChanged.emit();
           },
           error: (err) => {
-            console.log('Fail to delete absence day');
+            if (err.error.message.includes('AbsenceDay not found')) {
+              this.errorType = 'DELETE_UNEXISTED';
+              this.showOCCErrorModalCalendar = true;
+            }
             this.commonMessageService.showDeleteSucessfullMessage();
           }
         });
       }
-
-      console.log(`Updated cell ${this.months[this.selectedMonthIndex]} - Day ${this.selectedDayIndex + 1}:`, cell.value);
     }
 
     // Reset selection
