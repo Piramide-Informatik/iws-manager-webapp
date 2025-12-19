@@ -41,6 +41,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   projectId = '';
   public showOCCErrorModalProjectPackage = false;
   public occErrorProjectPackageType: OccErrorType = 'UPDATE_UNEXISTED';
+  visiblWorkPackageModal = false;
   constructor(private readonly activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -61,8 +62,10 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
     }
 
     let valueChange = changes['selectedProjectPackage'];
-    if (valueChange && !valueChange.firstChange) {
-      this.fillForm()
+    if (valueChange || changes['visibleProjectPackage']) {
+      if (this.selectedProjectPackage) {
+        this.fillForm()
+      }
     }
   }
 
@@ -112,6 +115,11 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
     }
   }
 
+  deleteWorkPackage() {
+    this.packageToDelete = this.selectedProjectPackage.id
+    this.onDeleteConfirm()
+  }
+
   onDeleteConfirm(): void {
     if (!this.packageToDelete) return;
     this.isLoading = true;
@@ -123,12 +131,14 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
           this.isLoading = false;
           this.deleteProjectPackageEvent.emit({ status: 'success' })
           this.commonMessagesService.showDeleteSucessfullMessage();
+          this.selectedProjectPackage = null;
           this.closeModal();
         },
         error: (error: any) => {
           this.isLoading = false;
           this.deleteProjectPackageEvent.emit({ status: 'error' })
           console.log(error.message);
+          this.visiblWorkPackageModal = false;
           if (error instanceof OccError || error?.message.includes('404')) {
             this.showOCCErrorModalProjectPackage = true;
             this.occErrorProjectPackageType = 'DELETE_UNEXISTED';
@@ -151,6 +161,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   public closeModal(): void {
     this.isVisibleModal.emit(false);
     this.workPackageForm.reset();
+    this.visiblWorkPackageModal = false;
   }
 
   get isCreateWorkPackageMode(): boolean {
