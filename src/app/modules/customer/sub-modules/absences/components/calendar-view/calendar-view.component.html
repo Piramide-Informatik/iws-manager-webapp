@@ -68,4 +68,8 @@
         [showAsBadge]="['label']" (selected)="onPopoverSelected($event)" #customPopover>
     </app-custom-popover>
 </div>
-<p-toast/>
+<p-toast />
+
+<app-occ-error-modal *ngIf="showOCCErrorModalCalendar" [errorType]="errorType" [reloadCurrentPage]="true"
+    (onClose)="showOCCErrorModalCalendar = false">
+</app-occ-error-modal>
