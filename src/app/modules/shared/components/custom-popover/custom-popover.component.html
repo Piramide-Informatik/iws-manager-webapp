@@ -6,12 +6,12 @@
             <ng-container *ngSwitchCase="'list'">
                 <div class="popover-content">
                     <!-- Header with translation JUST of static text -->
-                    <div class="popover-header">
+                    <div class="popover-header" *ngIf="values.length > 0">
                         <h3>{{ getTranslatedText('CUSTOM_POPOVER.TITLE.SELECT') }}</h3>
                     </div>
 
                     <!-- List of items -->
-                    <div class="popover-list">
+                    <div class="popover-list" *ngIf="values.length > 0">
                         <div *ngFor="let item of values; let i = index" class="popover-item"
                             [ngStyle]="{'backgroundColor': getItemBackgroundColor(i)}" (click)="onSelect(item)"
                             (keydown.enter)="onSelect(item)">
@@ -44,7 +44,7 @@
                     </div>
 
                     <!-- Footer with translation JUST of static text -->
-                    <div class="popover-footer">
+                    <div class="popover-footer" [ngClass]="{ 'delete' : values.length === 0 }">
                         <button pButton [label]="getTranslatedText('CUSTOM_POPOVER.BUTTON.CLEAR')" icon="pi pi-times"
                             class="p-button-text p-button-sm" (click)="onSelect(null)"></button>
                     </div>

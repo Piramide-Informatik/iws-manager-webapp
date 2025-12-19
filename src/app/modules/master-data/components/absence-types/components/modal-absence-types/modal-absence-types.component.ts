@@ -31,7 +31,7 @@ export class ModalAbsenceTypesComponent implements OnInit, OnChanges {
   public readonly absenceTypeForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     label: new FormControl('', [Validators.required]),
-    shareOfDay: new FormControl(null, [Validators.min(0), Validators.max(1.0)]),
+    shareOfDay: new FormControl(null, [Validators.min(0), Validators.max(1)]),
     isHoliday: new FormControl(false),
     hours: new FormControl(false),
   });
