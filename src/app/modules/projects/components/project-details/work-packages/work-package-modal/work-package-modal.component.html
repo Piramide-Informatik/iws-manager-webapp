@@ -58,6 +58,12 @@
         iconPos="left" [loading]="isLoading"
         [disabled]="workPackageForm.invalid || isLoading || !workPackageForm.dirty" />
 
+      <ng-container *ngIf="modalProjectPackageType === 'edit'">
+        <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+          iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" 
+          (onClick)="this.visiblWorkPackageModal = true;"/>  
+      </ng-container>
+
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
         iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
     </div>
@@ -84,3 +90,21 @@
   [reloadCurrentPage]="true"
   (onClose)="showOCCErrorModalProjectPackage = false">
 </app-occ-error-modal>
+<p-dialog 
+  [header]="'PROJECT_PACKAGES.MODAL.DELETE' | translate" 
+  [modal]="true" 
+  [(visible)]="visiblWorkPackageModal"
+>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedProjectPackage?.packageNo }"></p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="deleteWorkPackage()" severity="danger" [loading]="isLoading" [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="this.visiblWorkPackageModal = false;" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</p-dialog>

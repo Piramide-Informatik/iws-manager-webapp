@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectPackagesUtils } from '../../../utils/project-packages.util';
 import { ModalWorkPackageComponent } from './work-package-modal/work-package-modal.component';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
+import { momentCreateDate } from '../../../../shared/utils/moment-date-utils';
 
 @Component({
   selector: 'app-work-packages',
@@ -26,7 +27,7 @@ export class WorkPackagesComponent implements OnInit {
   public projectId!: string;
   loading: boolean = true;
   tableKey: string = 'ProjectPackages';
-  projectpackageList!: ProjectPackage[];
+  projectpackageList!: any[];
   projectpackageColumns: any[] = [];
   packageNo: number | null = null;
   selectedPackage: number | null = null;
@@ -60,7 +61,9 @@ export class WorkPackagesComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.projectId = params['idProject'];
       this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
-        this.projectpackageList = projectPackages;
+        const result = projectPackages;
+        this.transformDates(result);
+        this.projectpackageList = this.sortByTitle(result);
       })
     });
   }
@@ -134,8 +137,10 @@ export class WorkPackagesComponent implements OnInit {
 
   onCreateProjectPackage(event: { created?: ProjectPackage, status: 'success' | 'error' }): void {
     if (event.created && event.status === 'success') {
-      this.projectpackageList.push(event.created);
+      const result = [...this.projectpackageList, event.created]
+      this.transformDates(result);
       this.commonMessageService.showCreatedSuccesfullMessage();
+      this.projectpackageList = this.sortByTitle(result);
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorCreatedMessage();
     }
@@ -144,8 +149,10 @@ export class WorkPackagesComponent implements OnInit {
   onEditProjectPackage(event: { edited?: ProjectPackage, status: 'success' | 'error' }): void {
     if (event.edited && event.status === 'success') {
       this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
-        this.projectpackageList = projectPackages;
+        const result = projectPackages;
+        this.transformDates(result);
         this.commonMessageService.showEditSucessfullMessage();
+        this.projectpackageList = this.sortByTitle(result);
       })
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorEditMessage();
@@ -155,10 +162,25 @@ export class WorkPackagesComponent implements OnInit {
   onDeleteProjectPackage(event: { status: 'success' | 'error', error?: Error }): void {
     if (event.status === 'success') {
       this.projectPackagesUtils.getAllProjectPackageByProject(this.projectId).subscribe(projectPackages => {
-        this.projectpackageList = projectPackages;
+        const result = projectPackages;
+        this.transformDates(result);
+        this.projectpackageList = this.sortByTitle(result);
       });
     } else if (event.status === 'error') {
       this.commonMessageService.showErrorDeleteMessage();
+    }
+  }
+
+  sortByTitle(data: ProjectPackage[]) {
+    return data.sort(function(a, b) {
+      return a.packageNo - b.packageNo;
+    });
+  }
+
+  transformDates(data: any) {
+    for (let i = 0; i < data.length; i++) {
+      data[i].startDate = momentCreateDate(data[i].startDate);
+      data[i].endDate = momentCreateDate(data[i].endDate);
     }
   }
 }
