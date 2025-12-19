@@ -471,7 +471,7 @@
       "PERS_NR": "Pers. No.",
       "PM": "PM",
       "PERSONAL_COSTS": "Pers.Kosten",
-      "PK_AP":"PK in AP",
+      "PK_AP": "PK in AP",
       "STD": "Std."
     }
   },
@@ -585,7 +585,7 @@
     "FORM": {
       "PACKAGE_NUMBER": "Arbeitspaket",
       "PACKAGE_SERIAL": "AP-Nr.",
-      "PACKAGE_NAME": "Bezeichnung",
+      "PACKAGE_DESCRIPTION": "Bezeichnung",
       "DATE_RANGE": "Startdatum - Enddatum"
     },
     "LABEL": {
