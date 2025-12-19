@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
@@ -12,10 +12,10 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 
 interface MonthRow {
-  day: number, 
-  month: number, 
-  value: string, 
-  hasData: boolean, 
+  day: number,
+  month: number,
+  value: string,
+  hasData: boolean,
   data: AbsenceDay | null
 }
 
@@ -54,10 +54,13 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   @Input() currentYear!: number;
 
   // Map Weekends + holidays
-  @Input() weekendsHolidaysMap!: Map<string,DayOff> | null;
+  @Input() weekendsHolidaysMap!: Map<string, DayOff> | null;
 
   // Selected employee in dropdown
   @Input() employee!: Employee | undefined;
+
+  // Output event when absence is changed
+  @Output() absenceChanged = new EventEmitter<void>();
 
   isLoading = false;
 
@@ -83,23 +86,23 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if((changes['employee'] && this.employee) || (changes['currentYear'] && this.employee)){
+    if ((changes['employee'] && this.employee) || (changes['currentYear'] && this.employee)) {
       this.clearAllCells();
       this.absenceDayUtils.getAllAbsenceDaysByEmployeeIdByYear(this.employee.id, this.currentYear).subscribe(absenceDays => {
-        if(absenceDays.length > 0){
+        if (absenceDays.length > 0) {
           const absenceDaysMapped = absenceDays.map(ad => ({
             ...ad,
             absenceDate: momentCreateDate(ad.absenceDate)
           }));
-  
-          for(let i in absenceDaysMapped){
-            if(absenceDaysMapped[i].absenceType && absenceDaysMapped[i].absenceDate){
+
+          for (let i in absenceDaysMapped) {
+            if (absenceDaysMapped[i].absenceType && absenceDaysMapped[i].absenceDate) {
               this.setCellValue(absenceDaysMapped[i].absenceDate.getMonth(), absenceDaysMapped[i].absenceDate.getDate() - 1, absenceDaysMapped[i].absenceType.label, absenceDays[i]);
             }
           }
         }
       })
-    } else if(changes['employee'] && !this.employee){
+    } else if (changes['employee'] && !this.employee) {
       this.clearAllCells();
     }
   }
@@ -199,12 +202,12 @@ export class CalendarViewComponent implements OnInit, OnChanges {
       classes += ' invalid-day';
     }
 
-    if(isWeekendOrHoliday) {
-      classes += ' weekend-holiday'; 
+    if (isWeekendOrHoliday) {
+      classes += ' weekend-holiday';
     }
 
-    if(!this.employee){
-      classes  += ' no-employee-selected';
+    if (!this.employee) {
+      classes += ' no-employee-selected';
     }
 
     const cell = this.calendarData[monthIndex][dayIndex];
@@ -232,7 +235,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
       if (this.customPopover && cellSelected.data && cellSelected.hasData) {
         this.customPopover.values = [];
         this.customPopover.toggle(event);
-      }else if(this.customPopover && !cellSelected.data && !cellSelected.hasData){
+      } else if (this.customPopover && !cellSelected.data && !cellSelected.hasData) {
         this.customPopover.values = this.absenceTypesPopOverList();
         this.customPopover.toggle(event);
       }
@@ -281,7 +284,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
       const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
 
       // Select item (absence type) in cell void
-      if (absenceTypeSelectedPopover && !cell.data && !cell.hasData && cell.value === '' ) {
+      if (absenceTypeSelectedPopover && !cell.data && !cell.hasData && cell.value === '') {
         // Create a absence day
         const monthNumeric = this.selectedMonthIndex + 1 < 10 ? `0${this.selectedMonthIndex + 1}` : this.selectedMonthIndex + 1;
         const dayNumeric = this.selectedDayIndex + 1 < 10 ? `0${this.selectedDayIndex + 1}` : this.selectedDayIndex + 1;
@@ -298,6 +301,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
             cell.value = absenceTypeSelectedPopover.label;
             cell.hasData = true;
             cell.data = absenceDayCreated;
+            this.absenceChanged.emit();
           },
           error: () => {
             this.commonMessageService.showErrorCreatedMessage();
@@ -305,7 +309,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
         });
 
         // Selected clear in cell with data
-      } else if(!absenceTypeSelectedPopover && cell.data && cell.hasData && cell.value) {
+      } else if (!absenceTypeSelectedPopover && cell.data && cell.hasData && cell.value) {
         // Delete absence day
         this.absenceDayUtils.deleteAbsenceDay(cell.data.id).subscribe({
           next: () => {
@@ -313,6 +317,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
             cell.value = '';
             cell.hasData = false;
             cell.data = null;
+            this.absenceChanged.emit();
           },
           error: (err) => {
             console.log('Fail to delete absence day');
@@ -337,7 +342,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
 
   getCellTitle(monthIndex: number, dayIndex: number): string {
     // Check selected employee
-    if(!this.employee){
+    if (!this.employee) {
       return this.translate.instant('CALENDAR.ERROR.NO_EMPLOYEE_SELECTED');
     }
 
@@ -402,9 +407,9 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   }
 
   clearAllCells(): void {
-    for(let monthIndex = 0; monthIndex < 12; monthIndex++){
-      for(let dayIndex = 0; dayIndex < 31; dayIndex++){
-        if(this.isValidDay(monthIndex, dayIndex) && this.calendarData[monthIndex]?.[dayIndex]){
+    for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+      for (let dayIndex = 0; dayIndex < 31; dayIndex++) {
+        if (this.isValidDay(monthIndex, dayIndex) && this.calendarData[monthIndex]?.[dayIndex]) {
           this.calendarData[monthIndex][dayIndex].value = '';
           this.calendarData[monthIndex][dayIndex].hasData = false;
           this.calendarData[monthIndex][dayIndex].data = null;
