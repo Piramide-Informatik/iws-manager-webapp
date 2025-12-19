@@ -205,6 +205,15 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     });
   }
 
+  onCalendarAbsenceChanged(): void {
+    const employeeId = this.formYearEmployee.get('employeeno')?.value;
+    const year = this.formYearEmployee.get('year')?.value;
+
+    if (employeeId && year) {
+      this.loadAbsenceDayCounts(employeeId, year);
+    }
+  }
+
   private getYears(): void {
     const startYear = 2016;
     const currentYear = moment().year();
