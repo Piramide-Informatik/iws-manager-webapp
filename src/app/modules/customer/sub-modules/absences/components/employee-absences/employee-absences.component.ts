@@ -17,7 +17,7 @@ import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-
 import { PublicHolidayUtils } from '../../../../../master-data/components/holidays/utils/public-holiday-utils';
 import { DayOff } from '../../../../../../Entities/dayOff';
 import { AbsenceDayCountDTO } from '../../../../../../Entities/AbsenceDayCountDTO';
-import { AbsenceDayUtils } from '../../../../utils/absenceday-utils';
+import { AbsenceDayUtils } from '../../utils/absenceday-utils';
 
 @Component({
   selector: 'app-employee-absences',

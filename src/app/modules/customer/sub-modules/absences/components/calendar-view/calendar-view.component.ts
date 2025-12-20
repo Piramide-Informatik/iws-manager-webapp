@@ -6,7 +6,7 @@ import { AbsenceTypeService } from '../../../../../../Services/absence-type.serv
 import { DayOff } from '../../../../../../Entities/dayOff';
 import { Employee } from '../../../../../../Entities/employee';
 import { AbsenceType } from '../../../../../../Entities/absenceType';
-import { AbsenceDayUtils } from '../../../../utils/absenceday-utils';
+import { AbsenceDayUtils } from '../../utils/absenceday-utils';
 import { AbsenceDay } from '../../../../../../Entities/absenceDay';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
