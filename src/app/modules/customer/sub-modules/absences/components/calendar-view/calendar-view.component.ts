@@ -78,9 +78,6 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   selectedMonthIndex: number = -1;
   selectedDayIndex: number = -1;
 
-  // Reference to the currently selected cell (for the popover)
-  private selectedCellElement: HTMLElement | null = null;
-
   constructor() { }
 
   ngOnInit(): void {
@@ -232,15 +229,16 @@ export class CalendarViewComponent implements OnInit, OnChanges {
       this.selectedDayIndex = dayIndex;
 
       // Save the selected cell element
-      this.selectedCellElement = event.currentTarget as HTMLElement; // ??
       const cellSelected = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
 
       // Show the popover with data, hide options
       if (this.customPopover && cellSelected.data && cellSelected.hasData) {
         this.customPopover.values = [];
+        this.customPopover.showButtonDelete = true;
         this.customPopover.toggle(event);
       } else if (this.customPopover && !cellSelected.data && !cellSelected.hasData) {
         this.customPopover.values = this.absenceTypesPopOverList();
+        this.customPopover.showButtonDelete = false;
         this.customPopover.toggle(event);
       }
     }
@@ -254,9 +252,6 @@ export class CalendarViewComponent implements OnInit, OnChanges {
       // Save the selected cell indices
       this.selectedMonthIndex = monthIndex;
       this.selectedDayIndex = dayIndex;
-
-      // Save the selected cell element
-      this.selectedCellElement = event.currentTarget as HTMLElement;
 
       // Create a synthetic click event for the popover
       const syntheticEvent = new MouseEvent('click', {
@@ -342,7 +337,6 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   private resetSelection(): void {
     this.selectedMonthIndex = -1;
     this.selectedDayIndex = -1;
-    this.selectedCellElement = null;
   }
 
   getCellTitle(monthIndex: number, dayIndex: number): string {

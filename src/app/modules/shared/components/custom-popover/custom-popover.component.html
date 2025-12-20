@@ -7,7 +7,7 @@
                 <div class="popover-content">
                     <!-- Header with translation JUST of static text -->
                     <div class="popover-header" *ngIf="values.length > 0">
-                        <h3>{{ getTranslatedText('CUSTOM_POPOVER.TITLE.SELECT') }}</h3>
+                        <h3>{{ 'CUSTOM_POPOVER.TITLE.SELECT' | translate }}</h3>
                     </div>
 
                     <!-- List of items -->
@@ -38,15 +38,17 @@
                             <!-- Visual indicator for holidays (with translation JUST of static text) -->
                             <div *ngIf="isHoliday(item)" class="holiday-indicator">
                                 <i class="pi pi-sun"></i>
-                                <span>{{ getTranslatedText('CUSTOM_POPOVER.INDICATOR.HOLIDAY') }}</span>
+                                <span>{{ 'CUSTOM_POPOVER.INDICATOR.HOLIDAY' | translate }}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Footer with translation JUST of static text -->
                     <div class="popover-footer" [ngClass]="{ 'delete' : values.length === 0 }">
-                        <button pButton [label]="getTranslatedText('CUSTOM_POPOVER.BUTTON.CLEAR')" icon="pi pi-times"
-                            class="p-button-text p-button-sm" (click)="onSelect(null)"></button>
+                        <button *ngIf="showButtonDelete" pButton [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+                            class="p-button-text p-button-sm btn-delete" (click)="onSelect(null)"></button>
+                        <button pButton [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+                            class="p-button-text p-button-sm" (click)="op.hide()"></button>
                     </div>
                 </div>
             </ng-container>
@@ -57,7 +59,7 @@
                     <div class="default-icon">
                         <i class="pi pi-inbox"></i>
                     </div>
-                    <span>{{ getTranslatedText('CUSTOM_POPOVER.MESSAGE.NO_OPTIONS') }}</span>
+                    <span>{{ 'CUSTOM_POPOVER.MESSAGE.NO_OPTIONS' | translate }}</span>
                 </div>
             </ng-container>
 
