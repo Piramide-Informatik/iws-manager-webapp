@@ -158,6 +158,9 @@
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 
     button {
         color: #6b7280;
@@ -166,11 +169,22 @@
 
         &:hover {
             color: #374151;
-            background-color: #f3f4f6;
+            background-color: #e5e7eb;
         }
 
         &:focus {
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+    }
+
+    .btn-delete {
+        background-color: #e11d48;
+        color: #fff;
+        border: 1px solid #e11d48;
+
+        &:hover {
+            background-color: #be123c;
+            color: #fff;
         }
     }
 }

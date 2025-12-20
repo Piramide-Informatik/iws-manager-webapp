@@ -350,9 +350,6 @@
     "TITLE": {
       "SELECT": "Auswählen"
     },
-    "BUTTON": {
-      "CLEAR": "Löschen"
-    },
     "INDICATOR": {
       "HOLIDAY": "Feiertag"
     },

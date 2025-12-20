@@ -23,6 +23,9 @@ export class CustomPopoverComponent {
   // Fields to format as percentage (optional)
   @Input() percentageFields: string[] = [];
 
+  // Control visibility delete button
+  @Input() showButtonDelete: boolean = true;
+
   @Output() selected = new EventEmitter<any>();
 
   @ViewChild('op') op!: Popover;
@@ -157,11 +160,6 @@ export class CustomPopoverComponent {
   // Method to get the background color of an item
   getItemBackgroundColor(index: number): string {
     return this.getItemColor(index);
-  }
-
-  // Method to get translated text (ONLY for static texts)
-  getTranslatedText(key: string, params?: any): string {
-    return this.translate.instant(key, params);
   }
 
   // Method to check if the item is a holiday
