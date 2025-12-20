@@ -1,5 +1,8 @@
+@use "variables" as *;
+
 .calendar-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Inter", Roboto, "Helvetica Neue", sans-serif;
+    font-size: 12px !important;
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 8px;
@@ -93,23 +96,24 @@
 }
 
 .corner-cell {
-    background-color: #f8f9fa;
+    background-color: $primary-color;
     font-weight: bold;
     min-width: 120px;
 
     &:hover {
-        background-color: #f8f9fa;
+       background: $accent-color;
     }
 }
 
 .day-header {
-    background-color: #e9ecef;
+    background-color: $primary-color;
     font-weight: bold;
-    color: #495057;
-    min-height: 40px;
+    color: #fff;
+    min-height: 35px;
 
     &:hover {
-        background-color: #e9ecef;
+        background: $accent-color;
+        color: $primary-dark;
     }
 }
 
