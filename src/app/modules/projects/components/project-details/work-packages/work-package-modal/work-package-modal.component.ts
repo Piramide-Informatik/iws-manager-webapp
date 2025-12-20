@@ -31,8 +31,9 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   @ViewChild('firstInput') firstInput!: ElementRef<HTMLInputElement>;
 
   public isLoading: boolean = false;
+  public isLoadingDelete: boolean = false;
   dateFormatPicker: string = 'dd.mm.yy';
-  public readonly workPackageForm = new FormGroup({
+  public workPackageForm = new FormGroup({
     packageno: new FormControl('', [Validators.required]),
     packageSerial: new FormControl(''),
     dates: new FormControl([]),
@@ -57,20 +58,23 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       })
     }
 
-    if (changes['visibleProjectPackage'] && !this.visibleProjectPackage && this.workPackageForm) {
-      this.workPackageForm.reset();
-    }
-
     let valueChange = changes['selectedProjectPackage'];
-    if (valueChange || changes['visibleProjectPackage']) {
+    if (valueChange || changes['visibleProjectPackage'] && this.modalProjectPackageType === 'edit') {
       if (this.selectedProjectPackage) {
         this.fillForm()
       }
     }
+
+    if (changes['visibleProjectPackage'] && !this.visibleProjectPackage && this.workPackageForm) {
+      this.workPackageForm.reset();
+    }
+
   }
 
   public onSubmit(): void {
-    if (this.workPackageForm.invalid || this.isLoading) return
+    if (this.workPackageForm.invalid || this.isLoading) return;
+    
+    this.isLoading = true;
     const formData = this.workPackageForm.value;
     const body: any = {
       packageNo: formData.packageno,
@@ -122,20 +126,20 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
 
   onDeleteConfirm(): void {
     if (!this.packageToDelete) return;
-    this.isLoading = true;
+    this.isLoadingDelete = true;
 
     const sub = this.projectPackagesUtils
       .deleteProjectPackage(this.packageToDelete)
       .subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.deleteProjectPackageEvent.emit({ status: 'success' })
           this.commonMessagesService.showDeleteSucessfullMessage();
           this.selectedProjectPackage = null;
           this.closeModal();
         },
         error: (error: any) => {
-          this.isLoading = false;
+          this.isLoadingDelete = false;
           this.deleteProjectPackageEvent.emit({ status: 'error' })
           console.log(error.message);
           this.visiblWorkPackageModal = false;
