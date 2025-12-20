@@ -35,7 +35,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   dateFormatPicker: string = 'dd.mm.yy';
   public workPackageForm = new FormGroup({
     packageno: new FormControl('', [Validators.required]),
-    packageSerial: new FormControl(''),
+    packageSerial: new FormControl('', [Validators.required]),
     dates: new FormControl([]),
     packageTitle: new FormControl(''),
   });

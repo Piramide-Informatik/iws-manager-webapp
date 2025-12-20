@@ -10,6 +10,7 @@ import { ProjectPackagesUtils } from '../../../utils/project-packages.util';
 import { ModalWorkPackageComponent } from './work-package-modal/work-package-modal.component';
 import { CommonMessagesService } from '../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../shared/utils/moment-date-utils';
+import { Column } from '../../../../../Entities/column';
 
 @Component({
   selector: 'app-work-packages',
@@ -28,7 +29,7 @@ export class WorkPackagesComponent implements OnInit {
   loading: boolean = true;
   tableKey: string = 'ProjectPackages';
   projectpackageList!: any[];
-  projectpackageColumns: any[] = [];
+  projectpackageColumns: Column[] = [];
   packageNo: number | null = null;
   selectedPackage: number | null = null;
   projectPackageUserPreferences: UserPreference = {};
@@ -80,30 +81,30 @@ export class WorkPackagesComponent implements OnInit {
       {
         field: 'packageNo',
         useSameAsEdit: true,
+        classesTHead: ['width-5'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_NUMBER')),
       },
       {
         field: 'packageSerial',
-        type: 'string',
-        customClasses: ['align-right'],
+        classesTHead: ['width-10'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_SERIAL')),
-        filter: { type: 'numeric' },
       },
       {
         field: 'packageTitle',
-        type: 'string',
+        classesTHead: ['width-60'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.PACKAGE_NAME')),
-        filter: { type: 'text' },
       },
       {
         field: 'startDate',
         type: 'date',
+        classesTHead: ['width-10'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.START_DATE')),
         filter: { type: 'date' },
       },
       {
         field: 'endDate',
         type: 'date',
+        classesTHead: ['width-10'],
         header: this.translate.instant(_('PROJECT_PACKAGES.TABLE.END_DATE')),
         filter: { type: 'date' },
       },

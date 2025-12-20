@@ -21,7 +21,17 @@
       <div class="work-package-form">
         <label for="packageSerial">{{ "PROJECT_PACKAGES.FORM.PACKAGE_SERIAL" | translate }}</label>
         <div class="input-message">
-          <input pInputText type="text" id="packageSerial" formControlName="packageSerial" autocomplete="off" />
+          <input pInputText type="text" id="packageSerial" formControlName="packageSerial" autocomplete="off" 
+            invalid="workPackageForm.get('packageSerial')?.invalid  
+            && workPackageForm.get('packageSerial')?.dirty 
+            || workPackageForm.get('packageSerial')?.touched
+            || labelAlreadyExist" />
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            workPackageForm.get('packageSerial')?.invalid && 
+            workPackageForm.get('packageSerial')?.dirty
+            ">
+              {{ 'ERROR.FIELD_REQUIRED' | translate}}
+          </p-message>
         </div>
       </div>
 
