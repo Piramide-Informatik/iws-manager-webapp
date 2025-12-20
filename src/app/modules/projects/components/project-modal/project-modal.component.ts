@@ -1,5 +1,5 @@
 import { Component, effect, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, Signal, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 import { Project } from '../../../../Entities/project';
 import { CustomerUtils } from '../../../customer/utils/customer-utils';
@@ -75,7 +75,7 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
   initForm(): void {
     this.formNewProject = new FormGroup({
       projectLabel: new FormControl(''),
-      projectName: new FormControl(''),
+      projectName: new FormControl('', [Validators.required]),
       customer: new FormControl(),
       orderFueLabel: new FormControl(),
       orderFueNo: new FormControl({value: null, disabled: true}),
