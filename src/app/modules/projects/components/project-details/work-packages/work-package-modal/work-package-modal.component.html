@@ -47,16 +47,16 @@
     <div class="flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
         iconPos="left" [loading]="isLoading"
-        [disabled]="workPackageForm.invalid || isLoading || !workPackageForm.dirty" />
+        [disabled]="workPackageForm.invalid || isLoadingDelete || !workPackageForm.dirty" />
 
       <ng-container *ngIf="modalProjectPackageType === 'edit'">
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-          iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+          iconPos="left" severity="danger" [disabled]="isLoading || isLoadingDelete"
           (onClick)="this.visiblWorkPackageModal = true;" />
       </ng-container>
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoading || isLoadingDelete" />
     </div>
   </form>
 </ng-container>
@@ -67,10 +67,10 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading" [disabled]="isLoading" />
+        iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoadingDelete" [disabled]="isLoadingDelete" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="closeModal()" [disabled]="isLoading" />
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete" />
 
     </div>
   </div>
@@ -84,10 +84,10 @@
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="deleteWorkPackage()" severity="danger" [loading]="isLoading" [disabled]="isLoading" />
+        iconPos="left" (onClick)="deleteWorkPackage()" severity="danger" [loading]="isLoadingDelete" [disabled]="isLoadingDelete" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
-        iconPos="left" (onClick)="this.visiblWorkPackageModal = false;" [disabled]="isLoading" />
+        iconPos="left" (onClick)="this.visiblWorkPackageModal = false;" [disabled]="isLoadingDelete" />
 
     </div>
   </div>

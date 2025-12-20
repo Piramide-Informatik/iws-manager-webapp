@@ -16,7 +16,7 @@
         : ('PROJECT_PACKAGES.MODAL.DELETE' | translate)"
     [modal]="true" 
     [(visible)]="visibleProjectPackageModal" 
-    [style]="{ width: '35rem' }"
+    [style]="{ width: modalProjectPackageType === 'delete'? 'auto' : '35rem' }"
     (onHide)="onModalProjectPackageClose()"
   >
     <app-modal-project-package
