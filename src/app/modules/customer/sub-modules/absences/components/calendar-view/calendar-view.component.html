@@ -23,10 +23,10 @@
                 </div>
 
                 <!-- Day cells for this month -->
-                <div *ngFor="let day of days; let dayIndex = index" class="calendar-cell"
+                <button *ngFor="let day of days; let dayIndex = index" class="calendar-cell"
                     [ngClass]="getCellClass(monthIndex, dayIndex)" (click)="onCellClick(monthIndex, dayIndex, $event)"
                     onKeyUp="onCellKeyUp($any($event), monthIndex, dayIndex)"
-                    (keyup.enter)="onCellKeyUp($any($event), monthIndex, dayIndex)" tabIndex="0" role="button"
+                    (keyup.enter)="onCellKeyUp($any($event), monthIndex, dayIndex)"
                     [title]="getCellTitle(monthIndex, dayIndex)">
 
                     <!-- Show cell content if it exists     -->
@@ -38,7 +38,7 @@
                     <div *ngIf="!isValidDay(monthIndex, dayIndex)" class="invalid-indicator">
                         {{ getInvalidDayIndicator() }}
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     </div>
