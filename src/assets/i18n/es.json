@@ -212,7 +212,8 @@
     "LEGEND": {
       "VALID_DAY": "Día válido",
       "INVALID_DAY": "Día no válido para este mes",
-      "HAS_DATA": "Con datos/ausencia"
+      "HAS_DATA": "Con datos/ausencia",
+      "EVEN_MONTH": "Mes par"
     }
   },
   "MESSAGE": {
