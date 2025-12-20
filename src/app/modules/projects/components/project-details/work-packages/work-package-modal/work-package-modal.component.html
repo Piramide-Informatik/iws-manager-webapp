@@ -4,11 +4,11 @@
       <div class="work-package-form">
         <label for="packageno">{{ "PROJECT_PACKAGES.FORM.PACKAGE_NUMBER" | translate }}</label>
         <div class="input-message">
-          <input #firstInput pInputText type="text" id="packageno" formControlName="packageno" autocomplete="off" 
-          invalid="workPackageForm.get('packageno')?.invalid  
+          <input #firstInput pInputText type="text" id="packageno" formControlName="packageno" autocomplete="off"
+            invalid="workPackageForm.get('packageno')?.invalid  
           && workPackageForm.get('packageno')?.dirty 
           || workPackageForm.get('packageno')?.touched
-          || labelAlreadyExist"/>
+          || labelAlreadyExist" />
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
           workPackageForm.get('packageno')?.invalid && 
           workPackageForm.get('packageno')?.dirty
@@ -21,32 +21,23 @@
       <div class="work-package-form">
         <label for="packageSerial">{{ "PROJECT_PACKAGES.FORM.PACKAGE_SERIAL" | translate }}</label>
         <div class="input-message">
-          <input pInputText type="text" id="packageSerial" formControlName="packageSerial" autocomplete="off"/>
+          <input pInputText type="text" id="packageSerial" formControlName="packageSerial" autocomplete="off" />
         </div>
       </div>
 
       <div class="work-package-form">
         <label for="dates">{{ "PROJECT_PACKAGES.FORM.DATE_RANGE" | translate }}</label>
         <div class="datepicker-container w-full">
-          <p-datepicker
-            formControlName="dates"
-            #datePicker
-            selectionMode="range"
-            [showIcon]="true"
-            inputId="date"
-            [dateFormat]="dateFormatPicker"
-            [showClear]="true"
-            appendTo="body"
+          <p-datepicker formControlName="dates" #datePicker selectionMode="range" [showIcon]="true" inputId="date"
+            [dateFormat]="dateFormatPicker" [showClear]="true" appendTo="body"
             [placeholder]="('PROJECT_PACKAGES.LABEL.SELECT_DATES' | translate)"
-            [style]="{ 'width': '100%' , 'max-width': '300px'}"
-            inputStyleClass="centered-date"
-            panelStyleClass="datepicker-panel"
-          />
+            [style]="{ 'width': '100%' , 'max-width': '300px'}" inputStyleClass="centered-date"
+            panelStyleClass="datepicker-panel" />
         </div>
       </div>
 
       <div class="work-package-form">
-        <label for="packageTitle">{{ "PROJECT_PACKAGES.FORM.PACKAGE_NUMBER" | translate }}</label>
+        <label for="packageTitle">{{ "PROJECT_PACKAGES.FORM.PACKAGE_DESCRIPTION" | translate }}</label>
         <div class="input-message">
           <input pInputText type="text" id="packageTitle" formControlName="packageTitle" autocomplete="off" />
         </div>
@@ -60,8 +51,8 @@
 
       <ng-container *ngIf="modalProjectPackageType === 'edit'">
         <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-          iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading" 
-          (onClick)="this.visiblWorkPackageModal = true;"/>  
+          iconPos="left" severity="danger" [loading]="isLoading" [disabled]="isLoading"
+          (onClick)="this.visiblWorkPackageModal = true;" />
       </ng-container>
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
@@ -84,17 +75,10 @@
     </div>
   </div>
 </ng-template>
-<app-occ-error-modal
-  *ngIf="showOCCErrorModalProjectPackage"
-  [errorType]="occErrorProjectPackageType"
-  [reloadCurrentPage]="true"
-  (onClose)="showOCCErrorModalProjectPackage = false">
+<app-occ-error-modal *ngIf="showOCCErrorModalProjectPackage" [errorType]="occErrorProjectPackageType"
+  [reloadCurrentPage]="true" (onClose)="showOCCErrorModalProjectPackage = false">
 </app-occ-error-modal>
-<p-dialog 
-  [header]="'PROJECT_PACKAGES.MODAL.DELETE' | translate" 
-  [modal]="true" 
-  [(visible)]="visiblWorkPackageModal"
->
+<p-dialog [header]="'PROJECT_PACKAGES.MODAL.DELETE' | translate" [modal]="true" [(visible)]="visiblWorkPackageModal">
   <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedProjectPackage?.packageNo }"></p>
 

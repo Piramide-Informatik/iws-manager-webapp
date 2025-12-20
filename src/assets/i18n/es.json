@@ -465,7 +465,7 @@
       "PERS_NR": "N° Empl.",
       "PM": "PM",
       "PERSONAL_COSTS": "Costos Personales",
-      "PK_AP":"CP en PE",
+      "PK_AP": "CP en PE",
       "STD": "Horas"
     }
   },
@@ -579,7 +579,7 @@
     "FORM": {
       "PACKAGE_NUMBER": "Paquete de trabajo",
       "PACKAGE_SERIAL": "Nº WP",
-      "PACKAGE_NAME": "Descripción",
+      "PACKAGE_DESCRIPTION": "Descripción",
       "DATE_RANGE": "Rango de fechas"
     },
     "LABEL": {
