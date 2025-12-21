@@ -5,23 +5,35 @@
 
       <div class="project-field">
         <label for="projectLabel">{{ 'PROJECTS.FORM.PROJECT' | translate }}</label>
-        <input #firstInput
-          pInputText
-          type="text"
-          id="projectLabel"
-          formControlName="projectLabel"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input #firstInput
+            pInputText
+            type="text"
+            id="projectLabel"
+            formControlName="projectLabel"
+            autocomplete="off" />
+        </div>
       </div>
 
       <div class="project-field">
         <label for="projectName">{{ 'PROJECTS.FORM.LONGTEXT' | translate }}</label>
-        <input pInputText
-          type="text"
-          id="projectName"
-          formControlName="projectName"
-          autocomplete="off"
-        />
+        <div class="input-message">
+          <input pInputText
+            type="text"
+            id="projectName"
+            formControlName="projectName"
+            autocomplete="off"
+            invalid="formNewProject.get('projectName')?.invalid  
+            && formNewProject.get('projectName')?.dirty 
+            || formNewProject.get('projectName')?.touched
+            || labelAlreadyExist" />
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            formNewProject.get('projectName')?.invalid && 
+            formNewProject.get('projectName')?.dirty
+            ">
+              {{ 'ERROR.FIELD_REQUIRED' | translate}}
+          </p-message>
+        </div>
       </div>
 
       <div class="project-field">
