@@ -44,6 +44,8 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
       id: curr.id,
       projectLabel: curr.projectLabel,
       projectName: curr.projectName,
+      customer: curr.customer?.customername1 ?? '',
+      customerID: curr.customer?.id ?? '',
       fundingProgram: curr.fundingProgram?.name ?? '',
       promoter: curr.promoter?.projectPromoter ?? '',
       fundingLabel: curr.fundingLabel,
@@ -62,7 +64,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
 
   projectTableKey: string = 'Projects'
 
-  projectDataKeys = ['projectLabel', 'projectName', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
+  projectDataKeys = ['projectLabel', 'projectName', 'customer', 'fundingProgram', 'promoter', 'fundingLabel', 'startDate', 'endDate', 'authDate', 'fundingRate'];
 
   visibleProjectTableModal = false;
   visibleModalNewProject = false;
@@ -121,7 +123,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
             this.showOCCErrorDeleteModal = true;
             this.occErrorDeleteType = 'DELETE_UNEXISTED';
             this.commonMessageService.showErrorDeleteMessage();
-          } else if (errorDelete instanceof HttpErrorResponse && errorDelete.status === 500 && errorDelete.error.message.includes('foreign key constraint')){
+          } else if (errorDelete instanceof HttpErrorResponse && errorDelete.status === 500 && errorDelete.error.message.includes('foreign key constraint')) {
             this.commonMessageService.showErrorDeleteMessageUsedByEntityWithName(errorDelete.error.message);
           } else {
             this.commonMessageService.showErrorDeleteMessage();
@@ -144,7 +146,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   loadProjectColHeaders(): void {
-    this.cols = [ 
+    this.cols = [
       {
         field: 'projectLabel',
         routerLink: (row: any) => `./project-details/${row.id}`,
@@ -154,6 +156,12 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
       {
         field: 'projectName',
         header: this.translate.instant(_('PROJECTS.TABLE.PROJECT_NAME')),
+        customClasses: ['fix-td-width-project-name']
+      },
+      {
+        field: 'customer',
+        routerLink: (row: any) => `/customers/customer-details/${row.customerID}`,
+        header: this.translate.instant(_('SIDEBAR.CUSTOMER')),
         customClasses: ['fix-td-width-project-name']
       },
       { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM')), classesTHead: ['width-10'] },
@@ -178,10 +186,10 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     this.router.navigate(['/projects/project-details', project.id]);
   }
 
-  createProject(event: {created?: Project, error?: any}): void {
-    if(event.created){
+  createProject(event: { created?: Project, error?: any }): void {
+    if (event.created) {
       this.commonMessageService.showCreatedSuccesfullMessage();
-    }else if(event.error){
+    } else if (event.error) {
       this.commonMessageService.showErrorCreatedMessage();
     }
   }
