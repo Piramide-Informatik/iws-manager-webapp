@@ -144,7 +144,6 @@ export class AbsenceTypeService {
       tap({
         next: (sortedAbsenceTypes) => {
           this._error.set(null);
-          // También actualizamos la señal local con los datos ordenados
           this._absenceTypes.set(sortedAbsenceTypes);
         },
         error: (err) => {
