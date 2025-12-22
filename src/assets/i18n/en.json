@@ -569,9 +569,9 @@
   },
   "PROJECT_PACKAGES": {
     "TABLE": {
-      "PACKAGE_NUMBER": "Work Package",
+      "PACKAGE_NUMBER": "WP",
       "PACKAGE_SERIAL": "WP No.",
-      "PACKAGE_NAME": "Description",
+      "PACKAGE_NAME": "Name",
       "START_DATE": "Start",
       "END_DATE": "End",
       "TITLE": "Work Packages"
@@ -584,11 +584,15 @@
     "FORM": {
       "PACKAGE_NUMBER": "Work Package",
       "PACKAGE_SERIAL": "WP No.",
-      "PACKAGE_DESCRIPTION": "Description",
+      "PACKAGE_NAME": "Name",
       "DATE_RANGE": "Start Date - End Date"
     },
     "LABEL": {
       "SELECT_DATES": "Select Dates"
+    },
+    "ERROR": {
+      "PACKAGE_NUMBER_ALREADY_EXISTS": "Work Package No. already exists",
+      "PACKAGE_NAME_ALREADY_EXISTS": "Work Package Name already exists"
     }
   },
   "PROJECT_PERIOD": {

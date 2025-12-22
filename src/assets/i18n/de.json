@@ -569,9 +569,9 @@
   },
   "PROJECT_PACKAGES": {
     "TABLE": {
-      "PACKAGE_NUMBER": "Arbeitspaket",
+      "PACKAGE_NUMBER": "AP",
       "PACKAGE_SERIAL": "AP-Nr.",
-      "PACKAGE_NAME": "Bezeichnung",
+      "PACKAGE_NAME": "Name",
       "START_DATE": "Start",
       "END_DATE": "Ende",
       "TITLE": "Arbeitspakete"
@@ -584,11 +584,15 @@
     "FORM": {
       "PACKAGE_NUMBER": "Arbeitspaket",
       "PACKAGE_SERIAL": "AP-Nr.",
-      "PACKAGE_DESCRIPTION": "Bezeichnung",
+      "PACKAGE_NAME": "Name",
       "DATE_RANGE": "Startdatum - Enddatum"
     },
     "LABEL": {
       "SELECT_DATES": "Wählen Sie Daten aus"
+    },
+    "ERROR": {
+      "PACKAGE_NUMBER_ALREADY_EXISTS": "Arbeitspaket Nr. existiert bereits",
+      "PACKAGE_NAME_ALREADY_EXISTS": "Arbeitspaketbezeichnung existiert bereits"
     }
   },
   "PROJECT_PERIOD": {
