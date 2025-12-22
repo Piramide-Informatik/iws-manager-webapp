@@ -13,8 +13,16 @@
                     <!-- Longtext -->
                     <div class="field">
                         <label for="projectName"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
-                        <input id="projectName" pInputText formControlName="projectName"
-                            [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
+                        <div class="input-message">
+                            <input id="projectName" pInputText formControlName="projectName"
+                                [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
+                            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                                formProject.get('projectName')?.invalid && 
+                                formProject.get('projectName')?.dirty || nameAlreadyExist
+                                ">
+                                {{ nameAlreadyExist ? ('PROJECTS.PROJECT_NAME_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate)}}
+                            </p-message>
+                        </div>
                     </div>
 
                     <!-- Kunde -->
