@@ -173,8 +173,13 @@ export class WorkPackagesComponent implements OnInit {
   }
 
   sortByTitle(data: ProjectPackage[]) {
-    return data.sort(function(a, b) {
-      return a.packageNo - b.packageNo;
+    return data.sort((a, b) => this.naturalSort(a, b));
+  }
+
+  naturalSort(a: any, b: any): number {
+    return a.packageNo.localeCompare(b.packageNo, undefined, { 
+      numeric: true, 
+      sensitivity: 'base' 
     });
   }
 
