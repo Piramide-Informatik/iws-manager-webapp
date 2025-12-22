@@ -73,6 +73,13 @@ export class AbsenceTypeUtils {
   }
 
   /**
+   * Gets all absence types sorted by label in ascending order
+   */
+  getAllAbsenceTypesSortedByLabel(): Observable<AbsenceType[]> {
+    return this.absenceTypeService.getAllAbsenceTypesSortedByLabel();
+  }
+
+  /**
    * Refreshes absence types data
    */
   refreshAbsenceTypes(): Observable<void> {
