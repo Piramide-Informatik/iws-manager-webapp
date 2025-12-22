@@ -6,6 +6,7 @@
             <input pInputText type="text" id="projectName" [value]="currentProject?.projectName || ''" disabled>
         </div>
     </div>
+    
     <div class="table-container">
         <table class="excel-table">
             <thead>
@@ -15,7 +16,7 @@
                     <th rowspan="2" class="gray" id="header-pers-nr">{{ 'EMPLOYEE.WORK_PACKAGES.PERS_NR' | translate }}</th>
                     <th colspan="3" id="header-bewilligt">{{ 'EMPLOYEE.WORK_PACKAGES.APPROVED' | translate }}</th>
                     <th colspan="4" id="header-geplant">{{ 'EMPLOYEE.WORK_PACKAGES.PLANNED' | translate }}</th>
-                    <th colspan="4" id="header-abgerechnet">{{ 'EMPLOYEE.WORK_PACKAGES.SETTLED' | translate }}</th>
+                    <th colspan="3" id="header-abgerechnet">{{ 'EMPLOYEE.WORK_PACKAGES.SETTLED' | translate }}</th>
                     <th colspan="3" id="header-verfuegbar">{{ 'EMPLOYEE.WORK_PACKAGES.AVAILABLE' | translate }}</th>
                 </tr>
                 <tr>
@@ -26,12 +27,11 @@
                     <th class="orange" id="header-std-geplant">{{ 'EMPLOYEE.WORK_PACKAGES.STD' | translate }}</th>
                     <th class="orange" id="header-pers-kosten-geplant">{{ 'EMPLOYEE.WORK_PACKAGES.PERSONAL_COSTS' | translate }}</th>
                     <th class="orange" id="header-pk-in-ap-geplant">{{ 'EMPLOYEE.WORK_PACKAGES.PK_AP' | translate }}</th>
-                    <th class="red" id="header-pm-abgerechnet">{{ 'EMPLOYEE.WORK_PACKAGES.PM' | translate }}</th>
                     <th class="red" id="header-std-abgerechnet">{{ 'EMPLOYEE.WORK_PACKAGES.STD' | translate }}</th>
                     <th class="red" id="header-pers-kosten-abgerechnet">{{ 'EMPLOYEE.WORK_PACKAGES.PERSONAL_COSTS' | translate }}</th>
                     <th class="red" id="header-pk-in-ap-abgerechnet">{{ 'EMPLOYEE.WORK_PACKAGES.PK_AP' | translate }}</th>
-                    <th class="blue" id="header-pm-verfuegbar">{{ 'EMPLOYEE.WORK_PACKAGES.PM' | translate }}</th>
                     <th class="blue" id="header-std-verfuegbar">{{ 'EMPLOYEE.WORK_PACKAGES.STD' | translate }}</th>
+                    <th class="blue" id="header-pers-kosten-verfuegbar">{{ 'EMPLOYEE.WORK_PACKAGES.PERSONAL_COSTS' | translate }}</th>
                     <th class="blue" id="header-pk-in-ap-verfuegbar">{{ 'EMPLOYEE.WORK_PACKAGES.PK_AP' | translate }}</th>
                 </tr>
             </thead>
@@ -46,26 +46,37 @@
                         <!-- Pers.Nr -->
                         <td>{{ row.persNr[0] }}</td>
 
-                        <!-- bewilligt -->
-                        <td class="light-green">{{ formatNumber(row.pmBewilligt[0]) }}</td>
+                        <!-- bewilligt (EDITABLE - Verde) -->
+                        <td class="light-green editable">
+                            <input type="number" 
+                                   [(ngModel)]="row.pmBewilligt[0]" 
+                                   (ngModelChange)="calculateValues(i)"
+                                   class="cell-input"
+                                   step="0.01">
+                        </td>
                         <td class="light-gray">{{ formatNumber(row.persKostenBewilligt[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApBewilligt?.[0]) }}</td>
 
-                        <!-- geplant -->
-                        <td class="light-green">{{ formatNumber(row.pmGeplant[0]) }}</td>
+                        <!-- geplant (Solo PM editable - Naranja) -->
+                        <td class="light-green editable">
+                            <input type="number" 
+                                   [(ngModel)]="row.pmGeplant[0]" 
+                                   (ngModelChange)="calculateValues(i)"
+                                   class="cell-input"
+                                   step="0.01">
+                        </td>
                         <td class="light-gray">{{ formatNumber(row.stdGeplant[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.persKostenGeplant[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApGeplant?.[0]) }}</td>
 
                         <!-- abgerechnet -->
-                        <td class="light-gray">{{ formatNumber(row.pmAbgerechnet[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.stdAbgerechnet[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.persKostenAbgerechnet[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApAbgerechnet?.[0]) }}</td>
 
-                        <!-- verfügbar -->
-                        <td class="light-gray">{{ formatNumber(row.pmVerfuegbar[0]) }}</td>
+                        <!-- verfügbar (CALCULADO) -->
                         <td class="light-gray">{{ formatNumber(row.stdVerfuegbar[0]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenVerfuegbar[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApVerfuegbar?.[0]) }}</td>
                     </tr>
 
@@ -73,37 +84,83 @@
                     <tr *ngFor="let _ of row.persNr.slice(1); let j = index">
                         <td>{{ row.persNr[j + 1] }}</td>
 
-                        <!-- bewilligt -->
-                        <td class="light-green">{{ formatNumber(row.pmBewilligt[j + 1]) }}</td>
+                        <!-- bewilligt (EDITABLE - Verde) -->
+                        <td class="light-green editable">
+                            <input type="number" 
+                                   [(ngModel)]="row.pmBewilligt[j + 1]" 
+                                   (ngModelChange)="calculateValues(i)"
+                                   class="cell-input"
+                                   step="0.01">
+                        </td>
                         <td class="light-gray">{{ formatNumber(row.persKostenBewilligt[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApBewilligt?.[j + 1]) }}</td>
 
-                        <!-- geplant -->
-                        <td class="light-green">{{ formatNumber(row.pmGeplant[j + 1]) }}</td>
+                        <!-- geplant (Solo PM editable - Naranja) -->
+                        <td class="light-green editable">
+                            <input type="number" 
+                                   [(ngModel)]="row.pmGeplant[j + 1]" 
+                                   (ngModelChange)="calculateValues(i)"
+                                   class="cell-input"
+                                   step="0.01">
+                        </td>
                         <td class="light-gray">{{ formatNumber(row.stdGeplant[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.persKostenGeplant[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApGeplant?.[j + 1]) }}</td>
 
                         <!-- abgerechnet -->
-                        <td class="light-gray">{{ formatNumber(row.pmAbgerechnet[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.stdAbgerechnet[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.persKostenAbgerechnet[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApAbgerechnet?.[j + 1]) }}</td>
 
-                        <!-- verfügbar -->
-                        <td class="light-gray">{{ formatNumber(row.pmVerfuegbar[j + 1]) }}</td>
+                        <!-- verfügbar (CALCULADO) -->
                         <td class="light-gray">{{ formatNumber(row.stdVerfuegbar[j + 1]) }}</td>
+                        <td class="light-gray">{{ formatNumber(row.persKostenVerfuegbar[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApVerfuegbar?.[j + 1]) }}</td>
                     </tr>
                 </ng-container>
             </tbody>
         </table>
     </div>
-    <div class="flex gap-2 mt-4 buttons-left">
-        <p-button type="submit" class="new" size="small" [label]="'EMPLOYEE.WORK_PACKAGES.NEW' | translate"
-            [loading]="isLoading" [disabled]="isLoading"></p-button>
 
-        <p-button type="button" class="import" size="small" [label]="'EMPLOYEE.WORK_PACKAGES.IMPORT' | translate"
-            [disabled]="isLoading"></p-button>
+    <div class="flex gap-2 mt-4 buttons-left">
+        <p-button type="button" 
+                  class="new" 
+                  size="small" 
+                  [label]="'EMPLOYEE.WORK_PACKAGES.NEW' | translate"
+                  [loading]="isLoading" 
+                  [disabled]="isLoading"
+                  (onClick)="addRow()"></p-button>
+
+        <p-button type="button" 
+                  class="import" 
+                  size="small" 
+                  [label]="'EMPLOYEE.WORK_PACKAGES.IMPORT' | translate"
+                  [disabled]="isLoading"
+                  (onClick)="fileInput.click()"></p-button>
+        
+        <!-- Input oculto para seleccionar archivo -->
+        <input #fileInput 
+               type="file" 
+               accept=".xlsx,.xls" 
+               style="display: none" 
+               (change)="onFileSelected($event)">
     </div>
+
+    <!-- Dialog de confirmación para importación -->
+    <p-dialog [(visible)]="showConfirmDialog" 
+              [modal]="true" 
+              [style]="{width: '450px'}"
+              [header]="'EMPLOYEE.WORK_PACKAGES.CONFIRM_IMPORT' | translate">
+        <p>{{ 'EMPLOYEE.WORK_PACKAGES.EXISTING_DATA_WARNING' | translate }}</p>
+        <ng-template pTemplate="footer">
+            <p-button [label]="'COMMON.CANCEL' | translate" 
+                      severity="secondary" 
+                      (onClick)="cancelImport()"></p-button>
+            <p-button [label]="'COMMON.CONFIRM' | translate" 
+                      (onClick)="confirmImport()"></p-button>
+        </ng-template>
+    </p-dialog>
+
+    <!-- Toast para notificaciones -->
+    <p-toast></p-toast>
 </div>
