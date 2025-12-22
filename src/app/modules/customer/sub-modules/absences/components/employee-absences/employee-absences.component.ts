@@ -231,4 +231,21 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
       { field: 'number', classesTHead: ['width-10'], header: this.translate.instant('ORDER_PROYECT.TABLE.NUMBER'), filter: { type: 'numeric' }, customClasses: ['align-right'], type: 'integer' }
     ];
   }
+
+  loadEmployeeAfterRefreshOCC(employeeId: number): void {
+    this.employeeUtils.getEmployeeById(employeeId).subscribe({
+      next: (employee) => {
+        if (employee) {
+          this.selectedEmployee = employee;
+          this.formYearEmployee.patchValue({
+            employeeno: this.selectedEmployee.id
+          });
+        }
+        localStorage.removeItem('selectedEmployeeId');
+      },
+      error: () => {
+        localStorage.removeItem('selectedEmployeeId');
+      }
+    })
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
@@ -11,6 +11,7 @@ import { AbsenceDay } from '../../../../../../Entities/absenceDay';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccErrorType } from '../../../../../shared/utils/occ-error';
+import { Subscription } from 'rxjs';
 
 interface MonthRow {
   day: number,
@@ -26,13 +27,14 @@ interface MonthRow {
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.scss'
 })
-export class CalendarViewComponent implements OnInit, OnChanges {
+export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(CustomPopoverComponent) customPopover!: CustomPopoverComponent;
   private readonly translate = inject(TranslateService);
   private readonly absenceDayUtils = inject(AbsenceDayUtils);
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly absenceTypeService = inject(AbsenceTypeService);
   private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly subscriptions = new Subscription();
 
   public showOCCErrorModalCalendar = false;
   public errorType: OccErrorType = 'UPDATE_UPDATED';
@@ -67,6 +69,9 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   // Output event when absence is changed
   @Output() absenceChanged = new EventEmitter<void>();
 
+  // Employee Id after refresh occ
+  @Output() employeeIdAfterRefresh = new EventEmitter<number>();
+
   isLoading = false;
 
   // Array with even month indices (0-indexed)
@@ -83,6 +88,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.initializeCalendar();
     this.loadTranslations();
+    this.loadEmployeeAfterRefresh();
     this.subscribeToLanguageChanges();
     this.absenceTypeUtils.loadInitialData().subscribe();
   }
@@ -109,6 +115,10 @@ export class CalendarViewComponent implements OnInit, OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   loadTranslations(): void {
     this.months = [
       this.translate.instant('CALENDAR.MONTH.JANUARY'),
@@ -128,9 +138,11 @@ export class CalendarViewComponent implements OnInit, OnChanges {
 
   // Subscribe to language changes
   subscribeToLanguageChanges(): void {
-    this.translate.onLangChange.subscribe(() => {
-      this.loadTranslations();
-    });
+    this.subscriptions.add(
+      this.translate.onLangChange.subscribe(() => {
+        this.loadTranslations();
+      })
+    );
   }
 
   initializeCalendar(): void {
@@ -423,5 +435,19 @@ export class CalendarViewComponent implements OnInit, OnChanges {
       return this.calendarData[monthIndex][dayIndex].value;
     }
     return '';
+  }
+
+  public onRefresh(): void {
+    if (this.employee?.id) {
+      localStorage.setItem('selectedEmployeeId', this.employee.id.toString());
+      globalThis.location.reload();
+    }
+  }
+
+  private loadEmployeeAfterRefresh(): void {
+    const savedEmployeeId = localStorage.getItem('selectedEmployeeId');
+    if (savedEmployeeId) {
+      this.employeeIdAfterRefresh.emit(Number(savedEmployeeId));
+    }
   }
 }
