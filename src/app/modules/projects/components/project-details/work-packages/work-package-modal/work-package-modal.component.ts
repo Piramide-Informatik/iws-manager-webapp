@@ -75,7 +75,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
 
   public onSubmit(): void {
     if (this.workPackageForm.invalid || this.isLoading) return;
-    
+
     this.isLoading = true;
     const formData = this.workPackageForm.value;
     const body: any = {
@@ -103,7 +103,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       })
     }
     else if (this.modalProjectPackageType === 'edit') {
-      const updateBody = Object.assign(body, {...this.selectedProjectPackage});
+      const updateBody = { ...this.selectedProjectPackage, ...body };
       if (!formData.dates) {
         updateBody.startDate = null;
         updateBody.endDate = null;
@@ -120,7 +120,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
           if (error instanceof OccError) {
             this.showOCCErrorModalProjectPackage = true;
             this.occErrorProjectPackageType = error.errorType;
-          }else {
+          } else {
             this.handleErrorDuplicate(error);
           }
         }
@@ -129,15 +129,15 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   }
 
   private handleErrorDuplicate(error: any): void {
-    if(error.error.message.includes("duplication with attribute 'packageNo'")){
+    if (error.error.message.includes("duplication with attribute 'packageNo'")) {
       this.packageNumberAlreadyExists = true;
       this.workPackageForm.get('packageno')?.valueChanges.pipe(take(1))
         .subscribe(() => this.packageNumberAlreadyExists = false);
-    }else if(error.error.message.includes("duplication with attribute 'packageTitle'")){
+    } else if (error.error.message.includes("duplication with attribute 'packageTitle'")) {
       this.packageNameAlreadyExists = true;
       this.workPackageForm.get('packageTitle')?.valueChanges.pipe(take(1))
         .subscribe(() => this.packageNameAlreadyExists = false);
-    }else if(error.error.message.includes("duplication with attributes")){
+    } else if (error.error.message.includes("duplication with attributes")) {
       this.packageNumberAlreadyExists = true;
       this.workPackageForm.get('packageno')?.valueChanges.pipe(take(1))
         .subscribe(() => this.packageNumberAlreadyExists = false);
