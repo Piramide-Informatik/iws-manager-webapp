@@ -103,7 +103,11 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       })
     }
     else if (this.modalProjectPackageType === 'edit') {
-      const updateBody = Object.assign({...this.selectedProjectPackage}, body);
+      const updateBody = Object.assign(body, {...this.selectedProjectPackage});
+      if (!formData.dates) {
+        updateBody.startDate = null;
+        updateBody.endDate = null;
+      }
       this.projectPackagesUtils.updateProjectPackage(updateBody).subscribe({
         next: (edited: ProjectPackage) => {
           this.editedProjectPackage.emit({ edited, status: 'success' })
@@ -177,10 +181,17 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   }
 
   public fillForm() {
+    const dateArray: any = [];
+    if (this.selectedProjectPackage.startDate) {
+      dateArray.push(momentCreateDate(this.selectedProjectPackage.startDate));
+    }
+    if (this.selectedProjectPackage.endDate) {
+      dateArray.push(momentCreateDate(this.selectedProjectPackage.endDate));
+    }
     const formData: any = {
       packageno: this.selectedProjectPackage.packageNo,
       packageSerial: this.selectedProjectPackage.packageSerial,
-      dates: [momentCreateDate(this.selectedProjectPackage.startDate), momentCreateDate(this.selectedProjectPackage.endDate)],
+      dates: dateArray.length > 0 ? dateArray : [],
       packageTitle: this.selectedProjectPackage.packageTitle,
     }
     this.workPackageForm.patchValue(formData);
