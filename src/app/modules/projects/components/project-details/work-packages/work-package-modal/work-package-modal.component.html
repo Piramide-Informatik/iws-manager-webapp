@@ -5,15 +5,16 @@
         <label for="packageno">{{ "PROJECT_PACKAGES.FORM.PACKAGE_NUMBER" | translate }}</label>
         <div class="input-message">
           <input #firstInput pInputText type="text" id="packageno" formControlName="packageno" autocomplete="off"
+            [ngClass]="{'ng-invalid ng-dirty': workPackageForm.get('packageno')?.invalid && workPackageForm.get('packageno')?.touched ||
+            packageNumberAlreadyExists}"
             invalid="workPackageForm.get('packageno')?.invalid  
-          && workPackageForm.get('packageno')?.dirty 
-          || workPackageForm.get('packageno')?.touched
-          || labelAlreadyExist" />
+            && workPackageForm.get('packageno')?.dirty 
+            || workPackageForm.get('packageno')?.touched" />
           <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
           workPackageForm.get('packageno')?.invalid && 
-          workPackageForm.get('packageno')?.dirty
+          workPackageForm.get('packageno')?.dirty || packageNumberAlreadyExists
           ">
-            {{ 'ERROR.FIELD_REQUIRED' | translate}}
+            {{ packageNumberAlreadyExists ? ('PROJECT_PACKAGES.ERROR.PACKAGE_NUMBER_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
           </p-message>
         </div>
       </div>
@@ -21,17 +22,25 @@
       <div class="work-package-form">
         <label for="packageSerial">{{ "PROJECT_PACKAGES.FORM.PACKAGE_SERIAL" | translate }}</label>
         <div class="input-message">
-          <input pInputText type="text" id="packageSerial" formControlName="packageSerial" autocomplete="off" 
-            invalid="workPackageForm.get('packageSerial')?.invalid  
-            && workPackageForm.get('packageSerial')?.dirty 
-            || workPackageForm.get('packageSerial')?.touched
-            || labelAlreadyExist" />
+          <input pInputText type="text" id="packageSerial" formControlName="packageSerial" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="work-package-form">
+        <label for="packageTitle">{{ "PROJECT_PACKAGES.FORM.PACKAGE_NAME" | translate }}</label>
+        <div class="input-message">
+          <input pInputText type="text" id="packageTitle" formControlName="packageTitle" autocomplete="off" 
+            [ngClass]="{'ng-invalid ng-dirty': workPackageForm.get('packageTitle')?.invalid && workPackageForm.get('packageTitle')?.touched ||
+            packageNameAlreadyExists}"
+            invalid="workPackageForm.get('packageTitle')?.invalid  
+            && workPackageForm.get('packageTitle')?.dirty 
+            || workPackageForm.get('packageTitle')?.touched" />
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
-            workPackageForm.get('packageSerial')?.invalid && 
-            workPackageForm.get('packageSerial')?.dirty
+            workPackageForm.get('packageTitle')?.invalid && 
+            workPackageForm.get('packageTitle')?.dirty || packageNameAlreadyExists
             ">
-              {{ 'ERROR.FIELD_REQUIRED' | translate}}
-          </p-message>
+              {{ packageNameAlreadyExists ? ('PROJECT_PACKAGES.ERROR.PACKAGE_NAME_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+            </p-message>
         </div>
       </div>
 
@@ -43,13 +52,6 @@
             [placeholder]="('PROJECT_PACKAGES.LABEL.SELECT_DATES' | translate)"
             [style]="{ 'width': '100%' , 'max-width': '300px'}" inputStyleClass="centered-date"
             panelStyleClass="datepicker-panel" />
-        </div>
-      </div>
-
-      <div class="work-package-form">
-        <label for="packageTitle">{{ "PROJECT_PACKAGES.FORM.PACKAGE_DESCRIPTION" | translate }}</label>
-        <div class="input-message">
-          <input pInputText type="text" id="packageTitle" formControlName="packageTitle" autocomplete="off" />
         </div>
       </div>
     </div>

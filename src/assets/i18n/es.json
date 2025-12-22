@@ -565,7 +565,7 @@
     "TABLE": {
       "PACKAGE_NUMBER": "Paquete de trabajo",
       "PACKAGE_SERIAL": "Nº WP",
-      "PACKAGE_NAME": "Descripción",
+      "PACKAGE_NAME": "Nombre",
       "START_DATE": "Inicio",
       "END_DATE": "Fin",
       "TITLE": "Paquetes de Trabajo"
@@ -578,11 +578,15 @@
     "FORM": {
       "PACKAGE_NUMBER": "Paquete de trabajo",
       "PACKAGE_SERIAL": "Nº WP",
-      "PACKAGE_DESCRIPTION": "Descripción",
+      "PACKAGE_NAME": "Nombre",
       "DATE_RANGE": "Rango de fechas"
     },
     "LABEL": {
       "SELECT_DATES": "Seleccionar Fechas"
+    },
+    "ERROR": {
+      "PACKAGE_NUMBER_ALREADY_EXISTS": "Número de paquete de trabajo ya existe",
+      "PACKAGE_NAME_ALREADY_EXISTS": "Nombre de paquete de trabajo ya existe"
     }
   },
   "PROJECT_PERIOD": {

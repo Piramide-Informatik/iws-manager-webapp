@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectPackagesUtils } from '../../../../utils/project-packages.util';
 import { ProjectPackage } from '../../../../../../Entities/ProjectPackage';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
@@ -35,12 +35,14 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
   dateFormatPicker: string = 'dd.mm.yy';
   public workPackageForm = new FormGroup({
     packageno: new FormControl('', [Validators.required]),
-    packageSerial: new FormControl('', [Validators.required]),
+    packageSerial: new FormControl(''),
+    packageTitle: new FormControl('', [Validators.required]),
     dates: new FormControl([]),
-    packageTitle: new FormControl(''),
   });
   projectId = '';
   public showOCCErrorModalProjectPackage = false;
+  public packageNumberAlreadyExists = false;
+  public packageNameAlreadyExists = false;
   public occErrorProjectPackageType: OccErrorType = 'UPDATE_UNEXISTED';
   visiblWorkPackageModal = false;
   constructor(private readonly activatedRoute: ActivatedRoute) { }
@@ -95,6 +97,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
         },
         error: (error) => {
           this.isLoading = false;
+          this.handleErrorDuplicate(error);
           this.createProjectPackage.emit({ status: 'error' });
         }
       })
@@ -113,9 +116,30 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
           if (error instanceof OccError) {
             this.showOCCErrorModalProjectPackage = true;
             this.occErrorProjectPackageType = error.errorType;
+          }else {
+            this.handleErrorDuplicate(error);
           }
         }
       });
+    }
+  }
+
+  private handleErrorDuplicate(error: any): void {
+    if(error.error.message.includes("duplication with attribute 'packageNo'")){
+      this.packageNumberAlreadyExists = true;
+      this.workPackageForm.get('packageno')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.packageNumberAlreadyExists = false);
+    }else if(error.error.message.includes("duplication with attribute 'packageTitle'")){
+      this.packageNameAlreadyExists = true;
+      this.workPackageForm.get('packageTitle')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.packageNameAlreadyExists = false);
+    }else if(error.error.message.includes("duplication with attributes")){
+      this.packageNumberAlreadyExists = true;
+      this.workPackageForm.get('packageno')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.packageNumberAlreadyExists = false);
+      this.packageNameAlreadyExists = true;
+      this.workPackageForm.get('packageTitle')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.packageNameAlreadyExists = false);
     }
   }
 

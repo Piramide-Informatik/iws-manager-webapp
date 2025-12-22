@@ -14,8 +14,11 @@
                     <div class="field">
                         <label for="projectName"> {{ "PROJECTS.FORM.LONGTEXT" | translate }} </label>
                         <div class="input-message">
-                            <input id="projectName" pInputText formControlName="projectName"
-                                [attr.invalid]="(formProject.get('projectName')?.invalid && formProject.get('projectName')?.dirty)" />
+                            <input id="projectName" pInputText formControlName="projectName" autocomplete="off"
+                                [ngClass]="{'ng-invalid ng-dirty': formProject.get('projectName')?.invalid && formProject.get('projectName')?.touched || nameAlreadyExist}"
+                                invalid="formProject.get('projectName')?.invalid  
+                                && formProject.get('projectName')?.dirty 
+                                || formProject.get('projectName')?.touched"/>
                             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
                                 formProject.get('projectName')?.invalid && 
                                 formProject.get('projectName')?.dirty || nameAlreadyExist
