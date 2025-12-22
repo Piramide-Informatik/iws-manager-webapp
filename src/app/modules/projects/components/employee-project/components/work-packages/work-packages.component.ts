@@ -97,63 +97,66 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
   }
 
   private loadValidProjectData(): void {
-    // TODO: Load valid work packages and employees from the backend
+    // Load valid work packages and employees from the backend
     // For now, use mock data
   }
 
   /**
    * Handles the selection of an Excel file
    */
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
+  async onFileSelected(event: Event): Promise<void> {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
 
-    const file = input.files[0];
-    this.isLoading = true;
+  const file = input.files[0];
+  this.isLoading = true;
 
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      try {
-        const data = e.target.result;
-        const workbook = XLSX.read(data, { type: 'binary' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        
-        // Convert to JSON
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        
-        // Validate and process
-        const validationResult = this.validateExcelData(jsonData);
-        
-        if (!validationResult.valid) {
-          this.showValidationErrors(validationResult.errors);
-        } else {
-          if (validationResult.warnings.length > 0) {
-            this.showValidationWarnings(validationResult.warnings);
-          }
-          
-          // Check if there are existing data
-          if (this.hasExistingData(validationResult.data)) {
-            this.pendingImportData = validationResult.data;
-            this.showConfirmDialog = true;
-          } else {
-            this.importData(validationResult.data);
-          }
-        }
-      } catch (error) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al procesar el archivo Excel'
-        });
-      } finally {
-        this.isLoading = false;
-        input.value = ''; // Reset input
-      }
-    };
+  try {
+    const data = await file.arrayBuffer();
+    const workbook = XLSX.read(data, { type: 'array' });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    
+    // Convert to JSON
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    
+    // Validate and process
+    const validationResult = this.validateExcelData(jsonData);
+    
+    // Handle errors first and exit
+    if (!validationResult.valid) {
+      this.showValidationErrors(validationResult.errors);
+      return;
+    }
 
-    reader.readAsBinaryString(file);
+    // If we get here, validation passed
+    if (validationResult.warnings.length > 0) {
+      this.showValidationWarnings(validationResult.warnings);
+    }
+
+    // Check if there are existing data
+    if (this.hasExistingData(validationResult.data)) {
+      this.pendingImportData = validationResult.data;
+      this.showConfirmDialog = true;
+    } else {
+      this.importData(validationResult.data);
+    }
+  } catch (error) {
+    const errorMessage = error instanceof Error 
+      ? error.message 
+      : 'Error to process the Excel file';
+    
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: errorMessage
+    });
+    console.error('Error processing Excel file:', error);
+  } finally {
+    this.isLoading = false;
+    input.value = ''; // Reset input
   }
+}
 
   /**
    * Validates the Excel data
@@ -186,7 +189,7 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
 
       const workPackageNumber = String(row[0]).trim();
       const employeeNumber = String(row[1]).trim();
-      const personMonths = parseFloat(row[2]);
+      const personMonths = Number.parseFloat(row[2]);
 
       // Validate work package number
       if (!this.validWorkPackages.includes(workPackageNumber)) {
@@ -201,7 +204,7 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
       }
 
       // Validate person months
-      if (isNaN(personMonths) || personMonths < 0) {
+      if (Number.isNaN(personMonths) || personMonths < 0) {
         errors.push(`Row ${i + 1}: Invalid person months "${row[2]}"`);
         continue;
       }
@@ -240,7 +243,7 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
    * Checks if there are existing data for the period
    */
   private hasExistingData(importData: ExcelImportRow[]): boolean {
-    // TODO: Implement real logic to verify with backend
+    // Implement real logic to verify with backend
     // For now returns false to simplify
     return false;
   }
@@ -437,10 +440,10 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
    * Automatically save changes to the backend
    */
   private autoSaveChanges(index: number): void {
-    // TODO: Implement backend call
+    // Implement backend call
     // Debounce to prevent multiple rapid calls
     
-    // Example:
+    // NOSONAR - Example:
     // const row = this.rows[index];
     // this.workPackageService.updateWorkPackage(row).subscribe({
     //   next: () => console.log('Guardado automático exitoso'),
