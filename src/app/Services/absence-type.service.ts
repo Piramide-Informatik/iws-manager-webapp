@@ -132,4 +132,30 @@ export class AbsenceTypeService {
   public refreshAbsenceTypes(): void {
     this.loadInitialData();
   }
+
+  /**
+  * Gets all absence types sorted by label in ascending order
+  * Uses endpoint: /sort-by-label-asc
+  */
+  getAllAbsenceTypesSortedByLabel(): Observable<AbsenceType[]> {
+    const sortedUrl = `${this.apiUrl}/sort-by-label-asc`;
+
+    return this.http.get<AbsenceType[]>(sortedUrl, this.httpOptions).pipe(
+      tap({
+        next: (sortedAbsenceTypes) => {
+          this._error.set(null);
+          // También actualizamos la señal local con los datos ordenados
+          this._absenceTypes.set(sortedAbsenceTypes);
+        },
+        error: (err) => {
+          this._error.set('Failed to fetch absence types sorted by label');
+          console.error('Error fetching absence types sorted by label:', err);
+        }
+      }),
+      catchError(err => {
+        console.error('Error in sorted endpoint, falling back to local sorting:', err);
+        return of([]);
+      })
+    );
+  }
 }
