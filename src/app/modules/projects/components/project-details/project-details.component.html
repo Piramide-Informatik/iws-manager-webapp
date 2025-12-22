@@ -32,7 +32,8 @@
                     <div class="field">
                         <label for="customer"> {{ "PROJECTS.FORM.CUSTOMER" | translate }}</label>
                         <p-select formControlName="customer" id="customer" [options]="customers()"
-                            optionLabel="customername1" optionValue="id" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate">
+                            optionLabel="customername1" optionValue="id" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+                            [filter]="true" filterBy="customername1" [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate">
                             <ng-template let-customer pTemplate="selectedItem">
                                 <div class="flex align-items-center gap-2" *ngIf="customer">
                                     <span>{{ customer.customername1 }}</span>
