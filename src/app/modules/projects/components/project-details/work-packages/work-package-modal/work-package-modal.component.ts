@@ -103,7 +103,7 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       })
     }
     else if (this.modalProjectPackageType === 'edit') {
-      const updateBody = Object.assign(this.selectedProjectPackage, body);
+      const updateBody = Object.assign({...this.selectedProjectPackage}, body);
       this.projectPackagesUtils.updateProjectPackage(updateBody).subscribe({
         next: (edited: ProjectPackage) => {
           this.editedProjectPackage.emit({ edited, status: 'success' })
