@@ -564,7 +564,8 @@
       "ADMIN_ORDER_NUMBER": "Verwaltung-Auftrag / Nr."
     },
     "PROJECTS_DIALOG_REMOVE": "Projekt löschen",
-    "PROJECTS_DIALOG_CREATE": "Neues Projekt"
+    "PROJECTS_DIALOG_CREATE": "Neues Projekt",
+    "PROJECT_NAME_ALREADY_EXISTS": "Der Projektname existiert bereits"
   },
   "PROJECT_PACKAGES": {
     "TABLE": {

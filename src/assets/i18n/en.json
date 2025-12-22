@@ -564,7 +564,8 @@
       "ADMIN_ORDER_NUMBER": "Administration Order / No."
     },
     "PROJECTS_DIALOG_REMOVE": "Delete Project",
-    "PROJECTS_DIALOG_CREATE": "New Project"
+    "PROJECTS_DIALOG_CREATE": "New Project",
+    "PROJECT_NAME_ALREADY_EXISTS": "Project name already exists"
   },
   "PROJECT_PACKAGES": {
     "TABLE": {
