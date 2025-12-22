@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MessageService } from 'primeng/api';
@@ -51,6 +51,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   public showOCCErrorModal = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public redirectRoute = "";
+  public nameAlreadyExist = false;
 
   // Signals para las opciones de los selects
   public customers = toSignal(
@@ -146,8 +147,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   private initializeForm(): void {
     this.formProject = this.fb.group({
-      projectLabel: ['', [Validators.required]],
-      projectName: [''],
+      projectLabel: [''],
+      projectName: ['', [Validators.required]],
       customer: [null],
       orderIdFue: [null],
       orderIdFueNumber: [''],
@@ -334,6 +335,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   private handleSaveError(error: any): void {
     this.isSaving = false;
     this.commonMessageService.showErrorEditMessage();
+    if(error.error.message.includes('name already exists')){
+      this.nameAlreadyExist = true;
+      this.formProject.get('projectName')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.nameAlreadyExist = false);
+    }
   }
 
   onProjectDeleteConfirm(): void {

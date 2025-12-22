@@ -12,7 +12,8 @@ import { Promoter } from '../../../../Entities/promoter';
 import { momentFormatDate } from '../../../shared/utils/moment-date-utils';
 import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-utils';
 import { Order } from '../../../../Entities/order';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 @Component({
   selector: 'app-project-modal',
@@ -27,9 +28,11 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
   private readonly promoterUtils = inject(PromoterUtils);
   private readonly orderUtils = inject(OrderUtils);
   private readonly subscriptions = new Subscription();
+  private readonly commonMessageService = inject(CommonMessagesService);
 
   public isLoading = false;
   public formNewProject!: FormGroup;
+  public nameAlreadyExist = false;
 
   @Input() visible = false;
   @Output() visibleModal = new EventEmitter<void>();
@@ -143,8 +146,15 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
       },
       error: (error) => {
         this.isLoading = false;
-        this.closeModal();
-        this.createProject.emit({error});
+        if(error.error.message.includes('name already exists')){
+          this.nameAlreadyExist = true;
+          this.formNewProject.get('projectName')?.valueChanges.pipe(take(1))
+            .subscribe(() => this.nameAlreadyExist = false);
+          this.commonMessageService.showErrorCreatedMessage();
+        }else {
+          this.closeModal();
+          this.createProject.emit({error});
+        }
       }
     });
   }

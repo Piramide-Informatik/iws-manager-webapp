@@ -25,13 +25,12 @@
             autocomplete="off"
             invalid="formNewProject.get('projectName')?.invalid  
             && formNewProject.get('projectName')?.dirty 
-            || formNewProject.get('projectName')?.touched
-            || labelAlreadyExist" />
+            || formNewProject.get('projectName')?.touched" />
             <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
             formNewProject.get('projectName')?.invalid && 
-            formNewProject.get('projectName')?.dirty
+            formNewProject.get('projectName')?.dirty || nameAlreadyExist
             ">
-              {{ 'ERROR.FIELD_REQUIRED' | translate}}
+              {{ nameAlreadyExist ? ('PROJECTS.PROJECT_NAME_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate)}}
           </p-message>
         </div>
       </div>
