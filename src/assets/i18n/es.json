@@ -48,7 +48,8 @@
     "PROJECT": {
       "PROJECTS": "Proyectos",
       "NEW_PROJECT": "Nuevo Proyecto",
-      "DETAILS": "Detalles"
+      "DETAILS": "Detalles",
+      "ACCOUNTING_YEARS": "Años de Contabilidad"
     }
   },
   "ERROR": {
@@ -596,6 +597,11 @@
       "DELETE": "Eliminar Año de Contabilidad"
     },
     "TABLE": {
+      "YEAR": "Año",
+      "BEGINNING": "Inicio",
+      "END": "Fin"
+    },
+    "FORM": {
       "YEAR": "Año",
       "BEGINNING": "Inicio",
       "END": "Fin"

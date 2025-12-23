@@ -15,7 +15,7 @@ export class ProjectPeriodUtils {
   /**
    * Gets all project period by project
    */
-  getAllProjectPeriodByProject(projectId: string): Observable<ProjectPeriod[]> {
+  getAllProjectPeriodByProject(projectId: number): Observable<ProjectPeriod[]> {
     return this.projectPeriodService.getAllProjectsPeriodsByProject(projectId);
   }
 

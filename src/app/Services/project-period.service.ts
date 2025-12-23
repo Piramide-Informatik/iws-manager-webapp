@@ -32,7 +32,7 @@ export class ProjectPeriodService {
    * @returns Observable with Project periods array
    * @throws Error when server request fails
    */
-  getAllProjectsPeriodsByProject(projectId: string): Observable<ProjectPeriod[]> {
+  getAllProjectsPeriodsByProject(projectId: number): Observable<ProjectPeriod[]> {
     return this.http.get<ProjectPeriod[]>(`${this.apiUrl}/project/${projectId}`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {

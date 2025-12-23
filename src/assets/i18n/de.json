@@ -48,7 +48,8 @@
     "PROJECT": {
       "PROJECTS": "Projekte",
       "NEW_PROJECT": "Neues Projekt",
-      "DETAILS": "Details"
+      "DETAILS": "Details",
+      "ACCOUNTING_YEARS": "Abrechnungsjahre"
     }
   },
   "ERROR": {
@@ -605,6 +606,11 @@
       "YEAR": "Jahr",
       "BEGINNING": "Anfang",
       "END": "Ende"
+    },
+    "FORM": {
+      "YEAR": "Año",
+      "BEGINNING": "Inicio",
+      "END": "Fin"
     }
   },
   "ORDER_PROYECT": {

@@ -30,7 +30,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private readonly customerStateService = inject(CustomerStateService);
   private readonly customerUtils = inject(CustomerUtils);
   private readonly employeeUtils = inject(EmployeeUtils);
-  private readonly customerId: number = this.route.snapshot.params['id'];
+  private readonly customerId: number = Number(this.route.snapshot.params['id']);
   private readonly subscriptions = new Subscription();
   private readonly translate = inject(TranslateService);
   private readonly userPreferenceService = inject(UserPreferenceService);
