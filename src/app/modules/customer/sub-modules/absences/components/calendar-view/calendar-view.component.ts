@@ -12,6 +12,7 @@ import { CommonMessagesService } from '../../../../../../Services/common-message
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccErrorType } from '../../../../../shared/utils/occ-error';
 import { Subscription } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 interface MonthRow {
   day: number,
@@ -39,8 +40,13 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   public showOCCErrorModalCalendar = false;
   public errorType: OccErrorType = 'UPDATE_UPDATED';
 
+  readonly absenceTypesSortedSignal = toSignal(
+    this.absenceTypeService.getAllAbsenceTypesSortedByLabel(),
+    { initialValue: [] }
+  );
+
   readonly absenceTypesPopOverList = computed(() => {
-    return this.absenceTypeService.absenceTypes().map(aType => ({
+    return this.absenceTypesSortedSignal().map(aType => ({
       id: aType.id,
       name: aType.name,
       label: aType.label,
