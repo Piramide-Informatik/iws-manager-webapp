@@ -46,6 +46,9 @@
           optionLabel="customername1"
           optionValue="id"
           showClear
+          [filter]="true"
+          filterBy="customername1"
+          [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
         ></p-select>
       </div>
