@@ -44,6 +44,95 @@ export class ProjectPeriodService {
   }
 
   /**
+   * Retrieves a single project period by ID
+   * @param id Project period identifier
+   * @returns Observable with Project period object
+   * @throws Error when project not found or server error occurs
+   */
+  getProjectPeriodById(id: number): Observable<ProjectPeriod | undefined> {
+    return this.http.get<ProjectPeriod>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch project period by id');
+        console.error(err);
+        return of(undefined as unknown as ProjectPeriod);
+      })
+    );
+  }
+
+  // ==================== CREATE OPERATIONS ====================
+  /**
+   * Creates a new project period record
+   * @param projectPeriod project period data (without id, timestamps and version)
+   * @returns Observable with the created project period object
+   * @throws Error when validation fails or server error occurs
+   */
+  addProjectPeriod(projectPeriod: Omit<ProjectPeriod, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<ProjectPeriod> {
+    return this.http.post<ProjectPeriod>(this.apiUrl, projectPeriod, this.httpOptions).pipe(
+      tap({
+        next: (newProjectPeriod) => {
+          this._projectsPeriods.update(projectsPeriods => [...projectsPeriods, newProjectPeriod]);
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to add project period');
+          console.error('Error adding project period:', err);
+          return of(projectPeriod);
+        }
+      })
+    );
+  }
+
+  // ==================== UPDATE OPERATIONS ====================
+  /**
+   * Updates an existing project period
+   * @param updatedProjectPeriod Partial project period data with updates
+   * @returns Observable with updated Project period object
+   * @throws Error when project not found or validation fails
+   */
+  updateProjectPeriod(updatedProjectPeriod: ProjectPeriod): Observable<ProjectPeriod> {
+    const url = `${this.apiUrl}/${updatedProjectPeriod.id}`;
+    return this.http.put<ProjectPeriod>(url, updatedProjectPeriod, this.httpOptions).pipe(
+      tap({
+        next: (res) => {
+          this._projectsPeriods.update(projects =>
+            projects.map(s => s.id === res.id ? res : s)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to update project period');
+          console.error('Error updating project period:', err);
+        }
+      })
+    )
+  }
+  
+  // ==================== DELETE OPERATIONS ====================
+  /**
+   * Deletes a project period record
+   * @param id project period identifier to delete
+   * @returns Empty Observable
+   * @throws Error when project period not found or server error occurs
+   */
+  deleteProjectPeriod(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._projectsPeriods.update(projects =>
+            projects.filter(s => s.id !== id)
+          );
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete project period');
+        }
+      })
+    )
+  }
+
+  /**
   * Cleans the state of the projects
   */
   clearProjectsPeriods(): void {
