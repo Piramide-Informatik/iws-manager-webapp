@@ -13,7 +13,6 @@ import { ProjectPeriodUtils } from '../../../utils/project-period.util';
 import { ProjectService } from '../../../../../Services/project.service';
 import { ProjectUtils } from '../../../../customer/sub-modules/projects/utils/project.utils';
 import { SelectChangeEvent } from 'primeng/select';
-import { ProjectPeriod } from '../../../../../Entities/project-period';
 
 @Component({
   selector: 'app-projects-account-year',
