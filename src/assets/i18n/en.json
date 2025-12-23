@@ -596,6 +596,11 @@
     }
   },
   "PROJECT_PERIOD": {
+    "MODAL": {
+      "CREATE": "Create Project Period",
+      "EDIT": "Edit Project Period",
+      "DELETE": "Delete Project Period"
+    },
     "TABLE": {
       "YEAR": "Year",
       "BEGINNING": "Beginning",
