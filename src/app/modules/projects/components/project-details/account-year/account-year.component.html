@@ -28,5 +28,23 @@
     [userPreferences]="userProjectAccountYearPreferences"
     [dataKeys]="projectAccountYearDataKeys"
     (onColumnChanges)="onUserProjectAccountYearPreferencesChanges($event)"
+    (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
   ></master-data-genaral-table>
+  <p-dialog 
+    [header]="modalProjectPeriodType === 'edit' 
+      ? ('PROJECT_PERIOD.MODAL.EDIT' | translate) 
+      : modalProjectPeriodType === 'create' 
+       ? ('PROJECT_PERIOD.MODAL.CREATE' | translate) 
+       : ('PROJECT_PERIOD.MODAL.DELETE' | translate)" 
+    [modal]="true" 
+    [(visible)]="visibleProjectPeriodModal"
+  >
+    <app-project-period-modal
+      [modalType]="modalProjectPeriodType"
+      [visibleModal]="visibleProjectPeriodModal"
+      [currentProjectPeriodEntity]="currentProjectPeriod"
+      (isVisibleProjectPeriodModal)="onModalProjectPeriodModalVisibilityChange($event)"
+      (deletedProjectPeriod)="onDeleteProjectPeriod($event)"
+    ></app-project-period-modal>
+  </p-dialog>
 </div>

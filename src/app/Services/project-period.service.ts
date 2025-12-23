@@ -43,6 +43,27 @@ export class ProjectPeriodService {
     );
   }
 
+  // ==================== DELETE OPERATIONS ====================
+  /**
+   * Deletes a project period
+   * @param id Project period identifier to delete
+   * @returns Empty Observable
+   * @throws Error when project period not found or server error occurs
+   */
+  deleteProjectPeriod(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete project period');
+        }
+      })
+    )
+  }
+
   /**
    * Retrieves a single project period by ID
    * @param id Project period identifier
@@ -103,30 +124,6 @@ export class ProjectPeriodService {
         error: (err) => {
           this._error.set('Failed to update project period');
           console.error('Error updating project period:', err);
-        }
-      })
-    )
-  }
-  
-  // ==================== DELETE OPERATIONS ====================
-  /**
-   * Deletes a project period record
-   * @param id project period identifier to delete
-   * @returns Empty Observable
-   * @throws Error when project period not found or server error occurs
-   */
-  deleteProjectPeriod(id: number): Observable<void> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete<void>(url, this.httpOptions).pipe(
-      tap({
-        next: () => {
-          this._projectsPeriods.update(projects =>
-            projects.filter(s => s.id !== id)
-          );
-          this._error.set(null);
-        },
-        error: (err) => {
-          this._error.set('Failed to delete project period');
         }
       })
     )

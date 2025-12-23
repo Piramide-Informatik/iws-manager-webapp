@@ -1,0 +1,26 @@
+<ng-container *ngIf="isCreateMode; else deleteTemplate">
+   
+</ng-container>
+<ng-template #deleteTemplate>
+  <div class="confirmation-content mt-4">
+    <p *ngIf="currentProjectPeriodEntity" class="mb-4"
+      [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentProjectPeriodEntity?.year}">
+    </p>
+
+    <div class="flex justify-content-center gap-3">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
+        icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContractEntity()"
+        [loading]="isLoadingDelete" 
+      />
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
+        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete"
+      />
+    </div>
+  </div>
+</ng-template>
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalProjectPeriod"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalProjectPeriod = false">
+</app-occ-error-modal>

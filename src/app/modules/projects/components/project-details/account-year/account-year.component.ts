@@ -32,7 +32,9 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   public projectId!: string;
   public selectedProjectAccountYearTableColumns!: Column[];
   selectedProject = signal(0);
-
+  modalProjectPeriodType: 'create' | 'delete' | 'edit' = 'create';
+  visibleProjectPeriodModal: boolean = false;
+  currentProjectPeriod!: any;
   projectsAccountYears: any = []
 
   private projectAccountYearLangSubscription!: Subscription;
@@ -130,11 +132,31 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
     this.projectPeriodUtils.getAllProjectPeriodByProject(id).subscribe(data => {
       this.projectsAccountYears = data.map( pay => {
         return {
+          id: pay.id,
+          version: pay.version,
           year: pay.periodNo,
           beginning: pay.startDate,
           end: pay.endDate
         }
       })
     })
+  }
+
+  handleTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
+    this.modalProjectPeriodType = event.type;
+    if (event.type === 'delete') {
+      this.currentProjectPeriod = this.projectsAccountYears.find((c: any) => c.id === event.data);
+      console.log(this.selectedProject)
+    }
+    this.visibleProjectPeriodModal = true;
+  }
+
+  onModalProjectPeriodModalVisibilityChange(visible: any): void {
+    this.visibleProjectPeriodModal = visible; 
+  }
+
+  onDeleteProjectPeriod(projectPeriod: any) {
+    this.projectsAccountYears = this.projectsAccountYears.filter((pa: any) => pa.id !== projectPeriod.id);
+    this.currentProjectPeriod = undefined;
   }
 }
