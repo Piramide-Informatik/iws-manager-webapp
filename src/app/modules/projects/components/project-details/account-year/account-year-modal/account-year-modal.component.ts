@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,10 @@ import { ProjectPeriodUtils } from '../../../../utils/project-period.util';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { ProjectPeriod } from '../../../../../../Entities/project-period';
+import { FormControl, FormGroup } from '@angular/forms';
+import { InputNumber } from 'primeng/inputnumber';
+import { momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import { Project } from '../../../../../../Entities/project';
 
 @Component({
   selector: 'app-project-period-modal',
@@ -14,7 +18,7 @@ import { ProjectPeriod } from '../../../../../../Entities/project-period';
   templateUrl: './account-year-modal.component.html',
   styleUrl: './account-year-modal.component.scss'
 })
-export class ProjectsAccountYearModalComponent implements OnDestroy {
+export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnDestroy {
 
   private readonly subscription = new Subscription();
   private readonly projectPeriodUtils = inject(ProjectPeriodUtils);
@@ -22,19 +26,87 @@ export class ProjectsAccountYearModalComponent implements OnDestroy {
 
   @Input() modalType: 'create' | 'delete' | 'edit' = "create";
   @Input() currentProjectPeriodEntity!: any;
+  @Input() currentProject!: Project | null;
   @Input() visibleModal: boolean = false;
 
   @Output() isVisibleProjectPeriodModal = new EventEmitter<boolean>();
+  @Output() projectPeriodCreated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() deletedProjectPeriod = new EventEmitter<ProjectPeriod>();
+  @ViewChild('firstInput') firstInput!: InputNumber;
 
+  public formAccountYear!: FormGroup;
+  public isLoading = false;
   public showOCCErrorModalProjectPeriod = false;
   public isLoadingDelete: boolean = false;
   public visiblProjectPeriodModal: boolean = false;
+  public visibleDeleteEntityModal = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   errorMsg: string | null = null;
 
+  ngOnInit(): void {
+    this.initForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['visibleModal'] && this.visibleModal){
+      setTimeout(() => {
+        this.firstInputFocus();
+      })
+    }
+
+    if (changes['visibleModal'] && !this.visibleModal && this.formAccountYear) {
+      this.formAccountYear.reset();
+    }
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  private initForm(): void {
+    this.formAccountYear = new FormGroup({
+      periodNo: new FormControl(null),
+      startDate: new FormControl(''),
+      endDate: new FormControl(''),
+    });
+  }
+
+  onSubmit(): void {
+    if(!this.currentProject) return;
+
+    if(this.modalType === 'create'){
+      this.isLoading = true;
+      const newProjectPeriod: Omit<ProjectPeriod, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+        periodNo: this.formAccountYear.get('periodNo')?.value,
+        startDate: momentFormatDate(this.formAccountYear.get('startDate')?.value) ?? '',
+        endDate: momentFormatDate(this.formAccountYear.get('endDate')?.value) ?? '',
+        project: this.currentProject
+      }
+      this.createProjectPeriod(newProjectPeriod);
+
+    }else if(this.modalType === 'edit'){
+      this.updateProjectPeriod();
+    }
+  }
+
+  private createProjectPeriod(newProjectPeriod: Omit<ProjectPeriod, 'id' | 'createdAt' | 'updatedAt' | 'version'>): void {
+    this.projectPeriodUtils.createProjectPeriod(newProjectPeriod).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.projectPeriodCreated.emit({status: 'success'});
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.closeModal();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.projectPeriodCreated.emit({ status: 'error' });
+        this.commonMessageService.showErrorCreatedMessage();
+      }
+    });
+  }
+
+  private updateProjectPeriod(): void {
+    console.log('edit')
   }
 
   get isCreateMode(): boolean {
@@ -43,6 +115,7 @@ export class ProjectsAccountYearModalComponent implements OnDestroy {
 
   closeModal(): void {
     this.isVisibleProjectPeriodModal.emit(false);
+    this.formAccountYear.reset();
   }
 
   deleteEmployeeContractEntity() {
@@ -66,6 +139,16 @@ export class ProjectsAccountYearModalComponent implements OnDestroy {
           }
         }
       });
+    }
+  }
+
+  private firstInputFocus(): void {
+    if(this.firstInput && this.isCreateMode){
+      setTimeout(()=>{
+        if(this.firstInput.input.nativeElement){
+          this.firstInput.input.nativeElement.focus()
+        }
+      },300)
     }
   }
 }

@@ -1,5 +1,49 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
-   
+   <form [formGroup]="formAccountYear" (ngSubmit)="onSubmit()">
+     <div class="form-container mb-5">
+      <div class="account_input">
+        <label for="periodNo">{{ 'PROJECT_PERIOD.FORM.YEAR' | translate }}</label>
+        <div class="input-message">
+          <p-inputnumber #firstInput [useGrouping]="true" inputId="periodNo" formControlName="periodNo" autocomplete="off"/>
+        </div>
+      </div>
+
+      <div class="account_input">
+        <label for="startDate">{{ 'PROJECT_PERIOD.FORM.BEGINNING' | translate }}</label>
+        <p-datepicker
+          inputId="startDate"
+          [showIcon]="true"
+          [showClear]="true"
+          appendTo="body"
+          formControlName="startDate"
+          dateFormat="dd.mm.yy"
+        ></p-datepicker>
+      </div>
+      
+      <div class="account_input">
+        <label for="endDate">{{ 'PROJECT_PERIOD.FORM.END' | translate }}</label>
+        <p-datepicker
+          inputId="endDate"
+          [showIcon]="true"
+          [showClear]="true"
+          appendTo="body"
+          formControlName="endDate"
+          dateFormat="dd.mm.yy"
+        ></p-datepicker>
+      </div>
+     </div>
+    <div class="flex justify-content-center gap-2 mt-3">
+      <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+        iconPos="left" [loading]="isLoading" [disabled]="!formAccountYear.dirty || formAccountYear.invalid" />
+      @if(modalType === 'edit') {
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" [disabled]="isLoading"
+        (onClick)="visibleDeleteEntityModal = true;" />
+      }
+      <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+        (onClick)="closeModal()" [disabled]="isLoading" />
+    </div>
+  </form>
 </ng-container>
 <ng-template #deleteTemplate>
   <div class="confirmation-content mt-4">

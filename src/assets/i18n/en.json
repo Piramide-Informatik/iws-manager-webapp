@@ -48,7 +48,8 @@
     "PROJECT": {
       "PROJECTS": "Projects",
       "NEW_PROJECT": "New Project",
-      "DETAILS": "Details"
+      "DETAILS": "Details",
+      "ACCOUNTING_YEARS": "Accounting Years"
     }
   },
   "ERROR": {
@@ -597,7 +598,7 @@
   },
   "PROJECT_PERIOD": {
     "MODAL": {
-      "CREATE": "Create Project Period",
+      "CREATE": "New Project Period",
       "EDIT": "Edit Project Period",
       "DELETE": "Delete Project Period"
     },
@@ -605,6 +606,11 @@
       "YEAR": "Year",
       "BEGINNING": "Beginning",
       "END": "End"
+    },
+    "FORM": {
+      "YEAR": "Año",
+      "BEGINNING": "Inicio",
+      "END": "Fin"
     }
   },
   "ORDER_PROYECT": {

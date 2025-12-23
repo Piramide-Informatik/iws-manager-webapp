@@ -162,7 +162,6 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
         field: 'customer',
         routerLink: (row: any) => `/customers/customer-details/${row.customerID}`,
         header: this.translate.instant(_('SIDEBAR.CUSTOMER')),
-        customClasses: ['fix-td-width-project-name']
       },
       { field: 'fundingProgram', header: this.translate.instant(_('PROJECTS.TABLE.FUNDING_PROGRAM')), classesTHead: ['width-10'] },
       { field: 'promoter', header: this.translate.instant(_('PROJECTS.TABLE.PROMOTER')), classesTHead: ['width-10'] },
@@ -181,7 +180,6 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   editProject(project: Project) {
-    console.log('a guardar proj', project)
     this.projectStateService.setProjectToEdit(project);
     this.router.navigate(['/projects/project-details', project.id]);
   }
