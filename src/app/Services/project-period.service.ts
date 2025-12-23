@@ -43,6 +43,27 @@ export class ProjectPeriodService {
     );
   }
 
+  // ==================== DELETE OPERATIONS ====================
+  /**
+   * Deletes a project period
+   * @param id Project period identifier to delete
+   * @returns Empty Observable
+   * @throws Error when project period not found or server error occurs
+   */
+  deleteProjectPeriod(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap({
+        next: () => {
+          this._error.set(null);
+        },
+        error: (err) => {
+          this._error.set('Failed to delete project period');
+        }
+      })
+    )
+  }
+
   /**
   * Cleans the state of the projects
   */

@@ -596,6 +596,11 @@
     }
   },
   "PROJECT_PERIOD": {
+    "MODAL": {
+      "CREATE": "Neu Abrechnungsjahre",
+      "EDIT": "Abrechnungsjahre bearbeiten",
+      "DELETE": "Abrechnungsjahre löschen"
+    },
     "TABLE": {
       "YEAR": "Jahr",
       "BEGINNING": "Anfang",

@@ -17,4 +17,11 @@ export class ProjectPeriodUtils {
   getAllProjectPeriodByProject(projectId: string): Observable<ProjectPeriod[]> {
     return this.projectPeriodService.getAllProjectsPeriodsByProject(projectId);
   }
+
+  /**
+   * Delete Project Period
+   */
+  deleteProjectPeriod(projectPeriodId: number): Observable<void> {
+    return this.projectPeriodService.deleteProjectPeriod(projectPeriodId);
+  }
 }

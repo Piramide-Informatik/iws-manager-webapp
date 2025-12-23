@@ -590,6 +590,11 @@
     }
   },
   "PROJECT_PERIOD": {
+    "MODAL": {
+      "CREATE": "Nuevo Año de Contabilidad",
+      "EDIT": "Editar Año de Contabilidad",
+      "DELETE": "Eliminar Año de Contabilidad"
+    },
     "TABLE": {
       "YEAR": "Año",
       "BEGINNING": "Inicio",
