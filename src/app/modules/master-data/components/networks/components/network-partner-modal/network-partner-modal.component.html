@@ -5,7 +5,7 @@
                 <label for="partnerno">{{ 'NETWORKS.PARTNER.NO' | translate }}</label>
                 <div class="input-message">
                 <p-inputNumber #firstInput class="p-inputnumber-input" inputId="partnerno" formControlName="partnerno" [inputStyle]="{'text-align': 'right'}"
-                [max]="999999" [min]="0" [useGrouping]="false" locale="de-DE"
+                [min]="0" [useGrouping]="false" locale="de-DE"
                 invalid="networkPartnerForm.get('partnerno')?.invalid  
                         && networkPartnerForm.get('partnerno')?.dirty 
                         || networkPartnerForm.get('partnerno')?.touched

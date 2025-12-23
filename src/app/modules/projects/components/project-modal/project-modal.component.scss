@@ -15,10 +15,11 @@
         max-width: 220px;
         display: flex;
         gap: 5px;
+        min-width: 7rem;
 
         p-select {
             width: 30rem !important;
-            min-width: 10rem;
+            min-width: 8rem;
         }
     }
 
@@ -28,7 +29,6 @@
         .p-inputnumber,
         .p-datepicker {
             width: 100%;
-            max-width: 220px;
         }
 
     }

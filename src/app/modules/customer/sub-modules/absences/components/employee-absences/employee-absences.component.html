@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="calendar-table-container">
-    <app-calendar-view [currentYear]="currentYear" [employee]="selectedEmployee"
+    <app-calendar-view [currentYear]="currentYear" [employee]="selectedEmployee" (employeeIdAfterRefresh)="loadEmployeeAfterRefreshOCC($event)"
       [weekendsHolidaysMap]="holidaysWeekendMap" (absenceChanged)="onCalendarAbsenceChanged()"></app-calendar-view>
   </div>
 </div>
