@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -11,9 +11,9 @@ import { Employee } from '../../../../../../Entities/employee';
   templateUrl: './employee-detail-modal.component.html',
   styleUrl: './employee-detail-modal.component.scss'
 })
-export class EmployeeDetailModalComponent implements OnInit, OnChanges {
+export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() visibleModal: boolean = false;
@@ -42,7 +42,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-
+    //needs implementation here
   }
 
   ngOnDestroy(): void {
