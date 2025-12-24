@@ -9,7 +9,7 @@ import { ProjectEmployee } from '../Entities/projectEmployee';
 })
 export class ProjectEmployeeService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/project-employees`;
+  private readonly apiUrl = `${environment.BACK_END_HOST_DEV_V2}/order-employees`;
   //Signals
   private readonly _loading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
