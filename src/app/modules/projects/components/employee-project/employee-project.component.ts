@@ -1,5 +1,4 @@
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ProjectEmployee } from '../../../../Entities/projectEmployee';
 import { UserPreference } from '../../../../Entities/user-preference';
 import { Column } from '../../../../Entities/column';
 import { UserPreferenceService } from '../../../../Services/user-preferences.service';
@@ -11,6 +10,7 @@ import { ProjectStateService } from '../../utils/project-state.service';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 import { EmployeeDetailModalComponent } from './components/employee-detail-modal/employee-detail-modal.component';
 import { OrderEmployeeUtils } from '../../utils/order-employee.util';
+import { OrderEmployee } from '../../../../Entities/orderEmployee';
 
 
 @Component({
@@ -29,12 +29,12 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' | 'delete' = 'create';
-  selectedEmployeeDetails: ProjectEmployee | null = null;
+  selectedEmployeeDetails: OrderEmployee | null = null;
   isCreateButtonEnable = true;
 
   @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
 
-  projectEmployees: ProjectEmployee[] = [];
+  projectEmployees: OrderEmployee[] = [];
   currentProject!: Project | null;
   currentProjectId!: number;
 
