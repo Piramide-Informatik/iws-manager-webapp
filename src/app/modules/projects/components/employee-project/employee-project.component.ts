@@ -10,6 +10,7 @@ import { Project } from '../../../../Entities/project';
 import { ProjectStateService } from '../../utils/project-state.service';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 import { EmployeeDetailModalComponent } from './components/employee-detail-modal/employee-detail-modal.component';
+import { ProjectEmployeeUtils } from '../../utils/project-employee.util';
 
 @Component({
   selector: 'app-employee-project',
@@ -20,6 +21,7 @@ import { EmployeeDetailModalComponent } from './components/employee-detail-modal
 export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly projectUtils = inject(ProjectUtils);
+  private readonly projectEmployeeUtils = inject(ProjectEmployeeUtils);
   private readonly projectStateService = inject(ProjectStateService);
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
@@ -47,6 +49,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
     const routeSub = this.route.params.subscribe(params => {
       this.currentProjectId = Number(params['idProject']);
       this.loadProject();
+      this.loadEmployees()
     });
     this.subscriptions.add(routeSub);
     
@@ -76,6 +79,12 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions.add(projectSub);
+  }
+
+  private loadEmployees(): void {
+    this.projectEmployeeUtils.getAllProjectPeriodByProject(this.currentProjectId).subscribe( projectEmployees => {
+      this.projectEmployees = projectEmployees
+    })
   }
 
   loadColHeaders(): void {
