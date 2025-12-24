@@ -3,8 +3,9 @@
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center mb-3">
                 <label for="employee">{{ 'EMPLOYEE.LABELS.EMPLOYEE' | translate }}</label>
-                <p-select optionLabel="name" [placeholder]="'Select Employee' | translate" optionDisabled="inactive"
-                    appendTo="body" showClear></p-select>
+                <p-select formControlName="employee" [options]="employees" optionLabel="displayName" optionValue="id"
+                    [placeholder]="'Select Employee' | translate" appendTo="body" showClear
+                    (onChange)="onEmployeeChange($event)"></p-select>
             </div>
             <div class="create-form flex align-items-center mb-3">
                 <label for="employeeNo">{{ 'EMPLOYEE.TABLE.EMPLOYEE_ID' | translate }}</label>
