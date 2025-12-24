@@ -14,6 +14,7 @@ import { ProjectService } from '../../../../../Services/project.service';
 import { ProjectUtils } from '../../../../customer/sub-modules/projects/utils/project.utils';
 import { SelectChangeEvent } from 'primeng/select';
 import { ProjectStateService } from '../../../utils/project-state.service';
+import { ProjectPeriod } from '../../../../../Entities/project-period';
 
 @Component({
   selector: 'app-projects-account-year',
@@ -40,14 +41,14 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   public selectedProjectAccountYearTableColumns!: Column[];
   modalProjectPeriodType: 'create' | 'delete' | 'edit' = 'create';
   visibleProjectPeriodModal: boolean = false;
-  currentProjectPeriod!: any;
+  currentProjectPeriod!: ProjectPeriod | undefined;
   projectsAccountYears: any = []
 
   private projectAccountYearLangSubscription!: Subscription;
   userProjectAccountYearPreferences: UserPreference = {};
   projectAccountYearTableKey: string = 'ProjectsAccountYear'
 
-  projectAccountYearDataKeys = ['year', 'beginning', 'end'];
+  projectAccountYearDataKeys = ['periodNo', 'startDate', 'endDate'];
   readonly projects: Signal<Project[]> = computed(() => {
     return this.projectService.projects();
   });
@@ -82,15 +83,15 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
   loadProjectColHeaders(): void {
     this.cols = [
-      { field: 'year', 
+      { field: 'periodNo', 
         type: 'integer', 
         filter: { type: 'numeric' }, 
         customClasses: ['align-right'],
         header: this.translate.instant(_('PROJECT_PERIOD.TABLE.YEAR')), 
         classesTHead: ['width-35']
       },
-      { field: 'beginning', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-35']},
-      { field: 'end', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.END')), classesTHead: ['width-35'] },
+      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-35']},
+      { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.END')), classesTHead: ['width-35'] },
     ];
   }
 
@@ -111,20 +112,16 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
   loadProjectPeriod(id: number) {
     this.projectPeriodUtils.getAllProjectPeriodByProject(id).subscribe(data => {
-      this.projectsAccountYears = data.map( pay => {
-        return {
-          id: pay.id,
-          version: pay.version,
-          year: pay.periodNo,
-          beginning: pay.startDate,
-          end: pay.endDate
-        }
-      })
+      this.projectsAccountYears = data;
     })
   }
 
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalProjectPeriodType = event.type;
+
+    if(this.modalProjectPeriodType === 'edit' && event.data){
+      this.currentProjectPeriod = event.data;
+    }
     if (event.type === 'delete') {
       this.currentProjectPeriod = this.projectsAccountYears.find((c: any) => c.id === event.data);
     }
@@ -140,7 +137,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
     this.currentProjectPeriod = undefined;
   }
 
-  createProjectPeriod(event: { status: 'success' | 'error', error?: any}): void {
+  createUpdateProjectPeriod(event: { status: 'success' | 'error', error?: any}): void {
     if(event.status === 'success'){
       this.loadProjectPeriod(this.projectId);
     }

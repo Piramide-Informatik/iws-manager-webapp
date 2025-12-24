@@ -29,6 +29,7 @@
     [dataKeys]="projectAccountYearDataKeys"
     (onColumnChanges)="onUserProjectAccountYearPreferencesChanges($event)"
     (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
+    (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"
     (onCreateRegister)="handleTableEvents({ type: 'create'})"
   ></master-data-genaral-table>
   <p-dialog 
@@ -48,7 +49,7 @@
       [currentProjectPeriodEntity]="currentProjectPeriod"
       (isVisibleProjectPeriodModal)="onModalProjectPeriodModalVisibilityChange($event)"
       (deletedProjectPeriod)="onDeleteProjectPeriod($event)"
-      (projectPeriodCreated)="createProjectPeriod($event)"
+      (projectPeriodCreatedUpdated)="createUpdateProjectPeriod($event)"
     ></app-project-period-modal>
   </p-dialog>
 </div>

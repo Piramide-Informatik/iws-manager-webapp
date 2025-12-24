@@ -608,9 +608,9 @@
       "END": "Ende"
     },
     "FORM": {
-      "YEAR": "Año",
-      "BEGINNING": "Inicio",
-      "END": "Fin"
+      "YEAR": "Jahr",
+      "BEGINNING": "Anfang",
+      "END": "Ende"
     }
   },
   "ORDER_PROYECT": {

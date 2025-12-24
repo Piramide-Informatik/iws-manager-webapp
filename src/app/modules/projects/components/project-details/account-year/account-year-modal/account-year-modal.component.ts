@@ -8,7 +8,7 @@ import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { ProjectPeriod } from '../../../../../../Entities/project-period';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
-import { momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { Project } from '../../../../../../Entities/project';
 
 @Component({
@@ -25,12 +25,12 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   private readonly commonMessageService = inject(CommonMessagesService);
 
   @Input() modalType: 'create' | 'delete' | 'edit' = "create";
-  @Input() currentProjectPeriodEntity!: any;
+  @Input() currentProjectPeriodEntity!: ProjectPeriod | undefined;
   @Input() currentProject!: Project | null;
   @Input() visibleModal: boolean = false;
 
   @Output() isVisibleProjectPeriodModal = new EventEmitter<boolean>();
-  @Output() projectPeriodCreated = new EventEmitter<{ status: 'success' | 'error' }>();
+  @Output() projectPeriodCreatedUpdated = new EventEmitter<{ status: 'success' | 'error' }>();
   @Output() deletedProjectPeriod = new EventEmitter<ProjectPeriod>();
   @ViewChild('firstInput') firstInput!: InputNumber;
 
@@ -52,6 +52,14 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       setTimeout(() => {
         this.firstInputFocus();
       })
+    }
+
+    if((changes['currentProjectPeriodEntity'] || changes['visibleModal']) && this.modalType === 'edit' && this.currentProjectPeriodEntity && this.formAccountYear){
+      this.formAccountYear.patchValue({
+        periodNo: this.currentProjectPeriodEntity?.periodNo,
+        startDate: momentCreateDate(this.currentProjectPeriodEntity?.startDate),
+        endDate: momentCreateDate(this.currentProjectPeriodEntity?.endDate)
+      });
     }
 
     if (changes['visibleModal'] && !this.visibleModal && this.formAccountYear) {
@@ -93,20 +101,43 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
     this.projectPeriodUtils.createProjectPeriod(newProjectPeriod).subscribe({
       next: () => {
         this.isLoading = false;
-        this.projectPeriodCreated.emit({status: 'success'});
+        this.projectPeriodCreatedUpdated.emit({status: 'success'});
         this.commonMessageService.showCreatedSuccesfullMessage();
         this.closeModal();
       },
       error: (error) => {
         this.isLoading = false;
-        this.projectPeriodCreated.emit({ status: 'error' });
+        this.projectPeriodCreatedUpdated.emit({ status: 'error' });
         this.commonMessageService.showErrorCreatedMessage();
       }
     });
   }
 
   private updateProjectPeriod(): void {
-    console.log('edit')
+    if(!this.currentProjectPeriodEntity) return;
+
+    this.isLoading = true;
+    const projectPeriodEdited: ProjectPeriod = {
+      ...this.currentProjectPeriodEntity,
+      periodNo: this.formAccountYear.get('periodNo')?.value,
+      startDate: momentFormatDate(this.formAccountYear.get('startDate')?.value) ?? '',
+      endDate: momentFormatDate(this.formAccountYear.get('endDate')?.value) ?? ''
+    }
+    this.projectPeriodUtils.updateProjectPeriod(projectPeriodEdited).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.commonMessageService.showEditSucessfullMessage();
+        this.projectPeriodCreatedUpdated.emit({status: 'success'});
+        this.closeModal();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        if(error instanceof OccError){
+          this.visiblProjectPeriodModal = false;
+          this.showOCCErrorModalProjectPeriod = true;
+        }
+      }
+    });;
   }
 
   get isCreateMode(): boolean {
