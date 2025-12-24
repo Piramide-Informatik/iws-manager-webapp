@@ -67,18 +67,7 @@ export class OrderEmployeeService {
     this._loading.set(true);
 
     return this.http.get<OrderEmployee[]>(this.apiUrl, this.httpOptions).pipe(
-      tap({
-        next: (orderEmployees) => {
-          this._error.set(null);
-          this._loading.set(false);
-          this._orderEmployees.set(orderEmployees);
-        },
-        error: (err) => {
-          this._error.set('Failed to fetch order employees');
-          this._loading.set(false);
-          console.error('Error fetching order employees:', err);
-        }
-      }),
+      tap(() => this._error.set(null)),
       catchError(err => {
         this._loading.set(false);
         return of([]);
