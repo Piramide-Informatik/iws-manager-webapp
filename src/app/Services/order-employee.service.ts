@@ -143,26 +143,6 @@ export class OrderEmployeeService {
   }
 
   /**
-   * Filters order employees by order ID (client-side filtering)
-   * @param orderId Order identifier
-   * @returns Observable with filtered order employees
-   */
-  getOrderEmployeesByOrder(orderId: number): Observable<OrderEmployee[]> {
-    this._loading.set(true);
-
-    return this.getAllOrderEmployees().pipe(
-      tap(() => this._loading.set(false)),
-      map(orderEmployees => orderEmployees.filter(oe =>
-        oe.order?.id === orderId
-      )),
-      catchError(err => {
-        this._loading.set(false);
-        return of([]);
-      })
-    );
-  }
-
-  /**
    * Filters order employees by employee ID (client-side filtering)
    * @param employeeId Employee identifier
    * @returns Observable with filtered order employees
