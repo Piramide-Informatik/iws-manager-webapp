@@ -48,7 +48,7 @@
 <ng-template #deleteTemplate>
   <div class="confirmation-content mt-4">
     <p *ngIf="currentProjectPeriodEntity" class="mb-4"
-      [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentProjectPeriodEntity?.year}">
+      [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentProjectPeriodEntity.periodNo }">
     </p>
 
     <div class="flex justify-content-center gap-3">
