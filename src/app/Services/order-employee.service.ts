@@ -7,7 +7,7 @@ import { ProjectEmployee } from '../Entities/projectEmployee';
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectEmployeeService {
+export class OrderEmployeeService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.BACK_END_HOST_DEV_V2}/order-employees`;
   //Signals
@@ -30,7 +30,7 @@ export class ProjectEmployeeService {
    * @returns Observable with Project employee array
    * @throws Error when server request fails
    */
-  getAllProjectsEmployeeByProject(projectId: number): Observable<ProjectEmployee[]> {
+  getAllOrderEmployeeByProject(projectId: number): Observable<ProjectEmployee[]> {
     return this.http.get<ProjectEmployee[]>(`${this.apiUrl}/project/${projectId}`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {

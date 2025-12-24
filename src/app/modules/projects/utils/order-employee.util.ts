@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProjectEmployeeService } from '../../../Services/project-employee.service';
+import { OrderEmployeeService } from '../../../Services/order-employee.service';
 import { ProjectEmployee } from '../../../Entities/projectEmployee';
 
 /**
@@ -8,14 +8,14 @@ import { ProjectEmployee } from '../../../Entities/projectEmployee';
  * Works with ProjectEmployeeService's reactive signals while providing additional functionality.
  */
 @Injectable({ providedIn: 'root' })
-export class ProjectEmployeeUtils {
-  private readonly projectEmployeeService = inject(ProjectEmployeeService);
+export class OrderEmployeeUtils {
+  private readonly orderEmployeeService = inject(OrderEmployeeService);
 
   /**
    * Gets all project period by project
    */
-  getAllProjectPeriodByProject(projectId: number): Observable<ProjectEmployee[]> {
-    return this.projectEmployeeService.getAllProjectsEmployeeByProject(projectId);
+  getAllOrderEmployeeByProject(projectId: number): Observable<ProjectEmployee[]> {
+    return this.orderEmployeeService.getAllOrderEmployeeByProject(projectId);
   }
 
 }
