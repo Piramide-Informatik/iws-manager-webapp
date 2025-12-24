@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OrderEmployeeService } from '../../../Services/order-employee.service';
-import { ProjectEmployee } from '../../../Entities/projectEmployee';
+import { OrderEmployee } from '../../../Entities/orderEmployee';
 
 /**
  * Utility class for project employee business logic and operations.
@@ -14,7 +14,7 @@ export class OrderEmployeeUtils {
   /**
    * Gets all project period by project
    */
-  getAllOrderEmployeeByProject(projectId: number): Observable<ProjectEmployee[]> {
+  getAllOrderEmployeeByProject(projectId: number): Observable<OrderEmployee[]> {
     return this.orderEmployeeService.getAllOrderEmployeeByProject(projectId);
   }
 

@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-employee-detail-modal',
@@ -7,11 +8,13 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './employee-detail-modal.component.html',
   styleUrl: './employee-detail-modal.component.scss'
 })
-export class EmployeeDetailModalComponent {
+export class EmployeeDetailModalComponent implements OnInit, OnChanges {
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
   isLoading = false;
+  projectId = '';
+  constructor(private readonly activatedRoute: ActivatedRoute) { }
 
   readonly createEmployeeDetailsForm = new FormGroup({
     employee: new FormControl(''),
@@ -20,11 +23,23 @@ export class EmployeeDetailModalComponent {
     qualificationkmui: new FormControl('')
   });
 
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      this.projectId = params['idProject'];
+    });
+  }
+
+  ngOnChanges(): void {
+
+  }
+
   onSubmit(): void {
-      this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+    if (this.createEmployeeDetailsForm.invalid || this.isLoading) return;
+
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
   closeAndReset(): void {
@@ -41,7 +56,7 @@ export class EmployeeDetailModalComponent {
     this.closeAndReset();
   }
 
-  removeFromProject():void {
+  removeFromProject(): void {
     this.closeAndReset();
   }
 }
