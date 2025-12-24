@@ -10,7 +10,8 @@ import { Project } from '../../../../Entities/project';
 import { ProjectStateService } from '../../utils/project-state.service';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 import { EmployeeDetailModalComponent } from './components/employee-detail-modal/employee-detail-modal.component';
-import { ProjectEmployeeUtils } from '../../utils/project-employee.util';
+import { OrderEmployeeUtils } from '../../utils/order-employee.util';
+
 
 @Component({
   selector: 'app-employee-project',
@@ -21,7 +22,7 @@ import { ProjectEmployeeUtils } from '../../utils/project-employee.util';
 export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly userPreferenceService = inject(UserPreferenceService);
   private readonly projectUtils = inject(ProjectUtils);
-  private readonly projectEmployeeUtils = inject(ProjectEmployeeUtils);
+  private readonly orderEmployeeUtils = inject(OrderEmployeeUtils);
   private readonly projectStateService = inject(ProjectStateService);
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
@@ -31,12 +32,12 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   selectedEmployeeDetails: ProjectEmployee | null = null;
   isCreateButtonEnable = true;
 
-   @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
+  @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
 
   projectEmployees: ProjectEmployee[] = [];
   currentProject!: Project | null;
   currentProjectId!: number;
-  
+
   public cols!: Column[];
   public selectedColumns!: Column[];
   tableKey: string = 'EmployeeProjectOverview';
@@ -52,7 +53,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       this.loadEmployees()
     });
     this.subscriptions.add(routeSub);
-    
+
     this.loadColHeaders();
     this.selectedColumns = this.cols;
 
@@ -67,11 +68,11 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
 
   private loadProject(): void {
     const projectSub = this.projectStateService.currentProject$.subscribe(project => {
-      if(project && project.id === this.currentProjectId) {
+      if (project && project.id === this.currentProjectId) {
         this.currentProject = project;
-      }else{
+      } else {
         this.projectUtils.getProjectById(this.currentProjectId).subscribe(proj => {
-          if(proj){
+          if (proj) {
             this.currentProject = proj;
             this.projectStateService.setProjectToEdit(proj);
           }
@@ -82,8 +83,8 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   }
 
   private loadEmployees(): void {
-    this.projectEmployeeUtils.getAllProjectPeriodByProject(this.currentProjectId).subscribe( projectEmployees => {
-      this.projectEmployees = projectEmployees
+    this.orderEmployeeUtils.getAllOrderEmployeeByProject(this.currentProjectId).subscribe(orderEmployees => {
+      this.projectEmployees = orderEmployees
     })
   }
 
@@ -122,12 +123,12 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
 
   onCloseModal() {
     if (this.employeeDetailModalDialog) {
-    this.employeeDetailModalDialog.onCancel();
+      this.employeeDetailModalDialog.onCancel();
     }
     this.visibleModal = false;
     this.selectedEmployeeDetails = null;
   }
-  
+
   onNewEmployeeClick(): void {
     this.modalType = 'create';
     this.visibleModal = true;
@@ -135,9 +136,9 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   }
 
   handleTableEvents(event: { type: 'new employee' | 'create' | 'edit' | 'delete', data?: any }): void {
-    if(event.type === 'new employee'){
+    if (event.type === 'new employee') {
       console.log('modal new emp')
-    }else{
+    } else {
       this.modalType = event.type;
       if (event.type === 'edit') {
         //code to edit
