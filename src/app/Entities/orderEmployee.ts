@@ -1,5 +1,6 @@
 import { Employee } from "./employee";
 import { Order } from "./order";
+import { QualificationFZ } from "./qualificationfz";
 
 export interface OrderEmployee {
   id: number;
@@ -9,8 +10,10 @@ export interface OrderEmployee {
 
   employee: Employee | null;
   order: Order | null;
+  qualificationFZ: QualificationFZ | null;
 
-  hourlyRate: number;
-  plannedHours: number;
-  qualificationkmui: string;
+  hourlyrate?: number;
+  plannedhours?: number;
+  qualificationkmui?: string;
+  title?: string;
 }

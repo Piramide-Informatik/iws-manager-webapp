@@ -40,6 +40,7 @@
           [employeeNo]="employeeNo"
           (isVisibleModal)="onModalVisibilityChange($event)"
           (deleteProjectPackageEvent)="onDeleteEmployee($event)" 
+          (createdOrderEmployee)="createdOrderEmployee($event)"
           #employeeDetailModal
         ></app-employee-detail-modal>
       </p-dialog>
