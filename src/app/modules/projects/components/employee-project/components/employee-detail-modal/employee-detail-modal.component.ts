@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmployeeUtils } from '../../../../../customer/sub-modules/employee/utils/employee.utils';
 import { Employee } from '../../../../../../Entities/employee';
+import { OrderEmployeeUtils } from '../../../../utils/order-employee.util';
+import { OrderEmployee } from '../../../../../../Entities/orderEmployee';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-employee-detail-modal',
@@ -14,10 +17,14 @@ import { Employee } from '../../../../../../Entities/employee';
 export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly subscriptions = new Subscription();
+  private readonly orderEmployeeUtils = inject(OrderEmployeeUtils);
 
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
+  @Output() createdOrderEmployee = new EventEmitter<{ status: 'success' | 'error', error?: any }>();
+
+  @ViewChild('pSelect') firstInputForm!: Select;
 
   isLoading = false;
   projectId = '';
@@ -26,9 +33,9 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   constructor(private readonly activatedRoute: ActivatedRoute) { }
 
   readonly createEmployeeDetailsForm = new FormGroup({
-    employee: new FormControl(''),
+    employee: new FormControl(),
     employeeNo: new FormControl<number | null>({ value: null, disabled: true }),
-    hourlyrate: new FormControl(''),
+    hourlyrate: new FormControl(null),
     qualificationkmui: new FormControl('')
   });
 
@@ -37,12 +44,18 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       this.projectId = params['idProject'];
     });
     this.loadEmployees();
-
-    console.log(this.employees);
   }
 
-  ngOnChanges(): void {
-    //needs implementation here
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visibleModal'] && this.visibleModal) {
+      setTimeout(() => {
+        if (this.firstInputForm) {
+          setTimeout(() => {
+            this.firstInputForm.focus();
+          }, 300)
+        }
+      })
+    }
   }
 
   ngOnDestroy(): void {
@@ -84,9 +97,29 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
     if (this.createEmployeeDetailsForm.invalid || this.isLoading) return;
 
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
+    const newOrderEmployee: Omit<OrderEmployee, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+      employee: this.getSelectedEmployee(this.createEmployeeDetailsForm.get('employee')?.value),
+      hourlyrate: this.createEmployeeDetailsForm.get('hourlyrate')?.value ?? 0,
+      qualificationkmui: this.createEmployeeDetailsForm.get('qualificationkmui')?.value ?? '',
+      plannedhours: 0,
+      title: '',
+      order: null,
+      qualificationFZ: null
+    }
+    this.orderEmployeeUtils.addOrderEmployee(newOrderEmployee).subscribe({
+      next: () => {
+        this.closeAndReset();
+        this.createdOrderEmployee.emit({ status: 'success' });
+      },
+      error: (error) => {
+        this.closeAndReset();
+        this.createdOrderEmployee.emit({ status: 'error', error });
+      }
+    });
+  }
+
+  private getSelectedEmployee(employeeId: number | null | undefined): Employee | null {
+    return employeeId ? this.employees.find(employee => employee.id === employeeId) ?? null : null;
   }
 
   closeAndReset(): void {
