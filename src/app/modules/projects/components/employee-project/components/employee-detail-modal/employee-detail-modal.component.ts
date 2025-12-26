@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmployeeUtils } from '../../../../../customer/sub-modules/employee/utils/employee.utils';
@@ -7,6 +7,8 @@ import { Employee } from '../../../../../../Entities/employee';
 import { OrderEmployeeUtils } from '../../../../utils/order-employee.util';
 import { OrderEmployee } from '../../../../../../Entities/orderEmployee';
 import { Select } from 'primeng/select';
+import { Order } from '../../../../../../Entities/order';
+import { OrderUtils } from '../../../../../customer/sub-modules/orders/utils/order-utils';
 
 @Component({
   selector: 'app-employee-detail-modal',
@@ -17,6 +19,7 @@ import { Select } from 'primeng/select';
 export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
   private readonly orderEmployeeUtils = inject(OrderEmployeeUtils);
+  private readonly ordersUtils = inject(OrderUtils);
   private readonly subscriptions = new Subscription();
 
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
@@ -32,6 +35,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   isLoading = false;
   projectId = '';
   employees: Employee[] = [];
+  orders: Order[] = [];
 
   constructor(private readonly activatedRoute: ActivatedRoute) { }
 
@@ -39,7 +43,8 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
     employee: new FormControl(),
     employeeNo: new FormControl<number | null>({ value: null, disabled: true }),
     hourlyrate: new FormControl(null),
-    qualificationkmui: new FormControl('')
+    qualificationkmui: new FormControl(''),
+    order: new FormControl(null,[Validators.required])
   });
 
   ngOnInit(): void {
@@ -47,6 +52,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       this.projectId = params['idProject'];
     });
     this.loadEmployees();
+    this.loadOrders();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -66,7 +72,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   }
 
   private loadEmployees(): void {
-    const sub = this.employeeUtils.getEmployeesSortedByName().subscribe({
+    const sub = this.employeeUtils.getAllEmployeesByProjectId(Number(this.projectId)).subscribe({
       next: (employees: Employee[]) => {
         this.employees = employees.map(employee => ({
           ...employee,
@@ -79,6 +85,12 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       }
     });
     this.subscriptions.add(sub);
+  }
+
+  private loadOrders(): void {
+    this.ordersUtils.getAllOrdersByProjectId(Number(this.projectId)).subscribe(orders => {
+      this.orders = orders;
+    });
   }
 
   private getEmployeeDisplayName(employee: Employee): string {
@@ -104,9 +116,9 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       employee: this.getSelectedEmployee(this.createEmployeeDetailsForm.get('employee')?.value),
       hourlyrate: this.createEmployeeDetailsForm.get('hourlyrate')?.value ?? 0,
       qualificationkmui: this.createEmployeeDetailsForm.get('qualificationkmui')?.value ?? '',
-      plannedhours: 0,
+      order: this.getSelectOrder(this.createEmployeeDetailsForm.get('order')?.value ?? null),
+      plannedhours: 1,
       title: '',
-      order: null,
       qualificationFZ: null
     }
     this.orderEmployeeUtils.addOrderEmployee(newOrderEmployee).subscribe({
@@ -115,14 +127,18 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
         this.createdOrderEmployee.emit({ status: 'success' });
       },
       error: (error) => {
-        this.closeAndReset();
+        this.isLoading = false;
         this.createdOrderEmployee.emit({ status: 'error', error });
       }
     });
   }
 
-  private getSelectedEmployee(employeeId: number | null | undefined): Employee | null {
+  private getSelectedEmployee(employeeId: number | null): Employee | null {
     return employeeId ? this.employees.find(employee => employee.id === employeeId) ?? null : null;
+  }
+
+  private getSelectOrder(orderId: number | null): Order | null {
+    return orderId ? this.orders.find(order => order.id === orderId) ?? null : null;
   }
 
   closeAndReset(): void {

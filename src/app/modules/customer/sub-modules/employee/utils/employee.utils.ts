@@ -52,6 +52,17 @@ export class EmployeeUtils {
   }
 
   /**
+  * Gets all employees given a project
+  * @param projectId - Project to get his employees
+  * @returns Observable emitting the raw list of employees
+  */
+  getAllEmployeesByProjectId(projectId: number): Observable<Employee[]> {
+    return this.employeeService.getAllEmployeesByProjectId(projectId).pipe(
+      catchError(() => throwError(() => new Error('Failed to load employees')))
+    );
+  }
+
+  /**
   * Creates a new employee with validation
   * @param employee - Employee object to create (without id)
   * @returns Observable that completes when employee is created
