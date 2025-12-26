@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="isCreateEmployeeDetailsMode; else deleteEmployeeDetailsModal">
     <form [formGroup]="createEmployeeDetailsForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
             <div class="create-form flex align-items-center mb-3">
@@ -38,3 +38,18 @@
     </form>
 
 </ng-container>
+
+<ng-template #deleteEmployeeDetailsModal>
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: employeeNo }"></p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="onDeleteConfirm()" severity="danger" [loading]="isLoading" [disabled]="isLoading" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading" />
+
+    </div>
+  </div>
+</ng-template>

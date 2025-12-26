@@ -13,7 +13,6 @@ import { OrderEmployeeUtils } from '../../utils/order-employee.util';
 import { OrderEmployee } from '../../../../Entities/orderEmployee';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
-
 @Component({
   selector: 'app-employee-project',
   standalone: false,
@@ -33,6 +32,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   modalType: 'create' | 'edit' | 'delete' = 'create';
   selectedEmployeeDetails: OrderEmployee | null = null;
   isCreateButtonEnable = true;
+  employeeNo: number | null = null;
 
   @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
 
@@ -145,10 +145,24 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       if (event.type === 'edit') {
         //code to edit
       }
-      if (event.type === 'delete') {
-        //code to delete
+      if (event.type === 'delete' && event.data) {
+        // event.data is the OrderEmployee ID, find the full object
+        const foundEmployee = this.projectEmployees.find(e => e.id === event.data);
+        if (foundEmployee) {
+          this.selectedEmployeeDetails = foundEmployee;
+          this.employeeNo = foundEmployee.employee?.employeeno ?? null;
+        }
       }
       this.visibleModal = true;
+    }
+  }
+  onDeleteEmployee(event: { status: 'success' | 'error', error?: Error }): void {
+    if (event.status === 'success') {
+      // Reload the employees list using the same method as initial load
+      this.loadEmployees();
+      this.commonMessageService.showDeleteSucessfullMessage();
+    } else if (event.status === 'error') {
+      this.commonMessageService.showErrorDeleteMessage();
     }
   }
 
