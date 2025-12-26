@@ -11,6 +11,7 @@ import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/proje
 import { EmployeeDetailModalComponent } from './components/employee-detail-modal/employee-detail-modal.component';
 import { OrderEmployeeUtils } from '../../utils/order-employee.util';
 import { OrderEmployee } from '../../../../Entities/orderEmployee';
+import { CommonMessagesService } from '../../../../Services/common-messages.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly commonMessageService = inject(CommonMessagesService);
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' | 'delete' = 'create';
   selectedEmployeeDetails: OrderEmployee | null = null;
@@ -93,7 +95,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       { field: 'employee.employeeno', header: this.translate.instant('EMPLOYEE.TABLE.EMPLOYEE_ID') },
       { field: 'employee.firstname', header: this.translate.instant('EMPLOYEE.TABLE.FIRST_NAME') },
       { field: 'employee.lastname', header: this.translate.instant('EMPLOYEE.TABLE.LAST_NAME') },
-      { field: 'hourlyRate', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE') },
+      { field: 'hourlyrate', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE') },
       { field: 'qualificationkmui', header: this.translate.instant('PROJECT_EMPLOYEES.TABLE.FZ_ABBREVIATION_R&H_ACTIVITY') },
     ];
   }
@@ -147,6 +149,14 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
         //code to delete
       }
       this.visibleModal = true;
+    }
+  }
+
+  createdOrderEmployee(event: { status: 'success' | 'error', error?: any }): void {
+    if(event.status === 'success') {
+      this.commonMessageService.showCreatedSuccesfullMessage();
+    }else if(event.status === 'error' && event.error){
+      this.commonMessageService.showErrorCreatedMessage();
     }
   }
 }

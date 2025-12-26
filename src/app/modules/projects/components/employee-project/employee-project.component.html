@@ -37,6 +37,7 @@
           [modalType]="modalType"
           [visibleModal]="visibleModal"
           (isVisibleModal)="onModalVisibilityChange($event)"
+          (createdOrderEmployee)="createdOrderEmployee($event)"
           #employeeDetailModal
         ></app-employee-detail-modal>
       </p-dialog>
