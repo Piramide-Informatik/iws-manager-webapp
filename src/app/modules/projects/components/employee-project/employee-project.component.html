@@ -36,7 +36,10 @@
         <app-employee-detail-modal
           [modalType]="modalType"
           [visibleModal]="visibleModal"
+          [employeeToDelete]="selectedEmployeeDetails"
+          [employeeNo]="employeeNo"
           (isVisibleModal)="onModalVisibilityChange($event)"
+          (deleteProjectPackageEvent)="onDeleteEmployee($event)" 
           #employeeDetailModal
         ></app-employee-detail-modal>
       </p-dialog>

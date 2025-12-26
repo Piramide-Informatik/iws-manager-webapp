@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmployeeUtils } from '../../../../../customer/sub-modules/employee/utils/employee.utils';
 import { Employee } from '../../../../../../Entities/employee';
+import { OrderEmployee } from '../../../../../../Entities/orderEmployee';
+import { OrderEmployeeUtils } from '../../../../utils/order-employee.util';
 
 @Component({
   selector: 'app-employee-detail-modal',
@@ -13,11 +15,15 @@ import { Employee } from '../../../../../../Entities/employee';
 })
 export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestroy {
   private readonly employeeUtils = inject(EmployeeUtils);
+  private readonly orderEmployeeUtils = inject(OrderEmployeeUtils);
   private readonly subscriptions = new Subscription();
 
   @Input() modalType: 'create' | 'edit' | 'delete' = 'create';
   @Input() visibleModal: boolean = false;
   @Output() isVisibleModal = new EventEmitter<boolean>();
+  @Output() deleteProjectPackageEvent = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
+  @Input() employeeNo: number | null = null;
+  @Input() employeeToDelete: OrderEmployee | null = null;
 
   isLoading = false;
   projectId = '';
@@ -120,5 +126,28 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
         // qualificationkmui: selectedEmployee.qualificationkmui || ''
       });
     }
+  }
+  get isCreateEmployeeDetailsMode(): boolean {
+    return this.modalType === 'create' || this.modalType === 'edit';
+  }
+
+  onDeleteConfirm(): void {
+    if (!this.employeeToDelete?.id) return;
+    this.isLoading = true;
+    
+    const sub = this.orderEmployeeUtils
+    .deleteOrderEmployee(this.employeeToDelete.id)
+    .subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.deleteProjectPackageEvent.emit({ status: 'success' });
+        this.closeAndReset();
+      },
+      error: (error: Error) => {
+        this.isLoading = false;
+        this.deleteProjectPackageEvent.emit({ status: 'error', error });
+      }
+    });
+    this.subscriptions.add(sub);
   }
 }
