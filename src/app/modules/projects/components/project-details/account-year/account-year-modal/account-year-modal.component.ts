@@ -155,6 +155,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       this.projectPeriodUtils.deleteProjectPeriod(this.currentProjectPeriodEntity.id).subscribe({
         next: () => {
           this.isLoadingDelete = false;
+          this.visibleDeleteEntityModal = false;
           this.visiblProjectPeriodModal = false;
           this.isVisibleProjectPeriodModal.emit(false);
           this.commonMessageService.showDeleteSucessfullMessage();

@@ -181,7 +181,8 @@
     "IMPORT": "Importieren",
     "IMPORT_EMPLOYEES": "Mitarbeiter importieren",
     "ASSIGN_MORE_EMPLOYEES": "Weitere Mitarbeiter zuordnen",
-    "IMPORT_ABSENCES": "Fehltage importieren"
+    "IMPORT_ABSENCES": "Fehltage importieren",
+    "NEW_ACCOUNTING_YEAR": "Neues Abrechnungsjahr"
   },
   "CALENDAR": {
     "TITLE": "Abwesenheitskalender {{YEAR}}",

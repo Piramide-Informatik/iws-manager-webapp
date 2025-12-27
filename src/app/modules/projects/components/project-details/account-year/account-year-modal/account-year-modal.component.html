@@ -4,7 +4,8 @@
       <div class="account_input">
         <label for="periodNo">{{ 'PROJECT_PERIOD.FORM.YEAR' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber #firstInput [useGrouping]="true" inputId="periodNo" formControlName="periodNo" autocomplete="off"/>
+          <p-inputnumber #firstInput [useGrouping]="true" inputId="periodNo" [inputStyle]="{'text-align': 'right'}"
+          formControlName="periodNo" autocomplete="off"/>
         </div>
       </div>
 
@@ -68,3 +69,17 @@
   [reloadCurrentPage]="true"
   (onClose)="showOCCErrorModalProjectPeriod = false">
 </app-occ-error-modal>
+<p-dialog [header]="'PROJECT_PERIOD.MODAL.DELETE' | translate" [modal]="true" appendTo="body" [(visible)]="visibleDeleteEntityModal">
+  <div class="confirmation-content mb-2 mt-4">
+    <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentProjectPeriodEntity?.periodNo }"></p>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" (onClick)="deleteEmployeeContractEntity()" severity="danger" [loading]="isLoadingDelete" [disabled]="isLoadingDelete" />
+
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="this.visibleDeleteEntityModal = false;" [disabled]="isLoadingDelete" />
+
+    </div>
+  </div>
+</p-dialog>
