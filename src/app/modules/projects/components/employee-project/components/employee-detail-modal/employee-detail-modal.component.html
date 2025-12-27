@@ -1,19 +1,19 @@
 <ng-container *ngIf="isCreateEmployeeDetailsMode; else deleteEmployeeDetailsModal">
     <form [formGroup]="createEmployeeDetailsForm" (ngSubmit)="onSubmit()">
         <div class="align-items-center mb-2 mt-4">
-            <div class="create-form flex align-items-center mb-3">
+            <div class="create-form">
                 <label for="employee">{{ 'EMPLOYEE.LABELS.EMPLOYEE' | translate }}</label>
                 <p-select #pSelect formControlName="employee" [options]="employees" optionLabel="displayName" optionValue="id"
                     appendTo="body" showClear ></p-select>
             </div>
-            <div class="create-form flex align-items-center mb-3">
+            <div class="create-form">
                 <label for="employeeNo">{{ 'EMPLOYEE.TABLE.EMPLOYEE_ID' | translate }}</label>
                 <p-inputnumber [useGrouping]="true" inputId="employeeNo" formControlName="employeeNo" autocomplete="off"
                     [attr.aria-invalid]="createEmployeeDetailsForm.get('employeeNo')?.invalid"
                     [inputStyle]="{'text-align': 'right'}"
                     [attr.aria-describedby]="createEmployeeDetailsForm.get('employeeNo')?.invalid ? 'employeeNoError' : null" />
             </div>
-            <div class="create-form flex flex-row mb-4">
+            <div class="create-form">
                 <label for="hourlyrate">{{ 'EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE' | translate }}</label>
                 <p-inputnumber [useGrouping]="true" inputId="name" formControlName="hourlyrate" autocomplete="off"
                 [inputStyle]="{'text-align': 'right'}" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
@@ -24,7 +24,7 @@
                 <input pInputText type="text" id="qualificationkmui" formControlName="qualificationkmui"
                     autocomplete="off" />
             </div>
-            <div class="create-form flex align-items-center mb-3">
+            <div class="create-form">
                 <label for="order">{{ 'ORDERS.FORM.ORDER_LABEL' | translate }}</label>
                 <div class="input-message">
                     <p-select formControlName="order" [options]="orders" optionLabel="orderLabel" optionValue="id"

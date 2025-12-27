@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { ExcelImportRow } from '../../../../../../Entities/excelImportRow';
 import { ValidationResult } from '../../../../../../Entities/validationResult';
 import * as XLSX from 'xlsx';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-work-packages',
@@ -38,6 +39,8 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
   private readonly projectUtils = inject(ProjectUtils);
   private readonly messageService = inject(MessageService);
   private readonly subscriptions: Subscription = new Subscription();
+  private readonly titleService = inject(Title);
+  private readonly translate = inject(TranslateService);
 
   projectId: string = '';
   currentProjectId!: number;
@@ -76,6 +79,13 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
       this.loadProject();
     });
     this.subscriptions.add(routeSub);
+    
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.PROJECT.PROJECT_WORK_PACKAGE_EMPLOYEE')}`);
+    this.subscriptions.add(
+      this.translate.onLangChange.subscribe(() => {
+        this.titleService.setTitle(`${this.translate.instant('PAGETITLE.PROJECT.PROJECT_WORK_PACKAGE_EMPLOYEE')}`);
+      })
+    );
   }
 
   private loadProject(): void {

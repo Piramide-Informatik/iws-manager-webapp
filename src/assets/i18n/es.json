@@ -49,7 +49,9 @@
       "PROJECTS": "Proyectos",
       "NEW_PROJECT": "Nuevo Proyecto",
       "DETAILS": "Detalles",
-      "ACCOUNTING_YEARS": "Años de Contabilidad"
+      "ACCOUNTING_YEARS": "Años de Contabilidad",
+      "PROJECT_EMPLOYEE": "Proyecto - Empleados",
+      "PROJECT_WORK_PACKAGE_EMPLOYEE": "Proyecto - Paquetes de trabajo/Empleados"
     }
   },
   "ERROR": {

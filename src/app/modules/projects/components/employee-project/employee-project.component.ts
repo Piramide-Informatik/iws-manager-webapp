@@ -12,6 +12,7 @@ import { EmployeeDetailModalComponent } from './components/employee-detail-modal
 import { OrderEmployeeUtils } from '../../utils/order-employee.util';
 import { OrderEmployee } from '../../../../Entities/orderEmployee';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employee-project',
@@ -27,6 +28,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly titleService = inject(Title);
   private readonly commonMessageService = inject(CommonMessagesService);
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' | 'delete' = 'create';
@@ -60,9 +62,11 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
     this.selectedColumns = this.cols;
 
     this.userProjectEmployeesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
+    this.titleService.setTitle(`${this.translate.instant('PAGETITLE.PROJECT.PROJECT_EMPLOYEE')}`);
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.reloadComponent(true);
+      this.titleService.setTitle(`${this.translate.instant('PAGETITLE.PROJECT.PROJECT_EMPLOYEE')}`);
       this.userProjectEmployeesPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
 
