@@ -92,11 +92,11 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
 
   loadColHeaders(): void {
     this.cols = [
-      { field: 'employee.employeeno', header: this.translate.instant('EMPLOYEE.TABLE.EMPLOYEE_ID') },
-      { field: 'employee.firstname', header: this.translate.instant('EMPLOYEE.TABLE.FIRST_NAME') },
-      { field: 'employee.lastname', header: this.translate.instant('EMPLOYEE.TABLE.LAST_NAME') },
-      { field: 'hourlyrate', type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE') },
-      { field: 'qualificationkmui', header: this.translate.instant('PROJECT_EMPLOYEES.TABLE.FZ_ABBREVIATION_R&H_ACTIVITY') },
+      { field: 'employee.employeeno', classesTHead: ['width-10'], header: this.translate.instant('EMPLOYEE.TABLE.EMPLOYEE_ID') },
+      { field: 'employee.firstname', classesTHead: ['width-20'], header: this.translate.instant('EMPLOYEE.TABLE.FIRST_NAME') },
+      { field: 'employee.lastname', classesTHead: ['width-20'], header: this.translate.instant('EMPLOYEE.TABLE.LAST_NAME') },
+      { field: 'hourlyrate', classesTHead: ['width-10'], type: 'double', filter: { type: 'numeric' }, customClasses: ['align-right'], header: this.translate.instant('EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE') },
+      { field: 'qualificationkmui', classesTHead: ['width-40'], header: this.translate.instant('PROJECT_EMPLOYEES.TABLE.FZ_ABBREVIATION_R&H_ACTIVITY') },
     ];
   }
 
@@ -168,6 +168,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
 
   createdOrderEmployee(event: { status: 'success' | 'error', error?: any }): void {
     if(event.status === 'success') {
+      this.loadEmployees();
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error' && event.error){
       this.commonMessageService.showErrorCreatedMessage();

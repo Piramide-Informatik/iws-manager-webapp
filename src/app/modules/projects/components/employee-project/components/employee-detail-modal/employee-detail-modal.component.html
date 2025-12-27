@@ -15,8 +15,9 @@
                     [attr.aria-describedby]="createEmployeeDetailsForm.get('employeeNo')?.invalid ? 'employeeNoError' : null" />
             </div>
             <div class="create-form flex flex-row mb-4">
-                <label for="name">{{ 'EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE' | translate }}</label>
-                <input pInputText type="text" id="name" formControlName="hourlyrate" autocomplete="off" />
+                <label for="hourlyrate">{{ 'EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE' | translate }}</label>
+                <p-inputnumber [useGrouping]="true" inputId="name" formControlName="hourlyrate" autocomplete="off"
+                [inputStyle]="{'text-align': 'right'}" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
             </div>
             <div class="create-form wide">
                 <label for="qualificationkmui">{{ 'PROJECT_EMPLOYEES.TABLE.FZ_ABBREVIATION_R&H_ACTIVITY' | translate
@@ -24,6 +25,16 @@
                 <input pInputText type="text" id="qualificationkmui" formControlName="qualificationkmui"
                     autocomplete="off" />
             </div>
+            <div class="create-form flex align-items-center mb-3">
+                <label for="order">{{ 'ORDERS.FORM.ORDER_LABEL' | translate }}</label>
+                <div class="input-message">
+                    <p-select formControlName="order" [options]="orders" optionLabel="orderLabel" optionValue="id"
+                        appendTo="body" showClear></p-select>
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="createEmployeeDetailsForm.get('order')?.errors?.['required'] && (createEmployeeDetailsForm.get('order')?.dirty || createEmployeeDetailsForm.get('order')?.touched)">
+                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    </p-message>
+                </div>
+                </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
                     icon="pi pi-check" iconPos="left" [loading]="isLoading" [disabled]="isLoading"></p-button>
