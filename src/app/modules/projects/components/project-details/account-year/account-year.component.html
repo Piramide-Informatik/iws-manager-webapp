@@ -27,6 +27,7 @@
     [columns]="selectedProjectAccountYearTableColumns"
     [userPreferences]="userProjectAccountYearPreferences"
     [dataKeys]="projectAccountYearDataKeys"
+    [nameNewButton]="'BUTTONS.NEW_ACCOUNTING_YEAR'"
     (onColumnChanges)="onUserProjectAccountYearPreferencesChanges($event)"
     (onDeleteRegister)="handleTableEvents({ type: 'delete', data: $event })"
     (onEditRegister)="handleTableEvents({ type: 'edit', data: $event })"

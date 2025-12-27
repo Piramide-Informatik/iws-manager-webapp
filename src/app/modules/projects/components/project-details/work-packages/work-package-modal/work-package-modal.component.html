@@ -90,7 +90,7 @@
 <app-occ-error-modal *ngIf="showOCCErrorModalProjectPackage" [errorType]="occErrorProjectPackageType"
   [reloadCurrentPage]="true" (onClose)="showOCCErrorModalProjectPackage = false">
 </app-occ-error-modal>
-<p-dialog [header]="'PROJECT_PACKAGES.MODAL.DELETE' | translate" [modal]="true" [(visible)]="visiblWorkPackageModal">
+<p-dialog [header]="'PROJECT_PACKAGES.MODAL.DELETE' | translate" [modal]="true" appendTo="body" [(visible)]="visiblWorkPackageModal">
   <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: selectedProjectPackage?.packageNo }"></p>
 

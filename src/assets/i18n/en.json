@@ -181,7 +181,8 @@
     "IMPORT": "Import",
     "IMPORT_EMPLOYEES": "Import Employees",
     "ASSIGN_MORE_EMPLOYEES": "Assign More Employees",
-    "IMPORT_ABSENCES": "Import Absences"
+    "IMPORT_ABSENCES": "Import Absences",
+    "NEW_ACCOUNTING_YEAR": "New Accounting Year"
   },
   "CALENDAR": {
     "TITLE": "Absence Calendar {{YEAR}}",
