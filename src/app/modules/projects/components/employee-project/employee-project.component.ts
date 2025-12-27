@@ -142,8 +142,9 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       console.log('modal new emp')
     } else {
       this.modalType = event.type;
-      if (event.type === 'edit') {
-        //code to edit
+      if (event.type === 'edit' && event.data) {
+        this.selectedEmployeeDetails = event.data;
+        this.employeeNo = this.selectedEmployeeDetails?.employee?.employeeno ?? null;
       }
       if (event.type === 'delete' && event.data) {
         // event.data is the OrderEmployee ID, find the full object
@@ -172,6 +173,15 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       this.commonMessageService.showCreatedSuccesfullMessage();
     }else if(event.status === 'error' && event.error){
       this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  updatedOrderEmployee(event: { status: 'success' | 'error', error?: any }): void {
+    if(event.status === 'success'){
+      this.loadEmployees();
+      this.commonMessageService.showEditSucessfullMessage();
+    }else if(event.status === 'error' && event.error){
+      this.commonMessageService.showErrorEditMessage();
     }
   }
 }
