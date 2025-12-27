@@ -34,6 +34,8 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   @ViewChild('pSelect') firstInputForm!: Select;
 
   isLoading = false;
+  isLoadingDelete = false;
+  modalDeleteVisible = false;
   projectId = '';
   employees: Employee[] = [];
   orders: Order[] = [];
@@ -207,6 +209,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
 
   closeAndReset(): void {
     this.isLoading = false;
+    this.modalDeleteVisible = false;
     this.resetForm();
     this.isVisibleModal.emit(false);
   }
@@ -219,28 +222,24 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
     this.closeAndReset();
   }
 
-  removeFromProject(): void {
-    this.closeAndReset();
-  }
-
   get isCreateEmployeeDetailsMode(): boolean {
     return this.modalType === 'create' || this.modalType === 'edit';
   }
 
   onDeleteConfirm(): void {
     if (!this.selectedEmployee?.id) return;
-    this.isLoading = true;
+    this.isLoadingDelete = true;
     
     const sub = this.orderEmployeeUtils
     .deleteOrderEmployee(this.selectedEmployee.id)
     .subscribe({
       next: () => {
-        this.isLoading = false;
+        this.isLoadingDelete = false;
         this.deleteProjectPackageEvent.emit({ status: 'success' });
         this.closeAndReset();
       },
       error: (error: Error) => {
-        this.isLoading = false;
+        this.isLoadingDelete = false;
         this.deleteProjectPackageEvent.emit({ status: 'error', error });
       }
     });
