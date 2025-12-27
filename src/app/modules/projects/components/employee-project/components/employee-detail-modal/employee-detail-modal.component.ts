@@ -27,8 +27,9 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   @Output() isVisibleModal = new EventEmitter<boolean>();
   @Output() deleteProjectPackageEvent = new EventEmitter<{ status: 'success' | 'error', error?: Error }>();
   @Input() employeeNo: number | null = null;
-  @Input() employeeToDelete: OrderEmployee | null = null;
+  @Input() selectedEmployee: OrderEmployee | null = null;
   @Output() createdOrderEmployee = new EventEmitter<{ status: 'success' | 'error', error?: any }>();
+  @Output() updatedOrderEmployee = new EventEmitter<{ status: 'success' | 'error', error?: any }>();
 
   @ViewChild('pSelect') firstInputForm!: Select;
 
@@ -42,17 +43,31 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   readonly createEmployeeDetailsForm = new FormGroup({
     employee: new FormControl(),
     employeeNo: new FormControl<number | null>({ value: null, disabled: true }),
-    hourlyrate: new FormControl(null),
+    hourlyrate: new FormControl<number | null>(null),
     qualificationkmui: new FormControl(''),
-    order: new FormControl(null,[Validators.required])
+    order: new FormControl<number | null>(null,[Validators.required])
   });
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      this.projectId = params['idProject'];
-    });
+    this.subscriptions.add(
+      this.activatedRoute.params.subscribe(params => {
+        this.projectId = params['idProject'];
+      })
+    );
     this.loadEmployees();
     this.loadOrders();
+    this.subscriptions.add(
+      this.createEmployeeDetailsForm.get('employee')?.valueChanges.subscribe((employeeId: number | null) => {
+        if(employeeId){
+          const employee = this.employees.find(employee => employee.id === employeeId);
+          if(employee?.employeeno){
+            this.createEmployeeDetailsForm.get('employeeNo')!.setValue(employee.employeeno, { emitEvent: false });
+          }
+        }else{
+          this.createEmployeeDetailsForm.get('employeeNo')!.setValue(null, { emitEvent: false })
+        }
+      })
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -64,6 +79,24 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
           }, 300)
         }
       })
+    }
+
+    if (changes['visibleModal'] && !this.visibleModal){
+      this.createEmployeeDetailsForm.reset();
+    }
+
+    if((changes['selectedEmployee'] || changes['visibleModal']) && this.modalType === 'edit' && this.selectedEmployee){
+      const provsionalEmployee = {
+        ...this.selectedEmployee.employee,
+        displayName: this.selectedEmployee.employee ? this.getEmployeeDisplayName(this.selectedEmployee.employee) : ''
+      }
+
+      this.createEmployeeDetailsForm.patchValue({
+        employee: provsionalEmployee.id,
+        hourlyrate: this.selectedEmployee.hourlyrate,
+        qualificationkmui: this.selectedEmployee.qualificationkmui,
+        order: this.selectedEmployee.order?.id ?? null
+      });
     }
   }
 
@@ -111,6 +144,14 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   onSubmit(): void {
     if (this.createEmployeeDetailsForm.invalid || this.isLoading) return;
 
+    if(this.modalType === 'create'){
+      this.createOrderEmployee();
+    }else if(this.modalType === 'edit'){
+      this.updateOrderEmployee();
+    }
+  }
+
+  private createOrderEmployee(): void {
     this.isLoading = true;
     const newOrderEmployee: Omit<OrderEmployee, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       employee: this.getSelectedEmployee(this.createEmployeeDetailsForm.get('employee')?.value),
@@ -129,6 +170,29 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       error: (error) => {
         this.isLoading = false;
         this.createdOrderEmployee.emit({ status: 'error', error });
+      }
+    });
+  }
+
+  private updateOrderEmployee(): void {
+    if(!this.selectedEmployee) return;
+
+    this.isLoading = true;
+    const updatedOrderEmployee: OrderEmployee = {
+      ...this.selectedEmployee,
+      employee: this.getSelectedEmployee(this.createEmployeeDetailsForm.get('employee')?.value),
+      hourlyrate: this.createEmployeeDetailsForm.get('hourlyrate')?.value ?? 0,
+      qualificationkmui: this.createEmployeeDetailsForm.get('qualificationkmui')?.value ?? '',
+      order: this.getSelectOrder(this.createEmployeeDetailsForm.get('order')?.value ?? null),
+    }
+    this.orderEmployeeUtils.updateOrderEmployee(updatedOrderEmployee).subscribe({
+      next: () => {
+        this.closeAndReset();
+        this.updatedOrderEmployee.emit({ status: 'success' });
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.updatedOrderEmployee.emit({ status: 'error', error });
       }
     });
   }
@@ -159,30 +223,16 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
     this.closeAndReset();
   }
 
-  // Método para cuando cambia la selección del empleado
-  onEmployeeChange(event: any): void {
-    const employeeId = event.value;
-    const selectedEmployee = this.employees.find(emp => emp.id === employeeId);
-
-    if (selectedEmployee) {
-      this.createEmployeeDetailsForm.patchValue({
-        employeeNo: selectedEmployee.employeeno || null,
-        // Si quieres llenar automáticamente otros campos:
-        // hourlyrate: selectedEmployee.hourlyRate || '',
-        // qualificationkmui: selectedEmployee.qualificationkmui || ''
-      });
-    }
-  }
   get isCreateEmployeeDetailsMode(): boolean {
     return this.modalType === 'create' || this.modalType === 'edit';
   }
 
   onDeleteConfirm(): void {
-    if (!this.employeeToDelete?.id) return;
+    if (!this.selectedEmployee?.id) return;
     this.isLoading = true;
     
     const sub = this.orderEmployeeUtils
-    .deleteOrderEmployee(this.employeeToDelete.id)
+    .deleteOrderEmployee(this.selectedEmployee.id)
     .subscribe({
       next: () => {
         this.isLoading = false;

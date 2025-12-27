@@ -4,8 +4,7 @@
             <div class="create-form flex align-items-center mb-3">
                 <label for="employee">{{ 'EMPLOYEE.LABELS.EMPLOYEE' | translate }}</label>
                 <p-select #pSelect formControlName="employee" [options]="employees" optionLabel="displayName" optionValue="id"
-                    appendTo="body" showClear
-                    (onChange)="onEmployeeChange($event)"></p-select>
+                    appendTo="body" showClear ></p-select>
             </div>
             <div class="create-form flex align-items-center mb-3">
                 <label for="employeeNo">{{ 'EMPLOYEE.TABLE.EMPLOYEE_ID' | translate }}</label>
@@ -37,10 +36,10 @@
                 </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
-                    icon="pi pi-check" iconPos="left" [loading]="isLoading" [disabled]="isLoading"></p-button>
+                    icon="pi pi-check" iconPos="left" [loading]="isLoading" [disabled]="isLoading || !createEmployeeDetailsForm.dirty"></p-button>
 
                 <p-button type="button" class="remove" size="small" [label]="'BUTTONS.REMOVE_FROM_PROJECT' | translate"
-                    icon="pi pi-minus" iconPos="left" (onClick)="removeFromProject()" [disabled]="isLoading"></p-button>
+                    icon="pi pi-minus" iconPos="left" (onClick)="removeFromProject()" [disabled]="isLoading || !createEmployeeDetailsForm.dirty"></p-button>
 
                 <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
                     icon="pi pi-times" iconPos="left" (onClick)="closeAndReset()" [disabled]="isLoading"></p-button>
