@@ -76,7 +76,8 @@
     "FIELD_REQUIRED": "Campo requerido",
     "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}",
     "RECORD_ARLEADY_EXISTS": "Este registro ya existe",
-    "ALREADY_EXIST": "No disponible"
+    "ALREADY_EXIST": "No disponible",
+    "NUMBER_GREATER_THAN_0": "El valor debe ser mayor a 0"
   },
   "MENU": {
     "DASHBOARD": "Panel",

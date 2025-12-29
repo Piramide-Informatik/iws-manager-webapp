@@ -76,7 +76,8 @@
     "FIELD_REQUIRED": "Field required",
     "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected",
     "RECORD_ARLEADY_EXISTS": "This record already exists",
-    "ALREADY_EXIST": "Not available"
+    "ALREADY_EXIST": "Not available",
+    "NUMBER_GREATER_THAN_0": "The value must be greater than 0"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",
