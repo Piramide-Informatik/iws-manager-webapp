@@ -15,12 +15,19 @@
             </div>
             <div class="create-form">
                 <label for="hourlyrate">{{ 'EMPLOYEE-CONTRACTS.TABLE.HOURLY_RATE' | translate }}</label>
-                <p-inputnumber [useGrouping]="true" inputId="name" formControlName="hourlyrate" autocomplete="off"
-                [inputStyle]="{'text-align': 'right'}" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" locale="de-DE"/>
+                <div class="input-message">
+                  <p-inputnumber [useGrouping]="true" inputId="name" formControlName="hourlyrate" autocomplete="off"
+                  [inputStyle]="{'text-align': 'right'}" mode="decimal" [minFractionDigits]="2" 
+                  [maxFractionDigits]="2" locale="de-DE" invalid="createEmployeeDetailsForm.get('hourlyrate')?.invalid
+                  && createEmployeeDetailsForm.get('hourlyrate')?.dirty
+                  || createEmployeeDetailsForm.get('hourlyrate')?.touched"/>
+                  <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="createEmployeeDetailsForm.get('hourlyrate')?.invalid && createEmployeeDetailsForm.get('hourlyrate')?.dirty">
+                    {{ createEmployeeDetailsForm.get('hourlyrate')?.errors?.['required']? ('ERROR.FIELD_REQUIRED' | translate) : ('ERROR.NUMBER_GREATER_THAN_0' | translate) }}
+                  </p-message>
+                </div>
             </div>
             <div class="create-form wide">
-                <label for="qualificationkmui">{{ 'PROJECT_EMPLOYEES.TABLE.FZ_ABBREVIATION_R&H_ACTIVITY' | translate
-                    }}</label>
+                <label for="qualificationkmui">{{ 'PROJECT_EMPLOYEES.TABLE.FZ_ABBREVIATION_R&H_ACTIVITY' | translate }}</label>
                 <input pInputText type="text" id="qualificationkmui" formControlName="qualificationkmui"
                     autocomplete="off" />
             </div>

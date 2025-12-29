@@ -47,7 +47,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   readonly createEmployeeDetailsForm = new FormGroup({
     employee: new FormControl(),
     employeeNo: new FormControl<number | null>({ value: null, disabled: true }),
-    hourlyrate: new FormControl<number | null>(null),
+    hourlyrate: new FormControl<number | null>(null, [Validators.required,Validators.min(1)]),
     qualificationkmui: new FormControl(''),
     order: new FormControl<number | null>(null,[Validators.required])
   });
