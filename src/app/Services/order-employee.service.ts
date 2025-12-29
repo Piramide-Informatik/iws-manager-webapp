@@ -85,20 +85,10 @@ export class OrderEmployeeService {
     this._loading.set(true);
 
     return this.http.get<OrderEmployee>(`${this.apiUrl}/${id}`, this.httpOptions).pipe(
-      tap({
-        next: () => {
-          this._error.set(null);
-          this._loading.set(false);
-        },
-        error: (err) => {
-          this._error.set('Failed to fetch order employee by id');
-          this._loading.set(false);
-          console.error('Error fetching order employee by id:', err);
-        }
-      }),
+      tap(() => this._error.set(null)),
       catchError(err => {
         this._loading.set(false);
-        return throwError(() => err);
+        return of(undefined as unknown as OrderEmployee);
       })
     );
   }
