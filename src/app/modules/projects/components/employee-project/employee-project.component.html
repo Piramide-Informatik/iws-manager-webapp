@@ -46,3 +46,15 @@
         ></app-employee-detail-modal>
       </p-dialog>
 </div>
+<p-dialog [header]="'EMPLOYEE.LABELS.NEW_EMPLOYEE' | translate" 
+  [modal]="true"
+  [(visible)]="visibleModalNewEmployee"
+  [style]="{ width: '70rem' }"
+  >
+    <app-create-employee-modal
+      [visibleModal]="visibleModalNewEmployee"
+      [customer]="currentProject?.customer ?? null"
+      (closeOutputModal)="visibleModalNewEmployee = $event"
+      (openCreateModalOrderEmployee)="visibleModal = true"
+    ></app-create-employee-modal>
+</p-dialog>

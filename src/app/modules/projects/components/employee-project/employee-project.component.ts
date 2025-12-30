@@ -32,11 +32,13 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' | 'delete' = 'create';
+  @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
   selectedEmployeeDetails: OrderEmployee | null = null;
   isCreateButtonEnable = true;
   employeeNo: number | null = null;
 
-  @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
+  visibleModalNewEmployee = false;
+
 
   projectEmployees: OrderEmployee[] = [];
   currentProject!: Project | null;
@@ -143,7 +145,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'new employee' | 'create' | 'edit' | 'delete', data?: any }): void {
     if (event.type === 'new employee') {
-      console.log('modal new emp')
+      this.visibleModalNewEmployee = true;
     } else {
       this.modalType = event.type;
       if (event.type === 'edit' && event.data) {
