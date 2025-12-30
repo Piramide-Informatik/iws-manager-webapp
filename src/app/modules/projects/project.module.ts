@@ -41,6 +41,7 @@ import { EmployeeDetailModalComponent } from './components/employee-project/comp
 import { ProjectsAccountYearOverviewComponent } from './components/project-details/account-year/account-year.component';
 import { ModalWorkPackageComponent } from './components/project-details/work-packages/work-package-modal/work-package-modal.component';
 import { ProjectsAccountYearModalComponent } from './components/project-details/account-year/account-year-modal/account-year-modal.component';
+import { CreateEmployeeModalComponent } from './components/employee-project/components/create-employee-modal/create-employee-modal.component';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import { ProjectsAccountYearModalComponent } from './components/project-details/
         EmployeeDetailModalComponent,
         ProjectsAccountYearOverviewComponent,
         ModalWorkPackageComponent,
-        ProjectsAccountYearModalComponent
+        ProjectsAccountYearModalComponent,
+        CreateEmployeeModalComponent
     ],
     imports: [
         ButtonModule,
