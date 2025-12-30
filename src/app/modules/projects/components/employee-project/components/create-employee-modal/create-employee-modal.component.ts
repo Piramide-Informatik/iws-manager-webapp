@@ -28,7 +28,7 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
   private readonly employeeCategoryUtils = inject(EmployeeCategoryUtils);
   private readonly commonMessageService = inject(CommonMessagesService);
 
-  public employeeForm!: FormGroup;
+  public newEmployeeForm!: FormGroup;
   public isLoading = false;
   public employeeNumberAlreadyExist = false;
 
@@ -83,13 +83,13 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
 
   private initForm(): void {
     const EMAIL_STRICT = String.raw`^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$`;
-    this.employeeForm = new FormGroup({
+    this.newEmployeeForm = new FormGroup({
       employeeNumber: new FormControl(null, [Validators.required]),
       salutation: new FormControl(''),
       title: new FormControl(''),
-      employeeFirstName: new FormControl(''),
-      employeeLastName: new FormControl('', [Validators.required]),
-      employeeEmail: new FormControl('', [Validators.email, Validators.pattern(EMAIL_STRICT)]),
+      firstName: new FormControl(''),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.email, Validators.pattern(EMAIL_STRICT)]),
       generalManagerSinceDate: new FormControl(''),
       shareholderSinceDate: new FormControl(''),
       solePropietorSinceDate: new FormControl(''),
@@ -101,28 +101,28 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
   }
 
   onSubmit(): void {
-    if(this.employeeForm.invalid || !this.customer) return;
+    if(this.newEmployeeForm.invalid || !this.customer) return;
     
     this.customer.version = 1;
 
     this.isLoading = true;
     const newEmployee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       customer: this.customer,
-      employeeno: this.employeeForm.value.employeeNumber,
-      salutation: this.salutationMap.get(this.employeeForm.value.salutation) ?? null,
-      title: this.titleMap.get(this.employeeForm.value.title) ?? null,
-      firstname: this.employeeForm.value.employeeFirstName,
-      lastname: this.employeeForm.value.employeeLastName,
-      email: this.employeeForm.value.employeeEmail,
+      employeeno: this.newEmployeeForm.value.employeeNumber,
+      salutation: this.salutationMap.get(this.newEmployeeForm.value.salutation) ?? null,
+      title: this.titleMap.get(this.newEmployeeForm.value.title) ?? null,
+      firstname: this.newEmployeeForm.value.firstName,
+      lastname: this.newEmployeeForm.value.lastName,
+      email: this.newEmployeeForm.value.email,
       label: '',
       phone: '',
-      generalmanagersince: momentFormatDate(this.employeeForm.value.generalManagerSinceDate),
-      shareholdersince: momentFormatDate(this.employeeForm.value.shareholderSinceDate),
-      soleproprietorsince: momentFormatDate(this.employeeForm.value.solePropietorSinceDate),
-      coentrepreneursince: momentFormatDate(this.employeeForm.value.coentrepreneurSinceDate),
+      generalmanagersince: momentFormatDate(this.newEmployeeForm.value.generalManagerSinceDate),
+      shareholdersince: momentFormatDate(this.newEmployeeForm.value.shareholderSinceDate),
+      soleproprietorsince: momentFormatDate(this.newEmployeeForm.value.solePropietorSinceDate),
+      coentrepreneursince: momentFormatDate(this.newEmployeeForm.value.coentrepreneurSinceDate),
       qualificationFZ: null,
-      employeeCategory: this.employeeCategoryMap.get(this.employeeForm.value.employeeCategory) ?? null,
-      qualificationkmui: this.employeeForm.value.qualificationKMUi,
+      employeeCategory: this.employeeCategoryMap.get(this.newEmployeeForm.value.employeeCategory) ?? null,
+      qualificationkmui: this.newEmployeeForm.value.qualificationKMUi,
     }
 
     this.employeeUtils.createNewEmployee(newEmployee).subscribe({
@@ -151,6 +151,6 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
 
   closeModal(): void {
     this.closeOutputModal.emit(false);
-    this.employeeForm.reset();
+    this.newEmployeeForm.reset();
   }
 }
