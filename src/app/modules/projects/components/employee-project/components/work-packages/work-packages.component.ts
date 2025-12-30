@@ -484,7 +484,6 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
     }).format(num);
   }
 
-  
   onInputChange() {
     if (this.editingRowIndex !== null) {
       this.calculateValues(this.editingRowIndex);
