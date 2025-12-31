@@ -102,7 +102,8 @@
                         <label for="startDate"> {{ "PROJECTS.FORM.DURATION_START" | translate }}</label>
                         <div class="datepicker-container">
                             <p-datepicker id="startDate" formControlName="startDate" [showIcon]="true"
-                                dateFormat="dd.mm.yy" [readonlyInput]="true" [style]="{'width':'100%'}" />
+                                dateFormat="dd.mm.yy" [readonlyInput]="true" 
+                                [style]="{'width':'100%'}" [maxDate]="maxStartDateProjectEdit" />
                         </div>
                     </div>
 
@@ -111,7 +112,7 @@
                         <label for="endDate"> {{ "PROJECTS.FORM.DURATION_END" | translate }}</label>
                         <div class="datepicker-container">
                             <p-datepicker id="endDate" formControlName="endDate" [showIcon]="true" dateFormat="dd.mm.yy"
-                                [readonlyInput]="true" [style]="{'width':'100%'}" />
+                                [readonlyInput]="true" [style]="{'width':'100%'}" [minDate]="minEndDateProjectEdit" />
                         </div>
                     </div>
 
