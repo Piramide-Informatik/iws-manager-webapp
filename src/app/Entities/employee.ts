@@ -14,7 +14,7 @@ export interface Employee {
 
     customer?: Customer | null;
     
-    employeeno?: number;
+    employeeno: number;
     salutation?: Salutation | null;
     title?: Title | null;
 
