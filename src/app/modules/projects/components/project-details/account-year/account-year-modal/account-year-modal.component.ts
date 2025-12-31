@@ -4,7 +4,6 @@ import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ProjectPeriodUtils } from '../../../../utils/project-period.util';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
-import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 import { ProjectPeriod } from '../../../../../../Entities/project-period';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
@@ -30,17 +29,15 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   @Input() visibleModal: boolean = false;
 
   @Output() isVisibleProjectPeriodModal = new EventEmitter<boolean>();
-  @Output() projectPeriodCreatedUpdated = new EventEmitter<{ status: 'success' | 'error' }>();
-  @Output() deletedProjectPeriod = new EventEmitter<ProjectPeriod>();
+  @Output() projectPeriodCreatedUpdated = new EventEmitter<{ status: 'success' | 'error', error?: any }>();
+  @Output() deletedProjectPeriod = new EventEmitter<{ projectPeriod?: ProjectPeriod, error?: any }>();
   @ViewChild('firstInput') firstInput!: InputNumber;
 
   public formAccountYear!: FormGroup;
   public isLoading = false;
-  public showOCCErrorModalProjectPeriod = false;
   public isLoadingDelete: boolean = false;
   public visiblProjectPeriodModal: boolean = false;
   public visibleDeleteEntityModal = false;
-  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   errorMsg: string | null = null;
   public minEndDate: Date | null = null;
   public maxStartDate: Date | null = null;
@@ -167,7 +164,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       },
       error: (error) => {
         this.isLoading = false;
-        this.projectPeriodCreatedUpdated.emit({ status: 'error' });
+        this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
         this.commonMessageService.showErrorCreatedMessage();
       }
     });
@@ -192,12 +189,11 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       },
       error: (error) => {
         this.isLoading = false;
-        if (error instanceof OccError) {
-          this.visiblProjectPeriodModal = false;
-          this.showOCCErrorModalProjectPeriod = true;
-        }
+        this.isVisibleProjectPeriodModal.emit(false);
+        this.commonMessageService.showErrorEditMessage();
+        this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
       }
-    });;
+    });
   }
 
   get isCreateMode(): boolean {
@@ -210,28 +206,27 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   }
 
   deleteEmployeeContractEntity() {
-    if (this.currentProjectPeriodEntity) {
-      this.isLoadingDelete = true;
-      this.projectPeriodUtils.deleteProjectPeriod(this.currentProjectPeriodEntity.id).subscribe({
-        next: () => {
-          this.isLoadingDelete = false;
-          this.visibleDeleteEntityModal = false;
-          this.visiblProjectPeriodModal = false;
-          this.isVisibleProjectPeriodModal.emit(false);
-          this.commonMessageService.showDeleteSucessfullMessage();
-          this.deletedProjectPeriod.emit(this.currentProjectPeriodEntity);
-        },
-        error: (error) => {
-          this.isLoadingDelete = false;
-          this.commonMessageService.showErrorDeleteMessage();
-          if (error instanceof OccError || error?.message?.includes('404') || error?.errorType === 'DELETE_UNEXISTED') {
-            this.visiblProjectPeriodModal = false;
-            this.showOCCErrorModalProjectPeriod = true;
-            this.occErrorType = 'DELETE_UNEXISTED';
-          }
-        }
-      });
-    }
+    if (!this.currentProjectPeriodEntity) return;
+
+    this.isLoadingDelete = true;
+    this.projectPeriodUtils.deleteProjectPeriod(this.currentProjectPeriodEntity.id).subscribe({
+      next: () => {
+        this.isLoadingDelete = false;
+        this.visibleDeleteEntityModal = false;
+        this.visiblProjectPeriodModal = false;
+        this.isVisibleProjectPeriodModal.emit(false);
+        this.commonMessageService.showDeleteSucessfullMessage();
+        this.deletedProjectPeriod.emit({ projectPeriod: this.currentProjectPeriodEntity });
+      },
+      error: (error) => {
+        this.isLoadingDelete = false;
+        this.visiblProjectPeriodModal = false;
+        this.visibleDeleteEntityModal = false;
+        this.isVisibleProjectPeriodModal.emit(false);
+        this.commonMessageService.showErrorDeleteMessage();
+        this.deletedProjectPeriod.emit({ error });
+      }
+    });
   }
 
   private firstInputFocus(): void {

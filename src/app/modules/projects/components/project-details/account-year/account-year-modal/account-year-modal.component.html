@@ -47,9 +47,7 @@
     </div>
   </div>
 </ng-template>
-<app-occ-error-modal *ngIf="showOCCErrorModalProjectPeriod" [errorType]="occErrorType" [reloadCurrentPage]="true"
-  (onClose)="showOCCErrorModalProjectPeriod = false">
-</app-occ-error-modal>
+
 <p-dialog [header]="'PROJECT_PERIOD.MODAL.DELETE' | translate" [modal]="true" appendTo="body"
   [(visible)]="visibleDeleteEntityModal">
   <div class="confirmation-content mb-2 mt-4">
