@@ -69,6 +69,7 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
   @Input() visibleModal = false;
   @Output() closeOutputModal = new EventEmitter<boolean>();
   @Output() openCreateModalOrderEmployee = new EventEmitter<void>();
+  @Output() createdNewEmployee = new EventEmitter<void>();
   @ViewChild('inputNumber') firstInput!: InputNumber;
 
   ngOnInit(): void {
@@ -129,6 +130,7 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
       next: () => {
         this.isLoading = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
+        this.createdNewEmployee.emit();
         this.closeModal();
         setTimeout(() => {
           this.openCreateModalOrderEmployee.emit();
