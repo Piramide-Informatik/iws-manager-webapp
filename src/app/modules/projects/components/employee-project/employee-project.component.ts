@@ -202,4 +202,8 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  onCreatedNewEmployee(): void {
+    this.employeeDetailModalDialog.loadEmployees();
+  }
 }

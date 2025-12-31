@@ -105,7 +105,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
     this.subscriptions.unsubscribe();
   }
 
-  private loadEmployees(): void {
+  public loadEmployees(): void {
     const sub = this.employeeUtils.getAllEmployeesByProjectId(Number(this.projectId)).subscribe({
       next: (employees: Employee[]) => {
         this.employees = employees.map(employee => ({
