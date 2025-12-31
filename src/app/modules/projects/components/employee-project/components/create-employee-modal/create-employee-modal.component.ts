@@ -103,7 +103,7 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
   onSubmit(): void {
     if(this.newEmployeeForm.invalid || !this.customer) return;
     
-    this.customer.version = 1;
+    this.customer.version = 0;
 
     this.isLoading = true;
     const newEmployee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {

@@ -72,13 +72,9 @@
     </div>
   </div>
 </ng-template>
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModalEmployeeDetail" 
-  [errorType]="occErrorEmployeeDetailType"
-  [reloadCurrentPage]="true" 
-  (onClose)="showOCCErrorModalEmployeeDetail = false">
-</app-occ-error-modal>
-<p-dialog [header]="'IWS_STAFF.DELETE.CONFIRMATION' | translate" [modal]="true" appendTo="body" [(visible)]="modalDeleteVisible">
+
+<p-dialog [header]="'IWS_STAFF.DELETE.CONFIRMATION' | translate" [modal]="true" 
+  appendTo="body" [(visible)]="modalDeleteVisible" [style]="{ width: '25rem' }">
   <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: employeeNo }"></p>
 

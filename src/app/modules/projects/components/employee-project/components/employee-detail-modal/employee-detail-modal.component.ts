@@ -9,7 +9,6 @@ import { OrderEmployee } from '../../../../../../Entities/orderEmployee';
 import { Select } from 'primeng/select';
 import { Order } from '../../../../../../Entities/order';
 import { OrderUtils } from '../../../../../customer/sub-modules/orders/utils/order-utils';
-import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-employee-detail-modal',
@@ -40,8 +39,6 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   projectId = '';
   employees: Employee[] = [];
   orders: Order[] = [];
-  public occErrorEmployeeDetailType: OccErrorType = 'UPDATE_UNEXISTED';
-  public showOCCErrorModalEmployeeDetail = false;
   constructor(private readonly activatedRoute: ActivatedRoute) { }
 
   readonly createEmployeeDetailsForm = new FormGroup({
@@ -196,11 +193,8 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       },
       error: (error) => {
         this.isLoading = false;
+        this.isVisibleModal.emit(false);
         this.updatedOrderEmployee.emit({ status: 'error', error });
-        if (error instanceof OccError) {
-          this.showOCCErrorModalEmployeeDetail = true;
-          this.occErrorEmployeeDetailType = error.errorType;
-        }
       }
     });
   }
@@ -246,12 +240,9 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       },
       error: (error: Error) => {
         this.isLoadingDelete = false;
-        this.deleteProjectPackageEvent.emit({ status: 'error', error });
         this.modalDeleteVisible = false;
-        if (error instanceof OccError || error?.message.includes('404')) {
-          this.showOCCErrorModalEmployeeDetail = true;
-          this.occErrorEmployeeDetailType = 'DELETE_UNEXISTED';
-        }
+        this.isVisibleModal.emit(false);
+        this.deleteProjectPackageEvent.emit({ status: 'error', error });
       }
     });
     this.subscriptions.add(sub);
