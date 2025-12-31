@@ -5,7 +5,6 @@ import { TitleUtils } from '../../../../../master-data/components/title/utils/ti
 import { EmployeeCategoryUtils } from '../../../../../master-data/components/employee-qualification/utils/employee-category-utils';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { InputNumber } from 'primeng/inputnumber';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { Employee } from '../../../../../../Entities/employee';
 import { Customer } from '../../../../../../Entities/customer';
@@ -14,6 +13,7 @@ import { Salutation } from '../../../../../../Entities/salutation';
 import { tap } from 'rxjs';
 import { Title } from '../../../../../../Entities/title';
 import { EmployeeCategory } from '../../../../../../Entities/employee-category ';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-create-employee-modal',
@@ -30,7 +30,6 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
 
   public newEmployeeForm!: FormGroup;
   public isLoading = false;
-  public employeeNumberAlreadyExist = false;
 
   private readonly salutationMap = new Map<number, Salutation>();
   public salutations = toSignal(
@@ -70,7 +69,7 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
   @Output() closeOutputModal = new EventEmitter<boolean>();
   @Output() openCreateModalOrderEmployee = new EventEmitter<void>();
   @Output() createdNewEmployee = new EventEmitter<void>();
-  @ViewChild('inputNumber') firstInput!: InputNumber;
+  @ViewChild('firstInput') firstInput!: Select;
 
   ngOnInit(): void {
     this.initForm();
@@ -80,12 +79,20 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
     if(changes['visibleModal'] && this.visibleModal) {
       this.firstInputFocus();
     }
+
+    if((changes['customer'] && this.customer) || (changes['visibleModal'] && this.visibleModal && this.customer)) {
+      this.employeeUtils.getNextEmployeeNumber(this.customer.id).subscribe(nextEmployeeNo => {
+        if(nextEmployeeNo){
+          this.newEmployeeForm.get('employeeNumber')?.setValue(nextEmployeeNo);
+        }
+      })
+    }
   }
 
   private initForm(): void {
     const EMAIL_STRICT = String.raw`^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$`;
     this.newEmployeeForm = new FormGroup({
-      employeeNumber: new FormControl(null, [Validators.required]),
+      employeeNumber: new FormControl({ value: null, disabled: true }),
       salutation: new FormControl(''),
       title: new FormControl(''),
       firstName: new FormControl(''),
@@ -109,7 +116,7 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
     this.isLoading = true;
     const newEmployee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
       customer: this.customer,
-      employeeno: this.newEmployeeForm.value.employeeNumber,
+      employeeno: this.newEmployeeForm.getRawValue().employeeNumber,
       salutation: this.salutationMap.get(this.newEmployeeForm.value.salutation) ?? null,
       title: this.titleMap.get(this.newEmployeeForm.value.title) ?? null,
       firstname: this.newEmployeeForm.value.firstName,
@@ -127,9 +134,10 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
     }
 
     this.employeeUtils.createNewEmployee(newEmployee).subscribe({
-      next: () => {
+      next: (employeeCreated) => {
         this.isLoading = false;
         this.commonMessageService.showCreatedSuccesfullMessage();
+        this.handleEmployeeNoComparison(newEmployee.employeeno, employeeCreated.employeeno);
         this.createdNewEmployee.emit();
         this.closeModal();
         setTimeout(() => {
@@ -143,12 +151,22 @@ export class CreateEmployeeModalComponent implements OnInit, OnChanges{
     });
   }
 
+  private handleEmployeeNoComparison(expectedEmployeeNumber: number | undefined, actualEmployeeNo: number): void {
+    if (expectedEmployeeNumber === undefined) return;
+
+    if (expectedEmployeeNumber !== actualEmployeeNo) {
+      this.commonMessageService.showInformationMessageUpdatedRecordNumber(actualEmployeeNo);
+    }
+  }
+
   private firstInputFocus(): void {
     setTimeout(() => {
-      if (this.firstInput.input.nativeElement) {
-        this.firstInput.input.nativeElement.focus();
+      if (this.firstInput) {
+        setTimeout(() => {
+          this.firstInput.focus();
+        }, 300)
       }
-    }, 300)
+    })
   }
 
   closeModal(): void {

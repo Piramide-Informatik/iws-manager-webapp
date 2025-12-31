@@ -63,28 +63,23 @@ export class EmployeeUtils {
   }
 
   /**
+  * Gets the next available employee number for a specific customer
+  * @param customerId - Customer to get the next employee number
+  * @returns Observable emitting the next employee number or null if not available
+  */
+  getNextEmployeeNumber(customerId: number): Observable<number | null> {
+    return this.employeeService.getNextEmployeeNumber(customerId).pipe(
+      catchError(() => throwError(() => new Error('Failed to fetch employee number')))
+    );
+  }
+
+  /**
   * Creates a new employee with validation
   * @param employee - Employee object to create (without id)
   * @returns Observable that completes when employee is created
   */
   createNewEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<Employee> {
     return this.employeeService.addEmployee(employee);
-  }
-
-  /**
-  * Checks if a employee exists by employee.id (case-insensitive comparison)
-  * @param employee.id - Employee number to check
-  * @returns Observable emitting boolean indicating existence
-  */
-  employeeExists(employeeId: number | string): Observable<boolean> {
-    return this.employeeService.getAllEmployees().pipe(
-      map(employees => employees.some(
-          e => e.id !== null && e.id?.toString().toLowerCase() === employeeId.toString().toLowerCase()
-      )),
-      catchError(() => {
-          return throwError(() => new Error('Failed to check employee existence'));
-      })
-    );
   }
 
   /**

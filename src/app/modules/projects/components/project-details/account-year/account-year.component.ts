@@ -89,10 +89,10 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
         filter: { type: 'numeric' },
         customClasses: ['align-right'],
         header: this.translate.instant(_('PROJECT_PERIOD.TABLE.YEAR')),
-        classesTHead: ['width-45']
+        classesTHead: ['width-18']
       },
-      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-45'] },
-      { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.END')), classesTHead: ['width-45'] },
+      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-35'] },
+      { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.END')), classesTHead: ['width-35'] },
     ];
   }
 

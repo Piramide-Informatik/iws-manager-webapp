@@ -4,26 +4,14 @@
       <div class="field">
         <label for="employeeNumber">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber #inputNumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off"
-            formControlName="employeeNumber" id="employeeNumber"
-            [attr.invalid]="(employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.dirty) || employeeNumberAlreadyExist" />
-          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small"
-            *ngIf="
-            (employeeForm.get('employeeNumber')?.invalid && employeeForm.get('employeeNumber')?.dirty) || employeeNumberAlreadyExist">
-            <span
-              *ngIf="employeeForm.get('employeeNumber')?.errors?.['required'] && employeeForm.get('employeeNumber')?.dirty">
-              {{ 'ERROR.FIELD_REQUIRED' | translate }}
-            </span>
-            <span *ngIf="employeeNumberAlreadyExist && !employeeForm.get('employeeNumber')?.errors?.['required']">
-              {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
-            </span>
-          </p-message>
+          <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off"
+            formControlName="employeeNumber" id="employeeNumber" />
         </div>
       </div>
 
       <div class="field">
         <label for="salutation">{{ 'EMPLOYEE.FORM.SALUTATION' | translate }}</label>
-        <p-select [options]="salutations()" optionLabel="name" optionValue="id" formControlName="salutation"
+        <p-select #firstInput [options]="salutations()" optionLabel="name" optionValue="id" formControlName="salutation"
           inputId="salutation" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
       </div>
 

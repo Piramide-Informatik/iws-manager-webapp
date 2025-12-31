@@ -138,6 +138,17 @@ export class EmployeeService {
     );
   }
 
+  getNextEmployeeNumber(customerId: number): Observable<number | null> {
+    return this.http.get<number>(`${this.apiUrl}/customer/${customerId}/next-employeeno`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch employee number');
+        console.error(err);
+        return of(null);
+      })
+    );
+  }
+
   // ==================== UPDATE OPERATIONS ====================
   /**
    * Updates an existing employee

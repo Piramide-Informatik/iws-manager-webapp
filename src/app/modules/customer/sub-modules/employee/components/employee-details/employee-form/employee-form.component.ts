@@ -10,12 +10,12 @@ import { Employee } from '../../../../../../../Entities/employee';
 import { EmployeeUtils } from '../../../utils/employee.utils';
 import { momentFormatDate, momentSafeCreateDate } from '../../../../../../shared/utils/moment-date-utils';
 import { CommonMessagesService } from '../../../../../../../Services/common-messages.service';
-import { InputNumber } from 'primeng/inputnumber';
 import { OccError, OccErrorType } from '../../../../../../shared/utils/occ-error';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomerUtils } from '../../../../../../customer/utils/customer-utils';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-employee-form',
@@ -46,8 +46,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   public isLoading = false;
   public isLoadingDelete = false;
   public customer: any;
-  public customerEmployees: Employee[] = [];
-  public employeeNumberAlreadyExist = false;
+  customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
 
   public salutations = toSignal(
     this.salutationUtils.getSalutationsSortedByName().pipe(
@@ -70,7 +69,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     { initialValue: [] }
   );
 
-  @ViewChild('inputNumber') firstInput!: InputNumber;
+  @ViewChild('firstInput') firstInput!: Select;
 
   constructor(private readonly commonMessageService: CommonMessagesService, private readonly translate: TranslateService,) { }
 
@@ -81,12 +80,8 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
       this.employeeId = params['employeeId'];
       this.updateTitle();
       this.setupLangSubcription();
-      const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
       if (this.employeeId) {
         this.formType = 'update';
-        if (customerId) {
-          this.loadCustomerEmployees(customerId);
-        }
         this.subscriptions.add(
           this.employeeUtils.getEmployeeById(this.employeeId).subscribe({
             next: (employee) => {
@@ -115,22 +110,17 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
       } else {
         this.formType = 'create';
-        const customerId = Number(this.activatedRoute.parent?.snapshot.params['id']);
-        if (customerId) {
-          this.customerUtils.getCustomerById(customerId).subscribe(customer => {
+        if (this.customerId) {
+          this.employeeUtils.getNextEmployeeNumber(this.customerId).subscribe(nextEmployeeNo => {
+            if(nextEmployeeNo){
+              this.employeeForm.get('employeeNumber')?.setValue(nextEmployeeNo);
+            }
+          });
+
+          this.customerUtils.getCustomerById(this.customerId).subscribe(customer => {
             this.customer = customer;
           });
-
-          this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe(employees => {
-            this.customerEmployees = employees;
-          });
         }
-      }
-    });
-
-    this.employeeForm.get('employeeNumber')?.valueChanges.subscribe(() => {
-      if (this.employeeNumberAlreadyExist) {
-        this.employeeNumberAlreadyExist = false;
       }
     });
   }
@@ -149,16 +139,18 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
   private firstInputFocus(): void {
     setTimeout(() => {
-      if (this.firstInput.input.nativeElement) {
-        this.firstInput.input.nativeElement.focus();
+      if (this.firstInput) {
+        setTimeout(() => {
+          this.firstInput.focus();
+        }, 300)
       }
-    }, 300)
+    })
   }
 
   private initForm(): void {
     const EMAIL_STRICT = String.raw`^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$`;
     this.employeeForm = new FormGroup({
-      employeeNumber: new FormControl(null, [Validators.required]),
+      employeeNumber: new FormControl({ value: null, disabled: true }),
       salutation: new FormControl(''),
       title: new FormControl(''),
       employeeFirstName: new FormControl(''),
@@ -196,7 +188,7 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
 
     return {
       customer: this.buildCustomerFromSource(customerSource),
-      employeeno: formValues.employeeNumber,
+      employeeno: this.employeeForm.getRawValue().employeeNumber,
       salutation: this.mapToEntity(formValues.salutation),
       title: this.mapToEntity(formValues.title),
       firstname: formValues.employeeFirstName,
@@ -266,27 +258,16 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
   }
 
   private createEmployee(newEmployee: Omit<Employee, 'id'>): void {
-    const employeeNumber = newEmployee.employeeno?.toString().trim();
-    const exists = this.customerEmployees.some(
-      e => e.employeeno?.toString().trim() === employeeNumber
-    );
-
-    if (exists) {
-      this.commonMessageService.showErrorRecordAlreadyExist();
-      this.employeeNumberAlreadyExist = true;
-      return;
-    }
-
     this.isLoading = true;
     this.subscriptions.add(
       this.employeeUtils.createNewEmployee(newEmployee).subscribe({
         next: (createdEmployee) => {
           this.isLoading = false;
           this.commonMessageService.showCreatedSuccesfullMessage();
-          this.customerEmployees.push(createdEmployee);
+          this.handleEmployeeNoComparison(newEmployee.employeeno, createdEmployee.employeeno);
           setTimeout(() => {
             this.resetFormAndNavigation(createdEmployee.id);
-          }, 2000);
+          }, 500);
         },
         error: (err) => {
           this.isLoading = false;
@@ -297,21 +278,15 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  private updateEmployee(updatedEmployee: Employee): void {
-    const employeeNumber = updatedEmployee.employeeno?.toString().trim() ?? '';
+  private handleEmployeeNoComparison(expectedEmployeeNumber: number | undefined, actualEmployeeNo: number): void {
+    if (expectedEmployeeNumber === undefined) return;
 
-    if (employeeNumber) {
-      const duplicate = this.customerEmployees.some(
-        e => e.id !== updatedEmployee.id && e.employeeno?.toString().trim() === employeeNumber
-      );
-
-      if (duplicate) {
-        this.commonMessageService.showErrorRecordAlreadyExist();
-        this.employeeNumberAlreadyExist = true;
-        return;
-      }
+    if (expectedEmployeeNumber !== actualEmployeeNo) {
+      this.commonMessageService.showInformationMessageUpdatedRecordNumber(actualEmployeeNo);
     }
+  }
 
+  private updateEmployee(updatedEmployee: Employee): void {
     this.isLoading = true;
 
     this.subscriptions.add(
@@ -320,15 +295,6 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.commonMessageService.showEditSucessfullMessage();
           this.currentEmployee = editedEmployee;
-
-          const index = this.customerEmployees.findIndex(e => e.id === editedEmployee.id);
-          if (index === -1) {
-            console.warn(`Empleado con id ${editedEmployee.id} no encontrado en la lista local.`);
-            this.customerEmployees.push(editedEmployee);
-          } else {
-            this.customerEmployees[index] = editedEmployee;
-          }
-
         },
         error: (err) => {
           this.isLoading = false;
@@ -405,14 +371,5 @@ export class EmployeeFormComponent implements OnInit, OnDestroy {
     this.employeeId ?
       this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.EMPLOYEES')) :
       this.titleService.setTitle(this.translate.instant('EMPLOYEE.LABELS.NEW_EMPLOYEE'));
-  }
-
-  private loadCustomerEmployees(customerId: number): void {
-    this.employeeUtils.getAllEmployeesByCustomerId(customerId).subscribe({
-      next: (employees) => {
-        this.customerEmployees = employees;
-      },
-      error: (err) => console.error('Error loading employees list:', err)
-    });
   }
 }
