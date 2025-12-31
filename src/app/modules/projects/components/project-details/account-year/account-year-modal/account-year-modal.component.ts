@@ -42,9 +42,12 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   public visibleDeleteEntityModal = false;
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   errorMsg: string | null = null;
+  public minEndDate: Date | null = null;
+  public maxStartDate: Date | null = null;
 
   ngOnInit(): void {
     this.initForm();
+    this.setupDateValidation();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -77,6 +80,58 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       startDate: new FormControl(''),
       endDate: new FormControl(''),
     });
+  }
+
+  private setupDateValidation(): void {
+    // When start date changes
+    this.subscription.add(
+      this.formAccountYear.get('startDate')?.valueChanges.subscribe((startDate: Date | null) => {
+        if (startDate) {
+          // Set minDate for endDate
+          this.minEndDate = this.getStartOfDay(startDate);
+          
+          // Si endDate ya tiene valor y es anterior a startDate, limpiarlo
+          const endDate = this.formAccountYear.get('endDate')?.value;
+          if (endDate && endDate < startDate) {
+            this.formAccountYear.get('endDate')?.setValue(null, { emitEvent: false });
+          }
+        } else {
+          this.minEndDate = null;
+        }
+      })
+    );
+
+    // When end date changes
+    this.subscription.add(
+      this.formAccountYear.get('endDate')?.valueChanges.subscribe((endDate: Date) => {
+        if (endDate) {
+          // Set maxDate for startDate
+          this.maxStartDate = this.getEndOfDay(endDate);
+          
+          // Si startDate ya tiene valor y es posterior a endDate, limpiarlo
+          const startDate = this.formAccountYear.get('startDate')?.value;
+          if (startDate && startDate > endDate) {
+            this.formAccountYear.get('startDate')?.setValue(null, { emitEvent: false });
+          }
+        } else {
+          this.maxStartDate = null;
+        }
+      })
+    );
+  }
+
+  // Helper para obtener el inicio del día (00:00:00)
+  private getStartOfDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  }
+
+  // Helper para obtener el final del día (23:59:59)
+  private getEndOfDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setHours(23, 59, 59, 999);
+    return newDate;
   }
 
   onSubmit(): void {
