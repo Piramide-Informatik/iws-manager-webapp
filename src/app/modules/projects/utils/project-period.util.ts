@@ -62,4 +62,8 @@ export class ProjectPeriodUtils {
       })
     );
   }
+
+  getNextPeriodNo(projectId: number): Observable<number | null> {
+    return this.projectPeriodService.getNextPeriodNo(projectId);
+  }
 }
