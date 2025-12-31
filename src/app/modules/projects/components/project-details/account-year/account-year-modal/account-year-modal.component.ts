@@ -44,6 +44,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   errorMsg: string | null = null;
   public minEndDate: Date | null = null;
   public maxStartDate: Date | null = null;
+  public periodNo: number | null = null;
 
   ngOnInit(): void {
     this.initForm();
@@ -161,6 +162,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         this.isLoading = false;
         this.projectPeriodCreatedUpdated.emit({ status: 'success' });
         this.commonMessageService.showCreatedSuccesfullMessage();
+        this.commonMessageService.showInformationMessageUpdatedRecordNumber(this.periodNo);
         this.closeModal();
       },
       error: (error) => {
@@ -246,6 +248,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
     const sub = this.projectPeriodUtils.getNextPeriodNo(this.currentProject!.id).subscribe({
       next: (nextNo) => {
         if (nextNo != null) {
+          this.periodNo = nextNo;
           this.formAccountYear.patchValue({ periodNo: nextNo });
         }
       },
