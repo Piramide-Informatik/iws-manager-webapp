@@ -50,7 +50,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visibleModal'] && this.visibleModal) {
-      if (this.isCreateMode) {
+      if (this.modalType === 'create') {
         this.loadNextPeriodNo(); // cargar número al abrir modal
       }
       setTimeout(() => {
@@ -140,13 +140,16 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
 
     if (this.modalType === 'create') {
       this.isLoading = true;
-      const newProjectPeriod: Omit<ProjectPeriod, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-        periodNo: this.formAccountYear.get('periodNo')?.value,
-        startDate: momentFormatDate(this.formAccountYear.get('startDate')?.value) ?? '',
-        endDate: momentFormatDate(this.formAccountYear.get('endDate')?.value) ?? '',
-        project: this.currentProject
-      }
-      this.createProjectPeriod(newProjectPeriod);
+      this.loadNextPeriodNo();
+      setTimeout(() => { // Remove set timeout when fix create method in backend
+        const newProjectPeriod: Omit<ProjectPeriod, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+          periodNo: this.periodNo!,
+          startDate: momentFormatDate(this.formAccountYear.get('startDate')?.value) ?? '',
+          endDate: momentFormatDate(this.formAccountYear.get('endDate')?.value) ?? '',
+          project: this.currentProject!
+        }
+        this.createProjectPeriod(newProjectPeriod);
+      }, 800);
 
     } else if (this.modalType === 'edit') {
       this.updateProjectPeriod();
