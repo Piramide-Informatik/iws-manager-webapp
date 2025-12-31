@@ -15,6 +15,7 @@ import { ProjectUtils } from '../../../../customer/sub-modules/projects/utils/pr
 import { SelectChangeEvent } from 'primeng/select';
 import { ProjectStateService } from '../../../utils/project-state.service';
 import { ProjectPeriod } from '../../../../../Entities/project-period';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-projects-account-year',
@@ -43,6 +44,8 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   visibleProjectPeriodModal: boolean = false;
   currentProjectPeriod!: ProjectPeriod | undefined;
   projectsAccountYears: any = []
+  public showOCCErrorModalProjectPeriod = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   private projectAccountYearLangSubscription!: Subscription;
   userProjectAccountYearPreferences: UserPreference = {};
@@ -133,14 +136,26 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
     this.visibleProjectPeriodModal = visible;
   }
 
-  onDeleteProjectPeriod(projectPeriod: any) {
-    this.projectsAccountYears = this.projectsAccountYears.filter((pa: any) => pa.id !== projectPeriod.id);
-    this.currentProjectPeriod = undefined;
+  onDeleteProjectPeriod(event: { projectPeriod?: ProjectPeriod, error?: any }): void {
+    if(event.projectPeriod){
+      this.projectsAccountYears = this.projectsAccountYears.filter((pa: any) => pa.id !== event.projectPeriod?.id);
+      this.currentProjectPeriod = undefined;
+    }else if(event.error){
+      if (event.error instanceof OccError || event.error?.message?.includes('404') || event.error?.errorType === 'DELETE_UNEXISTED') {
+        this.showOCCErrorModalProjectPeriod = true;
+        this.occErrorType = 'DELETE_UNEXISTED';
+      }
+    }
   }
 
   createUpdateProjectPeriod(event: { status: 'success' | 'error', error?: any }): void {
     if (event.status === 'success') {
       this.loadProjectPeriod(this.projectId);
+    }else if(event.status === 'error' && event.error){
+      if(event.error instanceof OccError){
+        this.occErrorType = event.error.errorType;
+        this.showOCCErrorModalProjectPeriod = true;
+      }
     }
   }
 
