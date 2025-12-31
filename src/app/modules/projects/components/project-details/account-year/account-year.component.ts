@@ -37,7 +37,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
   public cols!: Column[];
   selectedProject = signal(0);
-  public currentProject!: Project | null; 
+  public currentProject!: Project | null;
   public selectedProjectAccountYearTableColumns!: Column[];
   modalProjectPeriodType: 'create' | 'delete' | 'edit' = 'create';
   visibleProjectPeriodModal: boolean = false;
@@ -74,7 +74,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
     this.loadProjectPeriod(this.projectId);
     this.selectedProject = signal(this.projectId);
-    
+
   }
 
   onUserProjectAccountYearPreferencesChanges(userProjectAccountYearPreferences: any) {
@@ -83,15 +83,16 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
   loadProjectColHeaders(): void {
     this.cols = [
-      { field: 'periodNo', 
-        type: 'integer', 
-        filter: { type: 'numeric' }, 
+      {
+        field: 'periodNo',
+        type: 'integer',
+        filter: { type: 'numeric' },
         customClasses: ['align-right'],
-        header: this.translate.instant(_('PROJECT_PERIOD.TABLE.YEAR')), 
-        classesTHead: ['width-35']
+        header: this.translate.instant(_('PROJECT_PERIOD.TABLE.YEAR')),
+        classesTHead: ['width-45']
       },
-      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-35']},
-      { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.END')), classesTHead: ['width-35'] },
+      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-45'] },
+      { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.END')), classesTHead: ['width-45'] },
     ];
   }
 
@@ -104,7 +105,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   onSelectedItem(event: SelectChangeEvent) {
     this.loadProjectPeriod(event.value);
     this.projectUtils.getProjectById(event.value).subscribe(selectedProject => {
-      if(selectedProject){
+      if (selectedProject) {
         this.currentProject = selectedProject;
       }
     })
@@ -119,7 +120,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalProjectPeriodType = event.type;
 
-    if(this.modalProjectPeriodType === 'edit' && event.data){
+    if (this.modalProjectPeriodType === 'edit' && event.data) {
       this.currentProjectPeriod = event.data;
     }
     if (event.type === 'delete') {
@@ -129,7 +130,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   }
 
   onModalProjectPeriodModalVisibilityChange(visible: any): void {
-    this.visibleProjectPeriodModal = visible; 
+    this.visibleProjectPeriodModal = visible;
   }
 
   onDeleteProjectPeriod(projectPeriod: any) {
@@ -137,8 +138,8 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
     this.currentProjectPeriod = undefined;
   }
 
-  createUpdateProjectPeriod(event: { status: 'success' | 'error', error?: any}): void {
-    if(event.status === 'success'){
+  createUpdateProjectPeriod(event: { status: 'success' | 'error', error?: any }): void {
+    if (event.status === 'success') {
       this.loadProjectPeriod(this.projectId);
     }
   }
