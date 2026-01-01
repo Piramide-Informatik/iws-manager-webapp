@@ -8,6 +8,7 @@
       "DETAILS": "Details",
       "EMPLOYEES": "Employees",
       "EMPLOYMENT_CONTRACTS": "Employment Contracts",
+      "ABSENCES": "Absences",
       "INVOICES": "Invoices",
       "ORDERS": "Orders",
       "PROJECTS": "Projects",
@@ -1566,6 +1567,7 @@
     "contactperson": "Contact Person",
     "employee": "Employee",
     "employmentcontract": "Employment Contract",
+    "absenceday": "Absence Day",
     "project": "Project",
     "order": "Order",
     "ordercommission": "Order Commission",
@@ -1610,6 +1612,7 @@
     "system": "System",
     "text": "Text",
     "companytype": "Company Type",
-    "stateholiday": "Holiday"
+    "stateholiday": "Holiday",
+    "projectemployee": "Order Employee"
   }
 }
