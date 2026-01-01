@@ -8,6 +8,7 @@
       "CONTRACTORS": "Contratistas",
       "DETAILS": "Detalles",
       "EMPLOYEES": "Empleados",
+      "ABSENCES": "Ausencias",
       "EMPLOYMENT_CONTRACTS": "Contratos Laborales",
       "INVOICES": "Facturas",
       "ORDERS": "Pedidos",
@@ -1563,6 +1564,7 @@
     "contactperson": "Persona de Contacto",
     "employee": "Empleado",
     "employmentcontract": "Contrato de Empleado",
+    "absenceday": "Día de Ausencia",
     "project": "Proyecto",
     "order": "Orden",
     "ordercommission": "Comisión de Orden",
@@ -1607,6 +1609,7 @@
     "system": "Sistema",
     "text": "Texto",
     "companytype": "Tipo de Empresa",
-    "stateholiday": "Feriado"
+    "stateholiday": "Feriado",
+    "projectemployee": "Orden de empleado"
   }
 }
