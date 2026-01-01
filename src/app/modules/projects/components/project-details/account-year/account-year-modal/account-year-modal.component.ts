@@ -41,6 +41,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   errorMsg: string | null = null;
   public minEndDate: Date | null = null;
   public maxStartDate: Date | null = null;
+  public periodNo: number | null = null;
 
   ngOnInit(): void {
     this.initForm();
@@ -48,13 +49,16 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['visibleModal'] && this.visibleModal){
+    if (changes['visibleModal'] && this.visibleModal) {
+      if (this.modalType === 'create') {
+        this.loadNextPeriodNo(); // cargar número al abrir modal
+      }
       setTimeout(() => {
         this.firstInputFocus();
       })
     }
 
-    if((changes['currentProjectPeriodEntity'] || changes['visibleModal']) && this.modalType === 'edit' && this.currentProjectPeriodEntity && this.formAccountYear){
+    if ((changes['currentProjectPeriodEntity'] || changes['visibleModal']) && this.modalType === 'edit' && this.currentProjectPeriodEntity && this.formAccountYear) {
       this.formAccountYear.patchValue({
         periodNo: this.currentProjectPeriodEntity?.periodNo,
         startDate: momentCreateDate(this.currentProjectPeriodEntity?.startDate),
@@ -73,7 +77,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
 
   private initForm(): void {
     this.formAccountYear = new FormGroup({
-      periodNo: new FormControl(null),
+      periodNo: new FormControl<number | null>({ value: null, disabled: true }),
       startDate: new FormControl(''),
       endDate: new FormControl(''),
     });
@@ -86,7 +90,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         if (startDate) {
           // Set minDate for endDate
           this.minEndDate = this.getStartOfDay(startDate);
-          
+
           // Si endDate ya tiene valor y es anterior a startDate, limpiarlo
           const endDate = this.formAccountYear.get('endDate')?.value;
           if (endDate && endDate < startDate) {
@@ -104,7 +108,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         if (endDate) {
           // Set maxDate for startDate
           this.maxStartDate = this.getEndOfDay(endDate);
-          
+
           // Si startDate ya tiene valor y es posterior a endDate, limpiarlo
           const startDate = this.formAccountYear.get('startDate')?.value;
           if (startDate && startDate > endDate) {
@@ -132,19 +136,22 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   }
 
   onSubmit(): void {
-    if(!this.currentProject) return;
+    if (!this.currentProject) return;
 
-    if(this.modalType === 'create'){
+    if (this.modalType === 'create') {
       this.isLoading = true;
-      const newProjectPeriod: Omit<ProjectPeriod, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-        periodNo: this.formAccountYear.get('periodNo')?.value,
-        startDate: momentFormatDate(this.formAccountYear.get('startDate')?.value) ?? '',
-        endDate: momentFormatDate(this.formAccountYear.get('endDate')?.value) ?? '',
-        project: this.currentProject
-      }
-      this.createProjectPeriod(newProjectPeriod);
+      this.loadNextPeriodNo();
+      setTimeout(() => { // Remove set timeout when fix create method in backend
+        const newProjectPeriod: Omit<ProjectPeriod, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+          periodNo: this.periodNo!,
+          startDate: momentFormatDate(this.formAccountYear.get('startDate')?.value) ?? '',
+          endDate: momentFormatDate(this.formAccountYear.get('endDate')?.value) ?? '',
+          project: this.currentProject!
+        }
+        this.createProjectPeriod(newProjectPeriod);
+      }, 800);
 
-    }else if(this.modalType === 'edit'){
+    } else if (this.modalType === 'edit') {
       this.updateProjectPeriod();
     }
   }
@@ -153,8 +160,9 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
     this.projectPeriodUtils.createProjectPeriod(newProjectPeriod).subscribe({
       next: () => {
         this.isLoading = false;
-        this.projectPeriodCreatedUpdated.emit({status: 'success'});
+        this.projectPeriodCreatedUpdated.emit({ status: 'success' });
         this.commonMessageService.showCreatedSuccesfullMessage();
+        this.commonMessageService.showInformationMessageUpdatedRecordNumber(this.periodNo);
         this.closeModal();
       },
       error: (error) => {
@@ -166,7 +174,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   }
 
   private updateProjectPeriod(): void {
-    if(!this.currentProjectPeriodEntity) return;
+    if (!this.currentProjectPeriodEntity) return;
 
     this.isLoading = true;
     const projectPeriodEdited: ProjectPeriod = {
@@ -179,14 +187,14 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       next: () => {
         this.isLoading = false;
         this.commonMessageService.showEditSucessfullMessage();
-        this.projectPeriodCreatedUpdated.emit({status: 'success'});
+        this.projectPeriodCreatedUpdated.emit({ status: 'success' });
         this.closeModal();
       },
       error: (error) => {
         this.isLoading = false;
         this.isVisibleProjectPeriodModal.emit(false);
         this.commonMessageService.showErrorEditMessage();
-        this.projectPeriodCreatedUpdated.emit({ status: 'error', error});
+        this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
       }
     });
   }
@@ -225,12 +233,25 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   }
 
   private firstInputFocus(): void {
-    if(this.firstInput && this.isCreateMode){
-      setTimeout(()=>{
-        if(this.firstInput.input.nativeElement){
+    if (this.firstInput && this.isCreateMode) {
+      setTimeout(() => {
+        if (this.firstInput.input.nativeElement) {
           this.firstInput.input.nativeElement.focus()
         }
-      },300)
+      }, 300)
     }
+  }
+
+  private loadNextPeriodNo(): void {
+    const sub = this.projectPeriodUtils.getNextPeriodNo(this.currentProject!.id).subscribe({
+      next: (nextNo) => {
+        if (nextNo != null) {
+          this.periodNo = nextNo;
+          this.formAccountYear.patchValue({ periodNo: nextNo });
+        }
+      },
+      error: (err) => console.error('Error loading next periodNo', err),
+    });
+    this.subscription.add(sub);
   }
 }
