@@ -38,6 +38,7 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
   }>();
 
   isLoading = false;
+  isLoadingDelete = false;
   errorMessage: string | null = null;
 
   readonly createEmployeeCategoryForm = new FormGroup({
@@ -114,12 +115,14 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
 
   closeAndReset(): void {
     this.isLoading = false;
+    this.isLoadingDelete = false;
     this.isVisibleModal.emit(false);
     this.resetForm();
   }
 
   onDeleteConfirm(): void {
     if (!this.employeeCategoryToDelete) return;
+    this.isLoadingDelete = true;
     this.employeeCategoryUtils.deleteEmployeeCategory(this.employeeCategoryToDelete).subscribe({
       next: () => {
         this.employeeCategoryStateService.clearEmployeeCategory();
@@ -127,6 +130,7 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
         this.closeAndReset();
       },
       error: (error) => {
+        this.isLoadingDelete = false;
         this.handleDeleteError(error);
         this.handleEntityRelatedError(error);
       }
@@ -149,7 +153,6 @@ export class EmployeeQualificationModalComponent implements OnInit, OnDestroy, O
       this.employeeCategoryUtils.addEmployeeCategory(EmployeeCategoryData),
       'MESSAGE.CREATE_SUCCESS',
       'MESSAGE.CREATE_FAILED',
-      undefined
     );
   }
 
