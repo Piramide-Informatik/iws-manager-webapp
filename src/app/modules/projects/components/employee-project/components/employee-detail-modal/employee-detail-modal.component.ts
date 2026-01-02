@@ -204,7 +204,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
 
   private handleErrorOrderEmployeeDuplicate(error: any): void {
     const duplicationRegex = /Employee with ID (\d+) is already assigned to Order with ID (\d+)/;
-    if (error.error.message && error.error.message.match(duplicationRegex)) {
+    if (error.error.message?.match(duplicationRegex)) {
       this.orderAlreadyAssigned = true;
       this.createEmployeeDetailsForm.get('order')?.valueChanges.pipe(take(1))
         .subscribe(() => this.orderAlreadyAssigned = false);
