@@ -63,14 +63,18 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
       persNr: ['ABC123', 'DEF456', 'GHI789'],
       pmBewilligt: [1.5, 2.5, 0.75],
       persKostenBewilligt: [1250, 9500, 6500],
+      pkInApBewilligt: [0, 0, 0],
       pmGeplant: [1.5, 2.5, 0.75],
       stdGeplant: [240, 400, 120],
       persKostenGeplant: [9500, 6500, 3000],
+      pkInApGeplant: [0, 0, 0],
       stdAbgerechnet: [880, 400, 3000],
       persKostenAbgerechnet: [6500, 3000, 1500],
+      pkInApAbgerechnet: [0, 0, 0],
       pmVerfuegbar: [2.5, 400, 1500],
       stdVerfuegbar: [400, 1500, 1500],
       persKostenVerfuegbar: [3000, 1500, 1500],
+      pkInApVerfuegbar: [0, 0, 0],
     }
   ];
 
@@ -484,11 +488,7 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
     }).format(num);
   }
 
-  onInputChange() {
-    if (this.editingRowIndex !== null) {
-      this.calculateValues(this.editingRowIndex);
-    }
-  }
+
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
