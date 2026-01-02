@@ -195,7 +195,6 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       },
       error: (error) => {
         this.isLoading = false;
-        this.isVisibleModal.emit(false);
         this.updatedOrderEmployee.emit({ status: 'error', error });
         this.handleErrorOrderEmployeeDuplicate(error);
       }
