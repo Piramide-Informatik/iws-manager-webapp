@@ -36,17 +36,7 @@ export class OrderEmployeeUtils {
    */
   addOrderEmployee(orderEmployee: Omit<OrderEmployee, 'id' | 'createdAt' | 'updatedAt' | 'version'>): Observable<OrderEmployee> {
     // Check for duplicates before creating
-    return this.orderEmployeeService.checkOrderEmployeeExists(
-      orderEmployee.employee?.id || 0,
-      orderEmployee.order?.id || 0
-    ).pipe(
-      switchMap(exists => {
-        if (exists) {
-          return throwError(() => new Error(`Order employee already exists for employee ${orderEmployee.employee?.id} and order ${orderEmployee.order?.id}`));
-        }
-        return this.orderEmployeeService.addOrderEmployee(orderEmployee);
-      })
-    );
+    return this.orderEmployeeService.addOrderEmployee(orderEmployee);
   }
 
   /**
