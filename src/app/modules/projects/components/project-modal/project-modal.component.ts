@@ -14,6 +14,7 @@ import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-uti
 import { Order } from '../../../../Entities/order';
 import { Subscription, take } from 'rxjs';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-modal',
@@ -29,6 +30,7 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
   private readonly orderUtils = inject(OrderUtils);
   private readonly subscriptions = new Subscription();
   private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly router = inject(Router);
 
   public isLoading = false;
   public formNewProject!: FormGroup;
@@ -190,6 +192,9 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
         this.isLoading = false;
         this.closeModal();
         this.createProject.emit({created});
+        setTimeout(() => {
+          this.router.navigate(['/projects/project-details', created.id]);
+        }, 500);
       },
       error: (error) => {
         this.isLoading = false;

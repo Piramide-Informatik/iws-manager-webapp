@@ -48,22 +48,28 @@
 
                         <!-- bewilligt (EDITABLE - Verde) -->
                         <td class="light-green editable">
-                            <input type="number" 
-                                   [(ngModel)]="row.pmBewilligt[0]" 
-                                   (ngModelChange)="calculateValues(i)"
-                                   class="cell-input"
-                                   step="0.01">
+                            <p-inputNumber [(ngModel)]="row.pmBewilligt[0]" 
+                                           (ngModelChange)="calculateValues(i)"
+                                           [minFractionDigits]="2"
+                                           [maxFractionDigits]="2"
+                                           locale="de-DE"
+                                           [useGrouping]="true"
+                                           styleClass="cell-input">
+                            </p-inputNumber>
                         </td>
                         <td class="light-gray">{{ formatNumber(row.persKostenBewilligt[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApBewilligt?.[0]) }}</td>
 
                         <!-- geplant (Solo PM editable - Naranja) -->
                         <td class="light-green editable">
-                            <input type="number" 
-                                   [(ngModel)]="row.pmGeplant[0]" 
-                                   (ngModelChange)="calculateValues(i)"
-                                   class="cell-input"
-                                   step="0.01">
+                            <p-inputNumber [(ngModel)]="row.pmGeplant[0]" 
+                                           (ngModelChange)="calculateValues(i)"
+                                           [minFractionDigits]="2"
+                                           [maxFractionDigits]="2"
+                                           locale="de-DE"
+                                           [useGrouping]="true"
+                                           styleClass="cell-input">
+                            </p-inputNumber>
                         </td>
                         <td class="light-gray">{{ formatNumber(row.stdGeplant[0]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.persKostenGeplant[0]) }}</td>
@@ -86,22 +92,28 @@
 
                         <!-- bewilligt (EDITABLE - Verde) -->
                         <td class="light-green editable">
-                            <input type="number" 
-                                   [(ngModel)]="row.pmBewilligt[j + 1]" 
-                                   (ngModelChange)="calculateValues(i)"
-                                   class="cell-input"
-                                   step="0.01">
+                            <p-inputNumber [(ngModel)]="row.pmBewilligt[j + 1]" 
+                                           (ngModelChange)="calculateValues(i)"
+                                           [minFractionDigits]="2"
+                                           [maxFractionDigits]="2"
+                                           locale="de-DE"
+                                           [useGrouping]="true"
+                                           styleClass="cell-input">
+                            </p-inputNumber>
                         </td>
                         <td class="light-gray">{{ formatNumber(row.persKostenBewilligt[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.pkInApBewilligt?.[j + 1]) }}</td>
 
                         <!-- geplant (Solo PM editable - Naranja) -->
                         <td class="light-green editable">
-                            <input type="number" 
-                                   [(ngModel)]="row.pmGeplant[j + 1]" 
-                                   (ngModelChange)="calculateValues(i)"
-                                   class="cell-input"
-                                   step="0.01">
+                            <p-inputNumber [(ngModel)]="row.pmGeplant[j + 1]" 
+                                           (ngModelChange)="calculateValues(i)"
+                                           [minFractionDigits]="2"
+                                           [maxFractionDigits]="2"
+                                           locale="de-DE"
+                                           [useGrouping]="true"
+                                           styleClass="cell-input">
+                            </p-inputNumber>
                         </td>
                         <td class="light-gray">{{ formatNumber(row.stdGeplant[j + 1]) }}</td>
                         <td class="light-gray">{{ formatNumber(row.persKostenGeplant[j + 1]) }}</td>
