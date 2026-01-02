@@ -1558,6 +1558,9 @@
   "PROJECT_EMPLOYEES": {
     "TABLE": {
       "FZ_ABBREVIATION_R&H_ACTIVITY": "FZ: Kurzbezeichnung FuE-Tätigkeit"
+    },
+    "ERROR": {
+      "ORDER_ALREADY_ASSIGNED": "Mitarbeiter ist dieser Bestellung bereits zugewiesen"
     }
   },
   "FILTER": {

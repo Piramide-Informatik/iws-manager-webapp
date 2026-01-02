@@ -1551,6 +1551,9 @@
   "PROJECT_EMPLOYEES": {
     "TABLE": {
       "FZ_ABBREVIATION_R&H_ACTIVITY": "FZ: Abreviatura de Actividad R&H"
+    },
+    "ERROR": {
+      "ORDER_ALREADY_ASSIGNED": "El empleado se encuentra ya asignado a la orden seleccionada."
     }
   },
   "FILTER": {

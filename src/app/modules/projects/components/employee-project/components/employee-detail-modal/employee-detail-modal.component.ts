@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { EmployeeUtils } from '../../../../../customer/sub-modules/employee/utils/employee.utils';
 import { Employee } from '../../../../../../Entities/employee';
 import { OrderEmployeeUtils } from '../../../../utils/order-employee.util';
@@ -40,6 +40,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
   projectId = '';
   employees: Employee[] = [];
   orders: Order[] = [];
+  orderAlreadyAssigned = false;
   public occErrorEmployeeDetailType: OccErrorType = 'UPDATE_UNEXISTED';
   public showOCCErrorModalEmployeeDetail = false;
   constructor(private readonly activatedRoute: ActivatedRoute) { }
@@ -173,6 +174,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       },
       error: (error) => {
         this.isLoading = false;
+        this.handleErrorOrderEmployeeDuplicate(error);
         this.createdOrderEmployee.emit({ status: 'error', error });
       }
     });
@@ -200,9 +202,20 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
         if (error instanceof OccError) {
           this.showOCCErrorModalEmployeeDetail = true;
           this.occErrorEmployeeDetailType = error.errorType;
+        } else {
+          this.handleErrorOrderEmployeeDuplicate(error);
         }
       }
     });
+  }
+
+  private handleErrorOrderEmployeeDuplicate(error: any): void {
+    const duplicationRegex = /Employee with ID (\d+) is already assigned to Order with ID (\d+)/;
+    if (error.error.message && error.error.message.match(duplicationRegex)) {
+      this.orderAlreadyAssigned = true;
+      this.createEmployeeDetailsForm.get('order')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.orderAlreadyAssigned = false);
+    }
   }
 
   private getSelectedEmployee(employeeId: number | null): Employee | null {

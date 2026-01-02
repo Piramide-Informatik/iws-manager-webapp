@@ -36,8 +36,12 @@
                 <div class="input-message">
                     <p-select formControlName="order" [options]="orders" optionLabel="orderLabel" optionValue="id"
                         appendTo="body" showClear></p-select>
-                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="createEmployeeDetailsForm.get('order')?.errors?.['required'] && (createEmployeeDetailsForm.get('order')?.dirty || createEmployeeDetailsForm.get('order')?.touched)">
-                        {{ 'ERROR.FIELD_REQUIRED' | translate }}
+                    <p-message severity="error" class="error-message" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                    createEmployeeDetailsForm.get('order')?.invalid && 
+                    createEmployeeDetailsForm.get('order')?.dirty &&
+                    createEmployeeDetailsForm.get('order')?.errors?.['required'] || orderAlreadyAssigned
+                    ">
+                      {{ orderAlreadyAssigned ? ('PROJECT_EMPLOYEES.ERROR.ORDER_ALREADY_ASSIGNED' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
                     </p-message>
                 </div>
                 </div>

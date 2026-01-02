@@ -26,3 +26,8 @@
 .flex.justify-content-center.gap-2.mt-4 {
   margin-top: 2rem;
 }
+
+::ng-deep .error-message span {
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+}
