@@ -450,7 +450,8 @@
       "DELETE_EMPLOYEE": "Delete Employee",
       "NEW_EMPLOYEE": "New Employee",
       "EMPLOYEE": "Employee",
-      "PROJECTEMPLOYEE": "Project - Employee"
+      "PROJECTEMPLOYEE": "Project - Employee",
+      "EDIT_EMPLOYEE": "Edit Employee"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Start Date",

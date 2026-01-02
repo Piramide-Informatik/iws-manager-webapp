@@ -447,7 +447,8 @@
       "DELETE_EMPLOYEE": "Mitarbeiter löschen",
       "NEW_EMPLOYEE": "Neuer Mitarbeiter",
       "EMPLOYEE": "Mitarbeiter",
-      "PROJECTEMPLOYEE": "Projekt - Mitarbeiter"
+      "PROJECTEMPLOYEE": "Projekt - Mitarbeiter",
+      "EDIT_EMPLOYEE": "Mitarbeiter bearbeiten"
     },
     "EMPLOYEE_CONTRACTS_TABLE": {
       "START_DATE": "Datum",
