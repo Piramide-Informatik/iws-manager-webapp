@@ -47,7 +47,7 @@
                 </div>
             <div class="flex justify-content-center gap-2 mt-4">
                 <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate"
-                    icon="pi pi-check" iconPos="left" [loading]="isLoading" [disabled]="isLoading || !createEmployeeDetailsForm.dirty || isLoadingDelete"></p-button>
+                    icon="pi pi-check" iconPos="left" [loading]="isLoading" [disabled]="isLoading || !createEmployeeDetailsForm.dirty || createEmployeeDetailsForm.invalid || isLoadingDelete"></p-button>
 
                 @if(modalType === 'edit'){
                     <p-button type="button" class="remove" size="small" [label]="'BUTTONS.REMOVE_FROM_PROJECT' | translate"

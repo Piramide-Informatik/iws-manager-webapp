@@ -28,6 +28,8 @@
     <p-dialog 
         [header]="modalType === 'create' 
           ? ('EMPLOYEE.LABELS.PROJECTEMPLOYEE' | translate) 
+          : modalType === 'edit' 
+          ? ('EMPLOYEE.LABELS.EDIT_EMPLOYEE' | translate) 
           : ('IWS_STAFF.DELETE.CONFIRMATION' | translate)" 
         [modal]="true" 
         [(visible)]="visibleModal"
