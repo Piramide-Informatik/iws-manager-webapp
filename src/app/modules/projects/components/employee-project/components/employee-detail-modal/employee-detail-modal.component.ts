@@ -109,7 +109,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
     this.subscriptions.unsubscribe();
   }
 
-  private loadEmployees(): void {
+  public loadEmployees(): void {
     const sub = this.employeeUtils.getAllEmployeesByProjectId(Number(this.projectId)).subscribe({
       next: (employees: Employee[]) => {
         this.employees = employees.map(employee => ({
@@ -198,6 +198,7 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       },
       error: (error) => {
         this.isLoading = false;
+        this.isVisibleModal.emit(false);
         this.updatedOrderEmployee.emit({ status: 'error', error });
         if (error instanceof OccError) {
           this.showOCCErrorModalEmployeeDetail = true;
@@ -259,6 +260,8 @@ export class EmployeeDetailModalComponent implements OnInit, OnChanges, OnDestro
       },
       error: (error: Error) => {
         this.isLoadingDelete = false;
+        this.modalDeleteVisible = false;
+        this.isVisibleModal.emit(false);
         this.deleteProjectPackageEvent.emit({ status: 'error', error });
         this.modalDeleteVisible = false;
         if (error instanceof OccError || error?.message.includes('404')) {

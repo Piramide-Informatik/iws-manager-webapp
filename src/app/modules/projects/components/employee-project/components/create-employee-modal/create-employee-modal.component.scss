@@ -1,0 +1,90 @@
+@use 'variables' as *;
+
+.form-row {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 10px;
+}
+
+.form-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+
+  label {
+    width: 140px;
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+ 
+  .input-wrapper,
+  .datepicker-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-width: 400px;
+  }
+
+ 
+  input,
+  p-select,
+  p-inputnumber,
+  p-datepicker,
+  .p-inputtext,
+  .p-calendar {
+    width: 100% !important;
+    min-width: 15rem;
+  }
+}
+
+.field.left-side {
+  label {
+    width: 120px;
+  }
+
+  input,
+  p-select,
+  p-inputnumber,
+  .p-inputtext {
+    max-width: 19rem;
+  }
+}
+
+::ng-deep .p-datepicker {
+  width: auto;
+  min-width: 100%;
+}
+
+::ng-deep .p-datepicker-panel table,
+::ng-deep .p-datepicker-panel .p-monthpicker,
+::ng-deep .p-datepicker-panel .p-yearpicker,
+::ng-deep .p-datepicker-panel .p-datepicker-group {
+  td, th {
+    padding: 0 !important;
+    text-align: center;
+  }
+}
+
+::ng-deep .p-datepicker-panel {
+  button.p-ripple.p-button.p-component {
+    background-color: initial !important;
+    border: none;
+    color: $primary-color;
+
+    &:hover{
+      background-color: $accent-color !important;
+    }
+  }
+
+  .p-datepicker-day-selected{
+    background: $primary-color !important;
+  }
+}

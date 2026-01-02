@@ -52,6 +52,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
   public redirectRoute = "";
   public nameAlreadyExist = false;
+  public minEndDateProjectEdit: Date | null = null;
+  public maxStartDateProjectEdit: Date | null = null;
 
   // Signals para las opciones de los selects
   public customers = toSignal(
@@ -83,10 +85,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     private readonly commonMessageService: CommonMessagesService
   ) {
     this.initializeForm();
+    this.setupDateValidationProjectEdit();
   }
 
   ngOnInit(): void {
-    this.setupProjectSubscription();
     this.setupOrderListeners();
 
     this.activatedRoute.params.subscribe(params => {
@@ -173,8 +175,48 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.formProject.get('orderIdFueNumber')?.disable();
   }
 
-  private setupProjectSubscription(): void {
-    // Add ProjectStateService if needed
+  private setupDateValidationProjectEdit(): void {
+    this.subscriptions.add(
+      this.formProject.get('startDate')?.valueChanges.subscribe((startDate: Date | null) => {
+        if (startDate) {
+          this.minEndDateProjectEdit = this.getStartOfDay(startDate);
+          
+          const endDate = this.formProject.get('endDate')?.value;
+          if (endDate && endDate < startDate) {
+            this.formProject.get('endDate')?.setValue(null, { emitEvent: false });
+          }
+        } else {
+          this.minEndDateProjectEdit = null;
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.formProject.get('endDate')?.valueChanges.subscribe((endDate: Date) => {
+        if (endDate) {
+          this.maxStartDateProjectEdit = this.getEndOfDay(endDate);
+          
+          const startDate = this.formProject.get('startDate')?.value;
+          if (startDate && startDate > endDate) {
+            this.formProject.get('startDate')?.setValue(null, { emitEvent: false });
+          }
+        } else {
+          this.maxStartDateProjectEdit = null;
+        }
+      })
+    );
+  }
+
+  private getStartOfDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  }
+
+  private getEndOfDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setHours(23, 59, 59, 999);
+    return newDate;
   }
 
   private loadProject(projectId: number): void {

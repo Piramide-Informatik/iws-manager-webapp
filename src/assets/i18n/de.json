@@ -8,6 +8,7 @@
       "DETAILS": "Details",
       "EMPLOYEES": "Mitarbeiter",
       "EMPLOYMENT_CONTRACTS": "Arbeitsverträge",
+      "ABSENCES": "Fehltage",
       "INVOICES": "Rechnungen",
       "ORDERS": "Aufträge",
       "PROJECTS": "Projekte",
@@ -1573,6 +1574,7 @@
     "contactperson": "Ansprechpartner",
     "employee": "Mitarbeiter",
     "employmentcontract": "Arbeitsverträge",
+    "absenceday": "Abwesenheitstage",
     "project": "Projekt",
     "order": "Auftrag",
     "ordercommission": "Auftragsprovision",
@@ -1617,6 +1619,7 @@
     "system": "Systemkonstanten",
     "text": "Texte",
     "companytype": "Unternehmensarten",
-    "stateholiday": "Feiertage"
+    "stateholiday": "Feiertage",
+    "projectemployee": "Mitarbeiter bestellen"
   }
 }

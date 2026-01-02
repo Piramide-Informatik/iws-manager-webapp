@@ -145,6 +145,7 @@
           [showClear]="true"
           formControlName="startDate"
           dateFormat="dd.mm.yy"
+          [maxDate]="maxStartDateProject"
         ></p-datepicker>
       </div> 
 
@@ -156,6 +157,7 @@
           [showClear]="true"
           formControlName="endDate"
           dateFormat="dd.mm.yy"
+          [minDate]="minEndDateProject"
         ></p-datepicker>
       </div> 
 

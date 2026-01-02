@@ -13,6 +13,7 @@ import { OrderEmployeeUtils } from '../../utils/order-employee.util';
 import { OrderEmployee } from '../../../../Entities/orderEmployee';
 import { CommonMessagesService } from '../../../../Services/common-messages.service';
 import { Title } from '@angular/platform-browser';
+import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-employee-project',
@@ -32,11 +33,14 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
   private readonly commonMessageService = inject(CommonMessagesService);
   visibleModal: boolean = false;
   modalType: 'create' | 'edit' | 'delete' = 'create';
+  @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
   selectedEmployeeDetails: OrderEmployee | null = null;
   isCreateButtonEnable = true;
   employeeNo: number | null = null;
 
-  @ViewChild('employeeDetailModal') employeeDetailModalDialog!: EmployeeDetailModalComponent;
+  visibleModalNewEmployee = false;
+  public occErrorEmployeeDetailType: OccErrorType = 'UPDATE_UNEXISTED';
+  public showOCCErrorModalEmployeeDetail = false;
 
   projectEmployees: OrderEmployee[] = [];
   currentProject!: Project | null;
@@ -143,7 +147,7 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
 
   handleTableEvents(event: { type: 'new employee' | 'create' | 'edit' | 'delete', data?: any }): void {
     if (event.type === 'new employee') {
-      console.log('modal new emp')
+      this.visibleModalNewEmployee = true;
     } else {
       this.modalType = event.type;
       if (event.type === 'edit' && event.data) {
@@ -166,8 +170,13 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       // Reload the employees list using the same method as initial load
       this.loadEmployees();
       this.commonMessageService.showDeleteSucessfullMessage();
-    } else if (event.status === 'error') {
-      this.commonMessageService.showErrorDeleteMessage();
+    } else if (event.status === 'error' && event.error) {
+      if (event.error instanceof OccError || event.error?.message.includes('404')) {
+        this.showOCCErrorModalEmployeeDetail = true;
+        this.occErrorEmployeeDetailType = 'DELETE_UNEXISTED';
+      }else{
+        this.commonMessageService.showErrorDeleteMessage();
+      }
     }
   }
 
@@ -185,7 +194,16 @@ export class EmployeeProjectComponent implements OnInit, OnDestroy {
       this.loadEmployees();
       this.commonMessageService.showEditSucessfullMessage();
     }else if(event.status === 'error' && event.error){
-      this.commonMessageService.showErrorEditMessage();
+      if (event.error instanceof OccError) {
+        this.showOCCErrorModalEmployeeDetail = true;
+        this.occErrorEmployeeDetailType = event.error.errorType;
+      }else{
+        this.commonMessageService.showErrorEditMessage();
+      }
     }
+  }
+
+  onCreatedNewEmployee(): void {
+    this.employeeDetailModalDialog.loadEmployees();
   }
 }

@@ -1,0 +1,118 @@
+<form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit()">
+  <div class="form-row mt-4 ">
+    <div class="form-column">
+      <div class="field left-side">
+        <label for="employeeNumber">{{ 'EMPLOYEE.FORM.EMPLOYEE_ID' | translate }}</label>
+        <div class="input-message">
+          <p-inputnumber [inputStyle]="{'text-align': 'right'}" [useGrouping]="false" autocomplete="off"
+            formControlName="employeeNumber" id="employeeNumber"/>
+        </div>
+      </div>
+
+      <div class="field left-side">
+        <label for="salutation">{{ 'EMPLOYEE.FORM.SALUTATION' | translate }}</label>
+        <p-select #firstInput [options]="salutations()" optionLabel="name" optionValue="id" formControlName="salutation"
+          inputId="salutation" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" appendTo="body" />
+      </div>
+
+      <div class="field left-side">
+        <label for="title">{{ 'EMPLOYEE.FORM.TITLE' | translate }}</label>
+        <p-select [options]="titles()" optionLabel="name" optionValue="id" formControlName="title" inputId="title"
+          [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" appendTo="body" />
+      </div>
+
+      <div class="field left-side">
+        <label for="firstName">{{ 'EMPLOYEE.FORM.FIRST_NAME' | translate }}</label>
+        <input type="text" pInputText formControlName="firstName" id="firstName" autocomplete="off" />
+      </div>
+
+      <div class="field left-side">
+        <label for="lastName">{{ 'EMPLOYEE.FORM.LAST_NAME' | translate }}</label>
+        <div class="input-message">
+          <input class="col-md-6" type="text" pInputText formControlName="lastName" id="lastName"
+            autocomplete="off" />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (newEmployeeForm.get('lastName')?.invalid && newEmployeeForm.get('lastName')?.dirty) ">
+            <span
+              *ngIf="newEmployeeForm.get('lastName')?.errors?.['required'] && newEmployeeForm.get('lastName')?.dirty">
+              {{ 'ERROR.FIELD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="!newEmployeeForm.get('lastName')?.errors?.['required']">
+              {{ 'FUNDING.ERROR.NAME_ALREADY_EXIST' | translate }}
+            </span>
+          </p-message>
+        </div>
+      </div>
+
+      <div class="field left-side">
+        <label for="email">{{ 'EMPLOYEE.FORM.EMAIL' | translate }}</label>
+        <div class="input-message">
+          <input type="text" pInputText formControlName="email" id="email" autocomplete="off"
+            [attr.invalid]="(newEmployeeForm.get('email')?.invalid && newEmployeeForm.get('email')?.dirty)" />
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            (newEmployeeForm.get('email')?.invalid && newEmployeeForm.get('email')?.dirty)">
+            <span *ngIf="(newEmployeeForm.get('email')?.errors?.['email']||
+                newEmployeeForm.get('email')?.errors?.['pattern']) && newEmployeeForm.get('email')?.dirty">
+              {{ 'MESSAGE.INVALID_EMAIL' | translate }}
+            </span>
+          </p-message>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-column">
+      <div class="field">
+        <label for="generalManagerSinceDate">{{ 'EMPLOYEE.FORM.GENERAL_MANAGER_SINCE' | translate }}</label>
+        <div class="datepicker-container">
+          <p-datepicker formControlName="generalManagerSinceDate" [style]="{'width':'100%'}" [showIcon]="true"
+            inputId="generalManagerSinceDate" dateFormat="dd.mm.yy" [showClear]="true" appendTo="body" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="shareholderSinceDate">{{ 'EMPLOYEE.FORM.SHAREHOLDER_SINCE' | translate }}</label>
+        <div class="datepicker-container">
+          <p-datepicker formControlName="shareholderSinceDate" [style]="{'width':'100%'}" [showIcon]="true"
+            inputId="shareholderSinceDate" dateFormat="dd.mm.yy" [showClear]="true" appendTo="body" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="solePropietorSinceDate">{{ 'EMPLOYEE.FORM.SOLE_PROPRIETOR_SINCE' | translate }}</label>
+        <div class="datepicker-container">
+          <p-datepicker formControlName="solePropietorSinceDate" [style]="{'width':'100%'}" [showIcon]="true"
+            inputId="solePropietorSinceDate" dateFormat="dd.mm.yy" [showClear]="true" appendTo="body" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="coentrepreneurSinceDate">{{ 'EMPLOYEE.FORM.CO_ENTREPRENEUR_SINCE' | translate }}</label>
+        <div class="datepicker-container">
+          <p-datepicker formControlName="coentrepreneurSinceDate" [style]="{'width':'100%'}" [showIcon]="true"
+            inputId="coentrepreneurSinceDate" dateFormat="dd.mm.yy" [showClear]="true" appendTo="body" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="employeeCategory">{{ 'EMPLOYEE.FORM.EMPLOYEE_CATEGORY' | translate }}</label>
+        <p-select [options]="employeeCategories()" optionLabel="label" optionValue="id"
+          formControlName="employeeCategory" [showClear]="true" inputId="employeeCategory"
+          [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" appendTo="body" />
+      </div>
+
+      <div class="field">
+        <label for="qualificationKMUi">{{ 'EMPLOYEE.FORM.QUALIFICATION_KMU_I' | translate }}</label>
+        <input type="text" pInputText formControlName="qualificationKMUi" id="qualificationKMUi"
+          autocomplete="off" />
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row flex flex-wrap gap-3 justify-content-center">
+    <p-button type="submit" class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
+      iconPos="left" [loading]="isLoading" [disabled]="newEmployeeForm.invalid || !newEmployeeForm.dirty" />
+    
+    <p-button class="cancel me-2" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
+      (onClick)="closeModal()" [disabled]="isLoading" />
+  </div>
+</form>

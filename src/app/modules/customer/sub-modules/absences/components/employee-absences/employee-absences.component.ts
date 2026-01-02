@@ -18,6 +18,7 @@ import { PublicHolidayUtils } from '../../../../../master-data/components/holida
 import { DayOff } from '../../../../../../Entities/dayOff';
 import { AbsenceDayCountDTO } from '../../../../../../Entities/AbsenceDayCountDTO';
 import { AbsenceDayUtils } from '../../utils/absenceday-utils';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employee-absences',
@@ -38,6 +39,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
   private readonly absenceDayUtils = inject(AbsenceDayUtils);
+  private readonly titleService = inject(Title);
 
   private readonly _absenceDayCounts = signal<AbsenceDayCountDTO[]>([]);
 
@@ -82,11 +84,13 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     this.absenceTypeUtils.loadInitialData().subscribe();
     this.loadColHeaders();
     this.selectedColumns = [...this.cols];
+    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.ABSENCES'));
     this.userAbsenceTypeDayPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
 
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.loadColHeaders();
       this.selectedColumns = [...this.cols];
+      this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.ABSENCES'));
       this.userAbsenceTypeDayPreferences = this.userPreferenceService.getUserPreferences(this.tableKey, this.selectedColumns);
     });
     this.initForm();

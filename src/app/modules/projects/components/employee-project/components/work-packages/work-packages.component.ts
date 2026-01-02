@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
@@ -27,7 +28,8 @@ import { Title } from '@angular/platform-browser';
     TranslatePipe, 
     InputTextModule,
     ToastModule,
-    DialogModule
+    DialogModule,
+    InputNumberModule
   ],
   providers: [MessageService],
   templateUrl: './work-packages.component.html',
@@ -476,7 +478,10 @@ export class WorkPackagesComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    return num.toFixed(2);
+    return new Intl.NumberFormat('de-DE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(num);
   }
 
   onInputChange() {

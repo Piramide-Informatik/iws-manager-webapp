@@ -54,3 +54,10 @@
     ></app-project-period-modal>
   </p-dialog>
 </div>
+
+<app-occ-error-modal
+  *ngIf="showOCCErrorModalProjectPeriod"
+  [errorType]="occErrorType"
+  [reloadCurrentPage]="true"
+  (onClose)="showOCCErrorModalProjectPeriod = false">
+</app-occ-error-modal>

@@ -33,6 +33,8 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
   public isLoading = false;
   public formNewProject!: FormGroup;
   public nameAlreadyExist = false;
+  public minEndDateProject: Date | null = null;
+  public maxStartDateProject: Date | null = null;
 
   @Input() visible = false;
   @Output() visibleModal = new EventEmitter<void>();
@@ -60,6 +62,7 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+    this.setupDateValidationProject();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -132,6 +135,50 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
         }
       })
     );
+  }
+
+  private setupDateValidationProject(): void {
+    this.subscriptions.add(
+      this.formNewProject.get('startDate')?.valueChanges.subscribe((startDate: Date | null) => {
+        if (startDate) {
+          this.minEndDateProject = this.getStartOfDay(startDate);
+          
+          const endDate = this.formNewProject.get('endDate')?.value;
+          if (endDate && endDate < startDate) {
+            this.formNewProject.get('endDate')?.setValue(null, { emitEvent: false });
+          }
+        } else {
+          this.minEndDateProject = null;
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.formNewProject.get('endDate')?.valueChanges.subscribe((endDate: Date) => {
+        if (endDate) {
+          this.maxStartDateProject = this.getEndOfDay(endDate);
+          
+          const startDate = this.formNewProject.get('startDate')?.value;
+          if (startDate && startDate > endDate) {
+            this.formNewProject.get('startDate')?.setValue(null, { emitEvent: false });
+          }
+        } else {
+          this.maxStartDateProject = null;
+        }
+      })
+    );
+  }
+
+  private getStartOfDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  }
+
+  private getEndOfDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setHours(23, 59, 59, 999);
+    return newDate;
   }
 
   onSubmit(): void {

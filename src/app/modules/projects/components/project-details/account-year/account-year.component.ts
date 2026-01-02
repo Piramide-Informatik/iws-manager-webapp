@@ -15,6 +15,7 @@ import { ProjectUtils } from '../../../../customer/sub-modules/projects/utils/pr
 import { SelectChangeEvent } from 'primeng/select';
 import { ProjectStateService } from '../../../utils/project-state.service';
 import { ProjectPeriod } from '../../../../../Entities/project-period';
+import { OccError, OccErrorType } from '../../../../shared/utils/occ-error';
 
 @Component({
   selector: 'app-projects-account-year',
@@ -37,12 +38,14 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
   public cols!: Column[];
   selectedProject = signal(0);
-  public currentProject!: Project | null; 
+  public currentProject!: Project | null;
   public selectedProjectAccountYearTableColumns!: Column[];
   modalProjectPeriodType: 'create' | 'delete' | 'edit' = 'create';
   visibleProjectPeriodModal: boolean = false;
   currentProjectPeriod!: ProjectPeriod | undefined;
   projectsAccountYears: any = []
+  public showOCCErrorModalProjectPeriod = false;
+  public occErrorType: OccErrorType = 'UPDATE_UNEXISTED';
 
   private projectAccountYearLangSubscription!: Subscription;
   userProjectAccountYearPreferences: UserPreference = {};
@@ -74,7 +77,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
     this.loadProjectPeriod(this.projectId);
     this.selectedProject = signal(this.projectId);
-    
+
   }
 
   onUserProjectAccountYearPreferencesChanges(userProjectAccountYearPreferences: any) {
@@ -83,14 +86,15 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
 
   loadProjectColHeaders(): void {
     this.cols = [
-      { field: 'periodNo', 
-        type: 'integer', 
-        filter: { type: 'numeric' }, 
+      {
+        field: 'periodNo',
+        type: 'integer',
+        filter: { type: 'numeric' },
         customClasses: ['align-right'],
-        header: this.translate.instant(_('PROJECT_PERIOD.TABLE.YEAR')), 
-        classesTHead: ['width-35']
+        header: this.translate.instant(_('PROJECT_PERIOD.TABLE.YEAR')),
+        classesTHead: ['width-18']
       },
-      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-35']},
+      { field: 'startDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.BEGINNING')), classesTHead: ['width-35'] },
       { field: 'endDate', type: 'date', header: this.translate.instant(_('PROJECT_PERIOD.TABLE.END')), classesTHead: ['width-35'] },
     ];
   }
@@ -104,7 +108,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   onSelectedItem(event: SelectChangeEvent) {
     this.loadProjectPeriod(event.value);
     this.projectUtils.getProjectById(event.value).subscribe(selectedProject => {
-      if(selectedProject){
+      if (selectedProject) {
         this.currentProject = selectedProject;
       }
     })
@@ -119,7 +123,7 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   handleTableEvents(event: { type: 'create' | 'delete' | 'edit', data?: any }): void {
     this.modalProjectPeriodType = event.type;
 
-    if(this.modalProjectPeriodType === 'edit' && event.data){
+    if (this.modalProjectPeriodType === 'edit' && event.data) {
       this.currentProjectPeriod = event.data;
     }
     if (event.type === 'delete') {
@@ -129,17 +133,29 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
   }
 
   onModalProjectPeriodModalVisibilityChange(visible: any): void {
-    this.visibleProjectPeriodModal = visible; 
+    this.visibleProjectPeriodModal = visible;
   }
 
-  onDeleteProjectPeriod(projectPeriod: any) {
-    this.projectsAccountYears = this.projectsAccountYears.filter((pa: any) => pa.id !== projectPeriod.id);
-    this.currentProjectPeriod = undefined;
+  onDeleteProjectPeriod(event: { projectPeriod?: ProjectPeriod, error?: any }): void {
+    if(event.projectPeriod){
+      this.projectsAccountYears = this.projectsAccountYears.filter((pa: any) => pa.id !== event.projectPeriod?.id);
+      this.currentProjectPeriod = undefined;
+    }else if(event.error){
+      if (event.error instanceof OccError || event.error?.message?.includes('404') || event.error?.errorType === 'DELETE_UNEXISTED') {
+        this.showOCCErrorModalProjectPeriod = true;
+        this.occErrorType = 'DELETE_UNEXISTED';
+      }
+    }
   }
 
-  createUpdateProjectPeriod(event: { status: 'success' | 'error', error?: any}): void {
-    if(event.status === 'success'){
+  createUpdateProjectPeriod(event: { status: 'success' | 'error', error?: any }): void {
+    if (event.status === 'success') {
       this.loadProjectPeriod(this.projectId);
+    }else if(event.status === 'error' && event.error){
+      if(event.error instanceof OccError){
+        this.occErrorType = event.error.errorType;
+        this.showOCCErrorModalProjectPeriod = true;
+      }
     }
   }
 

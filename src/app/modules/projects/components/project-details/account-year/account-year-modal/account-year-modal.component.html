@@ -1,45 +1,32 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
-   <form [formGroup]="formAccountYear" (ngSubmit)="onSubmit()">
-     <div class="form-container mb-5">
+  <form [formGroup]="formAccountYear" (ngSubmit)="onSubmit()">
+    <div class="form-container mb-5">
       <div class="account_input">
         <label for="periodNo">{{ 'PROJECT_PERIOD.FORM.YEAR' | translate }}</label>
         <div class="input-message">
           <p-inputnumber #firstInput [useGrouping]="true" inputId="periodNo" [inputStyle]="{'text-align': 'right'}"
-          formControlName="periodNo" autocomplete="off"/>
+            formControlName="periodNo" autocomplete="off" />
         </div>
       </div>
 
       <div class="account_input">
         <label for="startDate">{{ 'PROJECT_PERIOD.FORM.BEGINNING' | translate }}</label>
-        <p-datepicker
-          inputId="startDate"
-          [showIcon]="true"
-          [showClear]="true"
-          appendTo="body"
-          formControlName="startDate"
-          dateFormat="dd.mm.yy"
-        ></p-datepicker>
+        <p-datepicker inputId="startDate" [showIcon]="true" [showClear]="true" appendTo="body"
+          formControlName="startDate" dateFormat="dd.mm.yy" [maxDate]="maxStartDate"></p-datepicker>
       </div>
-      
+
       <div class="account_input">
         <label for="endDate">{{ 'PROJECT_PERIOD.FORM.END' | translate }}</label>
-        <p-datepicker
-          inputId="endDate"
-          [showIcon]="true"
-          [showClear]="true"
-          appendTo="body"
-          formControlName="endDate"
-          dateFormat="dd.mm.yy"
-        ></p-datepicker>
+        <p-datepicker inputId="endDate" [showIcon]="true" [showClear]="true" appendTo="body" formControlName="endDate"
+          dateFormat="dd.mm.yy" [minDate]="minEndDate"></p-datepicker>
       </div>
-     </div>
+    </div>
     <div class="flex justify-content-center gap-2 mt-3">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
         iconPos="left" [loading]="isLoading" [disabled]="!formAccountYear.dirty || formAccountYear.invalid" />
       @if(modalType === 'edit') {
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" severity="danger" [disabled]="isLoading"
-        (onClick)="visibleDeleteEntityModal = true;" />
+        iconPos="left" severity="danger" [disabled]="isLoading" (onClick)="visibleDeleteEntityModal = true;" />
       }
       <p-button class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times" iconPos="left"
         (onClick)="closeModal()" [disabled]="isLoading" />
@@ -53,29 +40,23 @@
     </p>
 
     <div class="flex justify-content-center gap-3">
-      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate"
-        icon="pi pi-trash" iconPos="left" severity="danger" (onClick)="deleteEmployeeContractEntity()"
-        [loading]="isLoadingDelete" 
-      />
-      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate"
-        icon="pi pi-times" iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete"
-      />
+      <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
+        iconPos="left" severity="danger" (onClick)="deleteEmployeeContractEntity()" [loading]="isLoadingDelete" />
+      <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
+        iconPos="left" (onClick)="closeModal()" [disabled]="isLoadingDelete" />
     </div>
   </div>
 </ng-template>
-<app-occ-error-modal
-  *ngIf="showOCCErrorModalProjectPeriod"
-  [errorType]="occErrorType"
-  [reloadCurrentPage]="true"
-  (onClose)="showOCCErrorModalProjectPeriod = false">
-</app-occ-error-modal>
-<p-dialog [header]="'PROJECT_PERIOD.MODAL.DELETE' | translate" [modal]="true" appendTo="body" [(visible)]="visibleDeleteEntityModal">
+
+<p-dialog [header]="'PROJECT_PERIOD.MODAL.DELETE' | translate" [modal]="true" appendTo="body"
+  [(visible)]="visibleDeleteEntityModal">
   <div class="confirmation-content mb-2 mt-4">
     <p class="mb-4" [innerHTML]="'DIALOG.DELETE' | translate:{ value: currentProjectPeriodEntity?.periodNo }"></p>
 
     <div class="flex justify-content-center gap-2">
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
-        iconPos="left" (onClick)="deleteEmployeeContractEntity()" severity="danger" [loading]="isLoadingDelete" [disabled]="isLoadingDelete" />
+        iconPos="left" (onClick)="deleteEmployeeContractEntity()" severity="danger" [loading]="isLoadingDelete"
+        [disabled]="isLoadingDelete" />
 
       <p-button type="button" class="cancel" size="small" [label]="'BUTTONS.CANCEL' | translate" icon="pi pi-times"
         iconPos="left" (onClick)="this.visibleDeleteEntityModal = false;" [disabled]="isLoadingDelete" />
