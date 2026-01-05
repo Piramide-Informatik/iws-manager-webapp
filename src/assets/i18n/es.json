@@ -1615,6 +1615,7 @@
     "text": "Texto",
     "companytype": "Tipo de Empresa",
     "stateholiday": "Feriado",
-    "projectemployee": "Orden de empleado"
+    "projectemployee": "Orden de empleado",
+    "projectpackage": "Paquete de Projecto"
   }
 }
