@@ -1618,6 +1618,7 @@
     "text": "Text",
     "companytype": "Company Type",
     "stateholiday": "Holiday",
-    "projectemployee": "Order Employee"
+    "projectemployee": "Order Employee",
+    "projectpackage": "Project Package"
   }
 }
