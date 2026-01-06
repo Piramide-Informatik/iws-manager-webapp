@@ -56,6 +56,9 @@
                                 optionLabel="orderLabel" 
                                 optionValue="id" 
                                 showClear
+                                [filter]="true"
+                                filterBy="orderLabel"
+                                [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
                                 [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"/>
                             <input pInputText type="text" id="orderIdFueNumber" formControlName="orderIdFueNumber"
                                 autocomplete="off" readonly [disabled]="true" />
@@ -162,7 +165,9 @@
                         <label for="orderIdAdmin"> {{ "PROJECTS.FORM.ADMIN_ORDER_NUMBER" | translate }}</label>
                         <div class="two-field">
                             <p-select formControlName="orderIdAdmin" inputId="orderIdAdmin" [options]="orders()"
-                                optionLabel="orderLabel" optionValue="id" showClear [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"/>
+                                optionLabel="orderLabel" optionValue="id" showClear 
+                                [filter]="true" filterBy="orderLabel" [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+                                [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"/>
                             <input pInputText formControlName="orderIdAdminNumber" type="text" id="orderIdAdminNumber"
                                 autocomplete="off" readonly [disabled]="true" />
                         </div>

@@ -64,6 +64,10 @@
             optionValue="id"
             showClear
             autocomplete="off"
+            [filter]="true"
+            filterBy="orderLabel"
+            [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
+            [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           />
           <p-inputnumber 
             inputId="orderFueNo"
@@ -226,6 +230,9 @@
             optionLabel="orderLabel"
             optionValue="id"
             showClear
+            [filter]="true"
+            filterBy="orderLabel"
+            [emptyFilterMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
             [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate"
           ></p-select>
           <p-inputnumber 
