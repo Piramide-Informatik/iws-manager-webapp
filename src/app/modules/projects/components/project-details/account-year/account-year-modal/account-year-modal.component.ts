@@ -41,6 +41,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   errorMsg: string | null = null;
   public minEndDate: Date | null = null;
   public maxStartDate: Date | null = null;
+  public minStartDate: Date | null = null;
   public periodNo: number | null = null;
 
   ngOnInit(): void {
@@ -50,6 +51,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visibleModal'] && this.visibleModal) {
+      this.minStartDate = null;
       if (this.modalType === 'create') {
         this.loadNextPeriodNo(); // cargar número al abrir modal
       }
@@ -59,11 +61,13 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
     }
 
     if ((changes['currentProjectPeriodEntity'] || changes['visibleModal']) && this.modalType === 'edit' && this.currentProjectPeriodEntity && this.formAccountYear) {
+      this.periodNo = this.currentProjectPeriodEntity?.periodNo;
       this.formAccountYear.patchValue({
         periodNo: this.currentProjectPeriodEntity?.periodNo,
         startDate: momentCreateDate(this.currentProjectPeriodEntity?.startDate),
         endDate: momentCreateDate(this.currentProjectPeriodEntity?.endDate)
       });
+      this.fetchPreviousPeriodEndDate();
     }
 
     if (changes['visibleModal'] && !this.visibleModal && this.formAccountYear) {
@@ -248,10 +252,40 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         if (nextNo != null) {
           this.periodNo = nextNo;
           this.formAccountYear.patchValue({ periodNo: nextNo });
+          this.fetchPreviousPeriodEndDate();
         }
       },
       error: (err) => console.error('Error loading next periodNo', err),
     });
     this.subscription.add(sub);
+  }
+
+  private fetchPreviousPeriodEndDate(): void {
+    if (!this.currentProject || this.periodNo === null) return;
+
+    this.subscription.add(
+      this.projectPeriodUtils.getAllProjectPeriodByProject(this.currentProject.id).subscribe(periods => {
+        const previousPeriod = periods
+          .filter(p => p.periodNo < this.periodNo!)
+          .sort((a, b) => b.periodNo - a.periodNo)[0];
+
+        if (previousPeriod) {
+          const endDate = momentCreateDate(previousPeriod.endDate);
+          if (endDate) {
+            const minDate = new Date(endDate);
+            minDate.setDate(minDate.getDate() + 1);
+            this.minStartDate = this.getStartOfDay(minDate);
+
+            // Si startDate ya tiene valor y es anterior a minStartDate, limpiarlo
+            const currentStartDate = this.formAccountYear.get('startDate')?.value;
+            if (currentStartDate && currentStartDate < this.minStartDate) {
+              this.formAccountYear.get('startDate')?.setValue(null, { emitEvent: false });
+            }
+          }
+        } else {
+          this.minStartDate = null;
+        }
+      })
+    );
   }
 }

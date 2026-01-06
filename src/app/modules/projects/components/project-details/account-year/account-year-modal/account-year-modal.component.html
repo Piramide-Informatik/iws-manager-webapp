@@ -12,7 +12,7 @@
       <div class="account_input">
         <label for="startDate">{{ 'PROJECT_PERIOD.FORM.BEGINNING' | translate }}</label>
         <p-datepicker inputId="startDate" [showIcon]="true" [showClear]="true" appendTo="body"
-          formControlName="startDate" dateFormat="dd.mm.yy" [maxDate]="maxStartDate"></p-datepicker>
+          formControlName="startDate" dateFormat="dd.mm.yy" [maxDate]="maxStartDate" [minDate]="minStartDate"></p-datepicker>
       </div>
 
       <div class="account_input">
