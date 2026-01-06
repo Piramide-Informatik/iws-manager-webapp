@@ -12,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { buildOrder } from '../../../../../shared/utils/builders/order';
 
 @Component({
   selector: 'app-order-details',
@@ -48,7 +49,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.updateTitle();
     this.subscriptions.add(
-      this.translate.onLangChange.subscribe(()=>{
+      this.translate.onLangChange.subscribe(() => {
         this.updateTitle();
       })
     )
@@ -67,8 +68,8 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
   private updateTitle(): void {
     this.orderId ?
-    this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')) :
-    this.titleService.setTitle(this.translate.instant('ORDERS.NEW_ORDER'));
+      this.titleService.setTitle(this.translate.instant('PAGETITLE.CUSTOMERS.ORDERS')) :
+      this.titleService.setTitle(this.translate.instant('ORDERS.NEW_ORDER'));
   }
 
   public onSubmit(): void {
@@ -127,7 +128,9 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       iwsProvision: this.orderCommission.iwsProvision
     }
 
-    this.orderUtils.updateOrder(updatedOrder).subscribe({
+    const newOrder = buildOrder(updatedOrder);
+
+    this.orderUtils.updateOrder(newOrder).subscribe({
       next: (updateded) => {
         this.isLoading = false;
         this.commonMessageService.showEditSucessfullMessage();
@@ -170,7 +173,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteError(error: Error) {
-    if (error instanceof OccError || error?.message?.includes('404') ) {
+    if (error instanceof OccError || error?.message?.includes('404')) {
       this.commonMessageService.showErrorDeleteMessage();
       this.showOCCErrorModalOrder = true;
       this.occErrorType = 'DELETE_UNEXISTED';
