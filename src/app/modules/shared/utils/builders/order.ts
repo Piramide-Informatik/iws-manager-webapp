@@ -17,19 +17,19 @@ export function buildOrder(source: any): any {
         updatedAt: source?.updatedAt ?? '',
         version: source?.version ?? 0,
 
-        // Relaciones
-        approvalStatus: buildApprovalStatus(source?.approvalStatus),
-        basiccontract: buildBasicContract(source?.basiccontract),
-        contractor: buildContractor(source?.contractor),
-        contractStatus: buildContractStatus(source?.contractStatus),
-        customer: buildCustomer(source?.customer),
-        employeeIws: buildEmployeeIws(source?.employeeIws),
-        fundingProgram: buildFundingProgram(source?.fundingProgram),
-        orderType: buildCostType(source?.orderType),
-        project: buildProject(source?.project),
-        promoter: buildPromoter(source?.promoter),
+        // Relations
+        approvalStatus: source?.approvalStatus ? { id: source.approvalStatus.id, version: source.approvalStatus.version ?? 0 } : null,
+        basiccontract: source?.basiccontract ? { id: source.basiccontract.id, version: source.basiccontract.version ?? 0 } : null,
+        contractor: source?.contractor ? { id: source.contractor.id, version: source.contractor.version ?? 0 } : null,
+        contractStatus: source?.contractStatus ? { id: source.contractStatus.id, version: source.contractStatus.version ?? 0 } : null,
+        customer: source?.customer ? { id: source.customer.id, version: source.customer.version ?? 0 } : null,
+        employeeIws: source?.employeeIws ? { id: source.employeeIws.id, version: source.employeeIws.version ?? 0 } : null,
+        fundingProgram: source?.fundingProgram ? { id: source.fundingProgram.id, version: source.fundingProgram.version ?? 0 } : null,
+        orderType: source?.orderType ? { id: source.orderType.id, version: source.orderType.version ?? 0 } : null,
+        project: source?.project ? { id: source.project.id, version: source.project.version ?? 0 } : null,
+        promoter: source?.promoter ? { id: source.promoter.id, version: source.promoter.version ?? 0 } : null,
 
-        // Campos opcionales
+        // Fields
         acronym: source?.acronym ?? '',
         approvalDate: source?.approvalDate ?? '',
         approvalPdf: source?.approvalPdf ?? '',
