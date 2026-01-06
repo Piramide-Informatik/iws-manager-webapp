@@ -90,7 +90,6 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private loadProjectData(): void {
-    // const currentProjectId = this.projectForm.get('projectLabel')?.value;
     const currentPromoterNo = this.projectForm.get('promoterNo')?.value;
     const currentPromoter = this.projectForm.get('promoter')?.value;
     const currentStartDate = this.projectForm.get('startDate')?.value;
@@ -103,7 +102,6 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
         this.selectedProject = fullProject;
 
         this.projectForm.patchValue({
-          // projectLabel: fullProject.id,
           promoterNo: fullProject.promoter?.promoterNo || currentPromoterNo || '',
           promoter: fullProject.promoter?.projectPromoter || currentPromoter || '',
           startDate: momentCreateDate(fullProject.startDate) || currentStartDate,
