@@ -19,9 +19,9 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
   private readonly route = inject(ActivatedRoute);
   private readonly subscription = new Subscription();
   private readonly customerId: number = this.route.snapshot.params['id'];
-  public readonly projects = toSignal( 
+  public readonly projects = toSignal(
     this.projectUtils.getAllProjectByCustomerId(this.customerId),
-    { initialValue: []} 
+    { initialValue: [] }
   );
 
   @Input() orderToEdit!: Order;
@@ -32,7 +32,7 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.initForm();
-    if(!this.orderToEdit){
+    if (!this.orderToEdit) {
       this.changeProjectSelected();
     }
   }
@@ -48,6 +48,7 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
         endDate: momentCreateDate(this.orderToEdit.project?.endDate)
       });
       this.changeProjectSelected();
+      this.loadProjectData();
     }
   }
 
@@ -71,9 +72,12 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
 
   private changeProjectSelected(): void {
     this.subscription.add(
-      this.projectForm.get('projectLabel')?.valueChanges.subscribe((projectIdSelected: number | null)=>{
+      this.projectForm.get('projectLabel')?.valueChanges.subscribe((projectIdSelected: number | null) => {
+        // reset form
+        this.projectForm.reset({}, { emitEvent: false });
+
         this.selectedProject = this.projects().find(p => p.id === projectIdSelected) ?? null;
-        if ( projectIdSelected && this.selectedProject ){
+        if (projectIdSelected && this.selectedProject) {
           this.projectForm.get('promoterNo')?.setValue(this.selectedProject.promoter?.promoterNo, { emitEvent: false });
           this.projectForm.get('promoter')?.setValue(this.selectedProject.promoter?.projectPromoter, { emitEvent: false });
           this.projectForm.get('startDate')?.setValue(momentCreateDate(this.selectedProject.startDate), { emitEvent: false });
@@ -83,6 +87,32 @@ export class ProjectComponent implements OnInit, OnDestroy, OnChanges {
         }
       })
     );
+  }
+
+  private loadProjectData(): void {
+    const currentPromoterNo = this.projectForm.get('promoterNo')?.value;
+    const currentPromoter = this.projectForm.get('promoter')?.value;
+    const currentStartDate = this.projectForm.get('startDate')?.value;
+    const currentEndDate = this.projectForm.get('endDate')?.value;
+
+    if (this.orderToEdit?.project?.id) {
+      const fullProject = this.projects().find(p => p.id === this.orderToEdit.project?.id);
+
+      if (fullProject) {
+        this.selectedProject = fullProject;
+
+        this.projectForm.patchValue({
+          promoterNo: fullProject.promoter?.promoterNo || currentPromoterNo || '',
+          promoter: fullProject.promoter?.projectPromoter || currentPromoter || '',
+          startDate: momentCreateDate(fullProject.startDate) || currentStartDate,
+          endDate: momentCreateDate(fullProject.endDate) || currentEndDate
+        });
+      } else {
+        this.projectForm.patchValue({
+          projectLabel: this.orderToEdit.project.id
+        });
+      }
+    }
   }
 
   onSubmit(): void {
