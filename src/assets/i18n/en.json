@@ -78,7 +78,8 @@
     "NUMBER_MAX_CUSTOM": "Max value {{ value }} expected",
     "RECORD_ARLEADY_EXISTS": "This record already exists",
     "ALREADY_EXIST": "Not available",
-    "NUMBER_GREATER_THAN_0": "The value must be greater than 0"
+    "NUMBER_GREATER_THAN_0": "The value must be greater than 0",
+    "INVALID_DATE": "Invalid date"
   },
   "MENU": {
     "DASHBOARD": "Dashboard",

@@ -9,7 +9,7 @@ import { PromoterUtils } from '../../../master-data/components/project-funnels/u
 import { Customer } from '../../../../Entities/customer';
 import { FundingProgram } from '../../../../Entities/fundingProgram';
 import { Promoter } from '../../../../Entities/promoter';
-import { momentFormatDate } from '../../../shared/utils/moment-date-utils';
+import { momentCreateDateFromGermanFormat, momentFormatDate } from '../../../shared/utils/moment-date-utils';
 import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-utils';
 import { Order } from '../../../../Entities/order';
 import { Subscription, take } from 'rxjs';
@@ -37,6 +37,8 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
   public nameAlreadyExist = false;
   public minEndDateProject: Date | null = null;
   public maxStartDateProject: Date | null = null;
+  public invalidStartDate = false;
+  public invalidEndDate = false;
 
   @Input() visible = false;
   @Output() visibleModal = new EventEmitter<void>();
@@ -137,6 +139,44 @@ export class ProjectModalComponent implements OnInit, OnChanges, OnDestroy {
         }
       })
     );
+  }
+
+  validationInputStartDate(event: any): void {
+    const dateValue = event.target.value;
+    const date = momentCreateDateFromGermanFormat(dateValue);
+    if(date && this.maxStartDateProject && date > this.maxStartDateProject){
+      this.invalidStartDate = true;
+    }else {
+      this.invalidStartDate = false;
+    }
+  }
+
+  validationSelectStartDate(event: Date): void {
+    const date = event;
+    if(date && this.maxStartDateProject && date > this.maxStartDateProject){
+      this.invalidStartDate = true;
+    }else {
+      this.invalidStartDate = false;
+    }
+  }
+
+  validationInputEndDate(event: any): void {
+    const dateValue = event.target.value;
+    const date = momentCreateDateFromGermanFormat(dateValue);
+    if(date && this.minEndDateProject && date < this.minEndDateProject){
+      this.invalidEndDate = true;
+    }else {
+      this.invalidEndDate = false;
+    }
+  }
+
+  validationSelectEndDate(event: Date): void {
+    const date = event;
+    if(date && this.minEndDateProject && date < this.minEndDateProject){
+      this.invalidEndDate = true;
+    }else {
+      this.invalidEndDate = false;
+    }
   }
 
   private setupDateValidationProject(): void {

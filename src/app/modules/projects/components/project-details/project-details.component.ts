@@ -20,7 +20,7 @@ import { buildProject } from '../../../shared/utils/builders/project';
 import { ProjectUtils } from '../../../customer/sub-modules/projects/utils/project.utils';
 import { OrderUtils } from '../../../customer/sub-modules/orders/utils/order-utils';
 import { Order } from '../../../../Entities/order';
-import { momentCreateDate } from '../../../shared/utils/moment-date-utils';
+import { momentCreateDate, momentCreateDateFromGermanFormat } from '../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../shared/utils/occ-error';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProjectStateService } from '../../utils/project-state.service';
@@ -54,6 +54,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   public nameAlreadyExist = false;
   public minEndDateProjectEdit: Date | null = null;
   public maxStartDateProjectEdit: Date | null = null;
+  public invalidStartDateProject = false;
+  public invalidEndDateProject = false;
 
   // Signals para las opciones de los selects
   public customers = toSignal(
@@ -173,6 +175,44 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.formProject.get('orderIdAdminNumber')?.disable();
     this.formProject.get('promoterNumber')?.disable();
     this.formProject.get('orderIdFueNumber')?.disable();
+  }
+
+  validationInputStartDateProject(event: any): void {
+    const dateValue = event.target.value;
+    const date = momentCreateDateFromGermanFormat(dateValue);
+    if(date && this.maxStartDateProjectEdit && date > this.maxStartDateProjectEdit){
+      this.invalidStartDateProject = true;
+    }else {
+      this.invalidStartDateProject = false;
+    }
+  }
+
+  validationSelectStartDateProject(event: Date): void {
+    const date = event;
+    if(date && this.maxStartDateProjectEdit && date > this.maxStartDateProjectEdit){
+      this.invalidStartDateProject = true;
+    }else {
+      this.invalidStartDateProject = false;
+    }
+  }
+
+  validationInputEndDateProject(event: any): void {
+    const dateValue = event.target.value;
+    const date = momentCreateDateFromGermanFormat(dateValue);
+    if(date && this.minEndDateProjectEdit && date < this.minEndDateProjectEdit){
+      this.invalidEndDateProject = true;
+    }else {
+      this.invalidEndDateProject = false;
+    }
+  }
+
+  validationSelectEndDateProject(event: Date): void {
+    const date = event;
+    if(date && this.minEndDateProjectEdit && date < this.minEndDateProjectEdit){
+      this.invalidEndDateProject = true;
+    }else {
+      this.invalidEndDateProject = false;
+    }
   }
 
   private setupDateValidationProjectEdit(): void {

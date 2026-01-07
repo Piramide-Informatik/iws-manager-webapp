@@ -78,7 +78,8 @@
     "NUMBER_MAX_CUSTOM": "Se espera un valor máximo de {{ value }}",
     "RECORD_ARLEADY_EXISTS": "Este registro ya existe",
     "ALREADY_EXIST": "No disponible",
-    "NUMBER_GREATER_THAN_0": "El valor debe ser mayor a 0"
+    "NUMBER_GREATER_THAN_0": "El valor debe ser mayor a 0",
+    "INVALID_DATE": "Fecha inválida"
   },
   "MENU": {
     "DASHBOARD": "Panel",

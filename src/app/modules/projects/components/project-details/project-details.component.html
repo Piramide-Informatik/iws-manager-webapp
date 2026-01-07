@@ -103,19 +103,39 @@
                     <!-- Laufzeit Start -->
                     <div class="field">
                         <label for="startDate"> {{ "PROJECTS.FORM.DURATION_START" | translate }}</label>
-                        <div class="datepicker-container">
+                        <div class="datepicker-container input-message">
                             <p-datepicker id="startDate" formControlName="startDate" [showIcon]="true"
-                                dateFormat="dd.mm.yy" [readonlyInput]="true" 
-                                [style]="{'width':'100%'}" [maxDate]="maxStartDateProjectEdit" />
+                                dateFormat="dd.mm.yy"
+                                [style]="{'width':'100%'}" [maxDate]="maxStartDateProjectEdit"
+                                [ngClass]="{ 'ng-invalid ng-dirty': invalidStartDateProject }"
+                                (onInput)="validationInputStartDateProject($event)"
+                                (onSelect)="validationSelectStartDateProject($event)"
+                                (onBlur)="invalidStartDateProject=false" />
+                            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                                formProject.get('startDate')?.invalid && 
+                                formProject.get('startDate')?.dirty || invalidStartDateProject
+                                ">
+                                {{ 'ERROR.INVALID_DATE' | translate }}
+                            </p-message>
                         </div>
                     </div>
 
                     <!-- Laufzeit Ende -->
                     <div class="field">
                         <label for="endDate"> {{ "PROJECTS.FORM.DURATION_END" | translate }}</label>
-                        <div class="datepicker-container">
+                        <div class="datepicker-container input-message">
                             <p-datepicker id="endDate" formControlName="endDate" [showIcon]="true" dateFormat="dd.mm.yy"
-                                [readonlyInput]="true" [style]="{'width':'100%'}" [minDate]="minEndDateProjectEdit" />
+                                [style]="{'width':'100%'}" [minDate]="minEndDateProjectEdit" 
+                                [ngClass]="{ 'ng-invalid ng-dirty': invalidEndDateProject }"
+                                (onInput)="validationInputEndDateProject($event)"
+                                (onSelect)="validationSelectEndDateProject($event)"
+                                (onBlur)="invalidEndDateProject=false"/>
+                            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                                formProject.get('endDate')?.invalid && 
+                                formProject.get('endDate')?.dirty || invalidEndDateProject
+                                ">
+                                {{ 'ERROR.INVALID_DATE' | translate }}
+                            </p-message>
                         </div>
                     </div>
 
@@ -186,7 +206,7 @@
     <div class="form-row flex flex-wrap gap-3 justify-content-center py-3">
         <p-button class="Save me-2" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
             [loading]="isSaving" iconPos="left" (onClick)="onSubmit()"
-            [disabled]="formProject.invalid || !formProject.dirty" />
+            [disabled]="formProject.invalid || !formProject.dirty || invalidStartDateProject || invalidEndDateProject" />
         <p-button class="Delete me-2" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
             [disabled]="isSaving" iconPos="left" [style]="{ background: '#ef4444' }"
             (onClick)="showDeleteProjectModal = true" />
