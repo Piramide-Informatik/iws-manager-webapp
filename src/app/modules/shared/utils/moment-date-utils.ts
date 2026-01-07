@@ -20,6 +20,18 @@ export function momentCreateDate(dateString: string | null | undefined): Date | 
 }
 
 /**
+ * Creates a Date object from a date string using Moment.js without timezone issues
+ * @param dateString Date string in format DD.MM.YYYY
+ * @returns Date object or null
+ */
+export function momentCreateDateFromGermanFormat(dateString: string | null | undefined): Date | null {
+  if (!dateString) return null;
+  
+  const momentDate = moment(dateString, 'DD.MM.YYYY', true); // strict parsing
+  return momentDate.isValid() ? momentDate.toDate() : null;
+}
+
+/**
  * Formats a Date object to YYYY-MM-DD string using Moment.js
  * @param date Date object to format
  * @returns Date string in YYYY-MM-DD format or undefined
