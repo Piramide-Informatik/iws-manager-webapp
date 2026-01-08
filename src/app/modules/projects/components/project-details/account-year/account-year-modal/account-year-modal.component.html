@@ -17,7 +17,7 @@
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
           isStartDateAfterEndDate || isStartDateLessOrEqualEndDateOfPreviousPeriod 
           ">
-            {{ isStartDateAfterEndDate ? ('PROJECT_PACKAGES.ERROR.PACKAGE_NUMBER_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+            {{ isStartDateAfterEndDate ? ('PROJECT_PERIOD.ERROR.START_DATE_AFTER_END_DATE_ERROR' | translate) : ('PROJECT_PERIOD.ERROR.START_DATE_LESS_OR_EQUALS_PREVIOUS_PERIOD_ERROR' | translate) }}
         </p-message>  
       </div>
 
@@ -29,7 +29,7 @@
         <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
           isEndDateLessOrEqualStartDateOfNextPeriod
           ">
-            {{ 'PROJECT_PACKAGES.ERROR.PACKAGE_NUMBER_ALREADY_EXISTS' | translate }}
+            {{ 'PROJECT_PERIOD.ERROR.END_DATE_GREATE_OR_EQUALS_NEXT_PERIOD_ERROR' | translate }}
         </p-message>    
       </div>
     </div>
