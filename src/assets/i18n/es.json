@@ -612,6 +612,11 @@
       "YEAR": "Año",
       "BEGINNING": "Inicio",
       "END": "Fin"
+    },
+    "ERROR": {
+      "START_DATE_AFTER_END_DATE_ERROR": "La fecha de inicio no puede ser posterior a la fecha de finalización.",
+      "START_DATE_LESS_OR_EQUALS_PREVIOUS_PERIOD_ERROR": "La fecha de inicio no puede ser anterior ni igual a la fecha de finalización del período anterior.",
+      "END_DATE_GREATE_OR_EQUALS_NEXT_PERIOD_ERROR": "La fecha de finalización no puede ser posterior ni igual a la fecha de inicio del período siguiente."
     }
   },
   "ORDER_PROYECT": {

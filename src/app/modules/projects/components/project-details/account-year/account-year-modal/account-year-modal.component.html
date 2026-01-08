@@ -12,13 +12,25 @@
       <div class="account_input">
         <label for="startDate">{{ 'PROJECT_PERIOD.FORM.BEGINNING' | translate }}</label>
         <p-datepicker inputId="startDate" [showIcon]="true" [showClear]="true" appendTo="body"
-          formControlName="startDate" dateFormat="dd.mm.yy" [maxDate]="maxStartDate" [minDate]="minStartDate"></p-datepicker>
+          formControlName="startDate" dateFormat="dd.mm.yy" [maxDate]="maxStartDate" [minDate]="minStartDate" 
+          [class.ng-invalid]="isStartDateAfterEndDate || isStartDateLessOrEqualEndDateOfPreviousPeriod" [class.ng-dirty]="isStartDateAfterEndDate || isStartDateLessOrEqualEndDateOfPreviousPeriod"></p-datepicker>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          isStartDateAfterEndDate || isStartDateLessOrEqualEndDateOfPreviousPeriod 
+          ">
+            {{ isStartDateAfterEndDate ? ('PROJECT_PACKAGES.ERROR.PACKAGE_NUMBER_ALREADY_EXISTS' | translate) : ('ERROR.FIELD_REQUIRED' | translate) }}
+        </p-message>  
       </div>
 
       <div class="account_input">
         <label for="endDate">{{ 'PROJECT_PERIOD.FORM.END' | translate }}</label>
         <p-datepicker inputId="endDate" [showIcon]="true" [showClear]="true" appendTo="body" formControlName="endDate"
-          dateFormat="dd.mm.yy" [minDate]="minEndDate"></p-datepicker>
+          dateFormat="dd.mm.yy" [minDate]="minEndDate"
+          [class.ng-invalid]="isEndDateLessOrEqualStartDateOfNextPeriod" [class.ng-dirty]="isEndDateLessOrEqualStartDateOfNextPeriod"></p-datepicker>
+        <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          isEndDateLessOrEqualStartDateOfNextPeriod
+          ">
+            {{ 'PROJECT_PACKAGES.ERROR.PACKAGE_NUMBER_ALREADY_EXISTS' | translate }}
+        </p-message>    
       </div>
     </div>
     <div class="flex justify-content-center gap-2 mt-3">

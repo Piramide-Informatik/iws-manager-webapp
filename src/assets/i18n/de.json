@@ -618,6 +618,11 @@
       "YEAR": "Jahr",
       "BEGINNING": "Anfang",
       "END": "Ende"
+    },
+    "ERROR": {
+      "START_DATE_AFTER_END_DATE_ERROR": "Das Startdatum darf nicht nach dem Enddatum liegen.",
+      "START_DATE_LESS_OR_EQUALS_PREVIOUS_PERIOD_ERROR": "Das Startdatum darf nicht vor oder gleich dem Enddatum des vorherigen Zeitraums liegen.",
+      "END_DATE_GREATE_OR_EQUALS_NEXT_PERIOD_ERROR": "Das Enddatum darf nicht nach oder gleich dem Startdatum des folgenden Zeitraums liegen."
     }
   },
   "ORDER_PROYECT": {
