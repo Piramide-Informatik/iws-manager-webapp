@@ -605,9 +605,9 @@
   },
   "PROJECT_PERIOD": {
     "MODAL": {
-      "CREATE": "Neu Abrechnungsjahre",
-      "EDIT": "Abrechnungsjahre bearbeiten",
-      "DELETE": "Abrechnungsjahre löschen"
+      "CREATE": "Neues Abrechnungsjahr",
+      "EDIT": "Abrechnungsjahr bearbeiten",
+      "DELETE": "Abrechnungsjahr löschen"
     },
     "TABLE": {
       "YEAR": "Jahr",
