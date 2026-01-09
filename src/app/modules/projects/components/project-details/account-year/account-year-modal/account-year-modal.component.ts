@@ -200,7 +200,6 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       },
       error: (error) => {
         this.isLoading = false;
-        this.isVisibleProjectPeriodModal.emit(false);
         this.commonMessageService.showErrorEditMessage();
         this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
         this.handleErrorPeriodDates(error);
