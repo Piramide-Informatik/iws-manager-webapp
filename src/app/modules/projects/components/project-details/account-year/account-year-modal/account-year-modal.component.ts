@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ProjectPeriodUtils } from '../../../../utils/project-period.util';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { ProjectPeriod } from '../../../../../../Entities/project-period';
@@ -43,6 +43,9 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   public maxStartDate: Date | null = null;
   public minStartDate: Date | null = null;
   public periodNo: number | null = null;
+  public isStartDateAfterEndDate = false;
+  public isStartDateLessOrEqualEndDateOfPreviousPeriod = false;
+  public isEndDateLessOrEqualStartDateOfNextPeriod = false;
 
   ngOnInit(): void {
     this.initForm();
@@ -173,6 +176,7 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         this.isLoading = false;
         this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
         this.commonMessageService.showErrorCreatedMessage();
+        this.handleErrorPeriodDates(error);
       }
     });
   }
@@ -199,8 +203,25 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         this.isVisibleProjectPeriodModal.emit(false);
         this.commonMessageService.showErrorEditMessage();
         this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
+        this.handleErrorPeriodDates(error);
       }
     });
+  }
+
+  private handleErrorPeriodDates(error: any): void {
+    if (error.error.message.includes("The start date cannot be after the end date")) {
+      this.isStartDateAfterEndDate = true;
+      this.formAccountYear.get('startDate')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.isStartDateAfterEndDate = false);
+    } else if (error.error.message.includes("cannot be less than or equal to the end date of the previous period")) {
+      this.isStartDateLessOrEqualEndDateOfPreviousPeriod = true;
+      this.formAccountYear.get('startDate')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.isStartDateLessOrEqualEndDateOfPreviousPeriod = false);
+    } else if (error.error.message.includes("It cannot be greater than or equal to the start date of the following period")) {
+      this.isEndDateLessOrEqualStartDateOfNextPeriod = true;
+      this.formAccountYear.get('endDate')?.valueChanges.pipe(take(1))
+        .subscribe(() => this.isEndDateLessOrEqualStartDateOfNextPeriod = false);
+    }
   }
 
   get isCreateMode(): boolean {
