@@ -66,3 +66,7 @@
     background: $primary-color !important;
   }
 }
+
+::ng-deep .p-message span {
+  display: contents;
+}
