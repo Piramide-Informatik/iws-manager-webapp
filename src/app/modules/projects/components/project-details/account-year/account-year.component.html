@@ -41,7 +41,7 @@
        : ('PROJECT_PERIOD.MODAL.DELETE' | translate)" 
     [modal]="true" 
     [(visible)]="visibleProjectPeriodModal"
-    [style]="{ width: modalProjectPeriodType === 'delete' ? 'auto' : '31rem' }"
+    [style]="{ 'max-width': '80vw' }"
   >
     <app-project-period-modal
       [modalType]="modalProjectPeriodType"
