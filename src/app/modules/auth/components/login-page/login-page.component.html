@@ -1,1 +1,47 @@
-<p>login-page works!</p>
+<p-card [style]="{ background: 'var(--light-cyan)', height: '250px', width: '35rem' }" [header]="'LOGIN.TITLE' | translate">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class="align-items-center mt-4">
+      <div class="user-form">
+        <label for="username">{{ "USERS.FORM.USERNAME" | translate }}</label>
+        <div class="input-message-login">
+          <input #firstInput pInputText id="username" formControlName="username" autocomplete="off" 
+          invalid="loginForm.get('username')?.invalid  
+          && loginForm.get('username')?.dirty 
+          || loginForm.get('username')?.touched"/>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+          loginForm.get('username')?.invalid && 
+          loginForm.get('username')?.dirty
+          ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
+        </div>
+      </div>
+
+      <div class="user-form">
+        <label for="password">{{ "USERS.FORM.PASSWORD" | translate }}</label>
+        <div class="input-message-login">
+            <p-password #passwordContainer formControlName="password" [feedback]="false" [toggleMask]="true" [ngClass]="{'ng-invalid ng-dirty':loginForm.get('password')?.invalid && 
+            loginForm.get('password')?.touched}" autocomplete="off" [promptLabel]="'USERS.PASSWORD_LABEL.ENTER_PASSWORD' | translate" inputId="password"
+            invalid="loginForm.get('password')?.invalid  
+            && loginForm.get('password')?.dirty 
+            || loginForm.get('password')?.touched">
+            </p-password>
+
+            <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+            loginForm.get('password')?.invalid && 
+            loginForm.get('password')?.dirty
+            ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
+        </div>
+      </div>
+
+      <div class="flex justify-content-center mt-5">
+        <p-button
+          type="submit"
+          size="large"
+          [label]="'BUTTONS.LOGIN' | translate"
+          [loading]="isLoading"
+          [disabled]="loginForm.invalid || !loginForm.dirty || isLoading"
+        />
+
+      </div>
+    </div>
+  </form>
+</p-card>

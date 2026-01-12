@@ -187,7 +187,8 @@
     "IMPORT_EMPLOYEES": "Import Employees",
     "ASSIGN_MORE_EMPLOYEES": "Assign More Employees",
     "IMPORT_ABSENCES": "Import Absences",
-    "NEW_ACCOUNTING_YEAR": "New Accounting Year"
+    "NEW_ACCOUNTING_YEAR": "New Accounting Year",
+    "LOGIN": "Login"
   },
   "CALENDAR": {
     "TITLE": "Absence Calendar {{YEAR}}",
@@ -1626,5 +1627,8 @@
     "stateholiday": "Holiday",
     "projectemployee": "Order Employee",
     "projectpackage": "Project Package"
+  },
+  "LOGIN": {
+    "TITLE": "Login"
   }
 }

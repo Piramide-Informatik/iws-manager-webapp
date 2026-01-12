@@ -187,7 +187,8 @@
     "IMPORT_EMPLOYEES": "Mitarbeiter importieren",
     "ASSIGN_MORE_EMPLOYEES": "Weitere Mitarbeiter zuordnen",
     "IMPORT_ABSENCES": "Fehltage importieren",
-    "NEW_ACCOUNTING_YEAR": "Neues Abrechnungsjahr"
+    "NEW_ACCOUNTING_YEAR": "Neues Abrechnungsjahr",
+    "LOGIN": "Anmelden"
   },
   "CALENDAR": {
     "TITLE": "Abwesenheitskalender {{YEAR}}",
@@ -1630,5 +1631,8 @@
     "stateholiday": "Feiertage",
     "projectemployee": "Mitarbeiter bestellen",
     "projectpackage": "Projektpakete"
+  },
+  "LOGIN": {
+    "TITLE": "Anmeldung"
   }
 }
