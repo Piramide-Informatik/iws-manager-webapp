@@ -40,6 +40,6 @@ import { MenubarModule } from 'primeng/menubar';
     TieredMenuModule,
     MenubarModule
   ],
-  exports: [MainLayoutComponent, SubMenuComponent ],
+  exports: [MainLayoutComponent, SubMenuComponent, HeaderComponent ],
 })
 export class LayoutModule {}
