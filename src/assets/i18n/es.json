@@ -187,7 +187,8 @@
     "IMPORT_EMPLOYEES": "Importar Empleados",
     "ASSIGN_MORE_EMPLOYEES": "Asignar Más Empleados",
     "IMPORT_ABSENCES": "Importar Ausencias",
-    "NEW_ACCOUNTING_YEAR": "Nuevo Año Contable"
+    "NEW_ACCOUNTING_YEAR": "Nuevo Año Contable",
+    "LOGIN": "Iniciar sesión"
   },
   "CALENDAR": {
     "TITLE": "Calendario de Ausencias {{YEAR}}",
@@ -1623,5 +1624,8 @@
     "stateholiday": "Feriado",
     "projectemployee": "Orden de empleado",
     "projectpackage": "Paquete de Projecto"
+  },
+  "LOGIN": {
+    "TITLE": "Iniciar Sesión"
   }
 }
