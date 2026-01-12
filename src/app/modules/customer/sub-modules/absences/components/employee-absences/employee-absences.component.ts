@@ -20,6 +20,10 @@ import { AbsenceDayCountDTO } from '../../../../../../Entities/AbsenceDayCountDT
 import { AbsenceDayUtils } from '../../utils/absenceday-utils';
 import { Title } from '@angular/platform-browser';
 
+interface EmployeeWithFullName extends Employee {
+  fullName: string;
+}
+
 @Component({
   selector: 'app-employee-absences',
   standalone: false,
@@ -63,9 +67,25 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   });
 
   currentCustomer!: Customer;
+
   employees: Signal<Employee[] | undefined> = toSignal(
     this.employeeUtils.getAllEmployeesByCustomerId(this.customerId)
   );
+
+  processedEmployees = computed<EmployeeWithFullName[] | undefined>(() => {
+    const employeesList = this.employees();
+    
+    if (!employeesList) return undefined;
+    
+    return employeesList.map(emp => {
+      const employeeWithFullName: EmployeeWithFullName = {
+        ...emp,
+        fullName: this.formatFullName(emp)
+      };
+      return employeeWithFullName;
+    });
+  });
+
   selectedEmployee!: Employee | undefined;
   years: number[] = []; // Values of dropdown
   formYearEmployee!: FormGroup;
@@ -106,24 +126,23 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private initForm(): void {
     this.formYearEmployee = new FormGroup({
       year: new FormControl(this.currentYear),
-      employeeno: new FormControl(),
-      employeeFullName: new FormControl({ value: '', disabled: true })
+      employeeFullName: new FormControl(),
+      employeeno: new FormControl({ value: '', disabled: true })
     });
 
     this.subscriptions.add(
-      this.formYearEmployee.get('employeeno')?.valueChanges.subscribe((employeeId: number | null) => {
+      this.formYearEmployee.get('employeeFullName')?.valueChanges.subscribe((employeeId: number | null) => {
         if (employeeId) {
           this.selectedEmployee = this.employees()?.find(e => e.id === employeeId);
           if (this.selectedEmployee) {
-            const fullName = `${this.selectedEmployee.firstname} ${this.selectedEmployee.lastname}`.trim();
             this.formYearEmployee.patchValue({
-              employeeFullName: fullName
+              employeeno: this.selectedEmployee.employeeno
             }, { emitEvent: false });
           }
         } else {
           this.selectedEmployee = undefined;
           this.formYearEmployee.patchValue({
-            employeeFullName: ''
+            employeeno: ''
           }, { emitEvent: false });
           this._absenceDayCounts.set([]); // Clear counts if no employee
         }
@@ -133,7 +152,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     // Observe combined changes to load counts
     this.subscriptions.add(
       combineLatest([
-        this.formYearEmployee.get('employeeno')!.valueChanges.pipe(startWith(null)),
+        this.formYearEmployee.get('employeeFullName')!.valueChanges.pipe(startWith(null)),
         this.formYearEmployee.get('year')!.valueChanges.pipe(startWith(this.currentYear))
       ]).subscribe(([employeeId, year]: [number | null, number | null]) => {
         if (employeeId && year) {
@@ -210,7 +229,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   }
 
   onCalendarAbsenceChanged(): void {
-    const employeeId = this.formYearEmployee.get('employeeno')?.value;
+    const employeeId = this.formYearEmployee.get('employeeFullName')?.value;
     const year = this.formYearEmployee.get('year')?.value;
 
     if (employeeId && year) {
@@ -242,7 +261,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
         if (employee) {
           this.selectedEmployee = employee;
           this.formYearEmployee.patchValue({
-            employeeno: this.selectedEmployee.id
+            employeeFullName: this.selectedEmployee.id
           });
         }
         localStorage.removeItem('selectedEmployeeId');
@@ -251,5 +270,9 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
         localStorage.removeItem('selectedEmployeeId');
       }
     })
+  }
+
+  private formatFullName(employee: Employee): string {
+    return `${employee.firstname} ${employee.lastname}`.trim();
   }
 }
