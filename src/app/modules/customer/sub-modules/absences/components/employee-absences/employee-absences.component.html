@@ -15,9 +15,9 @@
         <div class="field">
           <label for="employeeno">{{ 'SIDEBAR.EMPLOYEES' | translate }}</label>
           <div class="inputs flex gap-2">
-            <p-select inputId="employeeno" formControlName="employeeno" [options]="employees()" optionLabel="employeeno"
+            <p-select inputId="employeeFullName" formControlName="employeeFullName" [options]="processedEmployees()" optionLabel="fullName"
               optionValue="id" [showClear]="true" [emptyMessage]="'TABLES.NO_RESULTS_FOUND' | translate" />
-            <input pInputText id="employeeFullName" formControlName="employeeFullName">
+            <input pInputText id="employeeno" formControlName="employeeno">
           </div>
         </div>
       </form>

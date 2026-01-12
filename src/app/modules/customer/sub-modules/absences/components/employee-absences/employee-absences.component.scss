@@ -20,5 +20,13 @@
 
     .inputs {
         min-width: 15rem;
+
+        p-select {
+            width: 23rem;
+        }
+
+        input {
+            width: 10rem !important;
+        }
     }
 }
