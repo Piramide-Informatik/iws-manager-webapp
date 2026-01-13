@@ -86,8 +86,8 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       projectId: this.projectId
     }
     if (formData.dates) {
-      body.endDate = formatDate(formData.dates[1], 'yyyy-MM-dd', 'en-US'),
-      body.startDate = formatDate(formData.dates[0], 'yyyy-MM-dd', 'en-US')
+      body.endDate = formatDate(formData.dates[1], 'yyyy-MM-dd', 'en-US');
+      body.startDate = formatDate(formData.dates[0], 'yyyy-MM-dd', 'en-US');
     }
     if (this.modalProjectPackageType === 'create') {
       this.projectPackagesUtils.addProjectPage(body).subscribe({
