@@ -32,6 +32,10 @@
         </div>
       </div>
 
+      <div class="flex justify-content-center mt-3" *ngIf="errorMessage">
+        <p-message severity="error" [text]="errorMessage"></p-message>
+      </div>
+
       <div class="flex justify-content-center mt-5">
         <p-button
           type="submit"
