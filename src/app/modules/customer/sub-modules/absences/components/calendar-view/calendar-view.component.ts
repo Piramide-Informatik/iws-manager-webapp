@@ -51,7 +51,6 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
       name: aType.name,
       label: aType.label,
       shareOfDay: aType.shareOfDay,
-      isHoliday: aType.isHoliday && aType.isHoliday == 1,
       hours: aType.hours
     }));
   });
