@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { SidebarStateService } from '../sidebar-state.service'
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -14,9 +15,11 @@ import { SidebarStateService } from '../sidebar-state.service'
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
   sidebarState = inject(SidebarStateService);
+  authService = inject(AuthService);
   sidebarCollapsed$ = this.sidebarState.sidebarCollapsed$;
   isStateLoaded = false;
   mainMenuVisible: boolean = false;
+  username: string = this.authService.getUsername() || 'User';
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   currentSidebarItems: MenuItem[] = [];
   mainMenuItems: any[] = [];

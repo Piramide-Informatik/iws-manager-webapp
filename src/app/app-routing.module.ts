@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 import { BlankComponent } from './core/components/blank/blank.component';
+import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -29,6 +31,7 @@ const routes: Routes = [
   {
     path: 'customers',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./modules/customer/customer.module').then(
         (c) => c.CustomerModule
@@ -37,6 +40,7 @@ const routes: Routes = [
   {
     path: 'projects',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./modules/projects/project.module').then(
         (p) => p.ProjectModule
@@ -45,6 +49,7 @@ const routes: Routes = [
   {
     path: 'invoicing',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -55,6 +60,7 @@ const routes: Routes = [
   {
     path: 'controlling',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -65,6 +71,7 @@ const routes: Routes = [
   {
     path: 'master-data',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./modules/master-data/master-data.module').then(
         (md) => md.MasterDataModule

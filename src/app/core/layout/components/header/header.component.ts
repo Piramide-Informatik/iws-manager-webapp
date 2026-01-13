@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from '../../../../Services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +18,11 @@ export class HeaderComponent implements OnInit {
   @Output() menuSelected = new EventEmitter<string>();
   @Input() items: any[] = [];
   userMenuItems: MenuItem[] = [];
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.userMenuItems = [
@@ -60,7 +67,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    // Implement logout logic
-    console.log('Logging out...');
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
   }
 }
