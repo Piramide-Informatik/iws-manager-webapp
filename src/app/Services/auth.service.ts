@@ -17,7 +17,7 @@ export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USERNAME_KEY = 'auth_username';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   login(credentials: any): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.AUTH_URL}/login`, credentials).pipe(
