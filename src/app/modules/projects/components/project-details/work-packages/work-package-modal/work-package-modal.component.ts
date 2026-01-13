@@ -7,6 +7,7 @@ import { Subscription, take } from 'rxjs';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccError, OccErrorType } from '../../../../../shared/utils/occ-error';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-modal-project-package',
@@ -85,8 +86,8 @@ export class ModalWorkPackageComponent implements OnInit, OnChanges {
       projectId: this.projectId
     }
     if (formData.dates) {
-      body.startDate = formData.dates[0];
-      body.endDate = formData.dates[1];
+      body.endDate = formatDate(formData.dates[1], 'yyyy-MM-dd', 'en-US'),
+      body.startDate = formatDate(formData.dates[0], 'yyyy-MM-dd', 'en-US')
     }
     if (this.modalProjectPackageType === 'create') {
       this.projectPackagesUtils.addProjectPage(body).subscribe({
