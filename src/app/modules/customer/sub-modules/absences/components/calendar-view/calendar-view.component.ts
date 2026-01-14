@@ -19,7 +19,8 @@ interface MonthRow {
   month: number,
   value: string,
   hasData: boolean,
-  data: AbsenceDay | null
+  data: AbsenceDay | null,
+  isSelected?: boolean
 }
 
 @Component({
