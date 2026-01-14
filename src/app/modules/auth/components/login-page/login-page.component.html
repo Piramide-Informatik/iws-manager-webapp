@@ -1,6 +1,6 @@
-<p-card [style]="{ background: 'var(--light-cyan)', height: '250px', width: '35rem' }" [header]="'LOGIN.TITLE' | translate">
+<p-card [style]="{ background: 'var(--light-cyan)', height: '260px', width: '35rem' }" [header]="'LOGIN.TITLE' | translate">
   <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div class="align-items-center mt-4">
+    <div class="align-items-center mt-4 relative">
       <div class="user-form">
         <label for="username">{{ "USERS.FORM.USERNAME" | translate }}</label>
         <div class="input-message-login">
@@ -32,11 +32,11 @@
         </div>
       </div>
 
-      <div class="flex justify-content-center mt-3" *ngIf="errorMessage">
+      <div class="message-error-credentials" *ngIf="errorMessage">
         <p-message severity="error" [text]="errorMessage"></p-message>
       </div>
 
-      <div class="flex justify-content-center mt-5">
+      <div class="flex justify-content-center mt-8">
         <p-button
           type="submit"
           size="large"

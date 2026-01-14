@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../Services/auth.service';
 import { Router } from '@angular/router';
+import { PageTitleService } from '../../../../shared/services/page-title.service';
 
 @Component({
   selector: 'app-login-page',
@@ -17,10 +18,12 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly pageTitleService: PageTitleService
   ) {}
 
   ngOnInit(): void {
+    this.updateTitle();
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
       return;
@@ -61,5 +64,9 @@ export class LoginPageComponent implements OnInit {
         console.error('Login failed', error);
       }
     });
+  }
+
+  private updateTitle(): void {
+    this.pageTitleService.setTranslatedTitle('LOGIN.TITLE');
   }
 }

@@ -33,6 +33,14 @@
   }
 }
 
+.message-error-credentials {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 ::ng-deep p-card .p-card-body > .p-card-title {
     font-size: 20px !important;
 }

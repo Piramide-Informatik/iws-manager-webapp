@@ -959,7 +959,7 @@
     "FORM": {
       "USER_FORM": "Nuevo Usuario",
       "EDIT_TITLE": "Editar Usuario",
-      "USERNAME": "Nombre de usuario",
+      "USERNAME": "Usuario",
       "FIRSTNAME": "Nombre",
       "LASTNAME": "Apellido",
       "EMAIL": "Correo electrónico",
