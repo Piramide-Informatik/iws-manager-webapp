@@ -38,4 +38,28 @@ export class UserPreferenceService {
     return userPreferences['language']
   }
 
+  clearFilters() {
+    // Clear userPreferences but keep language
+    const userPreferenceData = localStorage.getItem('userPreferences');
+    if (userPreferenceData) {
+      const userPreferences: UserPreference = JSON.parse(userPreferenceData);
+      const language = userPreferences['language'];
+      const newUserPreferences: UserPreference = {};
+      if (language) {
+        newUserPreferences['language'] = language;
+      }
+      localStorage.setItem('userPreferences', JSON.stringify(newUserPreferences));
+    }
+
+    // Clear PrimeNG table states that store filters and sorting
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.endsWith('-table-state')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+  }
+
 }
