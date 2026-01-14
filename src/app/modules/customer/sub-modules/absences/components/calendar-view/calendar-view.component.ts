@@ -11,7 +11,7 @@ import { AbsenceDay } from '../../../../../../Entities/absenceDay';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { momentCreateDate } from '../../../../../shared/utils/moment-date-utils';
 import { OccErrorType } from '../../../../../shared/utils/occ-error';
-import { Subscription } from 'rxjs';
+import { Subscription, lastValueFrom } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 interface MonthRow {
@@ -531,7 +531,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
           absenceDate: `${this.currentYear}-${monthNumeric}-${dayNumeric}`
         };
 
-        return this.absenceDayUtils.addAbsenceDay(newAbsenceDay).toPromise();
+        return lastValueFrom(this.absenceDayUtils.addAbsenceDay(newAbsenceDay));
       }
       return Promise.resolve(null);
     });
