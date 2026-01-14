@@ -341,12 +341,6 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   private openPopoverForSelectedCells(event: MouseEvent): void {
     if (this.selectedCells.length === 0 || !this.employee) return;
 
-    // Verify if ALL selected cells are empty
-    const allCellsEmpty = this.selectedCells.every(cell => {
-      const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
-      return !calendarCell.hasData && !calendarCell.data && calendarCell.value === '';
-    });
-
     // Verify if ALL selected cells have data
     const allCellsHaveData = this.selectedCells.every(cell => {
       const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
