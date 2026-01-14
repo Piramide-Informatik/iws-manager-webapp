@@ -209,7 +209,8 @@
     "ERROR": {
       "INVALID_CELL": "Celda no válida",
       "INVALID_DAY": "{{MONTH}} tiene {{DAYS}} días. Día {{DAY}} no existe.",
-      "NO_EMPLOYEE_SELECTED": "No hay empleado seleccionado"
+      "NO_EMPLOYEE_SELECTED": "No hay empleado seleccionado",
+      "MIXED_CELL_STATES": "No se puede aplicar la operación a celdas con estados diferentes."
     },
     "CELL_INFO": {
       "EMPTY": "{{MONTH}} - Día {{DAY}} (Vacío)",
