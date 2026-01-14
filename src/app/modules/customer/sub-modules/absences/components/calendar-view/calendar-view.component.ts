@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CustomPopoverComponent } from '../../../../../shared/components/custom-popover/custom-popover.component';
 import { AbsenceTypeUtils } from '../../../../../master-data/components/absence-types/utils/absence-type-utils';
@@ -39,6 +39,12 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
   public showOCCErrorModalCalendar = false;
   public errorType: OccErrorType = 'UPDATE_UPDATED';
+
+  // Original absence list (loaded on load/refresh)
+  private originalAbsenceDays: AbsenceDay[] = [];
+  // Current absence list (updated before any operation)
+  private currentAbsenceDays: AbsenceDay[] = [];
+  private readonly cdr = inject(ChangeDetectorRef);
 
   readonly absenceTypesSortedSignal = toSignal(
     this.absenceTypeService.getAllAbsenceTypesSortedByLabel(),
@@ -102,6 +108,10 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
     if ((changes['employee'] && this.employee) || (changes['currentYear'] && this.employee)) {
       this.clearAllCells();
       this.absenceDayUtils.getAllAbsenceDaysByEmployeeIdByYear(this.employee.id, this.currentYear).subscribe(absenceDays => {
+        // STORE ORIGINAL ABSENCES
+        this.originalAbsenceDays = [...absenceDays];
+        this.currentAbsenceDays = [...absenceDays];
+
         if (absenceDays.length > 0) {
           const absenceDaysMapped = absenceDays.map(ad => ({
             ...ad,
@@ -117,6 +127,8 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
       })
     } else if (changes['employee'] && !this.employee) {
       this.clearAllCells();
+      this.originalAbsenceDays = [];
+      this.currentAbsenceDays = [];
     }
   }
 
@@ -292,9 +304,20 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Method to handle popover selection
-  onPopoverSelected(absenceTypeSelectedPopover: AbsenceType | null): void {
+  async onPopoverSelected(absenceTypeSelectedPopover: AbsenceType | null): Promise<void> {
     if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1 && this.employee) {
       const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
+
+      // FIRST: Verify concurrent changes BEFORE any operation
+      const hasConcurrentChanges = await this.checkForConcurrentChangesAsync();
+
+      if (hasConcurrentChanges) {
+        // There are concurrent changes, show OCC error
+        this.errorType = 'UPDATE_UPDATED';
+        this.showOCCErrorModalCalendar = true;
+        this.resetSelection();
+        return; // Exit without doing any operation
+      }
 
       // Select item (absence type) in cell void
       if (absenceTypeSelectedPopover && !cell.data && !cell.hasData && cell.value === '') {
@@ -314,6 +337,10 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
             cell.value = absenceTypeSelectedPopover.label;
             cell.hasData = true;
             cell.data = absenceDayCreated;
+
+            // update both lists after creating
+            this.currentAbsenceDays.push(absenceDayCreated);
+            this.originalAbsenceDays.push(absenceDayCreated);
             this.absenceChanged.emit();
           },
           error: (err) => {
@@ -332,14 +359,22 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
             this.commonMessageService.showDeleteSucessfullMessage();
             cell.value = '';
             cell.hasData = false;
+            // cell.data = null;
+
+            // update both lists after deleting
+            const absenceIdToRemove = cell.data?.id;
+            this.currentAbsenceDays = this.currentAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
+            this.originalAbsenceDays = this.originalAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
+
             cell.data = null;
+            this.cdr.detectChanges();
             this.absenceChanged.emit();
           },
           error: (err) => {
-            if (err.error.message.includes('AbsenceDay not found')) {
-              this.errorType = 'DELETE_UNEXISTED';
-              this.showOCCErrorModalCalendar = true;
-            }
+            // if (err.error.message.includes('AbsenceDay not found')) {
+            //   this.errorType = 'DELETE_UNEXISTED';
+            //   this.showOCCErrorModalCalendar = true;
+            // }
             this.commonMessageService.showDeleteSucessfullMessage();
           }
         });
@@ -445,7 +480,13 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   public onRefresh(): void {
     if (this.employee?.id) {
       localStorage.setItem('selectedEmployeeId', this.employee.id.toString());
-      globalThis.location.reload();
+
+      this.absenceDayUtils.getAllAbsenceDaysByEmployeeIdByYear(this.employee.id, this.currentYear).subscribe(absenceDays => {
+        this.originalAbsenceDays = [...absenceDays];
+        this.currentAbsenceDays = [...absenceDays];
+
+        globalThis.location.reload();
+      });
     }
   }
 
@@ -454,5 +495,80 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
     if (savedEmployeeId) {
       this.employeeIdAfterRefresh.emit(Number(savedEmployeeId));
     }
+  }
+
+  // Async method to verify concurrent changes
+  private async checkForConcurrentChangesAsync(): Promise<boolean> {
+    // First, refresh current absences from server
+    await this.refreshCurrentAbsenceDaysAsync();
+
+    // Then check for changes
+    return this.checkForConcurrentChanges();
+  }
+
+  // Async method to refresh current absence days from the server
+  private refreshCurrentAbsenceDaysAsync(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.employee) {
+        resolve();
+        return;
+      }
+
+      this.absenceDayUtils.getAllAbsenceDaysByEmployeeIdByYear(this.employee.id, this.currentYear).subscribe({
+        next: (absenceDays) => {
+          this.currentAbsenceDays = [...absenceDays];
+          resolve();
+        },
+        error: (err) => {
+          console.error('Error: could not refresh current absence days ', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+  // Method to verify concurrent changes (OCC) - IMPROVED
+  private checkForConcurrentChanges(): boolean {
+    // Get an updated snapshot from the server
+    // For a more robust implementation, we could store a "hash" or "timestamp"
+    // of the last load, but for simplicity, we will compare the absences
+
+    // Create a Map of original absences by date and type
+    const originalMap = new Map<string, AbsenceDay>();
+    this.originalAbsenceDays.forEach(ad => {
+      if (ad.absenceDate) {
+        const key = `${ad.absenceDate}-${ad.absenceType?.id || 'none'}`;
+        originalMap.set(key, ad);
+      }
+    });
+
+    // Create a Map of current absences by date and type
+    const currentMap = new Map<string, AbsenceDay>();
+    this.currentAbsenceDays.forEach(ad => {
+      if (ad.absenceDate) {
+        const key = `${ad.absenceDate}-${ad.absenceType?.id || 'none'}`;
+        currentMap.set(key, ad);
+      }
+    });
+
+    // If there is a difference in the number of absences, there are changes
+    if (originalMap.size !== currentMap.size) {
+      return true;
+    }
+
+    // Verify if all original absences exist in the current absences
+    for (const [key, absence] of originalMap.entries()) {
+      if (!currentMap.has(key)) {
+        return true; // Someone deleted an absence we had
+      }
+
+      // If you want to verify more details (like changes in the type)
+      const currentAbsence = currentMap.get(key);
+      if (currentAbsence && absence.absenceType?.id !== currentAbsence.absenceType?.id) {
+        return true; // Someone changed the type of absence
+      }
+    }
+
+    return false;
   }
 }
