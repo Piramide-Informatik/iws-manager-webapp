@@ -49,8 +49,6 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
   // Array to store selected cells
   private selectedCells: { monthIndex: number, dayIndex: number }[] = [];
-  // To display selected cells (we can change the CSS class)
-  private selectionVisualStyle: 'highlight' | 'border' = 'highlight';
 
   readonly absenceTypesSortedSignal = toSignal(
     this.absenceTypeService.getAllAbsenceTypesSortedByLabel(),
