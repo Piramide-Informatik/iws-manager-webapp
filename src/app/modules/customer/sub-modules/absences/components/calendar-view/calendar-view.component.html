@@ -3,7 +3,7 @@
         <h2>{{ getCalendarTitle() }}</h2>
     </div>
 
-    <div class="calendar-wrapper">  
+    <div class="calendar-wrapper">
         <div class="calendar-grid">
             <!-- Days header -->
             <div class="calendar-row header-row">
@@ -25,6 +25,7 @@
                 <!-- Day cells for this month -->
                 <button *ngFor="let day of days; let dayIndex = index" class="calendar-cell"
                     [ngClass]="getCellClass(monthIndex, dayIndex)" (click)="onCellClick(monthIndex, dayIndex, $event)"
+                    (contextmenu)="onCellClick(monthIndex, dayIndex, $event); $event.preventDefault()"
                     onKeyUp="onCellKeyUp($any($event), monthIndex, dayIndex)"
                     (keyup.enter)="onCellKeyUp($any($event), monthIndex, dayIndex)"
                     [title]="getCellTitle(monthIndex, dayIndex)">
@@ -61,6 +62,10 @@
             <div class="legend-color even-month"></div>
             <span>{{ 'CALENDAR.LEGEND.EVEN_MONTH' | translate }}</span>
         </div>
+
+        <div class="legend-item">
+            <div class="legend-color selected-day"></div>
+        </div>
     </div>
 
     <!-- Popover Component -->
@@ -70,11 +75,6 @@
 </div>
 <p-toast />
 
-<app-occ-error-modal 
-  *ngIf="showOCCErrorModalCalendar" 
-  [errorType]="errorType" 
-  [useEmitter]="true"
-  (refresh)="onRefresh()"
-  [reloadCurrentPage]="true"
-  (onClose)="showOCCErrorModalCalendar = false">
+<app-occ-error-modal *ngIf="showOCCErrorModalCalendar" [errorType]="errorType" [useEmitter]="true"
+    (refresh)="onRefresh()" [reloadCurrentPage]="true" (onClose)="showOCCErrorModalCalendar = false">
 </app-occ-error-modal>
