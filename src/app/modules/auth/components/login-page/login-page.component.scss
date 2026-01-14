@@ -1,69 +1,71 @@
 @use "variables" as *;
 
-
-.user-form {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  
-  label {
-    font-size: 16px !important;
-    width: 130px;
-    flex-shrink: 0;
-  }
-
-  input, p-password {
-    width: 100%;
-    font-size: 16px !important;
-    height: 28px !important;
-  } 
-
-  
-  .input-message-login {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
-    ::ng-deep p-message span.p-message-text {
-        position: absolute;
-        top: 26px !important;
-        font-size: 14px !important;
+.container {
+    .user-form {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      
+      label {
+        font-size: 16px !important;
+        width: 130px;
+        flex-shrink: 0;
+      }
+    
+      input, p-password {
+        width: 100%;
+        font-size: 16px !important;
+        height: 28px !important;
+      } 
+    
+      
+      .input-message-login {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    
+        ::ng-deep p-message span.p-message-text {
+            position: absolute;
+            top: 26px !important;
+            font-size: 14px !important;
+        }
+      }
     }
-  }
-}
-
-.message-error-credentials {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    
+    .message-error-credentials {
+        position: absolute;
+        bottom: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    
+    ::ng-deep p-password > .p-password {
+        width: 100% !important;
+        
+        .p-password-input {
+            width: 100% !important;
+            height: 28px !important;
+            font-size: 16px !important;
+        }
+    }
+    
+    ::ng-deep p-button {
+        width: 100% !important;
+        
+        .p-button {
+            width: 100% !important;
+            height: 30px !important;
+            
+            .p-button-label {
+                font-size: 16px !important;
+            }
+        }
+    }
 }
 
 ::ng-deep p-card .p-card-body > .p-card-title {
     font-size: 20px !important;
-}
-
-::ng-deep p-password > .p-password {
-    width: 100% !important;
-
-    .p-password-input {
-        width: 100% !important;
-        height: 28px !important;
-        font-size: 16px !important;
-    }
-}
-
-::ng-deep p-button {
-    width: 100% !important;
-
-    .p-button {
-        width: 100% !important;
-        height: 30px !important;
-
-        .p-button-label {
-            font-size: 16px !important;
-        }
-    }
 }
