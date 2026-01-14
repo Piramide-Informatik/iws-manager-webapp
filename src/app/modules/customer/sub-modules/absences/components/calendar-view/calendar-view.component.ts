@@ -47,6 +47,11 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   private currentAbsenceDays: AbsenceDay[] = [];
   private readonly cdr = inject(ChangeDetectorRef);
 
+  // Array to store selected cells
+  private selectedCells: { monthIndex: number, dayIndex: number }[] = [];
+  // To display selected cells (we can change the CSS class)
+  private selectionVisualStyle: 'highlight' | 'border' = 'highlight';
+
   readonly absenceTypesSortedSignal = toSignal(
     this.absenceTypeService.getAllAbsenceTypesSortedByLabel(),
     { initialValue: [] }
@@ -222,6 +227,8 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
     const isValid = this.isValidDay(monthIndex, dayIndex);
     const isEvenMonth = this.isEvenMonth(monthIndex);
     const isWeekendOrHoliday = this.isWeekendOrHoliday(monthIndex, dayIndex);
+    const cell = this.calendarData[monthIndex][dayIndex];
+    const isSelected = cell.isSelected || false;
 
     let classes = baseClass;
 
@@ -242,18 +249,52 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
       classes += ' no-employee-selected';
     }
 
-    const cell = this.calendarData[monthIndex][dayIndex];
     if (cell.hasData) {
       classes += ' has-data';
+    }
+
+    if (isSelected) {
+      classes += ' selected-cell';
     }
 
     return classes;
   }
 
-  // Method to handle cell click
+  // Method to handle cell click - CORREGIDO
   onCellClick(monthIndex: number, dayIndex: number, event: MouseEvent): void {
     if (this.isValidDay(monthIndex, dayIndex) && !this.isWeekendOrHoliday(monthIndex, dayIndex) && this.employee) {
 
+      // Verify if it's left click (event.button === 0) or right click (event.button === 2)
+      if (event.button === 0) { // Left click
+        event.preventDefault(); // Prevent browser context menu
+        this.handleLeftClick(monthIndex, dayIndex);
+        return;
+      }
+
+      // Left click - handle selection logic FIRST
+      // If there are selected cells
+      if (this.selectedCells.length > 0) {
+        const isClickingOnSelectedCell = this.selectedCells.some(
+          cell => cell.monthIndex === monthIndex && cell.dayIndex === dayIndex
+        );
+
+        if (isClickingOnSelectedCell) {
+          // Click on selected cell: open popover for all selected cells
+          this.openPopoverForSelectedCells(event);
+          return;
+        } else {
+          // Click on non-selected cell: clear previous selection and DON'T open popover
+          // User needs to click AGAIN to open popover for the new cell
+          this.clearSelection();
+
+          // Save the new cell as selected (opcional, para que en el próximo click funcione)
+          this.selectedMonthIndex = monthIndex;
+          this.selectedDayIndex = dayIndex;
+          return; // ← ¡IMPORTANTE! Salir sin abrir popover
+        }
+      }
+
+      // If no cells are selected, proceed with normal individual selection
       // Save the selected cell
       this.selectedMonthIndex = monthIndex;
       this.selectedDayIndex = dayIndex;
@@ -267,6 +308,67 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
         this.customPopover.showButtonDelete = true;
         this.customPopover.toggle(event);
       } else if (this.customPopover && !cellSelected.data && !cellSelected.hasData) {
+        this.customPopover.values = this.absenceTypesPopOverList();
+        this.customPopover.showButtonDelete = false;
+        this.customPopover.toggle(event);
+      }
+    }
+  }
+
+  private handleLeftClick(monthIndex: number, dayIndex: number): void {
+    const cell = this.calendarData[monthIndex][dayIndex];
+
+    // Verify if the cell is already selected
+    const isAlreadySelected = this.selectedCells.some(
+      selected => selected.monthIndex === monthIndex && selected.dayIndex === dayIndex
+    );
+
+    if (isAlreadySelected) {
+      // Deselect the cell
+      this.selectedCells = this.selectedCells.filter(
+        selected => !(selected.monthIndex === monthIndex && selected.dayIndex === dayIndex)
+      );
+      cell.isSelected = false;
+    } else {
+      // Select the cell
+      this.selectedCells.push({ monthIndex, dayIndex });
+      cell.isSelected = true;
+    }
+
+    // Update view
+    this.cdr.detectChanges();
+  }
+
+  // Method to open popover for all selected cells
+  private openPopoverForSelectedCells(event: MouseEvent): void {
+    if (this.selectedCells.length === 0 || !this.employee) return;
+
+    // Verify if ALL selected cells are empty
+    const allCellsEmpty = this.selectedCells.every(cell => {
+      const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+      return !calendarCell.hasData && !calendarCell.data && calendarCell.value === '';
+    });
+
+    // Verify if ALL selected cells have data
+    const allCellsHaveData = this.selectedCells.every(cell => {
+      const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+      return calendarCell.hasData && calendarCell.data && calendarCell.value !== '';
+    });
+
+    if (this.customPopover) {
+      if (allCellsEmpty) {
+        // All empty: show absence types
+        this.customPopover.values = this.absenceTypesPopOverList();
+        this.customPopover.showButtonDelete = false;
+        this.customPopover.toggle(event);
+      } else if (allCellsHaveData) {
+        // All have data: show only delete option
+        this.customPopover.values = [];
+        this.customPopover.showButtonDelete = true;
+        this.customPopover.toggle(event);
+      } else {
+        // Mix: show both or error message
+        // For now, show absence types
         this.customPopover.values = this.absenceTypesPopOverList();
         this.customPopover.showButtonDelete = false;
         this.customPopover.toggle(event);
@@ -305,85 +407,217 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Method to handle popover selection
+  // Method to handle popover selection - MODIFICADO para múltiples celdas
   async onPopoverSelected(absenceTypeSelectedPopover: AbsenceType | null): Promise<void> {
-    if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1 && this.employee) {
-      const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
-
-      // FIRST: Verify concurrent changes BEFORE any operation
-      const hasConcurrentChanges = await this.checkForConcurrentChangesAsync();
-
-      if (hasConcurrentChanges) {
-        // There are concurrent changes, show OCC error
-        this.errorType = 'UPDATE_UPDATED';
-        this.showOCCErrorModalCalendar = true;
-        this.resetSelection();
-        return; // Exit without doing any operation
-      }
-
-      // Select item (absence type) in cell void
-      if (absenceTypeSelectedPopover && !cell.data && !cell.hasData && cell.value === '') {
-        // Create a absence day
-        const monthNumeric = this.selectedMonthIndex + 1 < 10 ? `0${this.selectedMonthIndex + 1}` : this.selectedMonthIndex + 1;
-        const dayNumeric = this.selectedDayIndex + 1 < 10 ? `0${this.selectedDayIndex + 1}` : this.selectedDayIndex + 1;
-        const newAbsenceDay: Omit<AbsenceDay, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
-          employee: this.employee,
-          absenceType: absenceTypeSelectedPopover,
-          absenceDate: `${this.currentYear}-${monthNumeric}-${dayNumeric}`
-        };
-
-        // Save the selected value
-        this.absenceDayUtils.addAbsenceDay(newAbsenceDay).subscribe({
-          next: (absenceDayCreated) => {
-            this.commonMessageService.showCreatedSuccesfullMessage();
-            cell.value = absenceTypeSelectedPopover.label;
-            cell.hasData = true;
-            cell.data = absenceDayCreated;
-
-            // update both lists after creating
-            this.currentAbsenceDays.push(absenceDayCreated);
-            this.originalAbsenceDays.push(absenceDayCreated);
-            this.absenceChanged.emit();
-          },
-          error: (err) => {
-            if (err.error.message.includes('Absence already exists')) {
-              this.showOCCErrorModalCalendar = true;
-            }
-            this.commonMessageService.showErrorCreatedMessage();
-          }
-        });
-
-        // Selected clear in cell with data
-      } else if (!absenceTypeSelectedPopover && cell.data && cell.hasData && cell.value) {
-        // Delete absence day
-        this.absenceDayUtils.deleteAbsenceDay(cell.data.id).subscribe({
-          next: () => {
-            this.commonMessageService.showDeleteSucessfullMessage();
-            cell.value = '';
-            cell.hasData = false;
-            // cell.data = null;
-
-            // update both lists after deleting
-            const absenceIdToRemove = cell.data?.id;
-            this.currentAbsenceDays = this.currentAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
-            this.originalAbsenceDays = this.originalAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
-
-            cell.data = null;
-            this.cdr.detectChanges();
-            this.absenceChanged.emit();
-          },
-          error: (err) => {
-            // if (err.error.message.includes('AbsenceDay not found')) {
-            //   this.errorType = 'DELETE_UNEXISTED';
-            //   this.showOCCErrorModalCalendar = true;
-            // }
-            this.commonMessageService.showDeleteSucessfullMessage();
-          }
-        });
-      }
+    // If there are selected cells, process all
+    if (this.selectedCells.length > 0) {
+      await this.processMultipleCellsSelection(absenceTypeSelectedPopover);
+    }
+    // If there are no selected cells, process individual cell
+    else if (this.selectedMonthIndex !== -1 && this.selectedDayIndex !== -1 && this.employee) {
+      await this.processSingleCellSelection(absenceTypeSelectedPopover);
     }
 
     // Reset selection
     this.resetSelection();
+    this.clearSelection();
+  }
+
+  // Process selection for multiple cells
+  private async processMultipleCellsSelection(absenceTypeSelectedPopover: AbsenceType | null): Promise<void> {
+    if (!this.employee || this.selectedCells.length === 0) return;
+
+    // FIRST: Verify concurrent changes BEFORE any operation
+    const hasConcurrentChanges = await this.checkForConcurrentChangesAsync();
+
+    if (hasConcurrentChanges) {
+      this.errorType = 'UPDATE_UPDATED';
+      this.showOCCErrorModalCalendar = true;
+      return;
+    }
+
+    // Determine what action to perform based on the state of the cells
+    const allCellsEmpty = this.selectedCells.every(cell => {
+      const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+      return !calendarCell.hasData && !calendarCell.data && calendarCell.value === '';
+    });
+
+    const allCellsHaveData = this.selectedCells.every(cell => {
+      const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+      return calendarCell.hasData && calendarCell.data && calendarCell.value !== '';
+    });
+
+    if (absenceTypeSelectedPopover && allCellsEmpty) {
+      // Create absences for all selected cells
+      await this.createAbsencesForSelectedCells(absenceTypeSelectedPopover);
+    } else if (!absenceTypeSelectedPopover && allCellsHaveData) {
+      // Delete absences for all selected cells
+      await this.deleteAbsencesForSelectedCells();
+    } else {
+      // Invalid operation
+      console.warn('Operation not supported for the current cell combination');
+      this.commonMessageService.showCustomSeverityAndMessage('error', 'MESSAGE.ERROR', 'CALENDAR.ERROR.MIXED_CELL_STATES');
+    }
+  }
+
+  // Process selection for single cell (existing code refactored)
+  private async processSingleCellSelection(absenceTypeSelectedPopover: AbsenceType | null): Promise<void> {
+    const cell = this.calendarData[this.selectedMonthIndex][this.selectedDayIndex];
+
+    // FIRST: Verify concurrent changes BEFORE any operation
+    const hasConcurrentChanges = await this.checkForConcurrentChangesAsync();
+
+    if (hasConcurrentChanges) {
+      this.errorType = 'UPDATE_UPDATED';
+      this.showOCCErrorModalCalendar = true;
+      return;
+    }
+
+    // Select item (absence type) in cell void
+    if (absenceTypeSelectedPopover && !cell.data && !cell.hasData && cell.value === '') {
+      // Create absence (existing code)
+      const monthNumeric = this.selectedMonthIndex + 1 < 10 ? `0${this.selectedMonthIndex + 1}` : this.selectedMonthIndex + 1;
+      const dayNumeric = this.selectedDayIndex + 1 < 10 ? `0${this.selectedDayIndex + 1}` : this.selectedDayIndex + 1;
+      const newAbsenceDay: Omit<AbsenceDay, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+        employee: this.employee!,
+        absenceType: absenceTypeSelectedPopover,
+        absenceDate: `${this.currentYear}-${monthNumeric}-${dayNumeric}`
+      };
+
+      // Save the selected value
+      this.absenceDayUtils.addAbsenceDay(newAbsenceDay).subscribe({
+        next: (absenceDayCreated) => {
+          this.commonMessageService.showCreatedSuccesfullMessage();
+          cell.value = absenceTypeSelectedPopover.label;
+          cell.hasData = true;
+          cell.data = absenceDayCreated;
+
+          // update both lists after creating
+          this.currentAbsenceDays.push(absenceDayCreated);
+          this.originalAbsenceDays.push(absenceDayCreated);
+          this.absenceChanged.emit();
+        },
+        error: (err) => {
+          if (err.error.message.includes('Absence already exists')) {
+            this.showOCCErrorModalCalendar = true;
+          }
+          this.commonMessageService.showErrorCreatedMessage();
+        }
+      });
+
+    } else if (!absenceTypeSelectedPopover && cell.data && cell.hasData && cell.value) {
+      // Delete absence day (existing code)
+      this.absenceDayUtils.deleteAbsenceDay(cell.data.id).subscribe({
+        next: () => {
+          this.commonMessageService.showDeleteSucessfullMessage();
+          cell.value = '';
+          cell.hasData = false;
+
+          // update both lists after deleting
+          const absenceIdToRemove = cell.data?.id;
+          this.currentAbsenceDays = this.currentAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
+          this.originalAbsenceDays = this.originalAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
+
+          cell.data = null;
+          this.cdr.detectChanges();
+          this.absenceChanged.emit();
+        },
+        error: (err) => {
+          this.commonMessageService.showDeleteSucessfullMessage();
+        }
+      });
+    }
+  }
+
+  // Create absences for multiple cells
+  private async createAbsencesForSelectedCells(absenceType: AbsenceType): Promise<void> {
+    const creationPromises = this.selectedCells.map(cell => {
+      const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+
+      // Only create if the cell is empty
+      if (!calendarCell.hasData && !calendarCell.data && calendarCell.value === '') {
+        const monthNumeric = cell.monthIndex + 1 < 10 ? `0${cell.monthIndex + 1}` : cell.monthIndex + 1;
+        const dayNumeric = cell.dayIndex + 1 < 10 ? `0${cell.dayIndex + 1}` : cell.dayIndex + 1;
+        const newAbsenceDay: Omit<AbsenceDay, 'id' | 'createdAt' | 'updatedAt' | 'version'> = {
+          employee: this.employee!,
+          absenceType: absenceType,
+          absenceDate: `${this.currentYear}-${monthNumeric}-${dayNumeric}`
+        };
+
+        return this.absenceDayUtils.addAbsenceDay(newAbsenceDay).toPromise();
+      }
+      return Promise.resolve(null);
+    });
+
+    try {
+      const results = await Promise.all(creationPromises);
+      const createdAbsences = results.filter(result => result !== null) as AbsenceDay[];
+
+      if (createdAbsences.length > 0) {
+        // Update cells and lists
+        createdAbsences.forEach((absenceDayCreated, index) => {
+          const cell = this.selectedCells[index];
+          if (cell) {
+            const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+            calendarCell.value = absenceType.label;
+            calendarCell.hasData = true;
+            calendarCell.data = absenceDayCreated;
+
+            // Update lists
+            this.currentAbsenceDays.push(absenceDayCreated);
+            this.originalAbsenceDays.push(absenceDayCreated);
+          }
+        });
+
+        this.commonMessageService.showCreatedSuccesfullMessage();
+        this.absenceChanged.emit();
+        this.cdr.detectChanges();
+      }
+    } catch (error: any) {
+      console.error('Error creando ausencias múltiples:', error);
+      this.commonMessageService.showErrorCreatedMessage();
+    }
+  }
+
+  // Delete absences for multiple cells
+  private async deleteAbsencesForSelectedCells(): Promise<void> {
+    const deletionPromises = this.selectedCells.map(cell => {
+      const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+
+      // Only delete if the cell has data
+      if (calendarCell.data && calendarCell.hasData && calendarCell.value !== '') {
+        return this.absenceDayUtils.deleteAbsenceDay(calendarCell.data.id).toPromise();
+      }
+      return Promise.resolve(null);
+    });
+
+    try {
+      await Promise.all(deletionPromises);
+
+      // Update cells and lists
+      this.selectedCells.forEach(cell => {
+        const calendarCell = this.calendarData[cell.monthIndex][cell.dayIndex];
+        if (calendarCell.data) {
+          const absenceIdToRemove = calendarCell.data.id;
+
+          // Update lists
+          this.currentAbsenceDays = this.currentAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
+          this.originalAbsenceDays = this.originalAbsenceDays.filter(ad => ad.id !== absenceIdToRemove);
+
+          // Clear cell
+          calendarCell.value = '';
+          calendarCell.hasData = false;
+          calendarCell.data = null;
+        }
+      });
+
+      this.commonMessageService.showDeleteSucessfullMessage();
+      this.absenceChanged.emit();
+      this.cdr.detectChanges();
+    } catch (error: any) {
+      console.error('Error deleting multiple absences:', error);
+      this.commonMessageService.showDeleteSucessfullMessage();
+    }
   }
 
   // Method to reset selection
@@ -571,5 +805,28 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     return false;
+  }
+
+  // Method to clear selection
+  private clearSelection(): void {
+    // Clear selection state in all cells
+    this.selectedCells.forEach(cell => {
+      if (this.calendarData[cell.monthIndex]?.[cell.dayIndex]) {
+        this.calendarData[cell.monthIndex][cell.dayIndex].isSelected = false;
+      }
+    });
+
+    this.selectedCells = [];
+    this.cdr.detectChanges();
+  }
+
+  // Method to get selected cells
+  getSelectedCells(): { monthIndex: number, dayIndex: number }[] {
+    return [...this.selectedCells];
+  }
+
+  // Method to verify if there are selected cells
+  hasSelectedCells(): boolean {
+    return this.selectedCells.length > 0;
   }
 }
