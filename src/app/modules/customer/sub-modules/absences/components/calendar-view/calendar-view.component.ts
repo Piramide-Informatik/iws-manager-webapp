@@ -538,7 +538,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
     try {
       const results = await Promise.all(creationPromises);
-      const createdAbsences = results.filter(result => result !== null) as AbsenceDay[];
+      const createdAbsences = results.filter(result => result !== null);
 
       if (createdAbsences.length > 0) {
         // Update cells and lists
