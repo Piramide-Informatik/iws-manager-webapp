@@ -28,21 +28,21 @@ export class AuthService {
   }
 
   private setSession(authResult: LoginResponse): void {
-    sessionStorage.setItem(this.TOKEN_KEY, authResult.token);
-    sessionStorage.setItem(this.USERNAME_KEY, authResult.username);
+    localStorage.setItem(this.TOKEN_KEY, authResult.token);
+    localStorage.setItem(this.USERNAME_KEY, authResult.username);
   }
 
   logout(): void {
-    sessionStorage.removeItem(this.TOKEN_KEY);
-    sessionStorage.removeItem(this.USERNAME_KEY);
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USERNAME_KEY);
   }
 
   getToken(): string | null {
-    return sessionStorage.getItem(this.TOKEN_KEY);
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   getUsername(): string | null {
-    return sessionStorage.getItem(this.USERNAME_KEY);
+    return localStorage.getItem(this.USERNAME_KEY);
   }
 
   isLoggedIn(): boolean {
