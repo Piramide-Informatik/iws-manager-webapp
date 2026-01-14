@@ -354,12 +354,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     if (this.customPopover) {
-      if (allCellsEmpty) {
-        // All empty: show absence types
-        this.customPopover.values = this.absenceTypesPopOverList();
-        this.customPopover.showButtonDelete = false;
-        this.customPopover.toggle(event);
-      } else if (allCellsHaveData) {
+      if (allCellsHaveData) {
         // All have data: show only delete option
         this.customPopover.values = [];
         this.customPopover.showButtonDelete = true;
