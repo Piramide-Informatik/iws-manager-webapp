@@ -101,7 +101,7 @@
     min-width: 120px;
 
     &:hover {
-       background: $accent-color;
+        background: $accent-color;
     }
 }
 
@@ -162,6 +162,7 @@
 .weekend-holiday {
     background-color: #d9d9d9;
     cursor: not-allowed;
+
     &:hover {
         background-color: #d9d9d9;
     }
@@ -217,6 +218,53 @@
 
 .legend-color.even-month {
     background-color: rgba(142, 197, 255, 0.6);
+}
+
+// Style for selected cells
+.selected-cell {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        border: 2px solid #007bff;
+        border-radius: 3px;
+        pointer-events: none;
+    }
+
+    //  If you also want to change the background
+    background-color: rgba(0, 123, 255, 0.1) !important;
+
+    &:hover {
+        background-color: rgba(0, 123, 255, 0.2) !important;
+    }
+
+    //  For cells with data
+    &.has-data {
+        background-color: #b8daff !important;
+
+        &:hover {
+            background-color: #9fcdff !important;
+        }
+    }
+}
+
+// Style for selection counter 
+.selection-counter {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 // Responsive
