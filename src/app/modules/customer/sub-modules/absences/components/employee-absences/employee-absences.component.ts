@@ -19,6 +19,7 @@ import { DayOff } from '../../../../../../Entities/dayOff';
 import { AbsenceDayCountDTO } from '../../../../../../Entities/AbsenceDayCountDTO';
 import { AbsenceDayUtils } from '../../utils/absenceday-utils';
 import { Title } from '@angular/platform-browser';
+import { HolidayYearUtils } from '../../../../../master-data/components/holidays/utils/holiday-year-utils';
 
 interface EmployeeWithFullName extends Employee {
   fullName: string;
@@ -42,6 +43,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private langSubscription!: Subscription;
   private readonly absenceTypeUtils = inject(AbsenceTypeUtils);
   private readonly publicHolidayUtils = inject(PublicHolidayUtils);
+  private readonly holidayYearUtils = inject(HolidayYearUtils);
   private readonly absenceDayUtils = inject(AbsenceDayUtils);
   private readonly titleService = inject(Title);
 
@@ -74,9 +76,9 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
 
   processedEmployees = computed<EmployeeWithFullName[] | undefined>(() => {
     const employeesList = this.employees();
-    
+
     if (!employeesList) return undefined;
-    
+
     return employeesList.map(emp => {
       const employeeWithFullName: EmployeeWithFullName = {
         ...emp,
@@ -165,12 +167,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
 
     // Load holidays and weekends for the current year
     if (this.currentYear) {
-      this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(this.currentYear).subscribe(holidaysAndWeekends => {
-        this.holidaysAndWeekend = holidaysAndWeekends;
-        for (const dayOff of holidaysAndWeekends) {
-          this.holidaysWeekendMap.set(dayOff.date, dayOff);
-        }
-      });
+      this.loadHolidaysAndWeekends(this.currentYear);
     }
 
     this.checkChangeSelectedYear();
@@ -196,12 +193,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
         this.currentYear = selectedYear;
 
         // Reload holidays and weekends for the new year
-        this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(selectedYear).subscribe(holidaysAndWeekends => {
-          this.holidaysAndWeekend = holidaysAndWeekends;
-          for (const dayOff of holidaysAndWeekends) {
-            this.holidaysWeekendMap.set(dayOff.date, dayOff);
-          }
-        });
+        this.loadHolidaysAndWeekends(selectedYear);
       })
     );
   }
@@ -235,6 +227,32 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     if (employeeId && year) {
       this.loadAbsenceDayCounts(employeeId, year);
     }
+  }
+
+  private loadHolidaysAndWeekends(year: number): void {
+    this.holidaysWeekendMap.clear();
+
+    // Load standard holidays and weekends
+    this.subscriptions.add(
+      this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(year).subscribe(holidaysAndWeekends => {
+        this.holidaysAndWeekend = holidaysAndWeekends;
+        for (const dayOff of holidaysAndWeekends) {
+          this.holidaysWeekendMap.set(dayOff.date, dayOff);
+        }
+
+        // Also load non-fixed holidays from holiday-year table
+        this.holidayYearUtils.getAllHolidayYears().subscribe(holidayYears => {
+          const yearStr = year.toString();
+          const filteredYears = holidayYears.filter(hy => hy.year === yearStr);
+          for (const hy of filteredYears) {
+            this.holidaysWeekendMap.set(hy.date, {
+              date: hy.date,
+              name: hy.publicHoliday.name
+            });
+          }
+        });
+      })
+    );
   }
 
   private getYears(): void {
