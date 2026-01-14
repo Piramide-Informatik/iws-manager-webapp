@@ -55,7 +55,7 @@ export class UserPreferenceService {
     const keysToRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && key.endsWith('-table-state')) {
+      if (key?.endsWith('-table-state')) {
         keysToRemove.push(key);
       }
     }
