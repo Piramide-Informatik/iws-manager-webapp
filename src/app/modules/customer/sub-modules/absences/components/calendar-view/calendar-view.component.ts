@@ -573,7 +573,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
       // Only delete if the cell has data
       if (calendarCell.data && calendarCell.hasData && calendarCell.value !== '') {
-        return this.absenceDayUtils.deleteAbsenceDay(calendarCell.data.id).toPromise();
+        return lastValueFrom(this.absenceDayUtils.deleteAbsenceDay(calendarCell.data.id));
       }
       return Promise.resolve(null);
     });
