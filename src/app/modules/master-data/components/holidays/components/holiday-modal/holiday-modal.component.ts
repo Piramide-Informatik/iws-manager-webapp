@@ -49,7 +49,7 @@ export class HolidayModalComponent implements OnInit, OnDestroy, OnChanges {
     name: new FormControl('', [Validators.required]),
     sequenceNo: new FormControl(null),
     isFixedDate: new FormControl(false),
-    date: new FormControl(null),
+    date: new FormControl(null, [Validators.required]),
   });
 
   constructor() {} 
