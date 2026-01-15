@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../Services/auth.service';
 import { Router } from '@angular/router';
 import { PageTitleService } from '../../../../shared/services/page-title.service';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
 
 @Component({
   selector: 'app-login-page',
@@ -19,7 +20,8 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly pageTitleService: PageTitleService
+    private readonly pageTitleService: PageTitleService,
+    private readonly userPreferenceService: UserPreferenceService
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +52,7 @@ export class LoginPageComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         console.log('Login successful', response);
+        this.userPreferenceService.clearFilters();
         this.router.navigate(['/dashboard']); // Redirect to dashboard after login
       },
       error: (error) => {
