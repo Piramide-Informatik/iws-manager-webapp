@@ -152,4 +152,12 @@ export class CommonMessagesService {
       sticky: true
     })
   }
+
+  showCustomError(message: string) {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translateService.instant('MESSAGE.ERROR'),
+      detail: message
+    })
+  }
 }

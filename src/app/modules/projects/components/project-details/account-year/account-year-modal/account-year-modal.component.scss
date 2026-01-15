@@ -3,6 +3,7 @@
 .form-container {
   padding-top: 18px;
 
+
   .account_input {
     display: flex;
     align-items: center;
@@ -19,21 +20,14 @@
       min-width: 10rem;
     }
   }
+
 }
 
+.form-container > p-message {
+  justify-content: center;
+  display: flex;
 
-:host ::ng-deep  .account-year {
-  width: 30% !important;
-  margin-left: 75px;
-}
-
-:host ::ng-deep  .search-box-project {
-  width: 35% !important;
-  margin: 15px !important;
-}
-
-.account-year {
-  margin-bottom: 30px;
+  position: absolute;
 }
 
 ::ng-deep .p-datepicker {
@@ -65,8 +59,4 @@
   .p-datepicker-day-selected{
     background: $primary-color !important;
   }
-}
-
-::ng-deep .p-message span {
-  display: contents;
 }

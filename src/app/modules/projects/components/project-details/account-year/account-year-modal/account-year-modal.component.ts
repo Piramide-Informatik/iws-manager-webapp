@@ -1,13 +1,13 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
-import { Subscription, take } from 'rxjs';
+import { TranslatePipe, TranslateDirective, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { ProjectPeriodUtils } from '../../../../utils/project-period.util';
 import { CommonMessagesService } from '../../../../../../Services/common-messages.service';
 import { ProjectPeriod } from '../../../../../../Entities/project-period';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
-import { momentCreateDate, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
+import { momentCreateDate, momentCreateDateFromGermanFormat, momentFormatDate } from '../../../../../shared/utils/moment-date-utils';
 import { Project } from '../../../../../../Entities/project';
 
 @Component({
@@ -22,6 +22,8 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   private readonly subscription = new Subscription();
   private readonly projectPeriodUtils = inject(ProjectPeriodUtils);
   private readonly commonMessageService = inject(CommonMessagesService);
+  private readonly translate = inject(TranslateService);
+  private readonly messageService = inject(MessageService)
 
   @Input() modalType: 'create' | 'delete' | 'edit' = "create";
   @Input() currentProjectPeriodEntity!: ProjectPeriod | undefined;
@@ -41,11 +43,10 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
   errorMsg: string | null = null;
   public minEndDate: Date | null = null;
   public maxStartDate: Date | null = null;
-  public minStartDate: Date | null = null;
   public periodNo: number | null = null;
-  public isStartDateAfterEndDate = false;
-  public isStartDateLessOrEqualEndDateOfPreviousPeriod = false;
-  public isEndDateLessOrEqualStartDateOfNextPeriod = false;
+  public invalidStartDate = false;
+  public invalidEndDate = false;
+  public overlapPeriods: number[] = [];
 
   ngOnInit(): void {
     this.initForm();
@@ -54,7 +55,6 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visibleModal'] && this.visibleModal) {
-      this.minStartDate = null;
       if (this.modalType === 'create') {
         this.loadNextPeriodNo(); // cargar número al abrir modal
       }
@@ -70,7 +70,6 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         startDate: momentCreateDate(this.currentProjectPeriodEntity?.startDate),
         endDate: momentCreateDate(this.currentProjectPeriodEntity?.endDate)
       });
-      this.fetchPreviousPeriodEndDate();
     }
 
     if (changes['visibleModal'] && !this.visibleModal && this.formAccountYear) {
@@ -175,7 +174,9 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       error: (error) => {
         this.isLoading = false;
         this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
-        this.commonMessageService.showErrorCreatedMessage();
+        if(!error.error.message.includes("Overlapping Periods Detected")){
+          this.commonMessageService.showErrorCreatedMessage();
+        }
         this.handleErrorPeriodDates(error);
       }
     });
@@ -200,26 +201,97 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
       },
       error: (error) => {
         this.isLoading = false;
-        this.commonMessageService.showErrorEditMessage();
+        if(!error.error.message.includes("Overlapping Periods Detected")){
+          this.commonMessageService.showErrorEditMessage();
+        }
         this.projectPeriodCreatedUpdated.emit({ status: 'error', error });
         this.handleErrorPeriodDates(error);
       }
     });
   }
 
+  private showOverlapToast(periods: number[]): void {
+    let message = '';
+    
+    if (periods.length === 1) {
+      message = this.translate.instant('PROJECT_PERIOD.ERROR.PERIOD_OVERLAP_SINGLE', {
+        period: periods[0]
+      });
+    } else {
+      const formattedPeriods = periods.map(p => `${this.translate.instant('PROJECT_PERIOD.ERROR.PERIOD')} ${p}`).join(', ');
+      message = this.translate.instant('PROJECT_PERIOD.ERROR.PERIOD_OVERLAP_MULTIPLE', {
+        periods: formattedPeriods
+      });
+    }
+
+    this.commonMessageService.showCustomError(message);
+  }
+
   private handleErrorPeriodDates(error: any): void {
-    if (error.error.message.includes("The start date cannot be after the end date")) {
-      this.isStartDateAfterEndDate = true;
-      this.formAccountYear.get('startDate')?.valueChanges.pipe(take(1))
-        .subscribe(() => this.isStartDateAfterEndDate = false);
-    } else if (error.error.message.includes("cannot be less than or equal to the end date of the previous period")) {
-      this.isStartDateLessOrEqualEndDateOfPreviousPeriod = true;
-      this.formAccountYear.get('startDate')?.valueChanges.pipe(take(1))
-        .subscribe(() => this.isStartDateLessOrEqualEndDateOfPreviousPeriod = false);
-    } else if (error.error.message.includes("It cannot be greater than or equal to the start date of the following period")) {
-      this.isEndDateLessOrEqualStartDateOfNextPeriod = true;
-      this.formAccountYear.get('endDate')?.valueChanges.pipe(take(1))
-        .subscribe(() => this.isEndDateLessOrEqualStartDateOfNextPeriod = false);
+    if (error.error.message.includes("Overlapping Periods Detected")) {
+      const periodNumbers = this.extractPeriodNumbers(error.error.message);
+      this.showOverlapToast(periodNumbers);
+    }
+  }
+
+  private extractPeriodNumbers(errorMessage: string): number[] {
+    const periodNumbers: number[] = [];
+    
+    const periodRegex = /Period\s+(\d+)/g;
+    let match;
+    
+    let firstMatch = true;
+    
+    while ((match = periodRegex.exec(errorMessage)) !== null) {
+      if (firstMatch) {
+        firstMatch = false;
+        continue;
+      }
+      
+      const periodNumber = Number.parseInt(match[1], 10);
+      if (!periodNumbers.includes(periodNumber)) {
+        periodNumbers.push(periodNumber);
+      }
+    }
+    
+    return periodNumbers.sort((a, b) => a - b);
+  }
+
+  validationInputStartDate(event: any): void {
+    const dateValue = event.target.value;
+    const date = momentCreateDateFromGermanFormat(dateValue);
+    if(date && this.maxStartDate && date > this.maxStartDate){
+      this.invalidStartDate = true;
+    }else {
+      this.invalidStartDate = false;
+    }
+  }
+
+  validationSelectStartDate(event: Date): void {
+    const date = event;
+    if(date && this.maxStartDate && date > this.maxStartDate){
+      this.invalidStartDate = true;
+    }else {
+      this.invalidStartDate = false;
+    }
+  }
+
+  validationInputEndDate(event: any): void {
+    const dateValue = event.target.value;
+    const date = momentCreateDateFromGermanFormat(dateValue);
+    if(date && this.minEndDate && date < this.minEndDate){
+      this.invalidEndDate = true;
+    }else {
+      this.invalidEndDate = false;
+    }
+  }
+
+  validationSelectEndDate(event: Date): void {
+    const date = event;
+    if(date && this.minEndDate && date < this.minEndDate){
+      this.invalidEndDate = true;
+    }else {
+      this.invalidEndDate = false;
     }
   }
 
@@ -272,7 +344,6 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
         if (nextNo != null) {
           this.periodNo = nextNo;
           this.formAccountYear.patchValue({ periodNo: nextNo });
-          this.fetchPreviousPeriodEndDate();
         }
       },
       error: (err) => console.error('Error loading next periodNo', err),
@@ -280,32 +351,4 @@ export class ProjectsAccountYearModalComponent implements OnInit, OnChanges, OnD
     this.subscription.add(sub);
   }
 
-  private fetchPreviousPeriodEndDate(): void {
-    if (!this.currentProject || this.periodNo === null) return;
-
-    this.subscription.add(
-      this.projectPeriodUtils.getAllProjectPeriodByProject(this.currentProject.id).subscribe(periods => {
-        const previousPeriod = periods
-          .filter(p => p.periodNo < this.periodNo!)
-          .sort((a, b) => b.periodNo - a.periodNo)[0];
-
-        if (previousPeriod) {
-          const endDate = momentCreateDate(previousPeriod.endDate);
-          if (endDate) {
-            const minDate = new Date(endDate);
-            minDate.setDate(minDate.getDate() + 1);
-            this.minStartDate = this.getStartOfDay(minDate);
-
-            // Si startDate ya tiene valor y es anterior a minStartDate, limpiarlo
-            const currentStartDate = this.formAccountYear.get('startDate')?.value;
-            if (currentStartDate && currentStartDate < this.minStartDate) {
-              this.formAccountYear.get('startDate')?.setValue(null, { emitEvent: false });
-            }
-          }
-        } else {
-          this.minStartDate = null;
-        }
-      })
-    );
-  }
 }
