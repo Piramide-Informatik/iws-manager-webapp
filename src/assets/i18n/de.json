@@ -623,8 +623,10 @@
     },
     "ERROR": {
       "START_DATE_AFTER_END_DATE_ERROR": "Das Startdatum darf nicht nach dem Enddatum liegen.",
-      "START_DATE_LESS_OR_EQUALS_PREVIOUS_PERIOD_ERROR": "Das Startdatum darf nicht vor oder gleich dem Enddatum des vorherigen Zeitraums liegen.",
-      "END_DATE_GREATE_OR_EQUALS_NEXT_PERIOD_ERROR": "Das Enddatum darf nicht nach oder gleich dem Startdatum des folgenden Zeitraums liegen."
+      "END_DATE_BEFORE_START_DATE_ERROR": "Das Enddatum darf nicht vor dem Startdatum liegen.",
+      "PERIOD_OVERLAP_SINGLE": "Überlappende Perioden mit Periode {{period}} erkannt",
+      "PERIOD_OVERLAP_MULTIPLE": "Überlappende Perioden erkannt mit Perioden: {{periods}}",
+      "PERIOD": "Periode"
     }
   },
   "ORDER_PROYECT": {

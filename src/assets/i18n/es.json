@@ -617,8 +617,10 @@
     },
     "ERROR": {
       "START_DATE_AFTER_END_DATE_ERROR": "La fecha de inicio no puede ser posterior a la fecha de finalización.",
-      "START_DATE_LESS_OR_EQUALS_PREVIOUS_PERIOD_ERROR": "La fecha de inicio no puede ser anterior ni igual a la fecha de finalización del período anterior.",
-      "END_DATE_GREATE_OR_EQUALS_NEXT_PERIOD_ERROR": "La fecha de finalización no puede ser posterior ni igual a la fecha de inicio del período siguiente."
+      "END_DATE_BEFORE_START_DATE_ERROR": "La fecha de finalización no puede ser anterior a la fecha de inicio.",
+      "PERIOD_OVERLAP_SINGLE": "Períodos superpuestos detectados con el Periodo {{period}}",
+      "PERIOD_OVERLAP_MULTIPLE": "Períodos superpuestos detectados con los períodos: {{periods}}",
+      "PERIOD": "Periodo"
     }
   },
   "ORDER_PROYECT": {
