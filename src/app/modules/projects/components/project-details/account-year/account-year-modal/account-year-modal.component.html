@@ -1,6 +1,6 @@
 <ng-container *ngIf="isCreateMode; else deleteTemplate">
   <form [formGroup]="formAccountYear" (ngSubmit)="onSubmit()">
-    <div class="form-container mb-5">
+    <div class="form-container">
       <div class="account_input">
         <label for="periodNo">{{ 'PROJECT_PERIOD.FORM.YEAR' | translate }}</label>
         <div class="input-message">
@@ -13,12 +13,15 @@
         <label for="startDate">{{ 'PROJECT_PERIOD.FORM.BEGINNING' | translate }}</label>
         <div class="input-message">
           <p-datepicker inputId="startDate" [showIcon]="true" [showClear]="true" appendTo="body"
-          formControlName="startDate" dateFormat="dd.mm.yy" [maxDate]="maxStartDate" [minDate]="minStartDate" 
-          [class.ng-invalid]="isStartDateAfterEndDate || isStartDateLessOrEqualEndDateOfPreviousPeriod" [class.ng-dirty]="isStartDateAfterEndDate || isStartDateLessOrEqualEndDateOfPreviousPeriod"></p-datepicker>
-          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
-            isStartDateAfterEndDate || isStartDateLessOrEqualEndDateOfPreviousPeriod 
-            ">
-              {{ isStartDateAfterEndDate ? ('PROJECT_PERIOD.ERROR.START_DATE_AFTER_END_DATE_ERROR' | translate) : ('PROJECT_PERIOD.ERROR.START_DATE_LESS_OR_EQUALS_PREVIOUS_PERIOD_ERROR' | translate) }}
+          formControlName="startDate" dateFormat="dd.mm.yy" 
+          [maxDate]="maxStartDate"
+          [ngClass]="{ 'ng-invalid ng-dirty': invalidStartDate }"
+          (onInput)="validationInputStartDate($event)"
+          (onSelect)="validationSelectStartDate($event)"
+          (onBlur)="invalidStartDate=false"></p-datepicker>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" 
+          *ngIf="formAccountYear.get('startDate')?.invalid && formAccountYear.get('startDate')?.dirty || invalidStartDate" >
+              {{ 'PROJECT_PERIOD.ERROR.START_DATE_AFTER_END_DATE_ERROR' | translate }}
           </p-message>     
         </div>
       </div>
@@ -27,19 +30,22 @@
         <label for="endDate">{{ 'PROJECT_PERIOD.FORM.END' | translate }}</label>
         <div class="input-message">
           <p-datepicker inputId="endDate" [showIcon]="true" [showClear]="true" appendTo="body" formControlName="endDate"
-          dateFormat="dd.mm.yy" [minDate]="minEndDate"
-          [class.ng-invalid]="isEndDateLessOrEqualStartDateOfNextPeriod" [class.ng-dirty]="isEndDateLessOrEqualStartDateOfNextPeriod"></p-datepicker>
-          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
-            isEndDateLessOrEqualStartDateOfNextPeriod
-            ">
-              {{ 'PROJECT_PERIOD.ERROR.END_DATE_GREATE_OR_EQUALS_NEXT_PERIOD_ERROR' | translate }}
+          dateFormat="dd.mm.yy" 
+          [minDate]="minEndDate"
+          [ngClass]="{ 'ng-invalid ng-dirty': invalidEndDate }"
+          (onInput)="validationInputEndDate($event)"
+          (onSelect)="validationSelectEndDate($event)"
+          (onBlur)="invalidEndDate=false"></p-datepicker>
+          <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" 
+          *ngIf="formAccountYear.get('endDate')?.invalid && formAccountYear.get('endDate')?.dirty || invalidEndDate">
+            {{  'PROJECT_PERIOD.ERROR.END_DATE_BEFORE_START_DATE_ERROR' | translate }}
           </p-message>  
         </div>  
       </div>
     </div>
-    <div class="flex justify-content-center gap-2 mt-3">
+    <div class="flex justify-content-center gap-2 mt-4">
       <p-button type="submit" class="save" size="small" [label]="'BUTTONS.SAVE' | translate" icon="pi pi-check"
-        iconPos="left" [loading]="isLoading" [disabled]="!formAccountYear.dirty || formAccountYear.invalid" />
+        iconPos="left" [loading]="isLoading" [disabled]="!formAccountYear.dirty || formAccountYear.invalid || invalidStartDate || invalidEndDate" />
       @if(modalType === 'edit') {
       <p-button type="button" class="delete" size="small" [label]="'BUTTONS.DELETE' | translate" icon="pi pi-trash"
         iconPos="left" severity="danger" [disabled]="isLoading" (onClick)="visibleDeleteEntityModal = true;" />
