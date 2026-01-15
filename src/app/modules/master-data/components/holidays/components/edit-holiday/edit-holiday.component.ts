@@ -144,7 +144,7 @@ export class EditHolidayComponent implements OnInit, OnDestroy {
       publicHoliday: new FormControl('', [Validators.required]),
       sequenceNo: new FormControl(null),
       isFixedDate: new FormControl(false),
-      date: new FormControl(''),
+      date: new FormControl('', [Validators.required]),
     });
     this.editPublicHolidayForm.get('isFixedDate')?.valueChanges.subscribe((isFixed: boolean) => {
       this.isFixedDate = isFixed;

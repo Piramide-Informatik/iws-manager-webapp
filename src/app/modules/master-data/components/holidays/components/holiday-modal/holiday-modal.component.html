@@ -75,7 +75,18 @@
                         [style]="{ 'width': '100%' , 'max-width': '300px'}"
                         inputStyleClass="centered-date"
                         panelStyleClass="datepicker-panel"
+                        [class.ng-invalid]="createdPublicHolidayForm.get('date')?.invalid  
+                                && createdPublicHolidayForm.get('date')?.dirty 
+                                && createdPublicHolidayForm.get('date')!.hasError('required')"
+                        [class.ng-dirty]="createdPublicHolidayForm.get('date')?.invalid  
+                                && createdPublicHolidayForm.get('date')?.dirty 
+                                && createdPublicHolidayForm.get('date')!.hasError('required')"
                     />
+                    <p-message severity="error" [showTransitionOptions]="'0ms'" variant="simple" size="small" *ngIf="
+                        createdPublicHolidayForm.get('date')?.invalid &&
+                        createdPublicHolidayForm.get('date')?.dirty &&
+                        createdPublicHolidayForm.get('date')!.hasError('required')
+                    ">{{ 'ERROR.FIELD_REQUIRED' | translate }}</p-message>
                 </div>
             </div>
             <div class="flex justify-content-center gap-2 mt-4">
