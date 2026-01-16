@@ -10,7 +10,7 @@ import { Role } from "../Entities/role";
 })
 export class UserService {
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = `${environment.BACK_END_HOST_DEV_V2}/users`;
+    private readonly apiUrl = `${environment.BACK_END_HOST_DEV}/users`;
 
     private readonly _users = signal<User[]>([]);
     private readonly _loading = signal<boolean>(false);
