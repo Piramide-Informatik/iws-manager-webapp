@@ -1,14 +1,14 @@
-import {Injectable, inject} from '@angular/core';
-import {Observable, catchError, map, take, throwError, switchMap} from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, map, take, throwError, switchMap } from 'rxjs';
 import { PublicHoliday } from '../../../../../Entities/publicholiday';
 import { PublicHolidayService } from '../../../../../Services/public-holiday.service';
-import { createNotFoundUpdateError, createUpdateConflictError} from '../../../../shared/utils/occ-error';
+import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 import { DayOff } from '../../../../../Entities/dayOff';
 
 @Injectable({ providedIn: 'root' })
 export class PublicHolidayUtils {
     private readonly publicHolidayService = inject(PublicHolidayService);
-    
+
     loadInitialData(): Observable<PublicHoliday[]> {
         return this.publicHolidayService.loadInitialData();
     }
@@ -49,9 +49,9 @@ export class PublicHolidayUtils {
         return this.publicHolidayService.getAllPublicHolidays();
     }
 
-    // Get all holidays and weekend by year
-    getAllHolidaysAndWeekendByYear(year: number): Observable<DayOff[]> {
-        return this.publicHolidayService.getAllHolidaysAndWeekendByYear(year);
+    // Get all holidays and weekend by year and optionally by state
+    getAllHolidaysAndWeekendByYear(year: number, stateId?: number): Observable<DayOff[]> {
+        return this.publicHolidayService.getAllHolidaysAndWeekendByYear(year, stateId);
     }
 
     //Creates a new publicHoliday with validation

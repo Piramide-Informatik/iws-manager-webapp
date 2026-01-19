@@ -155,9 +155,12 @@ export class PublicHolidayService {
         );
     }
 
-    // Get all holidays and weekend by year
-    getAllHolidaysAndWeekendByYear(year: number): Observable<DayOff[]> {
-        const url = `${this.apiUrl}/all-with-weekends?year=${year}`;
+    // Get all holidays and weekend by year and optionally by state
+    getAllHolidaysAndWeekendByYear(year: number, stateId?: number): Observable<DayOff[]> {
+        let url = `${this.apiUrl}/all-with-weekends?year=${year}`;
+        if (stateId !== undefined && stateId !== null) {
+            url += `&stateId=${stateId}`;
+        }
         return this.http.get<DayOff[]>(url, this.httpOptions).pipe(
             tap(() => this._error.set(null)),
             catchError(err => {
