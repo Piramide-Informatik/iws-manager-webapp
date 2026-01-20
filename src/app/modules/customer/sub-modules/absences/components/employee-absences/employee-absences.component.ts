@@ -165,11 +165,6 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
       })
     );
 
-    // Load holidays and weekends for the current year
-    if (this.currentYear) {
-      this.loadHolidaysAndWeekends(this.currentYear);
-    }
-
     this.checkChangeSelectedYear();
   }
 
@@ -213,6 +208,11 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
         if (customer) {
           this.currentCustomer = customer;
           this.customerStateService.setCustomerToEdit(customer);
+
+          // Load holidays and weekends now that we have the customer with stateId
+          if (this.currentYear) {
+            this.loadHolidaysAndWeekends(this.currentYear);
+          }
         }
       })
     ).subscribe({
@@ -232,9 +232,12 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   private loadHolidaysAndWeekends(year: number): void {
     this.holidaysWeekendMap.clear();
 
-    // Load standard holidays and weekends
+    // Get the stateId from the current customer
+    const stateId = this.currentCustomer?.state?.id;
+
+    // Load standard holidays and weekends filtered by state
     this.subscriptions.add(
-      this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(year).subscribe(holidaysAndWeekends => {
+      this.publicHolidayUtils.getAllHolidaysAndWeekendByYear(year, stateId).subscribe(holidaysAndWeekends => {
         this.holidaysAndWeekend = holidaysAndWeekends;
         for (const dayOff of holidaysAndWeekends) {
           this.holidaysWeekendMap.set(dayOff.date, dayOff);
