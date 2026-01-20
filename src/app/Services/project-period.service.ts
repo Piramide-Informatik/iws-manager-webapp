@@ -129,17 +129,6 @@ export class ProjectPeriodService {
     )
   }
 
-  getNextPeriodNo(projectId: number): Observable<number | null> {
-    return this.http.get<number | null>(`${this.apiUrl}/project/${projectId}/next-year`, this.httpOptions).pipe(
-      tap(() => this._error.set(null)),
-      catchError(err => {
-        this._error.set('Failed to fetch next period no');
-        console.error('Error fetching next period no:', err);
-        return of(null);
-      })
-    );
-  }
-
   /**
   * Cleans the state of the projects
   */
