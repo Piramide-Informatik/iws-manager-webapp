@@ -617,9 +617,9 @@
       "END": "End"
     },
     "FORM": {
-      "YEAR": "Año",
-      "BEGINNING": "Inicio",
-      "END": "Fin"
+      "YEAR": "Year",
+      "BEGINNING": "Beginning",
+      "END": "End"
     },
     "ERROR": {
       "START_DATE_AFTER_END_DATE_ERROR": "The start date cannot be after the end date.",
