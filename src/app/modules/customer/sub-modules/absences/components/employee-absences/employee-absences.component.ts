@@ -63,7 +63,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
         fractionOfDay: absenceType.shareOfDay,
         isVacation: absenceType.isHoliday && absenceType.isHoliday == 1,
         canBeBooked: absenceType.hours && absenceType.hours == 1,
-        number: countDTO.count
+        number: countDTO.calculatedCount
       };
     }).filter(item => item !== null);
   });
@@ -269,7 +269,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     this.cols = [
       { field: 'abbreviation', classesTHead: ['width-10'], header: this.translate.instant('ABSENCE_TYPES.LABEL.ABBREVIATION') },
       { field: 'type', header: this.translate.instant('ABSENCE_TYPES.LABEL.TYPE') },
-      { field: 'number', classesTHead: ['width-10'], header: this.translate.instant('ORDER_PROYECT.TABLE.NUMBER'), filter: { type: 'numeric' }, customClasses: ['align-right'], type: 'integer' }
+      { field: 'number', type: 'double', classesTHead: ['width-10'], header: this.translate.instant('ORDER_PROYECT.TABLE.NUMBER'), filter: { type: 'numeric' }, customClasses: ['align-right'] }
     ];
   }
 
