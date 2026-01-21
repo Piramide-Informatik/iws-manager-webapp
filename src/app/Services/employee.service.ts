@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Employee } from '../Entities/employee';
 import { catchError, Observable, of, tap } from 'rxjs';
+import { EmployeeFullNameDTO } from '../Entities/employeeFullNameDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class EmployeeService {
     })
   };
 
-  constructor(){
+  constructor() {
     this.loadInitialData();
   }
 
@@ -112,6 +113,23 @@ export class EmployeeService {
    */
   getAllEmployeesByCustomerId(customerId: number): Observable<Employee[]> {
     return this.http.get<Employee[]>(`${this.apiUrl}/customer/${customerId}`, this.httpOptions).pipe(
+      tap(() => this._error.set(null)),
+      catchError(err => {
+        this._error.set('Failed to fetch employees');
+        console.error('Error fetching employees:', err);
+        return of([]);
+      })
+    );
+  }
+
+  /**
+   * Retrieves all employees with full name given a customer sorted by full name
+   * @param customerId Customer to get his employees
+   * @returns Observable with EmployeeFullNameDTO array
+   * @throws Error when server request fails
+   */
+  getAllEmployeesSortedByFullNameByCustomerId(customerId: number): Observable<EmployeeFullNameDTO[]> {
+    return this.http.get<EmployeeFullNameDTO[]>(`${this.apiUrl}/customer/${customerId}/sort-by-fullname`, this.httpOptions).pipe(
       tap(() => this._error.set(null)),
       catchError(err => {
         this._error.set('Failed to fetch employees');
