@@ -1,5 +1,5 @@
 
-export interface Employee {
+export interface EmployeeFullNameDTO {
     id: number;
 
     employeeno: number;
