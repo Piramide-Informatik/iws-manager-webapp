@@ -4,6 +4,7 @@ import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { Employee } from '../../../../../Entities/employee';
 import { EmploymentContractUtils } from './employment-contract-utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
+import { EmployeeFullNameDTO } from '../../../../../Entities/employeeFullNameDTO';
 
 @Injectable({ providedIn: 'root' })
 /**
@@ -94,8 +95,24 @@ export class EmployeeUtils {
         }
         // Filtra los empleados con nombre válido y ordena alfabéticamente
         return employees
-        .filter(employee => !!employee.firstname && employee.firstname.trim() !== '')
-        .sort((a, b) => (a.firstname ?? '').localeCompare(b.firstname ?? ''));
+          .filter(employee => !!employee.firstname && employee.firstname.trim() !== '')
+          .sort((a, b) => (a.firstname ?? '').localeCompare(b.firstname ?? ''));
+      }),
+      catchError(() => throwError(() => new Error('Failed to sort employees')))
+    );
+  }
+
+  /**
+  * Gets all employees with full name sorted alphabetically by firstName
+  * @returns Observable emitting sorted array of employees
+  */
+  getEmployeesWithFullNameSortedByName(customerId: number): Observable<EmployeeFullNameDTO[]> {
+    return this.employeeService.getAllEmployeesSortedByFullNameByCustomerId(customerId).pipe(
+      map((employees: EmployeeFullNameDTO[]) => {
+        if (!Array.isArray(employees)) {
+          return [];
+        }
+        return employees;
       }),
       catchError(() => throwError(() => new Error('Failed to sort employees')))
     );
@@ -136,7 +153,7 @@ export class EmployeeUtils {
       take(1),
       switchMap((currentEmployee) => {
         if (!currentEmployee) {
-           return throwError(() => createNotFoundUpdateError('Employee'));
+          return throwError(() => createNotFoundUpdateError('Employee'));
         }
 
         if (currentEmployee.version !== employee.version) {
