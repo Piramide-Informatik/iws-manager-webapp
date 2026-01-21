@@ -192,6 +192,8 @@
   },
   "CALENDAR": {
     "TITLE": "Calendario de Ausencias {{YEAR}}",
+    "SELECT_DATE_RANGE": "Seleccionar rango de fehcas",
+    "CLEAR_SELECTED_CELLS": "Borrar celdas seleccionadas",
     "MONTH": {
       "JANUARY": "Enero",
       "FEBRUARY": "Febrero",
@@ -210,7 +212,8 @@
       "INVALID_CELL": "Celda no válida",
       "INVALID_DAY": "{{MONTH}} tiene {{DAYS}} días. Día {{DAY}} no existe.",
       "NO_EMPLOYEE_SELECTED": "No hay empleado seleccionado",
-      "MIXED_CELL_STATES": "No se puede aplicar la operación a celdas con estados diferentes."
+      "MIXED_CELL_STATES": "No se puede aplicar la operación a celdas con estados diferentes.",
+      "END_DATE_BEFORE_START_DATE_ERROR": "La fecha de finalización no puede ser anterior a la fecha de inicio."
     },
     "CELL_INFO": {
       "EMPTY": "{{MONTH}} - Día {{DAY}} (Vacío)",

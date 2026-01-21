@@ -11,13 +11,20 @@
 
 .calendar-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
     h2 {
         color: #333;
         margin: 0;
         font-weight: 600;
     }
+}
+
+.options-calendar {
+    display: flex;
+    flex-direction: row;
+    gap: 1.2rem;
+    margin-bottom: 5px;
 }
 
 .calendar-wrapper {

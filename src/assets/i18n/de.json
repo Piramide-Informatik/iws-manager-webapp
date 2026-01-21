@@ -192,6 +192,8 @@
   },
   "CALENDAR": {
     "TITLE": "Abwesenheitskalender {{YEAR}}",
+    "SELECT_DATE_RANGE": "Datumsbereich auswählen",
+    "CLEAR_SELECTED_CELLS": "Ausgewählte Zellen löschen",
     "MONTH": {
       "JANUARY": "Januar",
       "FEBRUARY": "Februar",
@@ -210,7 +212,8 @@
       "INVALID_CELL": "Ungültige Zelle",
       "INVALID_DAY": "{{MONTH}} hat {{DAYS}} Tage. Tag {{DAY}} existiert nicht.",
       "NO_EMPLOYEE_SELECTED": "Kein Mitarbeiter ausgewählt",
-      "MIXED_CELL_STATES": "Operation kann nicht auf Zellen mit unterschiedlichen Zuständen angewendet werden."
+      "MIXED_CELL_STATES": "Operation kann nicht auf Zellen mit unterschiedlichen Zuständen angewendet werden.",
+      "END_DATE_BEFORE_START_DATE_ERROR": "Das Enddatum darf nicht vor dem Startdatum liegen."
     },
     "CELL_INFO": {
       "EMPTY": "{{MONTH}} - Tag {{DAY}} (Leer)",
