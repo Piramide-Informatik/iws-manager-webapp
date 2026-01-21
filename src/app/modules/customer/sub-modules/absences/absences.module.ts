@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { ToastModule } from 'primeng/toast';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ToastModule } from 'primeng/toast';
     SharedModule,
     InputText,
     ButtonModule,
-    ToastModule
+    ToastModule,
+    ToggleSwitchModule
   ]
 })
 export class AbsencesModule { }
