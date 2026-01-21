@@ -192,6 +192,8 @@
   },
   "CALENDAR": {
     "TITLE": "Absence Calendar {{YEAR}}",
+    "SELECT_DATE_RANGE": "Select date range",
+    "CLEAR_SELECTED_CELLS": "Clear selected cells",
     "MONTH": {
       "JANUARY": "January",
       "FEBRUARY": "February",
@@ -210,7 +212,8 @@
       "INVALID_CELL": "Invalid cell",
       "INVALID_DAY": "{{MONTH}} has {{DAYS}} days. Day {{DAY}} does not exist.",
       "NO_EMPLOYEE_SELECTED": "No employee selected",
-      "MIXED_CELL_STATES": "Cannot apply operation to cells with different states."
+      "MIXED_CELL_STATES": "Cannot apply operation to cells with different states.",
+      "END_DATE_BEFORE_START_DATE_ERROR": "The end date cannot be before the start date."
     },
     "CELL_INFO": {
       "EMPTY": "{{MONTH}} - Day {{DAY}} (Empty)",

@@ -48,7 +48,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
 
   // Array to store selected cells
-  private selectedCells: { monthIndex: number, dayIndex: number }[] = [];
+  public selectedCells: { monthIndex: number, dayIndex: number }[] = [];
 
   readonly absenceTypesSortedSignal = toSignal(
     this.absenceTypeService.getAllAbsenceTypesSortedByLabel(),
@@ -68,6 +68,10 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   // Days (1-31)
   days: number[] = [];
   months: string[] = [];
+
+  public datesRange = false;
+  private startDate: {monthIndex: number, dayIndex: number} | null = null;
+  private endDate: {monthIndex: number, dayIndex: number} | null = null;
 
   // Matrix to store cell data
   calendarData: MonthRow[][] = [];
@@ -316,25 +320,83 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   private handleLeftClick(monthIndex: number, dayIndex: number): void {
     const cell = this.calendarData[monthIndex][dayIndex];
 
-    // Verify if the cell is already selected
-    const isAlreadySelected = this.selectedCells.some(
-      selected => selected.monthIndex === monthIndex && selected.dayIndex === dayIndex
-    );
+    if(this.datesRange){
+      if(this.selectedCells.length === 0){
+        // Select the cell, start date
+        this.startDate = { monthIndex, dayIndex };
+        this.selectedCells.push({ monthIndex, dayIndex });
+        cell.isSelected = true;
+      }else if(this.selectedCells.length === 1 && this.startDate){
 
-    if (isAlreadySelected) {
-      // Deselect the cell
-      this.selectedCells = this.selectedCells.filter(
-        selected => !(selected.monthIndex === monthIndex && selected.dayIndex === dayIndex)
+        if((dayIndex <= this.startDate.dayIndex && monthIndex > this.startDate.monthIndex) ||
+            (dayIndex > this.startDate.dayIndex && monthIndex >= this.startDate.monthIndex)){
+          // Select the cell, end date
+          this.endDate = { monthIndex, dayIndex };
+          this.selectedCells.push({ monthIndex, dayIndex });
+          cell.isSelected = true;
+          this.fillRangeDates();
+        }else{
+          const messageError = this.translate.instant('CALENDAR.ERROR.END_DATE_BEFORE_START_DATE_ERROR');
+          this.commonMessageService.showCustomError(messageError);
+        }
+      }
+    }else{
+      // Verify if the cell is already selected
+      const isAlreadySelected = this.selectedCells.some(
+        selected => selected.monthIndex === monthIndex && selected.dayIndex === dayIndex
       );
-      cell.isSelected = false;
-    } else {
-      // Select the cell
-      this.selectedCells.push({ monthIndex, dayIndex });
-      cell.isSelected = true;
+  
+      if (isAlreadySelected) {
+        // Deselect the cell
+        this.selectedCells = this.selectedCells.filter(
+          selected => !(selected.monthIndex === monthIndex && selected.dayIndex === dayIndex)
+        );
+        cell.isSelected = false;
+      } else {
+        // Select the cell
+        this.selectedCells.push({ monthIndex, dayIndex });
+        cell.isSelected = true;
+      }
     }
 
     // Update view
     this.cdr.detectChanges();
+  }
+
+  private fillRangeDates(): void {
+    if(!this.startDate || !this.endDate) return;
+
+    for(let month = this.startDate.monthIndex; month <= this.endDate.monthIndex; month++){
+      // Límite inferior del día (startDay)
+      const startDay = (month === this.startDate.monthIndex) 
+        ? this.startDate.dayIndex + 1 
+        : 0;
+
+      // Límite superior del día (endDay)
+      const endDay = (month === this.endDate.monthIndex) 
+        ? this.endDate.dayIndex
+        : this.getDaysInMonth(month);
+
+      for(let day = startDay; day < endDay; day++){
+        if(this.isValidDay(month, day) && !this.isWeekendOrHoliday(month, day)){
+          const cell = this.calendarData[month][day];
+          this.selectedCells.push({ monthIndex: month, dayIndex: day });
+          cell.isSelected = true;
+        }
+      }
+    }
+  }
+
+  public changeSwitchRangeDates(): void {
+    this.datesRange = !this.datesRange;
+  }
+
+  public clearDatesRange(): void {
+    for(const date of this.selectedCells){
+      const cell = this.calendarData[date.monthIndex][date.dayIndex];
+      cell.isSelected = false;
+    }
+    this.selectedCells = [];
   }
 
   // Method to open popover for all selected cells

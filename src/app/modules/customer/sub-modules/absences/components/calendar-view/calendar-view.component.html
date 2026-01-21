@@ -3,6 +3,20 @@
         <h2>{{ getCalendarTitle() }}</h2>
     </div>
 
+    <div class="options-calendar">
+        <div class="flex align-items-center">
+            <label for="datesRangeSwitch" class="mr-2">{{ 'CALENDAR.SELECT_DATE_RANGE' | translate }}</label>
+            
+            <p-toggleswitch inputId="datesRangeSwitch" class="flex align-items-center" (onChange)="changeSwitchRangeDates()">
+                <ng-template #handle let-checked="checked">
+                    <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
+                </ng-template>
+            </p-toggleswitch>
+        </div>
+    
+        <p-button [label]="'CALENDAR.CLEAR_SELECTED_CELLS' | translate" (onClick)="clearDatesRange()" [disabled]="selectedCells.length === 0"></p-button>
+    </div>
+
     <div class="calendar-wrapper">
         <div class="calendar-grid">
             <!-- Days header -->
