@@ -1636,5 +1636,8 @@
   },
   "LOGIN": {
     "TITLE": "Login"
+  },
+  "DASHBOARD": {
+    "TITLE": "Dashboard"
   }
 }
