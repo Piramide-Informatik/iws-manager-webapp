@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .project-field {
     display: flex;
     align-items: center;
@@ -59,4 +61,30 @@
 ::ng-deep .p-datepicker .p-datepicker-group {
   width: 100%;
   table-layout: fixed;
+}
+
+::ng-deep .p-datepicker-panel table,
+::ng-deep .p-datepicker-panel .p-monthpicker,
+::ng-deep .p-datepicker-panel .p-yearpicker,
+::ng-deep .p-datepicker-panel .p-datepicker-group {
+  td, th {
+    padding: 0 !important;
+    text-align: center;
+  }
+}
+
+::ng-deep .p-datepicker-panel {
+  button.p-ripple.p-button.p-component {
+    background-color: initial !important;
+    border: none;
+    color: $primary-color;
+
+    &:hover{
+      background-color: $accent-color !important;
+    }
+  }
+
+  .p-datepicker-day-selected{
+    background: $primary-color !important;
+  }
 }
