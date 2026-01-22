@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { EmployeeService } from '../../../../../Services/employee.service';
 import { catchError, map, Observable, switchMap, take, throwError } from 'rxjs';
 import { Employee } from '../../../../../Entities/employee';
-import { EmploymentContractUtils } from './employment-contract-utils';
 import { createNotFoundUpdateError, createUpdateConflictError } from '../../../../shared/utils/occ-error';
 import { EmployeeFullNameDTO } from '../../../../../Entities/employeeFullNameDTO';
 
@@ -13,7 +12,6 @@ import { EmployeeFullNameDTO } from '../../../../../Entities/employeeFullNameDTO
  */
 export class EmployeeUtils {
   private readonly employeeService = inject(EmployeeService);
-  private readonly employmentContractUitls = inject(EmploymentContractUtils);
   /**
   * Gets all employees without any transformation
   * @returns Observable emitting the raw list of employees

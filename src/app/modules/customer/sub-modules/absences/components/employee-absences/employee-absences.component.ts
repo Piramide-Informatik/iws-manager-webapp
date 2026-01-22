@@ -20,10 +20,7 @@ import { AbsenceDayCountDTO } from '../../../../../../Entities/AbsenceDayCountDT
 import { AbsenceDayUtils } from '../../utils/absenceday-utils';
 import { Title } from '@angular/platform-browser';
 import { HolidayYearUtils } from '../../../../../master-data/components/holidays/utils/holiday-year-utils';
-
-interface EmployeeWithFullName extends Employee {
-  fullName: string;
-}
+import { EmployeeFullNameDTO } from '../../../../../../Entities/employeeFullNameDTO';
 
 @Component({
   selector: 'app-employee-absences',
@@ -74,19 +71,9 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     this.employeeUtils.getAllEmployeesByCustomerId(this.customerId)
   );
 
-  processedEmployees = computed<EmployeeWithFullName[] | undefined>(() => {
-    const employeesList = this.employees();
-
-    if (!employeesList) return undefined;
-
-    return employeesList.map(emp => {
-      const employeeWithFullName: EmployeeWithFullName = {
-        ...emp,
-        fullName: this.formatFullName(emp)
-      };
-      return employeeWithFullName;
-    });
-  });
+  processedEmployees = toSignal<EmployeeFullNameDTO[] | undefined>(
+    this.employeeUtils.getEmployeesWithFullNameSortedByName(this.customerId)
+  );
 
   selectedEmployee!: Employee | undefined;
   years: number[] = []; // Values of dropdown
@@ -291,9 +278,5 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
         localStorage.removeItem('selectedEmployeeId');
       }
     })
-  }
-
-  private formatFullName(employee: Employee): string {
-    return `${employee.firstname} ${employee.lastname}`.trim();
   }
 }
