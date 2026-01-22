@@ -1633,5 +1633,8 @@
   },
   "LOGIN": {
     "TITLE": "Iniciar Sesión"
+  },
+  "DASHBOARD": {
+    "TITLE": "Panel"
   }
 }

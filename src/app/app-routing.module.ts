@@ -1,8 +1,18 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { inject, NgModule } from '@angular/core';
+import { ResolveFn, RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 import { BlankComponent } from './core/components/blank/blank.component';
 import { authGuard } from './core/guards/auth.guard';
+import { PageTitleService } from './shared/services/page-title.service';
+import { TranslateService } from '@ngx-translate/core';
+
+export const titleResolver: ResolveFn<string> = (route, state) => {
+  const value = route.data['titleValue'] || '';
+  const pageTitleService = inject(PageTitleService);
+  const translateService = inject(TranslateService)
+  pageTitleService.setTranslatedTitle(value);
+  return translateService.instant(value);
+};
 
 const routes: Routes = [
   {
@@ -21,6 +31,10 @@ const routes: Routes = [
     path: 'dashboard',
     component: MainLayoutComponent,
     canActivate: [authGuard],
+    title: titleResolver,
+    data: { 
+      titleValue: 'DASHBOARD.TITLE',
+    },
     children: [
       {
         path: '',

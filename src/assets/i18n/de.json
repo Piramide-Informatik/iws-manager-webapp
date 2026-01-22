@@ -1640,5 +1640,8 @@
   },
   "LOGIN": {
     "TITLE": "Anmeldung"
+  },
+  "DASHBOARD": {
+    "TITLE": "Dashboard"
   }
 }
