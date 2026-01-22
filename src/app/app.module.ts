@@ -21,7 +21,6 @@ import { MasterDataModule } from './modules/master-data/master-data.module';
 
 //Prime NG
 import { ButtonModule } from 'primeng/button';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 import { MenubarModule } from 'primeng/menubar';
@@ -52,7 +51,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     LayoutModule,
     MatButtonModule,
     MasterDataModule,
-    OverlayPanelModule,
     SplitButtonModule,
     MenubarModule,
     MenuModule,

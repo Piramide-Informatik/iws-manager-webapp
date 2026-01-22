@@ -12,12 +12,14 @@ import { CommonModule } from '@angular/common';
 
 import { PopoverModule } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
+import { Error403Component } from './components/error403/error403.component';
 
 @NgModule({
   declarations: [
     OccErrorModalComponent,
     AutoFocusOnVisibleDirective,
-    CustomPopoverComponent
+    CustomPopoverComponent,
+    Error403Component
   ],
   imports: [
     ButtonModule,

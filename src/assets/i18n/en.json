@@ -1639,5 +1639,11 @@
   },
   "DASHBOARD": {
     "TITLE": "Dashboard"
+  },
+  "PAGE_ERROR": {
+    "ERROR_403": {
+      "TITLE": "Error 403 - Fordidden",
+      "DESCRIPTION": "You don't have permission to access this resource."
+    }
   }
 }

@@ -27,4 +27,25 @@
       <p-avatar image="assets/user/PatrickZessin.jpg" shape="circle" />
     </button>
   </div>
+  <button
+    pButton
+    icon="pi pi-globe"
+    label={{selectedLanguage}}
+    class="p-button-outlined idioma-btn"
+    style="float: right;"
+    (onKeyDown.enter)="op.toggle($event)"
+    (click)="op.toggle($event)"
+  ></button>
+  
+  <p-overlayPanel #op [appendTo]="'body'" styleClass="lang-panel">
+    <button class="flag-option" (keydown.enter)="changeLanguage('de'); op.hide()" (click)="changeLanguage('de'); op.hide()">
+      <span class="flag-icon flag-icon-de"></span> Deutsch
+    </button>
+    <button class="flag-option" (keydown.enter)="changeLanguage('en'); op.hide()" (click)="changeLanguage('en'); op.hide()">
+      <span class="flag-icon flag-icon-gb"></span> English
+    </button>
+    <button class="flag-option" (keydown.enter)="changeLanguage('es'); op.hide()" (click)="changeLanguage('es'); op.hide()">
+      <span class="flag-icon flag-icon-es"></span> Spanish
+    </button>
+  </p-overlayPanel>
 </div>

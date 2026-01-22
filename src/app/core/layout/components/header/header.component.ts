@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../../Services/auth.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { UserPreferenceService } from '../../../../Services/user-preferences.service';
+import { PrimeNGConfigService } from '../../../../shared/services/primeng-config.service';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +13,7 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class HeaderComponent implements OnInit {
+  private readonly primeNGConfigService = inject(PrimeNGConfigService);
   @Input() username: string = '';
 
   @Input() currentMenuKey: string = '';
@@ -18,13 +22,22 @@ export class HeaderComponent implements OnInit {
   @Output() menuSelected = new EventEmitter<string>();
   @Input() items: any[] = [];
   userMenuItems: MenuItem[] = [];
+  public selectedLanguage!: string;
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
-  ) {}
+    private readonly router: Router,
+    private readonly translate: TranslateService,
+    private readonly userPreferenceService: UserPreferenceService
+  ) {
+    this.translate.addLangs(['de', 'es', 'en']);
+  }
 
   ngOnInit(): void {
+    const currentLanguage = this.userPreferenceService.getLanguage() ?? 'de';
+    this.selectedLanguage = currentLanguage;
+    this.translate.use(currentLanguage);
+    this.primeNGConfigService.initialize();
     this.userMenuItems = [
       {
         label: 'Profile',
@@ -52,9 +65,7 @@ export class HeaderComponent implements OnInit {
     ];
   }
 
-  onMenuSelect(menu: string, index: number): void {
-    console.log('menu:', menu);
-    
+  onMenuSelect(menu: string, index: number): void {    
     this.menuSelected.emit(menu);
     const menuOptions: HTMLCollectionOf<Element> =
       document.getElementsByClassName('menu-options');
@@ -64,6 +75,13 @@ export class HeaderComponent implements OnInit {
       element.classList.remove('active');
     });
     option.classList.add('active');
+  }
+
+  changeLanguage(lang: string) {
+    this.translate.use(lang);
+    this.selectedLanguage = lang;
+    this.userPreferenceService.setLanguage(lang);
+    this.primeNGConfigService.initialize();
   }
 
   logout() {

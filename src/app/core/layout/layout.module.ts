@@ -16,6 +16,7 @@ import { TranslateDirective, TranslateModule, TranslatePipe } from '@ngx-transla
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { SubMenuComponent } from './components/sub-menu/sub-menu.component';
 import { MenubarModule } from 'primeng/menubar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MenubarModule } from 'primeng/menubar';
     TranslateModule,
     TranslatePipe,
     TieredMenuModule,
-    MenubarModule
+    MenubarModule,
+    OverlayPanelModule,
   ],
   exports: [MainLayoutComponent, SubMenuComponent, HeaderComponent ],
 })

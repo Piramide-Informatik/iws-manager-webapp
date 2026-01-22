@@ -5,6 +5,7 @@ import { BlankComponent } from './core/components/blank/blank.component';
 import { authGuard } from './core/guards/auth.guard';
 import { PageTitleService } from './shared/services/page-title.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Error403Component } from './modules/shared/components/error403/error403.component';
 
 export const titleResolver: ResolveFn<string> = (route, state) => {
   const value = route.data['titleValue'] || '';
@@ -91,6 +92,10 @@ const routes: Routes = [
         (md) => md.MasterDataModule
       ),
   },
+  {
+    path: '403',
+    component: Error403Component
+  }
 ];
 
 @NgModule({
