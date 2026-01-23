@@ -1636,5 +1636,11 @@
   },
   "DASHBOARD": {
     "TITLE": "Panel"
+  },
+  "PAGE_ERROR": {
+    "ERROR_403": {
+      "TITLE": "Error 403 - Prohibido",
+      "DESCRIPTION": "No tiene permiso para acceder a este recurso."
+    }
   }
 }

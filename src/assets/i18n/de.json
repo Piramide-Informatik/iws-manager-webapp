@@ -1643,5 +1643,11 @@
   },
   "DASHBOARD": {
     "TITLE": "Dashboard"
+  },
+  "PAGE_ERROR": {
+    "ERROR_403": {
+      "TITLE": "Fehler 403 - Verboten",
+      "DESCRIPTION": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen."
+    }
   }
 }
