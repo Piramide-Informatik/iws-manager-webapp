@@ -4,8 +4,7 @@
       <div class="account_input">
         <label for="periodNo">{{ 'PROJECT_PERIOD.FORM.YEAR' | translate }}</label>
         <div class="input-message">
-          <p-inputnumber #firstInput [useGrouping]="true" inputId="periodNo" [inputStyle]="{'text-align': 'right'}"
-            formControlName="periodNo" autocomplete="off" />
+          <input #firstInput pInputText type="text" id="periodNo" formControlName="periodNo" autocomplete="off"/>  
         </div>
       </div>
 
