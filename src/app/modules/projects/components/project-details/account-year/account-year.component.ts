@@ -88,8 +88,6 @@ export class ProjectsAccountYearOverviewComponent implements OnInit, OnDestroy {
     this.cols = [
       {
         field: 'periodNo',
-        type: 'integer',
-        filter: { type: 'numeric' },
         customClasses: ['align-right'],
         header: this.translate.instant(_('PROJECT_PERIOD.TABLE.YEAR')),
         classesTHead: ['width-18']

@@ -8,7 +8,7 @@ export interface ProjectPeriod {
 
   project: Project;
 
-  periodNo: number;
+  periodNo: string;
   startDate: string;
   endDate: string;
 }
