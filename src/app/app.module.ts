@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HttpClient, provideHttpClient, withInterceptors  } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import {
   TranslateModule,
@@ -34,7 +34,11 @@ import { ToastModule } from 'primeng/toast';
 import { AppComponent } from './app.component';
 import { BlankComponent } from './core/components/blank/blank.component';
 import { UserPreferenceService } from './Services/user-preferences.service';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
+
+// Interceptors
+import { credentialsInterceptor } from './core/interceptors/credentials.interceptor';
+import { authErrorInterceptor } from './core/interceptors/auth-error.interceptor';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -79,7 +83,12 @@ export function HttpLoaderFactory(http: HttpClient) {
         },
       },
     }),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(
+      withInterceptors([
+        credentialsInterceptor,
+        authErrorInterceptor
+      ])
+    ),
     {
       provide: DATE_PIPE_DEFAULT_OPTIONS,
       useValue: { dateFormat: "longDate" }
@@ -88,4 +97,4 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
