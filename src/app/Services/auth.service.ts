@@ -5,8 +5,6 @@ import { environment } from '../../environments/environment';
 import { UserPreferenceService } from './user-preferences.service';
 
 export interface LoginResponse {
-  token: string;
-  type: string;
   username: string;
 }
 
@@ -14,43 +12,64 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
+
   private readonly AUTH_URL = environment.BACK_END_HOST_DEV_AUTH;
-  private readonly TOKEN_KEY = 'auth_token';
   private readonly USERNAME_KEY = 'auth_username';
 
   constructor(
     private readonly http: HttpClient,
     private readonly userPreferenceService: UserPreferenceService
-  ) {}
+  ) { }
 
   login(credentials: any): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.AUTH_URL}/login`, credentials).pipe(
+    return this.http.post<LoginResponse>(
+      `${this.AUTH_URL}/login`,
+      credentials,
+      { withCredentials: true }
+    ).pipe(
       tap(response => {
-        this.setSession(response);
+        localStorage.setItem(this.USERNAME_KEY, response.username);
       })
     );
   }
 
-  private setSession(authResult: LoginResponse): void {
-    localStorage.setItem(this.TOKEN_KEY, authResult.token);
-    localStorage.setItem(this.USERNAME_KEY, authResult.username);
+  logout(): Observable<any> {
+    console.log('Logout');
+    return this.http.post(
+      `${this.AUTH_URL}/logout`,
+      {},
+      { withCredentials: true }
+    ).pipe(
+      tap(() => {
+        localStorage.removeItem(this.USERNAME_KEY);
+        this.userPreferenceService.clearFilters();
+      })
+    );
   }
 
-  logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USERNAME_KEY);
-    this.userPreferenceService.clearFilters();
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+  getCurrentUser(): Observable<LoginResponse> {
+    return this.http.get<LoginResponse>(
+      `${this.AUTH_URL}/me`,
+      { withCredentials: true }
+    );
   }
 
   getUsername(): string | null {
     return localStorage.getItem(this.USERNAME_KEY);
   }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  isLoggedIn(): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      this.getCurrentUser().subscribe({
+        next: () => {
+          observer.next(true);
+          observer.complete();
+        },
+        error: () => {
+          observer.next(false);
+          observer.complete();
+        }
+      });
+    });
   }
 }

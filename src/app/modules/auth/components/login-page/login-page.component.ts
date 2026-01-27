@@ -22,14 +22,10 @@ export class LoginPageComponent implements OnInit {
     private readonly router: Router,
     private readonly pageTitleService: PageTitleService,
     private readonly userPreferenceService: UserPreferenceService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.updateTitle();
-    if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
-      return;
-    }
     this.initForm();
   }
 
@@ -47,7 +43,7 @@ export class LoginPageComponent implements OnInit {
 
     this.isLoading = true;
     this.errorMessage = '';
-    
+
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         this.isLoading = false;
